@@ -129,6 +129,9 @@
   <ItemGroup>
     <ClInclude Include="framework.h" />
     <ClInclude Include="GameProject.h" />
+    <ClInclude Include="Maths\Math.h" />
+    <ClInclude Include="Maths\Math_Header.h" />
+    <ClInclude Include="Maths\Vector.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="targetver.h" />
   </ItemGroup>
