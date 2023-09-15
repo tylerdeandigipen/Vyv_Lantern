@@ -5,57 +5,24 @@
 class Color
 {
 public:
-	int r;
-	int g;
-	int b;
-	int a;
 
-	Color& operator+=(Color const& rhs)& {
-		r += rhs.r;
-		g += rhs.g;
-		b += rhs.b;
-		a += rhs.a;
-		return *this;
-	}
-	Color operator+(const Color& rhs) {
-		Color result;
-		result.r = this->r + rhs.r;
-		result.g = this->g + rhs.g;
-		result.b = this->b + rhs.b;
-		result.a = this->a + rhs.a;
-		return result;
-	}
-	Color& operator-=(Color const& rhs)& {
-		r -= rhs.r;
-		g -= rhs.g;
-		b -= rhs.b;
-		a -= rhs.a;
-		return *this;
-	}
-	Color operator-(const Color& rhs) {
-		Color result;
-		result.r = this->r - rhs.r;
-		result.g = this->g - rhs.g;
-		result.b = this->b - rhs.b;
-		result.a = this->a - rhs.a;
-		return result;
-	}
-	Color operator*(float rhs) {
-		Color result;
-		result.r = this->r * rhs;
-		result.g = this->g * rhs;
-		result.b = this->b * rhs;
-		result.a = this->a * rhs;
-		return result;
-	}
-	Color operator/(float rhs) {
-		Color result;
-		result.r = this->r / rhs;
-		result.g = this->g / rhs;
-		result.b = this->b / rhs;
-		result.a = this->a / rhs;
-		return result;
-	}
+	float r = 0;
+	float g = 0;
+	float b = 0;
+	float a = 0;
+
+	/*
+	Color(int r, int g, int b, int a);
+	Color(Color &rhs);
+	Color();
+	*/
+	Color& operator =(const Color& rhs)&;
+	Color& operator +=(const Color& rhs)&;
+	Color operator +(const Color& rhs);
+	Color& operator -=(const Color& rhs)&;
+	Color operator -(const Color& rhs);
+	Color operator *(const float rhs);
+	Color operator /(const float rhs);
 
 private:
 };

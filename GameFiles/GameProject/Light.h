@@ -2,12 +2,13 @@
 #ifndef LIGHT_H
 #define LIGHT_H
 
-class Color {};
+#include "Color.h"
+#include "Vector.h"
 
 class Light
 {
 public:
-	struct Vector2 position;
+	gfxVector2 position;
 	Color color;
 	float minAngle;
 	float maxAngle;
