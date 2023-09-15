@@ -8,28 +8,15 @@
 //
 //------------------------------------------------------------------------------
 #include "Renderer.h"
-#include "Vector"
+#include "Color.h"
+#include "Light.h"
+#include "Math_Header.h"
+#include "Vector.h"
+
 
 //BaseSystem::BaseSystem(const char* _name) : name(_name) {}
 
-struct Color
-{
-	int r;
-	int g;
-	int b;
-	int a;
-};
 
-struct Light
-{
-	struct Vector2 position;
-	struct Color color;
-	float minAngle;
-	float maxAngle;
-	float intensity;
-	float radialMult1;
-	float radialMult2;
-};
 
 struct Vector2
 {
@@ -96,8 +83,7 @@ ImgBuffer* RenderLightingPass(ImgBuffer *lightBuffer, Light *lightSource)
 			clamp(radialFalloff, 5, 0);
 
 			float lightIntensity = radialFalloff * angularFalloff * lightSource->intensity;
-			buffer[x][y] = (buffer[x][y] * lightIntensity) + ((lightSource->color / 255) * lightIntensity);
-			s
+			buffer[x][y] = (buffer[x][y] * lightIntensity) + ((lightSource->color / 255.0f) * lightIntensity);
 		}
 	}
 
