@@ -34,7 +34,7 @@ ImgBuffer* CreateImgBuffer()
 };
 
 //forward def because not made yet
-float Distance(int x1, int y1, int x2, int y2);
+float Distance(float x1, float y1, float x2, float y2);
 float clamp(float x, float max, float min);
 
 ImgBuffer* RenderLightingPass(ImgBuffer *lightBuffer, Light *lightSource)
@@ -50,11 +50,12 @@ ImgBuffer* RenderLightingPass(ImgBuffer *lightBuffer, Light *lightSource)
 		for (int y = 0; y < lightBuffer->size.y; y++)
 		{
 			float intenstity;
-			float distance = Distance(x, y, lightSource->position.x, lightSource->position.y);
-			angle = atan2(y - lightSource->position.y, x - lightSource->position.x);
+			float distance = Distance((float)x, (float)y, lightSource->position.x, lightSource->position.y);
+			angle = atan2((float)y - lightSource->position.y, (float)x - lightSource->position.x);
+
 			if (angle > 0.0f && lightSource->maxAngle < 0.0f)
 			{
-				angle -= 360;
+				angle -= 360.0f;
 			}
 			if (angle < 0.0f && lightSource->minAngle > 0.0f)
 			{
@@ -69,7 +70,7 @@ ImgBuffer* RenderLightingPass(ImgBuffer *lightBuffer, Light *lightSource)
 				angularFalloff = -1 * (angle - tempMax) / (tempMax - tempMin);
 			}
 
-			radialFalloff = 1.0 / (1.0f + lightSource->radialMult1 * distance + lightSource->radialMult2 * pow(distance, 2));
+			radialFalloff = 1.0f / (1.0f + lightSource->radialMult1 * distance + lightSource->radialMult2 * (distance * distance));
 
 			clamp(angularFalloff, 5.0f, 0.0f);
 			clamp(radialFalloff, 5.0f, 0.0f);
