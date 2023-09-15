@@ -22,7 +22,7 @@ const int ScreenSizeY = 135;
 struct ImgBuffer
 {
 	gfxVector2 size;
-	Color buffer_[ScreenSizeX][ScreenSizeY];
+	Color buffer[ScreenSizeX][ScreenSizeY];
 };
 
 ImgBuffer* CreateImgBuffer()
@@ -75,7 +75,7 @@ ImgBuffer* RenderLightingPass(ImgBuffer *lightBuffer, Light *lightSource)
 			clamp(radialFalloff, 5.0f, 0.0f);
 
 			float lightIntensity = radialFalloff * angularFalloff * lightSource->intensity;
-			buffer[x][y] = (buffer[x][y] * lightIntensity) + ((lightSource->color / 255.0f) * lightIntensity);
+			lightBuffer->buffer[x][y] = (lightBuffer->buffer[x][y] * lightIntensity) + ((lightSource->color / 255.0f) * lightIntensity);
 		}
 	}
 
