@@ -25,13 +25,16 @@ struct ImgBuffer
 	Color buffer[ScreenSizeX][ScreenSizeY];
 };
 
+/*
 ImgBuffer* CreateImgBuffer()
 {
-	ImgBuffer* lightBuffer = (ImgBuffer*)calloc(1, sizeof *lightBuffer + sizeof(Color[ScreenSizeX][ScreenSizeY]));
+	ImgBuffer(*lightBuffer)[ScreenSizeY] = (ImgBuffer*)calloc(ScreenSizeX, sizeof * lightBuffer);
 	lightBuffer->size.x = ScreenSizeX;
 	lightBuffer->size.y = ScreenSizeY;
 	return lightBuffer;
+
 };
+*/
 
 //forward def because not made yet
 float Distance(float x1, float y1, float x2, float y2);
@@ -49,7 +52,6 @@ ImgBuffer* RenderLightingPass(ImgBuffer *lightBuffer, Light *lightSource)
 	{
 		for (int y = 0; y < lightBuffer->size.y; y++)
 		{
-			float intenstity;
 			float distance = Distance((float)x, (float)y, lightSource->position.x, lightSource->position.y);
 			angle = atan2((float)y - lightSource->position.y, (float)x - lightSource->position.x);
 
@@ -79,5 +81,5 @@ ImgBuffer* RenderLightingPass(ImgBuffer *lightBuffer, Light *lightSource)
 			lightBuffer->buffer[x][y] = (lightBuffer->buffer[x][y] * lightIntensity) + ((lightSource->color / 255.0f) * lightIntensity);
 		}
 	}
-
+	return lightBuffer;
 };
