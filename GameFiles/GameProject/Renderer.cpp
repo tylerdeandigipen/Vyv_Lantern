@@ -97,6 +97,7 @@ ImgBuffer* RenderLightingPass(ImgBuffer *lightBuffer, Light *lightSource)
 
 			float lightIntensity = radialFalloff * angularFalloff * lightSource->intensity;
 			buffer[x][y] = (buffer[x][y] * lightIntensity) + ((lightSource->color / 255) * lightIntensity);
+			s
 		}
 	}
 
