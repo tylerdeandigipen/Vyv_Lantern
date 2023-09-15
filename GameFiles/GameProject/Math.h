@@ -94,4 +94,27 @@ public:
 		return "Divide by zero!";
 	}
 };
+
+
+// calculate distance from 2 points
+float distance(float x1, float y1, float x2, float y2)
+{
+	return sqrt(pow(x2 - x1, 2) + pow(y2 - y1, 2) * 1.0);
+}
+
+float clamp(float value, float min, float max)
+{
+	if (value <= max && value >= min)
+	{
+		return value;
+	}
+	else if (value < min)
+	{
+		return min;
+	}
+	else
+	{
+		return max;
+	}
+}
 #endif // !MATH_H_
