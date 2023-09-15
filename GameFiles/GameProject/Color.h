@@ -11,11 +11,11 @@ public:
 	float b = 0;
 	float a = 0;
 
-	/*
+	
 	Color(int r, int g, int b, int a);
 	Color(Color &rhs);
 	Color();
-	*/
+	
 	Color& operator =(const Color& rhs)&;
 	Color& operator +=(const Color& rhs)&;
 	Color operator +(const Color& rhs);

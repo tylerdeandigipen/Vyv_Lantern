@@ -1,6 +1,6 @@
 #include "Color.h"
 
-/*
+
 Color::Color(int r, int g, int b, int a) // constructor definition
 	: r{ r }
 	, g{ g }
@@ -24,7 +24,7 @@ Color::Color() // default constructor definition
 	, a{ 0 }
 {
 }
-*/
+
 Color& Color::operator =(Color const& rhs)& {
 	r = rhs.r;
 	g = rhs.g;

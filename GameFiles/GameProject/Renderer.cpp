@@ -12,6 +12,8 @@
 #include "Light.h"
 #include "Math_Header.h"
 #include "Vector.h"
+#include "ImageBuffer.h"
+
 
 const int ScreenSizeX = 240;
 const int ScreenSizeY = 135;
@@ -19,28 +21,11 @@ const int ScreenSizeY = 135;
 //BaseSystem::BaseSystem(const char* _name) : name(_name) {}
 
 
-struct ImgBuffer
-{
-	gfxVector2 size;
-	Color buffer[ScreenSizeX][ScreenSizeY];
-};
-
-/*
-ImgBuffer* CreateImgBuffer()
-{
-	ImgBuffer(*lightBuffer)[ScreenSizeY] = (ImgBuffer*)calloc(ScreenSizeX, sizeof * lightBuffer);
-	lightBuffer->size.x = ScreenSizeX;
-	lightBuffer->size.y = ScreenSizeY;
-	return lightBuffer;
-
-};
-*/
-
 //forward def because not made yet
 float Distance(float x1, float y1, float x2, float y2);
 float clamp(float x, float max, float min);
 
-ImgBuffer* RenderLightingPass(ImgBuffer *lightBuffer, Light *lightSource)
+ImageBuffer* RenderLightingPass(ImageBuffer *lightBuffer, Light *lightSource)
 {
 	Color temp;
 	temp = temp * 2.0f;
