@@ -50,3 +50,34 @@ ImageBuffer::~ImageBuffer()
     //Free the array of pointers
     delete[] buffer;
 }
+
+ImageBuffer& ImageBuffer::operator =(const ImageBuffer& rhs)&
+{
+    for (int i = 0; i < size.x; i++)
+    {
+        for (int j = 0; j < size.y; j++)
+        {
+            buffer[i][j] = rhs.buffer[i][j];
+        }
+    }
+}
+ImageBuffer ImageBuffer::operator +(const ImageBuffer& rhs)
+{
+    for (int i = 0; i < size.x; i++)
+    {
+        for (int j = 0; j < size.y; j++)
+        {
+            buffer[i][j] += rhs.buffer[i][j];
+        }
+    }
+}
+ImageBuffer ImageBuffer::operator -(const ImageBuffer& rhs)
+{
+    for (int i = 0; i < size.x; i++)
+    {
+        for (int j = 0; j < size.y; j++)
+        {
+            buffer[i][j] -= rhs.buffer[i][j];
+        }
+    }
+}

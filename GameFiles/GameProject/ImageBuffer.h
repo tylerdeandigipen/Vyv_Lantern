@@ -17,12 +17,11 @@ public:
 	ImageBuffer();
 	~ImageBuffer();
 
-	/*
 	ImageBuffer& operator =(const ImageBuffer& rhs)&;
 	ImageBuffer operator +(const ImageBuffer& rhs);
 	ImageBuffer operator -(const ImageBuffer& rhs);
 	//ImageBuffer operator *(const float rhs);
-	*/
+
 
 private:
 };
