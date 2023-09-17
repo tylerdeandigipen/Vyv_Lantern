@@ -71,6 +71,14 @@ Color Color::operator *(const float rhs) {
 	result.a = this->a * rhs;
 	return result;
 };
+Color Color::operator *(const Color& rhs) {
+	Color result;
+	result.r = this->r * rhs.r;
+	result.g = this->g * rhs.g;
+	result.b = this->b * rhs.b;
+	result.a = this->a * rhs.a;
+	return result;
+};
 Color Color::operator /(const float rhs) {
 	Color result;
 	result.r = this->r / rhs;

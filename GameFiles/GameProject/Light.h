@@ -15,6 +15,9 @@ public:
 	float intensity;
 	float radialMult1;
 	float radialMult2;
+	float radialWeight;
+	float angularWeight;
+	float volumetricIntensity;
 private:
 };
 

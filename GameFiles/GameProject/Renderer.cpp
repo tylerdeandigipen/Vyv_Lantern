@@ -11,6 +11,7 @@
 #include "Color.h"
 #include "Light.h"
 #include "Math_Header.h"
+#include "Math.h"
 #include "Vector.h"
 #include "ImageBuffer.h"
 
@@ -21,50 +22,63 @@ const int ScreenSizeY = 135;
 //BaseSystem::BaseSystem(const char* _name) : name(_name) {}
 
 
-//forward def because not made yet
-float Distance(float x1, float y1, float x2, float y2);
-float clamp(float x, float max, float min);
-
-ImageBuffer* RenderLightingPass(ImageBuffer *lightBuffer, Light *lightSource)
+ImageBuffer* RenderLightingPass(ImageBuffer *lightBuffer, Light *lightSource[])
 {
-	Color temp;
-	temp = temp * 2.0f;
-
 	float radialFalloff;
 	float angularFalloff;
 	float angle;
+    float lightMultiplier;
+    Color avgColor;
+    Color avgVolumetricColor;
+
 	for (int x = 0; x < lightBuffer->size.x; x++)
 	{
-		for (int y = 0; y < lightBuffer->size.y; y++)
-		{
-			float distance = Distance((float)x, (float)y, lightSource->position.x, lightSource->position.y);
-			angle = atan2((float)y - lightSource->position.y, (float)x - lightSource->position.x);
+        for (int y = 0; y < lightBuffer->size.y; y++)
+        {
+            for (int i = 0; i < (sizeof(lightSource) / sizeof(Light)); i++)
+            {
+                float distFromCenter = distance(lightSource[i]->position.x, lightSource[i]->position.y, x, y); //find distance from the center of the light
+                float angle = atan2(x - lightSource[i]->position.x, y - lightSource[i]->position.y) * 57.295779f; //Find angle from point to center relative to x axis, magic number is 180 / pi
 
-			if (angle > 0.0f && lightSource->maxAngle < 0.0f)
-			{
-				angle -= 360.0f;
-			}
-			if (angle < 0.0f && lightSource->minAngle > 0.0f)
-			{
-				angle += 360;
-			}
-			angularFalloff = 0;
-			if (angle >= lightSource->minAngle && angle <= lightSource->maxAngle)
-			{
-				float midAngle = lightSource->maxAngle - lightSource->minAngle;
-				float tempMax = lightSource->maxAngle - midAngle;
-				float tempMin = lightSource->minAngle - midAngle;
-				angularFalloff = -1 * (angle - tempMax) / (tempMax - tempMin);
-			}
+                //ajust angle to fit the sign of the input
+                if (angle > 0 && lightSource[i]->maxAngle < 0)
+                {
+                    angle -= 360;
+                }
+                if (angle < 0 && lightSource[i]->minAngle > 0)
+                {
+                    angle += 360;
+                }
 
-			radialFalloff = 1.0f / (1.0f + lightSource->radialMult1 * distance + lightSource->radialMult2 * (distance * distance));
+                angularFalloff = 0;
+                if (angle >= lightSource[i]->minAngle && angle <= lightSource[i]->maxAngle)
+                {
+                    float midAngle = (lightSource[i]->minAngle + lightSource[i]->maxAngle) / 2;
+                    float tempMax = lightSource[i]->maxAngle - midAngle;
+                    float tempMin = lightSource[i]->minAngle - midAngle;
 
-			clamp(angularFalloff, 5.0f, 0.0f);
-			clamp(radialFalloff, 5.0f, 0.0f);
+                    angularFalloff = -1 * (((abs(angle - midAngle) - tempMax)) / (tempMax - tempMin));
+                }
 
-			float lightIntensity = radialFalloff * angularFalloff * lightSource->intensity;
-			lightBuffer->buffer[x][y] = (lightBuffer->buffer[x][y] * lightIntensity) + ((lightSource->color / 255.0f) * lightIntensity);
-		}
+                //calculate radialfalloff
+                radialFalloff = 1 / (1 + (lightSource[i]->radialMult1 * distFromCenter) + (lightSource[i]->radialMult2 * (distFromCenter * distFromCenter)));
+
+                //clamp both falloffs
+                radialFalloff = clamp(lightSource[i]->radialWeight * radialFalloff, 1, 0);
+                angularFalloff = clamp(lightSource[i]->angularWeight * angularFalloff, 1, 0);
+
+                //Calculate objects light
+                lightMultiplier = lightSource[i]->intensity * radialFalloff * angularFalloff;
+                avgColor = (avgColor + (lightSource[i]->color * lightMultiplier)) / 2;
+
+                //Add volumetric lighting
+                lightMultiplier *= lightSource[i]->volumetricIntensity;
+                avgVolumetricColor += (lightSource[i]->color * lightMultiplier);
+            }
+            //Light the scene
+            lightBuffer->buffer[x][y] = (lightBuffer->buffer[x][y] * (avgColor / 255));
+            lightBuffer->buffer[x][y] += avgVolumetricColor;
+        }
 	}
 	return lightBuffer;
 };

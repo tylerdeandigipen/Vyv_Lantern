@@ -21,6 +21,7 @@ public:
 	Color operator +(const Color& rhs);
 	Color& operator -=(const Color& rhs)&;
 	Color operator -(const Color& rhs);
+	Color operator *(const Color& rhs);
 	Color operator *(const float rhs);
 	Color operator /(const float rhs);
 
