@@ -135,6 +135,7 @@
     <ClInclude Include="Main.h" />
     <ClInclude Include="Math.h" />
     <ClInclude Include="Math_Header.h" />
+    <ClInclude Include="Matrix.h" />
     <ClInclude Include="Renderer.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="targetver.h" />
@@ -144,6 +145,7 @@
     <ClCompile Include="BaseSystem.cpp" />
     <ClCompile Include="Engine.cpp" />
     <ClCompile Include="Main.cpp" />
+    <ClCompile Include="Matrix.cpp" />
     <ClCompile Include="Renderer.cpp" />
     <ClCompile Include="Color.cpp" />
     <ClCompile Include="Light.cpp" />
