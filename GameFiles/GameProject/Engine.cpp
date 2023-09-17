@@ -8,16 +8,12 @@
 //
 //------------------------------------------------------------------------------
 
-//#include "stdafx.h"
-#include <assert.h>
-
 #include "BaseSystem.h"
 #include "Engine.h"
-//#include "DGL.h"
 
 Engine* Engine::instance = new Engine();
 
-Engine::EngineCode Engine::Init()
+Engine::EngineCode Engine::Start()
 {
 	for (int i = 0; i < systemCount; ++i)
 	{
@@ -76,6 +72,18 @@ Engine::EngineCode Engine::Stop()
 	return EngineExit;
 }
 
+void Engine::EngineAddSystem(BaseSystem* sys)
+{
+	systems[systemCount++] = sys;
+}
+
+bool Engine::Paused() { return paused; }
+void Engine::SetPause(bool pause) { paused = pause; }
+
+Engine* Engine::GetInstance() { return instance; }
+
+// Priv
+//------------------------------------------------------------------------------------------//
 Engine::Engine() : isRunning(false), systemCount(0), systems(), paused(false)
 {
 
@@ -83,7 +91,7 @@ Engine::Engine() : isRunning(false), systemCount(0), systems(), paused(false)
 
 Engine::~Engine()
 {
-	if (instance != NULL)
+	if (instance != 0)
 		delete instance;
 }
 
