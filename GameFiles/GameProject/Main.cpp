@@ -8,6 +8,8 @@
 //------------------------------------------------------------------------------
 
 #include "framework.h"
+#include "Engine.h"
+#include "PlatformSystem.h"
 #include "Main.h"
 
 #define MAX_LOADSTRING 100
@@ -33,6 +35,21 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
     UNREFERENCED_PARAMETER(hPrevInstance);
     UNREFERENCED_PARAMETER(lpCmdLine);
 
+    //Engine* engine = Engine::GetInstance();
+    //engine->EngineAddSystem(PlatformSystem::GetInstance());
+
+    //Engine::EngineCode returnCode = engine->Start();
+
+    //switch (returnCode)
+    //{
+    //case Engine::NullWindowHandle:
+    //    return 1;
+    //    break;
+    //default:
+    //    return 0;
+    //    break;
+    //}
+
     LoadStringW(hInstance, IDS_APP_TITLE, szTitle, MAX_LOADSTRING);
     LoadStringW(hInstance, IDC_GAMEPROJECT, szWindowClass, MAX_LOADSTRING);
     MyRegisterClass(hInstance);
@@ -55,6 +72,8 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
             DispatchMessage(&msg);
         }
     }
+
+
 
     return (int) msg.wParam;
 }

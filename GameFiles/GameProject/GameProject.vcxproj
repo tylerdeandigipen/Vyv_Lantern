@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|Win32">
@@ -130,25 +130,17 @@
     <ClInclude Include="BaseSystem.h" />
     <ClInclude Include="Engine.h" />
     <ClInclude Include="framework.h" />
-    <ClInclude Include="Color.h" />
-    <ClInclude Include="ImageBuffer.h" />
-    <ClInclude Include="Light.h" />
     <ClInclude Include="Main.h" />
-    <ClInclude Include="Math.h" />
-    <ClInclude Include="Math_Header.h" />
-    <ClInclude Include="Renderer.h" />
+    <ClInclude Include="PlatformSystem.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="targetver.h" />
-    <ClInclude Include="Vector.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="BaseSystem.cpp" />
     <ClCompile Include="Engine.cpp" />
-    <ClCompile Include="ImageBuffer.cpp" />
+    <ClCompile Include="Entity.cpp" />
     <ClCompile Include="Main.cpp" />
-    <ClCompile Include="Renderer.cpp" />
-    <ClCompile Include="Color.cpp" />
-    <ClCompile Include="Light.cpp" />
+    <ClCompile Include="PlatformSystem.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="GameProject.rc" />

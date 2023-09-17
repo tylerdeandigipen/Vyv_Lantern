@@ -23,6 +23,9 @@ public:
 	EngineCode Stop();
 
 	void EngineAddSystem(BaseSystem*);
+
+	bool Paused();
+	void SetPause(bool pause);
 	
 	static Engine* GetInstance();
 
