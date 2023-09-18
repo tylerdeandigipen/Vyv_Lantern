@@ -36,7 +36,10 @@ Engine::EngineCode TestScene::Init()
 
 void TestScene::Update(float dt)
 {
-
+    //references
+    //https://github.com/ScienceDiscoverer/hello_world/blob/master/DirectoOpenGL_Draw_test.cpp
+    //https://registry.khronos.org/OpenGL-Refpages/gl2.1/xhtml/glDrawPixels.xml
+    //https://www.youtube.com/watch?v=WP0-SJHfKjE
     int argc = 1;
     char* argv[1] = { (char*)"Something" };
     glutInit(&argc, argv);
