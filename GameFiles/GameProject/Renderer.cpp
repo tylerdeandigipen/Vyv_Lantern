@@ -22,7 +22,7 @@ const int ScreenSizeY = 135;
 //BaseSystem::BaseSystem(const char* _name) : name(_name) {}
 
 
-ImageBuffer* RenderLightingPass(ImageBuffer *lightBuffer, Light *lightSource[])
+ImageBuffer* RenderLightingPass(ImageBuffer *lightBuffer, Light *lightSource[], int totalLights)
 {
 	float radialFalloff;
 	float angularFalloff;
@@ -35,7 +35,7 @@ ImageBuffer* RenderLightingPass(ImageBuffer *lightBuffer, Light *lightSource[])
 	{
         for (int y = 0; y < lightBuffer->size.y; y++)
         {
-            for (int i = 0; i < (sizeof(lightSource) / sizeof(Light)); i++)
+            for (int i = 0; i < totalLights; i++)
             {
                 float distFromCenter = distance(lightSource[i]->position.x, lightSource[i]->position.y, x, y); //find distance from the center of the light
                 float angle = atan2(x - lightSource[i]->position.x, y - lightSource[i]->position.y) * 57.295779f; //Find angle from point to center relative to x axis, magic number is 180 / pi
