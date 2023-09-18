@@ -138,6 +138,7 @@
     <ClInclude Include="Scene.h" />
     <ClInclude Include="SceneSystem.h" />
     <ClInclude Include="targetver.h" />
+    <ClInclude Include="TestScene.h" />
     <ClInclude Include="Transform.h" />
   </ItemGroup>
   <ItemGroup>
@@ -150,6 +151,7 @@
     <ClCompile Include="PlatformSystem.cpp" />
     <ClCompile Include="Scene.cpp" />
     <ClCompile Include="SceneSystem.cpp" />
+    <ClCompile Include="TestScene.cpp" />
     <ClCompile Include="Transform.cpp" />
   </ItemGroup>
   <ItemGroup>
