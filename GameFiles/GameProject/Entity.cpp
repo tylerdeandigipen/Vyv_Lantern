@@ -4,7 +4,7 @@
 // Author(s):	Michael Howard
 // Purpose:		Base for all game objects (could do object then this shall see)
 //
-// Copyright � 2023 DigiPen (USA) Corporation.
+// Copyright  © 2023 DigiPen (USA) Corporation.
 //
 //------------------------------------------------------------------------------
 
@@ -152,7 +152,6 @@ Component* Entity::Get(Component::TypeEnum type) const
 	return BinarySearch(type);
 }
 
-	 :private
 const char* Entity::GetName()
 {
 	if (name)
