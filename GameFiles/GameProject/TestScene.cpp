@@ -17,13 +17,13 @@
 
 #include "ImageBuffer.h"
 #include "Light.h"
-/*
+
 #define FREEGLUT_STATIC
 #define _LIB
 #define FREEGLUT_LIB_PRAGMAS 0
 #include <GL/freeglut.h>
 #include <GLFW/glfw3.h>
-*/
+
 
 ImageBuffer* lightBuffer;
 Light* lightSources[1];
@@ -60,7 +60,7 @@ Engine::EngineCode TestScene::Init()
 
 void render()
 {
-    RenderLightingPass(lightBuffer, lightSources, 1);
+    //RenderLightingPass(lightBuffer, lightSources, 1);
 }
 
 void TestScene::Update(float dt)
@@ -71,7 +71,7 @@ void TestScene::Update(float dt)
     //https://www.youtube.com/watch?v=WP0-SJHfKjE
     //https://www.geeksforgeeks.org/how-to-setup-opengl-with-visual-studio-2019-on-windows-10/
 
-    /*
+    
     int argc = 1;
     char* argv[1] = { (char*)"Something" };
     glutInit(&argc, argv);
@@ -90,7 +90,7 @@ void TestScene::Update(float dt)
 
     // enter glut event processing infinite loop
     glutMainLoop();
-    */
+    
 	dt = 0;
 }
 void TestScene::Render()

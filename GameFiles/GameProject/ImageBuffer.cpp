@@ -3,7 +3,7 @@
 ImageBuffer::ImageBuffer(ImageBuffer& rhs)
 {
     //allocate buffer
-    buffer = new Color * [ScreenSizeX];
+    buffer = new Color *[ScreenSizeX];
     for (int i = 0; i < ScreenSizeX; i++)
     {
         buffer[i] = new Color[ScreenSizeY];
@@ -60,6 +60,7 @@ ImageBuffer& ImageBuffer::operator =(const ImageBuffer& rhs)&
             buffer[i][j] = rhs.buffer[i][j];
         }
     }
+    return *this;
 }
 ImageBuffer ImageBuffer::operator +(const ImageBuffer& rhs)
 {
@@ -70,6 +71,7 @@ ImageBuffer ImageBuffer::operator +(const ImageBuffer& rhs)
             buffer[i][j] += rhs.buffer[i][j];
         }
     }
+    return *this;
 }
 ImageBuffer ImageBuffer::operator -(const ImageBuffer& rhs)
 {
@@ -80,4 +82,5 @@ ImageBuffer ImageBuffer::operator -(const ImageBuffer& rhs)
             buffer[i][j] -= rhs.buffer[i][j];
         }
     }
+    return *this;
 }
