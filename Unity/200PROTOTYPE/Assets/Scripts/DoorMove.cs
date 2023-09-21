@@ -22,7 +22,7 @@ public class DoorMove : MonoBehaviour
     private bool onOff = false;
     public void Move()
     {
-        Debug.Log("script called");
+        //Debug.Log("script called");
         if(onOff == false)
         {
 
