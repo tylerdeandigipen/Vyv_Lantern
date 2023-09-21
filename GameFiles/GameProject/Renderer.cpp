@@ -30,15 +30,19 @@ ImageBuffer* RenderLightingPass(ImageBuffer *lightBuffer, Light *lightSource[], 
     float lightMultiplier;
     Color avgColor;
     Color avgVolumetricColor;
-
+    float midAngle;
+    float tempMax;
+    float tempMi;
+    float distFromCenter;
+    float angle;
 	for (int x = 0; x < lightBuffer->size.x; x++)
 	{
         for (int y = 0; y < lightBuffer->size.y; y++)
         {
             for (int i = 0; i < totalLights; i++)
             {
-                float distFromCenter = distance(lightSource[i]->position.x, lightSource[i]->position.y, x, y); //find distance from the center of the light
-                float angle = atan2(x - lightSource[i]->position.x, y - lightSource[i]->position.y) * 57.295779f; //Find angle from point to center relative to x axis, magic number is 180 / pi
+                distFromCenter = distance(lightSource[i]->position.x, lightSource[i]->position.y, x, y); //find distance from the center of the light
+                angle = atan2(x - lightSource[i]->position.x, y - lightSource[i]->position.y) * 57.295779f; //Find angle from point to center relative to x axis, magic number is 180 / pi
 
                 //ajust angle to fit the sign of the input
                 if (angle > 0 && lightSource[i]->maxAngle < 0)
@@ -53,9 +57,9 @@ ImageBuffer* RenderLightingPass(ImageBuffer *lightBuffer, Light *lightSource[], 
                 angularFalloff = 0;
                 if (angle >= lightSource[i]->minAngle && angle <= lightSource[i]->maxAngle)
                 {
-                    float midAngle = (lightSource[i]->minAngle + lightSource[i]->maxAngle) / 2;
-                    float tempMax = lightSource[i]->maxAngle - midAngle;
-                    float tempMin = lightSource[i]->minAngle - midAngle;
+                    midAngle = (lightSource[i]->minAngle + lightSource[i]->maxAngle) / 2;
+                    tempMax = lightSource[i]->maxAngle - midAngle;
+                    tempMin = lightSource[i]->minAngle - midAngle;
 
                     angularFalloff = -1 * (((abs(angle - midAngle) - tempMax)) / (tempMax - tempMin));
                 }
