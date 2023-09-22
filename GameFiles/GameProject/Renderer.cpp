@@ -30,18 +30,28 @@ ImageBuffer* RenderLightingPass(ImageBuffer *lightBuffer, Light *lightSource[], 
     float lightMultiplier;
     Color avgColor;
     Color avgVolumetricColor;
+<<<<<<< HEAD
     float midAngle;
     float tempMax;
     float tempMi;
     float distFromCenter;
     float angle;
 	for (int x = 0; x < lightBuffer->size.x; x++)
+=======
+    float distFromCenter;
+
+	for (int x = 0; x < lightBuffer->size.x; ++x)
+>>>>>>> 8342e69301d455bb89d5e31c7dbde9c18bf46475
 	{
-        for (int y = 0; y < lightBuffer->size.y; y++)
+        for (int y = 0; y < lightBuffer->size.y; ++y)
         {
-            for (int i = 0; i < totalLights; i++)
+            for (int i = 0; i < totalLights; ++i)
             {
+<<<<<<< HEAD
                 distFromCenter = distance(lightSource[i]->position.x, lightSource[i]->position.y, x, y); //find distance from the center of the light
+=======
+                distFromCenter = distance(lightSource[i]->position.x, lightSource[i]->position.y, (float)x, (float)y); //find distance from the center of the light
+>>>>>>> 8342e69301d455bb89d5e31c7dbde9c18bf46475
                 angle = atan2(x - lightSource[i]->position.x, y - lightSource[i]->position.y) * 57.295779f; //Find angle from point to center relative to x axis, magic number is 180 / pi
 
                 //ajust angle to fit the sign of the input
