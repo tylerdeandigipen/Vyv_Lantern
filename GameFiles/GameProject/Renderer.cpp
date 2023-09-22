@@ -32,10 +32,7 @@ const int ScreenSizeY = 135;
     Color avgVolumetricColor;
     float midAngle;
     float tempMax;
-    float tempMi;
-    float distFromCenter;
-    float angle;
-	for (int x = 0; x < lightBuffer->size.x; x++)
+    float tempMin;
     float distFromCenter;
 
 	for (int x = 0; x < lightBuffer->size.x; ++x)

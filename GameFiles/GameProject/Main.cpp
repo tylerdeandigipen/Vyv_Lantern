@@ -40,7 +40,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
     engine->EngineAddSystem(PlatformSystem::GetInstance());
     engine->EngineAddSystem(SceneSystem::GetInstance());
 
-    Engine::EngineCode returnCode = engine->Start(); 
+       Engine::EngineCode returnCode = engine->Start(); 
 
     switch (returnCode)
     {

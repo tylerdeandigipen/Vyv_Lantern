@@ -18,15 +18,11 @@
 #include "ImageBuffer.h"
 #include "Light.h"
 
-#define FREEGLUT_STATIC
-#define _LIB
-#define FREEGLUT_LIB_PRAGMAS 0
-//#include <GL/freeglut.h>
-//#include <GLFW/glfw3.h>
+#include <SDL/SDL.h>
 
-/* ImageBuffer* lightBuffer;
+ ImageBuffer* lightBuffer;
 Light* lightSources[1];
-Light tempLight; */
+Light tempLight; 
 
 //TestScene::TestScene(Scene _base) : base(_base)
 //{
@@ -64,6 +60,11 @@ Engine::EngineCode TestScene::Init()
     tempLight.angularWeight = 1;
     tempLight.volumetricIntensity = 0.5f;
     lightSources[0] = &tempLight; */
+
+    if (SDL_Init(SDL_INIT_VIDEO) != 0) {
+        return Engine::SomethingBad;
+    }
+
 	return Engine::NothingBad;
 }
 
@@ -80,26 +81,6 @@ void TestScene::Update(float dt)
     //https://www.youtube.com/watch?v=WP0-SJHfKjE
     //https://www.geeksforgeeks.org/how-to-setup-opengl-with-visual-studio-2019-on-windows-10/
 
-    
-    /* int argc = 1;
-    char* argv[1] = { (char*)"Something" };
-    glutInit(&argc, argv);
-    glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB);
-    glutInitWindowPosition(400, 400);
-    glutInitWindowSize(240, 135);
-    glutCreateWindow("DirectDraw");
-
-    // register callbacks for winAPI
-    glutDisplayFunc(render);
-    glutIdleFunc(render); // render scene every frame even when idle
-    //glutIgnoreKeyRepeat(1); // ignore annoying windows key repeat delay
-
-
-    // OpenGL initialisation
-
-    // enter glut event processing infinite loop
-    glutMainLoop(); */
-    
 	dt = 0;
 }
 void TestScene::Render()
