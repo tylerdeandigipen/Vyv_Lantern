@@ -1,7 +1,7 @@
 #include "Color.h"
 
 
-Color::Color(int r, int g, int b, int a) // constructor definition
+Color::Color(float r, float g, float b, float a) // constructor definition
 	: r{ r }
 	, g{ g }
 	, b{ b }

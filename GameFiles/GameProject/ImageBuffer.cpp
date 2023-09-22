@@ -3,14 +3,14 @@
 ImageBuffer::ImageBuffer(ImageBuffer& rhs)
 {
     //allocate buffer
-    buffer = new Color * [ScreenSizeX];
-    for (int i = 0; i < ScreenSizeX; i++)
+    buffer = new Color *[ScreenSizeX];
+    for (int i = 0; i < ScreenSizeX; ++i)
     {
         buffer[i] = new Color[ScreenSizeY];
     }
-    for (int i = 0; i < ScreenSizeX; i++)
+    for (int i = 0; i < ScreenSizeX; ++i)
     {
-        for (int j = 0; j < ScreenSizeY; j++)
+        for (int j = 0; j < ScreenSizeY; ++j)
         {
             buffer[i][j] = rhs.buffer[i][j];
         }
@@ -23,14 +23,14 @@ ImageBuffer::ImageBuffer()
 {
     //allocate buffer
     buffer = new Color* [ScreenSizeX];
-    for (int i = 0; i < ScreenSizeX; i++)
+    for (int i = 0; i < ScreenSizeX; ++i)
     {
         buffer[i] = new Color[ScreenSizeY];
     }
     Color tempEmpty(0.0f, 0.0f, 0.0f, 0.0f);
-    for (int i = 0; i < ScreenSizeX; i++)
+    for (int i = 0; i < size.x; ++i)
     {
-        for (int j = 0; j < ScreenSizeY; j++)
+        for (int j = 0; j < size.y; ++j)
         {
             buffer[i][j] = tempEmpty;
         }
@@ -53,31 +53,34 @@ ImageBuffer::~ImageBuffer()
 
 ImageBuffer& ImageBuffer::operator =(const ImageBuffer& rhs)&
 {
-    for (int i = 0; i < size.x; i++)
+    for (int i = 0; i < size.x; ++i)
     {
-        for (int j = 0; j < size.y; j++)
+        for (int j = 0; j < size.y; ++j)
         {
             buffer[i][j] = rhs.buffer[i][j];
         }
     }
+    return *this;
 }
 ImageBuffer ImageBuffer::operator +(const ImageBuffer& rhs)
 {
-    for (int i = 0; i < size.x; i++)
+    for (int i = 0; i < size.x; ++i)
     {
-        for (int j = 0; j < size.y; j++)
+        for (int j = 0; j < size.y; ++j)
         {
             buffer[i][j] += rhs.buffer[i][j];
         }
     }
+    return *this;
 }
 ImageBuffer ImageBuffer::operator -(const ImageBuffer& rhs)
 {
-    for (int i = 0; i < size.x; i++)
+    for (int i = 0; i < size.x; ++i)
     {
-        for (int j = 0; j < size.y; j++)
+        for (int j = 0; j < size.y; ++j)
         {
             buffer[i][j] -= rhs.buffer[i][j];
         }
     }
+    return *this;
 }

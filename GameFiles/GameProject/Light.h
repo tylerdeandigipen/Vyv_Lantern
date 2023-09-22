@@ -10,14 +10,14 @@ class Light
 public:
 	gfxVector2 position;
 	Color color;
-	float minAngle;
-	float maxAngle;
-	float intensity;
-	float radialMult1;
-	float radialMult2;
-	float radialWeight;
-	float angularWeight;
-	float volumetricIntensity;
+	float minAngle = 0;
+	float maxAngle = 0;
+	float intensity = 2;
+	float radialMult1 = 0.4f;
+	float radialMult2 = 0;
+	float radialWeight = 0;
+	float angularWeight = 1;
+	float volumetricIntensity = 0;
 private:
 };
 

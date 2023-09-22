@@ -8,18 +8,18 @@ public class LeverController : MonoBehaviour
     private bool isLeverActivated = false;
     private Quaternion initialRotation;
 
-    public GameObject Door1;
-    public GameObject Door2;
-    public GameObject Door3;
+    public DoorMove doorScript1;
+    public DoorMove doorScript2;
+    public DoorMove doorScript3;
+    /*
+     public Vector3 newPosDoor1On;
+     public Vector3 newPosDoor1Off;
 
-    public Vector3 newPosDoor1On;
-    public Vector3 newPosDoor1Off;
+     public Vector3 newPosDoor2On;
+     public Vector3 newPosDoor2Off;
 
-    public Vector3 newPosDoor2On;
-    public Vector3 newPosDoor2Off;
-
-    public Vector3 newPosDoor3On;
-    public Vector3 newPosDoor3Off;
+     public Vector3 newPosDoor3On;
+     public Vector3 newPosDoor3Off; */
 
     // Start is called before the first frame update
     void Start()
@@ -68,9 +68,21 @@ public class LeverController : MonoBehaviour
         {
             transform.rotation = initialRotation;
         }
+        if(doorScript1 != null)
+        {
+            Debug.Log("door1");
+            doorScript1.Move();
+        }
+        if (doorScript2 != null)
+        {
+            Debug.Log("door2");
+            doorScript2.Move();
+        }
+        if (doorScript3 != null)
+        {
+            Debug.Log("door3");
+            doorScript3.Move();
+        }
 
-        Door1.transform.position = isLeverActivated ? newPosDoor1On : newPosDoor1Off;
-        Door2.transform.position = isLeverActivated ? newPosDoor2On : newPosDoor2Off;
-        Door3.transform.position = isLeverActivated ? newPosDoor3On : newPosDoor3Off;
     }
 }
