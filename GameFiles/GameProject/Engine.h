@@ -37,7 +37,7 @@ private:
 	Engine& operator=(const Engine&) = delete;
 
 	EngineCode Init();
-	EngineCode Update(float dt);
+	EngineCode Update();
 	EngineCode Render();
 	EngineCode ShutDown();
 

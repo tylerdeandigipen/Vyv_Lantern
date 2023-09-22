@@ -8,6 +8,7 @@
 //
 //------------------------------------------------------------------------------
 
+#include "stdafx.h"
 #include "BaseSystem.h"
 #include "Engine.h"
 
@@ -26,7 +27,7 @@ Engine::EngineCode Engine::Start()
 		}
 	}
 
-	/*while (true)
+	while (true)
 	{
 		EngineCode code = NothingBad;
 
@@ -34,7 +35,7 @@ Engine::EngineCode Engine::Start()
 		{
 			try 
 			{
-				code = Update(float dt);
+				code = Update();
 			}
 			catch (EngineCode updateFailure)
 			{
@@ -54,7 +55,7 @@ Engine::EngineCode Engine::Start()
 		}
 		if (code == CloseWindow)
 			break;
-	} */
+	}
 
 	return Stop();
 }
@@ -95,8 +96,10 @@ Engine::~Engine()
 		delete instance;
 }
 
-Engine::EngineCode Engine::Update(float dt)
+Engine::EngineCode Engine::Update()
 {
+	float dt = 0;
+	//dt = Clamp(dt, 0.0f, 0.1f);
 	for (int i = 0; i < systemCount; ++i)
 	{
 		try {
