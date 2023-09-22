@@ -36,6 +36,6 @@ public:
 private:
 	static TestScene* instance;
 	TestScene();
-	~TestScene() = delete;
+	~TestScene();
 };
 

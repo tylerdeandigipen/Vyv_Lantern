@@ -36,7 +36,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
     UNREFERENCED_PARAMETER(hPrevInstance);
     UNREFERENCED_PARAMETER(lpCmdLine);
 
-    Engine* engine = Engine::GetInstance();
+    /* Engine* engine = Engine::GetInstance();
     engine->EngineAddSystem(PlatformSystem::GetInstance());
     //engine->EngineAddSystem(SceneSystem::GetInstance());
 
@@ -50,7 +50,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
     default:
         return 0;
         break;
-    }
+    } */
 
     LoadStringW(hInstance, IDS_APP_TITLE, szTitle, MAX_LOADSTRING);
     LoadStringW(hInstance, IDC_GAMEPROJECT, szWindowClass, MAX_LOADSTRING);

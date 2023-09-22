@@ -18,7 +18,7 @@ private:
 	typedef void (*VoidFloat)(float);
 	typedef void (*VoidVoid)(void);
 public:
-	Scene(const char* _name, SceneCode load, SceneCode init, VoidFloat update, VoidVoid fixedUpdate, VoidVoid render, SceneCode exit, SceneCode unload);
+	Scene(const char* _name, SceneCode load, SceneCode init, VoidFloat update, VoidVoid render, SceneCode exit, SceneCode unload);
 	const char* name;
 	enum Mode { Pause, Play };
 	Mode mode;

@@ -24,14 +24,11 @@
 //#include <GL/freeglut.h>
 //#include <GLFW/glfw3.h>
 
+//TestScene* TestScene::instance(Scene("Test Scene", TestScene::Load, TestScene::Init, TestScene::Update, TestScene::Render, TestScene::Exit, TestScene::Unload));
 
-ImageBuffer* lightBuffer;
+/* ImageBuffer* lightBuffer;
 Light* lightSources[1];
-Light tempLight;
-
-//TestScene* instance = new TestScene();
-
-//Scene* TestScene::GetInstance() { return &(instance->base); }
+Light tempLight; */
 
 Engine::EngineCode TestScene::Load()
 {
@@ -40,7 +37,7 @@ Engine::EngineCode TestScene::Load()
 
 Engine::EngineCode TestScene::Init()
 {
-    tempLight.position.x = 120;
+    /* tempLight.position.x = 120;
     tempLight.position.y = 75;
     tempLight.color.r = 255;
     tempLight.color.g = 255;
@@ -54,7 +51,7 @@ Engine::EngineCode TestScene::Init()
     tempLight.radialWeight = 1;
     tempLight.angularWeight = 1;
     tempLight.volumetricIntensity = 0.5f;
-    lightSources[0] = &tempLight;
+    lightSources[0] = &tempLight; */
 	return Engine::NothingBad;
 }
 

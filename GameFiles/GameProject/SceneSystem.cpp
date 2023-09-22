@@ -12,6 +12,7 @@
 #include "PlatformSystem.h"
 #include "Scene.h"
 #include "Engine.h"
+#include "TestScene.h"
 
 SceneSystem* SceneSystem::instance = new SceneSystem();
 
