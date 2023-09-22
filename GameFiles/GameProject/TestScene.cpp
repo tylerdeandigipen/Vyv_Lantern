@@ -24,14 +24,26 @@
 //#include <GL/freeglut.h>
 //#include <GLFW/glfw3.h>
 
-//TestScene* TestScene::instance(Scene("Test Scene", TestScene::Load, TestScene::Init, TestScene::Update, TestScene::Render, TestScene::Exit, TestScene::Unload));
-
 /* ImageBuffer* lightBuffer;
 Light* lightSources[1];
 Light tempLight; */
 
+//TestScene::TestScene(Scene _base) : base(_base)
+//{
+//}
+
+
+
+Scene* instance = NULL; // ITS A GLOBAL VARIABLE CALM DOWN!! SHOW ME ANOTHER WAY AND ITS GONE
+
+TestScene::TestScene() : Scene("test")
+{
+
+}
+
 Engine::EngineCode TestScene::Load()
 {
+
 	return Engine::NothingBad;
 }
 
@@ -102,5 +114,15 @@ Engine::EngineCode TestScene::Exit()
 
 Engine::EngineCode TestScene::Unload()
 {
+    delete instance;
 	return Engine::NothingBad;
 }
+
+Scene* TestSceneGetInstance(void)
+{
+    instance = new TestScene();
+    return instance;
+}
+
+
+//Scene* TestSceneGetInstance() { return &instance->base; }

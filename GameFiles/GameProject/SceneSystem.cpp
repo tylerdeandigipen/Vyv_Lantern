@@ -18,7 +18,7 @@ SceneSystem* SceneSystem::instance = new SceneSystem();
 
 Engine::EngineCode SceneSystem::Init()
 {
-	instance->SetScene(DefaultSceneInstance());
+	instance->SetScene(DefaultSceneInstance);
 	return Engine::NothingBad;
 }
 
@@ -36,7 +36,6 @@ void SceneSystem::Update(float dt)
 		timer += dt;
 		while (timer >= rate)
 		{
-			activeScene->FixedUpdate();
 			timer -= rate;
 		}
 	}
@@ -90,7 +89,7 @@ SceneSystem* SceneSystem::GetInstance()
 // IM MAKING THIS PURPOSELY BIG SO I SEE IT MORE CLEARLY
 // IGNORE THIS PRACTICALLY EVERYONE ELSE
 // - taylee
-SceneSystem::SceneSystem() : BaseSystem("SceneSystem"), DefaultSceneInstance(),
+SceneSystem::SceneSystem() : BaseSystem("SceneSystem"), DefaultSceneInstance(TestSceneGetInstance()),
 activeScene(NULL), nextScene(NULL), timer(0), rate(0.01f), isRestarting(false)
 { }
 

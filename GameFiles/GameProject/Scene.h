@@ -14,19 +14,18 @@
 class Scene
 {
 private:
-	typedef Engine::EngineCode(*SceneCode)(void);
-	typedef void (*VoidFloat)(float);
-	typedef void (*VoidVoid)(void);
+//	typedef Engine::EngineCode(*SceneCode)(void);
+//	typedef void (*VoidFloat)(float);
+//	typedef void (*VoidVoid)(void);
 public:
-	Scene(const char* _name, SceneCode load, SceneCode init, VoidFloat update, VoidVoid render, SceneCode exit, SceneCode unload);
+	Scene(const char* name);
 	const char* name;
 	enum Mode { Pause, Play };
 	Mode mode;
-	SceneCode Load;
-	SceneCode Init;
-	VoidFloat Update;
-	VoidVoid FixedUpdate;
-	VoidVoid Render;
-	SceneCode Exit;
-	SceneCode Unload;
+	virtual Engine::EngineCode Load() = 0;
+	virtual Engine::EngineCode Init() = 0;
+	virtual void Update(float dt) {};
+	virtual void Render() {};
+	virtual Engine::EngineCode Exit() = 0;
+	virtual Engine::EngineCode Unload() = 0;
 };

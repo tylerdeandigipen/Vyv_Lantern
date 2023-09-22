@@ -10,9 +10,10 @@
 
 #include "Scene.h"
 
-Scene::Scene(const char* _name, SceneCode load, SceneCode init, VoidFloat update, VoidVoid render, SceneCode exit, SceneCode unload)
-	: Load(load), Init(init), Update(update), Render(render), Exit(exit), Unload(unload)
+Scene::Scene(const char* _name)
 { 
-	Scene::name = _name;
-	Scene::mode = Mode::Play;
+	name = _name;
+	mode = Mode::Play;
 }
+
+

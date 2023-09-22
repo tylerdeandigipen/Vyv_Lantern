@@ -39,7 +39,7 @@ private:
 	void ChangeScene();
 
 	static SceneSystem* instance;
-	Scene* (*DefaultSceneInstance)();
+	Scene* DefaultSceneInstance;
 
 	Scene* activeScene;
 	Scene* nextScene;

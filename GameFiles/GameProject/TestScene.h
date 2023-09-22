@@ -15,27 +15,21 @@
 
 class Scene;
 
-class TestScene
+class TestScene : public Scene
 {
 public:
-	Scene base;
-
-	Engine::EngineCode Load(void);
-	Engine::EngineCode Init(void);
-	Engine::EngineCode Exit(void);
-	Engine::EngineCode Unload(void);
-	void Update(float dt);
-	void Render(void);
-
 	
-	TestScene(Scene _base) : base(_base)
-	{
-	}
-
-	Scene* GetInstance(void);
-private:
-	static TestScene* instance;
 	TestScene();
 	~TestScene();
+
+	Engine::EngineCode Load(void) override;
+	Engine::EngineCode Init(void) override;
+	Engine::EngineCode Exit(void) override;
+	Engine::EngineCode Unload(void) override;
+	void Update(float dt) override;
+	void Render(void) override;
+private:
+
 };
 
+Scene* TestSceneGetInstance(void);
