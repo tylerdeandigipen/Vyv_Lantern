@@ -24,7 +24,7 @@ Engine::EngineCode SceneSystem::Init()
 
 void SceneSystem::Update(float dt)
 {
-	if (nextScene == NULL)
+	if (nextScene != NULL)
 	{
 		ChangeScene();
 	}
@@ -111,6 +111,8 @@ void SceneSystem::ChangeScene()
 	if (!activeScene)
 	{
 		activeScene = nextScene;
+		if (!activeScene && !nextScene)
+			activeScene = DefaultSceneInstance;
 		activeScene->Load();
 	}
 	else

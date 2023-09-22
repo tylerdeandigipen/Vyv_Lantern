@@ -20,7 +20,7 @@
 
 #include <SDL/SDL.h>
 
- ImageBuffer* lightBuffer;
+ImageBuffer* lightBuffer;
 Light* lightSources[1];
 Light tempLight; 
 
@@ -39,7 +39,6 @@ TestScene::TestScene() : Scene("test")
 
 Engine::EngineCode TestScene::Load()
 {
-
 	return Engine::NothingBad;
 }
 
