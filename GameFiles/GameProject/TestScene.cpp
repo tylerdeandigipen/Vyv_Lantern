@@ -75,11 +75,6 @@ void render()
 
 void TestScene::Update(float dt)
 {
-    //references
-    //https://github.com/ScienceDiscoverer/hello_world/blob/master/DirectoOpenGL_Draw_test.cpp
-    //https://registry.khronos.org/OpenGL-Refpages/gl2.1/xhtml/glDrawPixels.xml
-    //https://www.youtube.com/watch?v=WP0-SJHfKjE
-    //https://www.geeksforgeeks.org/how-to-setup-opengl-with-visual-studio-2019-on-windows-10/
 
 	dt = 0;
 }
