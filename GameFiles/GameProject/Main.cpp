@@ -10,6 +10,7 @@
 #include "framework.h"
 #include "Engine.h"
 #include "PlatformSystem.h"
+#include "SceneSystem.h"
 #include "Main.h"
 
 #define MAX_LOADSTRING 100
@@ -35,20 +36,21 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
     UNREFERENCED_PARAMETER(hPrevInstance);
     UNREFERENCED_PARAMETER(lpCmdLine);
 
-    //Engine* engine = Engine::GetInstance();
-    //engine->EngineAddSystem(PlatformSystem::GetInstance());
+    Engine* engine = Engine::GetInstance();
+    engine->EngineAddSystem(PlatformSystem::GetInstance());
+    //engine->EngineAddSystem(SceneSystem::GetInstance());
 
-    //Engine::EngineCode returnCode = engine->Start();
+    Engine::EngineCode returnCode = engine->Start(); 
 
-    //switch (returnCode)
-    //{
-    //case Engine::NullWindowHandle:
-    //    return 1;
-    //    break;
-    //default:
-    //    return 0;
-    //    break;
-    //}
+    switch (returnCode)
+    {
+    case Engine::NullWindowHandle:
+        return 1;
+        break;
+    default:
+        return 0;
+        break;
+    }
 
     LoadStringW(hInstance, IDS_APP_TITLE, szTitle, MAX_LOADSTRING);
     LoadStringW(hInstance, IDC_GAMEPROJECT, szWindowClass, MAX_LOADSTRING);

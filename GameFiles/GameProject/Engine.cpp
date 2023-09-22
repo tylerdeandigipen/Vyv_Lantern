@@ -26,7 +26,7 @@ Engine::EngineCode Engine::Start()
 		}
 	}
 
-	/* while (true)
+	/*while (true)
 	{
 		EngineCode code = NothingBad;
 

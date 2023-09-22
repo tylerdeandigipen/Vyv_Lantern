@@ -21,8 +21,8 @@
 #define FREEGLUT_STATIC
 #define _LIB
 #define FREEGLUT_LIB_PRAGMAS 0
-#include <GL/freeglut.h>
-#include <GLFW/glfw3.h>
+//#include <GL/freeglut.h>
+//#include <GLFW/glfw3.h>
 
 
 ImageBuffer* lightBuffer;
@@ -72,7 +72,7 @@ void TestScene::Update(float dt)
     //https://www.geeksforgeeks.org/how-to-setup-opengl-with-visual-studio-2019-on-windows-10/
 
     
-    int argc = 1;
+    /* int argc = 1;
     char* argv[1] = { (char*)"Something" };
     glutInit(&argc, argv);
     glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB);
@@ -89,7 +89,7 @@ void TestScene::Update(float dt)
     // OpenGL initialisation
 
     // enter glut event processing infinite loop
-    glutMainLoop();
+    glutMainLoop(); */
     
 	dt = 0;
 }

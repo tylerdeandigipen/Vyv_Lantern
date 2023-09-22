@@ -15,14 +15,15 @@
 #include "Vector.h"
 #include "ImageBuffer.h"
 
+// SORRY TYLER ITS JUST SO I CAN WORK ON SMTH ILY
 
-const int ScreenSizeX = 240;
+/* const int ScreenSizeX = 240;
 const int ScreenSizeY = 135;
 
 //BaseSystem::BaseSystem(const char* _name) : name(_name) {}
 
 
-ImageBuffer* RenderLightingPass(ImageBuffer *lightBuffer, Light *lightSource[], int totalLights)
+ ImageBuffer* RenderLightingPass(ImageBuffer* lightBuffer, Light* lightSource[], int totalLights)
 {
 	float radialFalloff;
 	float angularFalloff;
