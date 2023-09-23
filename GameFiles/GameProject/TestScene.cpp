@@ -20,16 +20,20 @@
 
 #include <SDL/SDL.h>
 
+#define MAX_LIGHT_SOURCES 20
+
 ImageBuffer* lightBuffer;
-Light* lightSources[1];
+ImageBuffer* renderBuffer;
+ImageBuffer* testSprite;
+Light* lightSources[MAX_LIGHT_SOURCES];
 Light tempLight; 
-Color white;
-Color black;
+Light tempLight2;
+Color white(255,255,255,255);
+Color black(0,0,0,255);
+Color transparent(0,0,0,0);
 SDL_Window* window;
 SDL_Renderer* renderer;
 
-int scaleDifX;
-int scaleDifY;
 //TestScene::TestScene(Scene _base) : base(_base)
 //{
 //}
@@ -60,7 +64,7 @@ Engine::EngineCode TestScene::Init()
 
     tempLight.maxAngle = 45;
     tempLight.minAngle = -45;
-    tempLight.angle = 235;
+    tempLight.angle = 200;
 
     tempLight.intensity = 2;
     tempLight.radialMult1 = 0.4f;
@@ -69,23 +73,48 @@ Engine::EngineCode TestScene::Init()
     tempLight.angularWeight = 2.0f;
     tempLight.volumetricIntensity = 1;
 
+
+    tempLight2.position.x = 120;
+    tempLight2.position.y = 50;
+
+    tempLight2.color.r = 255;
+    tempLight2.color.g = 255;
+    tempLight2.color.b = 255;
+    tempLight2.color.a = 255;
+
+    tempLight2.maxAngle = 25;
+    tempLight2.minAngle = -25;
+    tempLight2.angle = 280;
+
+    tempLight2.intensity = 2;
+    tempLight2.radialMult1 = 0.4f;
+    tempLight2.radialMult2 = 0.0f;
+    tempLight2.radialWeight = 1;
+    tempLight2.angularWeight = 2.0f;
+    tempLight2.volumetricIntensity = 1;
+
     lightSources[0] = &tempLight; 
+    lightSources[1] = &tempLight2;
+
     lightBuffer = new ImageBuffer;
+    renderBuffer = new ImageBuffer;
+    testSprite = new ImageBuffer(30,30);
 
-    white.r = 255;
-    white.g = 255;
-    white.b = 255;
-    white.a = 255;
+    for (int x = 0; x < testSprite->BufferSizeX; ++x)
+    {
+        for (int y = 0; y < testSprite->BufferSizeY; ++y)
+        {
+            if (x > 8 && x < testSprite->BufferSizeX - 8 && y > 8 && y < testSprite->BufferSizeY - 8)
+            {
+                testSprite->buffer[x][y] = transparent;
+            }
+            else
+                testSprite->buffer[x][y] = white;
+        }
+    }
 
-    black.r = 0;
-    black.g = 0;
-    black.b = 0;
-    black.a = 255;
-
-    scaleDifX = (int)(lightBuffer->RenderScreenSizeX / lightBuffer->PixelScreenSizeX);
-    scaleDifY = (int)(lightBuffer->RenderScreenSizeX / lightBuffer->PixelScreenSizeX);
-    SDL_CreateWindowAndRenderer(lightBuffer->RenderScreenSizeX, lightBuffer->RenderScreenSizeY, 0, &window, &renderer);
-
+    renderBuffer->screenScale = 6;
+    SDL_CreateWindowAndRenderer(renderBuffer->BufferSizeX * renderBuffer->screenScale, renderBuffer->BufferSizeY * renderBuffer->screenScale, 0, &window, &renderer);
     if (SDL_Init(SDL_INIT_VIDEO) != 0) {
         return Engine::SomethingBad;
     }
@@ -94,35 +123,21 @@ Engine::EngineCode TestScene::Init()
 
 void TestScene::Update(float dt)
 {
-    for (int x = 0; x < lightBuffer->PixelScreenSizeX; ++x)
-    {
-        for (int y = 0; y < lightBuffer->PixelScreenSizeY; ++y)
-        {
-            if (x > 40 && x < 70 && y > 30 && y < 60)
-            {
-                lightBuffer->buffer[x][y] = white;
-            }
-            else
-            {
-                lightBuffer->buffer[x][y] = black;
-            }
-        }
-    } 
-    RenderLightingPass(lightBuffer, lightSources, 1);
+    lightBuffer->AddSprite(testSprite, 30, 30);
+    RenderLightingPass(renderBuffer, lightBuffer, lightSources, 2);
   
-    SDL_RenderSetScale(renderer, 4.0f, 4.0f);
-    for (int x = 0; x < lightBuffer->PixelScreenSizeX; ++x)
+    SDL_RenderSetScale(renderer, renderBuffer->screenScale, renderBuffer->screenScale);
+    for (int x = 0; x < renderBuffer->BufferSizeX; ++x)
     {
-        for (int y = 0; y < lightBuffer->PixelScreenSizeY; ++y)
+        for (int y = 0; y < renderBuffer->BufferSizeY; ++y)
         {
-            SDL_SetRenderDrawColor(renderer, lightBuffer->buffer[x][y].r, lightBuffer->buffer[x][y].g, lightBuffer->buffer[x][y].b, 255);
+            SDL_SetRenderDrawColor(renderer, renderBuffer->buffer[x][y].r, renderBuffer->buffer[x][y].g, renderBuffer->buffer[x][y].b, 255);
             SDL_RenderDrawPoint(renderer, x, y);
         }
-
     }
+    renderBuffer->ClearImageBuffer();
     SDL_RenderPresent(renderer);
-    SDL_RenderClear(renderer);
-	tempLight.angle -= 3;
+    //tempLight.angle -= 2;
 }
 void TestScene::Render()
 {

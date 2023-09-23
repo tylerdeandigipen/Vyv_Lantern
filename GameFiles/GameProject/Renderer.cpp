@@ -18,29 +18,25 @@
 //BaseSystem::BaseSystem(const char* _name) : name(_name) {}
 
 
- ImageBuffer* RenderLightingPass(ImageBuffer* lightBuffer, Light* lightSource[], int totalLights)
+ ImageBuffer* RenderLightingPass(ImageBuffer* outputBuffer, ImageBuffer* inputBuffer, Light* lightSource[], int totalLights)
 {
-	float radialFalloff = 0;
-	float angularFalloff = 0;
-	float angle = 0;
-    float lightMultiplier = 0;
-    Color avgColor;
-    Color avgVolumetricColor;
-    float midAngle = 0;
-    float maxAng = 0;
-    float minAng = 0;
-    float distFromCenter = 0;
-
-
-   
-	for (int x = 0; x < lightBuffer->size.x; ++x)
-	{
-        for (int y = 0; y < lightBuffer->size.y; ++y)
+    for (int i = 0; i < totalLights; ++i)
+    {
+        float radialFalloff = 0;
+        float angularFalloff = 0;
+        float angle = 0;
+        float lightMultiplier = 0;
+        float midAngle = 0;
+        float maxAng = 0;
+        float minAng = 0;
+        float distFromCenter = 0;
+        float volLightMultiplier = 0;
+        int x = 0;
+        int y = 0;
+        for (x = 0; x < inputBuffer->size.x; ++x)
         {
-            for (int i = 0; i < totalLights; ++i)
-            {   
-                i = 0;
-                
+            for (y = 0; y < inputBuffer->size.y; ++y)
+            {
                 angularFalloff = 0;
                 radialFalloff = 0;
 
@@ -94,15 +90,18 @@
                 //clamp both falloffs
                 radialFalloff = clamp(lightSource[i]->radialWeight * radialFalloff, 0, 1);
                 angularFalloff = clamp(lightSource[i]->angularWeight * angularFalloff, 0, 1);
-                
+
                 //Calculate objects light
+
                 lightMultiplier = lightSource[i]->intensity * radialFalloff * angularFalloff;
-                lightBuffer->buffer[x][y] = (lightBuffer->buffer[x][y] * ((lightSource[i]->color * lightMultiplier) / 255));
+                outputBuffer->buffer[x][y] += (inputBuffer->buffer[x][y] * ((lightSource[i]->color * lightMultiplier) / 255));
 
                 lightMultiplier *= lightSource[i]->volumetricIntensity;
-                lightBuffer->buffer[x][y] += (lightSource[i]->color * lightMultiplier);
-            }            
+                outputBuffer->buffer[x][y] += (lightSource[i]->color * lightMultiplier);
+
+
+            }
         }
-	}
-	return lightBuffer;
+    }
+	return inputBuffer;
 };

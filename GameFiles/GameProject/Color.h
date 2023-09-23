@@ -15,7 +15,7 @@ public:
 	Color(float r, float g, float b, float a);
 	Color(Color &rhs);
 	Color();
-	void ColorClamp(Color& color);
+	void ColorClamp();
 
 	Color& operator =(const Color& rhs)&;
 	Color& operator +=(const Color& rhs)&;

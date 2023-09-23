@@ -2,4 +2,4 @@
 #include "ImageBuffer.h"
 #include "Light.h"
 
-ImageBuffer* RenderLightingPass(ImageBuffer* lightBuffer, Light* lightSource[], int totalLights);
+ImageBuffer* RenderLightingPass(ImageBuffer* outputBuffer, ImageBuffer* inputBuffer, Light* lightSource[], int totalLights);

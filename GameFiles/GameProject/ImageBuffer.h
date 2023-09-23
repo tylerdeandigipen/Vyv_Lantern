@@ -6,25 +6,28 @@
 
 class ImageBuffer
 {
-public:
+	public:
 
-	const float RenderScreenSizeX = 960;
-	const float RenderScreenSizeY = 540;
-	const float PixelScreenSizeX = 240;
-	const float PixelScreenSizeY = 135;
-	gfxVector2 size;
-	Color** buffer;
+		float BufferSizeX = 240;
+		float BufferSizeY = 135;
+		float screenScale = 4;
+		gfxVector2 size;
+		Color** buffer;
 
-	ImageBuffer(ImageBuffer &rhs);
-	ImageBuffer();
-	~ImageBuffer();
+		ImageBuffer(ImageBuffer &rhs);
+		ImageBuffer(float x, float y);
+		ImageBuffer();
+		~ImageBuffer();
 
-	ImageBuffer& operator =(const ImageBuffer& rhs)&;
-	ImageBuffer operator +(const ImageBuffer& rhs);
-	ImageBuffer operator -(const ImageBuffer& rhs);
-	//ImageBuffer operator *(const float rhs);
+		ImageBuffer& ClearImageBuffer();
+		ImageBuffer& AddSprite(ImageBuffer *sprite, int posX, int posY);
+
+		ImageBuffer& operator =(const ImageBuffer& rhs)&;
+		ImageBuffer operator +(const ImageBuffer& rhs);
+		ImageBuffer operator -(const ImageBuffer& rhs);
+		//ImageBuffer operator *(const float rhs);
 
 
-private:
+	private:
 };
 #endif
