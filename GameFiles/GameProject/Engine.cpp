@@ -85,7 +85,7 @@ Engine* Engine::GetInstance() { return instance; }
 
 // Priv
 //------------------------------------------------------------------------------------------//
-Engine::Engine() : isRunning(false), systemCount(0), systems(), paused(false)
+Engine::Engine() : isRunning(true), systemCount(0), systems(), paused(false)
 {
 
 }

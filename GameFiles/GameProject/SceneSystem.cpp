@@ -43,7 +43,7 @@ void SceneSystem::Update(float dt)
 
 void SceneSystem::Render()
 {
-	//activeScene->Render();
+	activeScene->Render();
 }
 
 Engine::EngineCode SceneSystem::Close()

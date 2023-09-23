@@ -146,11 +146,13 @@ void TestScene::Render()
 
 Engine::EngineCode TestScene::Exit()
 {
+    SDL_Quit();
 	return Engine::NothingBad;
 }
 
 Engine::EngineCode TestScene::Unload()
 {
+    SDL_DestroyWindow(window);
     delete instance;
 	return Engine::NothingBad;
 }

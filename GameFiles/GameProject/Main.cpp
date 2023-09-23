@@ -12,6 +12,9 @@
 #include "PlatformSystem.h"
 #include "SceneSystem.h"
 #include "Main.h"
+#include "Renderer.h"
+#include "ImageBuffer.h"
+#include <SDL/SDL.h>
 
 #define MAX_LOADSTRING 100
 #define APIENTRY    WINAPI
@@ -52,7 +55,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
         break;
     }
 
-    LoadStringW(hInstance, IDS_APP_TITLE, szTitle, MAX_LOADSTRING);
+    /* LoadStringW(hInstance, IDS_APP_TITLE, szTitle, MAX_LOADSTRING);
     LoadStringW(hInstance, IDC_GAMEPROJECT, szWindowClass, MAX_LOADSTRING);
     MyRegisterClass(hInstance);
 
@@ -73,11 +76,11 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
             TranslateMessage(&msg);
             DispatchMessage(&msg);
         }
-    }
+    } */
 
+    MSG msg;
 
-
-    return (int) msg.wParam;
+    return (int) msg.hwnd;
 }
 
 //
@@ -85,7 +88,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 //
 //  PURPOSE: Registers the window class.
 //
-ATOM MyRegisterClass(HINSTANCE hInstance)
+/* ATOM MyRegisterClass(HINSTANCE hInstance)
 {
     WNDCLASSEXW wcex;
 
@@ -104,7 +107,7 @@ ATOM MyRegisterClass(HINSTANCE hInstance)
     wcex.hIconSm        = LoadIcon(wcex.hInstance, MAKEINTRESOURCE(IDI_SMALL));
 
     return RegisterClassExW(&wcex);
-}
+} */
 
 //
 //   FUNCTION: InitInstance(HINSTANCE, int)
@@ -116,7 +119,7 @@ ATOM MyRegisterClass(HINSTANCE hInstance)
 //        In this function, we save the instance handle in a global variable and
 //        create and display the main program window.
 //
-BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
+/* BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
 {
    hInst = hInstance; // Store instance handle in our global variable
 
@@ -132,7 +135,7 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
    UpdateWindow(hWnd);
 
    return TRUE;
-}
+} */
 
 //
 //  FUNCTION: WndProc(HWND, UINT, WPARAM, LPARAM)
@@ -144,7 +147,7 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
 //  WM_DESTROY  - post a quit message and return
 //
 //
-LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
+/* LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
     switch (message)
     {
@@ -180,10 +183,10 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
         return DefWindowProc(hWnd, message, wParam, lParam);
     }
     return 0;
-}
+} */
 
 // Message handler for about box.
-INT_PTR CALLBACK About(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam)
+/* INT_PTR CALLBACK About(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam)
 {
     UNREFERENCED_PARAMETER(lParam);
     switch (message)
@@ -200,4 +203,4 @@ INT_PTR CALLBACK About(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam)
         break;
     }
     return (INT_PTR)FALSE;
-}
+} */
