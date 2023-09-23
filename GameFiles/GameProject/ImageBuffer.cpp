@@ -3,29 +3,29 @@
 ImageBuffer::ImageBuffer(ImageBuffer& rhs)
 {
     //allocate buffer
-    buffer = new Color *[ScreenSizeX];
-    for (int i = 0; i < ScreenSizeX; ++i)
+    buffer = new Color *[PixelScreenSizeX];
+    for (int i = 0; i < PixelScreenSizeX; ++i)
     {
-        buffer[i] = new Color[ScreenSizeY];
+        buffer[i] = new Color[PixelScreenSizeY];
     }
-    for (int i = 0; i < ScreenSizeX; ++i)
+    for (int i = 0; i < PixelScreenSizeX; ++i)
     {
-        for (int j = 0; j < ScreenSizeY; ++j)
+        for (int j = 0; j < PixelScreenSizeY; ++j)
         {
             buffer[i][j] = rhs.buffer[i][j];
         }
     }
-    size.x = ScreenSizeX;
-    size.y = ScreenSizeY;
+    size.x = PixelScreenSizeX;
+    size.y = PixelScreenSizeY;
 }
 
 ImageBuffer::ImageBuffer()
 {
     //allocate buffer
-    buffer = new Color* [ScreenSizeX];
-    for (int i = 0; i < ScreenSizeX; ++i)
+    buffer = new Color* [PixelScreenSizeX];
+    for (int i = 0; i < PixelScreenSizeX; ++i)
     {
-        buffer[i] = new Color[ScreenSizeY];
+        buffer[i] = new Color[PixelScreenSizeY];
     }
     Color tempEmpty(0.0f, 0.0f, 0.0f, 0.0f);
     for (int i = 0; i < size.x; ++i)
@@ -35,15 +35,15 @@ ImageBuffer::ImageBuffer()
             buffer[i][j] = tempEmpty;
         }
     }
-	size.x = ScreenSizeX;
-	size.y = ScreenSizeY;
+	size.x = PixelScreenSizeX;
+	size.y = PixelScreenSizeY;
 	return;
 }
 
 ImageBuffer::~ImageBuffer()
 {
     //Free each sub-array
-    for (int i = 0; i < ScreenSizeX; ++i) 
+    for (int i = 0; i < PixelScreenSizeX; ++i) 
     {
         delete[] buffer[i];
     }

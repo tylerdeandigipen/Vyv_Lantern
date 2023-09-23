@@ -1,5 +1,6 @@
 #include "Color.h"
 
+float clamp(float value, float min, float max);
 
 Color::Color(float r, float g, float b, float a) // constructor definition
 	: r{ r }
@@ -25,11 +26,20 @@ Color::Color() // default constructor definition
 {
 }
 
+void Color::ColorClamp(Color& color)
+{
+	r = clamp(r,0,255);
+	g = clamp(g, 0, 255);
+	b = clamp(b, 0, 255);
+	a = clamp(a, 0, 255);
+}
+
 Color& Color::operator =(Color const& rhs)& {
 	r = rhs.r;
 	g = rhs.g;
 	b = rhs.b;
 	a = rhs.a;
+	ColorClamp(*this);
 	return *this;
 };
 
@@ -38,6 +48,7 @@ Color& Color::operator +=(Color const& rhs)& {
 	g += rhs.g;
 	b += rhs.b;
 	a += rhs.a;
+	ColorClamp(*this);
 	return *this;
 };
 Color Color::operator +(const Color& rhs) {
@@ -46,6 +57,7 @@ Color Color::operator +(const Color& rhs) {
 	result.g = this->g + rhs.g;
 	result.b = this->b + rhs.b;
 	result.a = this->a + rhs.a;
+	ColorClamp(result);
 	return result;
 };
 Color& Color::operator -=(Color const& rhs)& {
@@ -53,6 +65,7 @@ Color& Color::operator -=(Color const& rhs)& {
 	g -= rhs.g;
 	b -= rhs.b;
 	a -= rhs.a;
+	ColorClamp(*this);
 	return *this;
 };
 Color Color::operator -(const Color& rhs) {
@@ -61,6 +74,7 @@ Color Color::operator -(const Color& rhs) {
 	result.g = this->g - rhs.g;
 	result.b = this->b - rhs.b;
 	result.a = this->a - rhs.a;
+	ColorClamp(result);
 	return result;
 };
 Color Color::operator *(const float rhs) {
@@ -69,6 +83,7 @@ Color Color::operator *(const float rhs) {
 	result.g = this->g * rhs;
 	result.b = this->b * rhs;
 	result.a = this->a * rhs;
+	ColorClamp(result);
 	return result;
 };
 Color Color::operator *(const Color& rhs) {
@@ -77,6 +92,7 @@ Color Color::operator *(const Color& rhs) {
 	result.g = this->g * rhs.g;
 	result.b = this->b * rhs.b;
 	result.a = this->a * rhs.a;
+	ColorClamp(result);
 	return result;
 };
 Color Color::operator /(const float rhs) {
@@ -85,5 +101,6 @@ Color Color::operator /(const float rhs) {
 	result.g = this->g / rhs;
 	result.b = this->b / rhs;
 	result.a = this->a / rhs;
+	ColorClamp(result);
 	return result;
 };

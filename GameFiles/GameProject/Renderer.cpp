@@ -24,65 +24,78 @@ const int ScreenSizeY = 135;
 
  ImageBuffer* RenderLightingPass(ImageBuffer* lightBuffer, Light* lightSource[], int totalLights)
 {
-	float radialFalloff;
-	float angularFalloff;
-	float angle;
-    float lightMultiplier;
+	float radialFalloff = 0;
+	float angularFalloff = 0;
+	float angle = 0;
+    float lightMultiplier = 0;
     Color avgColor;
     Color avgVolumetricColor;
-    float midAngle;
-    float tempMax;
-    float tempMin;
-    float distFromCenter;
+    float midAngle = 0;
+    float tempMax = 0;
+    float tempMin = 0;
+    float distFromCenter = 0;
 
+
+   
 	for (int x = 0; x < lightBuffer->size.x; ++x)
 	{
         for (int y = 0; y < lightBuffer->size.y; ++y)
         {
             for (int i = 0; i < totalLights; ++i)
             {
-                distFromCenter = distance(lightSource[i]->position.x, lightSource[i]->position.y, x, y); //find distance from the center of the light
+                i = 0;
                 distFromCenter = distance(lightSource[i]->position.x, lightSource[i]->position.y, (float)x, (float)y); //find distance from the center of the light
+
                 angle = atan2(x - lightSource[i]->position.x, y - lightSource[i]->position.y) * 57.295779f; //Find angle from point to center relative to x axis, magic number is 180 / pi
-
-                //ajust angle to fit the sign of the input
-                if (angle > 0 && lightSource[i]->maxAngle < 0)
-                {
-                    angle -= 360;
-                }
-                if (angle < 0 && lightSource[i]->minAngle > 0)
-                {
-                    angle += 360;
-                }
-
                 angularFalloff = 0;
-                if (angle >= lightSource[i]->minAngle && angle <= lightSource[i]->maxAngle)
+                radialFalloff = 0;
+
+                if (lightSource[i]->angularWeight != 0)
                 {
-                    midAngle = (lightSource[i]->minAngle + lightSource[i]->maxAngle) / 2;
-                    tempMax = lightSource[i]->maxAngle - midAngle;
-                    tempMin = lightSource[i]->minAngle - midAngle;
+                    //ajust angle to fit the sign of the input
+                    if (angle > 0 && lightSource[i]->maxAngle < 0)
+                    {
+                        angle -= 360;
+                    }
+                    if (angle < 0 && lightSource[i]->minAngle > 0)
+                    {
+                        angle += 360;
+                    }
 
-                    angularFalloff = -1 * (((abs(angle - midAngle) - tempMax)) / (tempMax - tempMin));
+                    angularFalloff = 0;
+                    if (angle >= lightSource[i]->minAngle && angle <= lightSource[i]->maxAngle)
+                    {
+                        midAngle = (lightSource[i]->minAngle + lightSource[i]->maxAngle) / 2;
+                        tempMax = lightSource[i]->maxAngle - midAngle;
+                        tempMin = lightSource[i]->minAngle - midAngle;
+
+                        angularFalloff = -1 * (((abs(angle - midAngle) - tempMax)) / (tempMax - tempMin));
+                    }
                 }
-
-                //calculate radialfalloff
-                radialFalloff = 1 / (1 + (lightSource[i]->radialMult1 * distFromCenter) + (lightSource[i]->radialMult2 * (distFromCenter * distFromCenter)));
-
+                else
+                {
+                    angularFalloff = 1;
+                }
+                if (lightSource[i]->radialWeight != 0)
+                {
+                    //calculate radialfalloff
+                    radialFalloff = 1 / (1 + (lightSource[i]->radialMult1 * distFromCenter) + (lightSource[i]->radialMult2 * (distFromCenter * distFromCenter)));
+                }
+                else
+                {
+                    radialFalloff = 1;
+                }
                 //clamp both falloffs
-                radialFalloff = clamp(lightSource[i]->radialWeight * radialFalloff, 1, 0);
-                angularFalloff = clamp(lightSource[i]->angularWeight * angularFalloff, 1, 0);
-
+                radialFalloff = clamp(lightSource[i]->radialWeight * radialFalloff, 0, 1);
+                angularFalloff = clamp(lightSource[i]->angularWeight * angularFalloff, 0, 1);
+                
                 //Calculate objects light
                 lightMultiplier = lightSource[i]->intensity * radialFalloff * angularFalloff;
-                avgColor = (avgColor + (lightSource[i]->color * lightMultiplier)) / 2;
+                lightBuffer->buffer[x][y] = (lightBuffer->buffer[x][y] * ((lightSource[i]->color * lightMultiplier) / 255));
 
-                //Add volumetric lighting
                 lightMultiplier *= lightSource[i]->volumetricIntensity;
-                avgVolumetricColor += (lightSource[i]->color * lightMultiplier);
-            }
-            //Light the scene
-            lightBuffer->buffer[x][y] = (lightBuffer->buffer[x][y] * (avgColor / 255));
-            lightBuffer->buffer[x][y] += avgVolumetricColor;
+                lightBuffer->buffer[x][y] += (lightSource[i]->color * lightMultiplier);
+            }            
         }
 	}
 	return lightBuffer;

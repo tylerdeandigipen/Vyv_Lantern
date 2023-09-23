@@ -8,8 +8,10 @@ class ImageBuffer
 {
 public:
 
-	const float ScreenSizeX = 240;
-	const float ScreenSizeY = 135;
+	const float RenderScreenSizeX = 960;
+	const float RenderScreenSizeY = 540;
+	const float PixelScreenSizeX = 240;
+	const float PixelScreenSizeY = 135;
 	gfxVector2 size;
 	Color** buffer;
 
