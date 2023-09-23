@@ -1,5 +1,21 @@
+//------------------------------------------------------------------------------
+//
+// File Name:	Inputs.cpp
+// Author(s):	TayLee Young
+// Purpose:		Figures out what button is being pressed, setting
+//              to true or false so yall can use it easier ;)
+//
+// Copyright  © 2023 DigiPen (USA) Corporation.
+//
+//------------------------------------------------------------------------------
+
 #include <SDL/SDL.h>
 #include "Inputs.h"
+
+Inputs::Inputs(SDL_Window* window)
+{
+	Inputs::window = window;
+}
 
 // for mouse tracking, just throw it in here, and add x and y cords to .h!!!!!!!!! - taylee
 void Inputs::handleInput()
@@ -11,7 +27,7 @@ void Inputs::handleInput()
 		switch (event.type)
 		{
 		case SDL_QUIT:
-			// come back
+			// come back and do shit to close window!!!
 			quitting = true;
 			break;
 
