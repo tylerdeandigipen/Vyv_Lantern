@@ -12,9 +12,32 @@
 #include <SDL/SDL.h>
 #include "Inputs.h"
 
+Inputs::Inputs()
+{
+	quitting = false;
+	wKey = false;
+	aKey = false;
+	sKey = false;
+	dKey = false;
+	escapeKey = false;
+	window = NULL;
+}
+
+
 Inputs::Inputs(SDL_Window* window)
 {
-	Inputs::window = window;
+	this->window = window;
+	quitting = false;
+	wKey = false;
+	aKey = false;
+	sKey = false;
+	dKey = false;
+	escapeKey = false;
+}
+
+Inputs::~Inputs()
+{
+
 }
 
 // for mouse tracking, just throw it in here, and add x and y cords to .h!!!!!!!!! - taylee
@@ -24,6 +47,10 @@ void Inputs::handleInput()
 
 	while (SDL_PollEvent(&event))
 	{
+		if (event.type == SDL_QUIT)
+		{
+			quitting = true;
+		}
 		switch (event.type)
 		{
 		case SDL_QUIT:
@@ -46,6 +73,10 @@ void Inputs::handleInput()
 			case SDLK_d:
 				dKey = true;
 				break;
+			case SDLK_ESCAPE:
+				quitting = true;
+				escapeKey = true;
+				break;
 			}
 			break;
 
@@ -63,6 +94,9 @@ void Inputs::handleInput()
 				break;
 			case SDLK_d:
 				dKey = false;
+				break;
+			case SDLK_ESCAPE:
+				escapeKey = false;
 				break;
 			}
 			break;
@@ -87,6 +121,8 @@ bool Inputs::keyPressed(SDL_Keycode key) const
 		return sKey;
 	case SDLK_d:
 		return dKey;
+	case SDLK_ESCAPE:
+		return escapeKey;
 	default:
 		return false;
 	}

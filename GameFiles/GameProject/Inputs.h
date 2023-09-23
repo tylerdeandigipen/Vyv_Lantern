@@ -13,7 +13,10 @@
 class Inputs
 {
 public:
-	Inputs(SDL_Window* window) : window(window) {};
+	Inputs();
+	~Inputs();
+
+	Inputs(SDL_Window* window);
 
 	void handleInput();
 
@@ -23,9 +26,10 @@ public:
 private:
 	SDL_Window* window;
 
-	bool quitting = false;
-	bool wKey = false;
-	bool aKey = false;
-	bool sKey = false;
-	bool dKey = false;
+	bool quitting;
+	bool wKey;
+	bool aKey;
+	bool sKey;
+	bool dKey;
+	bool escapeKey;
 };

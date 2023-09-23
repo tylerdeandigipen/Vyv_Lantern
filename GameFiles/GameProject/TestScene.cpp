@@ -14,6 +14,7 @@
 #include "Engine.h"
 #include "SceneSystem.h"
 #include "Renderer.h"
+#include "Inputs.h"
 
 #include "ImageBuffer.h"
 #include "Light.h"
@@ -33,12 +34,11 @@ Color black(0,0,0,255);
 Color transparent(0,0,0,0);
 SDL_Window* window;
 SDL_Renderer* renderer;
+Inputs input(window);
 
 //TestScene::TestScene(Scene _base) : base(_base)
 //{
 //}
-
-
 
 Scene* instance = NULL; // ITS A GLOBAL VARIABLE CALM DOWN!! SHOW ME ANOTHER WAY AND ITS GONE
 
@@ -146,13 +146,11 @@ void TestScene::Render()
 
 Engine::EngineCode TestScene::Exit()
 {
-    SDL_Quit();
 	return Engine::NothingBad;
 }
 
 Engine::EngineCode TestScene::Unload()
 {
-    SDL_DestroyWindow(window);
     delete instance;
 	return Engine::NothingBad;
 }
