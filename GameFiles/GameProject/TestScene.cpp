@@ -57,8 +57,8 @@ Engine::EngineCode TestScene::Init()
     tempLight.position.x = 80;
     tempLight.position.y = 90;
 
-    tempLight.color.r = 255;
-    tempLight.color.g = 255;
+    tempLight.color.r = 0;
+    tempLight.color.g = 0;
     tempLight.color.b = 255;
     tempLight.color.a = 255;
 
@@ -78,8 +78,8 @@ Engine::EngineCode TestScene::Init()
     tempLight2.position.y = 50;
 
     tempLight2.color.r = 255;
-    tempLight2.color.g = 255;
-    tempLight2.color.b = 255;
+    tempLight2.color.g = 0;
+    tempLight2.color.b = 0;
     tempLight2.color.a = 255;
 
     tempLight2.maxAngle = 25;
