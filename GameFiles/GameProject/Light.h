@@ -12,6 +12,7 @@ public:
 	Color color;
 	float minAngle = 0;
 	float maxAngle = 0;
+	float angle = 0;
 	float intensity = 2;
 	float radialMult1 = 0.4f;
 	float radialMult2 = 0;

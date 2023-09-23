@@ -52,12 +52,16 @@ Engine::EngineCode TestScene::Init()
 {
     tempLight.position.x = 80;
     tempLight.position.y = 90;
+
     tempLight.color.r = 255;
     tempLight.color.g = 255;
     tempLight.color.b = 255;
     tempLight.color.a = 255;
-    tempLight.maxAngle = 225;
-    tempLight.minAngle = 135;
+
+    tempLight.maxAngle = 45;
+    tempLight.minAngle = -45;
+    tempLight.angle = 235;
+
     tempLight.intensity = 2;
     tempLight.radialMult1 = 0.4f;
     tempLight.radialMult2 = 0.0f;
@@ -103,42 +107,22 @@ void TestScene::Update(float dt)
                 lightBuffer->buffer[x][y] = black;
             }
         }
-    }
+    } 
     RenderLightingPass(lightBuffer, lightSources, 1);
-    
-    int yCount = scaleDifY - 1;
-    int xCount = scaleDifX - 1;
-    int localY = 0;
-    int localX = 0;
-    SDL_SetRenderDrawColor(renderer, lightBuffer->buffer[0][0].r, lightBuffer->buffer[0][0].g, lightBuffer->buffer[0][0].b, 255);
-    for (int x = 0; x < lightBuffer->RenderScreenSizeX - 1; ++x)
+  
+    SDL_RenderSetScale(renderer, 4.0f, 4.0f);
+    for (int x = 0; x < lightBuffer->PixelScreenSizeX; ++x)
     {
-        if (xCount == 0)
+        for (int y = 0; y < lightBuffer->PixelScreenSizeY; ++y)
         {
-            SDL_SetRenderDrawColor(renderer, lightBuffer->buffer[localX][localY].r, lightBuffer->buffer[localX][localY].g, lightBuffer->buffer[localX][localY].b, 255);
-            localX += 1;
-            xCount = scaleDifX - 1;
+            SDL_SetRenderDrawColor(renderer, lightBuffer->buffer[x][y].r, lightBuffer->buffer[x][y].g, lightBuffer->buffer[x][y].b, 255);
+            SDL_RenderDrawPoint(renderer, x, y);
         }
-        else
-            --xCount;
-        for (int y = 0; y < lightBuffer->RenderScreenSizeY - 1; ++y)
-        {   
-            if (yCount == 0)
-            {
-                SDL_SetRenderDrawColor(renderer, lightBuffer->buffer[localX][localY].r, lightBuffer->buffer[localX][localY].g, lightBuffer->buffer[localX][localY].b, 255);
-                localY += 1;
-                yCount = scaleDifY - 1;
-            }
-            else
-                --yCount;
-            SDL_RenderDrawPoint(renderer, x, y); 
-        }
-        localY = 0;
-        yCount = scaleDifY - 1;
+
     }
     SDL_RenderPresent(renderer);
     SDL_RenderClear(renderer);
-	tempLight.position.x += 1;
+	tempLight.angle -= 3;
 }
 void TestScene::Render()
 {
