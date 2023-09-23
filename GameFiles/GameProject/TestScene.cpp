@@ -66,7 +66,7 @@ Engine::EngineCode TestScene::Init()
     tempLight.minAngle = -45;
     tempLight.angle = 200;
 
-    tempLight.intensity = 2;
+    tempLight.intensity = 3;
     tempLight.radialMult1 = 0.4f;
     tempLight.radialMult2 = 0.0f;
     tempLight.radialWeight = 1;
@@ -86,7 +86,7 @@ Engine::EngineCode TestScene::Init()
     tempLight2.minAngle = -25;
     tempLight2.angle = 280;
 
-    tempLight2.intensity = 2;
+    tempLight2.intensity = 3;
     tempLight2.radialMult1 = 0.4f;
     tempLight2.radialMult2 = 0.0f;
     tempLight2.radialWeight = 1;
