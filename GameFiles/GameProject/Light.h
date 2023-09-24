@@ -8,6 +8,8 @@
 class Light
 {
 public:
+	Light();
+	Light(const Light &rhs);
 	gfxVector2 position;
 	Color color;
 	float minAngle = 0;

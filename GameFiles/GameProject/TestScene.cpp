@@ -23,11 +23,7 @@
 
 
 ImageBuffer* testSprite;
-Light tempLight; 
-Light tempLight2;
-Color white(255,255,255,255);
-Color black(0,0,0,255);
-Color transparent(0,0,0,0);
+
 Renderer pixelRenderer;
 //TestScene::TestScene(Scene _base) : base(_base)
 //{
@@ -47,6 +43,12 @@ Engine::EngineCode TestScene::Load()
 
 Engine::EngineCode TestScene::Init()
 {
+    Light tempLight;
+    Light tempLight2;
+    Light tempLight3;
+    Color white(255, 255, 255, 255);
+    Color black(0, 0, 0, 255);
+    Color transparent(0, 0, 0, 0);
     pixelRenderer.Init();
 
 
@@ -89,11 +91,29 @@ Engine::EngineCode TestScene::Init()
     tempLight2.angularWeight = 2.0f;
     tempLight2.volumetricIntensity = 1;
 
-    pixelRenderer.lightSource[0] = &tempLight;
-    pixelRenderer.numLights += 1;
+    tempLight3.position.x = 200;
+    tempLight3.position.y = 90;
 
-    pixelRenderer.lightSource[1] = &tempLight2;
-    pixelRenderer.numLights += 1;
+    tempLight3.color.r = 255;
+    tempLight3.color.g = 255;
+    tempLight3.color.b = 255;
+    tempLight3.color.a = 255;
+
+    tempLight3.maxAngle = 360;
+    tempLight3.minAngle = -360;
+    tempLight3.angle = 0;
+
+    tempLight3.intensity = 3;
+    tempLight3.radialMult1 = 0.4f;
+    tempLight3.radialMult2 = 0.0f;
+    tempLight3.radialWeight = .5f;
+    tempLight3.angularWeight = 0;
+    tempLight3.volumetricIntensity = 1;
+
+    pixelRenderer.AddLight(tempLight);
+    pixelRenderer.AddLight(tempLight2);
+    pixelRenderer.AddLight(tempLight3);
+
 
     testSprite = new ImageBuffer(30, 30);
     for (int x = 0; x < testSprite->BufferSizeX; ++x)
@@ -117,7 +137,18 @@ Engine::EngineCode TestScene::Init()
 void TestScene::Update(float dt)
 {
     pixelRenderer.Update();
-    tempLight.angle -= 2;
+    pixelRenderer.lightSource[0].angle -= 2;
+    if (pixelRenderer.objects[0]->position.x < 180)
+    {
+        pixelRenderer.objects[0]->position.x += 3;
+        pixelRenderer.objects[0]->position.y += 1;
+    }
+    else
+    {
+        pixelRenderer.objects[0]->position.y = 30;
+        pixelRenderer.objects[0]->position.x = 10;
+    }
+    pixelRenderer.UpdateObjects();
 }
 void TestScene::Render()
 {

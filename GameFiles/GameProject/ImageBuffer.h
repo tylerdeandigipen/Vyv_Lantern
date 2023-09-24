@@ -13,6 +13,7 @@ class ImageBuffer
 		float screenScale = 6;
 		gfxVector2 size;
 		gfxVector2 position;
+		std::string name = "";
 		int layer = 0;
 		Color** buffer;
 
