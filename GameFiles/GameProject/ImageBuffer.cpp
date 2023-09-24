@@ -91,27 +91,27 @@ ImageBuffer& ImageBuffer::ClearImageBuffer()
     return *this;
 }
 
-ImageBuffer& ImageBuffer::AddSprite(ImageBuffer *sprite, int posX, int posY)
+ImageBuffer& ImageBuffer::AddSprite(ImageBuffer *sprite)
 {
     int endPointX = 0;
     int endPointY = 0;
     int tempPosX = 0;
     int tempPosY = 0;
-    if (posX + sprite->size.x > BufferSizeX)
+    if (sprite->position.x + sprite->size.x > BufferSizeX)
     {
-        endPointX += ((posX + sprite->size.x) - BufferSizeX);
+        endPointX += ((sprite->position.x + sprite->size.x) - BufferSizeX);
     }
-    if (posX < 0)
+    if (sprite->position.x < 0)
     {
-        tempPosX -= posX;
+        tempPosX -= sprite->position.x;
     }
-    if (posY + sprite->size.y > BufferSizeY)
+    if (sprite->position.y + sprite->size.y > BufferSizeY)
     {
-        endPointY += ((posY + sprite->size.y) - BufferSizeY);
+        endPointY += ((sprite->position.y + sprite->size.y) - BufferSizeY);
     }
-    if (posY < 0)
+    if (sprite->position.y < 0)
     {
-        tempPosY -= posY;
+        tempPosY -= sprite->position.y;
     }
 
     for (int x = 0; x < sprite->size.x - endPointX - tempPosX; ++x)
@@ -120,7 +120,7 @@ ImageBuffer& ImageBuffer::AddSprite(ImageBuffer *sprite, int posX, int posY)
         {
             if (sprite->buffer[x][y].a != 0)
             {
-                buffer[x + posX + tempPosX][y + posY + tempPosY] = sprite->buffer[x][y];
+                buffer[x + (int)sprite->position.x + tempPosX][y + (int)sprite->position.y + tempPosY] = sprite->buffer[x][y];
             }
         }
     }

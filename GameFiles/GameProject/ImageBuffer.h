@@ -10,8 +10,10 @@ class ImageBuffer
 
 		float BufferSizeX = 240;
 		float BufferSizeY = 135;
-		float screenScale = 4;
+		float screenScale = 6;
 		gfxVector2 size;
+		gfxVector2 position;
+		int layer = 0;
 		Color** buffer;
 
 		ImageBuffer(ImageBuffer &rhs);
@@ -20,7 +22,7 @@ class ImageBuffer
 		~ImageBuffer();
 
 		ImageBuffer& ClearImageBuffer();
-		ImageBuffer& AddSprite(ImageBuffer *sprite, int posX, int posY);
+		ImageBuffer& AddSprite(ImageBuffer *sprite);
 
 		ImageBuffer& operator =(const ImageBuffer& rhs)&;
 		ImageBuffer operator +(const ImageBuffer& rhs);

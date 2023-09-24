@@ -21,21 +21,14 @@
 
 #include <SDL/SDL.h>
 
-#define MAX_LIGHT_SOURCES 20
 
-ImageBuffer* lightBuffer;
-ImageBuffer* renderBuffer;
 ImageBuffer* testSprite;
-Light* lightSources[MAX_LIGHT_SOURCES];
 Light tempLight; 
 Light tempLight2;
 Color white(255,255,255,255);
 Color black(0,0,0,255);
 Color transparent(0,0,0,0);
-SDL_Window* window;
-SDL_Renderer* renderer;
-Inputs input(window);
-
+Renderer pixelRenderer;
 //TestScene::TestScene(Scene _base) : base(_base)
 //{
 //}
@@ -54,6 +47,9 @@ Engine::EngineCode TestScene::Load()
 
 Engine::EngineCode TestScene::Init()
 {
+    pixelRenderer.Init();
+
+
     tempLight.position.x = 80;
     tempLight.position.y = 90;
 
@@ -93,13 +89,13 @@ Engine::EngineCode TestScene::Init()
     tempLight2.angularWeight = 2.0f;
     tempLight2.volumetricIntensity = 1;
 
-    lightSources[0] = &tempLight; 
-    lightSources[1] = &tempLight2;
+    pixelRenderer.lightSource[0] = &tempLight;
+    pixelRenderer.numLights += 1;
 
-    lightBuffer = new ImageBuffer;
-    renderBuffer = new ImageBuffer;
-    testSprite = new ImageBuffer(30,30);
+    pixelRenderer.lightSource[1] = &tempLight2;
+    pixelRenderer.numLights += 1;
 
+    testSprite = new ImageBuffer(30, 30);
     for (int x = 0; x < testSprite->BufferSizeX; ++x)
     {
         for (int y = 0; y < testSprite->BufferSizeY; ++y)
@@ -112,32 +108,16 @@ Engine::EngineCode TestScene::Init()
                 testSprite->buffer[x][y] = white;
         }
     }
+    testSprite->position = {30, 30};
+    pixelRenderer.AddObject(testSprite);
 
-    renderBuffer->screenScale = 6;
-    SDL_CreateWindowAndRenderer(renderBuffer->BufferSizeX * renderBuffer->screenScale, renderBuffer->BufferSizeY * renderBuffer->screenScale, 0, &window, &renderer);
-    if (SDL_Init(SDL_INIT_VIDEO) != 0) {
-        return Engine::SomethingBad;
-    }
 	return Engine::NothingBad;
 }
 
 void TestScene::Update(float dt)
 {
-    lightBuffer->AddSprite(testSprite, 30, 30);
-    RenderLightingPass(renderBuffer, lightBuffer, lightSources, 2);
-  
-    SDL_RenderSetScale(renderer, renderBuffer->screenScale, renderBuffer->screenScale);
-    for (int x = 0; x < renderBuffer->BufferSizeX; ++x)
-    {
-        for (int y = 0; y < renderBuffer->BufferSizeY; ++y)
-        {
-            SDL_SetRenderDrawColor(renderer, renderBuffer->buffer[x][y].r, renderBuffer->buffer[x][y].g, renderBuffer->buffer[x][y].b, 255);
-            SDL_RenderDrawPoint(renderer, x, y);
-        }
-    }
-    renderBuffer->ClearImageBuffer();
-    SDL_RenderPresent(renderer);
-    //tempLight.angle -= 2;
+    pixelRenderer.Update();
+    tempLight.angle -= 2;
 }
 void TestScene::Render()
 {

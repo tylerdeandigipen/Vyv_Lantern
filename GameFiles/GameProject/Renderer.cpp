@@ -14,11 +14,11 @@
 #include "Math.h"
 #include "Vector.h"
 #include "ImageBuffer.h"
-
+#include <SDL/SDL.h>
 //BaseSystem::BaseSystem(const char* _name) : name(_name) {}
 
 
- ImageBuffer* RenderLightingPass(ImageBuffer* outputBuffer, ImageBuffer* inputBuffer, Light* lightSource[], int totalLights)
+ ImageBuffer* Renderer::RenderLightingPass(ImageBuffer* outputBuffer, ImageBuffer* inputBuffer, Light* lightSource[], int totalLights)
 {
     for (int i = 0; i < totalLights; ++i)
     {
@@ -105,3 +105,67 @@
     }
 	return inputBuffer;
 };
+
+ void Renderer::Init()
+ {
+     outputBuffer = new ImageBuffer;
+     inputBuffer = new ImageBuffer;
+     outputBuffer->screenScale = 6;
+
+     SDL_CreateWindowAndRenderer(outputBuffer->BufferSizeX * outputBuffer->screenScale, outputBuffer->BufferSizeY * outputBuffer->screenScale, 0, &window, &renderer);
+     if (SDL_Init(SDL_INIT_VIDEO) != 0) {
+         return;
+     }
+ }
+
+ void Renderer::Update()
+ {
+     RenderLightingPass(outputBuffer, inputBuffer, lightSource, numLights);
+
+     SDL_RenderSetScale(renderer, outputBuffer->screenScale, outputBuffer->screenScale);
+     for (int x = 0; x < outputBuffer->BufferSizeX; ++x)
+     {
+         for (int y = 0; y < outputBuffer->BufferSizeY; ++y)
+         {
+             SDL_SetRenderDrawColor(renderer, outputBuffer->buffer[x][y].r, outputBuffer->buffer[x][y].g, outputBuffer->buffer[x][y].b, 255);
+             SDL_RenderDrawPoint(renderer, x, y);
+         }
+     }
+     outputBuffer->ClearImageBuffer();
+     SDL_RenderPresent(renderer);
+ }
+
+ void Renderer::AddObject(ImageBuffer* sprite)
+ {
+     inputBuffer->ClearImageBuffer();
+     if (numOjbects + 1 > !MAX_OBJECTS)
+     {
+         objects[numOjbects] = sprite;
+         numOjbects += 1;
+     }
+     for (int l = 0; l < 3; ++l)
+     {
+         for (int i = 0; i < numOjbects; ++i)
+         {
+             if (objects[i]->layer == l)
+             {
+                 inputBuffer->AddSprite(objects[i]);
+             }
+         }
+     }
+ }
+
+ void Renderer::UpdateObjects()
+ {
+     inputBuffer->ClearImageBuffer();
+     for (int l = 0; l < 3; ++l)
+     {
+         for (int i = 0; i < numOjbects; ++i)
+         {
+             if (objects[i]->layer == l)
+             {
+                 inputBuffer->AddSprite(objects[i]);
+             }
+         }
+     }
+ }
