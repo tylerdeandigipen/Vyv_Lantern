@@ -114,13 +114,13 @@ ImageBuffer& ImageBuffer::AddSprite(ImageBuffer *sprite)
         tempPosY -= sprite->position.y;
     }
 
-    for (int x = 0; x < sprite->size.x - endPointX - tempPosX; ++x)
+    for (int x = tempPosX; x < sprite->size.x - endPointX; ++x)
     {
-        for (int y = 0; y < sprite->size.y - endPointY - tempPosY; ++y)
+        for (int y = tempPosY; y < sprite->size.y - endPointY; ++y)
         {
             if (sprite->buffer[x][y].a != 0)
             {
-                buffer[x + (int)sprite->position.x + tempPosX][y + (int)sprite->position.y + tempPosY] = sprite->buffer[x][y];
+                buffer[x + (int)sprite->position.x][y + (int)sprite->position.y] = sprite->buffer[x][y];
             }
         }
     }

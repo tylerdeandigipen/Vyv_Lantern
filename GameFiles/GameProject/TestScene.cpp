@@ -141,15 +141,22 @@ void TestScene::Update(float dt)
     pixelRenderer.Update();
     inputHandler.handleInput();
     pixelRenderer.lightSource[0].angle -= 2;
-    if (pixelRenderer.objects[0]->position.x < 180)
+
+    if (inputHandler.keyPressed(SDLK_w) == true)
     {
-        pixelRenderer.objects[0]->position.x += 3;
-        pixelRenderer.objects[0]->position.y += 1;
+        pixelRenderer.objects[0]->position.y -= 2;
     }
-    else
+    if (inputHandler.keyPressed(SDLK_s) == true)
     {
-        pixelRenderer.objects[0]->position.y = 30;
-        pixelRenderer.objects[0]->position.x = 10;
+        pixelRenderer.objects[0]->position.y += 2;
+    }
+    if (inputHandler.keyPressed(SDLK_d) == true)
+    {
+        pixelRenderer.objects[0]->position.x += 2;
+    }
+    if (inputHandler.keyPressed(SDLK_a) == true)
+    {
+        pixelRenderer.objects[0]->position.x -= 2;
     }
     pixelRenderer.UpdateObjects();
 
