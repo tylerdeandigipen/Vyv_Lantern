@@ -30,7 +30,7 @@ Renderer pixelRenderer;
 //SDL_Window* window = SDL_CreateWindow("Test Scene", SDL_WINDOWPOS_CENTERED, screen width, screen height, SDL_WINDOW_SHOWN)
 //Inputs inputHandler(window);
 
-Scene* instance = NULL; // ITS A GLOBAL VARIABLE CALM DOWN!! SHOW ME ANOTHER WAY AND ITS GONE
+Scene* TestSceneinstance = NULL; // ITS A GLOBAL VARIABLE CALM DOWN!! SHOW ME ANOTHER WAY AND ITS GONE
 
 TestScene::TestScene() : Scene("test")
 {
@@ -173,14 +173,14 @@ Engine::EngineCode TestScene::Exit()
 
 Engine::EngineCode TestScene::Unload()
 {
-    delete instance;
+    delete TestSceneinstance;
 	return Engine::NothingBad;
 }
 
 Scene* TestSceneGetInstance(void)
 {
-    instance = new TestScene();
-    return instance;
+    TestSceneinstance = new TestScene();
+    return TestSceneinstance;
 }
 
 
