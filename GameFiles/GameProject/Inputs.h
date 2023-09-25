@@ -23,8 +23,17 @@ public:
 	bool Quitting() const;
 	bool keyPressed(SDL_Keycode key) const;
 
+	int getMouseX() const;
+	int getMouseY() const;
+
 private:
 	SDL_Window* window;
+
+	int mouseX;
+	int mouseY;
+
+	bool leftMouseB;
+	bool rightMouseB;
 
 	bool quitting;
 	bool wKey;

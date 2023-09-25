@@ -23,11 +23,7 @@
 
 
 ImageBuffer* testSprite;
-
 Renderer pixelRenderer;
-//TestScene::TestScene(Scene _base) : base(_base)
-//{
-//}
 
 Scene* instance = NULL; // ITS A GLOBAL VARIABLE CALM DOWN!! SHOW ME ANOTHER WAY AND ITS GONE
 
