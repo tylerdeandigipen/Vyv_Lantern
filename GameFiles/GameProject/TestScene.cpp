@@ -111,9 +111,9 @@ Engine::EngineCode TestScene::Init()
     tempLight3.angle = 0;
 
     tempLight3.intensity = 3;
-    tempLight3.radialMult1 = 0.4f;
-    tempLight3.radialMult2 = 0.0f;
-    tempLight3.radialWeight = .5f;
+    tempLight3.radialMult1 = 0.2f;
+    tempLight3.radialMult2 = 0.0005;
+    tempLight3.radialWeight = .3;
     tempLight3.angularWeight = 0;
     tempLight3.volumetricIntensity = 1;
 
