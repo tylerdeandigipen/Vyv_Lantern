@@ -71,7 +71,7 @@ void Inputs::handleInput()
 				SDL_GetMouseState(&mouseX, &mouseY);
 				break;
 
-			case SDL_MOUSEBUTTONDOWN:
+			/* case SDL_MOUSEBUTTONDOWN:
 				switch (event.button.button)
 				{
 					case SDL_BUTTON_RIGHT:
@@ -93,7 +93,7 @@ void Inputs::handleInput()
 					leftMouseB = false;
 					break;
 				}
-				break;
+				break; */
 
 			case SDL_KEYDOWN:
 				switch (event.key.keysym.sym)

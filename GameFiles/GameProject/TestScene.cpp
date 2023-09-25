@@ -23,12 +23,11 @@
 
 
 ImageBuffer* testSprite;
-SDL_Window* window;
 SDL_Renderer* renderer;
 Renderer pixelRenderer;
 
-//SDL_Window* window = SDL_CreateWindow("Test Scene", SDL_WINDOWPOS_CENTERED, screen width, screen height, SDL_WINDOW_SHOWN)
-//Inputs inputHandler(window);
+SDL_Window* window = SDL_CreateWindow("Test Scene", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, pixelRenderer.outputBuffer->BufferSizeX * pixelRenderer.outputBuffer->screenScale, pixelRenderer.outputBuffer->BufferSizeY * pixelRenderer.outputBuffer->screenScale, 0);
+Inputs inputHandler(window);
 
 Scene* TestSceneinstance = NULL; // ITS A GLOBAL VARIABLE CALM DOWN!! SHOW ME ANOTHER WAY AND ITS GONE
 
@@ -51,13 +50,10 @@ Engine::EngineCode TestScene::Init()
     Color black(0, 0, 0, 255);
     Color transparent(0, 0, 0, 0);
 
-
-
-    SDL_CreateWindowAndRenderer(pixelRenderer.outputBuffer->BufferSizeX * pixelRenderer.outputBuffer->screenScale, pixelRenderer.outputBuffer->BufferSizeY * pixelRenderer.outputBuffer->screenScale, 0, &window, &renderer);
+    SDL_CreateRenderer(window, -1, 0);
     if (SDL_Init(SDL_INIT_VIDEO) != 0) {
     }
     pixelRenderer.renderer = renderer;
-
 
     tempLight.position.x = 80;
     tempLight.position.y = 90;
@@ -144,6 +140,7 @@ Engine::EngineCode TestScene::Init()
 void TestScene::Update(float dt)
 {
     pixelRenderer.Update();
+    inputHandler.handleInput();
     pixelRenderer.lightSource[0].angle -= 2;
     if (pixelRenderer.objects[0]->position.x < 180)
     {
@@ -157,7 +154,11 @@ void TestScene::Update(float dt)
     }
     pixelRenderer.UpdateObjects();
 
-    //inputHandler.handleInput();
+
+    if (inputHandler.keyPressed(SDLK_ESCAPE) == true)
+    {
+        TestScene::Exit();
+    }
 }
 void TestScene::Render()
 {
@@ -166,8 +167,8 @@ void TestScene::Render()
 
 Engine::EngineCode TestScene::Exit()
 {
-    //SDL_DestroyWindow(window)
-    //SDL_Quit
+    SDL_DestroyWindow(window);
+    SDL_Quit();
 	return Engine::NothingBad;
 }
 
