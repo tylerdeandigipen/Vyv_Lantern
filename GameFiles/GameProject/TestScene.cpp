@@ -50,10 +50,9 @@ Engine::EngineCode TestScene::Init()
     Color black(0, 0, 0, 255);
     Color transparent(0, 0, 0, 0);
 
-    SDL_CreateRenderer(window, -1, 0);
     if (SDL_Init(SDL_INIT_VIDEO) != 0) {
     }
-    pixelRenderer.renderer = renderer;
+    pixelRenderer.renderer = SDL_CreateRenderer(window, -1, 0);
 
     tempLight.position.x = 80;
     tempLight.position.y = 90;
