@@ -25,6 +25,9 @@
 ImageBuffer* testSprite;
 Renderer pixelRenderer;
 
+//SDL_Window* window = SDL_CreateWindow("Test Scene", SDL_WINDOWPOS_CENTERED, screen width, screen height, SDL_WINDOW_SHOWN)
+//Inputs inputHandler(window);
+
 Scene* instance = NULL; // ITS A GLOBAL VARIABLE CALM DOWN!! SHOW ME ANOTHER WAY AND ITS GONE
 
 TestScene::TestScene() : Scene("test")
@@ -145,6 +148,8 @@ void TestScene::Update(float dt)
         pixelRenderer.objects[0]->position.x = 10;
     }
     pixelRenderer.UpdateObjects();
+
+    //inputHandler.handleInput();
 }
 void TestScene::Render()
 {
@@ -153,6 +158,8 @@ void TestScene::Render()
 
 Engine::EngineCode TestScene::Exit()
 {
+    //SDL_DestroyWindow(window)
+    //SDL_Quit
 	return Engine::NothingBad;
 }
 
