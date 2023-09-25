@@ -75,6 +75,9 @@
     <ClInclude Include="Inputs.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="StubScene.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">
@@ -123,6 +126,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Inputs.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="StubScene.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
