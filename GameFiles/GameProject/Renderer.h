@@ -11,12 +11,14 @@
 class Renderer
 {
 public:
+	Renderer();
 	SDL_Window* window;
 	SDL_Renderer* renderer;
 	ImageBuffer* outputBuffer;
 	ImageBuffer* inputBuffer;
 	Light lightSource[MAX_LIGHT_SOURCES];
 	ImageBuffer* objects[MAX_OBJECTS];
+	float screenScale = 6;
 
 	void RenderLightingPass();
 	ImageBuffer* GetObjectByName(std::string name_);
@@ -24,7 +26,6 @@ public:
 	void AddLight(Light light);
 	void UpdateObjects();
 	void Update();
-	void Init();
 private:
 	int numObjects;
 	int numLights;

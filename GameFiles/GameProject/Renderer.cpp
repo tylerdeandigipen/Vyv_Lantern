@@ -105,16 +105,11 @@
 	return;
 };
 
- void Renderer::Init()
+ Renderer::Renderer()
  {
      outputBuffer = new ImageBuffer;
      inputBuffer = new ImageBuffer;
-     outputBuffer->screenScale = 6;
-
-     SDL_CreateWindowAndRenderer(outputBuffer->BufferSizeX * outputBuffer->screenScale, outputBuffer->BufferSizeY * outputBuffer->screenScale, 0, &window, &renderer);
-     if (SDL_Init(SDL_INIT_VIDEO) != 0) {
-         return;
-     }
+     outputBuffer->screenScale = screenScale;
  }
 
  void Renderer::Update()

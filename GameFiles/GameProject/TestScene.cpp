@@ -23,6 +23,8 @@
 
 
 ImageBuffer* testSprite;
+SDL_Window* window;
+SDL_Renderer* renderer;
 Renderer pixelRenderer;
 
 //SDL_Window* window = SDL_CreateWindow("Test Scene", SDL_WINDOWPOS_CENTERED, screen width, screen height, SDL_WINDOW_SHOWN)
@@ -48,7 +50,13 @@ Engine::EngineCode TestScene::Init()
     Color white(255, 255, 255, 255);
     Color black(0, 0, 0, 255);
     Color transparent(0, 0, 0, 0);
-    pixelRenderer.Init();
+
+
+
+    SDL_CreateWindowAndRenderer(pixelRenderer.outputBuffer->BufferSizeX * pixelRenderer.outputBuffer->screenScale, pixelRenderer.outputBuffer->BufferSizeY * pixelRenderer.outputBuffer->screenScale, 0, &window, &renderer);
+    if (SDL_Init(SDL_INIT_VIDEO) != 0) {
+    }
+    pixelRenderer.renderer = renderer;
 
 
     tempLight.position.x = 80;
