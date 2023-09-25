@@ -1,5 +1,9 @@
 #pragma once
 
+#include "Engine.h"
+#include "Scene.h"
+#include "SceneSystem.h"
+
 class Scene;
 
 class StubScene : public Scene
@@ -18,4 +22,5 @@ public:
 private:
 
 };
+
 Scene* StubSceneGetInstance(void);

@@ -1,9 +1,10 @@
 #include "StubScene.h"
 #include "Scene.h"
 #include "SceneSystem.h"
+#include "Engine.h"
 #include <SDL/SDL.h>
 
-Scene* instance = NULL; //SORRY MIKEY L MEYERS!!!!!!!!!!!!!!!!!!!!!!
+Scene* StubSceneinstance = NULL; //SORRY MIKEY L MEYERS!!!!!!!!!!!!!!!!!!!!!!
 
 StubScene::StubScene() : Scene("Stub")
 {
@@ -47,6 +48,6 @@ Engine::EngineCode StubScene::Exit()
 
 Scene* StubSceneGetInstance(void)
 {
-	instance = new StubScene();
-	return instance;
+	StubSceneinstance = new StubScene();
+	return StubSceneinstance;
 }
