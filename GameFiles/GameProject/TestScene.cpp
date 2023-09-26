@@ -156,7 +156,9 @@ void tempPlayerMovementLol()
 
     int x, y;
     Uint32 buttons = SDL_GetMouseState(&x, &y);
-    pixelRenderer.lightSource[0].angle = atan2(x - (pixelRenderer.lightSource[0].position.x * 6.25), y - (pixelRenderer.lightSource[0].position.y * 5.75)) * 57.295779f;
+    // to find angle between worldspace and screenspace take the worldspace coord and multiply by the screen scale in this case 6
+    pixelRenderer.lightSource[0].angle = atan2(x - (pixelRenderer.lightSource[0].position.x * 6), y - (pixelRenderer.lightSource[0].position.y * 6)) * 57.295779f;
+    //pixelRenderer.lightSource[0].angle = atan2(pixelRenderer.objects[0]->position.x + 15 - pixelRenderer.lightSource[0].position.x, pixelRenderer.objects[0]->position.y + 15 - pixelRenderer.lightSource[0].position.y) * 57.295779f;
 }
 void TestScene::Update(float dt)
 {
