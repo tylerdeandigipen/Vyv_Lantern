@@ -57,8 +57,8 @@ Engine::EngineCode TestScene::Init()
     tempLight.position.x = 80;
     tempLight.position.y = 90;
 
-    tempLight.color.r = 0;
-    tempLight.color.g = 0;
+    tempLight.color.r = 216;
+    tempLight.color.g = 247;
     tempLight.color.b = 255;
     tempLight.color.a = 255;
 
@@ -71,15 +71,15 @@ Engine::EngineCode TestScene::Init()
     tempLight.radialMult2 = 0.0f;
     tempLight.radialWeight = 1;
     tempLight.angularWeight = 2.0f;
-    tempLight.volumetricIntensity = 1;
+    tempLight.volumetricIntensity = .5f;
 
 
     tempLight2.position.x = 120;
     tempLight2.position.y = 50;
 
     tempLight2.color.r = 255;
-    tempLight2.color.g = 0;
-    tempLight2.color.b = 0;
+    tempLight2.color.g = 182;
+    tempLight2.color.b = 76;
     tempLight2.color.a = 255;
 
     tempLight2.maxAngle = 25;
@@ -91,14 +91,14 @@ Engine::EngineCode TestScene::Init()
     tempLight2.radialMult2 = 0.0f;
     tempLight2.radialWeight = 1;
     tempLight2.angularWeight = 2.0f;
-    tempLight2.volumetricIntensity = 1;
+    tempLight2.volumetricIntensity = .5f;
 
     tempLight3.position.x = 200;
     tempLight3.position.y = 90;
 
     tempLight3.color.r = 255;
-    tempLight3.color.g = 255;
-    tempLight3.color.b = 255;
+    tempLight3.color.g = 182;
+    tempLight3.color.b = 76;
     tempLight3.color.a = 255;
 
     tempLight3.maxAngle = 360;
@@ -110,7 +110,7 @@ Engine::EngineCode TestScene::Init()
     tempLight3.radialMult2 = 0.0005;
     tempLight3.radialWeight = .3;
     tempLight3.angularWeight = 0;
-    tempLight3.volumetricIntensity = 1;
+    tempLight3.volumetricIntensity = .25f;
 
     pixelRenderer.AddLight(tempLight);
     pixelRenderer.AddLight(tempLight2);
@@ -135,13 +135,8 @@ Engine::EngineCode TestScene::Init()
 
 	return Engine::NothingBad;
 }
-
-void TestScene::Update(float dt)
+void tempPlayerMovementLol()
 {
-    pixelRenderer.Update();
-    inputHandler.handleInput();
-    pixelRenderer.lightSource[0].angle -= 2;
-
     if (inputHandler.keyPressed(SDLK_w) == true)
     {
         pixelRenderer.objects[0]->position.y -= 2;
@@ -158,8 +153,17 @@ void TestScene::Update(float dt)
     {
         pixelRenderer.objects[0]->position.x -= 2;
     }
-    pixelRenderer.UpdateObjects();
 
+    int x, y;
+    Uint32 buttons = SDL_GetMouseState(&x, &y);
+    pixelRenderer.lightSource[0].angle = atan2(x - (pixelRenderer.lightSource[0].position.x * 6.25), y - (pixelRenderer.lightSource[0].position.y * 5.75)) * 57.295779f;
+}
+void TestScene::Update(float dt)
+{
+    inputHandler.handleInput();
+    tempPlayerMovementLol();
+    pixelRenderer.UpdateObjects();
+    //pixelRenderer.lightSource[0].angle -= 2;
 
     if (inputHandler.keyPressed(SDLK_ESCAPE) == true)
     {
@@ -168,6 +172,8 @@ void TestScene::Update(float dt)
 }
 void TestScene::Render()
 {
+    pixelRenderer.Update();
+
 	return;
 }
 
