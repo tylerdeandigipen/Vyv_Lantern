@@ -31,6 +31,11 @@ Inputs inputHandler(window);
 
 Scene* TestSceneinstance = NULL; // ITS A GLOBAL VARIABLE CALM DOWN!! SHOW ME ANOTHER WAY AND ITS GONE
 
+Color white(255, 255, 255, 255);
+Color black(0, 0, 0, 255);
+Color grey(150, 150, 150, 255);
+Color blue(50, 100, 255, 255);
+
 TestScene::TestScene() : Scene("test")
 {
 
@@ -46,8 +51,8 @@ Engine::EngineCode TestScene::Init()
     Light tempLight;
     Light tempLight2;
     Light tempLight3;
-    Color white(255, 255, 255, 255);
-    Color black(0, 0, 0, 255);
+
+
     Color transparent(0, 0, 0, 0);
 
     if (SDL_Init(SDL_INIT_VIDEO) != 0) {
@@ -116,7 +121,6 @@ Engine::EngineCode TestScene::Init()
     pixelRenderer.AddLight(tempLight2);
     pixelRenderer.AddLight(tempLight3);
 
-
     testSprite = new ImageBuffer(30, 30);
     for (int x = 0; x < testSprite->BufferSizeX; ++x)
     {
@@ -127,11 +131,13 @@ Engine::EngineCode TestScene::Init()
                 testSprite->buffer[x][y] = transparent;
             }
             else
-                testSprite->buffer[x][y] = white;
+                testSprite->buffer[x][y] = blue;
         }
     }
-    testSprite->position = {30, 30};
+    testSprite->position = { 30, 30 };
+    testSprite->layer = 1;
     pixelRenderer.AddObject(testSprite);
+  
 
 	return Engine::NothingBad;
 }
@@ -165,6 +171,32 @@ void TestScene::Update(float dt)
     inputHandler.handleInput();
     tempPlayerMovementLol();
     pixelRenderer.UpdateObjects();
+
+    //test tiles
+    ImageBuffer* testTile = new ImageBuffer(15, 15);
+    for (int x = 0; x < testTile->BufferSizeX; ++x)
+    {
+        for (int y = 0; y < testTile->BufferSizeY; ++y)
+        {
+            if (x % 3 != 0 && y % 3 != 0)
+            {
+                testTile->buffer[x][y] = white;
+            }
+            else
+                testTile->buffer[x][y] = grey;
+        }
+    }
+    testTile->position = { 0, 0 };
+    testTile->layer = 0;
+    for (float x = 0; x < 16; ++x)
+    {
+        for (float y = 0; y < 9; ++y)
+        {
+            testTile->position = { 0 + (x * 15), 0 + (y * 15) };
+            pixelRenderer.inputBuffer->AddSprite(testTile);
+        }
+    }
+    pixelRenderer.inputBuffer->AddSprite(testSprite); 
     //pixelRenderer.lightSource[0].angle -= 2;
 
     if (inputHandler.keyPressed(SDLK_ESCAPE) == true)
