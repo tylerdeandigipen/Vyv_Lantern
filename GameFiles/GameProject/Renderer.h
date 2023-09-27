@@ -17,8 +17,10 @@ public:
 	ImageBuffer* outputBuffer;
 	ImageBuffer* objectLayer;
 	ImageBuffer* backgroundLayer;
+	ImageBuffer* bakedLightsBuffer;
 	ImageBuffer* inputBuffer;
 	Light lightSource[MAX_LIGHT_SOURCES];
+	Light staticLightSource[MAX_LIGHT_SOURCES];
 	ImageBuffer* objects[MAX_OBJECTS];
 	float screenScale = 6;
 
@@ -27,10 +29,12 @@ public:
 	void AddObject(ImageBuffer* sprite);
 	void AddLight(Light light);
 	void UpdateObjects();
+	void BakeLights();
 	void Update();
 private:
 	int numObjects;
 	int numLights;
+	int numStaticLights;
 };
 
 #endif 

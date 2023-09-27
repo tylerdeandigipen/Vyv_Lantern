@@ -77,6 +77,7 @@ Engine::EngineCode TestScene::Init()
     tempLight.radialWeight = 1;
     tempLight.angularWeight = 2.0f;
     tempLight.volumetricIntensity = .5f;
+    tempLight.isStatic = 0;
 
 
     tempLight2.position.x = 120;
@@ -97,6 +98,7 @@ Engine::EngineCode TestScene::Init()
     tempLight2.radialWeight = 1;
     tempLight2.angularWeight = 2.0f;
     tempLight2.volumetricIntensity = .5f;
+    tempLight2.isStatic = 1;
 
     tempLight3.position.x = 200;
     tempLight3.position.y = 90;
@@ -116,6 +118,7 @@ Engine::EngineCode TestScene::Init()
     tempLight3.radialWeight = .3;
     tempLight3.angularWeight = 0;
     tempLight3.volumetricIntensity = .25f;
+    tempLight3.isStatic = 1;
 
     pixelRenderer.AddLight(tempLight);
     pixelRenderer.AddLight(tempLight2);
@@ -169,6 +172,7 @@ void tempPlayerMovementLol()
     if (inputHandler.keyPressed(SDLK_w) == true)
     {
         pixelRenderer.objects[0]->position.y -= 2;
+        //pixelRenderer.AddLight(pixelRenderer.staticLightSource[0]);
     }
     if (inputHandler.keyPressed(SDLK_s) == true)
     {

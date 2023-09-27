@@ -13,6 +13,8 @@ Light::Light(const Light& rhs)
 	radialWeight = rhs.radialWeight;
 	angularWeight = rhs.angularWeight;
 	volumetricIntensity = rhs.volumetricIntensity;
+	isStatic = rhs.isStatic;
+	isBaked = 0;
 }
 Light::Light()
 {
