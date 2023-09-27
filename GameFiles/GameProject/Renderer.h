@@ -15,6 +15,8 @@ public:
 	SDL_Window* window;
 	SDL_Renderer* renderer;
 	ImageBuffer* outputBuffer;
+	ImageBuffer* objectLayer;
+	ImageBuffer* backgroundLayer;
 	ImageBuffer* inputBuffer;
 	Light lightSource[MAX_LIGHT_SOURCES];
 	ImageBuffer* objects[MAX_OBJECTS];

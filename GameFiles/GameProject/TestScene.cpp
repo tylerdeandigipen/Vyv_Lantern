@@ -137,10 +137,33 @@ Engine::EngineCode TestScene::Init()
     testSprite->position = { 30, 30 };
     testSprite->layer = 1;
     pixelRenderer.AddObject(testSprite);
-  
+    ImageBuffer* testTile = new ImageBuffer(15, 15);
+    for (int x = 0; x < testTile->BufferSizeX; ++x)
+    {
+        for (int y = 0; y < testTile->BufferSizeY; ++y)
+        {
+            if (x % 3 != 0 && y % 3 != 0)
+            {
+                testTile->buffer[x][y] = white;
+            }
+            else
+                testTile->buffer[x][y] = grey;
+        }
+    }
+    testTile->position = { 0, 0 };
+    testTile->layer = 0;
+    for (float x = 0; x < 16; ++x)
+    {
+        for (float y = 0; y < 9; ++y)
+        {
+            testTile->position = { 0 + (x * 15), 0 + (y * 15) };
+            pixelRenderer.backgroundLayer->AddSprite(testTile);
+        }
+    }
 
 	return Engine::NothingBad;
 }
+
 void tempPlayerMovementLol()
 {
     if (inputHandler.keyPressed(SDLK_w) == true)
@@ -164,40 +187,12 @@ void tempPlayerMovementLol()
     Uint32 buttons = SDL_GetMouseState(&x, &y);
     // to find angle between worldspace and screenspace take the worldspace coord and multiply by the screen scale in this case 6
     pixelRenderer.lightSource[0].angle = atan2(x - (pixelRenderer.lightSource[0].position.x * 6), y - (pixelRenderer.lightSource[0].position.y * 6)) * 57.295779f;
-    //pixelRenderer.lightSource[0].angle = atan2(pixelRenderer.objects[0]->position.x + 15 - pixelRenderer.lightSource[0].position.x, pixelRenderer.objects[0]->position.y + 15 - pixelRenderer.lightSource[0].position.y) * 57.295779f;
 }
 void TestScene::Update(float dt)
 {
     inputHandler.handleInput();
     tempPlayerMovementLol();
     pixelRenderer.UpdateObjects();
-
-    //test tiles
-    ImageBuffer* testTile = new ImageBuffer(15, 15);
-    for (int x = 0; x < testTile->BufferSizeX; ++x)
-    {
-        for (int y = 0; y < testTile->BufferSizeY; ++y)
-        {
-            if (x % 3 != 0 && y % 3 != 0)
-            {
-                testTile->buffer[x][y] = white;
-            }
-            else
-                testTile->buffer[x][y] = grey;
-        }
-    }
-    testTile->position = { 0, 0 };
-    testTile->layer = 0;
-    for (float x = 0; x < 16; ++x)
-    {
-        for (float y = 0; y < 9; ++y)
-        {
-            testTile->position = { 0 + (x * 15), 0 + (y * 15) };
-            pixelRenderer.inputBuffer->AddSprite(testTile);
-        }
-    }
-    pixelRenderer.inputBuffer->AddSprite(testSprite); 
-    //pixelRenderer.lightSource[0].angle -= 2;
 
     if (inputHandler.keyPressed(SDLK_ESCAPE) == true)
     {
