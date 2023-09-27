@@ -7,6 +7,8 @@
 
 #define MAX_LIGHT_SOURCES 20
 #define MAX_OBJECTS 20
+#define SCREEN_SIZE_X 240
+#define SCREEN_SIZE_Y 135
 
 class Renderer
 {
@@ -25,6 +27,7 @@ public:
 	float screenScale = 6;
 
 	void RenderLightingPass();
+	float FindPixelLuminosity(float x, float y, int i, Light lightSource_[MAX_LIGHT_SOURCES]);
 	ImageBuffer* GetObjectByName(std::string name_);
 	void AddObject(ImageBuffer* sprite);
 	void AddLight(Light light);

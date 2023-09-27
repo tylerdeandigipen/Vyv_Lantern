@@ -97,7 +97,7 @@ Engine::EngineCode TestScene::Init()
     tempLight2.radialMult2 = 0.0f;
     tempLight2.radialWeight = 1;
     tempLight2.angularWeight = 2.0f;
-    tempLight2.volumetricIntensity = .5f;
+    tempLight2.volumetricIntensity = .25f;
     tempLight2.isStatic = 1;
 
     tempLight3.position.x = 200;
