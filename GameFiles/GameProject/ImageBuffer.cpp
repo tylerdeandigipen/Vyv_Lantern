@@ -109,16 +109,22 @@ void ImageBuffer::MergeLayers(ImageBuffer* bottom, ImageBuffer* top)
     }
 }
 
-void ImageBuffer::MergeLayersIndvPixel(ImageBuffer* bottom, ImageBuffer* top, int x, int y)
+void ImageBuffer::MergeLayersIndvPixel(ImageBuffer* bottom, ImageBuffer* middle, ImageBuffer* top, int x, int y)
 {
-    if (top->buffer[x][y].a == 0)
+    if (top->buffer[x][y].a != 0)
+    {
+        buffer[x][y] = top->buffer[x][y];
+    }
+    else if (middle->buffer[x][y].a != 0)
+    {
+        buffer[x][y] = middle->buffer[x][y];
+    }
+    else if (bottom->buffer[x][y].a != 0)
     {
         buffer[x][y] = bottom->buffer[x][y];
     }
     else
-    {
-        buffer[x][y] = top->buffer[x][y];
-    }
+        buffer[x][y] = { 0,0,0,0 };
 }
 
 

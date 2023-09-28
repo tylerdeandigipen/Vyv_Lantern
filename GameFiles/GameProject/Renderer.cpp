@@ -36,8 +36,7 @@
              {
                  if (i < numLights)
                  {
-                     inputBuffer->MergeLayersIndvPixel(backgroundLayer, objectLayer, x, y);
-                   
+                     inputBuffer->MergeLayersIndvPixel(backgroundLayer, objectLayer, tileMapLayer, x, y);
                      lightMultiplier = FindPixelLuminosity(x, y, i, lightSource);  
                      if (lightMultiplier != 0)
                      {
@@ -150,13 +149,74 @@
      return 0;     
  }
 
+ void Renderer::MakeTileMap(int tileMapArray[16][9])
+ {
+     Color trans{ 0,0,0,0 };
+
+     //make test tiles to make tilemap with (temp test tiles)
+     Color white(255, 255, 255, 255);
+     Color black(0, 0, 0, 255);
+     Color grey(150, 150, 150, 255);
+     Color blue(50, 100, 255, 255);
+     ImageBuffer* testBackgroundTile = new ImageBuffer(15, 15);
+     for (int x = 0; x < testBackgroundTile->BufferSizeX; ++x)
+     {
+         for (int y = 0; y < testBackgroundTile->BufferSizeY; ++y)
+         {
+             if (x % 3 != 0 && y % 3 != 0)
+             {
+                 testBackgroundTile->buffer[x][y] = white;
+             }
+             else
+                 testBackgroundTile->buffer[x][y] = grey;
+         }
+     }
+     ImageBuffer* testWallTile = new ImageBuffer(15, 15);
+     for (int x = 0; x < testWallTile->BufferSizeX; ++x)
+     {
+         for (int y = 0; y < testWallTile->BufferSizeY; ++y)
+         {
+             if (x % 3 != 0 && y % 3 != 0)
+             {
+                 testWallTile->buffer[x][y] = grey;
+             }
+             else
+                 testWallTile->buffer[x][y] = grey;
+         }
+     }
+     //end of test tiles
+     tileMapLayer->ClearImageBuffer();
+     backgroundLayer->ClearImageBuffer();
+
+     for (int x = 0; x < 16; ++x)
+     {
+         for (int y = 0; y < 9; ++y)
+         {
+
+             switch (tileMapArray[x][y])
+             {
+                 case 0:
+                     testBackgroundTile->position = { (float)(x * 15), (float)(y * 15) };
+                     backgroundLayer->AddSprite(testBackgroundTile);
+                     break;
+                 case 1:
+                     testWallTile->position = { (float)(x * 15), (float)(y * 15) };
+                     tileMapLayer->AddSprite(testWallTile);
+                     break;
+             }
+            
+         }
+     }
+ }
+
  Renderer::Renderer()
  {
      outputBuffer = new ImageBuffer;
      inputBuffer = new ImageBuffer;
      objectLayer = new ImageBuffer;
      backgroundLayer = new ImageBuffer;
-     bakedLightsBuffer = new ImageBuffer;
+     bakedLightsBuffer = new ImageBuffer; 
+     tileMapLayer = new ImageBuffer;
      outputBuffer->screenScale = screenScale;
  }
 

@@ -140,29 +140,22 @@ Engine::EngineCode TestScene::Init()
     testSprite->position = { 30, 30 };
     testSprite->layer = 1;
     pixelRenderer.AddObject(testSprite);
-    ImageBuffer* testTile = new ImageBuffer(15, 15);
-    for (int x = 0; x < testTile->BufferSizeX; ++x)
+    
+    int tileMapArray[16][9];
+
+    for (int x = 0; x < testSprite->BufferSizeX; ++x)
     {
-        for (int y = 0; y < testTile->BufferSizeY; ++y)
+        for (int y = 0; y < testSprite->BufferSizeY; ++y)
         {
-            if (x % 3 != 0 && y % 3 != 0)
+            if (x == 0 || y == 0)
             {
-                testTile->buffer[x][y] = white;
+                tileMapArray[x][y] = 1;
             }
             else
-                testTile->buffer[x][y] = grey;
+                tileMapArray[x][y] = 0;
         }
     }
-    testTile->position = { 0, 0 };
-    testTile->layer = 0;
-    for (float x = 0; x < 16; ++x)
-    {
-        for (float y = 0; y < 9; ++y)
-        {
-            testTile->position = { 0 + (x * 15), 0 + (y * 15) };
-            pixelRenderer.backgroundLayer->AddSprite(testTile);
-        }
-    }
+    pixelRenderer.MakeTileMap(tileMapArray);
 
 	return Engine::NothingBad;
 }
@@ -192,6 +185,7 @@ void tempPlayerMovementLol()
     // to find angle between worldspace and screenspace take the worldspace coord and multiply by the screen scale in this case 6
     pixelRenderer.lightSource[0].angle = atan2(x - (pixelRenderer.lightSource[0].position.x * 6), y - (pixelRenderer.lightSource[0].position.y * 6)) * 57.295779f;
 }
+
 void TestScene::Update(float dt)
 {
     inputHandler.handleInput();
@@ -203,6 +197,7 @@ void TestScene::Update(float dt)
         TestScene::Exit();
     }
 }
+
 void TestScene::Render()
 {
     pixelRenderer.Update();

@@ -17,8 +17,9 @@ public:
 	SDL_Window* window;
 	SDL_Renderer* renderer;
 	ImageBuffer* outputBuffer;
-	ImageBuffer* objectLayer;
-	ImageBuffer* backgroundLayer;
+	ImageBuffer* tileMapLayer; //layer 2
+	ImageBuffer* objectLayer; //layer 1
+	ImageBuffer* backgroundLayer; //layer 0
 	ImageBuffer* bakedLightsBuffer;
 	ImageBuffer* inputBuffer;
 	Light lightSource[MAX_LIGHT_SOURCES];
@@ -30,6 +31,7 @@ public:
 	void RenderLightingPass();
 	float FindPixelLuminosity(float x, float y, int i, Light lightSource_[MAX_LIGHT_SOURCES]);
 	ImageBuffer* GetObjectByName(std::string name_);
+	void MakeTileMap(int tileMapArray[16][9]);
 	void AddObject(ImageBuffer* sprite);
 	void AddLight(Light light);
 	void UpdateObjects();
