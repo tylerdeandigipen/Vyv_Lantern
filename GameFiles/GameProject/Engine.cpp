@@ -29,7 +29,7 @@ Engine::EngineCode Engine::Start()
 		}
 	}
 
-	while (true)
+	while (isRunning && !closeRequested)
 	{
 		EngineCode code = NothingBad;
 
@@ -143,4 +143,9 @@ Engine::EngineCode Engine::ShutDown()
 	return EngineExit;
 
 	// TYLER PLEASE MAKE SURE YOU PUT STUFF TO SHUT DOWN ALL RENDERING/GRAPHICS STUFF IF THIS IS CALLED THANNNKKKSSS - taylee)
+}
+
+void Engine::SetCloseRequest(bool close)
+{
+	closeRequested = close;
 }

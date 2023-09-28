@@ -195,7 +195,7 @@ void TestScene::Update(float dt)
 
     if (inputHandler.keyPressed(SDLK_ESCAPE) == true)
     {
-        TestScene::Exit();
+        Engine::GetInstance()->SetCloseRequest(true);
     }
 }
 
@@ -208,8 +208,8 @@ void TestScene::Render()
 
 Engine::EngineCode TestScene::Exit()
 {
-    SDL_DestroyWindow(window);
     SDL_Quit();
+    SDL_DestroyWindow(window);
 	return Engine::NothingBad;
 }
 

@@ -28,6 +28,7 @@ public:
 
 	bool Paused();
 	void SetPause(bool pause);
+	void SetCloseRequest(bool close);
 	
 	static Engine* GetInstance();
 
@@ -43,11 +44,13 @@ private:
 	EngineCode Render();
 	EngineCode ShutDown();
 
+
 	BaseSystem* systems[MAX_SYSTEMS];
 	int systemCount;
 
 	bool isRunning;
 	bool paused;
+	bool closeRequested;
 
 	static Engine* instance;
 
