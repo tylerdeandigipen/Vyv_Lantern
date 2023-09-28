@@ -20,7 +20,6 @@
 
  void Renderer::RenderLightingPass()
 {
-
      int x = 0;
      int y = 0;
      int i = 0;
@@ -35,20 +34,23 @@
              outputBuffer->buffer[x][y] = trans;
              for (i = 0; i < numLights + 1; ++i)
              {
-                 if (lightSource[i].intensity != 0 && i <= numLights)
+                 if (i < numLights)
                  {
                      inputBuffer->MergeLayersIndvPixel(backgroundLayer, objectLayer, x, y);
-                     
-                     lightMultiplier = FindPixelLuminosity(x, y, i, lightSource);                                      
-                     outputBuffer->buffer[x][y] += (inputBuffer->buffer[x][y] * ((lightSource[i].color * lightMultiplier) / 255));
+                   
+                     lightMultiplier = FindPixelLuminosity(x, y, i, lightSource);  
+                     if (lightMultiplier != 0)
+                     {
+                         outputBuffer->buffer[x][y] += (inputBuffer->buffer[x][y] * ((lightSource[i].color * lightMultiplier) / 255));
 
-                     lightMultiplier *= lightSource[i].volumetricIntensity;
-                     outputBuffer->buffer[x][y] += (lightSource[i].color * lightMultiplier);
+                         lightMultiplier *= lightSource[i].volumetricIntensity;
+                         outputBuffer->buffer[x][y] += (lightSource[i].color * lightMultiplier);
+                     }
                  }
-                 else
+                 else if(bakedLightsBuffer->buffer[x][y].a != 0)
                  {
                      outputBuffer->buffer[x][y] += (inputBuffer->buffer[x][y] * (bakedLightsBuffer->buffer[x][y] / 255));
-                     outputBuffer->buffer[x][y] += (lightSource[i].color * (bakedLightsBuffer->buffer[x][y] * lightSource[i].volumetricIntensity));
+                     outputBuffer->buffer[x][y] += (bakedLightsBuffer->buffer[x][y] * bakedVolumetricIntensity);
                  }
              }
          }
@@ -83,68 +85,69 @@
 
  float Renderer::FindPixelLuminosity(float x, float y, int i, Light lightSource_[MAX_LIGHT_SOURCES])
  {
-     float radialFalloff = 0;
-     float angularFalloff = 0;
-     float angle = 0;
-     float lightMultiplier = 0;
-     float midAngle = 0;
-     float maxAng = 0;
-     float minAng = 0;
-     float distFromCenter = 0;
-     float volLightMultiplier = 0;
-
-     distFromCenter = distance(lightSource_[i].position.x, lightSource_[i].position.y, (float)x, (float)y); //find distance from the center of the light   
-
-     if (lightSource_[i].angularWeight != 0)
+     if (lightSource_[i].intensity != 0)
      {
-         if (lightSource_[i].maxAngle + lightSource_[i].angle > 360)
+         float radialFalloff = 0;
+         float angularFalloff = 0;
+         float angle = 0;
+         float lightMultiplier = 0;
+         float midAngle = 0;
+         float maxAng = 0;
+         float minAng = 0;
+         float distFromCenter = 0;
+         float volLightMultiplier = 0;
+         if (lightSource_[i].angularWeight != 0)
          {
-             lightSource_[i].angle -= 360;
-         }
-         else if (lightSource_[i].maxAngle + lightSource_[i].angle < 0)
-         {
-             lightSource_[i].angle += 360;
-         }
+             if (lightSource_[i].maxAngle + lightSource_[i].angle > 360)
+             {
+                 lightSource_[i].angle -= 360;
+             }
+             else if (lightSource_[i].maxAngle + lightSource_[i].angle < 0)
+             {
+                 lightSource_[i].angle += 360;
+             }
 
-         angle = atan2(x - lightSource_[i].position.x, y - lightSource_[i].position.y) * 57.295779f; //Find angle from point to center relative to x axis, magic number is 180 / pi
-         maxAng = lightSource_[i].maxAngle + lightSource_[i].angle; //rotate relitive angles to be world space angles
-         minAng = lightSource_[i].minAngle + lightSource_[i].angle;
-         angularFalloff = 0;
+             angle = atan2(x - lightSource_[i].position.x, y - lightSource_[i].position.y) * 57.295779f; //Find angle from point to center relative to x axis, magic number is 180 / pi
+             maxAng = lightSource_[i].maxAngle + lightSource_[i].angle; //rotate relitive angles to be world space angles
+             minAng = lightSource_[i].minAngle + lightSource_[i].angle;
+             angularFalloff = 0;
 
-         //ajust angle to fit the sign of the input
-         if (angle > 0 && maxAng < 0)
-         {
-             angle -= 360;
-         }
-         if (angle < 0 && minAng > 0)
-         {
-             angle += 360;
-         }
+             //ajust angle to fit the sign of the input
+             if (angle > 0 && maxAng < 0)
+             {
+                 angle -= 360;
+             }
+             if (angle < 0 && minAng > 0)
+             {
+                 angle += 360;
+             }
 
-         if (angle >= minAng && angle <= maxAng)
-         {
-             midAngle = (minAng + maxAng) / 2;
-             angularFalloff = -1 * (((abs(angle - midAngle) - lightSource_[i].maxAngle)) / (lightSource_[i].maxAngle - lightSource_[i].minAngle));
-             angularFalloff = clamp(lightSource_[i].angularWeight * angularFalloff, 0, 1);
+             if (angle >= minAng && angle <= maxAng)
+             {
+                 midAngle = (minAng + maxAng) / 2;
+                 angularFalloff = -1 * (((abs(angle - midAngle) - lightSource_[i].maxAngle)) / (lightSource_[i].maxAngle - lightSource_[i].minAngle));
+                 angularFalloff = clamp(lightSource_[i].angularWeight * angularFalloff, 0, 1);
+             }
          }
+         else
+         {
+             angularFalloff = 1;
+         }
+         if (lightSource_[i].radialWeight != 0)
+         {
+             //calculate radialfalloff
+             distFromCenter = distance(lightSource_[i].position.x, lightSource_[i].position.y, (float)x, (float)y); //find distance from the center of the light   
+             radialFalloff = 1 / (1 + (lightSource_[i].radialMult1 * distFromCenter) + (lightSource_[i].radialMult2 * (distFromCenter * distFromCenter)));
+             radialFalloff = clamp(lightSource_[i].radialWeight * radialFalloff, 0, 1);
+         }
+         else
+         {
+             radialFalloff = 1;
+         }
+         lightMultiplier = lightSource_[i].intensity * radialFalloff * angularFalloff;
+         return lightMultiplier;
      }
-     else
-     {
-         angularFalloff = 1;
-     }
-     if (lightSource_[i].radialWeight != 0)
-     {
-         //calculate radialfalloff
-         radialFalloff = 1 / (1 + (lightSource_[i].radialMult1 * distFromCenter) + (lightSource_[i].radialMult2 * (distFromCenter * distFromCenter)));
-         radialFalloff = clamp(lightSource_[i].radialWeight * radialFalloff, 0, 1);
-     }
-     else
-     {
-         radialFalloff = 1;
-     }
-     lightMultiplier = lightSource_[i].intensity * radialFalloff * angularFalloff;
-     return lightMultiplier;
-     
+     return 0;     
  }
 
  Renderer::Renderer()

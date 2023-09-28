@@ -25,6 +25,7 @@ public:
 	Light staticLightSource[MAX_LIGHT_SOURCES];
 	ImageBuffer* objects[MAX_OBJECTS];
 	float screenScale = 6;
+	float bakedVolumetricIntensity = .25f;
 
 	void RenderLightingPass();
 	float FindPixelLuminosity(float x, float y, int i, Light lightSource_[MAX_LIGHT_SOURCES]);
