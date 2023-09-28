@@ -8,9 +8,11 @@
 //
 //------------------------------------------------------------------------------
 #pragma once
+#ifndef ENGINE_H
+#define ENGINE_H
 
 class BaseSystem;
-
+typedef class Time Time;
 // to be safe, may change later on - taylee
 #define MAX_SYSTEMS 10 
 
@@ -48,4 +50,8 @@ private:
 	bool paused;
 
 	static Engine* instance;
+
+	Time* time;
 };
+
+#endif // !ENGINE_H
