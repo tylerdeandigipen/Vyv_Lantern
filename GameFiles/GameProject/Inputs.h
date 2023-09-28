@@ -41,4 +41,8 @@ private:
 	bool sKey;
 	bool dKey;
 	bool escapeKey;
+	bool upKey;
+	bool downKey;
+	bool leftKey;
+	bool rightKey;
 };
