@@ -208,8 +208,8 @@ void TestScene::Render()
 
 Engine::EngineCode TestScene::Exit()
 {
-    SDL_Quit();
     SDL_DestroyWindow(window);
+    SDL_Quit();
 	return Engine::NothingBad;
 }
 
