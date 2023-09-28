@@ -143,11 +143,11 @@ Engine::EngineCode TestScene::Init()
     
     int tileMapArray[16][9];
 
-    for (int x = 0; x < testSprite->BufferSizeX; ++x)
+    for (int x = 0; x < 16; ++x)
     {
-        for (int y = 0; y < testSprite->BufferSizeY; ++y)
+        for (int y = 0; y < 9; ++y)
         {
-            if (x == 0 || y == 0)
+            if (x == 0 || y == 0 || x == 15 || y == 8)
             {
                 tileMapArray[x][y] = 1;
             }
@@ -155,6 +155,7 @@ Engine::EngineCode TestScene::Init()
                 tileMapArray[x][y] = 0;
         }
     }
+
     pixelRenderer.MakeTileMap(tileMapArray);
 
 	return Engine::NothingBad;
