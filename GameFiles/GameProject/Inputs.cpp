@@ -11,6 +11,7 @@
 
 #include <SDL/SDL.h>
 #include "Inputs.h"
+#include "Engine.h"
 
 Inputs::Inputs()
 {
@@ -66,14 +67,13 @@ void Inputs::handleInput()
 
 		switch (event.type)
 		{
-			case SDL_QUIT:
-				quitting = true;
-				break;
 
 			case SDL_MOUSEMOTION:
 				SDL_GetMouseState(&mouseX, &mouseY);
 				break;
-
+			case SDL_QUIT:
+				Engine::GetInstance()->SetCloseRequest(true);
+				break;
 			case SDL_MOUSEBUTTONDOWN:
 				switch (event.button.button)
 				{
