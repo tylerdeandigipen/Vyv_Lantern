@@ -27,12 +27,12 @@ ImageBuffer::ImageBuffer()
     {
         buffer[i] = new Color[BufferSizeY];
     }
-    Color tempEmpty(0.0f, 0.0f, 0.0f, 0.0f);
+    Color trans(0.0f, 0.0f, 0.0f, 0.0f);
     for (int i = 0; i < size.x; ++i)
     {
         for (int j = 0; j < size.y; ++j)
         {
-            buffer[i][j] = tempEmpty;
+            buffer[i][j] = trans;
         }
     }
 	size.x = BufferSizeX;
@@ -51,12 +51,12 @@ ImageBuffer::ImageBuffer(float x, float y)
     {
         buffer[i] = new Color[BufferSizeY];
     }
-    Color tempEmpty(0.0f, 0.0f, 0.0f, 0.0f);
+    Color trans(0.0f, 0.0f, 0.0f, 0.0f);
     for (int i = 0; i < size.x; ++i)
     {
         for (int j = 0; j < size.y; ++j)
         {
-            buffer[i][j] = tempEmpty;
+            buffer[i][j] = trans;
         }
     }
     size.x = BufferSizeX;
