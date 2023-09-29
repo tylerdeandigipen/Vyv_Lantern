@@ -1,3 +1,14 @@
+//------------------------------------------------------------------------------
+//
+// File Name:	EntityContainer.cpp
+// Author(s):	Michael Howard
+// Purpose:		Entity Container
+//				(adapted from Schillings usage in cs230)
+//				(added std::vector usage)
+//
+// Copyright  © 2023 DigiPen (USA) Corporation.
+//
+//------------------------------------------------------------------------------
 #include "EntityContainer.h"
 #include "Entity.h"
 

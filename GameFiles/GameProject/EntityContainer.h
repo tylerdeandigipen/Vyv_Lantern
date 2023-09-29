@@ -1,3 +1,13 @@
+//------------------------------------------------------------------------------
+//
+// File Name:	EntityContainer.h
+// Author(s):	Michael Howard
+// Purpose:		header
+//
+//
+// Copyright  © 2023 DigiPen (USA) Corporation.
+//
+//------------------------------------------------------------------------------
 #pragma once
 #ifndef ENTITYCONTAINER_H
 #define ENTITYCONTAINER_H
