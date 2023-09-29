@@ -45,9 +45,6 @@ private:
         FMOD::Channel* GetMusicChannel(void);
         FMOD::Channel* GetAudioChannel(void);
         FMOD::Channel* GetVoiceChannel(void);
-        void GetMinimiseVolumes(float& music, float& SFX, float& voice);
-        void SetMinimiseVolumes(float music, float SFX, float voice);
-        void CleanPlaying(void);
         void PlaySFX(std::string audiClip);
         void PlayMusic(std::string musicTrack);
         void PlayVoice(std::string voiceClip);

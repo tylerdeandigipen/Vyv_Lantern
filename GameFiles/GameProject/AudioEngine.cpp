@@ -2,7 +2,8 @@
 @file    AudioEngine.cpp
 @author	 Louis Wang
 
-         Audio engine that manages all audio related functions
+         Audio engine that manages all audio related functions.
+         (Adapted from my previous projects)
 *//*__________________________________________________________________________*/
 
 /*                                                                   includes
@@ -161,15 +162,6 @@
     void _audioManager::StopSFX(void)
     {
         // stop play the sound.
-        /*unsigned long long dspclock;
-        FMOD::Sound* snd;
-        int rate;
-        SFXchannel->getCurrentSound(&snd);
-        SFXchannel->getDSPClock(0, &dspclock);
-        fmodSystem->getSoftwareFormat(&rate, 0, 0);
-        SFXchannel->addFadePoint(dspclock, 1.0f);
-        SFXchannel->addFadePoint(dspclock + rate, 0.0f);
-        SFXchannel->setDelay(0, dspclock + rate, true);*/
         SFXchannel->stop();
     }
 
@@ -283,24 +275,6 @@
         fmodSystem->update();
     }
 
-    /*!				void _audioManager::CleanPlaying()
-    @param
-    @return none
-
-                   clean up music play
-    */
-    void _audioManager::CleanPlaying()
-    {
-        // Clean up.
-        std::map<std::string, FMOD::Sound*>::iterator start;
-        for (start = soundDatabase.begin(); start != soundDatabase.end(); start++)
-            start->second->release();
-
-        for (start = musicDatabase.begin(); start != musicDatabase.end(); start++)
-            start->second->release();
-        channelGroup->release();
-        fmodSystem->release();
-    }
 
     /*!				void _audioManager::LoadSFX(string name)
     {
@@ -313,7 +287,7 @@
     {
         if (soundDatabase.find(name) == soundDatabase.end())
         {
-            std::string pathString = "../Assets/Audio/SFX/" + name + '\0';
+            std::string pathString = "Assets/Audio/SFX/" + name + '\0';
             char* pathName = new char[pathString.length() + 1];
             std::copy(pathString.begin(), pathString.end(), pathName);
             FMOD::Sound* sound = 0;
@@ -334,7 +308,7 @@
     {
         if (voiceDatabase.find(name) == voiceDatabase.end())
         {
-            std::string pathString = "../Assets/Audio/Voice-over/" + name + '\0';
+            std::string pathString = "Assets/Audio/Voice-over/" + name + '\0';
             char* pathName = new char[pathString.length() + 1];
             std::copy(pathString.begin(), pathString.end(), pathName);
             FMOD::Sound* sound = 0;
@@ -355,7 +329,7 @@
     {
         if (musicDatabase.find(name) == musicDatabase.end())
         {
-            std::string pathString = "../Assets/Audio/Music/" + name + '\0';
+            std::string pathString = "Assets/Audio/Music/" + name + '\0';
             char* pathName = new char[pathString.length() + 1];
             std::copy(pathString.begin(), pathString.end(), pathName);
             FMOD::Sound* music = 0;
@@ -456,20 +430,6 @@
     FMOD::Channel* _audioManager::GetVoiceChannel()
     {
         return voiceChannel;
-    }
-
-    void _audioManager::GetMinimiseVolumes(float& music, float& SFX, float& voice)
-    {
-        musicChannel->getVolume(&music);
-        SFXchannel->getVolume(&SFX);
-        voiceChannel->getVolume(&voice);
-    }
-
-    void _audioManager::SetMinimiseVolumes(float music, float SFX, float voice)
-    {
-        SetMusicVolume(music);
-        SetAudioVolume(SFX);
-        SetVoiceVolume(voice);
     }
 
     FMOD_RESULT F_CALLBACK channelGroupCallback(FMOD_CHANNELCONTROL* channelControl,

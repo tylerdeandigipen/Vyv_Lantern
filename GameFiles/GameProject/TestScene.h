@@ -12,6 +12,8 @@
 #include "Engine.h"
 #include "Scene.h"
 #include "SceneSystem.h"
+#include "AudioEngine.h"
+#include "Collision.h"
 
 class Scene;
 

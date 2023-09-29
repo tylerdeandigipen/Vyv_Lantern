@@ -3,6 +3,7 @@
 #define IMAGEBUFFER_H
 #include "Color.h"
 #include "Vector.h"
+#include "Collision.h"
 
 class ImageBuffer
 {
@@ -16,6 +17,7 @@ class ImageBuffer
 		std::string name = "";
 		int layer = 0;
 		Color** buffer;
+		AABB aabb;
 
 		ImageBuffer(ImageBuffer &rhs);
 		ImageBuffer(float x, float y);

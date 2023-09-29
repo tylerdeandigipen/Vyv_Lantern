@@ -23,6 +23,7 @@
 
 
 ImageBuffer* testSprite;
+ImageBuffer* testSprite1;
 SDL_Renderer* renderer;
 Renderer pixelRenderer;
 
@@ -43,11 +44,15 @@ TestScene::TestScene() : Scene("test")
 
 Engine::EngineCode TestScene::Load()
 {
+    AudioManager.LoadMusic("bgm.ogg");
+    AudioManager.LoadSFX("footsteps.ogg");
 	return Engine::NothingBad;
 }
 
 Engine::EngineCode TestScene::Init()
 {
+    /*BGM*/
+    //AudioManager.PlayMusic("bgm.ogg");
     Light tempLight;
     Light tempLight2;
     Light tempLight3;
@@ -140,6 +145,24 @@ Engine::EngineCode TestScene::Init()
     testSprite->position = { 30, 30 };
     testSprite->layer = 1;
     pixelRenderer.AddObject(testSprite);
+
+    /*Add another testsprite to check for collision*/
+    testSprite1 = new ImageBuffer(30, 30);
+    for (int x = 0; x < testSprite1->BufferSizeX; ++x)
+    {
+        for (int y = 0; y < testSprite1->BufferSizeY; ++y)
+        {
+            if (x > 8 && x < testSprite1->BufferSizeX - 8 && y > 8 && y < testSprite1->BufferSizeY - 8)
+            {
+                testSprite1->buffer[x][y] = transparent;
+            }
+            else
+                testSprite1->buffer[x][y] = blue;
+        }
+    }
+    testSprite1->position = { 120, 80 };
+    testSprite1->layer = 1;
+    pixelRenderer.AddObject(testSprite1);
     
     int tileMapArray[16][9];
 
@@ -167,18 +190,22 @@ void tempPlayerMovementLol()
     {
         pixelRenderer.objects[0]->position.y -= 2;
         //pixelRenderer.AddLight(pixelRenderer.staticLightSource[0]);
+        AudioManager.PlaySFX("footsteps.ogg");
     }
     if (inputHandler.keyPressed(SDLK_s) == true)
     {
         pixelRenderer.objects[0]->position.y += 2;
+        AudioManager.PlaySFX("footsteps.ogg");
     }
     if (inputHandler.keyPressed(SDLK_d) == true)
     {
         pixelRenderer.objects[0]->position.x += 2;
+        AudioManager.PlaySFX("footsteps.ogg");
     }
     if (inputHandler.keyPressed(SDLK_a) == true)
     {
         pixelRenderer.objects[0]->position.x -= 2;
+        AudioManager.PlaySFX("footsteps.ogg");
     }
 
     int x, y;
@@ -189,14 +216,24 @@ void tempPlayerMovementLol()
 
 void TestScene::Update(float dt)
 {
+    AudioManager.Update();
     inputHandler.handleInput();
-    tempPlayerMovementLol();
     pixelRenderer.UpdateObjects();
 
     if (inputHandler.keyPressed(SDLK_ESCAPE) == true)
     {
         Engine::GetInstance()->SetCloseRequest(true);
     }
+
+    testSprite->aabb.min = { testSprite->position.x, testSprite->position.y };
+    testSprite->aabb.max = { testSprite->position.x + 30, testSprite->position.y + 30 };
+    testSprite1->aabb.min = { testSprite1->position.x, testSprite1->position.y };
+    testSprite1->aabb.max = { testSprite1->position.x + 30, testSprite1->position.y + 30 };
+    if (!CollisionCheck(testSprite->aabb, testSprite1->aabb))
+    {
+        tempPlayerMovementLol();
+    }
+
 }
 
 void TestScene::Render()
