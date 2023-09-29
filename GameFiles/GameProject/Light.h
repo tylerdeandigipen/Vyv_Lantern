@@ -12,6 +12,8 @@ public:
 	Light(const Light &rhs);
 	gfxVector2 position;
 	Color color;
+	int isStatic = 0;
+	int isBaked = 0;
 	float minAngle = 0;
 	float maxAngle = 0;
 	float angle = 0;

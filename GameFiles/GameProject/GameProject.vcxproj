@@ -139,6 +139,7 @@
     <ClInclude Include="Color.h" />
     <ClInclude Include="Component.h" />
     <ClInclude Include="Engine.h" />
+    <ClInclude Include="EntityContainer.h" />
     <ClInclude Include="framework.h" />
     <ClInclude Include="ImageBuffer.h" />
     <ClInclude Include="includes\glfw\glfw3.h" />
@@ -151,8 +152,10 @@
     <ClInclude Include="Resource.h" />
     <ClInclude Include="Scene.h" />
     <ClInclude Include="SceneSystem.h" />
+    <ClInclude Include="StubScene.h" />
     <ClInclude Include="targetver.h" />
     <ClInclude Include="TestScene.h" />
+    <ClInclude Include="Time.h" />
     <ClInclude Include="Transform.h" />
   </ItemGroup>
   <ItemGroup>
@@ -161,6 +164,7 @@
     <ClCompile Include="Component.cpp" />
     <ClCompile Include="Engine.cpp" />
     <ClCompile Include="Entity.cpp" />
+    <ClCompile Include="EntityContainer.cpp" />
     <ClCompile Include="ImageBuffer.cpp" />
     <ClCompile Include="Inputs.cpp" />
     <ClCompile Include="Light.cpp" />
@@ -170,9 +174,11 @@
     <ClCompile Include="Renderer.cpp" />
     <ClCompile Include="Scene.cpp" />
     <ClCompile Include="SceneSystem.cpp" />
+    <ClCompile Include="StubScene.cpp" />
     <ClCompile Include="TestScene.cpp">
       <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">C:\Users\tyler\OneDrive\Desktop\Documents\Vyv_Lantern\GameFiles\GameProject\glfw-3.3.8.bin.WIN64\glfw-3.3.8.bin.WIN64\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
+    <ClCompile Include="Time.cpp" />
     <ClCompile Include="Transform.cpp" />
   </ItemGroup>
   <ItemGroup>

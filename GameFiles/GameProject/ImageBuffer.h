@@ -23,6 +23,8 @@ class ImageBuffer
 		~ImageBuffer();
 
 		ImageBuffer& ClearImageBuffer();
+		void MergeLayers(ImageBuffer* bottom, ImageBuffer* top);
+		void MergeLayersIndvPixel(ImageBuffer* bottom, ImageBuffer* middle, ImageBuffer* top, int x, int y);
 		ImageBuffer& AddSprite(ImageBuffer *sprite);
 
 		ImageBuffer& operator =(const ImageBuffer& rhs)&;

@@ -76,20 +76,57 @@ ImageBuffer::~ImageBuffer()
 }
 ImageBuffer& ImageBuffer::ClearImageBuffer()
 {
-    Color black;
-    black.r = 0;
-    black.g = 0;
-    black.b = 0;
-    black.a = 255;
+    Color trans;
+    trans.r = 0;
+    trans.g = 0;
+    trans.b = 0;
+    trans.a = 0;
     for (int i = 0; i < size.x; ++i)
     {
         for (int j = 0; j < size.y; ++j)
         {
-            buffer[i][j] = black;
+            buffer[i][j] = trans;
         }
     }
     return *this;
 }
+
+void ImageBuffer::MergeLayers(ImageBuffer* bottom, ImageBuffer* top)
+{
+    for (int x = 0; x < size.x; ++x)
+    {
+        for (int y = 0; y < size.y; ++y)
+        {
+            if (top->buffer[x][y].a == 0)
+            {
+                buffer[x][y] = bottom->buffer[x][y];
+            }
+            else
+            {
+                buffer[x][y] = top->buffer[x][y];
+            }
+        }
+    }
+}
+
+void ImageBuffer::MergeLayersIndvPixel(ImageBuffer* bottom, ImageBuffer* middle, ImageBuffer* top, int x, int y)
+{
+    if (top->buffer[x][y].a != 0)
+    {
+        buffer[x][y] = top->buffer[x][y];
+    }
+    else if (middle->buffer[x][y].a != 0)
+    {
+        buffer[x][y] = middle->buffer[x][y];
+    }
+    else if (bottom->buffer[x][y].a != 0)
+    {
+        buffer[x][y] = bottom->buffer[x][y];
+    }
+    else
+        buffer[x][y] = { 0,0,0,0 };
+}
+
 
 ImageBuffer& ImageBuffer::AddSprite(ImageBuffer *sprite)
 {
@@ -114,13 +151,13 @@ ImageBuffer& ImageBuffer::AddSprite(ImageBuffer *sprite)
         tempPosY -= sprite->position.y;
     }
 
-    for (int x = 0; x < sprite->size.x - endPointX - tempPosX; ++x)
+    for (int x = tempPosX; x < sprite->size.x - endPointX; ++x)
     {
-        for (int y = 0; y < sprite->size.y - endPointY - tempPosY; ++y)
+        for (int y = tempPosY; y < sprite->size.y - endPointY; ++y)
         {
             if (sprite->buffer[x][y].a != 0)
             {
-                buffer[x + (int)sprite->position.x + tempPosX][y + (int)sprite->position.y + tempPosY] = sprite->buffer[x][y];
+                buffer[x + (int)sprite->position.x][y + (int)sprite->position.y] = sprite->buffer[x][y];
             }
         }
     }

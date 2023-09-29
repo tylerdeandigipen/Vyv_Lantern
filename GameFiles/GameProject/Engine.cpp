@@ -9,13 +9,15 @@
 //------------------------------------------------------------------------------
 
 #include "stdafx.h"
-#include "BaseSystem.h"
 #include "Engine.h"
+#include "BaseSystem.h"
+#include "Time.h"
 
 Engine* Engine::instance = new Engine();
 
 Engine::EngineCode Engine::Start()
 {
+	time = new Time();
 	for (int i = 0; i < systemCount; ++i)
 	{
 		try 
@@ -27,7 +29,7 @@ Engine::EngineCode Engine::Start()
 		}
 	}
 
-	while (true)
+	while (isRunning && !closeRequested)
 	{
 		EngineCode code = NothingBad;
 
@@ -85,7 +87,7 @@ Engine* Engine::GetInstance() { return instance; }
 
 // Priv
 //------------------------------------------------------------------------------------------//
-Engine::Engine() : isRunning(true), systemCount(0), systems(), paused(false)
+Engine::Engine() : isRunning(true), systemCount(0), systems(), paused(false), time(NULL)
 {
 
 }
@@ -98,8 +100,8 @@ Engine::~Engine()
 
 Engine::EngineCode Engine::Update()
 {
-	float dt = 0;
-	//dt = Clamp(dt, 0.0f, 0.1f);
+	float dt = time->Delta();
+	//dt = clamp(dt, 0.0f, 0.1f);
 	for (int i = 0; i < systemCount; ++i)
 	{
 		try {
@@ -137,7 +139,13 @@ Engine::EngineCode Engine::ShutDown()
 		systems[i]->Close();
 	}
 
+	delete time;
 	return EngineExit;
 
 	// TYLER PLEASE MAKE SURE YOU PUT STUFF TO SHUT DOWN ALL RENDERING/GRAPHICS STUFF IF THIS IS CALLED THANNNKKKSSS - taylee)
+}
+
+void Engine::SetCloseRequest(bool close)
+{
+	closeRequested = close;
 }

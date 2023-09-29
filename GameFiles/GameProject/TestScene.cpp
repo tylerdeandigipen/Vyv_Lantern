@@ -23,13 +23,18 @@
 
 
 ImageBuffer* testSprite;
-
+SDL_Renderer* renderer;
 Renderer pixelRenderer;
-//TestScene::TestScene(Scene _base) : base(_base)
-//{
-//}
 
-Scene* instance = NULL; // ITS A GLOBAL VARIABLE CALM DOWN!! SHOW ME ANOTHER WAY AND ITS GONE
+SDL_Window* window = SDL_CreateWindow("Test Scene", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, pixelRenderer.outputBuffer->BufferSizeX * pixelRenderer.outputBuffer->screenScale, pixelRenderer.outputBuffer->BufferSizeY * pixelRenderer.outputBuffer->screenScale, 0);
+Inputs inputHandler(window);
+
+Scene* TestSceneinstance = NULL; // ITS A GLOBAL VARIABLE CALM DOWN!! SHOW ME ANOTHER WAY AND ITS GONE
+
+Color white(255, 255, 255, 255);
+Color black(0, 0, 0, 255);
+Color grey(150, 150, 150, 255);
+Color blue(50, 100, 255, 255);
 
 TestScene::TestScene() : Scene("test")
 {
@@ -46,17 +51,19 @@ Engine::EngineCode TestScene::Init()
     Light tempLight;
     Light tempLight2;
     Light tempLight3;
-    Color white(255, 255, 255, 255);
-    Color black(0, 0, 0, 255);
-    Color transparent(0, 0, 0, 0);
-    pixelRenderer.Init();
 
+
+    Color transparent(0, 0, 0, 0);
+
+    if (SDL_Init(SDL_INIT_VIDEO) != 0) {
+    }
+    pixelRenderer.renderer = SDL_CreateRenderer(window, -1, 0);
 
     tempLight.position.x = 80;
     tempLight.position.y = 90;
 
-    tempLight.color.r = 0;
-    tempLight.color.g = 0;
+    tempLight.color.r = 216;
+    tempLight.color.g = 247;
     tempLight.color.b = 255;
     tempLight.color.a = 255;
 
@@ -69,15 +76,16 @@ Engine::EngineCode TestScene::Init()
     tempLight.radialMult2 = 0.0f;
     tempLight.radialWeight = 1;
     tempLight.angularWeight = 2.0f;
-    tempLight.volumetricIntensity = 1;
+    tempLight.volumetricIntensity = .25f;
+    tempLight.isStatic = 0;
 
 
     tempLight2.position.x = 120;
     tempLight2.position.y = 50;
 
     tempLight2.color.r = 255;
-    tempLight2.color.g = 0;
-    tempLight2.color.b = 0;
+    tempLight2.color.g = 182;
+    tempLight2.color.b = 76;
     tempLight2.color.a = 255;
 
     tempLight2.maxAngle = 25;
@@ -89,14 +97,15 @@ Engine::EngineCode TestScene::Init()
     tempLight2.radialMult2 = 0.0f;
     tempLight2.radialWeight = 1;
     tempLight2.angularWeight = 2.0f;
-    tempLight2.volumetricIntensity = 1;
+    tempLight2.volumetricIntensity = .25f;
+    tempLight2.isStatic = 1;
 
     tempLight3.position.x = 200;
     tempLight3.position.y = 90;
 
     tempLight3.color.r = 255;
-    tempLight3.color.g = 255;
-    tempLight3.color.b = 255;
+    tempLight3.color.g = 182;
+    tempLight3.color.b = 76;
     tempLight3.color.a = 255;
 
     tempLight3.maxAngle = 360;
@@ -104,16 +113,16 @@ Engine::EngineCode TestScene::Init()
     tempLight3.angle = 0;
 
     tempLight3.intensity = 3;
-    tempLight3.radialMult1 = 0.4f;
-    tempLight3.radialMult2 = 0.0f;
-    tempLight3.radialWeight = .5f;
+    tempLight3.radialMult1 = 0.2f;
+    tempLight3.radialMult2 = 0.0005;
+    tempLight3.radialWeight = .3;
     tempLight3.angularWeight = 0;
-    tempLight3.volumetricIntensity = 1;
+    tempLight3.volumetricIntensity = .25f;
+    tempLight3.isStatic = 1;
 
     pixelRenderer.AddLight(tempLight);
     pixelRenderer.AddLight(tempLight2);
     pixelRenderer.AddLight(tempLight3);
-
 
     testSprite = new ImageBuffer(30, 30);
     for (int x = 0; x < testSprite->BufferSizeX; ++x)
@@ -125,51 +134,95 @@ Engine::EngineCode TestScene::Init()
                 testSprite->buffer[x][y] = transparent;
             }
             else
-                testSprite->buffer[x][y] = white;
+                testSprite->buffer[x][y] = blue;
         }
     }
-    testSprite->position = {30, 30};
+    testSprite->position = { 30, 30 };
+    testSprite->layer = 1;
     pixelRenderer.AddObject(testSprite);
+    
+    int tileMapArray[16][9];
+
+    for (int x = 0; x < 16; ++x)
+    {
+        for (int y = 0; y < 9; ++y)
+        {
+            if (x == 0 || y == 0 || x == 15 || y == 8)
+            {
+                tileMapArray[x][y] = 1;
+            }
+            else
+                tileMapArray[x][y] = 0;
+        }
+    }
+
+    pixelRenderer.MakeTileMap(tileMapArray);
 
 	return Engine::NothingBad;
 }
 
+void tempPlayerMovementLol()
+{
+    if (inputHandler.keyPressed(SDLK_w) == true)
+    {
+        pixelRenderer.objects[0]->position.y -= 2;
+        //pixelRenderer.AddLight(pixelRenderer.staticLightSource[0]);
+    }
+    if (inputHandler.keyPressed(SDLK_s) == true)
+    {
+        pixelRenderer.objects[0]->position.y += 2;
+    }
+    if (inputHandler.keyPressed(SDLK_d) == true)
+    {
+        pixelRenderer.objects[0]->position.x += 2;
+    }
+    if (inputHandler.keyPressed(SDLK_a) == true)
+    {
+        pixelRenderer.objects[0]->position.x -= 2;
+    }
+
+    int x, y;
+    Uint32 buttons = SDL_GetMouseState(&x, &y);
+    // to find angle between worldspace and screenspace take the worldspace coord and multiply by the screen scale in this case 6
+    pixelRenderer.lightSource[0].angle = atan2(x - (pixelRenderer.lightSource[0].position.x * 6), y - (pixelRenderer.lightSource[0].position.y * 6)) * 57.295779f;
+}
+
 void TestScene::Update(float dt)
 {
-    pixelRenderer.Update();
-    pixelRenderer.lightSource[0].angle -= 2;
-    if (pixelRenderer.objects[0]->position.x < 180)
-    {
-        pixelRenderer.objects[0]->position.x += 3;
-        pixelRenderer.objects[0]->position.y += 1;
-    }
-    else
-    {
-        pixelRenderer.objects[0]->position.y = 30;
-        pixelRenderer.objects[0]->position.x = 10;
-    }
+    inputHandler.handleInput();
+    tempPlayerMovementLol();
     pixelRenderer.UpdateObjects();
+
+    if (inputHandler.keyPressed(SDLK_ESCAPE) == true)
+    {
+        Engine::GetInstance()->SetCloseRequest(true);
+    }
 }
+
 void TestScene::Render()
 {
+    pixelRenderer.Update();
+
 	return;
 }
 
 Engine::EngineCode TestScene::Exit()
 {
+    SDL_DestroyWindow(window);
+    SDL_Quit();
 	return Engine::NothingBad;
 }
 
 Engine::EngineCode TestScene::Unload()
 {
-    delete instance;
+    delete TestSceneinstance;
 	return Engine::NothingBad;
 }
 
 Scene* TestSceneGetInstance(void)
 {
-    instance = new TestScene();
-    return instance;
+    TestSceneinstance = new TestScene();
+    return TestSceneinstance;
 }
 
 

@@ -3,6 +3,7 @@
 // File Name:	Entity.cpp
 // Author(s):	Michael Howard
 // Purpose:		Base for all game objects (could do object then this shall see)
+//				(adapted from Schillings usage in cs230)
 //
 // Copyright  © 2023 DigiPen (USA) Corporation.
 //
