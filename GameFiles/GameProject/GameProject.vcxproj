@@ -135,6 +135,7 @@
     <ClInclude Include="Color.h" />
     <ClInclude Include="Component.h" />
     <ClInclude Include="Engine.h" />
+    <ClInclude Include="EntityContainer.h" />
     <ClInclude Include="framework.h" />
     <ClInclude Include="ImageBuffer.h" />
     <ClInclude Include="includes\glfw\glfw3.h" />
@@ -159,6 +160,7 @@
     <ClCompile Include="Component.cpp" />
     <ClCompile Include="Engine.cpp" />
     <ClCompile Include="Entity.cpp" />
+    <ClCompile Include="EntityContainer.cpp" />
     <ClCompile Include="ImageBuffer.cpp" />
     <ClCompile Include="Inputs.cpp" />
     <ClCompile Include="Light.cpp" />
