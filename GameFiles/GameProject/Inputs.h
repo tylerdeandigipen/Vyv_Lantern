@@ -45,4 +45,5 @@ private:
 	bool downKey;
 	bool leftKey;
 	bool rightKey;
+	bool eKey;
 };
