@@ -20,6 +20,7 @@ Inputs::Inputs()
 	aKey = false;
 	sKey = false;
 	dKey = false;
+	eKey = false;
 	escapeKey = false;
 	leftMouseB = false;
 	rightMouseB = false;
@@ -41,6 +42,7 @@ Inputs::Inputs(SDL_Window* window)
 	aKey = false;
 	sKey = false;
 	dKey = false;
+	eKey = false;
 	upKey = false;
 	downKey = false;
 	rightKey = false;
@@ -67,7 +69,6 @@ void Inputs::handleInput()
 
 		switch (event.type)
 		{
-
 			case SDL_MOUSEMOTION:
 				SDL_GetMouseState(&mouseX, &mouseY);
 				break;
@@ -113,6 +114,9 @@ void Inputs::handleInput()
 					case SDLK_d:
 						dKey = true;
 						break;
+					case SDLK_e:
+						eKey = true;
+						break;
 					case SDLK_ESCAPE:
 						quitting = true;
 						escapeKey = true;
@@ -146,6 +150,9 @@ void Inputs::handleInput()
 						break;
 					case SDLK_d:
 						dKey = false;
+						break;
+					case SDLK_e:
+						eKey = false;
 						break;
 					case SDLK_ESCAPE:
 						escapeKey = false;
@@ -185,6 +192,8 @@ bool Inputs::keyPressed(SDL_Keycode key) const
 		return sKey;
 	case SDLK_d:
 		return dKey;
+	case SDLK_e:
+		return eKey;
 	case SDLK_ESCAPE:
 		return escapeKey;
 	case SDLK_UP:

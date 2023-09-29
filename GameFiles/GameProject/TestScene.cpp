@@ -27,7 +27,7 @@ ImageBuffer* testSprite1;
 SDL_Renderer* renderer;
 Renderer pixelRenderer;
 
-SDL_Window* window = SDL_CreateWindow("Test Scene", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, pixelRenderer.outputBuffer->BufferSizeX * pixelRenderer.outputBuffer->screenScale, pixelRenderer.outputBuffer->BufferSizeY * pixelRenderer.outputBuffer->screenScale, 0);
+SDL_Window* window = SDL_CreateWindow("MAIN SCENE", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, pixelRenderer.outputBuffer->BufferSizeX * pixelRenderer.outputBuffer->screenScale, pixelRenderer.outputBuffer->BufferSizeY * pixelRenderer.outputBuffer->screenScale, 0);
 Inputs inputHandler(window);
 
 Scene* TestSceneinstance = NULL; // ITS A GLOBAL VARIABLE CALM DOWN!! SHOW ME ANOTHER WAY AND ITS GONE
@@ -206,6 +206,14 @@ void tempPlayerMovementLol()
     {
         pixelRenderer.objects[0]->position.x -= 2;
         AudioManager.PlaySFX("footsteps.ogg");
+    }
+    if (inputHandler.keyPressed(SDLK_e) == true)
+    {
+        pixelRenderer.lightSource[0].intensity = 0;
+    }
+    if (inputHandler.keyPressed(SDLK_e) == false)
+    {
+        pixelRenderer.lightSource[0].intensity = 3;
     }
 
     int x, y;
