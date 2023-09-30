@@ -1,7 +1,4 @@
 #include "FileIO.h"
-#include "ImageBuffer.h"
-#include <iostream>
-#include <fstream>
 
 FileIO::FileIO()
 {
@@ -47,11 +44,14 @@ ImageBuffer* ReadPPM(const char* filename)
 	{
 		int tempX = 0;
 		int tempY = 0;
-		char* hold = NULL;
+		char hold = NULL;
 		float red = 0.0f;
 		float green = 0.0f;
 		float blue = 0.0f;
-		fscanf_s(fp, "%s", hold);
+		fscanf_s(fp, "%c", &hold);
+
+		fscanf_s(fp, "%c", &hold);
+		fscanf_s(fp, "%c", &hold);
 		fscanf_s(fp, "%d", &tempX);
 		fscanf_s(fp, "%d", &tempY);
 		ImageBuffer* image = new ImageBuffer(tempX, tempY);

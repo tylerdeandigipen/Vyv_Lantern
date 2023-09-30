@@ -21,7 +21,6 @@
 
 #include <SDL/SDL.h>
 
-
 ImageBuffer* testSprite;
 ImageBuffer* testSprite1;
 SDL_Renderer* renderer;
@@ -56,7 +55,6 @@ Engine::EngineCode TestScene::Init()
     Light tempLight;
     Light tempLight2;
     Light tempLight3;
-
 
     Color transparent(0, 0, 0, 0);
 
@@ -128,8 +126,8 @@ Engine::EngineCode TestScene::Init()
     pixelRenderer.AddLight(tempLight);
     pixelRenderer.AddLight(tempLight2);
     pixelRenderer.AddLight(tempLight3);
-
-    testSprite = new ImageBuffer(30, 30);
+    testSprite = new ImageBuffer("Unit_Square.ppm");
+    /*testSprite = new ImageBuffer(30, 30);
     for (int x = 0; x < testSprite->BufferSizeX; ++x)
     {
         for (int y = 0; y < testSprite->BufferSizeY; ++y)
@@ -141,7 +139,7 @@ Engine::EngineCode TestScene::Init()
             else
                 testSprite->buffer[x][y] = blue;
         }
-    }
+    }*/
     testSprite->position = { 30, 30 };
     testSprite->layer = 1;
     pixelRenderer.AddObject(testSprite);

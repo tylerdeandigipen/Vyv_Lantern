@@ -1,6 +1,7 @@
 #pragma once
 #include "stdio.h"
-typedef class ImageBuffer;
+#include "ImageBuffer.h"
+
 class FileIO
 {
 public:

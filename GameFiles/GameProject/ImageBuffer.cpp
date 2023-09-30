@@ -64,6 +64,47 @@ ImageBuffer::ImageBuffer(float x, float y)
     return;
 }
 
+ImageBuffer::ImageBuffer(const char* filename)
+{
+    FILE* fp;
+    fopen_s(&fp, filename, "r");
+    if (fp)
+    {
+        int temp1;
+        int temp2;
+        char hold;
+        float red = 0.0f;
+        float green = 0.0f;
+        float blue = 0.0f;
+        fscanf_s(fp, "%c", &hold);
+        fscanf_s(fp, "%c", &hold);
+        fscanf_s(fp, "%d", &temp1);
+        fscanf_s(fp, "%d", &temp2);
+        BufferSizeX = temp1;
+        BufferSizeY = temp2;
+        fscanf_s(fp, "%d", &temp2);
+        buffer = new Color * [BufferSizeX];
+        for (int i = 0; i < BufferSizeX; ++i)
+        {
+            buffer[i] = new Color[BufferSizeY];
+        }
+        Color trans(0.0f, 0.0f, 0.0f, 0.0f);
+        size.x = BufferSizeX;
+        size.y = BufferSizeY;
+        
+        for (int i = 0; i < BufferSizeX; ++i)
+        {
+            for (int j = 0; j < BufferSizeY; ++j)
+            {
+                fscanf_s(fp, "%f", &red);
+                fscanf_s(fp, "%f", &green);
+                fscanf_s(fp, "%f", &blue);
+                buffer[j][i] = { red, green, blue, 255 };
+            }
+        }
+    }
+}
+
 ImageBuffer::~ImageBuffer()
 {
     //Free each sub-array

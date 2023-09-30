@@ -19,6 +19,7 @@ class ImageBuffer
 		Color** buffer;
 		AABB aabb;
 
+		ImageBuffer(const char* filename);
 		ImageBuffer(ImageBuffer &rhs);
 		ImageBuffer(float x, float y);
 		ImageBuffer();
