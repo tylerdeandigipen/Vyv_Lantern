@@ -188,22 +188,22 @@ void tempPlayerMovementLol()
     {
         pixelRenderer.objects[0]->position.y -= 2;
         //pixelRenderer.AddLight(pixelRenderer.staticLightSource[0]);
-        AudioManager.PlaySFX("footsteps.ogg");
+        //AudioManager.PlaySFX("footsteps.ogg");
     }
     if (inputHandler.keyPressed(SDLK_s) == true)
     {
         pixelRenderer.objects[0]->position.y += 2;
-        AudioManager.PlaySFX("footsteps.ogg");
+        //AudioManager.PlaySFX("footsteps.ogg");
     }
     if (inputHandler.keyPressed(SDLK_d) == true)
     {
         pixelRenderer.objects[0]->position.x += 2;
-        AudioManager.PlaySFX("footsteps.ogg");
+        //AudioManager.PlaySFX("footsteps.ogg");
     }
     if (inputHandler.keyPressed(SDLK_a) == true)
     {
         pixelRenderer.objects[0]->position.x -= 2;
-        AudioManager.PlaySFX("footsteps.ogg");
+        //AudioManager.PlaySFX("footsteps.ogg");
     }
     if (inputHandler.keyPressed(SDLK_e) == true)
     {
