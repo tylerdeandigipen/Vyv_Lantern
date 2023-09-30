@@ -70,19 +70,20 @@ ImageBuffer::ImageBuffer(const char* filename)
     fopen_s(&fp, filename, "r");
     if (fp)
     {
-        int temp1;
-        int temp2;
+        int temp;
         char hold;
         float red = 0.0f;
         float green = 0.0f;
         float blue = 0.0f;
+        
         fscanf_s(fp, "%c", &hold);
         fscanf_s(fp, "%c", &hold);
-        fscanf_s(fp, "%d", &temp1);
-        fscanf_s(fp, "%d", &temp2);
-        BufferSizeX = temp1;
-        BufferSizeY = temp2;
-        fscanf_s(fp, "%d", &temp2);
+        fscanf_s(fp, "%d", &temp);
+        BufferSizeX = temp;
+        fscanf_s(fp, "%d", &temp);
+        BufferSizeY = temp;
+        fscanf_s(fp, "%d", &temp);
+
         buffer = new Color * [BufferSizeX];
         for (int i = 0; i < BufferSizeX; ++i)
         {
@@ -92,14 +93,21 @@ ImageBuffer::ImageBuffer(const char* filename)
         size.x = BufferSizeX;
         size.y = BufferSizeY;
         
-        for (int i = 0; i < BufferSizeX; ++i)
+        for (int j = 0; j < BufferSizeY; ++j)
         {
-            for (int j = 0; j < BufferSizeY; ++j)
+            for (int i = 0; i < BufferSizeX; ++i)
             {
                 fscanf_s(fp, "%f", &red);
                 fscanf_s(fp, "%f", &green);
                 fscanf_s(fp, "%f", &blue);
-                buffer[j][i] = { red, green, blue, 255 };
+                if (red == 0 && green == 0 && blue == 0)
+                {
+                    buffer[i][j] = trans;
+                }
+                else
+                {
+                    buffer[i][j] = { red, green, blue, 255 };
+                }
             }
         }
     }

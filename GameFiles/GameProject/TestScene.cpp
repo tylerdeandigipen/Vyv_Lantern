@@ -126,20 +126,7 @@ Engine::EngineCode TestScene::Init()
     pixelRenderer.AddLight(tempLight);
     pixelRenderer.AddLight(tempLight2);
     pixelRenderer.AddLight(tempLight3);
-    testSprite = new ImageBuffer("test_face.ppm");
-    /*testSprite = new ImageBuffer(30, 30);
-    for (int x = 0; x < testSprite->BufferSizeX; ++x)
-    {
-        for (int y = 0; y < testSprite->BufferSizeY; ++y)
-        {
-            if (x > 8 && x < testSprite->BufferSizeX - 8 && y > 8 && y < testSprite->BufferSizeY - 8)
-            {
-                testSprite->buffer[x][y] = transparent;
-            }
-            else
-                testSprite->buffer[x][y] = blue;
-        }
-    }*/
+    testSprite = new ImageBuffer("goose2.ppm");
     testSprite->position = { 30, 30 };
     testSprite->layer = 1;
     pixelRenderer.AddObject(testSprite);
