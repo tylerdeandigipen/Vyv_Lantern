@@ -126,7 +126,7 @@ Engine::EngineCode TestScene::Init()
     pixelRenderer.AddLight(tempLight);
     pixelRenderer.AddLight(tempLight2);
     pixelRenderer.AddLight(tempLight3);
-    testSprite = new ImageBuffer("Unit_Square.ppm");
+    testSprite = new ImageBuffer("test_face.ppm");
     /*testSprite = new ImageBuffer(30, 30);
     for (int x = 0; x < testSprite->BufferSizeX; ++x)
     {
