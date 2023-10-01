@@ -207,6 +207,11 @@ void tempPlayerMovementLol()
     pixelRenderer.lightSource[0].angle = atan2(x - (pixelRenderer.lightSource[0].position.x * 6), y - (pixelRenderer.lightSource[0].position.y * 6)) * 57.295779f;
 }
 
+void BrandonTurkeyAlgo(float x1, float y1, float x2, float y2, Light clr)
+{
+
+}
+
 void TestScene::Update(float dt)
 {
     AudioManager.Update();
