@@ -126,7 +126,7 @@ Engine::EngineCode TestScene::Init()
     pixelRenderer.AddLight(tempLight);
     pixelRenderer.AddLight(tempLight2);
     pixelRenderer.AddLight(tempLight3);
-    testSprite = new ImageBuffer("goose2.ppm");
+    testSprite = new ImageBuffer("Logo.ppm");
     testSprite->position = { 30, 30 };
     testSprite->layer = 1;
     pixelRenderer.AddObject(testSprite);
