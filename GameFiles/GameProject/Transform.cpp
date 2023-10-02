@@ -30,13 +30,36 @@ Component* Transform::Clone() const
 
 void Transform::Read(Stream stream)
 {
-	UNREFERENCED_PARAMETER(stream);
+	stream = stream;
 	//if (stream)
 	//{
 	//	StreamReadVector2D(stream, &translation);
 	//	rotation = StreamReadFloat(stream);
 	//	StreamReadVector2D(stream, &scale);
 	//}
+}
+
+
+const gfxVector2* Transform::GetTranslation() { return translation; }
+float Transform::GetRotation() { return rotation; }
+const gfxVector2* Transform::GetScale() { return &scale; }
+
+void Transform::SetTranslation(gfxVector2* _translation)
+{
+	isDirty = true;
+	translation = _translation;
+}
+
+void Transform::SetRotation(float _rotation)
+{
+	isDirty = true;
+	rotation = _rotation;
+}
+
+void Transform::SetScale(const gfxVector2* _scale)
+{
+	isDirty = true;
+	scale = *_scale;
 }
 
 //const Matrix2D* Transform::GetMatrix()
@@ -66,26 +89,4 @@ void Transform::Read(Stream stream)
 //	}
 //
 //	return &matrix;
-//}
-
-//const Vector2D* Transform::GetTranslation() { return &translation; }
-//float Transform::GetRotation() { return rotation; }
-//const Vector2D* Transform::GetScale() { return &scale; }
-
-//void Transform::SetTranslation(const Vector2D* _translation)
-//{
-//	isDirty = true;
-//	translation = *_translation;
-//}
-
-//void Transform::SetRotation(float _rotation)
-//{
-//	isDirty = true;
-//	rotation = _rotation;
-//}
-
-//void Transform::SetScale(const Vector2D* _scale)
-//{
-//	isDirty = true;
-//	scale = *_scale;
 //}

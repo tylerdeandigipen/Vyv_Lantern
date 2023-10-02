@@ -25,6 +25,8 @@ class ImageBuffer
 		ImageBuffer();
 		~ImageBuffer();
 
+		void Update(float dt);
+
 		ImageBuffer& ClearImageBuffer();
 		void MergeLayers(ImageBuffer* bottom, ImageBuffer* top);
 		void MergeLayersIndvPixel(ImageBuffer* bottom, ImageBuffer* middle, ImageBuffer* top, int x, int y);

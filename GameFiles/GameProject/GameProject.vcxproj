@@ -140,6 +140,8 @@
   <ItemGroup>
     <ClInclude Include="AudioEngine.h" />
     <ClInclude Include="BaseSystem.h" />
+    <ClInclude Include="Behavior.h" />
+    <ClInclude Include="BehaviorPlayer.h" />
     <ClInclude Include="Collision.h" />
     <ClInclude Include="Color.h" />
     <ClInclude Include="Component.h" />
@@ -167,6 +169,8 @@
   <ItemGroup>
     <ClCompile Include="AudioEngine.cpp" />
     <ClCompile Include="BaseSystem.cpp" />
+    <ClCompile Include="Behavior.cpp" />
+    <ClCompile Include="BehaviorPlayer.cpp" />
     <ClCompile Include="Collision.cpp" />
     <ClCompile Include="Color.cpp" />
     <ClCompile Include="Component.cpp" />

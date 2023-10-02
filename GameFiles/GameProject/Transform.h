@@ -9,8 +9,9 @@
 //------------------------------------------------------------------------------
 #pragma once
 
-#include "stdafx.h"
 #include "Component.h"
+#include "Vector.h"
+
 class Transform : public Component
 {
 public:
@@ -20,20 +21,19 @@ public:
 	Component* Clone() const override;
 	void Read(Stream stream) override;
 	//const Matrix2D* GetMatrix();
-	//const Vector2D* GetTranslation();
-	//float GetRotation();
-	//const Vector2D* GetScale();
-	//void SetTranslation(const Vector2D* _translation);
-	//void SetRotation(float _rotation);
-	//void SetScale(const Vector2D* _scale);
+	const gfxVector2* GetTranslation();
+	float GetRotation();
+	const gfxVector2* GetScale();
+	void SetTranslation(gfxVector2* _translation);
+	void SetRotation(float _rotation);
+    void SetScale(const gfxVector2* _scale);
+	gfxVector2* translation;
 private:
-	// Vector2D translation;
 
-	//float rotation
+	gfxVector2 scale;
+	float rotation;
 
-	// Vector2D scale
-
-	// bool isDirty
+	bool isDirty;
 
 	//Matrix2D matrix;
 };

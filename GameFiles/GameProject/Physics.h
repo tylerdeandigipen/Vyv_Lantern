@@ -26,9 +26,6 @@ public:
 private:
 	// Variables and functions will need to be custom made
 	// CS230 examples are set up for a moving rocket 
-	// 
-	// 
-	// 
-	// 
+
 };
 

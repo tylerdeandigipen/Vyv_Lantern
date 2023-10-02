@@ -212,6 +212,7 @@ ImageBuffer& ImageBuffer::AddSprite(ImageBuffer *sprite)
     }
     return *this;
 }
+
 ImageBuffer& ImageBuffer::operator =(const ImageBuffer& rhs)&
 {
     for (int i = 0; i < size.x; ++i)

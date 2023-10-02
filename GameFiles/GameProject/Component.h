@@ -10,6 +10,7 @@
 //------------------------------------------------------------------------------
 
 #pragma once
+#include "stdafx.h"
 
 typedef class Entity Entity;
 typedef FILE* Stream;
@@ -18,7 +19,7 @@ class Component
 {
 public:
 
-	enum TypeEnum { cAnimation, cBehavior, cCollider, cPhysics, cSprite, cTransform };
+	enum TypeEnum { cBehavior, cCollider, cPhysics, cImageBuffer, cTransform };
 	_inline Component::TypeEnum type() const { return mType; };
 
 	_inline void Parent(Entity* entity) { mParent = entity; }

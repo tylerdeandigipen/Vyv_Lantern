@@ -12,6 +12,7 @@
 #include "Scene.h"
 #include "PlatformSystem.h"
 #include "Engine.h"
+#include "Entity.h"
 #include "SceneSystem.h"
 #include "Renderer.h"
 #include "Inputs.h"
@@ -23,11 +24,14 @@
 
 ImageBuffer* testSprite;
 ImageBuffer* testSprite1;
+
+Entity* testEntity;
+
 SDL_Renderer* renderer;
 Renderer pixelRenderer;
 
 SDL_Window* window = SDL_CreateWindow("MAIN SCENE", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, pixelRenderer.outputBuffer->BufferSizeX * pixelRenderer.outputBuffer->screenScale, pixelRenderer.outputBuffer->BufferSizeY * pixelRenderer.outputBuffer->screenScale, 0);
-Inputs inputHandler(window);
+Inputs* inputHandler;
 
 Scene* TestSceneinstance = NULL; // ITS A GLOBAL VARIABLE CALM DOWN!! SHOW ME ANOTHER WAY AND ITS GONE
 
@@ -52,6 +56,12 @@ Engine::EngineCode TestScene::Init()
 {
     /*BGM*/
     //AudioManager.PlayMusic("bgm.ogg");
+
+    inputHandler = new Inputs(window);
+
+    testEntity = new Entity("goose2.ppm", window);
+    testEntity->SetInputHandler(inputHandler);
+
     Light tempLight;
     Light tempLight2;
     Light tempLight3;
@@ -149,6 +159,8 @@ Engine::EngineCode TestScene::Init()
     testSprite1->layer = 1;
     pixelRenderer.AddObject(testSprite1);
     
+    testEntity->AddToRenderer(&pixelRenderer);
+
     int tileMapArray[16][9];
 
     for (int x = 0; x < 16; ++x)
@@ -171,32 +183,32 @@ Engine::EngineCode TestScene::Init()
 
 void tempPlayerMovementLol()
 {
-    if (inputHandler.keyPressed(SDLK_w) == true)
+    if (inputHandler->keyPressed(SDLK_UP) == true)
     {
         pixelRenderer.objects[0]->position.y -= 2;
         //pixelRenderer.AddLight(pixelRenderer.staticLightSource[0]);
         //AudioManager.PlaySFX("footsteps.ogg");
     }
-    if (inputHandler.keyPressed(SDLK_s) == true)
+    if (inputHandler->keyPressed(SDLK_DOWN) == true)
     {
         pixelRenderer.objects[0]->position.y += 2;
         //AudioManager.PlaySFX("footsteps.ogg");
     }
-    if (inputHandler.keyPressed(SDLK_d) == true)
+    if (inputHandler->keyPressed(SDLK_RIGHT) == true)
     {
         pixelRenderer.objects[0]->position.x += 2;
         //AudioManager.PlaySFX("footsteps.ogg");
     }
-    if (inputHandler.keyPressed(SDLK_a) == true)
+    if (inputHandler->keyPressed(SDLK_LEFT) == true)
     {
         pixelRenderer.objects[0]->position.x -= 2;
         //AudioManager.PlaySFX("footsteps.ogg");
     }
-    if (inputHandler.keyPressed(SDLK_e) == true)
+    if (inputHandler->keyPressed(SDLK_e) == true)
     {
         pixelRenderer.lightSource[0].intensity = 0;
     }
-    if (inputHandler.keyPressed(SDLK_e) == false)
+    if (inputHandler->keyPressed(SDLK_e) == false)
     {
         pixelRenderer.lightSource[0].intensity = 3;
     }
@@ -215,10 +227,11 @@ void BrandonTurkeyAlgo(float x1, float y1, float x2, float y2, Light clr)
 void TestScene::Update(float dt)
 {
     AudioManager.Update();
-    inputHandler.handleInput();
+    testEntity->Update(dt);
+    inputHandler->handleInput();
     pixelRenderer.UpdateObjects();
 
-    if (inputHandler.keyPressed(SDLK_ESCAPE) == true)
+    if (inputHandler->keyPressed(SDLK_ESCAPE) == true)
     {
         Engine::GetInstance()->SetCloseRequest(true);
     }
@@ -251,6 +264,7 @@ Engine::EngineCode TestScene::Exit()
 Engine::EngineCode TestScene::Unload()
 {
     delete TestSceneinstance;
+    delete testEntity;
 	return Engine::NothingBad;
 }
 

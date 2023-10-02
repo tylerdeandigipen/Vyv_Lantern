@@ -11,7 +11,11 @@
 
 #include <algorithm>
 #include "Component.h"
+#include "Behavior.h"
+#include "BehaviorPlayer.h"
 #include "Entity.h"
+#include "Transform.h"
+#include "ImageBuffer.h"
 
 // Used to sort components using their type Id.
 struct ComponentSorter
@@ -26,6 +30,12 @@ Entity::Entity() : isDestroyed(0), components(), name{}
 {
 
 }
+
+Entity::Entity(const char* file, SDL_Window* _window) : isDestroyed(0), components(), name{}, window(_window)
+{
+	CreateImage(file);
+}
+
 
 Entity::Entity(Entity const& ent) : isDestroyed(ent.isDestroyed), name{}, components(ent.components)
 {
@@ -45,7 +55,8 @@ Entity::Entity(Entity const& ent) : isDestroyed(ent.isDestroyed), name{}, compon
 
 Entity::~Entity()
 {
-
+	if (image)
+		delete image;
 }
 
 Entity* Entity::Clone()
@@ -78,7 +89,7 @@ bool Entity::IsDestroyed()
 	return isDestroyed;
 }
 
-void Entity::Read(Stream stream)
+void Entity::Read(FILE* stream)
 {
 	for (auto component : components)
 	{
@@ -190,4 +201,40 @@ void Entity::Render(void)
 	{
 		component->Render();
 	}
+}
+
+void Entity::CreateImage(const char* file)
+{
+	image = new ImageBuffer(file);
+	Component* transform = new Transform();
+	Add(transform);
+	this->Has(Transform)->SetTranslation(&image->position);
+	Component* player = new BehaviorPlayer();
+	Add(player);
+	//Has(Behavior)->Init();
+
+	this->Has(Transform)->translation->x = 60;
+	this->Has(Transform)->translation->y = 30;
+	image->layer = 1;
+}
+
+void Entity::AddToRenderer(Renderer* pixel)
+{
+	pixel->AddObject(image);
+}
+
+void Entity::SetWindow(SDL_Window* _window)
+{
+	window = _window;
+}
+
+SDL_Window* Entity::GetWindow()
+{
+	return window;
+}
+
+void Entity::SetInputHandler(Inputs* input)
+{
+	if (input)
+		Has(Behavior)->Type()->SetInputHandler(input);
 }

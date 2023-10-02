@@ -14,7 +14,7 @@
 
 #include <vector>
 
-typedef class Entity;
+typedef class Entity Entity;
 
 using namespace std;
 

@@ -35,6 +35,7 @@ Entity* EntityContainer::FindByName(const char* name)
 			if (entities[i]->IsNamed(name))
 				return entities[i];
 	}
+	return NULL;
 
 }
 
