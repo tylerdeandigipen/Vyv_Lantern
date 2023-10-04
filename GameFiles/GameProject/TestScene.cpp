@@ -21,6 +21,7 @@
 #include "Light.h"
 
 #include <SDL/SDL.h>
+#include <iostream>
 
 ImageBuffer* testSprite;
 ImageBuffer* testSprite1;
@@ -40,6 +41,9 @@ Color black(0, 0, 0, 255);
 Color grey(150, 150, 150, 255);
 Color blue(50, 100, 255, 255);
 
+int ObjCount;
+
+
 TestScene::TestScene() : Scene("test")
 {
 
@@ -49,6 +53,7 @@ Engine::EngineCode TestScene::Load()
 {
     AudioManager.LoadMusic("bgm.ogg");
     AudioManager.LoadSFX("footsteps.ogg");
+    AudioManager.LoadSFX("oof.ogg");
 	return Engine::NothingBad;
 }
 
@@ -155,7 +160,7 @@ Engine::EngineCode TestScene::Init()
                 testSprite1->buffer[x][y] = blue;
         }
     }
-    testSprite1->position = { 120, 80 };
+    testSprite1->position = { 120, 30 };
     testSprite1->layer = 1;
     pixelRenderer.AddObject(testSprite1);
     
@@ -177,6 +182,8 @@ Engine::EngineCode TestScene::Init()
     }
 
     pixelRenderer.MakeTileMap(tileMapArray);
+
+    ObjCount = pixelRenderer.returnObjCnt();
 
 	return Engine::NothingBad;
 }
@@ -235,16 +242,28 @@ void TestScene::Update(float dt)
     {
         Engine::GetInstance()->SetCloseRequest(true);
     }
-
-    testSprite->aabb.min = { testSprite->position.x, testSprite->position.y };
-    testSprite->aabb.max = { testSprite->position.x + 30, testSprite->position.y + 30 };
-    testSprite1->aabb.min = { testSprite1->position.x, testSprite1->position.y };
-    testSprite1->aabb.max = { testSprite1->position.x + 30, testSprite1->position.y + 30 };
-    if (!CollisionCheck(testSprite->aabb, testSprite1->aabb))
+    /*object[2] is the goose*/
+    /*object[1] is the square*/
+    for (int i = 0; i < ObjCount; i++)
     {
-        tempPlayerMovementLol();
+        pixelRenderer.objects[i]->aabb.min = { pixelRenderer.objects[i]->position.x, pixelRenderer.objects[i]->position.y };
+        pixelRenderer.objects[i]->aabb.max = { pixelRenderer.objects[i]->position.x + pixelRenderer.objects[i]->BufferSizeX, pixelRenderer.objects[i]->position.y + pixelRenderer.objects[i]->BufferSizeY };
+    };
+    
+    for (int a = 0; a < ObjCount; a++)
+    {
+        for (int b = a + 1; b < ObjCount; b++)
+        {
+            if (!CollisionCheck(pixelRenderer.objects[a]->aabb, pixelRenderer.objects[b]->aabb))
+            {
+                tempPlayerMovementLol();
+            }
+            else
+            {
+                AudioManager.PlaySFX("oof.ogg");
+            }
+        }
     }
-
 }
 
 void TestScene::Render()

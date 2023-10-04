@@ -37,6 +37,7 @@ public:
 	void UpdateObjects();
 	void BakeLights();
 	void Update();
+	int returnObjCnt();
 private:
 	int numObjects;
 	int numLights;

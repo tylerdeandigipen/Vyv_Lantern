@@ -246,6 +246,17 @@
      SDL_RenderPresent(renderer);
  }
 
+ int Renderer::returnObjCnt()
+ {
+     int countObjects = 0;
+     for (int i = 0; i < MAX_OBJECTS; ++i) {
+         if (objects[i] != nullptr) {
+             countObjects++;
+         }
+     }
+     return countObjects;
+ }
+
  void Renderer::AddObject(ImageBuffer* sprite)
  {
      objectLayer->ClearImageBuffer();
