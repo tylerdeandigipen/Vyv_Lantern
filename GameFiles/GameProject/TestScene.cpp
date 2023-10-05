@@ -16,12 +16,15 @@
 #include "SceneSystem.h"
 #include "Renderer.h"
 #include "Inputs.h"
+#include "Logging.h"
 
 #include "ImageBuffer.h"
 #include "Light.h"
 
 #include <SDL/SDL.h>
 #include <iostream>
+
+Logging& logger = Logging::GetInstance();
 
 ImageBuffer* testSprite;
 ImageBuffer* testSprite1;
@@ -43,6 +46,8 @@ Color blue(50, 100, 255, 255);
 
 int ObjCount;
 
+/* NOTICE !!!!!!!!!! Feel free to "turn off" debug messages as you please. You can see them in the debugLog.txt in the game files, or in the output tab when debugging. Literally
+   you can call for the logger anywhere as long as you get an instance first. Use it in ur functions or something - taylee */
 
 TestScene::TestScene() : Scene("test")
 {
@@ -54,6 +59,8 @@ Engine::EngineCode TestScene::Load()
     AudioManager.LoadMusic("bgm.ogg");
     AudioManager.LoadSFX("footsteps.ogg");
     AudioManager.LoadSFX("oof.ogg");
+
+    logger.LogLine("Debug info: Oof heard. (testScene loaded)");
 	return Engine::NothingBad;
 }
 
@@ -61,6 +68,7 @@ Engine::EngineCode TestScene::Init()
 {
     /*BGM*/
     //AudioManager.PlayMusic("bgm.ogg");
+
 
     inputHandler = new Inputs(window);
 
@@ -185,6 +193,7 @@ Engine::EngineCode TestScene::Init()
 
     ObjCount = pixelRenderer.returnObjCnt();
 
+    logger.LogLine("Debug info: Lights, camera, action! (testScene init)");
 	return Engine::NothingBad;
 }
 
@@ -193,32 +202,51 @@ void tempPlayerMovementLol()
     if (inputHandler->keyPressed(SDLK_UP) == true)
     {
         pixelRenderer.objects[0]->position.y -= 2;
+<<<<<<< Updated upstream
+=======
+
+        logger.LogLine("Debug info: Vyv Up pressed.");
+        //pixelRenderer.AddLight(pixelRenderer.staticLightSource[0]);
+>>>>>>> Stashed changes
         //AudioManager.PlaySFX("footsteps.ogg");
     }
     if (inputHandler->keyPressed(SDLK_DOWN) == true)
     {
         pixelRenderer.objects[0]->position.y += 2;
+
+        logger.LogLine("Debug info: Vyv Down pressed.");
         //AudioManager.PlaySFX("footsteps.ogg");
     }
     if (inputHandler->keyPressed(SDLK_RIGHT) == true)
     {
         pixelRenderer.objects[0]->position.x += 2;
+
+        logger.LogLine("Debug info: Vyv Right pressed.");
         //AudioManager.PlaySFX("footsteps.ogg");
     }
     if (inputHandler->keyPressed(SDLK_LEFT) == true)
     {
         pixelRenderer.objects[0]->position.x -= 2;
+<<<<<<< Updated upstream
         pixelRenderer.AddLight(pixelRenderer.lightSource[0]);
 
+=======
+
+        logger.LogLine("Debug info: Vyv Left pressed.");
+>>>>>>> Stashed changes
         //AudioManager.PlaySFX("footsteps.ogg");
     }
     if (inputHandler->keyPressed(SDLK_e) == true)
     {
         pixelRenderer.lightSource[0].intensity = 0;
+
+        logger.LogLine("Debug info: Vyv E pressed.");
     }
     if (inputHandler->keyPressed(SDLK_e) == false)
     {
         pixelRenderer.lightSource[0].intensity = 3;
+
+       // logger.LogLine("Debug info: E released.");
     }
 
     int x, y;
@@ -265,12 +293,14 @@ void TestScene::Update(float dt)
             }
         }
     }
+    logger.LogLine("Debug info: Things are being done. (testScene updated)");
 }
 
 void TestScene::Render()
 {
     pixelRenderer.Update();
 
+    logger.LogLine("Debug info: Things are being rendered. (testScene rendered)");
 	return;
 }
 
@@ -278,6 +308,8 @@ Engine::EngineCode TestScene::Exit()
 {
     SDL_DestroyWindow(window);
     SDL_Quit();
+
+    logger.LogLine("Debug info: Bye-Bye! (testScene exit)");
 	return Engine::NothingBad;
 }
 
@@ -285,6 +317,8 @@ Engine::EngineCode TestScene::Unload()
 {
     delete TestSceneinstance;
     delete testEntity;
+
+    logger.LogLine("Debug info: entities destroyed :( (testScene unloaded)");
 	return Engine::NothingBad;
 }
 
