@@ -202,12 +202,9 @@ void tempPlayerMovementLol()
     if (inputHandler->keyPressed(SDLK_UP) == true)
     {
         pixelRenderer.objects[0]->position.y -= 2;
-<<<<<<< Updated upstream
-=======
 
         logger.LogLine("Debug info: Vyv Up pressed.");
         //pixelRenderer.AddLight(pixelRenderer.staticLightSource[0]);
->>>>>>> Stashed changes
         //AudioManager.PlaySFX("footsteps.ogg");
     }
     if (inputHandler->keyPressed(SDLK_DOWN) == true)
@@ -227,13 +224,9 @@ void tempPlayerMovementLol()
     if (inputHandler->keyPressed(SDLK_LEFT) == true)
     {
         pixelRenderer.objects[0]->position.x -= 2;
-<<<<<<< Updated upstream
         pixelRenderer.AddLight(pixelRenderer.lightSource[0]);
 
-=======
-
         logger.LogLine("Debug info: Vyv Left pressed.");
->>>>>>> Stashed changes
         //AudioManager.PlaySFX("footsteps.ogg");
     }
     if (inputHandler->keyPressed(SDLK_e) == true)
