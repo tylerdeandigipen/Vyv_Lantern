@@ -16,6 +16,9 @@
 #include "Entity.h"
 #include "Transform.h"
 #include "ImageBuffer.h"
+#include <nlohmann/json.hpp>
+#include <fstream>
+
 
 // Used to sort components using their type Id.
 struct ComponentSorter
@@ -203,18 +206,25 @@ void Entity::Render(void)
 	}
 }
 
-void Entity::CreateImage(const char* file)
+void Entity::CreateImage(const char* _file)
 {
-	image = new ImageBuffer(file);
+	using json = nlohmann::json;
+	json jsonData;
+	std::fstream file("./Data/EntityTest.json");
+	image = new ImageBuffer(_file);
 	Component* transform = new Transform();
 	Add(transform);
 	this->Has(Transform)->SetTranslation(&image->position);
 	Component* player = new BehaviorPlayer();
 	Add(player);
 	//Has(Behavior)->Init();
-
-	this->Has(Transform)->translation->x = 60;
-	this->Has(Transform)->translation->y = 30;
+	if (file.is_open())
+	{
+		file >> jsonData;
+		this->Has(Transform)->translation->x = jsonData["x"];
+		this->Has(Transform)->translation->y = jsonData["y"];
+		file.close();
+	}
 	image->layer = 1;
 }
 
