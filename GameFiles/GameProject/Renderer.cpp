@@ -15,6 +15,10 @@
 #include "Vector.h"
 #include "ImageBuffer.h"
 #include <SDL/SDL.h>
+
+#include <stdlib.h>
+#include <stdio.h>
+#include <iostream>
 //BaseSystem::BaseSystem(const char* _name) : name(_name) {}
 
 
@@ -227,12 +231,15 @@
      bakedLightsBuffer = new ImageBuffer; 
      tileMapLayer = new ImageBuffer;
      outputBuffer->screenScale = screenScale;
+     startTime = SDL_GetTicks();
  }
 
  int needToSetSreenSize = 0;
 
  void Renderer::Update()
  {
+     Uint32 currentTime = SDL_GetTicks();
+
      if (needToSetSreenSize == 0)
      {
          SDL_RenderSetScale(renderer, outputBuffer->screenScale, outputBuffer->screenScale);
@@ -241,8 +248,15 @@
 
      RenderLightingPass();
      //debug count something code
-     
-     for(int i = 0; i < numLights * 2; i++)
+     ++frameCount;
+     if (currentTime - startTime >= 1000) {
+         std::cout << "FPS: " << frameCount << std::endl;
+         shut_up = frameCount;
+         frameCount = 0;
+         startTime = currentTime;
+     }
+
+     for(int i = 0; i < shut_up * 2; i++)
      {
         if(i % 2 == 0)
         {

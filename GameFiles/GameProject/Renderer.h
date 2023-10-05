@@ -42,6 +42,10 @@ private:
 	int numObjects;
 	int numLights;
 	int numStaticLights;
+	Uint32 startTime;
+	int frameCount = 0;
+	int shut_up;
+
 };
 
 #endif 
