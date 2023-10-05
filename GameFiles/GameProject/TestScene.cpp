@@ -197,11 +197,12 @@ Engine::EngineCode TestScene::Init()
 	return Engine::NothingBad;
 }
 
-void tempPlayerMovementLol()
+float moveSpeed = 20;
+void tempPlayerMovementLol(float dt)
 {
     if (inputHandler->keyPressed(SDLK_UP) == true)
     {
-        pixelRenderer.objects[0]->position.y -= 2;
+        pixelRenderer.objects[0]->position.y -= moveSpeed * dt;
 
         logger.LogLine("Debug info: Vyv Up pressed.");
         //pixelRenderer.AddLight(pixelRenderer.staticLightSource[0]);
@@ -209,37 +210,29 @@ void tempPlayerMovementLol()
     }
     if (inputHandler->keyPressed(SDLK_DOWN) == true)
     {
-        pixelRenderer.objects[0]->position.y += 2;
+        pixelRenderer.objects[0]->position.y += moveSpeed * dt;
 
         logger.LogLine("Debug info: Vyv Down pressed.");
         //AudioManager.PlaySFX("footsteps.ogg");
     }
     if (inputHandler->keyPressed(SDLK_RIGHT) == true)
     {
-        pixelRenderer.objects[0]->position.x += 2;
+        pixelRenderer.objects[0]->position.x += moveSpeed * dt;
 
         logger.LogLine("Debug info: Vyv Right pressed.");
         //AudioManager.PlaySFX("footsteps.ogg");
     }
     if (inputHandler->keyPressed(SDLK_LEFT) == true)
     {
-        pixelRenderer.objects[0]->position.x -= 2;
-        pixelRenderer.AddLight(pixelRenderer.lightSource[0]);
+        pixelRenderer.objects[0]->position.x -= moveSpeed * dt;
 
         logger.LogLine("Debug info: Vyv Left pressed.");
         //AudioManager.PlaySFX("footsteps.ogg");
     }
     if (inputHandler->keyPressed(SDLK_e) == true)
     {
-        pixelRenderer.lightSource[0].intensity = 0;
+        pixelRenderer.AddLight(pixelRenderer.lightSource[0]);
 
-        logger.LogLine("Debug info: Vyv E pressed.");
-    }
-    if (inputHandler->keyPressed(SDLK_e) == false)
-    {
-        pixelRenderer.lightSource[0].intensity = 3;
-
-       // logger.LogLine("Debug info: E released.");
     }
 
     int x, y;
@@ -271,6 +264,7 @@ void TestScene::Update(float dt)
         pixelRenderer.objects[i]->aabb.min = { pixelRenderer.objects[i]->position.x, pixelRenderer.objects[i]->position.y };
         pixelRenderer.objects[i]->aabb.max = { pixelRenderer.objects[i]->position.x + pixelRenderer.objects[i]->BufferSizeX, pixelRenderer.objects[i]->position.y + pixelRenderer.objects[i]->BufferSizeY };
     };
+
     
     for (int a = 0; a < ObjCount; a++)
     {
@@ -278,7 +272,7 @@ void TestScene::Update(float dt)
         {
             if (!CollisionCheck(pixelRenderer.objects[a]->aabb, pixelRenderer.objects[b]->aabb))
             {
-                tempPlayerMovementLol();
+                tempPlayerMovementLol(dt);
             }
             else
             {

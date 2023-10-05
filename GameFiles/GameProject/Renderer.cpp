@@ -260,10 +260,16 @@
      {
         if(i % 2 == 0)
         {
-            outputBuffer->buffer[i + 1][0] = {255,255,255,255};
+            outputBuffer->buffer[i + 1][0] = {0,255,0,255};
         }
      }
-    
+     for (int i = 0; i < numLights * 2; i++)
+     {
+         if (i % 2 == 0)
+         {
+             outputBuffer->buffer[i + 1][3] = { 0,0,255,255 };
+         }
+     }
      for (int x = 0; x < outputBuffer->BufferSizeX; ++x)
      {
          for (int y = 0; y < outputBuffer->BufferSizeY; ++y)
