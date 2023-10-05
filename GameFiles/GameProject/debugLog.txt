@@ -146,8 +146,14 @@ Debug info: Things are being done. (testScene updated)
 Debug info: Things are being rendered. (testScene rendered)
 Debug info: Things are being done. (testScene updated)
 Debug info: Things are being rendered. (testScene rendered)
+Debug info: Vyv Left pressed.
+Debug info: Vyv Left pressed.
+Debug info: Vyv Left pressed.
 Debug info: Things are being done. (testScene updated)
 Debug info: Things are being rendered. (testScene rendered)
+Debug info: Vyv Left pressed.
+Debug info: Vyv Left pressed.
+Debug info: Vyv Left pressed.
 Debug info: Things are being done. (testScene updated)
 Debug info: Things are being rendered. (testScene rendered)
 Debug info: Things are being done. (testScene updated)
@@ -194,6 +200,9 @@ Debug info: Things are being done. (testScene updated)
 Debug info: Things are being rendered. (testScene rendered)
 Debug info: Things are being done. (testScene updated)
 Debug info: Things are being rendered. (testScene rendered)
+Debug info: Vyv Left pressed.
+Debug info: Vyv Left pressed.
+Debug info: Vyv Left pressed.
 Debug info: Things are being done. (testScene updated)
 Debug info: Things are being rendered. (testScene rendered)
 Debug info: Things are being done. (testScene updated)
@@ -252,6 +261,9 @@ Debug info: Things are being done. (testScene updated)
 Debug info: Things are being rendered. (testScene rendered)
 Debug info: Things are being done. (testScene updated)
 Debug info: Things are being rendered. (testScene rendered)
+Debug info: Vyv Left pressed.
+Debug info: Vyv Left pressed.
+Debug info: Vyv Left pressed.
 Debug info: Things are being done. (testScene updated)
 Debug info: Things are being rendered. (testScene rendered)
 Debug info: Things are being done. (testScene updated)
@@ -278,12 +290,328 @@ Debug info: Things are being done. (testScene updated)
 Debug info: Things are being rendered. (testScene rendered)
 Debug info: Things are being done. (testScene updated)
 Debug info: Things are being rendered. (testScene rendered)
+Debug info: Vyv Right pressed.
+Debug info: Vyv Right pressed.
+Debug info: Vyv Right pressed.
 Debug info: Things are being done. (testScene updated)
 Debug info: Things are being rendered. (testScene rendered)
+Debug info: Vyv Right pressed.
+Debug info: Vyv Right pressed.
+Debug info: Vyv Right pressed.
 Debug info: Things are being done. (testScene updated)
 Debug info: Things are being rendered. (testScene rendered)
+Debug info: Vyv Right pressed.
+Debug info: Vyv Right pressed.
+Debug info: Vyv Right pressed.
 Debug info: Things are being done. (testScene updated)
 Debug info: Things are being rendered. (testScene rendered)
+Debug info: Vyv Right pressed.
+Debug info: Vyv Right pressed.
+Debug info: Vyv Right pressed.
+Debug info: Things are being done. (testScene updated)
+Debug info: Things are being rendered. (testScene rendered)
+Debug info: Vyv Right pressed.
+Debug info: Vyv Right pressed.
+Debug info: Vyv Right pressed.
+Debug info: Things are being done. (testScene updated)
+Debug info: Things are being rendered. (testScene rendered)
+Debug info: Vyv Right pressed.
+Debug info: Vyv Right pressed.
+Debug info: Things are being done. (testScene updated)
+Debug info: Things are being rendered. (testScene rendered)
+Debug info: Vyv Right pressed.
+Debug info: Vyv Right pressed.
+Debug info: Things are being done. (testScene updated)
+Debug info: Things are being rendered. (testScene rendered)
+Debug info: Vyv Right pressed.
+Debug info: Vyv Right pressed.
+Debug info: Things are being done. (testScene updated)
+Debug info: Things are being rendered. (testScene rendered)
+Debug info: Vyv Right pressed.
+Debug info: Vyv Right pressed.
+Debug info: Things are being done. (testScene updated)
+Debug info: Things are being rendered. (testScene rendered)
+Debug info: Vyv Right pressed.
+Debug info: Vyv Right pressed.
+Debug info: Things are being done. (testScene updated)
+Debug info: Things are being rendered. (testScene rendered)
+Debug info: Vyv Right pressed.
+Debug info: Vyv Right pressed.
+Debug info: Things are being done. (testScene updated)
+Debug info: Things are being rendered. (testScene rendered)
+Debug info: Vyv Right pressed.
+Debug info: Vyv Right pressed.
+Debug info: Things are being done. (testScene updated)
+Debug info: Things are being rendered. (testScene rendered)
+Debug info: Vyv Right pressed.
+Debug info: Vyv Right pressed.
+Debug info: Things are being done. (testScene updated)
+Debug info: Things are being rendered. (testScene rendered)
+Debug info: Vyv Right pressed.
+Debug info: Vyv Right pressed.
+Debug info: Things are being done. (testScene updated)
+Debug info: Things are being rendered. (testScene rendered)
+Debug info: Vyv Right pressed.
+Debug info: Vyv Right pressed.
+Debug info: Things are being done. (testScene updated)
+Debug info: Things are being rendered. (testScene rendered)
+Debug info: Vyv Right pressed.
+Debug info: Vyv Right pressed.
+Debug info: Things are being done. (testScene updated)
+Debug info: Things are being rendered. (testScene rendered)
+Debug info: Vyv Right pressed.
+Debug info: Vyv Right pressed.
+Debug info: Things are being done. (testScene updated)
+Debug info: Things are being rendered. (testScene rendered)
+Debug info: Vyv Right pressed.
+Debug info: Vyv Right pressed.
+Debug info: Things are being done. (testScene updated)
+Debug info: Things are being rendered. (testScene rendered)
+Debug info: Vyv Right pressed.
+Debug info: Vyv Right pressed.
+Debug info: Vyv Right pressed.
+Debug info: Things are being done. (testScene updated)
+Debug info: Things are being rendered. (testScene rendered)
+Debug info: Vyv Right pressed.
+Debug info: Vyv Right pressed.
+Debug info: Vyv Right pressed.
+Debug info: Things are being done. (testScene updated)
+Debug info: Things are being rendered. (testScene rendered)
+Debug info: Vyv Right pressed.
+Debug info: Vyv Right pressed.
+Debug info: Things are being done. (testScene updated)
+Debug info: Things are being rendered. (testScene rendered)
+Debug info: Vyv Right pressed.
+Debug info: Vyv Right pressed.
+Debug info: Things are being done. (testScene updated)
+Debug info: Things are being rendered. (testScene rendered)
+Debug info: Vyv Left pressed.
+Debug info: Vyv Left pressed.
+Debug info: Things are being done. (testScene updated)
+Debug info: Things are being rendered. (testScene rendered)
+Debug info: Vyv Left pressed.
+Debug info: Vyv Left pressed.
+Debug info: Things are being done. (testScene updated)
+Debug info: Things are being rendered. (testScene rendered)
+Debug info: Vyv Left pressed.
+Debug info: Vyv Left pressed.
+Debug info: Things are being done. (testScene updated)
+Debug info: Things are being rendered. (testScene rendered)
+Debug info: Vyv Left pressed.
+Debug info: Vyv Left pressed.
+Debug info: Things are being done. (testScene updated)
+Debug info: Things are being rendered. (testScene rendered)
+Debug info: Vyv Left pressed.
+Debug info: Vyv Left pressed.
+Debug info: Vyv Left pressed.
+Debug info: Things are being done. (testScene updated)
+Debug info: Things are being rendered. (testScene rendered)
+Debug info: Vyv Left pressed.
+Debug info: Vyv Left pressed.
+Debug info: Things are being done. (testScene updated)
+Debug info: Things are being rendered. (testScene rendered)
+Debug info: Vyv Left pressed.
+Debug info: Vyv Left pressed.
+Debug info: Things are being done. (testScene updated)
+Debug info: Things are being rendered. (testScene rendered)
+Debug info: Vyv Left pressed.
+Debug info: Vyv Left pressed.
+Debug info: Things are being done. (testScene updated)
+Debug info: Things are being rendered. (testScene rendered)
+Debug info: Things are being done. (testScene updated)
+Debug info: Things are being rendered. (testScene rendered)
+Debug info: Things are being done. (testScene updated)
+Debug info: Things are being rendered. (testScene rendered)
+Debug info: Things are being done. (testScene updated)
+Debug info: Things are being rendered. (testScene rendered)
+Debug info: Things are being done. (testScene updated)
+Debug info: Things are being rendered. (testScene rendered)
+Debug info: Things are being done. (testScene updated)
+Debug info: Things are being rendered. (testScene rendered)
+Debug info: Vyv E pressed.
+Debug info: Vyv E pressed.
+Debug info: Things are being done. (testScene updated)
+Debug info: Things are being rendered. (testScene rendered)
+Debug info: Things are being done. (testScene updated)
+Debug info: Things are being rendered. (testScene rendered)
+Debug info: Things are being done. (testScene updated)
+Debug info: Things are being rendered. (testScene rendered)
+Debug info: Things are being done. (testScene updated)
+Debug info: Things are being rendered. (testScene rendered)
+Debug info: Vyv E pressed.
+Debug info: Vyv E pressed.
+Debug info: Things are being done. (testScene updated)
+Debug info: Things are being rendered. (testScene rendered)
+Debug info: Vyv E pressed.
+Debug info: Vyv E pressed.
+Debug info: Things are being done. (testScene updated)
+Debug info: Things are being rendered. (testScene rendered)
+Debug info: Vyv E pressed.
+Debug info: Vyv E pressed.
+Debug info: Things are being done. (testScene updated)
+Debug info: Things are being rendered. (testScene rendered)
+Debug info: Vyv E pressed.
+Debug info: Vyv E pressed.
+Debug info: Things are being done. (testScene updated)
+Debug info: Things are being rendered. (testScene rendered)
+Debug info: Vyv E pressed.
+Debug info: Vyv E pressed.
+Debug info: Things are being done. (testScene updated)
+Debug info: Things are being rendered. (testScene rendered)
+Debug info: Vyv E pressed.
+Debug info: Vyv E pressed.
+Debug info: Things are being done. (testScene updated)
+Debug info: Things are being rendered. (testScene rendered)
+Debug info: Vyv E pressed.
+Debug info: Vyv E pressed.
+Debug info: Things are being done. (testScene updated)
+Debug info: Things are being rendered. (testScene rendered)
+Debug info: Vyv E pressed.
+Debug info: Vyv E pressed.
+Debug info: Things are being done. (testScene updated)
+Debug info: Things are being rendered. (testScene rendered)
+Debug info: Vyv E pressed.
+Debug info: Vyv E pressed.
+Debug info: Things are being done. (testScene updated)
+Debug info: Things are being rendered. (testScene rendered)
+Debug info: Vyv E pressed.
+Debug info: Vyv E pressed.
+Debug info: Things are being done. (testScene updated)
+Debug info: Things are being rendered. (testScene rendered)
+Debug info: Vyv E pressed.
+Debug info: Vyv E pressed.
+Debug info: Things are being done. (testScene updated)
+Debug info: Things are being rendered. (testScene rendered)
+Debug info: Things are being done. (testScene updated)
+Debug info: Things are being rendered. (testScene rendered)
+Debug info: Things are being done. (testScene updated)
+Debug info: Things are being rendered. (testScene rendered)
+Debug info: Things are being done. (testScene updated)
+Debug info: Things are being rendered. (testScene rendered)
+Debug info: Things are being done. (testScene updated)
+Debug info: Things are being rendered. (testScene rendered)
+Debug info: Things are being done. (testScene updated)
+Debug info: Things are being rendered. (testScene rendered)
+Debug info: Things are being done. (testScene updated)
+Debug info: Things are being rendered. (testScene rendered)
+Debug info: Things are being done. (testScene updated)
+Debug info: Things are being rendered. (testScene rendered)
+Debug info: Things are being done. (testScene updated)
+Debug info: Things are being rendered. (testScene rendered)
+Debug info: Things are being done. (testScene updated)
+Debug info: Things are being rendered. (testScene rendered)
+Debug info: Things are being done. (testScene updated)
+Debug info: Things are being rendered. (testScene rendered)
+Debug info: Things are being done. (testScene updated)
+Debug info: Things are being rendered. (testScene rendered)
+Debug info: Things are being done. (testScene updated)
+Debug info: Things are being rendered. (testScene rendered)
+Debug info: Things are being done. (testScene updated)
+Debug info: Things are being rendered. (testScene rendered)
+Debug info: Things are being done. (testScene updated)
+Debug info: Things are being rendered. (testScene rendered)
+Debug info: Things are being done. (testScene updated)
+Debug info: Things are being rendered. (testScene rendered)
+Debug info: Things are being done. (testScene updated)
+Debug info: Things are being rendered. (testScene rendered)
+Debug info: Things are being done. (testScene updated)
+Debug info: Things are being rendered. (testScene rendered)
+Debug info: Things are being done. (testScene updated)
+Debug info: Things are being rendered. (testScene rendered)
+Debug info: Things are being done. (testScene updated)
+Debug info: Things are being rendered. (testScene rendered)
+Debug info: Things are being done. (testScene updated)
+Debug info: Things are being rendered. (testScene rendered)
+Debug info: Things are being done. (testScene updated)
+Debug info: Things are being rendered. (testScene rendered)
+Debug info: Things are being done. (testScene updated)
+Debug info: Things are being rendered. (testScene rendered)
+Debug info: Things are being done. (testScene updated)
+Debug info: Things are being rendered. (testScene rendered)
+Debug info: Things are being done. (testScene updated)
+Debug info: Things are being rendered. (testScene rendered)
+Debug info: Things are being done. (testScene updated)
+Debug info: Things are being rendered. (testScene rendered)
+Debug info: Things are being done. (testScene updated)
+Debug info: Things are being rendered. (testScene rendered)
+Debug info: Things are being done. (testScene updated)
+Debug info: Things are being rendered. (testScene rendered)
+Debug info: Things are being done. (testScene updated)
+Debug info: Things are being rendered. (testScene rendered)
+Debug info: Things are being done. (testScene updated)
+Debug info: Things are being rendered. (testScene rendered)
+Debug info: Things are being done. (testScene updated)
+Debug info: Things are being rendered. (testScene rendered)
+Debug info: Things are being done. (testScene updated)
+Debug info: Things are being rendered. (testScene rendered)
+Debug info: Things are being done. (testScene updated)
+Debug info: Things are being rendered. (testScene rendered)
+Debug info: Things are being done. (testScene updated)
+Debug info: Things are being rendered. (testScene rendered)
+Debug info: Things are being done. (testScene updated)
+Debug info: Things are being rendered. (testScene rendered)
+Debug info: Things are being done. (testScene updated)
+Debug info: Things are being rendered. (testScene rendered)
+Debug info: Things are being done. (testScene updated)
+Debug info: Things are being rendered. (testScene rendered)
+Debug info: Things are being done. (testScene updated)
+Debug info: Things are being rendered. (testScene rendered)
+Debug info: Things are being done. (testScene updated)
+Debug info: Things are being rendered. (testScene rendered)
+Debug info: Things are being done. (testScene updated)
+Debug info: Things are being rendered. (testScene rendered)
+Debug info: Things are being done. (testScene updated)
+Debug info: Things are being rendered. (testScene rendered)
+Debug info: Things are being done. (testScene updated)
+Debug info: Things are being rendered. (testScene rendered)
+Debug info: Things are being done. (testScene updated)
+Debug info: Things are being rendered. (testScene rendered)
+Debug info: Things are being done. (testScene updated)
+Debug info: Things are being rendered. (testScene rendered)
+Debug info: Things are being done. (testScene updated)
+Debug info: Things are being rendered. (testScene rendered)
+Debug info: Vyv Left pressed.
+Debug info: Vyv Left pressed.
+Debug info: Things are being done. (testScene updated)
+Debug info: Things are being rendered. (testScene rendered)
+Debug info: Vyv Left pressed.
+Debug info: Vyv Left pressed.
+Debug info: Things are being done. (testScene updated)
+Debug info: Things are being rendered. (testScene rendered)
+Debug info: Vyv Left pressed.
+Debug info: Vyv Left pressed.
+Debug info: Things are being done. (testScene updated)
+Debug info: Things are being rendered. (testScene rendered)
+Debug info: Vyv Left pressed.
+Debug info: Vyv Left pressed.
+Debug info: Things are being done. (testScene updated)
+Debug info: Things are being rendered. (testScene rendered)
+Debug info: Vyv Left pressed.
+Debug info: Vyv Left pressed.
+Debug info: Things are being done. (testScene updated)
+Debug info: Things are being rendered. (testScene rendered)
+Debug info: Vyv Left pressed.
+Debug info: Vyv Left pressed.
+Debug info: Things are being done. (testScene updated)
+Debug info: Things are being rendered. (testScene rendered)
+Debug info: Vyv Left pressed.
+Debug info: Vyv Left pressed.
+Debug info: Things are being done. (testScene updated)
+Debug info: Things are being rendered. (testScene rendered)
+Debug info: Vyv Right pressed.
+Debug info: Vyv Right pressed.
+Debug info: Things are being done. (testScene updated)
+Debug info: Things are being rendered. (testScene rendered)
+Debug info: Vyv Right pressed.
+Debug info: Vyv Right pressed.
+Debug info: Things are being done. (testScene updated)
+Debug info: Things are being rendered. (testScene rendered)
+Debug info: Vyv Right pressed.
+Debug info: Vyv Right pressed.
+Debug info: Things are being done. (testScene updated)
+Debug info: Things are being rendered. (testScene rendered)
+Debug info: Vyv Right pressed.
+Debug info: Vyv Right pressed.
 Debug info: Things are being done. (testScene updated)
 Debug info: Things are being rendered. (testScene rendered)
 Debug info: Things are being done. (testScene updated)
