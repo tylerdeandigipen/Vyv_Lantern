@@ -48,7 +48,7 @@
                  }
                  else if(bakedLightsBuffer->buffer[x][y].a != 0)
                  {
-                     outputBuffer->buffer[x][y] += (inputBuffer->buffer[x][y] * (bakedLightsBuffer->buffer[x][y] / 255));
+                     outputBuffer->buffer[x][y] += (inputBuffer->buffer[x][y] * (bakedLightsBuffer->buffer[x][y]));
                      outputBuffer->buffer[x][y] += (bakedLightsBuffer->buffer[x][y] * bakedVolumetricIntensity);
                  }
              }
@@ -76,7 +76,7 @@
                  }
 
                  lumiosity = FindPixelLuminosity(x, y, i, staticLightSource);
-                 bakedLightsBuffer->buffer[x][y] += (staticLightSource[i].color * lumiosity);
+                 bakedLightsBuffer->buffer[x][y] += ((staticLightSource[i].color * lumiosity) / 255);
              }
          }
      }
@@ -125,6 +125,10 @@
              {
                  midAngle = (minAng + maxAng) / 2;
                  angularFalloff = -1 * (((abs(angle - midAngle) - lightSource_[i].maxAngle)) / (lightSource_[i].maxAngle - lightSource_[i].minAngle));
+                 if (angularFalloff < 0)
+                 {
+                     return 0;
+                 }
                  angularFalloff = clamp(lightSource_[i].angularWeight * angularFalloff, 0, 1);
              }
          }
@@ -135,8 +139,13 @@
          if (lightSource_[i].radialWeight != 0)
          {
              //calculate radialfalloff
+             //maybe change to dist squared later?
              distFromCenter = distance(lightSource_[i].position.x, lightSource_[i].position.y, (float)x, (float)y); //find distance from the center of the light   
              radialFalloff = 1 / (1 + (lightSource_[i].radialMult1 * distFromCenter) + (lightSource_[i].radialMult2 * (distFromCenter * distFromCenter)));
+             if (radialFalloff < 0)
+             {
+                 return 0;
+             }
              radialFalloff = clamp(lightSource_[i].radialWeight * radialFalloff, 0, 1);
          }
          else
@@ -220,20 +229,27 @@
      outputBuffer->screenScale = screenScale;
  }
 
+ int needToSetSreenSize = 0;
+
  void Renderer::Update()
  {
+     if (needToSetSreenSize == 0)
+     {
+         SDL_RenderSetScale(renderer, outputBuffer->screenScale, outputBuffer->screenScale);
+         needToSetSreenSize = 1;
+     }
+
      RenderLightingPass();
-     SDL_RenderSetScale(renderer, outputBuffer->screenScale, outputBuffer->screenScale);
      //debug count something code
-     /*
-     for(int i = 0; i < thing to count * 2; i++)
+     
+     for(int i = 0; i < numLights * 2; i++)
      {
         if(i % 2 == 0)
         {
-            outputBuffer->buffer[i + 1][0];
+            outputBuffer->buffer[i + 1][0] = {255,255,255,255};
         }
      }
-     */
+    
      for (int x = 0; x < outputBuffer->BufferSizeX; ++x)
      {
          for (int y = 0; y < outputBuffer->BufferSizeY; ++y)

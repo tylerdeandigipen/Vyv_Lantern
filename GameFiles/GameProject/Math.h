@@ -102,6 +102,12 @@ float distance(float x1, float y1, float x2, float y2)
 	return static_cast<float>(sqrt(pow(x2 - x1, 2) + pow(y2 - y1, 2) * 1.0));
 }
 
+// calculate distance from 2 points squared
+float distanceSquared(float x1, float y1, float x2, float y2)
+{
+	return static_cast<float>(pow(x2 - x1,2) + pow(y2 - y1, 2) * 1.0);
+}
+
 float clamp(float value, float min, float max)
 {
 	if (value <= max && value >= min)

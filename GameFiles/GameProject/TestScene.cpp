@@ -193,7 +193,6 @@ void tempPlayerMovementLol()
     if (inputHandler->keyPressed(SDLK_UP) == true)
     {
         pixelRenderer.objects[0]->position.y -= 2;
-        //pixelRenderer.AddLight(pixelRenderer.staticLightSource[0]);
         //AudioManager.PlaySFX("footsteps.ogg");
     }
     if (inputHandler->keyPressed(SDLK_DOWN) == true)
@@ -209,6 +208,8 @@ void tempPlayerMovementLol()
     if (inputHandler->keyPressed(SDLK_LEFT) == true)
     {
         pixelRenderer.objects[0]->position.x -= 2;
+        pixelRenderer.AddLight(pixelRenderer.lightSource[0]);
+
         //AudioManager.PlaySFX("footsteps.ogg");
     }
     if (inputHandler->keyPressed(SDLK_e) == true)
