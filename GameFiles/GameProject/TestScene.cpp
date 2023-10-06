@@ -241,6 +241,7 @@ void tempPlayerMovementLol(float dt)
     pixelRenderer.lightSource[0].angle = atan2(x - (pixelRenderer.lightSource[0].position.x * 6), y - (pixelRenderer.lightSource[0].position.y * 6)) * 57.295779f;
 }
 
+/*algo for brensenham algo*/
 void BrandonTurkeyAlgo(float x1, float y1, float x2, float y2, Light clr)
 {
 
@@ -265,7 +266,7 @@ void TestScene::Update(float dt)
         pixelRenderer.objects[i]->aabb.max = { pixelRenderer.objects[i]->position.x + pixelRenderer.objects[i]->BufferSizeX, pixelRenderer.objects[i]->position.y + pixelRenderer.objects[i]->BufferSizeY };
     };
 
-    
+    /*This will make ALL objects collidable*/
     for (int a = 0; a < ObjCount; a++)
     {
         for (int b = a + 1; b < ObjCount; b++)
