@@ -260,7 +260,15 @@
      {
         if(i % 2 == 0)
         {
-            outputBuffer->buffer[i + 1][0] = {0,255,0,255};
+            if (shut_up > 10)
+            {
+                outputBuffer->buffer[i + 1][0] = { 0,255,0,255 };
+            }
+            else
+            {
+                outputBuffer->buffer[i + 1][0] = { 255,0,0,255 };
+            }
+            
         }
      }
      for (int i = 0; i < numLights * 2; i++)
