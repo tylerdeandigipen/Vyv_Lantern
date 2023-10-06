@@ -23,24 +23,48 @@ Logging& Logging::GetInstance(const std::string& filename)
 	static Logging instance(filename);
 	return instance;
 }
-void Logging::Log(const std::string& message)
+
+/* I used chatgpt for this bc idk how the fuck the ,... argument works! funky number parameters. */
+void Logging::Log(const char* format, ...)
 {
-	if (logFile.is_open())
+	if (!logFile.is_open())
 	{
-		logFile << message;
-		logFile.flush();
+		return;
 	}
 
-	OutputDebugStringA(message.c_str());
+	va_list args;
+	va_start(args, format);
+
+	char buffer[4096];
+	vsnprintf(buffer, sizeof(buffer), format, args);
+
+	logFile << buffer;
+	logFile.flush();
+
+	va_end(args);
+
+	OutputDebugStringA(buffer);
+
 }
 
-void Logging::LogLine(const std::string& message)
+void Logging::LogLine(const char* format, ...)
 {
-	if (logFile.is_open())
+	if (!logFile.is_open())
 	{
-		logFile << message << std::endl;
-		logFile.flush();
+		return;
 	}
 
-	OutputDebugStringA((message + "\n").c_str());
+	va_list args;
+	va_start(args, format);
+
+	char buffer[4096];
+	vsnprintf(buffer, sizeof(buffer), format, args);
+
+	logFile << buffer << std::endl;
+	logFile.flush();
+
+	va_end(args);
+
+	OutputDebugStringA(buffer);
+	OutputDebugStringA("\n");
 }

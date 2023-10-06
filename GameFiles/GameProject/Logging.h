@@ -9,8 +9,8 @@ public:
 	static Logging& GetInstance(const std::string& filename = "debugLog.log");
 	~Logging();
 
-	void Log(const std::string& message);
-	void LogLine(const std::string& message);
+	void Log(const char* format, ...);
+	void LogLine(const char* format, ...);
 
 private:
 	Logging(const std::string& filename);
