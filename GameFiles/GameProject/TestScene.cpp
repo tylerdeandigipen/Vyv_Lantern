@@ -67,7 +67,7 @@ Engine::EngineCode TestScene::Load()
 Engine::EngineCode TestScene::Init()
 {
     /*BGM*/
-    //AudioManager.PlayMusic("bgm.ogg");
+    AudioManager.PlayMusic("bgm.ogg");
 
 
     inputHandler = new Inputs(window);
