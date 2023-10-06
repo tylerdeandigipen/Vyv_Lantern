@@ -11,11 +11,12 @@ public:
 	float b = 0;
 	float a = 0;
 
-	
 	Color(float r, float g, float b, float a);
 	Color(Color &rhs);
 	Color();
 	void ColorClamp();
+
+	float GetAlpha();
 
 	Color& operator =(const Color& rhs)&;
 	Color& operator +=(const Color& rhs)&;
@@ -27,6 +28,7 @@ public:
 	Color operator /(const float rhs);
 
 private:
+
 };
 
 

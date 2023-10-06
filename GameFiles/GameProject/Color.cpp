@@ -34,6 +34,11 @@ void Color::ColorClamp()
 	a = clamp(a, 0, 255);
 }
 
+float Color::GetAlpha()
+{
+	return a;
+}
+
 Color& Color::operator =(Color const& rhs)& {
 	r = rhs.r;
 	g = rhs.g;

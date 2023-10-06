@@ -44,6 +44,8 @@
                      lightMultiplier = FindPixelLuminosity(x, y, i, lightSource);  
                      if (lightMultiplier != 0)
                      {
+                         lightMultiplier = 1;
+
                          outputBuffer->buffer[x][y] += (inputBuffer->buffer[x][y] * ((lightSource[i].color * lightMultiplier) / 255));
 
                          lightMultiplier *= lightSource[i].volumetricIntensity;
@@ -250,7 +252,6 @@
      //debug count something code
      ++frameCount;
      if (currentTime - startTime >= 1000) {
-         std::cout << "FPS: " << frameCount << std::endl;
          shut_up = frameCount;
          frameCount = 0;
          startTime = currentTime;

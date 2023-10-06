@@ -198,7 +198,7 @@ Engine::EngineCode TestScene::Init()
     logger.LogLine("Debug info: Lights, camera, action! (testScene init)");
 	return Engine::NothingBad;
 }
-
+int canPlaceMoreLight = 0;
 float moveSpeed = 20;
 void tempPlayerMovementLol(float dt)
 {
@@ -231,10 +231,14 @@ void tempPlayerMovementLol(float dt)
         logger.LogLine("Debug info: Vyv Left pressed.");
         //AudioManager.PlaySFX("footsteps.ogg");
     }
-    if (inputHandler->keyPressed(SDLK_e) == true)
+    if (inputHandler->keyPressed(SDLK_e) == true && canPlaceMoreLight == 1)
     {
         pixelRenderer.AddLight(pixelRenderer.lightSource[0]);
-
+        canPlaceMoreLight = 0;
+    }
+    if (inputHandler->keyPressed(SDLK_e) == false)
+    {
+        canPlaceMoreLight = 1;
     }
 
     int x, y;
@@ -279,11 +283,15 @@ void TestScene::Update(float dt)
             }
             else
             {
+<<<<<<< Updated upstream
                 if (soundCooldown <= 0.0f) 
                 {
                     AudioManager.PlaySFX("footsteps.ogg");
                     soundCooldown = 1.0f; // Set the cooldown time
                 }
+=======
+                //AudioManager.PlaySFX("oof.ogg");
+>>>>>>> Stashed changes
             }
         }
     }

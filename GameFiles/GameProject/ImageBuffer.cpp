@@ -125,11 +125,7 @@ ImageBuffer::~ImageBuffer()
 }
 ImageBuffer& ImageBuffer::ClearImageBuffer()
 {
-    Color trans;
-    trans.r = 0;
-    trans.g = 0;
-    trans.b = 0;
-    trans.a = 0;
+    Color trans = { 0,0,0,0 };
     for (int i = 0; i < size.x; ++i)
     {
         for (int j = 0; j < size.y; ++j)
@@ -160,15 +156,15 @@ void ImageBuffer::MergeLayers(ImageBuffer* bottom, ImageBuffer* top)
 
 void ImageBuffer::MergeLayersIndvPixel(ImageBuffer* bottom, ImageBuffer* middle, ImageBuffer* top, int x, int y)
 {
-    if (top->buffer[x][y].a != 0)
+    if (top->buffer[x][y].GetAlpha() != 0)
     {
         buffer[x][y] = top->buffer[x][y];
     }
-    else if (middle->buffer[x][y].a != 0)
+    else if (middle->buffer[x][y].GetAlpha() != 0)
     {
         buffer[x][y] = middle->buffer[x][y];
     }
-    else if (bottom->buffer[x][y].a != 0)
+    else if (bottom->buffer[x][y].GetAlpha() != 0)
     {
         buffer[x][y] = bottom->buffer[x][y];
     }
@@ -204,7 +200,7 @@ ImageBuffer& ImageBuffer::AddSprite(ImageBuffer *sprite)
     {
         for (int y = tempPosY; y < sprite->size.y - endPointY; ++y)
         {
-            if (sprite->buffer[x][y].a != 0)
+            if (sprite->buffer[x][y].GetAlpha() != 0)
             {
                 buffer[x + (int)sprite->position.x][y + (int)sprite->position.y] = sprite->buffer[x][y];
             }
