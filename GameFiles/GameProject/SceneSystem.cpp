@@ -7,7 +7,7 @@
 // Copyright © 2023 DigiPen (USA) Corporation.
 //
 //------------------------------------------------------------------------------
-
+#include <cassert>
 #include "SceneSystem.h"
 #include "PlatformSystem.h"
 #include "Scene.h"
@@ -18,6 +18,7 @@ SceneSystem* SceneSystem::instance = new SceneSystem();
 
 Engine::EngineCode SceneSystem::Init()
 {
+	assert(DefaultSceneInstance != NULL);
 	instance->SetScene(DefaultSceneInstance);
 	return Engine::NothingBad;
 }
@@ -43,6 +44,7 @@ void SceneSystem::Update(float dt)
 
 void SceneSystem::Render()
 {
+	assert(activeScene != NULL);
 	activeScene->Render();
 }
 
@@ -65,6 +67,7 @@ void SceneSystem::SetScene(Scene* scene)
 
 void SceneSystem::RestartScene()
 {
+	assert(activeScene != NULL);
 	SetScene(activeScene);
 }
 
@@ -105,6 +108,7 @@ void SceneSystem::ChangeScene()
 {
 	if (!nextScene)
 	{
+		assert(false && "nextScene is NULL!");
 		throw(Engine::AllScenesNull);
 	}
 

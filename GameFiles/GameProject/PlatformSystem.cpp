@@ -10,6 +10,7 @@
 
 #include "stdafx.h"
 #include <Windows.h>
+#include <cassert>
 
 #include "BaseSystem.h"
 #include "PlatformSystem.h"
@@ -18,6 +19,7 @@ PlatformSystem* PlatformSystem::instance = new PlatformSystem();
 
 Engine::EngineCode PlatformSystem::Init()
 {
+    assert(winHandle != NULL);
     return Engine::NothingBad;
 }
 
@@ -30,6 +32,7 @@ void PlatformSystem::Render() { }
 
 Engine::EngineCode PlatformSystem::Close()
 {
+    assert(instance != NULL);
     return Engine::NothingBad;
 }
 
@@ -40,6 +43,7 @@ PlatformSystem* PlatformSystem::GetInstance()
 
 void PlatformSystem::ChangeTitle(const char* title)
 {
+    assert(title != NULL);
     SetWindowTextA(winHandle, title);
 }
 

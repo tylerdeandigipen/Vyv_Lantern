@@ -12,6 +12,7 @@
 #include "Engine.h"
 #include "BaseSystem.h"
 #include "Time.h"
+#include <cassert>
 
 Engine* Engine::instance = new Engine();
 
@@ -24,7 +25,9 @@ Engine::EngineCode Engine::Start()
 		{
 			systems[i]->Init();
 		}
-		catch (EngineCode engineFailure) {
+		catch (EngineCode engineFailure) 
+		{
+			assert(engineFailure && "engine failed!");
 			return engineFailure;
 		}
 	}
@@ -41,6 +44,7 @@ Engine::EngineCode Engine::Start()
 			}
 			catch (EngineCode updateFailure)
 			{
+				assert(updateFailure && "update failed!");
 				return updateFailure;
 			}
 			if (code == CloseWindow)
@@ -53,6 +57,7 @@ Engine::EngineCode Engine::Start()
 		}
 		catch (EngineCode renderFailure)
 		{
+			assert(renderFailure && "render failed!");
 			return renderFailure;
 		}
 		if (code == CloseWindow)
