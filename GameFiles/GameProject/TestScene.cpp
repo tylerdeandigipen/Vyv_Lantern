@@ -69,7 +69,7 @@ Engine::EngineCode TestScene::Load()
 Engine::EngineCode TestScene::Init()
 {
     /*BGM*/
-    AudioManager.PlayMusic("bgm.ogg");
+    //AudioManager.PlayMusic("bgm.ogg");
 
 
     inputHandler = new Inputs(window);
@@ -281,7 +281,7 @@ void TestScene::Update(float dt)
             {
                 if (soundCooldown <= 0.0f) 
                 {
-                    AudioManager.PlaySFX("oof.ogg");
+                    AudioManager.PlaySFX("footsteps.ogg");
                     soundCooldown = 1.0f; // Set the cooldown time
                 }
             }
