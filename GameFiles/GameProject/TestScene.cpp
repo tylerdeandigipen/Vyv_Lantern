@@ -44,6 +44,8 @@ Color black(0, 0, 0, 255);
 Color grey(150, 150, 150, 255);
 Color blue(50, 100, 255, 255);
 
+float soundCooldown = 0.0f;
+
 int ObjCount;
 
 /* NOTICE !!!!!!!!!! Feel free to "turn off" debug messages as you please. You can see them in the debugLog.txt in the game files, or in the output tab when debugging. Literally
@@ -277,11 +279,21 @@ void TestScene::Update(float dt)
             }
             else
             {
-                AudioManager.PlaySFX("oof.ogg");
+                if (soundCooldown <= 0.0f) 
+                {
+                    AudioManager.PlaySFX("oof.ogg");
+                    soundCooldown = 1.0f; // Set the cooldown time
+                }
             }
         }
     }
     logger.LogLine("Debug info: Things are being done. (testScene updated)");
+
+    // Update the cooldown timer.
+    soundCooldown -= dt;
+    if (soundCooldown < 0.0f) {
+        soundCooldown = 0.0f;
+    }
 }
 
 void TestScene::Render()
