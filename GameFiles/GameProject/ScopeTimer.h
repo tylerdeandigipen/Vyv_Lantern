@@ -4,16 +4,16 @@
 #include <chrono>
 #include <string>
 
-class scopeClass
+class ScopeTimer
 {
 	std::chrono::time_point<std::chrono::high_resolution_clock> startTimept;
 	std::string name_;
-	scopeClass(std::string name)
+	ScopeTimer(std::string name)
 	{
 		startTimept = std::chrono::high_resolution_clock::now();
 	}
 
-	~scopeClass()
+	~ScopeTimer()
 	{
 		auto endTimept = std::chrono::high_resolution_clock::now();
 
@@ -22,6 +22,6 @@ class scopeClass
 		auto duration = end - start;
 		double ms = duration * 0.001;
 
-
+		//add debug out code here
 	}
 };

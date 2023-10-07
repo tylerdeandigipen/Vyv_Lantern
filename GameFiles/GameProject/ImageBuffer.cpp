@@ -1,4 +1,5 @@
 #include "ImageBuffer.h"
+#include <inttypes.h>
 
 ImageBuffer::ImageBuffer(ImageBuffer& rhs)
 {
@@ -72,9 +73,9 @@ ImageBuffer::ImageBuffer(const char* filename)
     {
         int temp;
         char hold;
-        float red = 0.0f;
-        float green = 0.0f;
-        float blue = 0.0f;
+        uint8_t red = 0.0f;
+        uint8_t green = 0.0f;
+        uint8_t blue = 0.0f;
         
         fscanf_s(fp, "%c", &hold);
         fscanf_s(fp, "%c", &hold);
@@ -97,9 +98,9 @@ ImageBuffer::ImageBuffer(const char* filename)
         {
             for (int i = 0; i < BufferSizeX; ++i)
             {
-                fscanf_s(fp, "%f", &red);
-                fscanf_s(fp, "%f", &green);
-                fscanf_s(fp, "%f", &blue);
+                fscanf_s(fp, "%" SCNu8, &red);
+                fscanf_s(fp, "%" SCNu8, &green);
+                fscanf_s(fp, "%" SCNu8, &blue);
                 if (red == 0 && green == 0 && blue == 0)
                 {
                     buffer[i][j] = trans;
@@ -142,7 +143,7 @@ void ImageBuffer::MergeLayers(ImageBuffer* bottom, ImageBuffer* top)
     {
         for (int y = 0; y < size.y; ++y)
         {
-            if (top->buffer[x][y].a == 0)
+            if (top->buffer[x][y].GetAlpha() == 0)
             {
                 buffer[x][y] = bottom->buffer[x][y];
             }

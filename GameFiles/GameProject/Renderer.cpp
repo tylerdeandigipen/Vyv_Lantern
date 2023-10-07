@@ -19,6 +19,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <iostream>
+#include <string>
 //BaseSystem::BaseSystem(const char* _name) : name(_name) {}
 
 
@@ -28,7 +29,9 @@
      int y = 0;
      int i = 0;
      float lightMultiplier = 0;
-
+     float rScale = 0;
+     float gScale = 0;
+     float bScale = 0;
      Color trans{ 0,0,0,0 };
 
      for (x = 0; x < inputBuffer->size.x; ++x)
@@ -44,18 +47,26 @@
                      lightMultiplier = FindPixelLuminosity(x, y, i, lightSource);  
                      if (lightMultiplier != 0)
                      {
-                         lightMultiplier = 1;
+                         rScale = (lightSource[i].color.GetRed() * lightMultiplier) / 255;
+                         gScale = (lightSource[i].color.GetGreen() * lightMultiplier) / 255;
+                         bScale = (lightSource[i].color.GetBlue() * lightMultiplier) / 255;
 
-                         outputBuffer->buffer[x][y] += (inputBuffer->buffer[x][y] * ((lightSource[i].color * lightMultiplier) / 255));
+                         outputBuffer->buffer[x][y] += inputBuffer->buffer[x][y].ScaleIndividual(rScale, gScale, bScale);
 
                          lightMultiplier *= lightSource[i].volumetricIntensity;
                          outputBuffer->buffer[x][y] += (lightSource[i].color * lightMultiplier);
                      }
                  }
-                 else if(bakedLightsBuffer->buffer[x][y].a != 0)
+                 else if(bakedLightsBuffer->buffer[x][y].intensity != 0)
                  {
-                     outputBuffer->buffer[x][y] += (inputBuffer->buffer[x][y] * (bakedLightsBuffer->buffer[x][y]));
-                     outputBuffer->buffer[x][y] += (bakedLightsBuffer->buffer[x][y] * bakedVolumetricIntensity);
+                     lightMultiplier = bakedLightsBuffer->buffer[x][y].intensity;
+                     rScale = (bakedLightsBuffer->buffer[x][y].GetRed() * lightMultiplier) / 255;
+                     gScale = (bakedLightsBuffer->buffer[x][y].GetGreen() * lightMultiplier) / 255;
+                     bScale = (bakedLightsBuffer->buffer[x][y].GetBlue() * lightMultiplier) / 255;
+                     outputBuffer->buffer[x][y] += inputBuffer->buffer[x][y].ScaleIndividual(rScale, gScale, bScale);
+                     
+                     lightMultiplier *= bakedVolumetricIntensity;
+                     outputBuffer->buffer[x][y] += (bakedLightsBuffer->buffer[x][y] * lightMultiplier);
                  }
              }
          }
@@ -66,10 +77,12 @@
  void Renderer::BakeLights()
  {
      Color trans{ 0,0,0,0 };
-     float lumiosity;
+     float lightMultiplier;
      int x = 0;
      int y = 0;
      int i = 0;
+
+
      for (x = 0; x < inputBuffer->size.x; ++x)
      {
          for (y = 0; y < inputBuffer->size.y; ++y)
@@ -79,11 +92,18 @@
                  if (i == 0)
                  {
                      bakedLightsBuffer->buffer[x][y] = trans;
+                     bakedLightsBuffer->buffer[x][y].intensity = 0;
                  }
 
-                 lumiosity = FindPixelLuminosity(x, y, i, staticLightSource);
-                 bakedLightsBuffer->buffer[x][y] += ((staticLightSource[i].color * lumiosity) / 255);
+                 lightMultiplier = FindPixelLuminosity(x, y, i, staticLightSource);
+                 if (lightMultiplier != 0)
+                 {
+                    bakedLightsBuffer->buffer[x][y].intensity += lightMultiplier;
+                    bakedLightsBuffer->buffer[x][y] += staticLightSource[i].color; 
+                    bakedLightsBuffer->buffer[x][y].SetAlpha(255);
+                 }
              }
+             bakedLightsBuffer->buffer[x][y].intensity /= numStaticLights;
          }
      }
  }
@@ -170,8 +190,8 @@
 
      //make test tiles to make tilemap with (temp test tiles)
      Color white(255, 255, 255, 255);
-     Color black(0, 0, 0, 255);
-     Color grey(150, 150, 150, 255);
+     Color black(1, 1, 1, 255);
+     Color grey = { 150, 150, 150, 255 };
      Color blue(50, 100, 255, 255);
      ImageBuffer* testBackgroundTile = new ImageBuffer(15, 15);
      for (int x = 0; x < testBackgroundTile->BufferSizeX; ++x)
@@ -191,12 +211,7 @@
      {
          for (int y = 0; y < testWallTile->BufferSizeY; ++y)
          {
-             if (x % 3 != 0 && y % 3 != 0)
-             {
-                 testWallTile->buffer[x][y] = grey;
-             }
-             else
-                 testWallTile->buffer[x][y] = grey;
+                 testWallTile->buffer[x][y] = black;
          }
      }
      //end of test tiles
@@ -256,22 +271,9 @@
          frameCount = 0;
          startTime = currentTime;
      }
+     std::string fpsString = std::to_string(shut_up);
+     SDL_SetWindowTitle(window, fpsString.c_str());
 
-     for(int i = 0; i < shut_up * 2; i++)
-     {
-        if(i % 2 == 0)
-        {
-            if (shut_up > 10)
-            {
-                outputBuffer->buffer[i + 1][0] = { 0,255,0,255 };
-            }
-            else
-            {
-                outputBuffer->buffer[i + 1][0] = { 255,0,0,255 };
-            }
-            
-        }
-     }
      for (int i = 0; i < numLights * 2; i++)
      {
          if (i % 2 == 0)
@@ -283,7 +285,7 @@
      {
          for (int y = 0; y < outputBuffer->BufferSizeY; ++y)
          {
-             SDL_SetRenderDrawColor(renderer, outputBuffer->buffer[x][y].r, outputBuffer->buffer[x][y].g, outputBuffer->buffer[x][y].b, 255);
+             SDL_SetRenderDrawColor(renderer, outputBuffer->buffer[x][y].GetRed(), outputBuffer->buffer[x][y].GetGreen(), outputBuffer->buffer[x][y].GetBlue(), 255);
              SDL_RenderDrawPoint(renderer, x, y);
          }
      }

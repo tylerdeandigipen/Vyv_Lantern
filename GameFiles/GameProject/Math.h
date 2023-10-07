@@ -123,4 +123,20 @@ float clamp(float value, float min, float max)
 		return max;
 	}
 }
+
+uint8_t clampInt8(uint8_t value, uint8_t min, uint8_t max)
+{
+	if (value <= max && value >= min)
+	{
+		return value;
+	}
+	else if (value < min)
+	{
+		return min;
+	}
+	else
+	{
+		return max;
+	}
+}
 #endif // !MATH_H_

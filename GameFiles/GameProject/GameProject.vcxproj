@@ -169,6 +169,7 @@
     <ClInclude Include="Resource.h" />
     <ClInclude Include="Scene.h" />
     <ClInclude Include="SceneSystem.h" />
+    <ClInclude Include="ScopeTimer.h" />
     <ClInclude Include="StubScene.h" />
     <ClInclude Include="targetver.h" />
     <ClInclude Include="TestScene.h" />

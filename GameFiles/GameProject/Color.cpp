@@ -1,8 +1,9 @@
 #include "Color.h"
 
+uint8_t clampInt8(uint8_t value, uint8_t min, uint8_t max);
 float clamp(float value, float min, float max);
 
-Color::Color(float r, float g, float b, float a) // constructor definition
+Color::Color(uint8_t r, uint8_t g, uint8_t b, uint8_t a) // constructor definition
 	: r{ r }
 	, g{ g }
 	, b{ b }
@@ -26,17 +27,38 @@ Color::Color() // default constructor definition
 {
 }
 
-void Color::ColorClamp()
+uint8_t Color::GetRed()
 {
-	r = clamp(r,0,255);
-	g = clamp(g, 0, 255);
-	b = clamp(b, 0, 255);
-	a = clamp(a, 0, 255);
+	return r;
 }
 
-float Color::GetAlpha()
+uint8_t Color::GetGreen()
+{
+	return g;
+}
+
+uint8_t Color::GetBlue()
+{
+	return b;
+}
+
+uint8_t Color::GetAlpha()
 {
 	return a;
+}
+
+void Color::SetAlpha(uint8_t a_)
+{
+	a = a_;
+}
+
+Color Color::ScaleIndividual(float rScale, float gScale, float bScale)
+{
+	Color result;
+	result.r = clamp(this->r * rScale, 0, 255);
+	result.g = clamp(this->g * gScale, 0, 255);
+	result.b = clamp(this->b * bScale, 0, 255);
+	return result;
 }
 
 Color& Color::operator =(Color const& rhs)& {
@@ -44,68 +66,54 @@ Color& Color::operator =(Color const& rhs)& {
 	g = rhs.g;
 	b = rhs.b;
 	a = rhs.a;
-	ColorClamp();
 	return *this;
 };
 
 Color& Color::operator +=(Color const& rhs)& {
-	r += rhs.r;
-	g += rhs.g;
-	b += rhs.b;
-	a += rhs.a;
-	ColorClamp();
+	r = clamp(r + rhs.r, 0, 255);
+	g = clamp(g + rhs.g, 0, 255);
+	b = clamp(b + rhs.b, 0, 255);
 	return *this;
 };
 Color Color::operator +(const Color& rhs) {
 	Color result;
-	result.r = this->r + rhs.r;
-	result.g = this->g + rhs.g;
-	result.b = this->b + rhs.b;
-	result.a = this->a + rhs.a;
-	ColorClamp();
+	result.r = clamp(this->r + rhs.r, 0, 255);
+	result.g = clamp(this->g + rhs.g, 0, 255);
+	result.b = clamp(this->b + rhs.b, 0, 255);
+
 	return result;
 };
 Color& Color::operator -=(Color const& rhs)& {
-	r -= rhs.r;
-	g -= rhs.g;
-	b -= rhs.b;
-	a -= rhs.a;
-	ColorClamp();
+	r = clamp(r - rhs.r, 0, 255);
+	g = clamp(g - rhs.g, 0, 255);
+	b = clamp(b - rhs.b, 0, 255);
 	return *this;
 };
 Color Color::operator -(const Color& rhs) {
 	Color result;
-	result.r = this->r - rhs.r;
-	result.g = this->g - rhs.g;
-	result.b = this->b - rhs.b;
-	result.a = this->a - rhs.a;
-	ColorClamp();
+	result.r = clamp(this->r - rhs.r, 0, 255);
+	result.g = clamp(this->g - rhs.g, 0, 255);
+	result.b = clamp(this->b - rhs.b, 0, 255);
 	return result;
 };
 Color Color::operator *(const float rhs) {
 	Color result;
-	result.r = this->r * rhs;
-	result.g = this->g * rhs;
-	result.b = this->b * rhs;
-	result.a = this->a * rhs;
-	ColorClamp();
+	result.r = clamp(this->r * rhs, 0, 255);
+	result.g = clamp(this->g * rhs, 0, 255);
+	result.b = clamp(this->b * rhs, 0, 255);
 	return result;
 };
 Color Color::operator *(const Color& rhs) {
 	Color result;
-	result.r = this->r * rhs.r;
-	result.g = this->g * rhs.g;
-	result.b = this->b * rhs.b;
-	result.a = this->a * rhs.a;
-	ColorClamp();
+	result.r = clamp(this->r * rhs.r, 0, 255);
+	result.g = clamp(this->g * rhs.g, 0, 255);
+	result.b = clamp(this->b * rhs.b, 0, 255);
 	return result;
 };
 Color Color::operator /(const float rhs) {
 	Color result;
-	result.r = this->r / rhs;
-	result.g = this->g / rhs;
-	result.b = this->b / rhs;
-	result.a = this->a / rhs;
-	ColorClamp();
+	result.r = clamp(this->r / rhs, 0, 255);
+	result.g = clamp(this->g / rhs, 0, 255);
+	result.b = clamp(this->b / rhs, 0, 255);
 	return result;
 };

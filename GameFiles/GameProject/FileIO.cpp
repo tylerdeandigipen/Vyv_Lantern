@@ -45,9 +45,9 @@ ImageBuffer* ReadPPM(const char* filename)
 		int tempX = 0;
 		int tempY = 0;
 		char hold = NULL;
-		float red = 0.0f;
-		float green = 0.0f;
-		float blue = 0.0f;
+		uint8_t red = 0.0f;
+		uint8_t green = 0.0f;
+		uint8_t blue = 0.0f;
 		fscanf_s(fp, "%c", &hold);
 
 		fscanf_s(fp, "%c", &hold);

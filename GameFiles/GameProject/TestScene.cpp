@@ -73,6 +73,7 @@ Engine::EngineCode TestScene::Init()
 
 
     inputHandler = new Inputs(window);
+    pixelRenderer.window = window;
 
     testEntity = new Entity("goose2.ppm", window);
     testEntity->SetInputHandler(inputHandler);
@@ -90,16 +91,13 @@ Engine::EngineCode TestScene::Init()
     tempLight.position.x = 80;
     tempLight.position.y = 90;
 
-    tempLight.color.r = 216;
-    tempLight.color.g = 247;
-    tempLight.color.b = 255;
-    tempLight.color.a = 255;
+    tempLight.color = { 216, 247, 255, 255 };
 
     tempLight.maxAngle = 45;
     tempLight.minAngle = -45;
     tempLight.angle = 200;
 
-    tempLight.intensity = 3;
+    tempLight.intensity = 2.5f;
     tempLight.radialMult1 = 0.4f;
     tempLight.radialMult2 = 0.0f;
     tempLight.radialWeight = 1;
@@ -111,10 +109,7 @@ Engine::EngineCode TestScene::Init()
     tempLight2.position.x = 120;
     tempLight2.position.y = 50;
 
-    tempLight2.color.r = 255;
-    tempLight2.color.g = 182;
-    tempLight2.color.b = 76;
-    tempLight2.color.a = 255;
+    tempLight2.color = { 255, 182, 76, 255 };
 
     tempLight2.maxAngle = 25;
     tempLight2.minAngle = -25;
@@ -131,10 +126,7 @@ Engine::EngineCode TestScene::Init()
     tempLight3.position.x = 200;
     tempLight3.position.y = 90;
 
-    tempLight3.color.r = 255;
-    tempLight3.color.g = 182;
-    tempLight3.color.b = 76;
-    tempLight3.color.a = 255;
+    tempLight3.color = { 255, 182, 76, 255 };
 
     tempLight3.maxAngle = 360;
     tempLight3.minAngle = -360;
@@ -283,15 +275,12 @@ void TestScene::Update(float dt)
             }
             else
             {
-<<<<<<< Updated upstream
                 if (soundCooldown <= 0.0f) 
                 {
                     AudioManager.PlaySFX("footsteps.ogg");
                     soundCooldown = 1.0f; // Set the cooldown time
                 }
-=======
                 //AudioManager.PlaySFX("oof.ogg");
->>>>>>> Stashed changes
             }
         }
     }
