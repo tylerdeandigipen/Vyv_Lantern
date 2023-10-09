@@ -33,7 +33,15 @@
      float gScale = 0;
      float bScale = 0;
      Color trans{ 0,0,0,0 };
-
+     /*
+     * used for check if inside cone, couldent get to work do later
+     for (i = 0; i < numLights; ++i)
+     {
+         float angle = lightSource[i].angle;
+         lightSource[i].leftAnglePos = { cos(lightSource[i].maxAngle + angle) + lightSource[i].position.x, sin(lightSource[i].maxAngle + angle) + lightSource[i].position.y };
+         lightSource[i].rightAnglePos = { cos(lightSource[i].minAngle + angle) + lightSource[i].position.x, sin(lightSource[i].minAngle + angle) + lightSource[i].position.y };
+     }
+     */
      for (x = 0; x < inputBuffer->size.x; ++x)
      {
          for (y = 0; y < inputBuffer->size.y; ++y)
@@ -108,6 +116,11 @@
      }
  }
 
+bool isLeft(float aX, float aY, float bX, float bY, float cX, float cY)
+{
+     return (bX - aX) * (cY - aY) - (bY - aY) * (cX - aX) > 0;
+ }
+
  float Renderer::FindPixelLuminosity(float x, float y, int i, Light lightSource_[MAX_LIGHT_SOURCES])
  {
      if (lightSource_[i].intensity != 0)
@@ -123,6 +136,13 @@
          float volLightMultiplier = 0;
          if (lightSource_[i].angularWeight != 0)
          {
+             /*
+             * check if inside cone, couldent get to work do later
+             if (isLeft(lightSource_[i].position.x, lightSource_[i].position.y, lightSource_[i].leftAnglePos.x, lightSource_[i].leftAnglePos.y, x, y) == true && isLeft(lightSource_[i].position.x, lightSource_[i].position.y, lightSource_[i].rightAnglePos.x, lightSource_[i].rightAnglePos.y, x, y) == false)
+             {
+                 return 0;
+             }
+             */
              if (lightSource_[i].maxAngle + lightSource_[i].angle > 360)
              {
                  lightSource_[i].angle -= 360;
@@ -158,6 +178,7 @@
                  angularFalloff = clamp(lightSource_[i].angularWeight * angularFalloff, 0, 1);
              }
          }
+
          else
          {
              angularFalloff = 1;
@@ -166,6 +187,7 @@
          {
              //calculate radialfalloff
              //maybe change to dist squared later?
+
              distFromCenter = distance(lightSource_[i].position.x, lightSource_[i].position.y, (float)x, (float)y); //find distance from the center of the light   
              radialFalloff = 1 / (1 + (lightSource_[i].radialMult1 * distFromCenter) + (lightSource_[i].radialMult2 * (distFromCenter * distFromCenter)));
              if (radialFalloff < 0)
@@ -181,7 +203,7 @@
          lightMultiplier = lightSource_[i].intensity * radialFalloff * angularFalloff;
          return lightMultiplier;
      }
-     return 0;     
+     return 0;
  }
 
  void Renderer::MakeTileMap(int tileMapArray[16][9])

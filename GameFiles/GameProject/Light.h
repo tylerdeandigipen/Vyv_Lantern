@@ -14,6 +14,8 @@ public:
 	Color color;
 	int isStatic = 0;
 	int isBaked = 0;
+	gfxVector2 leftAnglePos;
+	gfxVector2 rightAnglePos;
 	float minAngle = 0;
 	float maxAngle = 0;
 	float angle = 0;

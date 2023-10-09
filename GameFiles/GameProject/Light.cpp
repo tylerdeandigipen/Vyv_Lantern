@@ -3,6 +3,9 @@
 Light::Light(const Light& rhs)
 {
 	position = rhs.position;
+	leftAnglePos = rhs.leftAnglePos;
+	rightAnglePos = rhs.rightAnglePos;
+
 	color = rhs.color;
 	minAngle = rhs.minAngle;
 	maxAngle = rhs.maxAngle;
