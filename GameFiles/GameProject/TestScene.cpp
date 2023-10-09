@@ -47,6 +47,7 @@ Color blue(50, 100, 255, 255);
 float soundCooldown = 0.0f;
 
 int ObjCount;
+const float pushForce = 1.0f;
 
 /* NOTICE !!!!!!!!!! Feel free to "turn off" debug messages as you please. You can see them in the debugLog.txt in the game files, or in the output tab when debugging. Literally
    you can call for the logger anywhere as long as you get an instance first. Use it in ur functions or something - taylee */
@@ -275,6 +276,27 @@ void TestScene::Update(float dt)
             }
             else
             {
+                // Calculate the vector from object 'a' to object 'b'
+                float pushDirX = pixelRenderer.objects[b]->position.x - pixelRenderer.objects[a]->position.x;
+                float pushDirY = pixelRenderer.objects[b]->position.y - pixelRenderer.objects[a]->position.y;
+
+                // Calculate the length of the vector
+                float pushDirLength = sqrt(pushDirX * pushDirX + pushDirY * pushDirY);
+
+                // Normalize the vector to obtain a unit vector
+                if (pushDirLength > 0)
+                {
+                    pushDirX /= pushDirLength;
+                    pushDirY /= pushDirLength;
+                }
+
+                // Apply the push force to both objects
+                pixelRenderer.objects[a]->position.x -= pushDirX * pushForce;
+                pixelRenderer.objects[a]->position.y -= pushDirY * pushForce;
+                pixelRenderer.objects[b]->position.x += pushDirX * pushForce;
+                pixelRenderer.objects[b]->position.y += pushDirY * pushForce;
+
+
                 if (soundCooldown <= 0.0f) 
                 {
                     AudioManager.PlaySFX("footsteps.ogg");
