@@ -1,3 +1,12 @@
+//------------------------------------------------------------------------------
+//
+// File Name:	Logging.cpp
+// Author(s):	TayLee Young
+// Purpose:		Prints to both console and a log file for debugging purposes
+//
+// Copyright © 2023 DigiPen (USA) Corporation.
+//
+//------------------------------------------------------------------------------
 #include "Logging.h"
 #include <Windows.h>
 
@@ -24,7 +33,13 @@ Logging& Logging::GetInstance(const std::string& filename)
 	return instance;
 }
 
-/* I used chatgpt for this bc idk how the fuck the ,... argument works! funky number parameters. */
+// The following code, namely any use of va_(anything) is not entirely mine. Credit goes to IBM:
+// https://www.ibm.com/docs/en/i/7.1?topic=lf-va-arg-va-end-va-start-access-function-arguments
+// 
+// For examples on how to use.
+// 
+// VA_(anything) is used to allow for arguments to be passed in when logging. Previously, just allowed strings.
+ 
 void Logging::Log(const char* format, ...)
 {
 	if (!logFile.is_open())
