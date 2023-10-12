@@ -1,6 +1,5 @@
 #include "Color.h"
 
-uint8_t clampInt8(uint8_t value, uint8_t min, uint8_t max);
 float clamp(float value, float min, float max);
 
 Color::Color(uint8_t r, uint8_t g, uint8_t b, uint8_t a) // constructor definition

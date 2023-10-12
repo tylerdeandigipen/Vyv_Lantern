@@ -10,13 +10,11 @@ public:
 	Color(uint8_t r, uint8_t g, uint8_t b, uint8_t a);
 	Color(Color &rhs);
 	Color();
-	void ColorClamp();
 
 	uint8_t GetAlpha();
 	uint8_t GetRed();
 	uint8_t GetBlue();
 	uint8_t GetGreen();
-	float intensity; //only use this with prebaked lights
 
 	void SetAlpha(uint8_t a_);
 	Color ScaleIndividual(float rScale, float gScale, float bScale);
