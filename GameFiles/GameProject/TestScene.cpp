@@ -22,6 +22,7 @@
 #include "Light.h"
 
 #include <SDL/SDL.h>
+#include <glad/glad.h>
 #include <iostream>
 
 Logging& logger = Logging::GetInstance();
@@ -34,8 +35,10 @@ Entity* testEntity;
 SDL_Renderer* renderer;
 Renderer pixelRenderer;
 
-SDL_Window* window = SDL_CreateWindow("MAIN SCENE", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, pixelRenderer.outputBuffer->BufferSizeX * pixelRenderer.outputBuffer->screenScale, pixelRenderer.outputBuffer->BufferSizeY * pixelRenderer.outputBuffer->screenScale, 0);
+SDL_Window* window;
 Inputs* inputHandler;
+
+SDL_GLContext glContext; // OpenGL context for SDL2
 
 Scene* TestSceneinstance = NULL; // ITS A GLOBAL VARIABLE CALM DOWN!! SHOW ME ANOTHER WAY AND ITS GONE
 
@@ -87,6 +90,18 @@ Engine::EngineCode TestScene::Init()
 
     if (SDL_Init(SDL_INIT_VIDEO) != 0) {
     }
+
+    // Specify Major version and minor version
+    SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 3);
+    SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 3);
+
+    // Create SDL Window
+    window = SDL_CreateWindow("MAIN SCENE", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, pixelRenderer.outputBuffer->BufferSizeX * pixelRenderer.outputBuffer->screenScale, pixelRenderer.outputBuffer->BufferSizeY * pixelRenderer.outputBuffer->screenScale, 0);
+
+    glContext = SDL_GL_CreateContext(window);
+
+    gladLoadGLLoader(SDL_GL_GetProcAddress);
+
     pixelRenderer.renderer = SDL_CreateRenderer(window, -1, 0);
 
     tempLight.position.x = 80;
@@ -325,6 +340,8 @@ void TestScene::Render()
 
 Engine::EngineCode TestScene::Exit()
 {
+    // Remember to clean up
+    SDL_GL_DeleteContext(glContext);
     SDL_DestroyWindow(window);
     SDL_Quit();
 

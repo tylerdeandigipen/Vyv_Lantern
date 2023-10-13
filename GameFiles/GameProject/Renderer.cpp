@@ -313,6 +313,9 @@ bool isLeft(float aX, float aY, float bX, float bY, float cX, float cY)
      }
 
      SDL_RenderPresent(renderer);
+
+     // Remember to swap window buffers
+     // SDL_GL_SwapWindow(window);
  }
 
  int Renderer::returnObjCnt()
