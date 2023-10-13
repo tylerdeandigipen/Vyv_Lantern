@@ -65,9 +65,9 @@
                          outputBuffer->buffer[x][y] += (lightSource[i].color * lightMultiplier);
                      }
                  }
-                 else if(bakedLightsBuffer->buffer[x][y].intensity != 0)
+                 else if(bakedIntensity[x][y] != 0)
                  {
-                     lightMultiplier = bakedLightsBuffer->buffer[x][y].intensity;
+                     lightMultiplier = bakedIntensity[x][y];
                      rScale = (bakedLightsBuffer->buffer[x][y].GetRed() * lightMultiplier) / 255;
                      gScale = (bakedLightsBuffer->buffer[x][y].GetGreen() * lightMultiplier) / 255;
                      bScale = (bakedLightsBuffer->buffer[x][y].GetBlue() * lightMultiplier) / 255;
@@ -100,18 +100,18 @@
                  if (i == 0)
                  {
                      bakedLightsBuffer->buffer[x][y] = trans;
-                     bakedLightsBuffer->buffer[x][y].intensity = 0;
+                     bakedIntensity[x][y] = 0;
                  }
 
                  lightMultiplier = FindPixelLuminosity(x, y, i, staticLightSource);
                  if (lightMultiplier != 0)
                  {
-                    bakedLightsBuffer->buffer[x][y].intensity += lightMultiplier;
+                     bakedIntensity[x][y] += lightMultiplier;
                     bakedLightsBuffer->buffer[x][y] += staticLightSource[i].color; 
                     bakedLightsBuffer->buffer[x][y].SetAlpha(255);
                  }
              }
-             bakedLightsBuffer->buffer[x][y].intensity /= numStaticLights;
+             bakedIntensity[x][y] /= numStaticLights;
          }
      }
  }

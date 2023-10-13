@@ -22,6 +22,7 @@ public:
 	ImageBuffer* backgroundLayer; //layer 0
 	ImageBuffer* bakedLightsBuffer;
 	ImageBuffer* inputBuffer;
+	float bakedIntensity[SCREEN_SIZE_X][SCREEN_SIZE_Y];
 	Light lightSource[MAX_LIGHT_SOURCES];
 	Light staticLightSource[MAX_LIGHT_SOURCES];
 	ImageBuffer* objects[MAX_OBJECTS];
