@@ -17,7 +17,7 @@ public:
 
 	void Update(float dt);
 private:
-	void Controller();
+	void Controller(float dt);
 	Inputs* input;
 };
 

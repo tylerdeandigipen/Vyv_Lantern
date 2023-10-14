@@ -210,7 +210,7 @@ int canPlaceMoreLight = 0;
 float moveSpeed = 20;
 void tempPlayerMovementLol(float dt)
 {
-    if (inputHandler->keyPressed(SDLK_UP) == true)
+    if (inputHandler->keyPressed(SDL_SCANCODE_UP))
     {
         pixelRenderer.objects[0]->position.y -= moveSpeed * dt;
 
@@ -218,33 +218,33 @@ void tempPlayerMovementLol(float dt)
         //pixelRenderer.AddLight(pixelRenderer.staticLightSource[0]);
         //AudioManager.PlaySFX("footsteps.ogg");
     }
-    if (inputHandler->keyPressed(SDLK_DOWN) == true)
+    if (inputHandler->keyPressed(SDL_SCANCODE_DOWN))
     {
         pixelRenderer.objects[0]->position.y += moveSpeed * dt;
 
         logger.LogLine("Debug info: Vyv Down pressed.");
         //AudioManager.PlaySFX("footsteps.ogg");
     }
-    if (inputHandler->keyPressed(SDLK_RIGHT) == true)
+    if (inputHandler->keyPressed(SDL_SCANCODE_RIGHT))
     {
         pixelRenderer.objects[0]->position.x += moveSpeed * dt;
 
         logger.LogLine("Debug info: Vyv Right pressed.");
         //AudioManager.PlaySFX("footsteps.ogg");
     }
-    if (inputHandler->keyPressed(SDLK_LEFT) == true)
+    if (inputHandler->keyPressed(SDL_SCANCODE_LEFT))
     {
         pixelRenderer.objects[0]->position.x -= moveSpeed * dt;
 
         logger.LogLine("Debug info: Vyv Left pressed.");
         //AudioManager.PlaySFX("footsteps.ogg");
     }
-    if (inputHandler->keyPressed(SDLK_e) == true && canPlaceMoreLight == 1)
+    if (inputHandler->keyPressed(SDL_SCANCODE_E) && canPlaceMoreLight == 1)
     {
         pixelRenderer.AddLight(pixelRenderer.lightSource[0]);
         canPlaceMoreLight = 0;
     }
-    if (inputHandler->keyPressed(SDLK_e) == false)
+    if (!inputHandler->keyPressed(SDL_SCANCODE_E))
     {
         canPlaceMoreLight = 1;
     }

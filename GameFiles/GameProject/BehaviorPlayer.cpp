@@ -31,7 +31,7 @@ void BehaviorPlayer::Update(float dt)
 {
 	dt = dt;
     input->handleInput();
-	Controller();
+	Controller(dt);
 }
 
 void BehaviorPlayer::SetInputHandler(Inputs* _input)
@@ -40,27 +40,27 @@ void BehaviorPlayer::SetInputHandler(Inputs* _input)
 }
 
 
-void BehaviorPlayer::Controller()
+void BehaviorPlayer::Controller(float dt)
 {
-    if (input->keyPressed(SDLK_w) == true)
+    if (input->keyPressed(SDL_SCANCODE_W))
     {
-        Parent()->Has(Transform)->translation->y -= 2;
+        Parent()->Has(Transform)->translation->y -= 50 * dt;
         //pixelRenderer.AddLight(pixelRenderer.staticLightSource[0]);
         //AudioManager.PlaySFX("footsteps.ogg");
     }
-    if (input->keyPressed(SDLK_s) == true)
+    if (input->keyPressed(SDL_SCANCODE_S))
     {
-        Parent()->Has(Transform)->translation->y += 2;
+        Parent()->Has(Transform)->translation->y += 50 * dt;
         //AudioManager.PlaySFX("footsteps.ogg");
     }
-    if (input->keyPressed(SDLK_d) == true)
+    if (input->keyPressed(SDL_SCANCODE_D))
     {
-        Parent()->Has(Transform)->translation->x += 2;
+        Parent()->Has(Transform)->translation->x += 50 * dt;
         //AudioManager.PlaySFX("footsteps.ogg");
     }
-    if (input->keyPressed(SDLK_a) == true)
+    if (input->keyPressed(SDL_SCANCODE_A))
     {
-        Parent()->Has(Transform)->translation->x -= 2;
+        Parent()->Has(Transform)->translation->x -= 50 * dt;
         //AudioManager.PlaySFX("footsteps.ogg");
     }
 }
