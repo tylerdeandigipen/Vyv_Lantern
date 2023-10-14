@@ -47,6 +47,9 @@ private:
 	int frameCount = 0;
 	int shut_up;
 
+	SDL_Texture *OutputBufferTexture;
+    uint32_t PreviousFrameBeginTime;
+
 };
 
 #endif 

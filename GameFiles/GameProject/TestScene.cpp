@@ -77,7 +77,6 @@ Engine::EngineCode TestScene::Init()
 
 
     inputHandler = new Inputs(window);
-    pixelRenderer.window = window;
 
     testEntity = new Entity("goose2.ppm", window);
     testEntity->SetInputHandler(inputHandler);
@@ -97,6 +96,7 @@ Engine::EngineCode TestScene::Init()
 
     // Create SDL Window
     window = SDL_CreateWindow("MAIN SCENE", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, pixelRenderer.outputBuffer->BufferSizeX * pixelRenderer.outputBuffer->screenScale, pixelRenderer.outputBuffer->BufferSizeY * pixelRenderer.outputBuffer->screenScale, 0);
+    pixelRenderer.window = window;
 
     glContext = SDL_GL_CreateContext(window);
 

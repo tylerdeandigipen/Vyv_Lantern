@@ -8,7 +8,9 @@ class ScopeTimer
 {
 	std::chrono::time_point<std::chrono::high_resolution_clock> startTimept;
 	std::string name_;
-	ScopeTimer(std::string name)
+
+public:
+    ScopeTimer(std::string name)
 	{
 		startTimept = std::chrono::high_resolution_clock::now();
 	}

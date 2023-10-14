@@ -1,7 +1,7 @@
 //------------------------------------------------------------------------------
 //
-// File Name:	BaseSystem.cpp
-// Author(s):	Tyler Dean
+// File Name:	Renderer.cpp
+// Author(s):	Tyler Dean, Thomas Stephenson
 // Purpose:		The Renderer implementation
 //
 // Copyright © 2023 DigiPen (USA) Corporation.
@@ -14,6 +14,7 @@
 #include "Math.h"
 #include "Vector.h"
 #include "ImageBuffer.h"
+#include "ScopeTimer.h"
 #include <SDL/SDL.h>
 
 #include <stdlib.h>
@@ -23,7 +24,7 @@
 //BaseSystem::BaseSystem(const char* _name) : name(_name) {}
 
 
- void Renderer::RenderLightingPass()
+void Renderer::RenderLightingPass()
 {
      int x = 0;
      int y = 0;
@@ -270,14 +271,18 @@ bool isLeft(float aX, float aY, float bX, float bY, float cX, float cY)
      bakedLightsBuffer = new ImageBuffer; 
      tileMapLayer = new ImageBuffer;
      outputBuffer->screenScale = screenScale;
+
      startTime = SDL_GetTicks();
+     PreviousFrameBeginTime = startTime;
  }
 
  int needToSetSreenSize = 0;
 
  void Renderer::Update()
  {
-     Uint32 currentTime = SDL_GetTicks();
+     ScopeTimer TestScopeTimer("Renderer::Update");
+     
+	 Uint32 currentTime = SDL_GetTicks();
 
      if (needToSetSreenSize == 0)
      {
@@ -293,7 +298,9 @@ bool isLeft(float aX, float aY, float bX, float bY, float cX, float cY)
          frameCount = 0;
          startTime = currentTime;
      }
-     std::string fpsString = std::to_string(shut_up);
+
+	 float FrameRate = 1000.0f / (float)(currentTime - PreviousFrameBeginTime);
+     std::string fpsString = std::to_string(FrameRate);
      SDL_SetWindowTitle(window, fpsString.c_str());
 
      for (int i = 0; i < numLights * 2; i++)
@@ -303,19 +310,39 @@ bool isLeft(float aX, float aY, float bX, float bY, float cX, float cY)
              outputBuffer->buffer[i + 1][3] = { 0,0,255,255 };
          }
      }
-     for (int x = 0; x < outputBuffer->BufferSizeX; ++x)
-     {
-         for (int y = 0; y < outputBuffer->BufferSizeY; ++y)
-         {
-             SDL_SetRenderDrawColor(renderer, outputBuffer->buffer[x][y].GetRed(), outputBuffer->buffer[x][y].GetGreen(), outputBuffer->buffer[x][y].GetBlue(), 255);
-             SDL_RenderDrawPoint(renderer, x, y);
-         }
-     }
+
+	 if(!OutputBufferTexture)
+	 {
+		 OutputBufferTexture = SDL_CreateTexture(renderer, SDL_PIXELFORMAT_RGBA8888, SDL_TEXTUREACCESS_STREAMING,
+												 outputBuffer->BufferSizeX, outputBuffer->BufferSizeY);
+	 }
+
+	 void *LockedPixels = NULL;
+	 int LockPitch = 0;
+	 SDL_LockTexture(OutputBufferTexture, NULL, &LockedPixels, &LockPitch);
+	 
+	 for(int PixelY = 0; PixelY < outputBuffer->BufferSizeY; ++PixelY)
+	 {
+		 uint32_t *DestPixels = (uint32_t *)((uint8_t *)LockedPixels + (PixelY * LockPitch));
+		 
+		 for(int PixelX = 0; PixelX < outputBuffer->BufferSizeX; ++PixelX)
+		 {
+			 Color SampleColor = outputBuffer->buffer[PixelX][PixelY];
+
+			 uint32_t ColorValue =	((uint32_t)SampleColor.GetRed() << 24) | ((uint32_t)SampleColor.GetGreen() << 16) | (uint32_t)(SampleColor.GetBlue() << 8) | 0xff;
+			 *DestPixels++ = ColorValue;
+		 }
+	 }
+
+	 SDL_UnlockTexture(OutputBufferTexture);
+	 SDL_RenderCopy(renderer, OutputBufferTexture, NULL, NULL);
 
      SDL_RenderPresent(renderer);
 
      // Remember to swap window buffers
      // SDL_GL_SwapWindow(window);
+
+     PreviousFrameBeginTime = currentTime;
  }
 
  int Renderer::returnObjCnt()
