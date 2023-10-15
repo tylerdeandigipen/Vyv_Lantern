@@ -56,9 +56,10 @@ ImageBuffer::ImageBuffer(float x, float y)
 	size.y = y;
 }
 
-ImageBuffer::ImageBuffer(const char* filename)
+ImageBuffer::ImageBuffer(const std::string file)
 {
     FILE* fp;
+    const char* filename = file.c_str();
     fopen_s(&fp, filename, "r");
     if (fp)
     {

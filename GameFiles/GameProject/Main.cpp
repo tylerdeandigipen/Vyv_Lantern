@@ -9,8 +9,11 @@
 
 #include "framework.h"
 #include "Engine.h"
+#include "ComponentFactory.h"
+#include "EntityFactory.h"
 #include "PlatformSystem.h"
 #include "SceneSystem.h"
+#include "LevelBuilder.h"
 #include "Main.h"
 #include "Renderer.h"
 #include "ImageBuffer.h"
@@ -42,6 +45,11 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
     Engine* engine = Engine::GetInstance();
     engine->EngineAddSystem(PlatformSystem::GetInstance());
     engine->EngineAddSystem(SceneSystem::GetInstance());
+    engine->EngineAddSystem(ComponentFactory::GetInstance());
+    engine->EngineAddSystem(EntityFactory::GetInstance());
+    engine->EngineAddSystem(LevelBuilder::GetInstance());
+
+
 
        Engine::EngineCode returnCode = engine->Start(); 
 

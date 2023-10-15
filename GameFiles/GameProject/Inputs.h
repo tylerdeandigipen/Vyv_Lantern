@@ -7,16 +7,20 @@
 // Copyright  © 2023 DigiPen (USA) Corporation.
 //
 //------------------------------------------------------------------------------
-#include <SDL/SDL.h>
 #pragma once
+
+#include <SDL/SDL.h>
 
 class Inputs
 {
 public:
 	Inputs();
-	~Inputs();
 
 	Inputs(SDL_Window* window);
+
+	~Inputs();
+
+	static Inputs* GetInstance();
 
 	void handleInput();
 
@@ -26,7 +30,10 @@ public:
 	int getMouseX() const;
 	int getMouseY() const;
 
+	void SetWindow(SDL_Window* window);
 private:
+	static Inputs* instance;
+
 	SDL_Window* window;
 
 	int mouseX;
@@ -36,14 +43,5 @@ private:
 	bool rightMouseB;
 
 	bool quitting;
-	bool wKey;
-	bool aKey;
-	bool sKey;
-	bool dKey;
-	bool escapeKey;
-	bool upKey;
-	bool downKey;
-	bool leftKey;
-	bool rightKey;
-	bool eKey;
+	bool keyStates[SDL_NUM_SCANCODES];
 };

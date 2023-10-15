@@ -11,15 +11,19 @@
 
 #pragma once
 #include "stdafx.h"
+#include <nlohmann/json.hpp>
 
-typedef class Entity Entity;
-typedef FILE* Stream;
+class Entity;
+
+using json = nlohmann::json;
+
+//typedef FILE* Stream;
 
 class Component
 {
 public:
 
-	enum TypeEnum { cBehavior, cCollider, cPhysics, cImageBuffer, cTransform };
+	enum TypeEnum { cBehavior, cCollider, cImageBuffer, cLight, cPhysics, cTransform,  };
 	_inline Component::TypeEnum type() const { return mType; };
 
 	_inline void Parent(Entity* entity) { mParent = entity; }
@@ -27,6 +31,8 @@ public:
 
 	Component(Component::TypeEnum type);
 	Component(Component const& other);
+	virtual std::string GetName() = 0;
+	//virtual CreateComponent(mType);
 	virtual ~Component();
 
 	// used to invoke the copy constructor
@@ -36,7 +42,7 @@ public:
 	virtual void Update(float dt) { dt = dt; }
 
 	virtual void Render() const {};
-	virtual void Read(Stream stream) = 0;
+	virtual void Read(json jsonData) = 0;
 
 private:
 	TypeEnum mType;

@@ -8,18 +8,23 @@
 //
 //------------------------------------------------------------------------------
 #include "Transform.h"
+#include "Entity.h"
 
-Transform::Transform() : Component(Component::cTransform)
+Transform::Transform() : Component(Component::cTransform), isDirty(true), scale{ 0 }, rotation(0)
 {
+	translation = new gfxVector2();
 }
 
-Transform::Transform(Transform const& trans) : Component(trans)
+Transform::Transform(Transform const& trans) : Component(trans), isDirty(trans.isDirty), scale(trans.scale), rotation(trans.rotation)
 {
+	translation = new gfxVector2(*trans.translation);
 }
 
 
 Transform::~Transform()
 {
+	if (!this->Parent()->IsObject())
+		delete translation;
 }
 
 
@@ -28,26 +33,49 @@ Component* Transform::Clone() const
 	return new Transform(*this);
 }
 
-void Transform::Read(Stream stream)
+std::string Transform::GetName()
 {
-	stream = stream;
-	//if (stream)
-	//{
-	//	StreamReadVector2D(stream, &translation);
-	//	rotation = StreamReadFloat(stream);
-	//	StreamReadVector2D(stream, &scale);
-	//}
+	return std::string();
+}
+
+std::string Transform::Name()
+{
+	return "Transform";
+}
+
+void Transform::Read(json jsonData)
+{
+	
+	if (translation)
+	{
+		if (jsonData["translation"].is_object())
+		{
+			json trans = jsonData["translation"];
+			translation->x = trans["x"];
+			translation->y = trans["y"];
+		}
+	}
+	else
+	{
+
+	}
 }
 
 
 const gfxVector2* Transform::GetTranslation() { return translation; }
 float Transform::GetRotation() { return rotation; }
-const gfxVector2* Transform::GetScale() { return &scale; }
+const gfxVector2* Transform::GetScale() { return scale; }
 
 void Transform::SetTranslation(gfxVector2* _translation)
 {
 	isDirty = true;
+	*_translation = *translation;
 	translation = _translation;
+}
+
+void Transform::SetTranslation(gfxVector2 _translation)
+{
+	*translation = _translation;
 }
 
 void Transform::SetRotation(float _rotation)
@@ -59,7 +87,7 @@ void Transform::SetRotation(float _rotation)
 void Transform::SetScale(const gfxVector2* _scale)
 {
 	isDirty = true;
-	scale = *_scale;
+	*scale = *_scale;
 }
 
 //const Matrix2D* Transform::GetMatrix()

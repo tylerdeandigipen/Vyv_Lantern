@@ -8,6 +8,7 @@
 //
 //------------------------------------------------------------------------------
 #pragma once
+#include "stdafx.h"
 #include "Component.h"
 #include "ImageBuffer.h"
 #include "Inputs.h"
@@ -20,26 +21,28 @@ class Entity
 {
 public:
 	Entity();
-	Entity(const char* file, SDL_Window* _window);
+	Entity(std::string type, const std::string file = NULL);
 	Entity(Entity const& entity);
 	~Entity();
 	Entity* Clone();
 
-	void CreateImage(const char* file);
+	void CreateImage(const std::string file);
 
 	bool IsNamed(const char* name);
-	void Read(FILE* stream);
+	void Read(json const& stream);
 	void FreeComponents();
 	void Add(Component*);
 	void AddToRenderer(Renderer* pixel);
 	bool IsDestroyed();
 	void Destroy();
 
+	static std::string ObjectName();
+	//static std::string LightName();
+
 	void SetName(const char* name);
-	void SetWindow(SDL_Window* _window);
 	void SetInputHandler(Inputs* input);
 
-	SDL_Window* GetWindow();
+	
 	
 	Component* Get(Component::TypeEnum type) const;
 	const char* GetName();
@@ -51,11 +54,12 @@ public:
 		return static_cast<type_*>(Get(typeId));
 	}
 
+	bool IsLight();
+	bool IsObject();
+
 	void Update(float dt);
 	void Render();
 #define Has(type) GetComponent<type>(Component::c##type)
-
-	SDL_Window* window;
 
 private:
 	Component* BinarySearch(Component::TypeEnum type) const;
@@ -64,7 +68,13 @@ private:
 
 	char name[256];
 
+	std::string mName;
+
 	bool isDestroyed;
+
+	bool isLight;
+
+	bool isObject;
 
 
 	std::vector<Component*> components;

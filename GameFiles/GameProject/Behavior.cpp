@@ -17,9 +17,9 @@ Component* Behavior::Clone() const
 	return new Behavior(*this);
 }
 
-void Behavior::Read(Stream stream)
+void Behavior::Read(json jsonData)
 {
-	stream = stream;
+	jsonData = jsonData;
 }
 
 void Behavior::Update(float dt)

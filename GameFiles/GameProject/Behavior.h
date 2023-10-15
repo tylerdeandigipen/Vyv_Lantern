@@ -14,10 +14,10 @@ public:
 	Behavior(Behavior const& other);
 
 	virtual ~Behavior();
-	void Read(Stream stream) override;
+	std::string GetName() override { return std::string(); };
+	void Read(json jsonData) override;
 
 	virtual void SetInputHandler(Inputs* input) {};
-
 	Component* Clone(void) const override;
 
 	virtual void Init() {} ;

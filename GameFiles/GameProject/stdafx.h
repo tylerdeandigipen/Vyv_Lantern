@@ -24,6 +24,12 @@
 #include <stdbool.h> /* bool */
 #include <string.h> /* strcmp, strcpy_s, strtok_s */
 #include <winerror.h>
+#include <iostream>
+#include <string>
+#include <unordered_map>
+#include <functional>
+#include <fstream>
+//#include <string_view>
 
 // Used to clean /W4 unused parameters for functions that must match a function-pointer type 
 // NOTE: copied from winnt.h, but we don't want to include that here, otherwise.
