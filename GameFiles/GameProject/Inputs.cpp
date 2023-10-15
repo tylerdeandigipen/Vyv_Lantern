@@ -13,6 +13,8 @@
 #include "Inputs.h"
 #include "Engine.h"
 
+Inputs* Inputs::instance = new Inputs();
+
 Inputs::Inputs()
 {
     quitting = false;
@@ -20,6 +22,7 @@ Inputs::Inputs()
     mouseY = 0;
     leftMouseB = false;
     rightMouseB = false;
+    window = NULL;
 
     for (int i = 0; i < SDL_NUM_SCANCODES; ++i)
     {
@@ -30,6 +33,16 @@ Inputs::Inputs()
 Inputs::Inputs(SDL_Window* window) : Inputs()
 {
     this->window = window;
+}
+
+Inputs::~Inputs()
+{
+    delete instance;
+}
+
+Inputs* Inputs::GetInstance()
+{
+    return instance;
 }
 
 void Inputs::handleInput()
@@ -107,4 +120,9 @@ int Inputs::getMouseX() const
 int Inputs::getMouseY() const
 {
     return mouseY;
+}
+
+void Inputs::SetWindow(SDL_Window* _window)
+{
+    window = _window;
 }

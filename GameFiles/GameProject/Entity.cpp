@@ -11,14 +11,15 @@
 
 #include <algorithm>
 #include "Component.h"
+#include "ComponentFactory.h"
 #include "Behavior.h"
 #include "BehaviorPlayer.h"
 #include "Entity.h"
 #include "Transform.h"
 #include "ImageBuffer.h"
 #include <nlohmann/json.hpp>
-#include <fstream>
 
+using json = nlohmann::json;
 
 // Used to sort components using their type Id.
 struct ComponentSorter
@@ -29,14 +30,29 @@ struct ComponentSorter
 	}
 };
 
-Entity::Entity() : isDestroyed(0), components(), name{}
+Entity::Entity() : isDestroyed(false), components(), name{}, image(NULL), mName(), isLight(false), isObject(false)
 {
 
 }
 
-Entity::Entity(const char* file, SDL_Window* _window) : isDestroyed(0), components(), name{}, window(_window)
+Entity::Entity(std::string type, const std::string file) : isDestroyed(0), components(), name{}, image(NULL), mName(), isLight(false), isObject(false)
 {
-	CreateImage(file);
+	if (type.compare("Object") == 0)
+	{
+		CreateImage(file);
+		isObject = true;
+	}
+	else if (type.compare("Image") == 0)
+	{
+
+		//CreateLight();
+		isLight = true;
+	}
+	else
+	{
+
+	}
+
 }
 
 
@@ -50,8 +66,6 @@ Entity::Entity(Entity const& ent) : isDestroyed(ent.isDestroyed), name{}, compon
 	{
 		components[i] = component->Clone();
 		components[i]->Parent(this);
-		//Add(components[i]);
-		//std::sort(components.begin(), components.end(), ComponentSorter()); 
 		i++;
 	}
 }
@@ -60,6 +74,8 @@ Entity::~Entity()
 {
 	if (image)
 		delete image;
+//	if (light)
+//		delete light;
 }
 
 Entity* Entity::Clone()
@@ -87,17 +103,27 @@ void Entity::Destroy()
 	isDestroyed = true;
 }
 
-bool Entity::IsDestroyed()
-{
-	return isDestroyed;
-}
+bool Entity::IsDestroyed() { return isDestroyed; }
+bool Entity::IsLight() { return isLight; };
+bool Entity::IsObject() { return isObject; };
 
-void Entity::Read(FILE* stream)
+void Entity::Read(json const& jsonData)
 {
-	for (auto component : components)
+	ComponentFactory* factory = ComponentFactory::GetInstance();
+
+	mName = jsonData["Name"];
+
+	for (auto componentData : jsonData["Components"])
 	{
-		component->Read(stream);
+		std::string type = componentData["Type"];
+		if (Component* component = factory->CreateComponent(type))
+		{
+			component->Read(componentData);
+			Add(component);
+		}
 	}
+	if (isObject)
+		Has(Transform)->SetTranslation(&(image->position));
 }
 
 void Entity::Add(Component* component)
@@ -114,6 +140,16 @@ void Entity::Add(Component* component)
 		std::sort(components.begin(), components.end(), ComponentSorter());
 	}
 }
+
+std::string Entity::ObjectName()
+{
+	return "Object";
+}
+
+//std::string Entity::ObjectName()
+//{
+//	return "Light";
+//}
 
 void Entity::SetName(const char* _name)
 {
@@ -206,41 +242,15 @@ void Entity::Render(void)
 	}
 }
 
-void Entity::CreateImage(const char* _file)
+void Entity::CreateImage(const std::string _file)
 {
-	using json = nlohmann::json;
-	json jsonData;
-	std::fstream file("./Data/EntityTest.json");
 	image = new ImageBuffer(_file);
-	Component* transform = new Transform();
-	Add(transform);
-	this->Has(Transform)->SetTranslation(&image->position);
-	Component* player = new BehaviorPlayer();
-	Add(player);
-	//Has(Behavior)->Init();
-	if (file.is_open())
-	{
-		file >> jsonData;
-		this->Has(Transform)->translation->x = jsonData["x"];
-		this->Has(Transform)->translation->y = jsonData["y"];
-		file.close();
-	}
 	image->layer = 1;
 }
 
 void Entity::AddToRenderer(Renderer* pixel)
 {
 	pixel->AddObject(image);
-}
-
-void Entity::SetWindow(SDL_Window* _window)
-{
-	window = _window;
-}
-
-SDL_Window* Entity::GetWindow()
-{
-	return window;
 }
 
 void Entity::SetInputHandler(Inputs* input)

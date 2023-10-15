@@ -1,1 +1,16 @@
-{"x":90, "y":30}
+{
+  "Entities": [
+    {
+      "Name": "Player",
+      "Components": [
+        {
+          "Type": "Transform",
+          "translation": {
+            "x": 90,
+            "y": 30
+          }
+        }
+      ]
+    }
+  ]
+}

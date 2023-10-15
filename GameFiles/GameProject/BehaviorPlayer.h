@@ -9,6 +9,10 @@ public:
 	BehaviorPlayer(BehaviorPlayer const& other);
 	~BehaviorPlayer();
 
+
+	std::string GetName() override;
+	static std::string Name();
+
 	void SetInputHandler(Inputs* _input) override;
 
 	void Init() override;

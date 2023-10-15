@@ -1,0 +1,25 @@
+{
+  "Levels": [
+    {
+      "Entities": [
+        {
+          "Type": "Object",
+          "Name": "Player",
+          "file": "goose2.ppm",
+          "Components": [
+            {
+              "Type": "BehaviorPlayer"
+            },
+            {
+              "Type": "Transform",
+              "translation": {
+                "x": 90,
+                "y": 30
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -20,6 +20,7 @@
 
 #include "ImageBuffer.h"
 #include "Light.h"
+#include "LevelBuilder.h"
 
 #include <SDL/SDL.h>
 #include <glad/glad.h>
@@ -27,16 +28,17 @@
 
 Logging& logger = Logging::GetInstance();
 
+
+
 ImageBuffer* testSprite;
 ImageBuffer* testSprite1;
 
 Entity* testEntity;
-
+Entity* jsonEntity;
 SDL_Renderer* renderer;
 Renderer pixelRenderer;
 
 SDL_Window* window;
-Inputs* inputHandler;
 
 SDL_GLContext glContext; // OpenGL context for SDL2
 
@@ -75,11 +77,9 @@ Engine::EngineCode TestScene::Init()
     /*BGM*/
     //AudioManager.PlayMusic("bgm.ogg");
 
+    
 
-    inputHandler = new Inputs(window);
-
-    testEntity = new Entity("goose2.ppm", window);
-    testEntity->SetInputHandler(inputHandler);
+    Inputs::GetInstance()->SetWindow(window);
 
     Light tempLight;
     Light tempLight2;
@@ -103,6 +103,8 @@ Engine::EngineCode TestScene::Init()
     gladLoadGLLoader(SDL_GL_GetProcAddress);
 
     pixelRenderer.renderer = SDL_CreateRenderer(window, -1, 0);
+
+    LevelBuilder::GetInstance()->LoadLevel(&pixelRenderer);
 
     tempLight.position.x = 80;
     tempLight.position.y = 90;
@@ -182,8 +184,6 @@ Engine::EngineCode TestScene::Init()
     testSprite1->layer = 1;
     pixelRenderer.AddObject(testSprite1);
     
-    testEntity->AddToRenderer(&pixelRenderer);
-
     int tileMapArray[16][9];
 
     for (int x = 0; x < 16; ++x)
@@ -210,9 +210,10 @@ int canPlaceMoreLight = 0;
 float moveSpeed = 20;
 void tempPlayerMovementLol(float dt)
 {
+    Inputs* inputHandler = Inputs::GetInstance();
     if (inputHandler->keyPressed(SDL_SCANCODE_UP))
     {
-        pixelRenderer.objects[0]->position.y -= moveSpeed * dt;
+        pixelRenderer.objects[1]->position.y -= moveSpeed * dt;
 
         logger.LogLine("Debug info: Vyv Up pressed.");
         //pixelRenderer.AddLight(pixelRenderer.staticLightSource[0]);
@@ -220,21 +221,21 @@ void tempPlayerMovementLol(float dt)
     }
     if (inputHandler->keyPressed(SDL_SCANCODE_DOWN))
     {
-        pixelRenderer.objects[0]->position.y += moveSpeed * dt;
+        pixelRenderer.objects[1]->position.y += moveSpeed * dt;
 
         logger.LogLine("Debug info: Vyv Down pressed.");
         //AudioManager.PlaySFX("footsteps.ogg");
     }
     if (inputHandler->keyPressed(SDL_SCANCODE_RIGHT))
     {
-        pixelRenderer.objects[0]->position.x += moveSpeed * dt;
+        pixelRenderer.objects[1]->position.x += moveSpeed * dt;
 
         logger.LogLine("Debug info: Vyv Right pressed.");
         //AudioManager.PlaySFX("footsteps.ogg");
     }
     if (inputHandler->keyPressed(SDL_SCANCODE_LEFT))
     {
-        pixelRenderer.objects[0]->position.x -= moveSpeed * dt;
+        pixelRenderer.objects[1]->position.x -= moveSpeed * dt;
 
         logger.LogLine("Debug info: Vyv Left pressed.");
         //AudioManager.PlaySFX("footsteps.ogg");
@@ -263,8 +264,9 @@ void BrandonTurkeyAlgo(float x1, float y1, float x2, float y2, Light clr)
 
 void TestScene::Update(float dt)
 {
+    Inputs* inputHandler = Inputs::GetInstance();
+    LevelBuilder::GetInstance()->LevelUpdate(dt);
     AudioManager.Update();
-    testEntity->Update(dt);
     inputHandler->handleInput();
     pixelRenderer.UpdateObjects();
 
@@ -352,7 +354,10 @@ Engine::EngineCode TestScene::Exit()
 Engine::EngineCode TestScene::Unload()
 {
     delete TestSceneinstance;
-    delete testEntity;
+    //delete testEntity;
+    //delete jsonEntity;
+
+    LevelBuilder::GetInstance()->FreeLevel();
 
     logger.LogLine("Debug info: entities destroyed :( (testScene unloaded)");
 	return Engine::NothingBad;

@@ -18,10 +18,12 @@ public:
 	Physics(Physics const& physics);
 	~Physics();
 	Component* Clone() const override;
+	std::string GetName() override;
+	static std::string Name();
 	// const Vector2D* GetOldTranslation() const 
 	// const Vector2D* GetAcceleration() const;
 	// const Vector2D* GetVelocity() const;
-	void Read(FILE* stream) override;
+	void Read(json jsonData) override;
 	void Update(float dt);
 private:
 	// Variables and functions will need to be custom made
