@@ -5,18 +5,31 @@
 #include "Color.h"
 #include "Vector.h"
 
+enum light_source_type
+{
+    LightSourceType_Point,
+    LightSourceType_Directional,
+    LightSourceType_EnumCount
+};
+
 class Light
 {
 public:
 	Light();
 	Light(const Light &rhs);
-	gfxVector2 position;
+
+    enum light_source_type Type = LightSourceType_Point;
+    
+    gfxVector2 position;
 	Color color;
-	int isStatic = 0;
+
+    int isStatic = 0;
 	int isBaked = 0;
+
 	gfxVector2 leftAnglePos;
 	gfxVector2 rightAnglePos;
-	float minAngle = 0;
+
+    float minAngle = 0;
 	float maxAngle = 0;
 	float angle = 0;
 	float intensity = 2;

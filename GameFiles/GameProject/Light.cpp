@@ -2,6 +2,8 @@
 
 Light::Light(const Light& rhs)
 {
+	Type = rhs.Type;
+
 	position = rhs.position;
 	leftAnglePos = rhs.leftAnglePos;
 	rightAnglePos = rhs.rightAnglePos;

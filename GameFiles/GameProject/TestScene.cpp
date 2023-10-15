@@ -87,33 +87,29 @@ Engine::EngineCode TestScene::Init()
 
     Color transparent(0, 0, 0, 0);
 
-    if (SDL_Init(SDL_INIT_VIDEO) != 0) {
-    }
-
-    // Specify Major version and minor version
-    SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 3);
-    SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 3);
-
     // Create SDL Window
-    window = SDL_CreateWindow("MAIN SCENE", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, pixelRenderer.outputBuffer->BufferSizeX * pixelRenderer.outputBuffer->screenScale, pixelRenderer.outputBuffer->BufferSizeY * pixelRenderer.outputBuffer->screenScale, 0);
+    window = SDL_CreateWindow("MAIN SCENE", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
+                              pixelRenderer.outputBuffer->BufferSizeX * pixelRenderer.outputBuffer->screenScale,
+                              pixelRenderer.outputBuffer->BufferSizeY * pixelRenderer.outputBuffer->screenScale,
+                              SDL_WINDOW_OPENGL);
     pixelRenderer.window = window;
 
+    // Specify Major version and minor version
+    // SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 3);
+    // SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 3);
     glContext = SDL_GL_CreateContext(window);
-
+    SDL_GL_SetSwapInterval(0);
+    
     gladLoadGLLoader(SDL_GL_GetProcAddress);
 
-    pixelRenderer.renderer = SDL_CreateRenderer(window, -1, 0);
-
+    tempLight.Type = LightSourceType_Directional;
     tempLight.position.x = 80;
     tempLight.position.y = 90;
-
     tempLight.color = { 216, 247, 255, 255 };
-
-    tempLight.maxAngle = 45;
-    tempLight.minAngle = -45;
+    tempLight.maxAngle = 15;
+    tempLight.minAngle = -15;
     tempLight.angle = 200;
-
-    tempLight.intensity = 2.5f;
+    tempLight.intensity = 215.0f;
     tempLight.radialMult1 = 0.4f;
     tempLight.radialMult2 = 0.0f;
     tempLight.radialWeight = 1;
@@ -121,12 +117,9 @@ Engine::EngineCode TestScene::Init()
     tempLight.volumetricIntensity = .25f;
     tempLight.isStatic = 0;
 
-
     tempLight2.position.x = 120;
     tempLight2.position.y = 50;
-
-    tempLight2.color = { 255, 182, 76, 255 };
-
+    tempLight2.color = { 255, 0, 0, 255 };
     tempLight2.maxAngle = 25;
     tempLight2.minAngle = -25;
     tempLight2.angle = 280;
@@ -137,7 +130,7 @@ Engine::EngineCode TestScene::Init()
     tempLight2.radialWeight = 1;
     tempLight2.angularWeight = 2.0f;
     tempLight2.volumetricIntensity = .25f;
-    tempLight2.isStatic = 1;
+    tempLight2.isStatic = 0;
 
     tempLight3.position.x = 200;
     tempLight3.position.y = 90;
@@ -154,7 +147,7 @@ Engine::EngineCode TestScene::Init()
     tempLight3.radialWeight = .3;
     tempLight3.angularWeight = 0;
     tempLight3.volumetricIntensity = .25f;
-    tempLight3.isStatic = 1;
+    tempLight3.isStatic = 0;
 
     pixelRenderer.AddLight(tempLight);
     pixelRenderer.AddLight(tempLight2);
@@ -172,10 +165,10 @@ Engine::EngineCode TestScene::Init()
         {
             if (x > 8 && x < testSprite1->BufferSizeX - 8 && y > 8 && y < testSprite1->BufferSizeY - 8)
             {
-                testSprite1->buffer[x][y] = transparent;
+                testSprite1->SampleColor(x, y) = transparent;
             }
             else
-                testSprite1->buffer[x][y] = blue;
+                testSprite1->SampleColor(x, y) = blue;
         }
     }
     testSprite1->position = { 120, 30 };
@@ -321,7 +314,7 @@ void TestScene::Update(float dt)
             }
         }
     }
-    logger.LogLine("Debug info: Things are being done. (testScene updated)");
+    //logger.LogLine("Debug info: Things are being done. (testScene updated)");
 
     // Update the cooldown timer.
     soundCooldown -= dt;
@@ -334,7 +327,7 @@ void TestScene::Render()
 {
     pixelRenderer.Update();
 
-    logger.LogLine("Debug info: Things are being rendered. (testScene rendered)");
+    //logger.LogLine("Debug info: Things are being rendered. (testScene rendered)");
 	return;
 }
 

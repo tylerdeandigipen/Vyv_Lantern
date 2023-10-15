@@ -10,6 +10,7 @@
 
 #include "stdafx.h"
 #include <Windows.h>
+#include <SDL/SDL.h>
 #include <cassert>
 
 #include "BaseSystem.h"
@@ -19,7 +20,11 @@ PlatformSystem* PlatformSystem::instance = new PlatformSystem();
 
 Engine::EngineCode PlatformSystem::Init()
 {
-    assert(winHandle != NULL);
+	if(SDL_Init(SDL_INIT_VIDEO | SDL_INIT_EVENTS) != 0) {
+		// @TODO: Log failuer to initialize SDL
+	}
+
+	assert(winHandle != NULL);
     return Engine::NothingBad;
 }
 

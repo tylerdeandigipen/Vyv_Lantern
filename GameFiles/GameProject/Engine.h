@@ -31,7 +31,7 @@ public:
 	void SetCloseRequest(bool close);
 	
 	static Engine* GetInstance();
-
+    
 private:
 	Engine();
 	~Engine();

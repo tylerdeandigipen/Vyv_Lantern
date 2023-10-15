@@ -7,37 +7,38 @@
 
 class ImageBuffer
 {
-	public:
+public:
 
-		float BufferSizeX = 240;
-		float BufferSizeY = 135;
-		float screenScale = 6;
-		gfxVector2 size;
-		gfxVector2 position;
-		std::string name = "";
-		int layer = 0;
-		Color** buffer;
-		AABB aabb;
+    int BufferSizeX = 240;
+    int BufferSizeY = 135;
 
-		ImageBuffer(const char* filename);
-		ImageBuffer(ImageBuffer &rhs);
-		ImageBuffer(float x, float y);
-		ImageBuffer();
-		~ImageBuffer();
+    float screenScale = 6;
+    gfxVector2 size;
+    gfxVector2 position;
+    std::string name = "";
+    
+    int layer = 0;
+    Color *buffer;
+    AABB aabb;
 
-		void Update(float dt);
+    ImageBuffer(const char* filename);
+    ImageBuffer(ImageBuffer &rhs);
+    ImageBuffer(float x, float y);
+    ImageBuffer();
+    ~ImageBuffer();
 
-		ImageBuffer& ClearImageBuffer();
-		void MergeLayers(ImageBuffer* bottom, ImageBuffer* top);
-		void MergeLayersIndvPixel(ImageBuffer* bottom, ImageBuffer* middle, ImageBuffer* top, int x, int y);
-		ImageBuffer& AddSprite(ImageBuffer *sprite);
+    void Blit(ImageBuffer *Destination, int OffsetX = 0, int OffsetY = 0);
+    
+    void Update(float dt);
 
-		ImageBuffer& operator =(const ImageBuffer& rhs)&;
-		ImageBuffer operator +(const ImageBuffer& rhs);
-		ImageBuffer operator -(const ImageBuffer& rhs);
-		//ImageBuffer operator *(const float rhs);
-
-
-	private:
+    Color &SampleColor(int x, int y);
+    
+    ImageBuffer& ClearImageBuffer();
+    void MergeLayers(ImageBuffer* bottom, ImageBuffer* top);
+    void MergeLayersIndvPixel(ImageBuffer* bottom, ImageBuffer* middle, ImageBuffer* top, int x, int y);
+    ImageBuffer& AddSprite(ImageBuffer *sprite);
+    
+    ImageBuffer& operator =(const ImageBuffer& rhs);
+private:
 };
 #endif

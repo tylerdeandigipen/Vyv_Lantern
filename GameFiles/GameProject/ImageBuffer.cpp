@@ -1,68 +1,59 @@
 #include "ImageBuffer.h"
 #include <inttypes.h>
 
+inline int min(int x, int y)
+{
+	int Result = x;
+	if(y < x)
+	{
+		Result = y;
+	}
+
+	return(Result);
+}
+
+inline int max(int x, int y)
+{
+	int Result = x;
+	if(y > x)
+	{
+		Result = y;
+	}
+
+	return(Result);
+}
+
 ImageBuffer::ImageBuffer(ImageBuffer& rhs)
 {
-    //allocate buffer
-    buffer = new Color *[BufferSizeX];
-    for (int i = 0; i < BufferSizeX; ++i)
-    {
-        buffer[i] = new Color[BufferSizeY];
-    }
-    for (int i = 0; i < BufferSizeX; ++i)
-    {
-        for (int j = 0; j < BufferSizeY; ++j)
-        {
-            buffer[i][j] = rhs.buffer[i][j];
-        }
-    }
-    size.x = BufferSizeX;
-    size.y = BufferSizeY;
+    buffer = new Color [rhs.BufferSizeX*rhs.BufferSizeY];
+    memcpy(buffer, rhs.buffer, rhs.BufferSizeX*rhs.BufferSizeY*sizeof(Color));
+
+    BufferSizeX = rhs.BufferSizeX;
+    BufferSizeY = rhs.BufferSizeY;
+    
+    size.x = rhs.BufferSizeX;
+    size.y = rhs.BufferSizeY;
 }
 
 ImageBuffer::ImageBuffer()
 {
-    //allocate buffer
-    buffer = new Color* [BufferSizeX];
-    for (int i = 0; i < BufferSizeX; ++i)
-    {
-        buffer[i] = new Color[BufferSizeY];
-    }
-    Color trans(0.0f, 0.0f, 0.0f, 0.0f);
-    for (int i = 0; i < size.x; ++i)
-    {
-        for (int j = 0; j < size.y; ++j)
-        {
-            buffer[i][j] = trans;
-        }
-    }
+    buffer = new Color[BufferSizeX*BufferSizeY];
+    ClearImageBuffer();
+
 	size.x = BufferSizeX;
 	size.y = BufferSizeY;
-	return;
 }
 
 ImageBuffer::ImageBuffer(float x, float y)
 {
-    //set size
-    BufferSizeX = x;
-    BufferSizeY = y;
-    //allocate buffer
-    buffer = new Color * [BufferSizeX];
-    for (int i = 0; i < BufferSizeX; ++i)
-    {
-        buffer[i] = new Color[BufferSizeY];
-    }
-    Color trans(0.0f, 0.0f, 0.0f, 0.0f);
-    for (int i = 0; i < size.x; ++i)
-    {
-        for (int j = 0; j < size.y; ++j)
-        {
-            buffer[i][j] = trans;
-        }
-    }
-    size.x = BufferSizeX;
-    size.y = BufferSizeY;
-    return;
+	BufferSizeX = x;
+	BufferSizeY = y;
+
+	buffer = new Color[BufferSizeX * BufferSizeY];
+    ClearImageBuffer();
+    
+	size.x = x;
+	size.y = y;
 }
 
 ImageBuffer::ImageBuffer(const char* filename)
@@ -85,17 +76,15 @@ ImageBuffer::ImageBuffer(const char* filename)
         BufferSizeY = temp;
         fscanf_s(fp, "%d", &temp);
 
-        buffer = new Color * [BufferSizeX];
-        for (int i = 0; i < BufferSizeX; ++i)
-        {
-            buffer[i] = new Color[BufferSizeY];
-        }
-        Color trans(0.0f, 0.0f, 0.0f, 0.0f);
-        size.x = BufferSizeX;
+        buffer = new Color[BufferSizeX*BufferSizeY];
+
+		Color trans(0.0f, 0.0f, 0.0f, 0.0f);
+		size.x = BufferSizeX;
         size.y = BufferSizeY;
         
         for (int j = 0; j < BufferSizeY; ++j)
         {
+			Color *DestPixel = buffer + (BufferSizeX * j);
             for (int i = 0; i < BufferSizeX; ++i)
             {
                 fscanf_s(fp, "%" SCNu8, &red);
@@ -103,11 +92,11 @@ ImageBuffer::ImageBuffer(const char* filename)
                 fscanf_s(fp, "%" SCNu8, &blue);
                 if (red == 0 && green == 0 && blue == 0)
                 {
-                    buffer[i][j] = trans;
+                    *DestPixel++ = trans;
                 }
                 else
                 {
-                    buffer[i][j] = { red, green, blue, 255 };
+                    *DestPixel++ = { red, green, blue, 255 };
                 }
             }
         }
@@ -116,130 +105,113 @@ ImageBuffer::ImageBuffer(const char* filename)
 
 ImageBuffer::~ImageBuffer()
 {
-    //Free each sub-array
-    for (int i = 0; i < BufferSizeX; ++i) 
-    {
-        delete[] buffer[i];
-    }
-    //Free the array of pointers
     delete[] buffer;
 }
+
 ImageBuffer& ImageBuffer::ClearImageBuffer()
 {
     Color trans = { 0,0,0,0 };
-    for (int i = 0; i < size.x; ++i)
-    {
-        for (int j = 0; j < size.y; ++j)
-        {
-            buffer[i][j] = trans;
-        }
-    }
-    return *this;
+
+	Color *DestBuffer = buffer;
+	for(int PixelIndex = 0; PixelIndex < (BufferSizeX * BufferSizeY); ++PixelIndex)
+	{
+		*DestBuffer++ = trans;
+	}
+
+	return *this;
 }
 
 void ImageBuffer::MergeLayers(ImageBuffer* bottom, ImageBuffer* top)
 {
-    for (int x = 0; x < size.x; ++x)
+    for (int y = 0; y < size.y; ++y)
     {
-        for (int y = 0; y < size.y; ++y)
+        Color *DestPixel = buffer + (y * BufferSizeX);
+        for (int x = 0; x < size.x; ++x)
         {
-            if (top->buffer[x][y].GetAlpha() == 0)
-            {
-                buffer[x][y] = bottom->buffer[x][y];
-            }
-            else
-            {
-                buffer[x][y] = top->buffer[x][y];
-            }
+            Color TopSample = top->buffer[(y * top->BufferSizeY) + x];
+            Color BottomSample = bottom->buffer[(y * bottom->BufferSizeY) + x];
+            
+            *DestPixel++ = (TopSample.GetAlpha()) ? TopSample : BottomSample;
         }
     }
 }
 
 void ImageBuffer::MergeLayersIndvPixel(ImageBuffer* bottom, ImageBuffer* middle, ImageBuffer* top, int x, int y)
 {
-    if (top->buffer[x][y].GetAlpha() != 0)
+    Color &DestSample = SampleColor(x, y);
+    Color &BottomSample = bottom->SampleColor(x, y);
+    Color &MiddleSample = middle->SampleColor(x, y);
+    Color &TopSample = top->SampleColor(x, y);
+    
+    if (TopSample.GetAlpha() != 0)
     {
-        buffer[x][y] = top->buffer[x][y];
+        DestSample = TopSample;
     }
-    else if (middle->buffer[x][y].GetAlpha() != 0)
+    else if (MiddleSample.GetAlpha() != 0)
     {
-        buffer[x][y] = middle->buffer[x][y];
+        DestSample = MiddleSample;
     }
-    else if (bottom->buffer[x][y].GetAlpha() != 0)
+    else if (BottomSample.GetAlpha() != 0)
     {
-        buffer[x][y] = bottom->buffer[x][y];
+        DestSample = BottomSample;
     }
     else
-        buffer[x][y] = { 0,0,0,0 };
+    {
+        DestSample = { 0,0,0,0 };
+    }
 }
 
 
 ImageBuffer& ImageBuffer::AddSprite(ImageBuffer *sprite)
 {
-    int endPointX = 0;
-    int endPointY = 0;
-    int tempPosX = 0;
-    int tempPosY = 0;
-    if (sprite->position.x + sprite->size.x > BufferSizeX)
-    {
-        endPointX += ((sprite->position.x + sprite->size.x) - BufferSizeX);
-    }
-    if (sprite->position.x < 0)
-    {
-        tempPosX -= sprite->position.x;
-    }
-    if (sprite->position.y + sprite->size.y > BufferSizeY)
-    {
-        endPointY += ((sprite->position.y + sprite->size.y) - BufferSizeY);
-    }
-    if (sprite->position.y < 0)
-    {
-        tempPosY -= sprite->position.y;
-    }
+    sprite->Blit(this, sprite->position.x, sprite->position.y);
+    return *this;
+}
 
-    for (int x = tempPosX; x < sprite->size.x - endPointX; ++x)
+void ImageBuffer::Blit(ImageBuffer *Destination, int OffsetX, int OffsetY)
+{
+    int MinX = max(OffsetX, 0);
+    int MinY = max(OffsetY, 0);
+    int MaxX = min(OffsetX + BufferSizeX, Destination->BufferSizeX);
+    int MaxY = min(OffsetY + BufferSizeY, Destination->BufferSizeY);
+
+	int SourceOffsetX = 0;
+	int SourceOffsetY = 0;
+	if(OffsetX < 0)
+	{
+		SourceOffsetX = -OffsetX;
+	}
+	if(OffsetY < 0)
+	{
+		SourceOffsetY = -OffsetY;
+	}
+
+    for(int y = MinY; y < MaxY; ++y)
     {
-        for (int y = tempPosY; y < sprite->size.y - endPointY; ++y)
+        Color *DestPixel = Destination->buffer + (y * Destination->BufferSizeX) + MinX;
+        Color *SourcePixel = buffer + ((y - MinY + SourceOffsetY) * BufferSizeX) + SourceOffsetX;
+        
+        for(int x = MinX; x < MaxX; ++x)
         {
-            if (sprite->buffer[x][y].GetAlpha() != 0)
+            if(SourcePixel->GetAlpha() != 0)
             {
-                buffer[x + (int)sprite->position.x][y + (int)sprite->position.y] = sprite->buffer[x][y];
+                *DestPixel = *SourcePixel;
             }
+
+            DestPixel++;
+            SourcePixel++;
         }
     }
-    return *this;
 }
 
-ImageBuffer& ImageBuffer::operator =(const ImageBuffer& rhs)&
+Color &ImageBuffer::SampleColor(int x, int y)
 {
-    for (int i = 0; i < size.x; ++i)
-    {
-        for (int j = 0; j < size.y; ++j)
-        {
-            buffer[i][j] = rhs.buffer[i][j];
-        }
-    }
-    return *this;
+    Color &Result = buffer[x + (BufferSizeX * y)];
+    return(Result);
 }
-ImageBuffer ImageBuffer::operator +(const ImageBuffer& rhs)
+
+ImageBuffer& ImageBuffer::operator =(const ImageBuffer& rhs)
 {
-    for (int i = 0; i < size.x; ++i)
-    {
-        for (int j = 0; j < size.y; ++j)
-        {
-            buffer[i][j] += rhs.buffer[i][j];
-        }
-    }
-    return *this;
-}
-ImageBuffer ImageBuffer::operator -(const ImageBuffer& rhs)
-{
-    for (int i = 0; i < size.x; ++i)
-    {
-        for (int j = 0; j < size.y; ++j)
-        {
-            buffer[i][j] -= rhs.buffer[i][j];
-        }
-    }
+    memcpy(buffer, rhs.buffer, BufferSizeX*BufferSizeY);
     return *this;
 }
