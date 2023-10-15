@@ -21,7 +21,7 @@ public:
     Color *buffer;
     AABB aabb;
 
-    ImageBuffer(const char* filename);
+    ImageBuffer(const std::string filename);
     ImageBuffer(ImageBuffer &rhs);
     ImageBuffer(float x, float y);
     ImageBuffer();
