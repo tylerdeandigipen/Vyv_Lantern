@@ -225,7 +225,7 @@ void tempPlayerMovementLol(float dt)
         logger.LogLine("Debug info: Vyv Right pressed.");
         //AudioManager.PlaySFX("footsteps.ogg");
     }
-    if (inputHandler->keyPressed(SDLK_LEFT))
+    if (inputHandler->keyPressed(SDL_SCANCODE_LEFT))
     {
         pixelRenderer.objects[1]->position.x -= moveSpeed * dt;
 
