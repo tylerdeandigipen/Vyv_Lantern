@@ -1,6 +1,7 @@
 #pragma once
 #ifndef RENDERER_H
 #define RENDERER_H
+
 #include "ImageBuffer.h"
 #include "Light.h"
 #include <SDL/SDL.h>

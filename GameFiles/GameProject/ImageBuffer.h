@@ -1,6 +1,7 @@
 #pragma once
 #ifndef IMAGEBUFFER_H
 #define IMAGEBUFFER_H
+
 #include "Color.h"
 #include "Vector.h"
 #include "Collision.h"
