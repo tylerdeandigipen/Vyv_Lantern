@@ -5,9 +5,19 @@
 #include "Vector.h"
 #include "Collision.h"
 
+enum ImageType
+{
+	/*Add what type of object is it*/
+	COLLIDABLE,
+	SWITCH,
+	PLAYER
+};
+
 class ImageBuffer
 {
 	public:
+
+		ImageType type;
 
 		float BufferSizeX = 240;
 		float BufferSizeY = 135;

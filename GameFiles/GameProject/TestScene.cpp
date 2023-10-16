@@ -145,6 +145,7 @@ Engine::EngineCode TestScene::Init()
     pixelRenderer.AddLight(tempLight2);
     pixelRenderer.AddLight(tempLight3);
     testSprite = new ImageBuffer("Logo.ppm");
+    testSprite->type = SWITCH;
     testSprite->position = { 30, 30 };
     testSprite->layer = 1;
     pixelRenderer.AddObject(testSprite);
@@ -166,6 +167,7 @@ Engine::EngineCode TestScene::Init()
     testSprite1->position = { 120, 30 };
     testSprite1->layer = 1;
     pixelRenderer.AddObject(testSprite1);
+    testSprite1->type = COLLIDABLE;
     
     testEntity->AddToRenderer(&pixelRenderer);
 
@@ -276,25 +278,28 @@ void TestScene::Update(float dt)
             }
             else
             {
-                // Calculate the vector from object 'a' to object 'b'
-                float pushDirX = pixelRenderer.objects[b]->position.x - pixelRenderer.objects[a]->position.x;
-                float pushDirY = pixelRenderer.objects[b]->position.y - pixelRenderer.objects[a]->position.y;
-
-                // Calculate the length of the vector
-                float pushDirLength = sqrt(pushDirX * pushDirX + pushDirY * pushDirY);
-
-                // Normalize the vector to obtain a unit vector
-                if (pushDirLength > 0)
+                if (pixelRenderer.objects[b]->type == COLLIDABLE && pixelRenderer.objects[a]->type == COLLIDABLE)
                 {
-                    pushDirX /= pushDirLength;
-                    pushDirY /= pushDirLength;
+                    // Calculate the vector from object 'a' to object 'b'
+                    float pushDirX = pixelRenderer.objects[b]->position.x - pixelRenderer.objects[a]->position.x;
+                    float pushDirY = pixelRenderer.objects[b]->position.y - pixelRenderer.objects[a]->position.y;
+                    // Calculate the length of the vector
+                    float pushDirLength = sqrt(pushDirX * pushDirX + pushDirY * pushDirY);
+
+                    // Normalize the vector to obtain a unit vector
+                    if (pushDirLength > 0)
+                    {
+                        pushDirX /= pushDirLength;
+                        pushDirY /= pushDirLength;
+                    }
+
+                    // Apply the push force to both objects
+                    pixelRenderer.objects[a]->position.x -= pushDirX * pushForce;
+                    pixelRenderer.objects[a]->position.y -= pushDirY * pushForce;
+                    pixelRenderer.objects[b]->position.x += pushDirX * pushForce;
+                    pixelRenderer.objects[b]->position.y += pushDirY * pushForce;
                 }
 
-                // Apply the push force to both objects
-                pixelRenderer.objects[a]->position.x -= pushDirX * pushForce;
-                pixelRenderer.objects[a]->position.y -= pushDirY * pushForce;
-                pixelRenderer.objects[b]->position.x += pushDirX * pushForce;
-                pixelRenderer.objects[b]->position.y += pushDirY * pushForce;
 
 
                 if (soundCooldown <= 0.0f) 
