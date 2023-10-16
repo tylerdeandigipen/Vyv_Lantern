@@ -18,17 +18,17 @@ class ImageBuffer
 {
 public:
 
-		ImageType type;
+    ImageType type;
 
-		float BufferSizeX = 240;
-		float BufferSizeY = 135;
-		float screenScale = 6;
-		gfxVector2 size;
-		gfxVector2 position;
-		std::string name = "";
-		int layer = 0;
-		Color** buffer;
-		AABB aabb;
+    int BufferSizeX = 240;
+    int BufferSizeY = 135;
+    float screenScale = 6;
+    gfxVector2 size;
+    gfxVector2 position;
+    std::string name = "";
+    int layer = 0;
+    Color* buffer;
+    AABB aabb;
 
     ImageBuffer(const std::string filename);
     ImageBuffer(ImageBuffer &rhs);
