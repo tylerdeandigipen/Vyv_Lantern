@@ -27,7 +27,17 @@ Component* Physics::Clone() const
 	return new Physics(*this);
 }
 
-void Physics::Read(FILE* stream)
+std::string Physics::Name()
+{
+	return "Physics";
+}
+
+std::string Physics::GetName()
+{
+	return std::string();
+}
+
+void Physics::Read(json jsonData)
 {
 	// for when we get json
 	// 

@@ -14,8 +14,10 @@ class Renderer
 {
 public:
 	Renderer();
+    ~Renderer(void);
+    
 	SDL_Window* window;
-	SDL_Renderer* renderer;
+	//SDL_Renderer* renderer;
 	ImageBuffer* outputBuffer;
 	ImageBuffer* tileMapLayer; //layer 2
 	ImageBuffer* objectLayer; //layer 1
@@ -31,7 +33,9 @@ public:
 
 	void RenderLightingPass();
 	float FindPixelLuminosity(float x, float y, int i, Light lightSource_[MAX_LIGHT_SOURCES]);
+
 	ImageBuffer* GetObjectByName(std::string name_);
+
 	void MakeTileMap(int tileMapArray[16][9]);
 	void AddObject(ImageBuffer* sprite);
 	void AddLight(Light light);
@@ -47,6 +51,10 @@ private:
 	int frameCount = 0;
 	int shut_up;
 
+	uint32_t OutputBufferTexture;
+    uint32_t PreviousFrameBeginTime;
+
+	bool LightsBaked = false;
 };
 
 #endif 

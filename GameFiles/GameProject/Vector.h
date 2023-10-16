@@ -126,13 +126,36 @@ public:
 		vecResult.y = vec.y / length(vec);
 	}
 
+    static inline float DotProduct(const gfxVector2 &a, const gfxVector2 &b)
+    {
+        float Result = a * b;
+        return(Result);
+    }
+
+	static inline float Length(const gfxVector2& v)
+	{
+		float Result = sqrtf(DotProduct(v, v));
+        return(Result);
+	}
+
+	static inline gfxVector2 Normalize(const gfxVector2 &vec)
+	{
+		gfxVector2 Result = {};
+		Result.x = vec.x / Length(vec);
+		Result.y = vec.y / Length(vec);
+        return(Result);
+	}
+    
 	//delegates
 	float x; //access to X component
 	float y; //access to Y component
 
 private:
 	//data member
-	double mVec[2]{};
+	float mVec[2]{};
 
 };
+
+typedef gfxVector2 Vector2;
+
 #endif // !VECTOR_H_

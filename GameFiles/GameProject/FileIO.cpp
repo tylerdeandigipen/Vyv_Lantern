@@ -45,9 +45,9 @@ ImageBuffer* ReadPPM(const char* filename)
 		int tempX = 0;
 		int tempY = 0;
 		char hold = NULL;
-		uint8_t red = 0.0f;
-		uint8_t green = 0.0f;
-		uint8_t blue = 0.0f;
+		uint8_t red = 0;
+		uint8_t green = 0;
+		uint8_t blue = 0;
 		fscanf_s(fp, "%c", &hold);
 
 		fscanf_s(fp, "%c", &hold);
@@ -62,7 +62,7 @@ ImageBuffer* ReadPPM(const char* filename)
 				fscanf_s(fp, "%f", &red);
 				fscanf_s(fp, "%f", &green);
 				fscanf_s(fp, "%f", &blue);
-				image->buffer[i][j] = { red, green, blue, 255 };
+				image->buffer[(i * image->BufferSizeX) + j] = { red, green, blue, 255 };
 			}
 		}
 		return image;

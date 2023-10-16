@@ -3,13 +3,17 @@
 #include <iostream>
 #include <chrono>
 #include <string>
+#include "Logging.h"
 
 class ScopeTimer
 {
 	std::chrono::time_point<std::chrono::high_resolution_clock> startTimept;
 	std::string name_;
-	ScopeTimer(std::string name)
+
+public:
+    ScopeTimer(std::string name)
 	{
+        name_ = name;
 		startTimept = std::chrono::high_resolution_clock::now();
 	}
 
@@ -20,8 +24,10 @@ class ScopeTimer
 		auto start = std::chrono::time_point_cast<std::chrono::microseconds>(startTimept).time_since_epoch().count();
 		auto end = std::chrono::time_point_cast<std::chrono::microseconds>(endTimept).time_since_epoch().count();
 		auto duration = end - start;
-		double ms = duration * 0.001;
+		double microseconds_elapsed = duration * 0.001f;
 
-		//add debug out code here
+        // @TODO: Consider some kind of visual profiler to output this to.
+        Logging &Logger = Logging::GetInstance();
+        Logger.LogLine("SCOPED TIMER (%s): %f", name_.c_str(), microseconds_elapsed);
 	}
 };

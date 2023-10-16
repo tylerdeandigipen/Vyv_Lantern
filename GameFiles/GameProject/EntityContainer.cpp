@@ -12,7 +12,7 @@
 #include "EntityContainer.h"
 #include "Entity.h"
 
-EntityContainer::EntityContainer() : entities(NULL)
+EntityContainer::EntityContainer() : entities()
 {
 
 }
@@ -73,19 +73,20 @@ void EntityContainer::CheckCollisions()
 
 void EntityContainer::UpdateAll(float dt)
 {
-	for (unsigned i = 0; entities.size(); ++i)
+	int i = 0;
+	for (auto it : entities)
 	{
-		if (entities[i])
+		if (it)
 		{
-			entities[i]->Update(dt);
-			if (entities[i]->IsDestroyed())
+			(it)->Update(dt);
+			if (it->IsDestroyed())
 			{
-				entities[i]->FreeComponents();
-				delete entities[i];
-				entities[i] = NULL;
-				
+				it->FreeComponents();
+				delete it;
+				it = NULL;
 			}
 		}
+		++i;
 	}
 }
 
@@ -102,13 +103,13 @@ void EntityContainer::RenderAll()
 
 void EntityContainer::FreeAll()
 {
-	for (unsigned i = 0; entities.max_size(); ++i)
+	for (auto it : entities)
 	{
-		if (entities[i] != NULL)
+		if (it)
 		{
-			entities[i]->FreeComponents();
-			delete entities[i];
-			entities[i] = NULL;
+			it->FreeComponents();
+			delete it;
+			it = NULL;
 		}
 	}
 	entities.clear();

@@ -19,18 +19,21 @@ public:
 	Transform(Transform const& transform);
 	~Transform();
 	Component* Clone() const override;
-	void Read(Stream stream) override;
+	std::string GetName() override;
+	static std::string Name();
+	void Read(json jsonData) override;
 	//const Matrix2D* GetMatrix();
 	const gfxVector2* GetTranslation();
 	float GetRotation();
 	const gfxVector2* GetScale();
 	void SetTranslation(gfxVector2* _translation);
+	void SetTranslation(gfxVector2 _translation);
 	void SetRotation(float _rotation);
     void SetScale(const gfxVector2* _scale);
-	gfxVector2* translation;
 private:
 
-	gfxVector2 scale;
+	gfxVector2* scale;
+	gfxVector2* translation;
 	float rotation;
 
 	bool isDirty;
