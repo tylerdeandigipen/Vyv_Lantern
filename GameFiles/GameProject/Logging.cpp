@@ -33,12 +33,13 @@ Logging& Logging::GetInstance(const std::string& filename)
 	return instance;
 }
 
-// The following code, namely any use of va_(anything) is not entirely mine. Credit goes to IBM:
-// https://www.ibm.com/docs/en/i/7.1?topic=lf-va-arg-va-end-va-start-access-function-arguments
-// 
-// For examples on how to use.
-// 
-// VA_(anything) is used to allow for arguments to be passed in when logging. Previously, just allowed strings.
+
+/***************************************************************************************
+*    Title: Game Engine Architecture (second edition)
+*    Author: Jason Gregory
+*    pg. 411 - 413
+*
+***************************************************************************************/
  
 void Logging::Log(const char* format, ...)
 {

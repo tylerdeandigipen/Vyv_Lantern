@@ -38,7 +38,7 @@ float ReadFloat(FILE* stream)
 
 ImageBuffer* ReadPPM(const char* filename)
 {
-	FILE* fp;
+	/*FILE* fp;
 	fopen_s(&fp, filename, "r");
 	if (fp)
 	{
@@ -66,6 +66,6 @@ ImageBuffer* ReadPPM(const char* filename)
 			}
 		}
 		return image;
-	}
+	}*/
 	return NULL;
 }
