@@ -28,8 +28,6 @@
 
 Logging& logger = Logging::GetInstance("debugLog.log");
 
-
-
 ImageBuffer* testSprite;
 ImageBuffer* testSprite1;
 
@@ -68,7 +66,6 @@ Engine::EngineCode TestScene::Load()
     AudioManager.LoadSFX("footsteps.ogg");
     AudioManager.LoadSFX("oof.ogg");
 
-    logger.LogLine("Debug info: Oof heard. (testScene loaded)");
 	return Engine::NothingBad;
 }
 
@@ -77,7 +74,7 @@ Engine::EngineCode TestScene::Init()
     /*BGM*/
     //AudioManager.PlayMusic("bgm.ogg");
 
-
+    logger.LogToAll("Timestamped message: %s", "Starting TestScene!!");
 
     Inputs::GetInstance()->SetWindow(window);
 
