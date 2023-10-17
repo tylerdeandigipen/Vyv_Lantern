@@ -26,7 +26,7 @@
 #include <glad/glad.h>
 #include <iostream>
 
-Logging& logger = Logging::GetInstance();
+Logging& logger = Logging::GetInstance("debugLog.log");
 
 
 

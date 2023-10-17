@@ -154,7 +154,6 @@
     <ClInclude Include="Color.h" />
     <ClInclude Include="Component.h" />
     <ClInclude Include="ComponentFactory.h" />
-    <ClInclude Include="DebugVisuals.h" />
     <ClInclude Include="Engine.h" />
     <ClInclude Include="EntityContainer.h" />
     <ClInclude Include="EntityFactory.h" />
