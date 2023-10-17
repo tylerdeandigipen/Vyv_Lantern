@@ -163,9 +163,10 @@ void ImageBuffer::MergeLayersIndvPixel(ImageBuffer* bottom, ImageBuffer* middle,
 }
 
 
-ImageBuffer& ImageBuffer::AddSprite(ImageBuffer *sprite)
+ImageBuffer& ImageBuffer::AddSprite(ImageBuffer *sprite, Vector2 CameraP)
 {
-    sprite->Blit(this, sprite->position.x, sprite->position.y);
+	Vector2 ScreenSpaceP = sprite->position - CameraP;
+    sprite->Blit(this, (int)ScreenSpaceP.x, (int)ScreenSpaceP.y);
     return *this;
 }
 

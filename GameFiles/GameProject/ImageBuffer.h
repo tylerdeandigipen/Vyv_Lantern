@@ -36,7 +36,8 @@ public:
     ImageBuffer();
     ~ImageBuffer();
 
-    void Blit(ImageBuffer *Destination, int OffsetX = 0, int OffsetY = 0);
+	ImageBuffer& AddSprite(ImageBuffer* sprite, Vector2 CameraP = Vector2(0, 0));
+	void Blit(ImageBuffer *Destination, int OffsetX = 0, int OffsetY = 0);
     
     void Update(float dt);
 
@@ -45,7 +46,6 @@ public:
     ImageBuffer& ClearImageBuffer();
     void MergeLayers(ImageBuffer* bottom, ImageBuffer* top);
     void MergeLayersIndvPixel(ImageBuffer* bottom, ImageBuffer* middle, ImageBuffer* top, int x, int y);
-    ImageBuffer& AddSprite(ImageBuffer *sprite);
     
     ImageBuffer& operator =(const ImageBuffer& rhs);
 private:

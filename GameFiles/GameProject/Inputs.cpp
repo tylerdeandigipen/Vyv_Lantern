@@ -53,6 +53,10 @@ void Inputs::handleInput()
     {
         switch (event.type)
         {
+			case SDL_QUIT:
+				Engine::GetInstance()->SetCloseRequest(true);
+				break;
+
         case SDL_MOUSEMOTION:
             SDL_GetMouseState(&mouseX, &mouseY);
             break;

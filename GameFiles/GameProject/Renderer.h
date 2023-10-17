@@ -18,40 +18,46 @@ public:
     ~Renderer(void);
     
 	SDL_Window* window;
-	//SDL_Renderer* renderer;
+
 	ImageBuffer* outputBuffer;
 	ImageBuffer* tileMapLayer; //layer 2
 	ImageBuffer* objectLayer; //layer 1
 	ImageBuffer* backgroundLayer; //layer 0
 	ImageBuffer* bakedLightsBuffer;
 	ImageBuffer* inputBuffer;
-	float bakedIntensity[SCREEN_SIZE_X][SCREEN_SIZE_Y];
+
 	Light lightSource[MAX_LIGHT_SOURCES];
-	Light staticLightSource[MAX_LIGHT_SOURCES];
 	ImageBuffer* objects[MAX_OBJECTS];
+
 	float screenScale = 6;
 	float bakedVolumetricIntensity = .25f;
+
+	Vector2 GetCameraPosition(void);
+	void SetCameraPosition(Vector2 NewCameraP);
 
 	void RenderLightingPass();
 	float FindPixelLuminosity(float x, float y, int i, Light lightSource_[MAX_LIGHT_SOURCES]);
 
 	ImageBuffer* GetObjectByName(std::string name_);
-
+    
 	void MakeTileMap(int tileMapArray[16][9]);
 	void AddObject(ImageBuffer* sprite);
 	void AddLight(Light light);
 	void UpdateObjects();
-	void BakeLights();
 	void Update();
 	int returnObjCnt();
+
 private:
+
+	Vector2 CameraP;
+
 	int numObjects;
 	int numLights;
 	int numStaticLights;
-	Uint32 startTime;
-	int frameCount = 0;
-	int shut_up;
 
+	int frameCount = 0;
+
+    Uint32 startTime;
 	uint32_t OutputBufferTexture;
     uint32_t PreviousFrameBeginTime;
 

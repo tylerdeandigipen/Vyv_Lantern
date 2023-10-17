@@ -246,14 +246,16 @@ void tempPlayerMovementLol(float dt)
 
     int x, y;
     Uint32 buttons = SDL_GetMouseState(&x, &y);
-    // to find angle between worldspace and screenspace take the worldspace coord and multiply by the screen scale in this case 6
-    pixelRenderer.lightSource[0].angle = atan2(x - (pixelRenderer.lightSource[0].position.x * 6), y - (pixelRenderer.lightSource[0].position.y * 6)) * 57.295779f;
-}
 
-/*algo for brensenham algo*/
-void BrandonTurkeyAlgo(float x1, float y1, float x2, float y2, Light clr)
-{
+	Vector2 CursourWorldP = Vector2(x, y)- pixelRenderer.GetCameraPosition();
 
+	// to find angle between worldspace and screenspace take the worldspace coord and multiply by the screen scale in this case 6
+	pixelRenderer.lightSource[0].angle = atan2(CursourWorldP.x - (pixelRenderer.lightSource[0].position.x * 6), CursourWorldP.y - (pixelRenderer.lightSource[0].position.y * 6)) * 57.295779f;
+
+	ImageBuffer *playerEntity = pixelRenderer.objects[1];
+	Vector2 ScreenHalfSize = 0.5f*Vector2(SCREEN_SIZE_X, SCREEN_SIZE_Y);
+	Vector2 BitmapHalfDim = 0.5f*playerEntity->size;
+	pixelRenderer.SetCameraPosition(playerEntity->position - ScreenHalfSize + BitmapHalfDim);
 }
 
 void TestScene::Update(float dt)

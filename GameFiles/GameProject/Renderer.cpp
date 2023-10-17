@@ -24,6 +24,16 @@
 #include <string>
 #include <assert.h>
 
+Vector2 Renderer::GetCameraPosition(void)
+{
+	return CameraP;
+}
+
+void Renderer::SetCameraPosition(Vector2 NewCameraP)
+{
+	CameraP = NewCameraP;
+}
+
 void Renderer::RenderLightingPass()
 {
     int x = 0;
@@ -35,9 +45,12 @@ void Renderer::RenderLightingPass()
     float bScale = 0;
     Color trans{ 0,0,0,0 };
     
-    backgroundLayer->Blit(inputBuffer);
-    objectLayer->Blit(inputBuffer);
-    tileMapLayer->Blit(inputBuffer);
+	int CameraOffsetX = (int)CameraP.x;
+	int CameraOffsetY = (int)CameraP.y;
+
+    backgroundLayer->Blit(inputBuffer, -CameraOffsetX, -CameraOffsetY);
+    objectLayer->Blit(inputBuffer, -CameraOffsetX, -CameraOffsetY);
+    tileMapLayer->Blit(inputBuffer, -CameraOffsetX, -CameraOffsetY);
     
     outputBuffer->ClearImageBuffer();
     
@@ -64,48 +77,18 @@ void Renderer::RenderLightingPass()
     }
 }
 
-void Renderer::BakeLights()
-{
-    Color trans{ 0,0,0,0 };
-    float lightMultiplier;
-    int x = 0;
-    int y = 0;
-    int i = 0;
-
-    for (x = 0; x < inputBuffer->size.x; ++x)
-    {
-        for (y = 0; y < inputBuffer->size.y; ++y)
-        {
-            for (int i = 0; i < numStaticLights; ++i)
-            {
-                if (i == 0)
-                {
-                    bakedLightsBuffer->SampleColor(x, y) = trans;
-                    bakedIntensity[x][y] = 0;
-                }
-
-                lightMultiplier = FindPixelLuminosity(x, y, i, staticLightSource);
-                if (lightMultiplier != 0)
-                {
-                    bakedIntensity[x][y] += lightMultiplier;
-                    bakedLightsBuffer->SampleColor(x, y) += staticLightSource[i].color;
-                    bakedLightsBuffer->SampleColor(x, y).SetAlpha(255);
-                }
-            }
-        }
-    }
- }
-
 float Renderer::FindPixelLuminosity(float x, float y, int i, Light lightSource_[MAX_LIGHT_SOURCES])
 {
     Light *LightSource = lightSource_ + i;
+
+    Vector2 LightP = LightSource->position - CameraP;
     float Result = 0.0f;
     
     switch(LightSource->Type)
     {
         case LightSourceType_Point:
         {
-            Result = 1.0f / Vector2::Length(Vector2(x, y) - LightSource->position);
+            Result = 1.0f / Vector2::Length(Vector2(x, y) - LightP);
         } break;
 
         case LightSourceType_Directional:
@@ -123,7 +106,7 @@ float Renderer::FindPixelLuminosity(float x, float y, int i, Light lightSource_[
             
             Vector2 EmissionDirection = Vector2(-sinf(AngleRadians), cosf(AngleRadians));
             Vector2 EmissionTangent = Vector2(-EmissionDirection.y, EmissionDirection.x);
-            Vector2 ToPixel = Vector2(x, y) - LightSource->position;
+            Vector2 ToPixel = Vector2(x, y) - LightP;
 
             float EPSILON = 0.0;
             float Dot = Vector2::DotProduct(ToPixel, EmissionDirection);
@@ -243,25 +226,15 @@ void Renderer::Update()
     Uint32 currentTime = SDL_GetTicks();
     ScopeTimer TestScopeTimer("Renderer::Update");
 
-    if(numStaticLights && !LightsBaked)
-    {
-		//BakeLights();		
-		LightsBaked = true;
-    }
-     
     RenderLightingPass();
 
-    //debug count something code
-    ++frameCount;
-    if (currentTime - startTime >= 1000) {
-        shut_up = frameCount;
-        frameCount = 0;
-        startTime = currentTime;
-    }
-
+	float dt = (float)(currentTime - PreviousFrameBeginTime) / 1000.0f;
     float FrameRate = 1000.0f / (float)(currentTime - PreviousFrameBeginTime);
     std::string fpsString = std::to_string(FrameRate);
     SDL_SetWindowTitle(window, fpsString.c_str());
+
+	Vector2 dCameraP = Vector2(1.0f, 0.0f);
+	CameraP += dt*10.0f*dCameraP;
 
     for (int i = 0; i < numLights * 2; i++)
     {
@@ -378,15 +351,7 @@ void Renderer::AddLight(Light light)
 {
     if (numLights + numStaticLights + 1 < MAX_LIGHT_SOURCES)
     {
-        if (light.isStatic == 0)
-        {
-            lightSource[numLights] = light;
-            numLights += 1;
-        }
-        else
-        {
-            staticLightSource[numStaticLights] = light;
-            numStaticLights += 1;
-        }
+		lightSource[numLights++] = light;
+		numLights += 1;
     }
 }
