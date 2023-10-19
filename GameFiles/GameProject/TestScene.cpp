@@ -104,8 +104,8 @@ Engine::EngineCode TestScene::Init()
 	tempLight.position.x = 80;
     tempLight.position.y = 90;
     tempLight.color = { 216, 247, 255, 255 };
-    tempLight.maxAngle = 15;
-    tempLight.minAngle = -15;
+    tempLight.maxAngle = 25;
+    tempLight.minAngle = -25;
     tempLight.angle = 200;
     tempLight.intensity = 215.0f;
     tempLight.radialMult1 = 0.4f;
@@ -148,8 +148,8 @@ Engine::EngineCode TestScene::Init()
     tempLight3.isStatic = 0;
 
     pixelRenderer.AddLight(tempLight);
-    pixelRenderer.AddLight(tempLight2);
-    pixelRenderer.AddLight(tempLight3);
+   // pixelRenderer.AddLight(tempLight2);
+   // pixelRenderer.AddLight(tempLight3);
     testSprite = new ImageBuffer("Logo.ppm");
     testSprite->type = SWITCH;
     testSprite->position = { 30, 30 };
