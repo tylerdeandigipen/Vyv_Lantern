@@ -55,6 +55,7 @@ void Renderer::RenderLightingPass()
 	tileMapLayer->Blit(inputBuffer, -CameraOffsetX, -CameraOffsetY);
 	objectLayer->Blit(inputBuffer);
 
+#if 1
     for (x = 0; x < inputBuffer->size.x; ++x)
     {
         for (y = 0; y < inputBuffer->size.y; ++y)
@@ -76,6 +77,9 @@ void Renderer::RenderLightingPass()
             }
         }
     }
+#else
+	inputBuffer->Blit(outputBuffer);
+#endif
 }
 
 float Renderer::FindPixelLuminosity(float x, float y, int i, Light lightSource_[MAX_LIGHT_SOURCES])
@@ -245,9 +249,6 @@ void Renderer::Update()
 	char WindowTextBuffer[128];
 	sprintf_s(WindowTextBuffer, sizeof(WindowTextBuffer), "FPS: %.2f", AveragteFrameRate);
     SDL_SetWindowTitle(window, WindowTextBuffer);
-
-	Vector2 dCameraP = Vector2(1.0f, 0.0f);
-	CameraP += dtThisFrame*10.0f*dCameraP;
 
     for (int i = 0; i < numLights * 2; i++)
     {
