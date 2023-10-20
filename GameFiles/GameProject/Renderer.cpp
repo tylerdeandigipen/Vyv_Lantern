@@ -48,12 +48,13 @@ void Renderer::RenderLightingPass()
 	int CameraOffsetX = (int)CameraP.x;
 	int CameraOffsetY = (int)CameraP.y;
 
-    backgroundLayer->Blit(inputBuffer, -CameraOffsetX, -CameraOffsetY);
-    objectLayer->Blit(inputBuffer, -CameraOffsetX, -CameraOffsetY);
-    tileMapLayer->Blit(inputBuffer, -CameraOffsetX, -CameraOffsetY);
-    
-    outputBuffer->ClearImageBuffer();
-    
+	inputBuffer->ClearImageBuffer();
+	outputBuffer->ClearImageBuffer();
+	
+	backgroundLayer->Blit(inputBuffer, -CameraOffsetX, -CameraOffsetY);
+	tileMapLayer->Blit(inputBuffer, -CameraOffsetX, -CameraOffsetY);
+	objectLayer->Blit(inputBuffer);
+
     for (x = 0; x < inputBuffer->size.x; ++x)
     {
         for (y = 0; y < inputBuffer->size.y; ++y)
@@ -228,13 +229,25 @@ void Renderer::Update()
 
     RenderLightingPass();
 
-	float dt = (float)(currentTime - PreviousFrameBeginTime) / 1000.0f;
-    float FrameRate = 1000.0f / (float)(currentTime - PreviousFrameBeginTime);
-    std::string fpsString = std::to_string(FrameRate);
-    SDL_SetWindowTitle(window, fpsString.c_str());
+    float AverageFrameLength = 0.0f;
+	for(uint32_t FrameIndex = 1; FrameIndex < _countof(PreviousFrameLengths); ++FrameIndex)
+	{
+        AverageFrameLength += PreviousFrameLengths[FrameIndex - 1];
+        PreviousFrameLengths[FrameIndex] = PreviousFrameLengths[FrameIndex - 1];
+	}
+
+    float dtThisFrame = (float)(currentTime - PreviousFrameBeginTime) / 1000.0f;
+    PreviousFrameLengths[0] = dtThisFrame;
+    AverageFrameLength += dtThisFrame;
+    AverageFrameLength /= (float)_countof(PreviousFrameLengths);
+    
+	float AveragteFrameRate = 1.0f / AverageFrameLength;
+	char WindowTextBuffer[128];
+	sprintf_s(WindowTextBuffer, sizeof(WindowTextBuffer), "FPS: %.2f", AveragteFrameRate);
+    SDL_SetWindowTitle(window, WindowTextBuffer);
 
 	Vector2 dCameraP = Vector2(1.0f, 0.0f);
-	CameraP += dt*10.0f*dCameraP;
+	CameraP += dtThisFrame*10.0f*dCameraP;
 
     for (int i = 0; i < numLights * 2; i++)
     {
@@ -302,38 +315,29 @@ int Renderer::returnObjCnt()
 
 void Renderer::AddObject(ImageBuffer* sprite)
 {
-    //objectLayer->ClearImageBuffer();
-    if (numObjects + 1 > !MAX_OBJECTS)
+    if ((numObjects + 1) < MAX_OBJECTS)
     {
         objects[numObjects] = sprite;
         numObjects += 1;
     }
-    for (int l = 0; l < 3; ++l)
+}
+
+void Renderer::UpdateObjects()
+{
+    objectLayer->ClearImageBuffer();
+
+    for(int i = 0; i < numObjects; ++i)
     {
-        for (int i = 0; i < numObjects; ++i)
+        for(int l = 0; l < 3; ++l)
         {
             if (objects[i]->layer == l)
             {
-                objectLayer->AddSprite(objects[i]);
+                objectLayer->AddSprite(objects[i], CameraP);
+                break;
             }
         }
     }
 }
-
- void Renderer::UpdateObjects()
- {
-     //objectLayer->ClearImageBuffer();
-     for (int l = 0; l < 3; ++l)
-     {
-         for (int i = 0; i < numObjects; ++i)
-         {
-             if (objects[i]->layer == l)
-             {
-                 objectLayer->AddSprite(objects[i]);
-             }
-         }
-     }
- }
 
 ImageBuffer* Renderer::GetObjectByName(std::string name_)
 {

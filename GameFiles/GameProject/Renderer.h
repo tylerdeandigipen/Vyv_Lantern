@@ -58,9 +58,11 @@ private:
 	int frameCount = 0;
 
     Uint32 startTime;
+    
 	uint32_t OutputBufferTexture;
     uint32_t PreviousFrameBeginTime;
-
+    float PreviousFrameLengths[15];
+    
 	bool LightsBaked = false;
 };
 
