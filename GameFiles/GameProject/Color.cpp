@@ -51,6 +51,7 @@ void Color::SetAlpha(uint8_t a_)
 	a = a_;
 }
 
+
 Color Color::ScaleIndividual(float rScale, float gScale, float bScale)
 {
 	Color result;

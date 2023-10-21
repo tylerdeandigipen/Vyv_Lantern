@@ -48,39 +48,54 @@ void Renderer::RenderLightingPass()
 	int CameraOffsetX = (int)CameraP.x;
 	int CameraOffsetY = (int)CameraP.y;
 
-    backgroundLayer->Blit(inputBuffer, -CameraOffsetX, -CameraOffsetY);
-    objectLayer->Blit(inputBuffer, -CameraOffsetX, -CameraOffsetY);
-    tileMapLayer->Blit(inputBuffer, -CameraOffsetX, -CameraOffsetY);
-    
-    outputBuffer->ClearImageBuffer();
-    
-    for (x = 0; x < inputBuffer->size.x; ++x)
+	inputBuffer->ClearImageBuffer();
+	outputBuffer->ClearImageBuffer();
+	
+	backgroundLayer->Blit(inputBuffer, -CameraOffsetX, -CameraOffsetY);
+	tileMapLayer->Blit(inputBuffer, -CameraOffsetX, -CameraOffsetY);
+	objectLayer->Blit(inputBuffer);
+
+#if 1
+	float const OneOver255 = 1.0f / 255.0f;
+	
+	for (x = 0; x < inputBuffer->size.x; ++x)
     {
         for (y = 0; y < inputBuffer->size.y; ++y)
         {
+			float IntensityR = 0.0f;
+			float IntensityG = 0.0f;
+			float IntensityB = 0.0f;
+
             for (i = 0; i < numLights; ++i)
             {
-                lightMultiplier = FindPixelLuminosity(x, y, i, lightSource);
-                if (lightMultiplier != 0)
+				Light *LightSource = lightSource + i;
+                float lightMultiplier = FindPixelLuminosity(x, y, LightSource);
+
+				//if (lightMultiplier != 0)
                 {
-                    rScale = (lightSource[i].color.GetRed() * lightMultiplier) / 255;
-                    gScale = (lightSource[i].color.GetGreen() * lightMultiplier) / 255;
-                    bScale = (lightSource[i].color.GetBlue() * lightMultiplier) / 255;
+                    float R_F32 = ((float)LightSource->color.GetRed())    * OneOver255;
+                    float G_F32 = ((float)LightSource->color.GetGreen())  * OneOver255;
+                    float B_F32 = ((float)LightSource->color.GetBlue())   * OneOver255;
                         
-                    outputBuffer->SampleColor(x, y) += inputBuffer->SampleColor(x, y).ScaleIndividual(rScale, gScale, bScale);
-                        
-                    lightMultiplier *= lightSource[i].volumetricIntensity;
-                    outputBuffer->SampleColor(x, y) += (lightSource[i].color * lightMultiplier);
-                }
+                    lightMultiplier *= LightSource->volumetricIntensity;
+                    
+					IntensityR += lightMultiplier * R_F32;
+					IntensityG += lightMultiplier * G_F32;
+					IntensityB += lightMultiplier * B_F32;
+				}
             }
-        }
+		
+			Color &DestPixel = outputBuffer->SampleColor(x, y);
+			DestPixel = inputBuffer->SampleColor(x, y).ScaleIndividual(IntensityR, IntensityG, IntensityB);
+		}
     }
+#else
+	inputBuffer->Blit(outputBuffer);
+#endif
 }
 
-float Renderer::FindPixelLuminosity(float x, float y, int i, Light lightSource_[MAX_LIGHT_SOURCES])
+float Renderer::FindPixelLuminosity(float x, float y, Light *LightSource)
 {
-    Light *LightSource = lightSource_ + i;
-
     Vector2 LightP = LightSource->position - CameraP;
     float Result = 0.0f;
     
@@ -88,7 +103,9 @@ float Renderer::FindPixelLuminosity(float x, float y, int i, Light lightSource_[
     {
         case LightSourceType_Point:
         {
-            Result = 1.0f / Vector2::Length(Vector2(x, y) - LightP);
+			Vector2 D = Vector2(x, y) - LightP;
+            float DistanceSq = Vector2::DotProduct(D, D);
+            Result = 1.0f / (DistanceSq);
         } break;
 
         case LightSourceType_Directional:
@@ -108,23 +125,22 @@ float Renderer::FindPixelLuminosity(float x, float y, int i, Light lightSource_[
             Vector2 EmissionTangent = Vector2(-EmissionDirection.y, EmissionDirection.x);
             Vector2 ToPixel = Vector2(x, y) - LightP;
 
-            float EPSILON = 0.0;
             float Dot = Vector2::DotProduct(ToPixel, EmissionDirection);
-            if(Dot > EPSILON)
+            if(Dot > 0.0f)
             {
-                float Distance = Vector2::Length(ToPixel);
-                float Radius = sqrt(Dot) * dRadius;
-                float EmitterDistance = 1.0f / (Distance*Distance);
-                float FrustumDistance = (Radius - sqrtf(fabsf(Vector2::DotProduct(EmissionTangent, ToPixel))));
+                float DistanceSq = Vector2::DotProduct(ToPixel, ToPixel);
+                float Radius = Dot * dRadius;
+                float EmitterDistance = 1.0f / (DistanceSq);
+                float FrustumDistance = (Radius - (fabsf(Vector2::DotProduct(EmissionTangent, ToPixel))));
                 if(FrustumDistance < 0.0f)
                 {
                     FrustumDistance = 0.0f;
                 }
-                if(FrustumDistance > 1.0f)
+                if(FrustumDistance > Radius)
                 {
-                    FrustumDistance = 1.0f;
+                    FrustumDistance = Radius;
                 }
-                
+
                 Result = EmitterDistance * FrustumDistance;
             }
         } break;
@@ -136,7 +152,10 @@ float Renderer::FindPixelLuminosity(float x, float y, int i, Light lightSource_[
     }
 
     Result *= LightSource->intensity;
-    
+	
+	//float const LIGHTING_STEP_SIZE = 0.25f;
+	//Result = LIGHTING_STEP_SIZE * floorf(Result / LIGHTING_STEP_SIZE);
+
     return(Result);
 }
 
@@ -228,13 +247,22 @@ void Renderer::Update()
 
     RenderLightingPass();
 
-	float dt = (float)(currentTime - PreviousFrameBeginTime) / 1000.0f;
-    float FrameRate = 1000.0f / (float)(currentTime - PreviousFrameBeginTime);
-    std::string fpsString = std::to_string(FrameRate);
-    SDL_SetWindowTitle(window, fpsString.c_str());
+    float AverageFrameLength = 0.0f;
+	for(uint32_t FrameIndex = 1; FrameIndex < _countof(PreviousFrameLengths); ++FrameIndex)
+	{
+        AverageFrameLength += PreviousFrameLengths[FrameIndex - 1];
+        PreviousFrameLengths[FrameIndex] = PreviousFrameLengths[FrameIndex - 1];
+	}
 
-	Vector2 dCameraP = Vector2(1.0f, 0.0f);
-	CameraP += dt*10.0f*dCameraP;
+    float dtThisFrame = (float)(currentTime - PreviousFrameBeginTime) / 1000.0f;
+    PreviousFrameLengths[0] = dtThisFrame;
+    AverageFrameLength += dtThisFrame;
+    AverageFrameLength /= (float)_countof(PreviousFrameLengths);
+    
+	float AverageFrameRate = 1.0f / AverageFrameLength;
+	char WindowTextBuffer[128];
+	sprintf_s(WindowTextBuffer, sizeof(WindowTextBuffer), "FPS: %.2f", AverageFrameRate);
+    SDL_SetWindowTitle(window, WindowTextBuffer);
 
     for (int i = 0; i < numLights * 2; i++)
     {
@@ -248,6 +276,9 @@ void Renderer::Update()
     {
         glGenTextures(1, &OutputBufferTexture);
     }
+
+	// @TODO: Maybe rework image buffers to be alligned to GPU memory layouts
+	assert(sizeof(Color) == sizeof(uint32_t));
 
     glClearColor(1.0f, 0.0f, 1.0f, 0.0f);
     glClear(GL_COLOR_BUFFER_BIT);
@@ -302,38 +333,29 @@ int Renderer::returnObjCnt()
 
 void Renderer::AddObject(ImageBuffer* sprite)
 {
-    //objectLayer->ClearImageBuffer();
-    if (numObjects + 1 > !MAX_OBJECTS)
+    if ((numObjects + 1) < MAX_OBJECTS)
     {
         objects[numObjects] = sprite;
         numObjects += 1;
     }
-    for (int l = 0; l < 3; ++l)
+}
+
+void Renderer::UpdateObjects()
+{
+    objectLayer->ClearImageBuffer();
+
+    for(int i = 0; i < numObjects; ++i)
     {
-        for (int i = 0; i < numObjects; ++i)
+        for(int l = 0; l < 3; ++l)
         {
             if (objects[i]->layer == l)
             {
-                objectLayer->AddSprite(objects[i]);
+                objectLayer->AddSprite(objects[i], CameraP);
+                break;
             }
         }
     }
 }
-
- void Renderer::UpdateObjects()
- {
-     //objectLayer->ClearImageBuffer();
-     for (int l = 0; l < 3; ++l)
-     {
-         for (int i = 0; i < numObjects; ++i)
-         {
-             if (objects[i]->layer == l)
-             {
-                 objectLayer->AddSprite(objects[i]);
-             }
-         }
-     }
- }
 
 ImageBuffer* Renderer::GetObjectByName(std::string name_)
 {
@@ -352,6 +374,5 @@ void Renderer::AddLight(Light light)
     if (numLights + numStaticLights + 1 < MAX_LIGHT_SOURCES)
     {
 		lightSource[numLights++] = light;
-		numLights += 1;
-    }
+	}
 }
