@@ -150,6 +150,8 @@
     <ClInclude Include="BaseSystem.h" />
     <ClInclude Include="Behavior.h" />
     <ClInclude Include="BehaviorPlayer.h" />
+    <ClInclude Include="Collider.h" />
+    <ClInclude Include="ColliderAABB.h" />
     <ClInclude Include="Collision.h" />
     <ClInclude Include="Color.h" />
     <ClInclude Include="Component.h" />
@@ -186,6 +188,8 @@
     <ClCompile Include="BaseSystem.cpp" />
     <ClCompile Include="Behavior.cpp" />
     <ClCompile Include="BehaviorPlayer.cpp" />
+    <ClCompile Include="Collider.cpp" />
+    <ClCompile Include="ColliderAABB.cpp" />
     <ClCompile Include="Collision.cpp" />
     <ClCompile Include="Color.cpp" />
     <ClCompile Include="Component.cpp" />

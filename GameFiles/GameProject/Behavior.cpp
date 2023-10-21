@@ -1,10 +1,10 @@
 #include "Behavior.h"
 
-Behavior::Behavior(Behavior::BehaviorType _type) : Component(Component::cBehavior), bType(_type)
+Behavior::Behavior(Behavior::BehaviorType type) : Component(Component::cBehavior), bType(type), _type()
 {
 }
 
-Behavior::Behavior(Behavior const& other) : Component(other), bType(other.bType)
+Behavior::Behavior(Behavior const& other) : Component(other), bType(other.bType), _type(other._type)
 {
 }
 

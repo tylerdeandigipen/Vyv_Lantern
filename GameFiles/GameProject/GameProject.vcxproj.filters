@@ -123,6 +123,12 @@
     <ClInclude Include="LevelBuilder.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Collider.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ColliderAABB.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">
@@ -218,6 +224,12 @@
     <ClCompile Include="LevelBuilder.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Collider.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ColliderAABB.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="GameProject.rc">
@@ -241,6 +253,8 @@
     <None Include="TempEntity.json">
       <Filter>Data</Filter>
     </None>
-    <None Include="Data\FirstLevel.json" />
+    <None Include="Data\FirstLevel.json">
+      <Filter>Data</Filter>
+    </None>
   </ItemGroup>
 </Project>

@@ -9,6 +9,7 @@
 //------------------------------------------------------------------------------
 #include "stdafx.h"
 #include "ComponentFactory.h"
+#include "ColliderAABB.h"
 #include "Transform.h"
 #include "BehaviorPlayer.h"
 
@@ -27,6 +28,7 @@ ComponentFactory::~ComponentFactory()
 Engine::EngineCode ComponentFactory::Init()
 {
     Add(BehaviorPlayer::Name(), &ComponentFactory::CreateBehaviorPlayer);
+    Add(ColliderAABB::Name(), &ComponentFactory::CreateColliderAABB);
     Add(Transform::Name(), &ComponentFactory::CreateTransform);
     assert(winHandle != NULL);
     return Engine::NothingBad;
@@ -72,6 +74,12 @@ Component& ComponentFactory::CreateBehaviorPlayer()
 {
     Behavior* behavior = new BehaviorPlayer();
     return *behavior;
+}
+
+Component& ComponentFactory::CreateColliderAABB(void)
+{
+    Collider* collider = new ColliderAABB();
+    return *collider;
 }
 
 Component& ComponentFactory::CreateTransform()

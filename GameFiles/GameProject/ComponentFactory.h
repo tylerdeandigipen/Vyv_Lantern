@@ -29,6 +29,7 @@ public:
 	Engine::EngineCode Close();
 private:
 	static Component& CreateBehaviorPlayer(void);
+	static Component& CreateColliderAABB(void);
 	static Component& CreateTransform(void);
 	//static Component& CreateLight(void);
 	static ComponentFactory* instance;
