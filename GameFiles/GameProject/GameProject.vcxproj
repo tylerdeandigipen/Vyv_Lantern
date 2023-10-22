@@ -111,7 +111,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_WINDOWS;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(ProjectDir)glfw-3.3.8.bin.WIN64\glfw-3.3.8.bin.WIN64\include;$(ProjectDir)lib\Fmod\inc;IMGUI;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)glfw-3.3.8.bin.WIN64\glfw-3.3.8.bin.WIN64\include;$(ProjectDir)lib\Fmod\inc;$(ProjectDir)IMGUI;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
