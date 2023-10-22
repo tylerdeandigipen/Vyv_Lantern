@@ -159,7 +159,7 @@ float Renderer::FindPixelLuminosity(float x, float y, Light *LightSource)
     return(Result);
 }
 
-void Renderer::MakeTileMap(int tileMapArray[16][9])
+void Renderer::MakeTileMap(int** tileMapArray)
 {
     Color trans{ 0,0,0,0 };
 

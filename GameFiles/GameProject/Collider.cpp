@@ -35,6 +35,7 @@ void Collider::Read(json jsonData)
 void Collider::Update(float dt)
 {
 	dt = dt;
+	handler(Parent(), Parent());
 }
 
 void Collider::SetCollisionHandler(std::function<void(Entity*, Entity*)> _handler)

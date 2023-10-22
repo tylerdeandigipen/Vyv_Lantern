@@ -10,6 +10,14 @@ LevelBuilder::LevelBuilder()
 
 LevelBuilder::~LevelBuilder()
 {
+    if (TileMap)
+    {
+        for (int i = 0; i < SizeX; ++i)
+        {
+            delete[] TileMap[i];
+        }
+        delete[] TileMap;
+    }
     delete entity_container;
 }
 
@@ -52,6 +60,36 @@ void LevelBuilder::LoadLevel(Renderer* pixel)
     {
         for (auto& levelData : jsonData["Levels"])
         {
+            if (levelData["TileData"].is_object())
+            {
+                json Data = levelData["TileData"];
+                int i = 0, j = 0, hatelife = 0;
+                SizeX = Data["SizeX"];
+                SizeY = Data["SizeY"];
+
+                TileMap = new int *[SizeX];
+                for (int i = 0; i < SizeX; ++i)
+                {
+                    TileMap[i] = new int[SizeY];
+                }
+                if (Data["TileMap"].is_array())
+                {
+                    json Array = Data["TileMap"];
+                    for (i = 0; i < SizeX; ++i)
+                    {
+                        for (j = 0; j < SizeY; ++j)
+                        {
+                            if (Array[i][j].is_number())
+                            {
+                                TileMap[i][j] = Array[i][j];
+                                ++hatelife;
+                            }
+                        }
+                    }
+                }
+                pixel->MakeTileMap(TileMap);
+            }
+
             Read(levelData, pixel);
         }
     }

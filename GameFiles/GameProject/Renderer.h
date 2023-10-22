@@ -40,7 +40,7 @@ public:
 
 	ImageBuffer* GetObjectByName(std::string name_);
     
-	void MakeTileMap(int tileMapArray[16][9]);
+	void MakeTileMap(int** tileMapArray);
 	void AddObject(ImageBuffer* sprite);
 	void AddLight(Light light);
 	void UpdateObjects();

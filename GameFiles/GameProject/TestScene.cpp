@@ -152,7 +152,7 @@ Engine::EngineCode TestScene::Init()
     pixelRenderer.AddLight(tempLight2);
     pixelRenderer.AddLight(tempLight3);
 
-    testSprite = new ImageBuffer("Logo.ppm");
+    testSprite = new ImageBuffer("./Assets/PPM/Logo.ppm");
     testSprite->type = COLLIDABLE;
     testSprite->position = { 30, 30 };
     testSprite->layer = 1;
@@ -205,22 +205,7 @@ Engine::EngineCode TestScene::Init()
 
 
     
-    int tileMapArray[16][9];
 
-    for (int x = 0; x < 16; ++x)
-    {
-        for (int y = 0; y < 9; ++y)
-        {
-            if (x == 0 || y == 0 || x == 15 || y == 8)
-            {
-                tileMapArray[x][y] = 1;
-            }
-            else
-                tileMapArray[x][y] = 0;
-        }
-    }
-
-    pixelRenderer.MakeTileMap(tileMapArray);
 
     ObjCount = pixelRenderer.returnObjCnt();
     /*temp fix to set object[0] to player type*/
@@ -236,7 +221,7 @@ void tempPlayerMovementLol(float dt)
     Inputs* inputHandler = Inputs::GetInstance();
     if (inputHandler->keyPressed(SDL_SCANCODE_UP))
     {
-        pixelRenderer.objects[1]->position.y -= moveSpeed * dt;
+        pixelRenderer.objects[2]->position.y -= moveSpeed * dt;
 
         logger.LogLine("Debug info: Vyv Up pressed.");
         //pixelRenderer.AddLight(pixelRenderer.staticLightSource[0]);
@@ -244,21 +229,21 @@ void tempPlayerMovementLol(float dt)
     }
     if (inputHandler->keyPressed(SDL_SCANCODE_DOWN))
     {
-        pixelRenderer.objects[1]->position.y += moveSpeed * dt;
+        pixelRenderer.objects[2]->position.y += moveSpeed * dt;
 
         logger.LogLine("Debug info: Vyv Down pressed.");
         //AudioManager.PlaySFX("footsteps.ogg");
     }
     if (inputHandler->keyPressed(SDL_SCANCODE_RIGHT))
     {
-        pixelRenderer.objects[1]->position.x += moveSpeed * dt;
+        pixelRenderer.objects[2]->position.x += moveSpeed * dt;
 
         logger.LogLine("Debug info: Vyv Right pressed.");
         //AudioManager.PlaySFX("footsteps.ogg");
     }
     if (inputHandler->keyPressed(SDL_SCANCODE_LEFT))
     {
-        pixelRenderer.objects[1]->position.x -= moveSpeed * dt;
+        pixelRenderer.objects[2]->position.x -= moveSpeed * dt;
 
         logger.LogLine("Debug info: Vyv Left pressed.");
         //AudioManager.PlaySFX("footsteps.ogg");
@@ -285,7 +270,7 @@ void tempPlayerMovementLol(float dt)
     float Angle = atan2f(D.x, D.y) * (180.0f / 3.14f) + 180.0f;
     pixelRenderer.lightSource[0].angle = Angle;
     
-	ImageBuffer *playerEntity = pixelRenderer.objects[1];
+	ImageBuffer *playerEntity = pixelRenderer.objects[2];
 	Vector2 ScreenHalfSize = 0.5f*Vector2(SCREEN_SIZE_X, SCREEN_SIZE_Y);
 	Vector2 BitmapHalfDim = 0.5f*playerEntity->size;
 	pixelRenderer.SetCameraPosition(playerEntity->position - ScreenHalfSize + BitmapHalfDim);

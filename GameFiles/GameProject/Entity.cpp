@@ -118,8 +118,8 @@ void Entity::Read(json const& jsonData)
 		std::string type = componentData["Type"];
 		if (Component* component = factory->CreateComponent(type))
 		{
-			component->Read(componentData);
 			Add(component);
+			component->Read(componentData);
 		}
 	}
 	if (isObject)

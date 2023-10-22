@@ -25,9 +25,13 @@ public:
 	void LoadLevel(Renderer* pixel);
 	void ReLoadLevel();
 	void FreeLevel();
+	int** GetTileMap();
 private:
 	static LevelBuilder* instance;
 	EntityContainer* entity_container;
 	json jsonData;
+	int** TileMap;
+	int SizeX;
+	int SizeY;
 };
 

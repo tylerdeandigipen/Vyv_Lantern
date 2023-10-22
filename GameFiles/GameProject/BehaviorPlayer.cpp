@@ -36,6 +36,7 @@ void BehaviorPlayer::Init()
 {
     if (Parent())
     {
+        // always make the behavior after the collider to avoid problems
         Collider* collider = Parent()->Has(Collider);
         if (collider)
         {
