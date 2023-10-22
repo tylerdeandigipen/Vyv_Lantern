@@ -7,6 +7,13 @@
 // Copyright  © 2023 DigiPen (USA) Corporation.
 //
 //------------------------------------------------------------------------------
+#include "imgui.h"
+#include "imgui_impl_glfw.h"
+#include "imgui_impl_opengl3.h"
+#include "imgui_impl_sdl2.h"
+#include <SDL/SDL.h>
+#include <glad/glad.h>
+#include <iostream>
 
 #include "TestScene.h"
 #include "Scene.h"
@@ -21,10 +28,6 @@
 #include "ImageBuffer.h"
 #include "Light.h"
 #include "LevelBuilder.h"
-
-#include <SDL/SDL.h>
-#include <glad/glad.h>
-#include <iostream>
 
 Logging& logger = Logging::GetInstance("debugLog.log");
 
@@ -74,6 +77,15 @@ Engine::EngineCode TestScene::Init()
 {
     /*BGM*/
     //AudioManager.PlayMusic("bgm.ogg");
+
+    IMGUI_CHECKVERSION();
+    ImGui::CreateContext();
+    ImGuiIO& io = ImGui::GetIO();
+    io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;     // Enable Keyboard Controls
+    io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;      // Enable Gamepad Controls
+
+    ImGui_ImplSDL2_InitForOpenGL(window, glContext);
+    ImGui_ImplOpenGL3_Init();
 
     logger.LogToAll("Timestamped message: %s", "Starting TestScene!!");
 

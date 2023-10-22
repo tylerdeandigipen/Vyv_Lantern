@@ -34,7 +34,7 @@ Logging::~Logging()
 	}
 }
 
-// instances baby, pass in "debuglog.log" by default
+ //instances babeeyyy, pass in "debuglog.log" by default
 Logging& Logging::GetInstance(const std::string& filename)
 {
 	static Logging instance(filename);

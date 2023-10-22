@@ -111,7 +111,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_WINDOWS;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(ProjectDir)glfw-3.3.8.bin.WIN64\glfw-3.3.8.bin.WIN64\include;$(ProjectDir)lib\Fmod\inc;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)glfw-3.3.8.bin.WIN64\glfw-3.3.8.bin.WIN64\include;$(ProjectDir)lib\Fmod\inc;IMGUI;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -146,6 +146,7 @@
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\..\..\..\..\Downloads\imgui-master\backends\imgui_impl_sdl2.h" />
     <ClInclude Include="AudioEngine.h" />
     <ClInclude Include="BaseSystem.h" />
     <ClInclude Include="Behavior.h" />
@@ -164,6 +165,15 @@
     <ClInclude Include="FileIO.h" />
     <ClInclude Include="framework.h" />
     <ClInclude Include="ImageBuffer.h" />
+    <ClInclude Include="IMGUI\imconfig.h" />
+    <ClInclude Include="IMGUI\imgui.h" />
+    <ClInclude Include="IMGUI\imgui_impl_glfw.h" />
+    <ClInclude Include="IMGUI\imgui_impl_opengl3.h" />
+    <ClInclude Include="IMGUI\imgui_impl_opengl3_loader.h" />
+    <ClInclude Include="IMGUI\imgui_internal.h" />
+    <ClInclude Include="IMGUI\imstb_rectpack.h" />
+    <ClInclude Include="IMGUI\imstb_textedit.h" />
+    <ClInclude Include="IMGUI\imstb_truetype.h" />
     <ClInclude Include="includes\glfw\glfw3.h" />
     <ClInclude Include="Inputs.h" />
     <ClInclude Include="LevelBuilder.h" />
@@ -184,6 +194,7 @@
     <ClInclude Include="Transform.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\..\..\..\..\Downloads\imgui-master\backends\imgui_impl_sdl2.cpp" />
     <ClCompile Include="AudioEngine.cpp" />
     <ClCompile Include="BaseSystem.cpp" />
     <ClCompile Include="Behavior.cpp" />
@@ -203,6 +214,13 @@
     <ClCompile Include="FileIO.cpp" />
     <ClCompile Include="glad.c" />
     <ClCompile Include="ImageBuffer.cpp" />
+    <ClCompile Include="IMGUI\imgui.cpp" />
+    <ClCompile Include="IMGUI\imgui_demo.cpp" />
+    <ClCompile Include="IMGUI\imgui_draw.cpp" />
+    <ClCompile Include="IMGUI\imgui_impl_glfw.cpp" />
+    <ClCompile Include="IMGUI\imgui_impl_opengl3.cpp" />
+    <ClCompile Include="IMGUI\imgui_tables.cpp" />
+    <ClCompile Include="IMGUI\imgui_widgets.cpp" />
     <ClCompile Include="Inputs.cpp" />
     <ClCompile Include="LevelBuilder.cpp" />
     <ClCompile Include="Light.cpp" />
