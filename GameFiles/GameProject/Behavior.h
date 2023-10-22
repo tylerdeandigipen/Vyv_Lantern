@@ -1,3 +1,12 @@
+//------------------------------------------------------------------------------
+//
+// File Name:	Behavior.h
+// Author(s):	Michael Howard (michael.howard)
+// Purpose:		behavior component
+// 
+// Copyright © 2023 DigiPen (USA) Corporation.
+//
+//------------------------------------------------------------------------------
 #pragma once
 
 #include "Component.h"
@@ -15,7 +24,7 @@ public:
 
 	virtual ~Behavior();
 	std::string GetName() override { return std::string(); };
-	void Read(json jsonData) override;
+	void Read(json jsonData);
 
 	virtual void SetInputHandler(Inputs* input) {};
 	Component* Clone(void) const override;

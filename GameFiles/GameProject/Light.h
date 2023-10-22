@@ -38,6 +38,8 @@ public:
 	float radialWeight = 0;
 	float angularWeight = 1;
 	float volumetricIntensity = 0;
+
+    float Attenuation[3];
 private:
 };
 

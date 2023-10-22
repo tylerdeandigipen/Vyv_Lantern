@@ -20,6 +20,8 @@ Light::Light(const Light& rhs)
 	volumetricIntensity = rhs.volumetricIntensity;
 	isStatic = rhs.isStatic;
 	isBaked = 0;
+
+    memcpy(Attenuation, rhs.Attenuation, sizeof(Attenuation));
 }
 Light::Light()
 {
@@ -32,4 +34,8 @@ Light::Light()
 	radialWeight = 0;
 	angularWeight = 0;
 	volumetricIntensity = 0;
+
+    Attenuation[0] = 0.0f;
+    Attenuation[1] = 1.0f;
+    Attenuation[2] = 1.0f;
 }

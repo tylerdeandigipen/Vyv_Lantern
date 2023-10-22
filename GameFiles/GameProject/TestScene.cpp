@@ -108,7 +108,7 @@ Engine::EngineCode TestScene::Init()
     tempLight.maxAngle = 25;
     tempLight.minAngle = -25;
     tempLight.angle = 200;
-    tempLight.intensity = 215.0f;
+    tempLight.intensity = 100.0f;
     tempLight.radialMult1 = 0.4f;
     tempLight.radialMult2 = 0.0f;
     tempLight.radialWeight = 1;
@@ -123,7 +123,7 @@ Engine::EngineCode TestScene::Init()
     tempLight2.minAngle = -25;
     tempLight2.angle = 280;
 
-    tempLight2.intensity = 3;
+    tempLight2.intensity = 200;
     tempLight2.radialMult1 = 0.4f;
     tempLight2.radialMult2 = 0.0f;
     tempLight2.radialWeight = 1;
@@ -140,7 +140,7 @@ Engine::EngineCode TestScene::Init()
     tempLight3.minAngle = -360;
     tempLight3.angle = 0;
 
-    tempLight3.intensity = 3;
+    tempLight3.intensity = 300;
     tempLight3.radialMult1 = 0.2f;
     tempLight3.radialMult2 = 0.0005;
     tempLight3.radialWeight = .3;
@@ -149,8 +149,9 @@ Engine::EngineCode TestScene::Init()
     tempLight3.isStatic = 0;
 
     pixelRenderer.AddLight(tempLight);
-   // pixelRenderer.AddLight(tempLight2);
-   // pixelRenderer.AddLight(tempLight3);
+    pixelRenderer.AddLight(tempLight2);
+    pixelRenderer.AddLight(tempLight3);
+
     testSprite = new ImageBuffer("Logo.ppm");
     testSprite->type = COLLIDABLE;
     testSprite->position = { 30, 30 };
@@ -275,11 +276,15 @@ void tempPlayerMovementLol(float dt)
     int x, y;
     Uint32 buttons = SDL_GetMouseState(&x, &y);
 
-	Vector2 CursourWorldP = Vector2(x, y)- pixelRenderer.GetCameraPosition();
+    Vector2 CursourP = {(float)x, (float)y};
+    CursourP *= 1.0f / pixelRenderer.screenScale;
+    CursourP += pixelRenderer.GetCameraPosition();
 
-	// to find angle between worldspace and screenspace take the worldspace coord and multiply by the screen scale in this case 6
-	pixelRenderer.lightSource[0].angle = atan2(CursourWorldP.x - (pixelRenderer.lightSource[0].position.x * 6), CursourWorldP.y - (pixelRenderer.lightSource[0].position.y * 6)) * 57.295779f;
-
+    Vector2 LightP = pixelRenderer.lightSource[0].position;
+    Vector2 D = LightP - CursourP;
+    float Angle = atan2f(D.x, D.y) * (180.0f / 3.14f) + 180.0f;
+    pixelRenderer.lightSource[0].angle = Angle;
+    
 	ImageBuffer *playerEntity = pixelRenderer.objects[1];
 	Vector2 ScreenHalfSize = 0.5f*Vector2(SCREEN_SIZE_X, SCREEN_SIZE_Y);
 	Vector2 BitmapHalfDim = 0.5f*playerEntity->size;
@@ -408,6 +413,3 @@ Scene* TestSceneGetInstance(void)
     TestSceneinstance = new TestScene();
     return TestSceneinstance;
 }
-
-
-//Scene* TestSceneGetInstance() { return &instance->base; }

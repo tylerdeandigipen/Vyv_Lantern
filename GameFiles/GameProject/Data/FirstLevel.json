@@ -8,6 +8,9 @@
           "file": "goose2.ppm",
           "Components": [
             {
+              "Type": "ColliderAABB"
+            },
+            {
               "Type": "BehaviorPlayer"
             },
             {

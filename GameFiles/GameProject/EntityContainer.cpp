@@ -10,6 +10,7 @@
 //
 //------------------------------------------------------------------------------
 #include "EntityContainer.h"
+#include "Collider.h"
 #include "Entity.h"
 
 EntityContainer::EntityContainer() : entities()
@@ -52,21 +53,21 @@ void EntityContainer::CheckCollisions()
 	unsigned current = 0;
 	while (current != entities.size())
 	{
-//		Collider* collider = entities[current]->Has(Collider);
-//		if (collider)
-//		{
-// 		   for (unsigned i = current + 1; i < entities.size(); ++i)
-// 		   {
-//				if (entities[i])
-// 				{
-//					Collider* secCollider = entities[i]->Has(Collider);
-//					if (secCollider)
-//					{
-//						collider->Check(secCollider);
-//					}
-// 				}
-// 		   }
-//		}
+		Collider* collider = entities[current]->Has(Collider);
+		if (collider)
+		{
+ 		   for (unsigned i = current + 1; i < entities.size(); ++i)
+ 		   {
+				if (entities[i])
+ 				{
+					Collider* secCollider = entities[i]->Has(Collider);
+					if (secCollider)
+					{
+						collider->Check(secCollider);
+					}
+ 				}
+ 		   }
+		}
 		++current;
 	}
 }
@@ -88,6 +89,7 @@ void EntityContainer::UpdateAll(float dt)
 		}
 		++i;
 	}
+	CheckCollisions();
 }
 
 void EntityContainer::RenderAll()

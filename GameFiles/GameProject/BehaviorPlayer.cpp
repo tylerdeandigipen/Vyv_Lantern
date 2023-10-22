@@ -1,4 +1,14 @@
+//------------------------------------------------------------------------------
+//
+// File Name:	BehaviorPlayer.cpp
+// Author(s):	Michael Howard (michael.howard)
+// Purpose:		The players behavior
+// 
+// Copyright © 2023 DigiPen (USA) Corporation.
+//
+//------------------------------------------------------------------------------
 #include "BehaviorPlayer.h"
+#include "Collider.h"
 #include "Entity.h"
 #include "Inputs.h"
 #include "Transform.h"
@@ -24,6 +34,15 @@ Behavior* BehaviorPlayer::Clone() const
 
 void BehaviorPlayer::Init()
 {
+    if (Parent())
+    {
+        Collider* collider = Parent()->Has(Collider);
+        if (collider)
+        {
+            collider->SetCollisionHandler(PlayerCollisionHandler);
+        }
+    }
+
    // input = new Inputs(Parent()->window);
 }
 
@@ -39,13 +58,18 @@ std::string BehaviorPlayer::Name()
 
 void BehaviorPlayer::Update(float dt)
 {
-	dt = dt;
 	Controller(dt);
 }
 
 void BehaviorPlayer::SetInputHandler(Inputs* _input)
 {
     input = _input;
+}
+
+void BehaviorPlayer::Read(json jsonData)
+{
+    UNREFERENCED_PARAMETER(jsonData);
+    Init();
 }
 
 
@@ -76,4 +100,11 @@ void BehaviorPlayer::Controller(float dt)
         //AudioManager.PlaySFX("footsteps.ogg");
     }
     transform->SetTranslation(translation);
+}
+
+void BehaviorPlayer::PlayerCollisionHandler(Entity* entity1, Entity* entity2)
+{
+    // check which one is player and what the other one is
+    // make each instance of what the player can collide 
+    // with and set interactable value pressed to true if 'E' is entered
 }
