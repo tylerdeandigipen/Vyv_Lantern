@@ -331,6 +331,37 @@ int Renderer::returnObjCnt()
     return countObjects;
 }
 
+void Renderer::brensenhamalgo(int x1, int y1, int x2, int y2)
+{
+    int dx = abs(x2 - x1);
+    int dy = abs(y2 - y1);
+    int sx = (x1 < x2) ? 1 : -1;
+    int sy = (y1 < y2) ? 1 : -1;
+
+    int error = dx - dy;
+    int x = x1;
+    int y = y1;
+
+    while (x != x2 || y != y2) {
+        // Draw the current point (x, y) here
+        std::cout << "(" << x << ", " << y << ")" << std::endl;
+
+        int error2 = 2 * error;
+
+        if (error2 > -dy) {
+            error -= dy;
+            x += sx;
+        }
+
+        if (error2 < dx) {
+            error += dx;
+            y += sy;
+        }
+    }
+    /*DO THE DRAWINGS HERE TO DRAW THE LINE*/
+
+}
+
 void Renderer::AddObject(ImageBuffer* sprite)
 {
     if ((numObjects + 1) < MAX_OBJECTS)

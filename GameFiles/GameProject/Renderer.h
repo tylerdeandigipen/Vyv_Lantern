@@ -46,6 +46,7 @@ public:
 	void UpdateObjects();
 	void Update();
 	int returnObjCnt();
+	void brensenhamalgo(int x1, int y1, int x2, int y2);
 
 private:
 
