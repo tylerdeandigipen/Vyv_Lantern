@@ -386,6 +386,13 @@ Engine::EngineCode TestScene::Exit()
 {
     // Remember to clean up
     SDL_GL_DeleteContext(glContext);
+    ImGui::DestroyContext();
+
+    // these crash and i dont like 
+
+//    ImGui_ImplOpenGL3_Shutdown();
+//    ImGui_ImplSDL2_Shutdown();
+
     SDL_DestroyWindow(window);
     SDL_Quit();
 
