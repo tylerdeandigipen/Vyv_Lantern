@@ -11,7 +11,8 @@ enum ImageType
 	/*Add what type of object is it*/
 	COLLIDABLE,
 	SWITCH,
-	PLAYER
+	PLAYER,
+    WALL
 };
 
 class ImageBuffer

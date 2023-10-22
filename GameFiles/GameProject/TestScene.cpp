@@ -30,6 +30,7 @@ Logging& logger = Logging::GetInstance("debugLog.log");
 
 ImageBuffer* testSprite;
 ImageBuffer* testSprite1;
+ImageBuffer* topwall, *bottomwall, *leftwall, *rightwall;
 
 Entity* testEntity;
 Entity* jsonEntity;
@@ -151,7 +152,7 @@ Engine::EngineCode TestScene::Init()
    // pixelRenderer.AddLight(tempLight2);
    // pixelRenderer.AddLight(tempLight3);
     testSprite = new ImageBuffer("Logo.ppm");
-    testSprite->type = SWITCH;
+    testSprite->type = COLLIDABLE;
     testSprite->position = { 30, 30 };
     testSprite->layer = 1;
     pixelRenderer.AddObject(testSprite);
@@ -173,7 +174,35 @@ Engine::EngineCode TestScene::Init()
     testSprite1->position = { 120, 30 };
     testSprite1->layer = 1;
     pixelRenderer.AddObject(testSprite1);
-    testSprite1->type = COLLIDABLE;
+    testSprite1->type = SWITCH;
+    /*Walls here*/
+    topwall = new ImageBuffer(pixelRenderer.outputBuffer->BufferSizeX * pixelRenderer.outputBuffer->screenScale, 2);
+    for (int x = 0; x < topwall->BufferSizeX; ++x)
+    {
+        for (int y = 0; y < topwall->BufferSizeY; ++y)
+        {
+            topwall->SampleColor(x, y) = blue;
+        }
+    }
+    topwall->position = { 0, 0 };
+    topwall->layer = 1;
+    pixelRenderer.AddObject(topwall);
+    topwall->type = WALL;
+
+    bottomwall = new ImageBuffer(pixelRenderer.outputBuffer->BufferSizeX * pixelRenderer.outputBuffer->screenScale, 2);
+    for (int x = 0; x < bottomwall->BufferSizeX; ++x)
+    {
+        for (int y = 0; y < bottomwall->BufferSizeY; ++y)
+        {
+            bottomwall->SampleColor(x, y) = blue;
+        }
+    }
+    bottomwall->position = { 0, -pixelRenderer.outputBuffer->BufferSizeY * pixelRenderer.outputBuffer->screenScale };
+    bottomwall->layer = 1;
+    pixelRenderer.AddObject(bottomwall);
+    bottomwall->type = WALL;
+
+
     
     int tileMapArray[16][9];
 
@@ -193,6 +222,8 @@ Engine::EngineCode TestScene::Init()
     pixelRenderer.MakeTileMap(tileMapArray);
 
     ObjCount = pixelRenderer.returnObjCnt();
+    /*temp fix to set object[0] to player type*/
+    pixelRenderer.objects[0]->type = PLAYER;
 
     logger.LogLine("Debug info: Lights, camera, action! (testScene init)");
 	return Engine::NothingBad;
@@ -276,21 +307,20 @@ void TestScene::Update(float dt)
     };
 
     /*This will make ALL objects collidable*/
-    for (int a = 0; a < ObjCount; a++)
-    {
-        for (int b = a + 1; b < ObjCount; b++)
+
+        for (int b = 1; b < ObjCount; b++)
         {
-            if (!CollisionCheck(pixelRenderer.objects[a]->aabb, pixelRenderer.objects[b]->aabb))
+            if (!CollisionCheck(pixelRenderer.objects[0]->aabb, pixelRenderer.objects[b]->aabb))
             {
                 tempPlayerMovementLol(dt);
             }
             else
             {
-                if (pixelRenderer.objects[b]->type == COLLIDABLE && pixelRenderer.objects[a]->type == COLLIDABLE)
+                if (pixelRenderer.objects[b]->type == COLLIDABLE)
                 {
                     // Calculate the vector from object 'a' to object 'b'
-                    float pushDirX = pixelRenderer.objects[b]->position.x - pixelRenderer.objects[a]->position.x;
-                    float pushDirY = pixelRenderer.objects[b]->position.y - pixelRenderer.objects[a]->position.y;
+                    float pushDirX = pixelRenderer.objects[b]->position.x - pixelRenderer.objects[0]->position.x;
+                    float pushDirY = pixelRenderer.objects[b]->position.y - pixelRenderer.objects[0]->position.y;
                     // Calculate the length of the vector
                     float pushDirLength = sqrt(pushDirX * pushDirX + pushDirY * pushDirY);
 
@@ -302,10 +332,25 @@ void TestScene::Update(float dt)
                     }
 
                     // Apply the push force to both objects
-                    pixelRenderer.objects[a]->position.x -= pushDirX * pushForce;
-                    pixelRenderer.objects[a]->position.y -= pushDirY * pushForce;
+                    pixelRenderer.objects[0]->position.x -= pushDirX * pushForce;
+                    pixelRenderer.objects[0]->position.y -= pushDirY * pushForce;
                     pixelRenderer.objects[b]->position.x += pushDirX * pushForce;
                     pixelRenderer.objects[b]->position.y += pushDirY * pushForce;
+                }
+                if (pixelRenderer.objects[b]->type == SWITCH)
+                {
+                    for (int x = 0; x < pixelRenderer.objects[b]->BufferSizeX; ++x)
+                    {
+                        for (int y = 0; y < pixelRenderer.objects[b]->BufferSizeY; ++y)
+                        {
+                           pixelRenderer.objects[b]->SampleColor(x, y) = black;
+                        }
+                    }
+                }
+
+                if (pixelRenderer.objects[b]->type == WALL)
+                {
+
                 }
 
 
@@ -318,7 +363,6 @@ void TestScene::Update(float dt)
                 //AudioManager.PlaySFX("oof.ogg");
             }
         }
-    }
     //logger.LogLine("Debug info: Things are being done. (testScene updated)");
 
     // Update the cooldown timer.
