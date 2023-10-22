@@ -71,7 +71,7 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <IncludePath>$(IncludePath);$(ProjectDir)JSON</IncludePath>
+    <IncludePath>$(IncludePath);$(ProjectDir)JSON;$(ProjectDir)IMGUI</IncludePath>
     <LibraryPath>$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -146,7 +146,6 @@
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\..\..\..\..\Downloads\imgui-master\backends\imgui_impl_sdl2.h" />
     <ClInclude Include="AudioEngine.h" />
     <ClInclude Include="BaseSystem.h" />
     <ClInclude Include="Behavior.h" />
