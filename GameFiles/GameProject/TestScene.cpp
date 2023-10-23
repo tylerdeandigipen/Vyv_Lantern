@@ -14,6 +14,7 @@
 #include <SDL/SDL.h>
 #include <glad/glad.h>
 #include <iostream>
+#include <algorithm>
 
 #include "TestScene.h"
 #include "Scene.h"
@@ -41,6 +42,8 @@ SDL_Renderer* renderer;
 Renderer pixelRenderer;
 
 SDL_Window* window;
+
+bool canMove = true; // Initialize to allow movement
 
 SDL_GLContext glContext; // OpenGL context for SDL2
 
@@ -231,35 +234,39 @@ float moveSpeed = 20;
 void tempPlayerMovementLol(float dt)
 {
     Inputs* inputHandler = Inputs::GetInstance();
-    if (inputHandler->keyPressed(SDL_SCANCODE_UP))
+    if (canMove)
     {
-        pixelRenderer.objects[2]->position.y -= moveSpeed * dt;
+        if (inputHandler->keyPressed(SDL_SCANCODE_UP))
+        {
+            pixelRenderer.objects[2]->position.y -= moveSpeed * dt;
 
-        logger.LogLine("Debug info: Vyv Up pressed.");
-        //pixelRenderer.AddLight(pixelRenderer.staticLightSource[0]);
-        //AudioManager.PlaySFX("footsteps.ogg");
-    }
-    if (inputHandler->keyPressed(SDL_SCANCODE_DOWN))
-    {
-        pixelRenderer.objects[2]->position.y += moveSpeed * dt;
+            logger.LogLine("Debug info: Vyv Up pressed.");
+            //pixelRenderer.AddLight(pixelRenderer.staticLightSource[0]);
+            //AudioManager.PlaySFX("footsteps.ogg");
+        }
+        if (inputHandler->keyPressed(SDL_SCANCODE_DOWN))
+        {
+            pixelRenderer.objects[2]->position.y += moveSpeed * dt;
 
-        logger.LogLine("Debug info: Vyv Down pressed.");
-        //AudioManager.PlaySFX("footsteps.ogg");
-    }
-    if (inputHandler->keyPressed(SDL_SCANCODE_RIGHT))
-    {
-        pixelRenderer.objects[2]->position.x += moveSpeed * dt;
+            logger.LogLine("Debug info: Vyv Down pressed.");
+            //AudioManager.PlaySFX("footsteps.ogg");
+        }
+        if (inputHandler->keyPressed(SDL_SCANCODE_RIGHT))
+        {
+            pixelRenderer.objects[2]->position.x += moveSpeed * dt;
 
-        logger.LogLine("Debug info: Vyv Right pressed.");
-        //AudioManager.PlaySFX("footsteps.ogg");
-    }
-    if (inputHandler->keyPressed(SDL_SCANCODE_LEFT))
-    {
-        pixelRenderer.objects[2]->position.x -= moveSpeed * dt;
+            logger.LogLine("Debug info: Vyv Right pressed.");
+            //AudioManager.PlaySFX("footsteps.ogg");
+        }
+        if (inputHandler->keyPressed(SDL_SCANCODE_LEFT))
+        {
+            pixelRenderer.objects[2]->position.x -= moveSpeed * dt;
 
-        logger.LogLine("Debug info: Vyv Left pressed.");
-        //AudioManager.PlaySFX("footsteps.ogg");
+            logger.LogLine("Debug info: Vyv Left pressed.");
+            //AudioManager.PlaySFX("footsteps.ogg");
+        }
     }
+
     if (inputHandler->keyPressed(SDL_SCANCODE_E) && canPlaceMoreLight == 1)
     {
         pixelRenderer.AddLight(pixelRenderer.lightSource[0]);
@@ -314,6 +321,7 @@ void TestScene::Update(float dt)
         {
             if (!CollisionCheck(pixelRenderer.objects[0]->aabb, pixelRenderer.objects[b]->aabb))
             {
+                canMove = true;
                 tempPlayerMovementLol(dt);
             }
             else
@@ -352,7 +360,37 @@ void TestScene::Update(float dt)
 
                 if (pixelRenderer.objects[b]->type == WALL)
                 {
+                        // Calculate the vector from object 'a' to object 'b'
+                        float pushDirX = pixelRenderer.objects[b]->position.x - pixelRenderer.objects[0]->position.x;
+                        float pushDirY = pixelRenderer.objects[b]->position.y - pixelRenderer.objects[0]->position.y;
 
+                        // Calculate the length of the vector
+                        float pushDirLength = sqrt(pushDirX * pushDirX + pushDirY * pushDirY);
+
+                        // Normalize the vector to obtain a unit vector
+                        if (pushDirLength > 0)
+                        {
+                            pushDirX /= pushDirLength;
+                            pushDirY /= pushDirLength;
+                        }
+
+                        // Calculate the overlap between the player and the wall's AABB
+                        float playerLeft = pixelRenderer.objects[0]->aabb.min.x;
+                        float playerRight = pixelRenderer.objects[0]->aabb.max.x;
+                        float playerTop = pixelRenderer.objects[0]->aabb.min.y;
+                        float playerBottom = pixelRenderer.objects[0]->aabb.max.y;
+
+                        float wallLeft = pixelRenderer.objects[b]->aabb.min.x;
+                        float wallRight = pixelRenderer.objects[b]->aabb.max.x;
+                        float wallTop = pixelRenderer.objects[b]->aabb.min.y;
+                        float wallBottom = pixelRenderer.objects[b]->aabb.max.y;
+
+                        // Check if there is an overlap in both the x and y directions
+                        if (playerRight > wallLeft && playerLeft < wallRight && playerBottom > wallTop && playerTop < wallBottom)
+                        {
+                            // There's a collision with the wall, so prevent further player movement.
+                            canMove = false;
+                        }
                 }
 
 
