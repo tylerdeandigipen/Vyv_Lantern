@@ -40,11 +40,11 @@
     <Filter Include="Source Files\EntityStuff\Components\SubComponents">
       <UniqueIdentifier>{f28d368e-a916-4cd6-9cf4-715c33b439ef}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Debug\imgui">
-      <UniqueIdentifier>{f76e24a1-bcbb-4dc3-8da3-475fe21079ab}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Header Files\imgui">
-      <UniqueIdentifier>{a5405fe8-5abe-474f-b434-8dddda9459d4}</UniqueIdentifier>
+      <UniqueIdentifier>{656c09ff-47ab-4c0a-9e50-4f084ae9c024}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\imgui">
+      <UniqueIdentifier>{2eae67a3-175c-4c0b-9ede-4c8a25f7d315}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -156,34 +156,34 @@
     <ClInclude Include="ColliderAABB.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="IMGUI\imgui.h">
+    <ClInclude Include="IMGUI\imgui_internal.h">
       <Filter>Header Files\imgui</Filter>
     </ClInclude>
-    <ClInclude Include="IMGUI\imgui_impl_glfw.h">
-      <Filter>Header Files\imgui</Filter>
-    </ClInclude>
-    <ClInclude Include="IMGUI\imgui_impl_opengl3.h">
+    <ClInclude Include="IMGUI\imgui_impl_sdl2.h">
       <Filter>Header Files\imgui</Filter>
     </ClInclude>
     <ClInclude Include="IMGUI\imgui_impl_opengl3_loader.h">
       <Filter>Header Files\imgui</Filter>
     </ClInclude>
-    <ClInclude Include="IMGUI\imgui_internal.h">
+    <ClInclude Include="IMGUI\imgui_impl_opengl3.h">
       <Filter>Header Files\imgui</Filter>
     </ClInclude>
-    <ClInclude Include="IMGUI\imstb_rectpack.h">
+    <ClInclude Include="IMGUI\imgui_impl_glfw.h">
       <Filter>Header Files\imgui</Filter>
     </ClInclude>
-    <ClInclude Include="IMGUI\imstb_textedit.h">
-      <Filter>Header Files\imgui</Filter>
-    </ClInclude>
-    <ClInclude Include="IMGUI\imstb_truetype.h">
+    <ClInclude Include="IMGUI\imgui.h">
       <Filter>Header Files\imgui</Filter>
     </ClInclude>
     <ClInclude Include="IMGUI\imconfig.h">
       <Filter>Header Files\imgui</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\..\..\..\Downloads\imgui-master\backends\imgui_impl_sdl2.h">
+    <ClInclude Include="IMGUI\imstb_truetype.h">
+      <Filter>Header Files\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="IMGUI\imstb_textedit.h">
+      <Filter>Header Files\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="IMGUI\imstb_rectpack.h">
       <Filter>Header Files\imgui</Filter>
     </ClInclude>
   </ItemGroup>
@@ -287,29 +287,29 @@
     <ClCompile Include="FileIO.cpp">
       <Filter>Source Files\LevelStuff</Filter>
     </ClCompile>
-    <ClCompile Include="IMGUI\imgui.cpp">
-      <Filter>Source Files\Debug\imgui</Filter>
+    <ClCompile Include="IMGUI\imgui_draw.cpp">
+      <Filter>Source Files\imgui</Filter>
     </ClCompile>
     <ClCompile Include="IMGUI\imgui_demo.cpp">
-      <Filter>Source Files\Debug\imgui</Filter>
+      <Filter>Source Files\imgui</Filter>
     </ClCompile>
-    <ClCompile Include="IMGUI\imgui_draw.cpp">
-      <Filter>Source Files\Debug\imgui</Filter>
-    </ClCompile>
-    <ClCompile Include="IMGUI\imgui_impl_glfw.cpp">
-      <Filter>Source Files\Debug\imgui</Filter>
-    </ClCompile>
-    <ClCompile Include="IMGUI\imgui_impl_opengl3.cpp">
-      <Filter>Source Files\Debug\imgui</Filter>
-    </ClCompile>
-    <ClCompile Include="IMGUI\imgui_tables.cpp">
-      <Filter>Source Files\Debug\imgui</Filter>
+    <ClCompile Include="IMGUI\imgui.cpp">
+      <Filter>Source Files\imgui</Filter>
     </ClCompile>
     <ClCompile Include="IMGUI\imgui_widgets.cpp">
-      <Filter>Source Files\Debug\imgui</Filter>
+      <Filter>Source Files\imgui</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\..\..\..\Downloads\imgui-master\backends\imgui_impl_sdl2.cpp">
-      <Filter>Source Files\Debug\imgui</Filter>
+    <ClCompile Include="IMGUI\imgui_tables.cpp">
+      <Filter>Source Files\imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="IMGUI\imgui_impl_sdl2.cpp">
+      <Filter>Source Files\imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="IMGUI\imgui_impl_opengl3.cpp">
+      <Filter>Source Files\imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="IMGUI\imgui_impl_glfw.cpp">
+      <Filter>Source Files\imgui</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
