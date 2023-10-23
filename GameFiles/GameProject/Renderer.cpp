@@ -159,6 +159,7 @@ float Renderer::FindPixelLuminosity(float x, float y, Light *LightSource)
     return(Result);
 }
 
+#define TILE_SIZE 7
 void Renderer::MakeTileMap(int** tileMapArray)
 {
     Color trans{ 0,0,0,0 };
@@ -168,7 +169,7 @@ void Renderer::MakeTileMap(int** tileMapArray)
     Color black(1, 1, 1, 255);
     Color grey = { 150, 150, 150, 255 };
     Color blue(50, 100, 255, 255);
-    ImageBuffer* testBackgroundTile = new ImageBuffer(15, 15);
+    ImageBuffer* testBackgroundTile = new ImageBuffer(TILE_SIZE, TILE_SIZE);
     for (int x = 0; x < testBackgroundTile->BufferSizeX; ++x)
     {
         for (int y = 0; y < testBackgroundTile->BufferSizeY; ++y)
@@ -181,7 +182,7 @@ void Renderer::MakeTileMap(int** tileMapArray)
                 testBackgroundTile->SampleColor(x, y) = grey;
         }
     }
-    ImageBuffer* testWallTile = new ImageBuffer(15, 15);
+    ImageBuffer* testWallTile = new ImageBuffer(TILE_SIZE, TILE_SIZE);
     for (int x = 0; x < testWallTile->BufferSizeX; ++x)
     {
         for (int y = 0; y < testWallTile->BufferSizeY; ++y)
@@ -193,19 +194,19 @@ void Renderer::MakeTileMap(int** tileMapArray)
     tileMapLayer->ClearImageBuffer();
     backgroundLayer->ClearImageBuffer();
 
-    for (int x = 0; x < 16; ++x)
+    for (int x = 0; x < tileMapSize.x; ++x)
     {
-        for (int y = 0; y < 9; ++y)
+        for (int y = 0; y < tileMapSize.y; ++y)
         {
 
             switch (tileMapArray[x][y])
             {
                 case 0:
-                    testBackgroundTile->position = { (float)(x * 15), (float)(y * 15) };
+                    testBackgroundTile->position = { (float)(x * TILE_SIZE), (float)(y * TILE_SIZE) };
                     backgroundLayer->AddSprite(testBackgroundTile);
                     break;
                 case 1:
-                    testWallTile->position = { (float)(x * 15), (float)(y * 15) };
+                    testWallTile->position = { (float)(x * TILE_SIZE), (float)(y * TILE_SIZE) };
                     tileMapLayer->AddSprite(testWallTile);
                     break;
             }

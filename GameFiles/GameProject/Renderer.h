@@ -47,6 +47,7 @@ public:
 	void Update();
 	int returnObjCnt();
 	void brensenhamalgo(int x1, int y1, int x2, int y2);
+	Vector2 tileMapSize;
 
 private:
 
@@ -55,7 +56,6 @@ private:
 	int numObjects;
 	int numLights;
 	int numStaticLights;
-
 	int frameCount = 0;
 
     Uint32 startTime;

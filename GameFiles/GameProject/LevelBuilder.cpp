@@ -66,6 +66,8 @@ void LevelBuilder::LoadLevel(Renderer* pixel)
                 int i = 0, j = 0, hatelife = 0;
                 SizeX = Data["SizeX"];
                 SizeY = Data["SizeY"];
+                pixel->tileMapSize.x = SizeX;
+                pixel->tileMapSize.y = SizeY;
 
                 TileMap = new int *[SizeX];
                 for (int i = 0; i < SizeX; ++i)
