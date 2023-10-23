@@ -123,45 +123,35 @@ Engine::EngineCode TestScene::Init()
     tempLight.maxAngle = 25;
     tempLight.minAngle = -25;
     tempLight.angle = 200;
-    tempLight.intensity = 100.0f;
+    tempLight.intensity = 25.0f;
     tempLight.radialMult1 = 0.4f;
     tempLight.radialMult2 = 0.0f;
     tempLight.radialWeight = 1;
     tempLight.angularWeight = 2.0f;
     tempLight.volumetricIntensity = .25f;
-    tempLight.isStatic = 0;
 
     tempLight2.position.x = 120;
     tempLight2.position.y = 50;
     tempLight2.color = { 255, 0, 0, 255 };
-    tempLight2.maxAngle = 25;
-    tempLight2.minAngle = -25;
-    tempLight2.angle = 280;
 
-    tempLight2.intensity = 200;
+    tempLight2.intensity = 50;
     tempLight2.radialMult1 = 0.4f;
     tempLight2.radialMult2 = 0.0f;
     tempLight2.radialWeight = 1;
     tempLight2.angularWeight = 2.0f;
     tempLight2.volumetricIntensity = .25f;
-    tempLight2.isStatic = 0;
 
     tempLight3.position.x = 200;
     tempLight3.position.y = 90;
 
     tempLight3.color = { 255, 182, 76, 255 };
 
-    tempLight3.maxAngle = 360;
-    tempLight3.minAngle = -360;
-    tempLight3.angle = 0;
-
-    tempLight3.intensity = 300;
-    tempLight3.radialMult1 = 0.2f;
-    tempLight3.radialMult2 = 0.0005;
-    tempLight3.radialWeight = .3;
+    tempLight3.intensity = 50;
+    tempLight3.radialMult1 = 0.4f;
+    tempLight3.radialMult2 = 0;
+    tempLight3.radialWeight = 1;
     tempLight3.angularWeight = 0;
     tempLight3.volumetricIntensity = .25f;
-    tempLight3.isStatic = 0;
 
     pixelRenderer.AddLight(tempLight);
     pixelRenderer.AddLight(tempLight2);
@@ -236,7 +226,7 @@ void tempPlayerMovementLol(float dt)
     Inputs* inputHandler = Inputs::GetInstance();
     if (canMove)
     {
-        if (inputHandler->keyPressed(SDL_SCANCODE_UP))
+        if (inputHandler->keyPressed(SDL_SCANCODE_W))
         {
             pixelRenderer.objects[2]->position.y -= moveSpeed * dt;
 
@@ -244,21 +234,21 @@ void tempPlayerMovementLol(float dt)
             //pixelRenderer.AddLight(pixelRenderer.staticLightSource[0]);
             //AudioManager.PlaySFX("footsteps.ogg");
         }
-        if (inputHandler->keyPressed(SDL_SCANCODE_DOWN))
+        if (inputHandler->keyPressed(SDL_SCANCODE_S))
         {
             pixelRenderer.objects[2]->position.y += moveSpeed * dt;
 
             logger.LogLine("Debug info: Vyv Down pressed.");
             //AudioManager.PlaySFX("footsteps.ogg");
         }
-        if (inputHandler->keyPressed(SDL_SCANCODE_RIGHT))
+        if (inputHandler->keyPressed(SDL_SCANCODE_D))
         {
             pixelRenderer.objects[2]->position.x += moveSpeed * dt;
 
             logger.LogLine("Debug info: Vyv Right pressed.");
             //AudioManager.PlaySFX("footsteps.ogg");
         }
-        if (inputHandler->keyPressed(SDL_SCANCODE_LEFT))
+        if (inputHandler->keyPressed(SDL_SCANCODE_A))
         {
             pixelRenderer.objects[2]->position.x -= moveSpeed * dt;
 
