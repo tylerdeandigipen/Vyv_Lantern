@@ -21,8 +21,8 @@ public:
 
     ImageType type;
 
-    int BufferSizeX = 240;
-    int BufferSizeY = 136;
+    int BufferSizeX = 0;
+    int BufferSizeY = 0;
     float screenScale = 6;
     gfxVector2 size;
     gfxVector2 position;

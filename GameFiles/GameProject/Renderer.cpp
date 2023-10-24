@@ -59,7 +59,7 @@ void Renderer::RenderLightingPass()
 	outputBuffer->ClearImageBuffer();
 	
 	backgroundLayer->Blit(inputBuffer, -CameraOffsetX, -CameraOffsetY);
-	tileMapLayer->Blit(inputBuffer, -CameraOffsetX, -CameraOffsetY);
+	foregroundLayer->Blit(inputBuffer, -CameraOffsetX, -CameraOffsetY);
 	objectLayer->Blit(inputBuffer);
 
 #if 1
@@ -174,57 +174,30 @@ float Renderer::FindPixelLuminosity(float x, float y, Light *LightSource)
 #define TILE_SIZE 7
 void Renderer::MakeTileMap(int** tileMapArray)
 {
-    Color trans{ 0,0,0,0 };
-
-    //make test tiles to make tilemap with (temp test tiles)
-    Color white(255, 255, 255, 255);
-    Color black(1, 1, 1, 255);
-    Color grey = { 150, 150, 150, 255 };
-    Color blue(50, 100, 255, 255);
-    ImageBuffer* testBackgroundTile = new ImageBuffer(TILE_SIZE, TILE_SIZE);
-    for (int x = 0; x < testBackgroundTile->BufferSizeX; ++x)
-    {
-        for (int y = 0; y < testBackgroundTile->BufferSizeY; ++y)
-        {
-            if (x % 3 != 0 && y % 3 != 0)
-            {
-                testBackgroundTile->SampleColor(x, y) = white;
-            }
-            else
-                testBackgroundTile->SampleColor(x, y) = grey;
-        }
-    }
-    ImageBuffer* testWallTile = new ImageBuffer(TILE_SIZE, TILE_SIZE);
-    for (int x = 0; x < testWallTile->BufferSizeX; ++x)
-    {
-        for (int y = 0; y < testWallTile->BufferSizeY; ++y)
-        {
-            testWallTile->SampleColor(x, y) = black;
-        }
-    }
-    //end of test tiles
-    tileMapLayer->ClearImageBuffer();
+    foregroundLayer->ClearImageBuffer();
     backgroundLayer->ClearImageBuffer();
-
     for (int x = 0; x < tileMapSize.x; ++x)
     {
         for (int y = 0; y < tileMapSize.y; ++y)
         {
-
-            switch (tileMapArray[x][y])
+            if (tileSet[tileMapArray[x][y]]->layer > 0)
             {
-                case 0:
-                    testBackgroundTile->position = { (float)(x * TILE_SIZE), (float)(y * TILE_SIZE) };
-                    backgroundLayer->AddSprite(testBackgroundTile);
-                    break;
-                case 1:
-                    testWallTile->position = { (float)(x * TILE_SIZE), (float)(y * TILE_SIZE) };
-                    tileMapLayer->AddSprite(testWallTile);
-                    break;
+                tileSet[tileMapArray[x][y]]->position = { (float)(x * TILE_SIZE), (float)(y * TILE_SIZE) };
+                backgroundLayer->AddSprite(tileSet[tileMapArray[x][y]]);
             }
-            
+            else
+            {
+                tileSet[tileMapArray[x][y]]->position = { (float)(x * TILE_SIZE), (float)(y * TILE_SIZE) };
+                foregroundLayer->AddSprite(tileSet[tileMapArray[x][y]]);
+            }            
         }
     }
+}
+
+void Renderer::AddTileToTileset(ImageBuffer* tile)
+{
+    tileSet[numTiles] = tile;
+    numTiles += 1;
 }
 
 Renderer::Renderer()
@@ -233,9 +206,37 @@ Renderer::Renderer()
     inputBuffer = new ImageBuffer{ SCREEN_SIZE_X ,SCREEN_SIZE_Y };
     objectLayer = new ImageBuffer{ SCREEN_SIZE_X ,SCREEN_SIZE_Y };
     backgroundLayer = new ImageBuffer{ SCREEN_SIZE_X ,SCREEN_SIZE_Y };
-    bakedLightsBuffer = new ImageBuffer{ SCREEN_SIZE_X ,SCREEN_SIZE_Y };
-    tileMapLayer = new ImageBuffer{ SCREEN_SIZE_X ,SCREEN_SIZE_Y };
+    foregroundLayer = new ImageBuffer{ SCREEN_SIZE_X ,SCREEN_SIZE_Y };
     outputBuffer->screenScale = screenScale;
+
+    //temp tileset things
+    Color white(255, 255, 255, 255);
+    Color black(1, 1, 1, 255);
+    Color grey = { 150, 150, 150, 255 };
+    Color blue(50, 100, 255, 255);
+    ImageBuffer* temp1 = new ImageBuffer(TILE_SIZE, TILE_SIZE);
+    for (int x = 0; x < temp1->BufferSizeX; ++x)
+    {
+        for (int y = 0; y < temp1->BufferSizeY; ++y)
+        {
+            if (x % 3 != 0 && y % 3 != 0)
+            {
+                temp1->SampleColor(x, y) = white;
+            }
+            else
+                temp1->SampleColor(x, y) = grey;
+        }
+    }
+    ImageBuffer* temp2 = new ImageBuffer(TILE_SIZE, TILE_SIZE);
+    for (int x = 0; x < temp2->BufferSizeX; ++x)
+    {
+        for (int y = 0; y < temp2->BufferSizeY; ++y)
+        {
+            temp2->SampleColor(x, y) = black;
+        }
+    }
+    AddTileToTileset(temp1);
+    AddTileToTileset(temp2);
 
     startTime = SDL_GetTicks();
     PreviousFrameBeginTime = startTime;
@@ -247,8 +248,7 @@ Renderer::~Renderer(void)
     delete inputBuffer;
     delete objectLayer;
     delete backgroundLayer;
-    delete tileMapLayer;
-    delete bakedLightsBuffer;
+    delete foregroundLayer;
 
     glDeleteTextures(1, &OutputBufferTexture);
 }
@@ -350,15 +350,13 @@ void Renderer::ResizeBuffers()
     delete inputBuffer;
     delete objectLayer;
     delete backgroundLayer;
-    delete tileMapLayer;
-    delete bakedLightsBuffer;
+    delete foregroundLayer;
 
     outputBuffer = new ImageBuffer{tileMapSize.x * (TILE_SIZE + 1), tileMapSize.y * (TILE_SIZE + 1) };
     inputBuffer = new ImageBuffer{ tileMapSize.x * (TILE_SIZE + 1), tileMapSize.y * (TILE_SIZE + 1) };
     objectLayer = new ImageBuffer{ tileMapSize.x * (TILE_SIZE + 1), tileMapSize.y * (TILE_SIZE + 1) };
     backgroundLayer = new ImageBuffer{ tileMapSize.x * (TILE_SIZE + 1), tileMapSize.y * (TILE_SIZE + 1) };
-    bakedLightsBuffer = new ImageBuffer{ tileMapSize.x * (TILE_SIZE + 1), tileMapSize.y * (TILE_SIZE + 1) };
-    tileMapLayer = new ImageBuffer{ tileMapSize.x * (TILE_SIZE + 1), tileMapSize.y * (TILE_SIZE + 1) };
+    foregroundLayer = new ImageBuffer{ tileMapSize.x * (TILE_SIZE + 1), tileMapSize.y * (TILE_SIZE + 1) };
     outputBuffer->screenScale = screenScale;
 }
 
@@ -433,7 +431,7 @@ ImageBuffer* Renderer::GetObjectByName(std::string name_)
 
 void Renderer::AddLight(Light light)
 {
-    if (numLights + numStaticLights + 1 < MAX_LIGHT_SOURCES)
+    if (numLights + 1 < MAX_LIGHT_SOURCES)
     {
 		lightSource[numLights++] = light;
 	}
