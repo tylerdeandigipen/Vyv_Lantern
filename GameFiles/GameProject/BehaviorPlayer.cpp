@@ -117,7 +117,7 @@ void BehaviorPlayer::PlayerCollisionHandler(Entity* entity1, Entity* entity2)
     // check which one is player and what the other one is
     // make each instance of what the player can collide 
     // with and set interactable value pressed to true if 'E' is entered
-    if (entity1->ObjectName().compare("Player") && entity2->ObjectName().compare("Object"))
+    if (entity1->GetRealName().compare("Player") == 0 && entity2->GetRealName().compare("Object") == 0)
     {
         // Calculate the vector from object 'a' to object 'b'
         float pushDirX = entity2->GetImage()->position.x - entity1->GetImage()->position.x;

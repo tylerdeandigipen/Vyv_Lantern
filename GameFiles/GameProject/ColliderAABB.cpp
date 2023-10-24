@@ -10,6 +10,7 @@
 #include "ColliderAABB.h"
 #include "Entity.h"
 #include "ImageBuffer.h"
+#include "Transform.h"
 ColliderAABB::ColliderAABB() : Collider(ColliderType::AABB)
 {
 
@@ -47,14 +48,18 @@ bool ColliderAABB::IsColliding(const Collider& other)
 {
 	ImageBuffer checks = *Parent()->GetImage();
 	ImageBuffer otherChecks = *other.Parent()->GetImage();
+	
+	Vector2 firstPosition = *Parent()->Has(Transform)->GetTranslation();
+	Vector2 secondPosition = *other.Parent()->Has(Transform)->GetTranslation();
 
-	checks.aabb.min = { checks.position.x, checks.position.y};
-	checks.aabb.max = { checks.position.x + checks.BufferSizeX, 
-		checks.position.y + checks.BufferSizeY };
 
-	otherChecks.aabb.min = { otherChecks.position.x, otherChecks.position.y };
-	otherChecks.aabb.max = { otherChecks.position.x + otherChecks.BufferSizeX,
-		otherChecks.position.y + otherChecks.BufferSizeY };
+	checks.aabb.min = { firstPosition.x, firstPosition.y};
+	checks.aabb.max = { firstPosition.x + checks.BufferSizeX,
+		firstPosition.y + checks.BufferSizeY };
+
+	otherChecks.aabb.min = { secondPosition.x, secondPosition.y };
+	otherChecks.aabb.max = { secondPosition.x + otherChecks.BufferSizeX,
+		secondPosition.y + otherChecks.BufferSizeY };
 
 	return CollisionCheck(checks.aabb, otherChecks.aabb);
 }
