@@ -46,7 +46,7 @@ public:
 	void MakeTileMap(int** tileMapArray);
 	void AddTileToTileset(ImageBuffer* tile);
 	void AddObject(ImageBuffer* sprite);
-	void AddAnimatedObject(const std::string filename, float spriteSizeX, float spriteSizeY);
+	void AddAnimatedObject(const std::string filename, Vector2 frameSize);
 	void AddLight(Light light);
 	void UpdateAnimations(float dt);
 	void UpdateObjects();
