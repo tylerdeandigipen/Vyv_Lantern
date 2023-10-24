@@ -59,25 +59,6 @@
               }
             }
           ]
-        },
-        {
-          
-          "Type": "Object",
-          "Name": "Object",
-          "file": "./Assets/PPM/goose2.ppm",
-          "isAnimated": false,
-          "Components": [
-            {
-              "Type": "ColliderAABB"
-            },
-            {
-              "Type": "Transform",
-              "translation": {
-                "x": 150,
-                "y": 30
-              }
-            }
-          ]
         }
       ]
     }
