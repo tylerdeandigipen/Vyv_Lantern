@@ -117,7 +117,8 @@ Engine::EngineCode TbdTestScene::Init()
     TbdPixelRenderer.AddLight(tempLight2);
 
     TbdPixelRenderer.AddAnimatedObject("./Assets/PPM/Animated_Man.ppm", 8, 8);
- 
+    TbdPixelRenderer.animatedObjects[0][0]->position = Vector2(120, 75);
+
     TbdPixelRenderer.objects[0]->type = PLAYER;
 	return Engine::NothingBad;
 }
@@ -178,7 +179,7 @@ void TbdTestScene::Update(float dt)
     TbdPixelRenderer.UpdateObjects();
     TbdPixelRenderer.UpdateAnimations(dt);
 
-    //TbdPlayerMovement(dt);
+    TbdPlayerMovement(dt);
 
     if (inputHandler->keyPressed(SDLK_ESCAPE) == true)
     {
