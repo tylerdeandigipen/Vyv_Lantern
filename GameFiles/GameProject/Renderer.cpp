@@ -4,7 +4,7 @@
 // Author(s):	Tyler Dean, Thomas Stephenson
 // Purpose:		The Renderer implementation
 //
-// Copyright © 2023 DigiPen (USA) Corporation.
+// Copyright ï¿½ 2023 DigiPen (USA) Corporation.
 //
 //------------------------------------------------------------------------------
 #include "Renderer.h"
@@ -18,6 +18,7 @@
 
 #include <windows.h>
 #include <SDL/SDL.h>
+#include "imgui_impl_opengl3.h"
 #include <glad/glad.h>
 #include <stdlib.h>
 #include <stdio.h>
@@ -412,6 +413,8 @@ void Renderer::Update()
     glVertex2f(-1.0f, -1.0f);
 
     glEnd();
+
+    ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
     
     SDL_GL_SwapWindow(window);
     

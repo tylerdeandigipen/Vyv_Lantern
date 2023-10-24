@@ -8,9 +8,8 @@
 //
 //------------------------------------------------------------------------------
 #include "imgui.h"
-#include "imgui_impl_glfw.h"
-#include "imgui_impl_opengl3.h"
 #include "imgui_impl_sdl2.h"
+#include "imgui_impl_opengl3.h"
 #include <SDL/SDL.h>
 #include <glad/glad.h>
 #include <iostream>
@@ -81,15 +80,6 @@ Engine::EngineCode TestScene::Init()
     /*BGM*/
     //AudioManager.PlayMusic("bgm.ogg");
 
-    IMGUI_CHECKVERSION();
-    ImGui::CreateContext();
-    ImGuiIO& io = ImGui::GetIO();
-    io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;     // Enable Keyboard Controls
-    io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;      // Enable Gamepad Controls
-
-    ImGui_ImplSDL2_InitForOpenGL(window, glContext);
-    ImGui_ImplOpenGL3_Init();
-
     logger.LogToAll("Timestamped message: %s", "Starting TestScene!!");
 
     Inputs::GetInstance()->SetWindow(window);
@@ -124,6 +114,17 @@ Engine::EngineCode TestScene::Init()
     
     gladLoadGLLoader(SDL_GL_GetProcAddress);
 	LevelBuilder::GetInstance()->LoadLevel(&pixelRenderer, "./Data/FirstLevel.json");
+
+    IMGUI_CHECKVERSION();
+    ImGui::CreateContext();
+    ImGuiIO& io = ImGui::GetIO(); (void)io;
+    io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;     // Enable Keyboard Controls
+    io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;
+
+    ImGui::StyleColorsLight();
+
+    ImGui_ImplSDL2_InitForOpenGL(window, glContext);
+    ImGui_ImplOpenGL3_Init("#version 330");
 
 	tempLight.Type = LightSourceType_Directional;
 	tempLight.position.x = 80;
@@ -296,6 +297,14 @@ void tempPlayerMovementLol(float dt)
 
 void TestScene::Update(float dt)
 {
+    ImGui_ImplOpenGL3_NewFrame();
+    ImGui_ImplSDL2_NewFrame();
+    ImGui::NewFrame();
+
+    ImGui::ShowDemoWindow();
+
+    ImGui::Render();
+
     Inputs* inputHandler = Inputs::GetInstance();
     LevelBuilder::GetInstance()->LevelUpdate(dt);
     AudioManager.Update();
@@ -427,6 +436,8 @@ void TestScene::Update(float dt)
 void TestScene::Render()
 {
     pixelRenderer.Update();
+    //ImGui::Render();
+    //ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 
     //logger.LogLine("Debug info: Things are being rendered. (testScene rendered)");
 	return;
@@ -435,14 +446,10 @@ void TestScene::Render()
 Engine::EngineCode TestScene::Exit()
 {
     // Remember to clean up
-    SDL_GL_DeleteContext(glContext);
+    ImGui_ImplOpenGL3_Shutdown();
+    ImGui_ImplSDL2_Shutdown();
     ImGui::DestroyContext();
-
-    // these crash and i dont like 
-
-//    ImGui_ImplOpenGL3_Shutdown();
-//    ImGui_ImplSDL2_Shutdown();
-
+    SDL_GL_DeleteContext(glContext);
     SDL_DestroyWindow(window);
     SDL_Quit();
 

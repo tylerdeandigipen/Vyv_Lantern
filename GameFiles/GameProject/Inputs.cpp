@@ -10,6 +10,7 @@
 //------------------------------------------------------------------------------
 
 #include <SDL/SDL.h>
+#include "imgui_impl_sdl2.h"
 
 #include "Inputs.h"
 #include "Engine.h"
@@ -52,6 +53,7 @@ void Inputs::handleInput()
 
     while (SDL_PollEvent(&event))
     {
+        ImGui_ImplSDL2_ProcessEvent(&event);
         switch (event.type)
         {
 			case SDL_QUIT:

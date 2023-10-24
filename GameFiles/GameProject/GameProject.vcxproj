@@ -167,7 +167,6 @@
     <ClInclude Include="ImageBuffer.h" />
     <ClInclude Include="IMGUI\imconfig.h" />
     <ClInclude Include="IMGUI\imgui.h" />
-    <ClInclude Include="IMGUI\imgui_impl_glfw.h" />
     <ClInclude Include="IMGUI\imgui_impl_opengl3.h" />
     <ClInclude Include="IMGUI\imgui_impl_opengl3_loader.h" />
     <ClInclude Include="IMGUI\imgui_impl_sdl2.h" />
@@ -218,7 +217,6 @@
     <ClCompile Include="IMGUI\imgui.cpp" />
     <ClCompile Include="IMGUI\imgui_demo.cpp" />
     <ClCompile Include="IMGUI\imgui_draw.cpp" />
-    <ClCompile Include="IMGUI\imgui_impl_glfw.cpp" />
     <ClCompile Include="IMGUI\imgui_impl_opengl3.cpp" />
     <ClCompile Include="IMGUI\imgui_impl_sdl2.cpp" />
     <ClCompile Include="IMGUI\imgui_tables.cpp" />

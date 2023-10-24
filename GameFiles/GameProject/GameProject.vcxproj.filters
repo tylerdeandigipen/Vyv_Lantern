@@ -162,15 +162,6 @@
     <ClInclude Include="IMGUI\imgui_impl_sdl2.h">
       <Filter>Header Files\imgui</Filter>
     </ClInclude>
-    <ClInclude Include="IMGUI\imgui_impl_opengl3_loader.h">
-      <Filter>Header Files\imgui</Filter>
-    </ClInclude>
-    <ClInclude Include="IMGUI\imgui_impl_opengl3.h">
-      <Filter>Header Files\imgui</Filter>
-    </ClInclude>
-    <ClInclude Include="IMGUI\imgui_impl_glfw.h">
-      <Filter>Header Files\imgui</Filter>
-    </ClInclude>
     <ClInclude Include="IMGUI\imgui.h">
       <Filter>Header Files\imgui</Filter>
     </ClInclude>
@@ -188,6 +179,11 @@
     </ClInclude>
     <ClInclude Include="TbdTestScene.h">
       <Filter>Header Files</Filter>
+    <ClInclude Include="IMGUI\imgui_impl_opengl3.h">
+      <Filter>Header Files\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="IMGUI\imgui_impl_opengl3_loader.h">
+      <Filter>Header Files\imgui</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
