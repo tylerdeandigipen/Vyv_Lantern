@@ -12,7 +12,8 @@
 #include "PlatformSystem.h"
 #include "Scene.h"
 #include "Engine.h"
-#include "TestScene.h"
+#include "TbdTestScene.h"
+
 
 SceneSystem* SceneSystem::instance = new SceneSystem();
 
@@ -92,7 +93,7 @@ SceneSystem* SceneSystem::GetInstance()
 // IM MAKING THIS PURPOSELY BIG SO I SEE IT MORE CLEARLY
 // IGNORE THIS PRACTICALLY EVERYONE ELSE
 // - taylee
-SceneSystem::SceneSystem() : BaseSystem("SceneSystem"), DefaultSceneInstance(TestSceneGetInstance()),
+SceneSystem::SceneSystem() : BaseSystem("SceneSystem"), DefaultSceneInstance(TbdTestSceneGetInstance()),
 activeScene(NULL), nextScene(NULL), timer(0), rate(0.01f), isRestarting(false)
 { }
 

@@ -60,6 +60,14 @@ Color Color::ScaleIndividual(float rScale, float gScale, float bScale)
 	result.b = clamp(this->b * bScale, 0, 255);
 	return result;
 }
+bool Color::operator ==(const Color& rhs)&
+{
+	if (r == rhs.r && g == rhs.g && b == rhs.b)
+	{
+		return true;
+	}
+	return false;
+}
 
 Color& Color::operator =(Color const& rhs)& {
 	r = rhs.r;

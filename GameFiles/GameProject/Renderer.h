@@ -9,7 +9,7 @@
 #define MAX_LIGHT_SOURCES 20
 #define MAX_OBJECTS 20
 #define SCREEN_SIZE_X 240
-#define SCREEN_SIZE_Y 135
+#define SCREEN_SIZE_Y 136
 
 class Renderer
 {
@@ -40,6 +40,7 @@ public:
 
 	ImageBuffer* GetObjectByName(std::string name_);
     
+	void ResizeBuffers();
 	void MakeTileMap(int** tileMapArray);
 	void AddObject(ImageBuffer* sprite);
 	void AddLight(Light light);
@@ -48,7 +49,7 @@ public:
 	int returnObjCnt();
 	void brensenhamalgo(int x1, int y1, int x2, int y2);
 	Vector2 tileMapSize;
-
+	bool isFullBright = false;
 private:
 
 	Vector2 CameraP;

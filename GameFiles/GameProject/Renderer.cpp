@@ -24,6 +24,8 @@
 #include <string>
 #include <assert.h>
 
+#define OneOver255 (1.0f / 255.0f)
+
 Vector2 Renderer::GetCameraPosition(void)
 {
 	return CameraP;
@@ -43,8 +45,13 @@ void Renderer::RenderLightingPass()
     float rScale = 0;
     float gScale = 0;
     float bScale = 0;
+    float IntensityR = 0.0f;
+    float IntensityG = 0.0f;
+    float IntensityB = 0.0f;
     Color trans{ 0,0,0,0 };
-    
+    float R_F32 = 0;
+    float G_F32 = 0;
+    float B_F32 = 0;
 	int CameraOffsetX = (int)CameraP.x;
 	int CameraOffsetY = (int)CameraP.y;
 
@@ -56,37 +63,42 @@ void Renderer::RenderLightingPass()
 	objectLayer->Blit(inputBuffer);
 
 #if 1
-	float const OneOver255 = 1.0f / 255.0f;
 	
 	for (x = 0; x < inputBuffer->size.x; ++x)
     {
         for (y = 0; y < inputBuffer->size.y; ++y)
         {
-			float IntensityR = 0.0f;
-			float IntensityG = 0.0f;
-			float IntensityB = 0.0f;
+			IntensityR = 0.0f;
+			IntensityG = 0.0f;
+			IntensityB = 0.0f;
 
             for (i = 0; i < numLights; ++i)
             {
 				Light *LightSource = lightSource + i;
-                float lightMultiplier = FindPixelLuminosity(x, y, LightSource);
-
-				//if (lightMultiplier != 0)
-                {
-                    float R_F32 = ((float)LightSource->color.GetRed())    * OneOver255;
-                    float G_F32 = ((float)LightSource->color.GetGreen())  * OneOver255;
-                    float B_F32 = ((float)LightSource->color.GetBlue())   * OneOver255;
+                lightMultiplier = FindPixelLuminosity(x, y, LightSource);
+                R_F32 = ((float)LightSource->color.GetRed())    * OneOver255;
+                G_F32 = ((float)LightSource->color.GetGreen())  * OneOver255;
+                B_F32 = ((float)LightSource->color.GetBlue())   * OneOver255;
                         
-                    lightMultiplier *= LightSource->volumetricIntensity;
+                lightMultiplier *= LightSource->volumetricIntensity;
                     
-					IntensityR += lightMultiplier * R_F32;
-					IntensityG += lightMultiplier * G_F32;
-					IntensityB += lightMultiplier * B_F32;
-				}
+				IntensityR += lightMultiplier * R_F32;
+				IntensityG += lightMultiplier * G_F32;
+			    IntensityB += lightMultiplier * B_F32;
             }
 		
 			Color &DestPixel = outputBuffer->SampleColor(x, y);
-			DestPixel = inputBuffer->SampleColor(x, y).ScaleIndividual(IntensityR, IntensityG, IntensityB);
+            //force glowing eyes, maybe make an emisive mask later
+            if (inputBuffer->SampleColor(x, y) == Color{ 196,215,164,255})
+            {
+                DestPixel = inputBuffer->SampleColor(x, y);
+            }
+            else
+			    DestPixel = inputBuffer->SampleColor(x, y).ScaleIndividual(IntensityR, IntensityG, IntensityB);
+            if (isFullBright == true)
+            {
+                DestPixel = inputBuffer->SampleColor(x, y);
+            }
 		}
     }
 #else
@@ -217,12 +229,12 @@ void Renderer::MakeTileMap(int** tileMapArray)
 
 Renderer::Renderer()
 {
-    outputBuffer = new ImageBuffer;
-    inputBuffer = new ImageBuffer;
-    objectLayer = new ImageBuffer;
-    backgroundLayer = new ImageBuffer;
-    bakedLightsBuffer = new ImageBuffer; 
-    tileMapLayer = new ImageBuffer;
+    outputBuffer = new ImageBuffer{ SCREEN_SIZE_X ,SCREEN_SIZE_Y };
+    inputBuffer = new ImageBuffer{ SCREEN_SIZE_X ,SCREEN_SIZE_Y };
+    objectLayer = new ImageBuffer{ SCREEN_SIZE_X ,SCREEN_SIZE_Y };
+    backgroundLayer = new ImageBuffer{ SCREEN_SIZE_X ,SCREEN_SIZE_Y };
+    bakedLightsBuffer = new ImageBuffer{ SCREEN_SIZE_X ,SCREEN_SIZE_Y };
+    tileMapLayer = new ImageBuffer{ SCREEN_SIZE_X ,SCREEN_SIZE_Y };
     outputBuffer->screenScale = screenScale;
 
     startTime = SDL_GetTicks();
@@ -330,6 +342,24 @@ int Renderer::returnObjCnt()
         }
     }
     return countObjects;
+}
+
+void Renderer::ResizeBuffers()
+{
+    delete outputBuffer;
+    delete inputBuffer;
+    delete objectLayer;
+    delete backgroundLayer;
+    delete tileMapLayer;
+    delete bakedLightsBuffer;
+
+    outputBuffer = new ImageBuffer{tileMapSize.x * (TILE_SIZE + 1), tileMapSize.y * (TILE_SIZE + 1) };
+    inputBuffer = new ImageBuffer{ tileMapSize.x * (TILE_SIZE + 1), tileMapSize.y * (TILE_SIZE + 1) };
+    objectLayer = new ImageBuffer{ tileMapSize.x * (TILE_SIZE + 1), tileMapSize.y * (TILE_SIZE + 1) };
+    backgroundLayer = new ImageBuffer{ tileMapSize.x * (TILE_SIZE + 1), tileMapSize.y * (TILE_SIZE + 1) };
+    bakedLightsBuffer = new ImageBuffer{ tileMapSize.x * (TILE_SIZE + 1), tileMapSize.y * (TILE_SIZE + 1) };
+    tileMapLayer = new ImageBuffer{ tileMapSize.x * (TILE_SIZE + 1), tileMapSize.y * (TILE_SIZE + 1) };
+    outputBuffer->screenScale = screenScale;
 }
 
 void Renderer::brensenhamalgo(int x1, int y1, int x2, int y2)

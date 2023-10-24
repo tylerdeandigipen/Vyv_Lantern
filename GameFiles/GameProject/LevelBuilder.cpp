@@ -91,10 +91,10 @@ void LevelBuilder::LoadLevel(Renderer* pixel)
                 }
                 pixel->MakeTileMap(TileMap);
             }
-
             Read(levelData, pixel);
         }
     }
+    //pixel->ResizeBuffers();
 }
 
 void LevelBuilder::LevelUpdate(float dt)

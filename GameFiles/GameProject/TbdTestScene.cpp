@@ -93,7 +93,7 @@ Engine::EngineCode TbdTestScene::Init()
     tempLight.maxAngle = 25;
     tempLight.minAngle = -25;
     tempLight.angle = 200;
-    tempLight.intensity = 25.0f;
+    tempLight.intensity = 50.0f;
     tempLight.radialMult1 = 0.4f;
     tempLight.radialMult2 = 0.0f;
     tempLight.radialWeight = 1;
@@ -122,6 +122,7 @@ Engine::EngineCode TbdTestScene::Init()
 
 int TbdCanPlaceLight = 0;
 float TbdMoveSpeed = 20;
+bool TbdCanToggleFullBright = true;
 void TbdPlayerMovement(float dt)
 {
     Inputs* inputHandler = Inputs::GetInstance();
@@ -152,6 +153,18 @@ void TbdPlayerMovement(float dt)
         TbdCanPlaceLight = 1;
     }
 
+    if (inputHandler->keyPressed(SDL_SCANCODE_GRAVE) && TbdCanToggleFullBright == true)
+    {
+        if(TbdPixelRenderer.isFullBright == false)
+            TbdPixelRenderer.isFullBright = true;
+        else
+            TbdPixelRenderer.isFullBright = false;
+        TbdCanToggleFullBright = false;
+    }
+    if (!inputHandler->keyPressed(SDL_SCANCODE_GRAVE))
+    {
+        TbdCanToggleFullBright = true;
+    }
     int x, y;
     Uint32 buttons = SDL_GetMouseState(&x, &y);
 
