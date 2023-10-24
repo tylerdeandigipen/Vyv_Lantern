@@ -13,6 +13,8 @@
 #include "Inputs.h"
 #include "Transform.h"
 
+const float pushForce = 1.0f;
+
 BehaviorPlayer::BehaviorPlayer() : Behavior(Behavior::Player)
 {
     _type = this;
@@ -115,4 +117,25 @@ void BehaviorPlayer::PlayerCollisionHandler(Entity* entity1, Entity* entity2)
     // check which one is player and what the other one is
     // make each instance of what the player can collide 
     // with and set interactable value pressed to true if 'E' is entered
+    if (entity1->ObjectName().compare("Player") && entity2->ObjectName().compare("Object"))
+    {
+        // Calculate the vector from object 'a' to object 'b'
+        float pushDirX = entity2->GetImage()->position.x - entity1->GetImage()->position.x;
+        float pushDirY = entity2->GetImage()->position.y - entity1->GetImage()->position.y;
+        // Calculate the length of the vector
+        float pushDirLength = sqrt(pushDirX * pushDirX + pushDirY * pushDirY);
+
+        // Normalize the vector to obtain a unit vector
+        if (pushDirLength > 0)
+        {
+            pushDirX /= pushDirLength;
+            pushDirY /= pushDirLength;
+        }
+
+        // Apply the push force to both objects
+        entity1->GetImage()->position.x -= pushDirX * pushForce;
+        entity1->GetImage()->position.y -= pushDirY * pushForce;
+        entity2->GetImage()->position.x += pushDirX * pushForce;
+        entity2->GetImage()->position.y += pushDirY * pushForce;
+    }
 }

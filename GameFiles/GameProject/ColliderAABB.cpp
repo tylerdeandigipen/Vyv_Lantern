@@ -8,7 +8,8 @@
 //
 //------------------------------------------------------------------------------
 #include "ColliderAABB.h"
-
+#include "Entity.h"
+#include "ImageBuffer.h"
 ColliderAABB::ColliderAABB() : Collider(ColliderType::AABB)
 {
 
@@ -44,9 +45,18 @@ void ColliderAABB::Check(Collider* other)
 
 bool ColliderAABB::IsColliding(const Collider& other)
 {
-	//LOUISSS you can do your checking here
+	ImageBuffer checks = *Parent()->GetImage();
+	ImageBuffer otherChecks = *other.Parent()->GetImage();
 
-	return false;
+	checks.aabb.min = { checks.position.x, checks.position.y};
+	checks.aabb.max = { checks.position.x + checks.BufferSizeX, 
+		checks.position.y + checks.BufferSizeY };
+
+	otherChecks.aabb.min = { otherChecks.position.x, otherChecks.position.y };
+	otherChecks.aabb.max = { otherChecks.position.x + otherChecks.BufferSizeX,
+		otherChecks.position.y + otherChecks.BufferSizeY };
+
+	return CollisionCheck(checks.aabb, otherChecks.aabb);
 }
 
 std::string ColliderAABB::Name()
