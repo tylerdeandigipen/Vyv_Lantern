@@ -21,18 +21,19 @@ class Entity
 {
 public:
 	Entity();
-	Entity(std::string type, const std::string file = NULL);
+	Entity(std::string type, const std::string file = NULL, json Animation = NULL );
 	Entity(Entity const& entity);
 	~Entity();
 	Entity* Clone();
 
 	void CreateImage(const std::string file);
+	void CreateAnimatedImage(const std::string);
 
 	bool IsNamed(const char* name);
 	void Read(json const& stream);
 	void FreeComponents();
 	void Add(Component*);
-	void AddToRenderer(Renderer* pixel);
+	void AddToRenderer(Renderer* pixel, std::string _file = "");
 	bool IsDestroyed();
 	void Destroy();
 
@@ -48,6 +49,8 @@ public:
 	const char* GetName();
 	const char* GetName() const;
 
+	ImageBuffer* GetImage();
+	void SetImage(ImageBuffer* image);
 	template<typename type_>
 	type_* GetComponent(Component::TypeEnum typeId) const
 	{
@@ -56,6 +59,8 @@ public:
 
 	bool IsLight();
 	bool IsObject();
+	bool IsAnimated();
+
 
 	void Update(float dt);
 	void Render();
@@ -65,16 +70,21 @@ private:
 	Component* BinarySearch(Component::TypeEnum type) const;
 
 	ImageBuffer* image;
+	ImageBuffer* AnimationArray;
 
 	char name[256];
 
 	std::string mName;
+
+	bool isAnimated;
 
 	bool isDestroyed;
 
 	bool isLight;
 
 	bool isObject;
+
+	Vector2 FrameSize;
 
 
 	std::vector<Component*> components;

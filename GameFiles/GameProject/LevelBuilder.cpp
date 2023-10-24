@@ -1,5 +1,6 @@
 #include "LevelBuilder.h"
 #include "EntityFactory.h"
+#include "Transform.h"
 
 LevelBuilder* LevelBuilder::instance = new LevelBuilder();
 
@@ -33,20 +34,29 @@ void LevelBuilder::Read(json const& _jsonData, Renderer* pixel)
     //{
         for (auto& entityData : _jsonData["Entities"])
         {
-            Entity* newEnt = factory->CreateEntity(entityData["Type"], entityData["file"]);
+            Entity* newEnt = factory->CreateEntity(entityData["Type"], entityData["file"], entityData);
             newEnt->Read(entityData);
             entity_container->AddEntity(newEnt);
             if (newEnt->IsObject())
             {
-                newEnt->AddToRenderer(pixel);
+                if (newEnt->IsAnimated())
+                {
+                    newEnt->AddToRenderer(pixel, entityData["file"]);
+                    //newEnt->Has(Transform)->SetTranslation(&pixel->animatedObjects[0][0]->position);
+                    //newEnt->SetImage(pixel->animatedObjects[0][0]);
+                }
+                else
+                {
+                    newEnt->AddToRenderer(pixel);
+                }
             }
         }
     //}
 }
 
-void LevelBuilder::LoadLevel(Renderer* pixel)
+void LevelBuilder::LoadLevel(Renderer* pixel, std::string filename)
 {
-    std::fstream file("./Data/FirstLevel.json");
+    std::fstream file(filename);
     if (file.is_open())
     {
         file >> jsonData;

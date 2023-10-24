@@ -200,6 +200,23 @@ void Renderer::AddTileToTileset(ImageBuffer* tile)
     numTiles += 1;
 }
 
+ImageBuffer* Renderer::CreateAnimatedObject(const std::string filename, Vector2 frameSize)
+{
+    ImageBuffer* spriteSheet = new ImageBuffer{ filename };
+    spriteSheet->position.y = 0;
+    ImageBuffer* temp;
+    for (int i = 0; i < spriteSheet->BufferSizeX / frameSize.x; i++)
+    {
+        temp = new ImageBuffer{ frameSize.x, frameSize.y };
+        spriteSheet->position.x = -(frameSize.x * i);
+        animatedObjects[numAnimatedObjects][i] = &temp->AddSprite(spriteSheet);
+    }
+    animatedObjects[numAnimatedObjects][0]->totalFrames = (spriteSheet->BufferSizeX / frameSize.x) - 1;
+    numAnimatedObjects += 1;
+    delete spriteSheet;
+    return animatedObjects[numAnimatedObjects-1][0];
+}
+
 void Renderer::AddAnimatedObject(const std::string filename, Vector2 frameSize)
 {
     ImageBuffer* spriteSheet = new ImageBuffer{ filename };

@@ -91,11 +91,19 @@ void BehaviorPlayer::Controller(float dt)
     }
     if (input->keyPressed(SDL_SCANCODE_D))
     {
+        if (Parent()->GetImage()->isFlipped == false)
+        {
+            Parent()->GetImage()->FlipSprite();
+        }
         translation.x += 50 * dt;
         //AudioManager.PlaySFX("footsteps.ogg");
     }
     if (input->keyPressed(SDL_SCANCODE_A))
     {
+        if (Parent()->GetImage()->isFlipped == true)
+        {
+            Parent()->GetImage()->FlipSprite();
+        }
         translation.x -= 50 * dt;
         //AudioManager.PlaySFX("footsteps.ogg");
     }

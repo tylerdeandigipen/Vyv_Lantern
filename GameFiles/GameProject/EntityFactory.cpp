@@ -43,11 +43,11 @@ EntityFactory* EntityFactory::GetInstance()
     return instance;
 }
 
-Entity* EntityFactory::CreateEntity(std::string const& type, const std::string file)
+Entity* EntityFactory::CreateEntity(std::string const& type, const std::string file, json thing)
 {
     if (entity_map.count(type))
     {
-        return &entity_map[type](type, file);
+        return &entity_map[type](type, file, thing);
     }
     else
         return NULL;
@@ -61,13 +61,13 @@ Engine::EngineCode EntityFactory::Close()
 }
 
 
-void EntityFactory::Add(std::string type, std::function<Entity& (std::string type, const std::string)> create)
+void EntityFactory::Add(std::string type, std::function<Entity& (std::string type, const std::string, json thing)> create)
 {
     entity_map.emplace(type, create);
 }
 
-Entity& EntityFactory::CreateObject(std::string type, const std::string file)
+Entity& EntityFactory::CreateObject(std::string type, const std::string file, json thing)
 {
-    Entity* entity = new Entity(type, file);
+    Entity* entity = new Entity(type, file, thing);
     return *entity;
 }

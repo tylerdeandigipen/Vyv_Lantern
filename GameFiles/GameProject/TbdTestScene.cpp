@@ -84,7 +84,7 @@ Engine::EngineCode TbdTestScene::Init()
     SDL_GL_SetSwapInterval(0);
     
     gladLoadGLLoader(SDL_GL_GetProcAddress);
-	LevelBuilder::GetInstance()->LoadLevel(&TbdPixelRenderer);
+	LevelBuilder::GetInstance()->LoadLevel(&TbdPixelRenderer, "./Data/FirstLevel.json");
 
 	tempLight.Type = LightSourceType_Directional;
 	tempLight.position.x = 80;
@@ -117,9 +117,9 @@ Engine::EngineCode TbdTestScene::Init()
     TbdPixelRenderer.AddLight(tempLight2);
 
     TbdPixelRenderer.AddAnimatedObject("./Assets/PPM/Animated_Man.ppm", {8,8});
-    TbdPixelRenderer.animatedObjects[0][0]->position = Vector2(120, 75);
+    TbdPixelRenderer.animatedObjects[1][0]->position = Vector2(120, 75);
 
-    TbdPixelRenderer.objects[0]->type = PLAYER;
+//    TbdPixelRenderer.objects[0]->type = PLAYER;
 	return Engine::NothingBad;
 }
 
@@ -165,10 +165,10 @@ void TbdPlayerMovement(float dt)
     float Angle = atan2f(D.x, D.y) * (180.0f / 3.14f) + 180.0f;
     TbdPixelRenderer.lightSource[0].angle = Angle;
     
-	ImageBuffer *playerEntity = TbdPixelRenderer.objects[0];
-	Vector2 ScreenHalfSize = 0.5f*Vector2(SCREEN_SIZE_X, SCREEN_SIZE_Y);
-	Vector2 BitmapHalfDim = 0.5f*playerEntity->size;
-	TbdPixelRenderer.SetCameraPosition(playerEntity->position - ScreenHalfSize + BitmapHalfDim);
+	//ImageBuffer *playerEntity = TbdPixelRenderer.objects[0];
+	//Vector2 ScreenHalfSize = 0.5f*Vector2(SCREEN_SIZE_X, SCREEN_SIZE_Y);
+	//Vector2 BitmapHalfDim = 0.5f*playerEntity->size;
+	//TbdPixelRenderer.SetCameraPosition(playerEntity->position - ScreenHalfSize + BitmapHalfDim);
 }
 
 void TbdTestScene::Update(float dt)

@@ -47,6 +47,7 @@ public:
 	void AddTileToTileset(ImageBuffer* tile);
 	void AddObject(ImageBuffer* sprite);
 	void AddAnimatedObject(const std::string filename, Vector2 frameSize);
+	ImageBuffer* CreateAnimatedObject(const std::string filename, Vector2 frameSize);
 	void AddLight(Light light);
 	void UpdateAnimations(float dt);
 	void UpdateObjects();

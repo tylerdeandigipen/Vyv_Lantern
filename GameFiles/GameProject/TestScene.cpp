@@ -114,7 +114,7 @@ Engine::EngineCode TestScene::Init()
     SDL_GL_SetSwapInterval(0);
     
     gladLoadGLLoader(SDL_GL_GetProcAddress);
-	LevelBuilder::GetInstance()->LoadLevel(&pixelRenderer);
+	LevelBuilder::GetInstance()->LoadLevel(&pixelRenderer, "./Data/FirstLevel.json");
 
 	tempLight.Type = LightSourceType_Directional;
 	tempLight.position.x = 80;

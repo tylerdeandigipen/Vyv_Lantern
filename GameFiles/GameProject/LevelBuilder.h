@@ -22,7 +22,7 @@ public:
 	Engine::EngineCode Close();
 
 	static LevelBuilder* GetInstance();
-	void LoadLevel(Renderer* pixel);
+	void LoadLevel(Renderer* pixel, std::string filename);
 	void ReLoadLevel();
 	void FreeLevel();
 	int** GetTileMap();

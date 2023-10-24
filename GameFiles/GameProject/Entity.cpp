@@ -30,17 +30,27 @@ struct ComponentSorter
 	}
 };
 
-Entity::Entity() : isDestroyed(false), components(), name{}, image(NULL), mName(), isLight(false), isObject(false)
+Entity::Entity() : isDestroyed(false), components(), name{}, image(NULL), mName(), isLight(false), isObject(false), isAnimated(false)
 {
 
 }
 
-Entity::Entity(std::string type, const std::string file) : isDestroyed(0), components(), name{}, image(NULL), mName(), isLight(false), isObject(false)
+Entity::Entity(std::string type, const std::string file, json Animated) : isDestroyed(0), components(), name{}, image(NULL), mName(), isLight(false), isObject(false), isAnimated(false)
 {
 	if (type.compare("Object") == 0)
-	{
-		CreateImage(file);
-		isObject = true;
+	{	
+		if (Animated["isAnimated"])
+		{
+			isAnimated = true;
+			FrameSize.x = Animated["frameSize"][0];
+			FrameSize.y = Animated["frameSize"][1];
+			isObject = true;
+		}
+		else
+		{
+			CreateImage(file);
+			isObject = true;
+		}
 	}
 	else if (type.compare("Image") == 0)
 	{
@@ -56,7 +66,7 @@ Entity::Entity(std::string type, const std::string file) : isDestroyed(0), compo
 }
 
 
-Entity::Entity(Entity const& ent) : isDestroyed(ent.isDestroyed), name{}, components(ent.components)
+Entity::Entity(Entity const& ent) : isDestroyed(ent.isDestroyed), name{}, components(ent.components), image(ent.image), mName(ent.mName), isLight(ent.isLight), isObject(ent.isObject), isAnimated(ent.isAnimated)
 {
 	if (ent.name)
 		strcpy_s(name, _countof(name), ent.name);
@@ -106,6 +116,7 @@ void Entity::Destroy()
 bool Entity::IsDestroyed() { return isDestroyed; }
 bool Entity::IsLight() { return isLight; };
 bool Entity::IsObject() { return isObject; };
+bool Entity::IsAnimated() { return isAnimated; }
 
 void Entity::Read(json const& jsonData)
 {
@@ -123,7 +134,12 @@ void Entity::Read(json const& jsonData)
 		}
 	}
 	if (isObject)
-		Has(Transform)->SetTranslation(&(image->position));
+	{
+		if (image)
+		{
+			Has(Transform)->SetTranslation(&(image->position));
+		}
+	}
 }
 
 void Entity::Add(Component* component)
@@ -223,6 +239,16 @@ const char* Entity::GetName() const
 		return NULL;
 }
 
+ImageBuffer* Entity::GetImage()
+{
+	return image;
+}
+
+void Entity::SetImage(ImageBuffer* _image)
+{
+	image = image;
+}
+
 void Entity::Update(float dt)
 {
 	for (auto component : components)
@@ -248,9 +274,18 @@ void Entity::CreateImage(const std::string _file)
 	image->layer = 1;
 }
 
-void Entity::AddToRenderer(Renderer* pixel)
+void Entity::AddToRenderer(Renderer* pixel, std::string _file)
 {
-	pixel->AddObject(image);
+	if (!isAnimated)
+	{
+		pixel->AddObject(image);
+	}
+	else
+	{
+		image = pixel->CreateAnimatedObject(_file, FrameSize);
+		Has(Transform)->SetTranslation(&image->position);
+
+	}
 }
 
 void Entity::SetInputHandler(Inputs* input)

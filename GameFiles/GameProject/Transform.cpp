@@ -46,14 +46,14 @@ std::string Transform::Name()
 void Transform::Read(json jsonData)
 {
 	
+	if (jsonData["translation"].is_object())
+	{
+		json trans = jsonData["translation"];
+		translation->x = trans["x"];
+		translation->y = trans["y"];
+	}
 	if (translation)
 	{
-		if (jsonData["translation"].is_object())
-		{
-			json trans = jsonData["translation"];
-			translation->x = trans["x"];
-			translation->y = trans["y"];
-		}
 	}
 	else
 	{
@@ -69,6 +69,10 @@ const gfxVector2* Transform::GetScale() { return scale; }
 void Transform::SetTranslation(gfxVector2* _translation)
 {
 	isDirty = true;
+	if (_translation->x = 0.0f)
+	{
+		*translation = *translation;
+	}
 	*_translation = *translation;
 	translation = _translation;
 }
