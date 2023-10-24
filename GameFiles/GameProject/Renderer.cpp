@@ -90,9 +90,18 @@ void Renderer::RenderLightingPass()
                     IntensityB += lightMultiplier * B_F32;
 				}
             }
-		
-			Color &DestPixel = outputBuffer->SampleColor(x, y);
-			    DestPixel = inputBuffer->SampleColor(x, y).ScaleIndividual(IntensityR, IntensityG, IntensityB);
+            Color& DestPixel = outputBuffer->SampleColor(x, y);
+            //force glowing eyes, maybe make an emisive mask later
+            if (inputBuffer->SampleColor(x, y) == Color{ 196,215,164,255 })
+            {
+                DestPixel = inputBuffer->SampleColor(x, y);
+            }
+            else
+                DestPixel = inputBuffer->SampleColor(x, y).ScaleIndividual(IntensityR, IntensityG, IntensityB);
+            if (isFullBright == true)
+            {
+                DestPixel = inputBuffer->SampleColor(x, y);
+            }
 		}
     }
 #else
