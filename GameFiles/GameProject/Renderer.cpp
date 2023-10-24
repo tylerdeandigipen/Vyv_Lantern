@@ -425,7 +425,7 @@ void Renderer::UpdateObjects()
     {
         for(int l = 0; l < 3; ++l)
         {
-            if (objects[i]->layer == l)
+            if (objects[i]->layer == l && objects[i]->totalFrames == 0)
             {
                 objectLayer->AddSprite(objects[i], CameraP);
                 break;
