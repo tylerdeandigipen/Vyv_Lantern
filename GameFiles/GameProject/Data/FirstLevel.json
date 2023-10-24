@@ -50,8 +50,8 @@
             {
               "Type": "Transform",
               "translation": {
-                "x": 90,
-                "y": 30
+                "x": 1000,
+                "y": 1000
               }
             }
           ]

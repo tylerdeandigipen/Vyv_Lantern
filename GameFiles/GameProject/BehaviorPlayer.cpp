@@ -82,7 +82,6 @@ void BehaviorPlayer::Controller(float dt)
     if (input->keyPressed(SDL_SCANCODE_W))
     {
         translation.y -= 50 * dt;
-        //pixelRenderer.AddLight(pixelRenderer.staticLightSource[0]);
         //AudioManager.PlaySFX("footsteps.ogg");
     }
     if (input->keyPressed(SDL_SCANCODE_S))
