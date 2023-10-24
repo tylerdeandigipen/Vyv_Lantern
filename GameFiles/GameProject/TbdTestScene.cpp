@@ -117,8 +117,7 @@ Engine::EngineCode TbdTestScene::Init()
     TbdPixelRenderer.AddLight(tempLight2);
 
     TbdPixelRenderer.AddAnimatedObject("./Assets/PPM/Animated_Man.ppm", 8, 8);
-    TbdPixelRenderer.animatedObjects[0][0]->position = Vector2(120, 75);
-
+ 
     TbdPixelRenderer.objects[0]->type = PLAYER;
 	return Engine::NothingBad;
 }
@@ -129,23 +128,7 @@ bool TbdCanToggleFullBright = true;
 void TbdPlayerMovement(float dt)
 {
     Inputs* inputHandler = Inputs::GetInstance();
-    if (inputHandler->keyPressed(SDL_SCANCODE_W))
-    {
-        TbdPixelRenderer.objects[0]->position.y -= TbdMoveSpeed * dt;
-    }
-    if (inputHandler->keyPressed(SDL_SCANCODE_S))
-    {
-        TbdPixelRenderer.objects[0]->position.y += TbdMoveSpeed * dt;
-    }
-    if (inputHandler->keyPressed(SDL_SCANCODE_D))
-    {
-        TbdPixelRenderer.objects[0]->position.x += TbdMoveSpeed * dt;
-    }
-    if (inputHandler->keyPressed(SDL_SCANCODE_A))
-    {
-        TbdPixelRenderer.objects[0]->position.x -= TbdMoveSpeed * dt;
-    }
-
+   
     if (inputHandler->keyPressed(SDL_SCANCODE_E) && TbdCanPlaceLight == 1)
     {
         TbdPixelRenderer.AddLight(TbdPixelRenderer.lightSource[0]);
@@ -155,7 +138,6 @@ void TbdPlayerMovement(float dt)
     {
         TbdCanPlaceLight = 1;
     }
-
     if (inputHandler->keyPressed(SDL_SCANCODE_GRAVE) && TbdCanToggleFullBright == true)
     {
         if(TbdPixelRenderer.isFullBright == false)
@@ -168,6 +150,7 @@ void TbdPlayerMovement(float dt)
     {
         TbdCanToggleFullBright = true;
     }
+
     int x, y;
     Uint32 buttons = SDL_GetMouseState(&x, &y);
 
@@ -195,7 +178,7 @@ void TbdTestScene::Update(float dt)
     TbdPixelRenderer.UpdateObjects();
     TbdPixelRenderer.UpdateAnimations(dt);
 
-    TbdPlayerMovement(dt);
+    //TbdPlayerMovement(dt);
 
     if (inputHandler->keyPressed(SDLK_ESCAPE) == true)
     {

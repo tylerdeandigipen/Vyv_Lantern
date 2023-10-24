@@ -48,9 +48,6 @@
               "Type": "ColliderAABB"
             },
             {
-              "Type": "BehaviorPlayer"
-            },
-            {
               "Type": "Transform",
               "translation": {
                 "x": 90,
