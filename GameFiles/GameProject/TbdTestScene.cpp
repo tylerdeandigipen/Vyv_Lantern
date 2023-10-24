@@ -135,6 +135,7 @@ void TbdPlayerMovement(float dt)
         TbdPixelRenderer.animatedObjects[0][0]->FlipSprite();
         TbdCanPlaceLight = 0;
     }
+
     if (!inputHandler->keyPressed(SDL_SCANCODE_E))
     {
         TbdCanPlaceLight = 1;
