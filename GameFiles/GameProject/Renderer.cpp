@@ -16,6 +16,7 @@
 #include "ImageBuffer.h"
 #include "ScopeTimer.h"
 
+#include <windows.h>
 #include <SDL/SDL.h>
 #include <glad/glad.h>
 #include <stdlib.h>
@@ -59,8 +60,8 @@ void Renderer::RenderLightingPass()
 	outputBuffer->ClearImageBuffer();
 	
 	backgroundLayer->Blit(inputBuffer, -CameraOffsetX, -CameraOffsetY);
-	foregroundLayer->Blit(inputBuffer, -CameraOffsetX, -CameraOffsetY);
 	objectLayer->Blit(inputBuffer);
+	foregroundLayer->Blit(inputBuffer, -CameraOffsetX, -CameraOffsetY);
 
 #if 1
 	
@@ -75,30 +76,23 @@ void Renderer::RenderLightingPass()
             for (i = 0; i < numLights; ++i)
             {
 				Light *LightSource = lightSource + i;
-                lightMultiplier = FindPixelLuminosity(x, y, LightSource);
-                R_F32 = ((float)LightSource->color.GetRed())    * OneOver255;
-                G_F32 = ((float)LightSource->color.GetGreen())  * OneOver255;
-                B_F32 = ((float)LightSource->color.GetBlue())   * OneOver255;
-                        
-                lightMultiplier *= LightSource->volumetricIntensity;
+                float lightMultiplier = FindPixelLuminosity((float)x, (float)y, LightSource);
+
+				if (lightMultiplier != 0)
+                {
+                    float R_F32 = ((float)LightSource->color.GetRed())    * OneOver255;
+                    float G_F32 = ((float)LightSource->color.GetGreen())  * OneOver255;
+                    float B_F32 = ((float)LightSource->color.GetBlue())   * OneOver255;
+                    lightMultiplier *= LightSource->volumetricIntensity;
                     
-				IntensityR += lightMultiplier * R_F32;
-				IntensityG += lightMultiplier * G_F32;
-			    IntensityB += lightMultiplier * B_F32;
+                    IntensityR += lightMultiplier * R_F32;
+                    IntensityG += lightMultiplier * G_F32;
+                    IntensityB += lightMultiplier * B_F32;
+				}
             }
 		
 			Color &DestPixel = outputBuffer->SampleColor(x, y);
-            //force glowing eyes, maybe make an emisive mask later
-            if (inputBuffer->SampleColor(x, y) == Color{ 196,215,164,255})
-            {
-                DestPixel = inputBuffer->SampleColor(x, y);
-            }
-            else
 			    DestPixel = inputBuffer->SampleColor(x, y).ScaleIndividual(IntensityR, IntensityG, IntensityB);
-            if (isFullBright == true)
-            {
-                DestPixel = inputBuffer->SampleColor(x, y);
-            }
 		}
     }
 #else
@@ -272,6 +266,8 @@ Renderer::Renderer()
     AddTileToTileset(temp1);
     AddTileToTileset(temp2);
 
+	DebugBuffer = new ImageBuffer;
+
     startTime = SDL_GetTicks();
     PreviousFrameBeginTime = startTime;
 }
@@ -287,12 +283,59 @@ Renderer::~Renderer(void)
     glDeleteTextures(1, &OutputBufferTexture);
 }
 
+void Renderer::DrawLine(Vector2 P0, Vector2 P1, const Color &LineColor)
+{
+	int MinX = (int)min(P0.x, P1.x);
+	int MinY = (int)min(P0.y, P1.y);
+	int MaxX = (int)max(P0.x, P1.x);
+	int MaxY = (int)max(P0.y, P1.y);
+
+	int ClippedMinX = MinX;
+	int ClippedMaxX = MaxX;
+	int ClippedMinY = MinY;
+	int ClippedMaxY = MaxY;
+	if(ClippedMinX < 0)
+	{
+		ClippedMinX = 0;
+	}
+	if(ClippedMinY < 0)
+	{
+		ClippedMinY = 0;
+	}
+	if(ClippedMaxX > (DebugBuffer->BufferSizeX - 1))
+	{
+		ClippedMaxX = DebugBuffer->BufferSizeX - 1;
+	}
+	if(ClippedMaxY > (DebugBuffer->BufferSizeY - 1))
+	{
+		ClippedMaxY = DebugBuffer->BufferSizeY - 1;
+	}
+
+	Vector2 D = P1 - P0;
+	Vector2 N = Vector2::Normalize(Vector2(-D.y, D.x));
+	for(int PixelY = ClippedMinY; PixelY <= ClippedMaxY; ++PixelY)
+	{
+		for(int PixelX = ClippedMinX; PixelX <= ClippedMaxX; ++PixelX)
+		{
+			Vector2 PixelD = Vector2((float)PixelX + 0.5f, (float)PixelY + 0.5f) - P0;
+            float d = fabsf(Vector2::DotProduct(N, PixelD));
+			if(d <= 1.0f)
+			{
+				Color &DestPixel = DebugBuffer->SampleColor(PixelX, PixelY);
+				DestPixel = LineColor;
+			}
+		}
+	}
+}
+
 void Renderer::Update()
 {
     Uint32 currentTime = SDL_GetTicks();
     ScopeTimer TestScopeTimer("Renderer::Update");
 
     RenderLightingPass();
+	DebugBuffer->Blit(outputBuffer);
+	DebugBuffer->ClearImageBuffer();
 
     float AverageFrameLength = 0.0f;
 	for(uint32_t FrameIndex = 1; FrameIndex < _countof(PreviousFrameLengths); ++FrameIndex)
@@ -422,7 +465,6 @@ void Renderer::brensenhamalgo(int x1, int y1, int x2, int y2)
         }
     }
     /*DO THE DRAWINGS HERE TO DRAW THE LINE*/
-
 }
 
 void Renderer::AddObject(ImageBuffer* sprite)

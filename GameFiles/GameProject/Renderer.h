@@ -22,10 +22,11 @@ public:
 	SDL_Window* window;
 
 	ImageBuffer* outputBuffer;
+	ImageBuffer* inputBuffer;
+
 	ImageBuffer* foregroundLayer; //layer 2
 	ImageBuffer* objectLayer; //layer 1
 	ImageBuffer* backgroundLayer; //layer 0
-	ImageBuffer* inputBuffer;
 
 	Light lightSource[MAX_LIGHT_SOURCES];
 	ImageBuffer* objects[MAX_OBJECTS];
@@ -36,6 +37,8 @@ public:
 
 	Vector2 GetCameraPosition(void);
 	void SetCameraPosition(Vector2 NewCameraP);
+
+	void DrawLine(Vector2 P0, Vector2 P1, const Color &LineColor);
 
 	void RenderLightingPass();
 	float FindPixelLuminosity(float x, float y, Light *LightSource);
@@ -55,6 +58,8 @@ public:
 	int returnObjCnt();
 	void brensenhamalgo(int x1, int y1, int x2, int y2);
 private:
+
+	ImageBuffer *DebugBuffer;
 
 	Vector2 CameraP;
 	ImageBuffer* tileSet[32];

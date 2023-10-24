@@ -107,6 +107,15 @@ Engine::EngineCode TestScene::Init()
                               SDL_WINDOW_OPENGL);
     pixelRenderer.window = window;
 
+	// @NOTE: Setup lasers
+	laser_emitter *TestLaser = Emitters + EmitterCount++;
+	TestLaser->P = Vector2(40.0f, 30.0f);
+	TestLaser->Direction = Vector2::Normalize(Vector2(0.0f, 1.0f));
+
+	laser_emitter *TestLaser1 = Emitters + EmitterCount++;
+	TestLaser1->P = Vector2(50.0f, 30.0f);
+	TestLaser1->Direction = Vector2::Normalize(Vector2(1.0f, -1.0f));
+
     // Specify Major version and minor version
     // SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 3);
     // SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 3);
@@ -278,9 +287,9 @@ void tempPlayerMovementLol(float dt)
     Vector2 D = LightP - CursourP;
     float Angle = atan2f(D.x, D.y) * (180.0f / 3.14f) + 180.0f;
     pixelRenderer.lightSource[0].angle = Angle;
-    
-	ImageBuffer *playerEntity = pixelRenderer.objects[2];
-	Vector2 ScreenHalfSize = 0.5f*Vector2(SCREEN_SIZE_X, SCREEN_SIZE_Y);
+
+    ImageBuffer *playerEntity = pixelRenderer.objects[1];
+    Vector2 ScreenHalfSize = 0.5f*Vector2(SCREEN_SIZE_X, SCREEN_SIZE_Y);
 	Vector2 BitmapHalfDim = 0.5f*playerEntity->size;
 	pixelRenderer.SetCameraPosition(playerEntity->position - ScreenHalfSize + BitmapHalfDim);
 }
@@ -400,6 +409,19 @@ void TestScene::Update(float dt)
     if (soundCooldown < 0.0f) {
         soundCooldown = 0.0f;
     }
+
+	// @NOTE: Laser directional test
+	float MaxLaserTravelDistance = 100000.0f;
+	for(uint32_t EmitterIndex = 0;
+		EmitterIndex < EmitterCount;
+		++EmitterIndex)
+	{
+		laser_emitter *Emitter = Emitters + EmitterIndex;
+
+		Vector2 StartP = Emitter->P - pixelRenderer.GetCameraPosition();
+		Vector2 EndP = StartP + MaxLaserTravelDistance*Emitter->Direction;
+		pixelRenderer.DrawLine(StartP, EndP, Color(255, 255, 255, 255));
+	}
 }
 
 void TestScene::Render()

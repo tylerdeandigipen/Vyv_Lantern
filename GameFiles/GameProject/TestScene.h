@@ -17,6 +17,12 @@
 
 class Scene;
 
+struct laser_emitter
+{
+	Vector2 P;
+	Vector2 Direction;
+};
+
 class TestScene : public Scene
 {
 public:
@@ -31,6 +37,10 @@ public:
 	void Update(float dt) override;
 	void Render(void) override;
 private:
+
+#define MAX_LASER_EMITTERS 64
+	laser_emitter Emitters[MAX_LASER_EMITTERS];
+	uint32_t EmitterCount = 0;
 };
 
 Scene* TestSceneGetInstance(void);
