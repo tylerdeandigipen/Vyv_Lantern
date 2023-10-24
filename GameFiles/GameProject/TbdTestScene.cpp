@@ -165,10 +165,10 @@ void TbdPlayerMovement(float dt)
     float Angle = atan2f(D.x, D.y) * (180.0f / 3.14f) + 180.0f;
     TbdPixelRenderer.lightSource[0].angle = Angle;
     
-	//ImageBuffer *playerEntity = TbdPixelRenderer.objects[0];
-	//Vector2 ScreenHalfSize = 0.5f*Vector2(SCREEN_SIZE_X, SCREEN_SIZE_Y);
-	//Vector2 BitmapHalfDim = 0.5f*playerEntity->size;
-	//TbdPixelRenderer.SetCameraPosition(playerEntity->position - ScreenHalfSize + BitmapHalfDim);
+	ImageBuffer *playerEntity = TbdPixelRenderer.animatedObjects[0][0];
+	Vector2 ScreenHalfSize = 0.5f*Vector2(SCREEN_SIZE_X, SCREEN_SIZE_Y);
+	Vector2 BitmapHalfDim = 0.5f*playerEntity->size;
+	TbdPixelRenderer.SetCameraPosition(playerEntity->position - ScreenHalfSize + BitmapHalfDim);
 }
 
 void TbdTestScene::Update(float dt)
