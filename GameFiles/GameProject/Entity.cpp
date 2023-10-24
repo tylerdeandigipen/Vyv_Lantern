@@ -162,6 +162,11 @@ std::string Entity::ObjectName()
 	return "Object";
 }
 
+std::string Entity::GetRealName()
+{
+	return mName;
+}
+
 //std::string Entity::ObjectName()
 //{
 //	return "Light";

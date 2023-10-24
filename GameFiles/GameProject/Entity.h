@@ -46,6 +46,7 @@ public:
 	
 	
 	Component* Get(Component::TypeEnum type) const;
+	std::string GetRealName();
 	const char* GetName();
 	const char* GetName() const;
 
