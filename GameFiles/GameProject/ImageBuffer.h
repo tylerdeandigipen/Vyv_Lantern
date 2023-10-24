@@ -30,7 +30,7 @@ public:
     int layer = 0;
     int currentFrame = 0;
     int totalFrames = 0;
-
+    bool isFlipped = false;
     Color* buffer;
     AABB aabb;
 
@@ -47,6 +47,7 @@ public:
 
     Color &SampleColor(int x, int y);
     
+    void FlipSprite();
     ImageBuffer& ClearImageBuffer();
     void MergeLayers(ImageBuffer* bottom, ImageBuffer* top);
     void MergeLayersIndvPixel(ImageBuffer* bottom, ImageBuffer* middle, ImageBuffer* top, int x, int y);

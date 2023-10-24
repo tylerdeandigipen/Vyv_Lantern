@@ -131,7 +131,8 @@ void TbdPlayerMovement(float dt)
    
     if (inputHandler->keyPressed(SDL_SCANCODE_E) && TbdCanPlaceLight == 1)
     {
-        TbdPixelRenderer.AddLight(TbdPixelRenderer.lightSource[0]);
+        //TbdPixelRenderer.AddLight(TbdPixelRenderer.lightSource[0]);
+        TbdPixelRenderer.objects[0]->FlipSprite();
         TbdCanPlaceLight = 0;
     }
     if (!inputHandler->keyPressed(SDL_SCANCODE_E))

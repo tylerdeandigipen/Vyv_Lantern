@@ -206,6 +206,23 @@ void ImageBuffer::Blit(ImageBuffer *Destination, int OffsetX, int OffsetY)
     }
 }
 
+void ImageBuffer::FlipSprite()
+{
+    Color temp;
+    int ySize = size.y;
+    int xSize = size.x;
+    for (int y = 0; y < size.y; ++y)
+    {
+        for (int x = 0; x < size.x / 2; ++x)
+        {
+            temp = buffer[(y * ySize) + x];
+            buffer[(y * ySize) + x] = buffer[(y * ySize) + (xSize - x - 1)];
+            buffer[(y * ySize) + (xSize - x - 1)] = temp;
+        }
+    }
+    isFlipped == true;
+}
+
 Color &ImageBuffer::SampleColor(int x, int y)
 {
     Color &Result = buffer[x + (BufferSizeX * y)];
