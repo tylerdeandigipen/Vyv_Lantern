@@ -171,7 +171,7 @@ float Renderer::FindPixelLuminosity(float x, float y, Light *LightSource)
     return(Result);
 }
 
-#define TILE_SIZE 7
+#define TILE_SIZE 8
 void Renderer::MakeTileMap(int** tileMapArray)
 {
     foregroundLayer->ClearImageBuffer();
@@ -252,7 +252,7 @@ Renderer::Renderer()
     {
         for (int y = 0; y < temp1->BufferSizeY; ++y)
         {
-            if (x % 3 != 0 && y % 3 != 0)
+            if (x % 4 != 0 && y % 4 != 0)
             {
                 temp1->SampleColor(x, y) = white;
             }
