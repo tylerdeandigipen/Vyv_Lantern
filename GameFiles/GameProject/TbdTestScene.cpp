@@ -21,6 +21,7 @@
 #include "PlatformSystem.h"
 #include "Engine.h"
 #include "Entity.h"
+#include "FileIO.h"
 #include "SceneSystem.h"
 #include "Renderer.h"
 #include "Inputs.h"
@@ -82,9 +83,9 @@ Engine::EngineCode TbdTestScene::Init()
 
     TbdGlContext = SDL_GL_CreateContext(TbdWindow);
     SDL_GL_SetSwapInterval(0);
-    
     gladLoadGLLoader(SDL_GL_GetProcAddress);
 	LevelBuilder::GetInstance()->LoadLevel(&TbdPixelRenderer, "./Data/FirstLevel.json");
+    //FileIO::GetInstance()->ReadTileMap("./Data/TileMapSprites.json", &TbdPixelRenderer);
 
 	tempLight.Type = LightSourceType_Directional;
 	tempLight.position.x = 80;

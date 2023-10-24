@@ -7,7 +7,7 @@
 #include <SDL/SDL.h>
 
 #define MAX_LIGHT_SOURCES 20
-#define MAX_OBJECTS 20
+#define MAX_OBJECTS 60
 #define MAX_ANIMATED_OBJECTS 3
 #define MAX_ANIMATION_FRAMES 8
 #define SCREEN_SIZE_X 240

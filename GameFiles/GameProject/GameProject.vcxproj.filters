@@ -343,5 +343,8 @@
     <None Include="Data\FirstLevel.json">
       <Filter>Data</Filter>
     </None>
+    <None Include="TileMapSprites.json">
+      <Filter>Data</Filter>
+    </None>
   </ItemGroup>
 </Project>

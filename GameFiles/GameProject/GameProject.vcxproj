@@ -253,6 +253,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Data\FirstLevel.json" />
+    <None Include="Data\TileMapSprites.json" />
     <None Include="TempEntity.json" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
