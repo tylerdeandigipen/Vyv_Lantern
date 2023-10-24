@@ -28,6 +28,9 @@ public:
     gfxVector2 position;
     std::string name = "";
     int layer = 0;
+    int currentFrame = 0;
+    int totalFrames = 0;
+
     Color* buffer;
     AABB aabb;
 

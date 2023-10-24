@@ -200,6 +200,22 @@ void Renderer::AddTileToTileset(ImageBuffer* tile)
     numTiles += 1;
 }
 
+void Renderer::AddAnimatedObject(const std::string filename, float spriteSizeX, float spriteSizeY)
+{
+    ImageBuffer* spriteSheet = new ImageBuffer{ filename };
+    spriteSheet->position.y = 0;
+    ImageBuffer* temp;
+    for(int i = 0; i < spriteSheet->BufferSizeX / spriteSizeX; i++)
+    {
+        temp = new ImageBuffer{spriteSizeX, spriteSizeY};
+        spriteSheet->position.x = -(spriteSizeX * i);
+        animatedObjects[numAnimatedObjects][i] = &temp->AddSprite(spriteSheet);
+    }
+    animatedObjects[numAnimatedObjects][0]->totalFrames = (spriteSheet->BufferSizeX / spriteSizeX) - 1;
+    numAnimatedObjects += 1;
+    delete spriteSheet;
+}
+
 Renderer::Renderer()
 {
     outputBuffer = new ImageBuffer{ SCREEN_SIZE_X ,SCREEN_SIZE_Y };
@@ -415,6 +431,42 @@ void Renderer::UpdateObjects()
                 break;
             }
         }
+    }
+    for (int i = 0; i < numAnimatedObjects; ++i)
+    {
+        for (int l = 0; l < 3; ++l)
+        {
+            if (animatedObjects[i][0]->layer == l)
+            {
+                int frame = animatedObjects[i][0]->currentFrame;
+                animatedObjects[i][frame]->position = animatedObjects[i][0]->position;
+                objectLayer->AddSprite(animatedObjects[i][frame], CameraP);
+                break;
+            }
+        }
+    }
+}
+
+void Renderer::UpdateAnimations(float dt = 0)
+{
+    if (timer >= timeBetweenFrames)
+    {
+        for (int i = 0; i < numAnimatedObjects; ++i)
+        {
+            if (animatedObjects[i][0]->currentFrame == animatedObjects[i][0]->totalFrames)
+            {
+                animatedObjects[i][0]->currentFrame = 0;
+            }
+            else
+            {
+                animatedObjects[i][0]->currentFrame += 1;
+            }
+        }
+        timer = 0;
+    }
+    else
+    {
+        timer += dt;
     }
 }
 
