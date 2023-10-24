@@ -220,7 +220,14 @@ void ImageBuffer::FlipSprite()
             buffer[(y * ySize) + (xSize - x - 1)] = temp;
         }
     }
-    isFlipped == true;
+    if (isFlipped == true)
+    {
+        isFlipped = false;
+    }
+    else
+    {
+        isFlipped = true;
+    }
 }
 
 Color &ImageBuffer::SampleColor(int x, int y)

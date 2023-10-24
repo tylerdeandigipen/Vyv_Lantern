@@ -440,6 +440,10 @@ void Renderer::UpdateObjects()
             {
                 int frame = animatedObjects[i][0]->currentFrame;
                 animatedObjects[i][frame]->position = animatedObjects[i][0]->position;
+                if ((animatedObjects[i][0]->isFlipped == true && animatedObjects[i][frame]->isFlipped != true) || (animatedObjects[i][0]->isFlipped == false && animatedObjects[i][frame]->isFlipped != false))
+                {
+                    animatedObjects[i][frame]->FlipSprite();
+                }
                 objectLayer->AddSprite(animatedObjects[i][frame], CameraP);
                 break;
             }
