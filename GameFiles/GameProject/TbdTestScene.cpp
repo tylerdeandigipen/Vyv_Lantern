@@ -121,7 +121,7 @@ Engine::EngineCode TbdTestScene::Init()
 }
 
 int TbdCanPlaceLight = 0;
-float TbdMoveSpeed = 20;
+float TbdMoveSpeed = 2.5f;
 bool TbdCanToggleFullBright = true;
 void TbdPlayerMovement(float dt)
 {

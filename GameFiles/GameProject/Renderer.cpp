@@ -180,7 +180,7 @@ void Renderer::MakeTileMap(int** tileMapArray)
     {
         for (int y = 0; y < tileMapSize.y; ++y)
         {
-            if (tileSet[tileMapArray[x][y]]->layer > 0)
+            if (tileSet[tileMapArray[x][y]]->layer == 0)
             {
                 tileSet[tileMapArray[x][y]]->position = { (float)(x * TILE_SIZE), (float)(y * TILE_SIZE) };
                 backgroundLayer->AddSprite(tileSet[tileMapArray[x][y]]);
@@ -211,7 +211,7 @@ Renderer::Renderer()
 
     //temp tileset things
     Color white(255, 255, 255, 255);
-    Color black(1, 1, 1, 255);
+    Color black(50, 50, 50, 255);
     Color grey = { 150, 150, 150, 255 };
     Color blue(50, 100, 255, 255);
     ImageBuffer* temp1 = new ImageBuffer(TILE_SIZE, TILE_SIZE);
@@ -235,6 +235,7 @@ Renderer::Renderer()
             temp2->SampleColor(x, y) = black;
         }
     }
+    temp2->layer = 1;
     AddTileToTileset(temp1);
     AddTileToTileset(temp2);
 
