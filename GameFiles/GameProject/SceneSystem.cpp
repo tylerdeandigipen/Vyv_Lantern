@@ -151,6 +151,10 @@ bool CheckGameScenes()
 	{
 		SceneSystem::GetInstance()->SetScene(TbdTestSceneGetInstance());
 	}
+	if (inputHandlerScene->keyPressed(SDL_SCANCODE_2))
+	{
+		SceneSystem::GetInstance()->SetScene(TestSceneGetInstance());
+	}
 	else
 	{
 		return false;
