@@ -35,12 +35,7 @@ void Particle::Update()
 		break;
 		case Particle_Dust:
 		{
-			Vector2 temp = { (float)(rand() % RAND_RANGE), (float)(rand() % RAND_RANGE) };
-			temp -= {RAND_RANGE / 2, RAND_RANGE / 2};
-			temp /= RAND_RANGE;
-			direction += temp;
-			position.x += cos(direction.x) * speed.x;
-			position.y += sin(direction.y) * speed.y;
+
 		}
 		break;
 	}
