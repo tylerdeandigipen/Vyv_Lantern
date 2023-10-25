@@ -173,6 +173,9 @@ void TbdPlayerMovement(float dt)
 
 void TbdTestScene::Update(float dt)
 {
+    if (CheckGameScenes() || CheckRestart())
+        return;
+
     ImGui_ImplOpenGL3_NewFrame();
     ImGui_ImplSDL2_NewFrame();
     ImGui::NewFrame();
@@ -223,6 +226,9 @@ Engine::EngineCode TbdTestScene::Unload()
 
 Scene* TbdTestSceneGetInstance(void)
 {
-    TbdTestSceneinstance = new TbdTestScene();
+    static Scene* TbdSceneinstance = nullptr; // Make it static to ensure a single instance
+    if (!TbdTestSceneinstance) {
+        TbdTestSceneinstance = new TbdTestScene();
+    }
     return TbdTestSceneinstance;
 }

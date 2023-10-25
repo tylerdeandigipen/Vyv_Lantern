@@ -23,6 +23,7 @@ public:
 	void Exit();
 	void RestartScene();
 	void SetScene(Scene* scene);
+	Scene* GetActiveScene();
 
 	static SceneSystem* GetInstance();
 
@@ -49,3 +50,4 @@ private:
 };
 
 bool CheckGameScenes();
+bool CheckRestart();

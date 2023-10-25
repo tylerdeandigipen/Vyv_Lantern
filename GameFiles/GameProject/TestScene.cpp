@@ -297,7 +297,7 @@ void tempPlayerMovementLol(float dt)
 
 void TestScene::Update(float dt)
 {
-    if (CheckGameScenes())
+    if (CheckGameScenes() || CheckRestart())
         return;
     ImGui_ImplOpenGL3_NewFrame();
     ImGui_ImplSDL2_NewFrame();
@@ -471,6 +471,10 @@ Engine::EngineCode TestScene::Unload()
 
 Scene* TestSceneGetInstance(void)
 {
-    TestSceneinstance = new TestScene();
+    static Scene* TestSceneinstance = nullptr; // Make it static to ensure a single instance
+    if (!TestSceneinstance) {
+        TestSceneinstance = new TestScene();
+    }
     return TestSceneinstance;
 }
+

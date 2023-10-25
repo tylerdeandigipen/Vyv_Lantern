@@ -1,4 +1,4 @@
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 //
 // File Name:	SceneSystem.cpp
 // Author(s):	TayLee Young, Doug Schilling (dschilling)
@@ -18,8 +18,15 @@
 
 #include "Inputs.h"
 
+enum SceneType 
+{
+	SCENE_TBD_TEST,
+	SCENE_TEST,
+	NULL_SCENE,
+	// Add more scenes as needed
+};
 
-SceneSystem* SceneSystem::instance = new SceneSystem();
+SceneSystem * SceneSystem::instance = new SceneSystem();
 
 Inputs* inputHandlerScene = Inputs::GetInstance();
 
@@ -88,6 +95,11 @@ void SceneSystem::Exit()
 	throw Engine::CloseWindow;
 }
 
+Scene* SceneSystem::GetActiveScene()
+{
+	return activeScene;
+}
+
 SceneSystem* SceneSystem::GetInstance()
 {
 	return instance;
@@ -147,13 +159,25 @@ void SceneSystem::ChangeScene()
 
 bool CheckGameScenes()
 {
-	if (inputHandlerScene->keyPressed(SDL_SCANCODE_1))
-	{
-		SceneSystem::GetInstance()->SetScene(TbdTestSceneGetInstance());
+	SceneSystem* sceneSystem = SceneSystem::GetInstance();
+	SceneType activeSceneType = NULL_SCENE;
+
+	Scene* activeScene = sceneSystem->GetActiveScene();
+
+	if (activeScene == TbdTestSceneGetInstance()) {
+		activeSceneType = SCENE_TBD_TEST;
 	}
-	if (inputHandlerScene->keyPressed(SDL_SCANCODE_2))
+	else if (activeScene == TestSceneGetInstance()) {
+		activeSceneType = SCENE_TEST;
+	}
+
+	if (inputHandlerScene->keyPressed(SDL_SCANCODE_1) && activeSceneType != SCENE_TBD_TEST)
 	{
-		SceneSystem::GetInstance()->SetScene(TestSceneGetInstance());
+		sceneSystem->SetScene(TbdTestSceneGetInstance());
+	}
+	else if (inputHandlerScene->keyPressed(SDL_SCANCODE_2) && activeSceneType != SCENE_TEST)
+	{
+		sceneSystem->SetScene(TestSceneGetInstance());
 	}
 	else
 	{
@@ -161,4 +185,15 @@ bool CheckGameScenes()
 	}
 
 	return true;
+}
+
+
+bool CheckRestart()
+{
+	if (inputHandlerScene->keyPressed(SDL_SCANCODE_R) && dynamic_cast<TestScene*>(SceneSystem::GetInstance()->GetActiveScene()))
+	{
+		SceneSystem::GetInstance()->RestartScene();
+		return true;
+	}
+	return false;
 }
