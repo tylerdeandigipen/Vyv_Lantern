@@ -14,9 +14,14 @@
 #include "Engine.h"
 #include "TbdTestScene.h"
 #include "TestScene.h"
+#include "TBDTestScene.h"
+
+#include "Inputs.h"
 
 
 SceneSystem* SceneSystem::instance = new SceneSystem();
+
+Inputs* inputHandlerScene = Inputs::GetInstance();
 
 Engine::EngineCode SceneSystem::Init()
 {
@@ -142,8 +147,14 @@ void SceneSystem::ChangeScene()
 
 bool CheckGameScenes()
 {
-	// primarily used for debugging purposes later on
-	// plus i used dgl inputs and we have no dgl :( - taylee
+	if (inputHandlerScene->keyPressed(SDL_SCANCODE_1))
+	{
+		SceneSystem::GetInstance()->SetScene(TbdTestSceneGetInstance());
+	}
+	else
+	{
+		return false;
+	}
 
-	return false;
+	return true;
 }

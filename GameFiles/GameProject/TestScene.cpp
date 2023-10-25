@@ -297,6 +297,8 @@ void tempPlayerMovementLol(float dt)
 
 void TestScene::Update(float dt)
 {
+    if (CheckGameScenes())
+        return;
     ImGui_ImplOpenGL3_NewFrame();
     ImGui_ImplSDL2_NewFrame();
     ImGui::NewFrame();
