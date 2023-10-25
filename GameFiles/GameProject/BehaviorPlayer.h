@@ -35,5 +35,6 @@ public:
 private:
 	void Controller(float dt);
 	Inputs* input;
+	float playerMoveSpeed;
 };
 

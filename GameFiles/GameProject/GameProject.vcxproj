@@ -251,6 +251,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Data\FirstLevel.json" />
+    <None Include="Data\Tbd_TestLevel.json" />
     <None Include="Data\TestLight.json" />
     <None Include="Data\TileMapSprites.json" />
     <None Include="TempEntity.json" />

@@ -71,11 +71,10 @@ void BehaviorPlayer::SetInputHandler(Inputs* _input)
 
 void BehaviorPlayer::Read(json jsonData)
 {
-    UNREFERENCED_PARAMETER(jsonData);
     Init();
+    playerMoveSpeed = jsonData["MoveSpeed"];
 }
 
-float playerMoveSpeed = 35;
 void BehaviorPlayer::Controller(float dt)
 {
     Transform* transform = Parent()->Has(Transform);
