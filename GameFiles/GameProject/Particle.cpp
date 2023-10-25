@@ -25,7 +25,7 @@ void Particle::Update()
 	{
 		case Particle_Moth:
 		{
-			Vector2 temp = { (float)(rand() % RAND_RANGE), (float)(rand() % RAND_RANGE) };
+			Vector2 temp = {(float)(rand() % RAND_RANGE), (float)(rand() % RAND_RANGE)};
 			temp -= {RAND_RANGE / 2, RAND_RANGE / 2};
 			temp /= RAND_RANGE;
 			direction += temp;
