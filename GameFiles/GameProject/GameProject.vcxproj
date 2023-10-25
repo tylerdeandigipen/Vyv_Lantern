@@ -180,6 +180,8 @@
     <ClInclude Include="Light.h" />
     <ClInclude Include="Logging.h" />
     <ClInclude Include="Main.h" />
+    <ClInclude Include="Particle.h" />
+    <ClInclude Include="ParticleManager.h" />
     <ClInclude Include="Physics.h" />
     <ClInclude Include="PlatformSystem.h" />
     <ClInclude Include="Renderer.h" />
@@ -226,6 +228,8 @@
     <ClCompile Include="Light.cpp" />
     <ClCompile Include="Logging.cpp" />
     <ClCompile Include="Main.cpp" />
+    <ClCompile Include="Particle.cpp" />
+    <ClCompile Include="ParticleManager.cpp" />
     <ClCompile Include="Physics.cpp" />
     <ClCompile Include="PlatformSystem.cpp" />
     <ClCompile Include="Renderer.cpp" />
