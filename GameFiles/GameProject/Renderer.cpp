@@ -414,7 +414,7 @@ void Renderer::Update()
 
     glEnd();
 
-    ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+    //ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
     
     SDL_GL_SwapWindow(window);
     
