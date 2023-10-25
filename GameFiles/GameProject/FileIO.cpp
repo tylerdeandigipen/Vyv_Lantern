@@ -45,15 +45,18 @@ void FileIO::ReadTileMap(std::string filename, Renderer* pixel)
 	ImageBuffer* spriteSheet = new ImageBuffer(jsonData["TilePPM"]);
 	spriteSheet->position.y = 0;
 	ImageBuffer* temp;
-	for (int i = 0; i < spriteSheet->BufferSizeX / frameSize.x; ++i)
+	for (int i = 0; i < spriteSheet->BufferSizeY / frameSize.y; ++i)
 	{
-		for (int j = 0; j < spriteSheet->BufferSizeY / frameSize.y; ++j)
+		for (int j = 0; j < (spriteSheet->BufferSizeX / frameSize.x); ++j)
 		{
 			temp = new ImageBuffer{ frameSize.x, frameSize.y };
-			spriteSheet->position.x = -(frameSize.x * i);
-			pixel->AddObject(spriteSheet);
+			spriteSheet->position.x = -(frameSize.x * j);
+			spriteSheet->position.y = -(frameSize.y * i);
+			temp->AddSprite(spriteSheet);
+			pixel->AddTileToTileset(temp);
 		}
 	}
+	delete spriteSheet;
 }
 
 int FileIO::ReadInt(FILE* stream)

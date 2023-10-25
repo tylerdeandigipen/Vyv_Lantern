@@ -1,5 +1,5 @@
 {
-  "TilePPM": "./Assets/PPM/TestTiles.ppm",
+  "TilePPM": "./Assets/PPM/TestTileSet.ppm",
   "FrameSize": {
     "X": 8,
     "Y": 8

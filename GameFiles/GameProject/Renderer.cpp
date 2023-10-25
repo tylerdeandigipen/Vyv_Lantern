@@ -184,16 +184,19 @@ void Renderer::MakeTileMap(int** tileMapArray)
     {
         for (int y = 0; y < tileMapSize.y; ++y)
         {
-            if (tileSet[tileMapArray[x][y]]->layer == 0)
+            if (tileSet[tileMapArray[x][y]])
             {
-                tileSet[tileMapArray[x][y]]->position = { (float)(x * TILE_SIZE), (float)(y * TILE_SIZE) };
-                backgroundLayer->AddSprite(tileSet[tileMapArray[x][y]]);
+                if (tileSet[tileMapArray[x][y]]->layer == 0)
+                {
+                    tileSet[tileMapArray[x][y]]->position = { (float)(x * TILE_SIZE), (float)(y * TILE_SIZE) };
+                    backgroundLayer->AddSprite(tileSet[tileMapArray[x][y]]);
+                }
+                else
+                {
+                    tileSet[tileMapArray[x][y]]->position = { (float)(x * TILE_SIZE), (float)(y * TILE_SIZE) };
+                    foregroundLayer->AddSprite(tileSet[tileMapArray[x][y]]);
+                }
             }
-            else
-            {
-                tileSet[tileMapArray[x][y]]->position = { (float)(x * TILE_SIZE), (float)(y * TILE_SIZE) };
-                foregroundLayer->AddSprite(tileSet[tileMapArray[x][y]]);
-            }            
         }
     }
 }
@@ -247,34 +250,6 @@ Renderer::Renderer()
     outputBuffer->screenScale = screenScale;
 
     //temp tileset things
-    Color white(255, 255, 255, 255);
-    Color black(50, 50, 50, 255);
-    Color grey = { 150, 150, 150, 255 };
-    Color blue(50, 100, 255, 255);
-    ImageBuffer* temp1 = new ImageBuffer(TILE_SIZE, TILE_SIZE);
-    for (int x = 0; x < temp1->BufferSizeX; ++x)
-    {
-        for (int y = 0; y < temp1->BufferSizeY; ++y)
-        {
-            if (x % 4 != 0 && y % 4 != 0)
-            {
-                temp1->SampleColor(x, y) = white;
-            }
-            else
-                temp1->SampleColor(x, y) = grey;
-        }
-    }
-    ImageBuffer* temp2 = new ImageBuffer(TILE_SIZE, TILE_SIZE);
-    for (int x = 0; x < temp2->BufferSizeX; ++x)
-    {
-        for (int y = 0; y < temp2->BufferSizeY; ++y)
-        {
-            temp2->SampleColor(x, y) = black;
-        }
-    }
-    temp2->layer = 1;
-    AddTileToTileset(temp1);
-    AddTileToTileset(temp2);
 
 	DebugBuffer = new ImageBuffer;
 

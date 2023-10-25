@@ -74,7 +74,8 @@ Engine::EngineCode TbdTestScene::Init()
     TbdGlContext = SDL_GL_CreateContext(TbdWindow);
     SDL_GL_SetSwapInterval(0);
     gladLoadGLLoader(SDL_GL_GetProcAddress);
-	LevelBuilder::GetInstance()->LoadLevel(&TbdPixelRenderer, "./Data/FirstLevel.json");
+    FileIO::GetInstance()->ReadTileMap("./Data/TileMapSprites.json", &TbdPixelRenderer);
+	LevelBuilder::GetInstance()->LoadLevel(&TbdPixelRenderer, "./Data/Tbd_TestLevel.json");
 
     IMGUI_CHECKVERSION();
     ImGui::CreateContext();
@@ -87,7 +88,6 @@ Engine::EngineCode TbdTestScene::Init()
     ImGui_ImplSDL2_InitForOpenGL(TbdWindow, TbdGlContext);
     ImGui_ImplOpenGL3_Init("#version 330");
 
-    //FileIO::GetInstance()->ReadTileMap("./Data/TileMapSprites.json", &TbdPixelRenderer);
 
 	tempLight.Type = LightSourceType_Directional;
 	tempLight.position.x = 80;

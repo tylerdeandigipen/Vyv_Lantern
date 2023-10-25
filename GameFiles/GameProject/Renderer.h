@@ -31,6 +31,7 @@ public:
 	Light lightSource[MAX_LIGHT_SOURCES];
 	ImageBuffer* objects[MAX_OBJECTS];
 	ImageBuffer* animatedObjects[MAX_ANIMATED_OBJECTS][MAX_ANIMATION_FRAMES];
+	ImageBuffer* tileSet[128];
 	float screenScale = 6;
 	Vector2 tileMapSize;
 	bool isFullBright = false;
@@ -62,7 +63,6 @@ private:
 	ImageBuffer *DebugBuffer;
 
 	Vector2 CameraP;
-	ImageBuffer* tileSet[32];
 	int numTiles = 0;
 	int numObjects = 0;
 	int numAnimatedObjects = 0;
