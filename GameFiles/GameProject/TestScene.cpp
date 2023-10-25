@@ -436,8 +436,6 @@ void TestScene::Update(float dt)
 void TestScene::Render()
 {
     pixelRenderer.Update();
-    //ImGui::Render();
-    //ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 
     //logger.LogLine("Debug info: Things are being rendered. (testScene rendered)");
 	return;

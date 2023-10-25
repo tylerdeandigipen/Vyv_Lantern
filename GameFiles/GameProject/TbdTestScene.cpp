@@ -8,8 +8,8 @@
 //
 //------------------------------------------------------------------------------
 #include "imgui.h"
-#include "imgui_impl_opengl3.h"
 #include "imgui_impl_sdl2.h"
+#include "imgui_impl_opengl3.h"
 #include <SDL/SDL.h>
 #include <glad/glad.h>
 #include <iostream>
@@ -57,15 +57,6 @@ Engine::EngineCode TbdTestScene::Load()
 
 Engine::EngineCode TbdTestScene::Init()
 {
-    IMGUI_CHECKVERSION();
-    ImGui::CreateContext();
-    ImGuiIO& io = ImGui::GetIO();
-    io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;     // Enable Keyboard Controls
-    io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;      // Enable Gamepad Controls
-
-    ImGui_ImplSDL2_InitForOpenGL(TbdWindow, TbdGlContext);
-    ImGui_ImplOpenGL3_Init();
-
     TbdLogger.LogToAll("Timestamped message: %s", "Starting TbdTestScene!!");
 
     Inputs::GetInstance()->SetWindow(TbdWindow);
@@ -84,6 +75,18 @@ Engine::EngineCode TbdTestScene::Init()
     SDL_GL_SetSwapInterval(0);
     gladLoadGLLoader(SDL_GL_GetProcAddress);
 	LevelBuilder::GetInstance()->LoadLevel(&TbdPixelRenderer, "./Data/FirstLevel.json");
+
+    IMGUI_CHECKVERSION();
+    ImGui::CreateContext();
+    ImGuiIO& io = ImGui::GetIO(); (void)io;
+    io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;     // Enable Keyboard Controls
+    io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;
+
+    ImGui::StyleColorsLight();
+
+    ImGui_ImplSDL2_InitForOpenGL(TbdWindow, TbdGlContext);
+    ImGui_ImplOpenGL3_Init("#version 330");
+
     //FileIO::GetInstance()->ReadTileMap("./Data/TileMapSprites.json", &TbdPixelRenderer);
 
 	tempLight.Type = LightSourceType_Directional;
@@ -170,6 +173,14 @@ void TbdPlayerMovement(float dt)
 
 void TbdTestScene::Update(float dt)
 {
+    ImGui_ImplOpenGL3_NewFrame();
+    ImGui_ImplSDL2_NewFrame();
+    ImGui::NewFrame();
+
+    ImGui::ShowDemoWindow();
+
+    ImGui::Render();
+
     Inputs* inputHandler = Inputs::GetInstance();
     LevelBuilder::GetInstance()->LevelUpdate(dt);
     AudioManager.Update();
@@ -194,9 +205,10 @@ void TbdTestScene::Render()
 Engine::EngineCode TbdTestScene::Exit()
 {
     // Remember to clean up
-    SDL_GL_DeleteContext(TbdGlContext);
+    ImGui_ImplOpenGL3_Shutdown();
+    ImGui_ImplSDL2_Shutdown();
     ImGui::DestroyContext();
-
+    SDL_GL_DeleteContext(TbdGlContext);
     SDL_DestroyWindow(TbdWindow);
     SDL_Quit();
 	return Engine::NothingBad;
