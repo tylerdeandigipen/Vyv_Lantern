@@ -96,9 +96,12 @@ Engine::EngineCode TbdTestScene::Init()
     tempLight.maxAngle = 25;
     tempLight.minAngle = -25;
     tempLight.angle = 200;
-    tempLight.intensity = 50.0f;
+    tempLight.intensity = 1.5f;
+    tempLight.radius = 100;
+    tempLight.radialFalloff = 4;
     tempLight.radialWeight = 1;
     tempLight.angularWeight = 2.0f;
+    tempLight.frustumWeight = 0.15f;
     tempLight.volumetricIntensity = .25f;
 
 
@@ -107,7 +110,7 @@ Engine::EngineCode TbdTestScene::Init()
 
     tempLight2.color = { 216, 247, 255, 255 };
 
-    tempLight2.intensity = 2;
+    tempLight2.intensity = 1.5f;
     tempLight2.radius = 100;
     tempLight2.radialFalloff = 4;
     tempLight2.radialWeight = 1;

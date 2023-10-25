@@ -34,6 +34,7 @@ public:
 	float radialFalloff = 1;
 	float radialWeight = 0;
 	float angularWeight = 1;
+	float frustumWeight = 0.15f;
 	float volumetricIntensity = 0;
 
     float Attenuation[3];

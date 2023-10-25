@@ -17,6 +17,7 @@ Light::Light(const Light& rhs)
 	radialFalloff = rhs.radialFalloff;
 	radialWeight = rhs.radialWeight;
 	angularWeight = rhs.angularWeight;
+	frustumWeight = rhs.frustumWeight;
 	volumetricIntensity = rhs.volumetricIntensity;
 
     memcpy(Attenuation, rhs.Attenuation, sizeof(Attenuation));
@@ -31,6 +32,7 @@ Light::Light()
 	radialFalloff = 0;
 	radialWeight = 0;
 	angularWeight = 0;
+	frustumWeight = 0.15f;
 	volumetricIntensity = 0;
 
     Attenuation[0] = 0.0f;
