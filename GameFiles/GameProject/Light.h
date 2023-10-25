@@ -23,9 +23,6 @@ public:
     gfxVector2 position;
 	Color color;
 
-    int isStatic = 0;
-	int isBaked = 0;
-
 	gfxVector2 leftAnglePos;
 	gfxVector2 rightAnglePos;
 
