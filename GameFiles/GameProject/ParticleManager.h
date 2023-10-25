@@ -8,13 +8,11 @@
 class ParticleManager
 {
 public:
+	ParticleManager();
 	void UpdateParticles();
-	void RenderParticles();
 	void AddParticle(Particle* particle_);
 
 	Particle* particleArray[MAX_PARTICLES];
-
-private:
 	int totalParticles;
 };
 

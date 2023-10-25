@@ -66,16 +66,16 @@ Engine::EngineCode TbdTestScene::Init()
 
     // Create SDL Window
     TbdWindow = SDL_CreateWindow("MAIN SCENE", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
-                              TbdPixelRenderer.outputBuffer->BufferSizeX * TbdPixelRenderer.outputBuffer->screenScale,
-                              TbdPixelRenderer.outputBuffer->BufferSizeY * TbdPixelRenderer.outputBuffer->screenScale,
-                              SDL_WINDOW_OPENGL);
+        TbdPixelRenderer.outputBuffer->BufferSizeX * TbdPixelRenderer.outputBuffer->screenScale,
+        TbdPixelRenderer.outputBuffer->BufferSizeY * TbdPixelRenderer.outputBuffer->screenScale,
+        SDL_WINDOW_OPENGL);
     TbdPixelRenderer.window = TbdWindow;
 
     TbdGlContext = SDL_GL_CreateContext(TbdWindow);
     SDL_GL_SetSwapInterval(0);
     gladLoadGLLoader(SDL_GL_GetProcAddress);
     FileIO::GetInstance()->ReadTileMap("./Data/TileMapSprites.json", &TbdPixelRenderer);
-	LevelBuilder::GetInstance()->LoadLevel(&TbdPixelRenderer, "./Data/Tbd_TestLevel.json");
+    LevelBuilder::GetInstance()->LoadLevel(&TbdPixelRenderer, "./Data/Tbd_TestLevel.json");
 
     IMGUI_CHECKVERSION();
     ImGui::CreateContext();
@@ -104,6 +104,14 @@ Engine::EngineCode TbdTestScene::Init()
 
     TbdPixelRenderer.AddLight(tempLight);
     TbdPixelRenderer.AddLight(tempLight2);
+    Color tempColor = { 226, 230, 179, 255 };
+
+    int numTestParticles = 30;
+    for (int i = 0; i < numTestParticles; i++)
+    {
+        Particle* testParticle = new Particle(Vector2{ 120, 75 }, Vector2{ -.25f,-.8f }, Vector2{ 0.15f,0.15f }, tempColor, Particle_Moth);
+        TbdPixelRenderer.particleManager->AddParticle(testParticle);
+    }
 
     return Engine::NothingBad;
 }

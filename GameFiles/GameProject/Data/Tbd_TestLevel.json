@@ -49,15 +49,15 @@
               "Type": "ColliderAABB"
             },
             {
-              "Type": "BehaviorPlayer",
-              "MoveSpeed": 35
-            },
-            {
               "Type": "Transform",
               "translation": {
                 "x": 90,
                 "y": 30
               }
+            },
+            {
+              "Type": "BehaviorPlayer",
+              "MoveSpeed": 35
             }
           ]
         }

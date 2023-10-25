@@ -1,5 +1,14 @@
 #include "ParticleManager.h"
 
+ParticleManager::ParticleManager()
+{
+	totalParticles = 0;
+	for (int i = 0; i < MAX_PARTICLES; i++)
+	{
+		particleArray[i] = NULL;
+	}
+}
+
 void ParticleManager::UpdateParticles()
 {
 	//Loop through each particle here
@@ -15,15 +24,6 @@ void ParticleManager::UpdateParticles()
 			particleArray[i]->Update();
 		}
 	}
-	if (particleArray[totalParticles] == NULL)
-	{
-		totalParticles -= 1;
-	}
-}
-
-void ParticleManager::RenderParticles()
-{
-	//Render each particle here
 }
 
 void ParticleManager::AddParticle(Particle* particle_)

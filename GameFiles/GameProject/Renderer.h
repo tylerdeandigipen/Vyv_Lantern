@@ -4,6 +4,7 @@
 
 #include "ImageBuffer.h"
 #include "Light.h"
+#include "ParticleManager.h"
 #include <SDL/SDL.h>
 
 #define MAX_LIGHT_SOURCES 20
@@ -32,6 +33,7 @@ public:
 	ImageBuffer* objects[MAX_OBJECTS];
 	ImageBuffer* animatedObjects[MAX_ANIMATED_OBJECTS][MAX_ANIMATION_FRAMES];
 	ImageBuffer* tileSet[128];
+	ParticleManager* particleManager;
 	float screenScale = 6;
 	Vector2 tileMapSize;
 	bool isFullBright = false;
@@ -47,6 +49,7 @@ public:
 	ImageBuffer* GetObjectByName(std::string name_);
     
 	void ResizeBuffers();
+	void RenderParticles();
 	void MakeTileMap(int** tileMapArray);
 	void AddTileToTileset(ImageBuffer* tile);
 	void AddObject(ImageBuffer* sprite);

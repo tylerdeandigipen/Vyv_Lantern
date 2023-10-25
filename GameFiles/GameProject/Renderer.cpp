@@ -63,9 +63,10 @@ void Renderer::RenderLightingPass()
 	backgroundLayer->Blit(inputBuffer, -CameraOffsetX, -CameraOffsetY);
 	objectLayer->Blit(inputBuffer);
 	foregroundLayer->Blit(inputBuffer, -CameraOffsetX, -CameraOffsetY);
-
+    particleManager->UpdateParticles();
+        
 #if 1
-	
+    RenderParticles();
 	for (x = 0; x < inputBuffer->size.x; ++x)
     {
         for (y = 0; y < inputBuffer->size.y; ++y)
@@ -183,6 +184,24 @@ float Renderer::FindPixelLuminosity(float x, float y, Light *LightSource)
     return(Result);
 }
 
+void Renderer::RenderParticles()
+{
+    Vector2 tempPos;
+    for (int i = 0; i < particleManager->totalParticles; i++)
+    {
+        if (particleManager->particleArray[i] != NULL)
+        {
+            tempPos = particleManager->particleArray[i]->position;
+            tempPos -= CameraP;
+            if (tempPos.x >= 0 && tempPos.x < inputBuffer->BufferSizeX && tempPos.y >= 0 && tempPos.y < inputBuffer->BufferSizeY)
+            {
+                Color& DestPixel = inputBuffer->SampleColor(tempPos.x, tempPos.y);
+                DestPixel = particleManager->particleArray[i]->color;
+            }
+        }
+    }
+}
+
 #define TILE_SIZE 8
 void Renderer::MakeTileMap(int** tileMapArray)
 {
@@ -255,6 +274,7 @@ Renderer::Renderer()
     objectLayer = new ImageBuffer{ SCREEN_SIZE_X ,SCREEN_SIZE_Y };
     backgroundLayer = new ImageBuffer{ SCREEN_SIZE_X ,SCREEN_SIZE_Y };
     foregroundLayer = new ImageBuffer{ SCREEN_SIZE_X ,SCREEN_SIZE_Y };
+    particleManager = new ParticleManager;
     outputBuffer->screenScale = screenScale;
 
     //temp tileset things
@@ -272,6 +292,7 @@ Renderer::~Renderer(void)
     delete objectLayer;
     delete backgroundLayer;
     delete foregroundLayer;
+    delete particleManager;
 
     glDeleteTextures(1, &OutputBufferTexture);
 }
