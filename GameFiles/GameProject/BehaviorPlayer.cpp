@@ -75,7 +75,7 @@ void BehaviorPlayer::Read(json jsonData)
     Init();
 }
 
-
+float playerMoveSpeed = 35;
 void BehaviorPlayer::Controller(float dt)
 {
     Transform* transform = Parent()->Has(Transform);
@@ -83,12 +83,12 @@ void BehaviorPlayer::Controller(float dt)
     input = Inputs::GetInstance();
     if (input->keyPressed(SDL_SCANCODE_W))
     {
-        translation.y -= 50 * dt;
+        translation.y -= playerMoveSpeed * dt;
         //AudioManager.PlaySFX("footsteps.ogg");
     }
     if (input->keyPressed(SDL_SCANCODE_S))
     {
-        translation.y += 50 * dt;
+        translation.y += playerMoveSpeed * dt;
         //AudioManager.PlaySFX("footsteps.ogg");
     }
     if (input->keyPressed(SDL_SCANCODE_D))
@@ -97,7 +97,7 @@ void BehaviorPlayer::Controller(float dt)
         {
             Parent()->GetImage()->FlipSprite();
         }
-        translation.x += 50 * dt;
+        translation.x += playerMoveSpeed * dt;
         //AudioManager.PlaySFX("footsteps.ogg");
     }
     if (input->keyPressed(SDL_SCANCODE_A))
@@ -106,7 +106,7 @@ void BehaviorPlayer::Controller(float dt)
         {
             Parent()->GetImage()->FlipSprite();
         }
-        translation.x -= 50 * dt;
+        translation.x -= playerMoveSpeed * dt;
         //AudioManager.PlaySFX("footsteps.ogg");
     }
     transform->SetTranslation(translation);

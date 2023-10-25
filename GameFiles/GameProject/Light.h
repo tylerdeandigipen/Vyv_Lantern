@@ -32,9 +32,9 @@ public:
     float minAngle = 0;
 	float maxAngle = 0;
 	float angle = 0;
-	float intensity = 2;
-	float radialMult1 = 0.4f;
-	float radialMult2 = 0;
+	float intensity = 1;
+	float radius = 100;
+	float radialFalloff = 1;
 	float radialWeight = 0;
 	float angularWeight = 1;
 	float volumetricIntensity = 0;

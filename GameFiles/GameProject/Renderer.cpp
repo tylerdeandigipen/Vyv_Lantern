@@ -114,14 +114,19 @@ float Renderer::FindPixelLuminosity(float x, float y, Light *LightSource)
 {
     Vector2 LightP = LightSource->position - CameraP;
     float Result = 0.0f;
-    
+
     switch(LightSource->Type)
     {
         case LightSourceType_Point:
         {
-			Vector2 D = Vector2(x, y) - LightP;
+            Vector2 D = Vector2(x, y) - LightP;
             float DistanceSq = Vector2::DotProduct(D, D);
-            Result = 1.0f / (DistanceSq);
+            float distance = sqrt(DistanceSq);
+            float s = distance / LightSource->radius;
+            if (s >= 1.0)
+                return 0.0;
+            float s2 = s * s;
+            return LightSource->intensity * pow((1 - s2), 2) / (1 + LightSource->radialFalloff * s);
         } break;
 
         case LightSourceType_Directional:
@@ -158,6 +163,7 @@ float Renderer::FindPixelLuminosity(float x, float y, Light *LightSource)
                 }
 
                 Result = EmitterDistance * FrustumDistance;
+                Result *= LightSource->intensity;
             }
         } break;
 
@@ -165,10 +171,7 @@ float Renderer::FindPixelLuminosity(float x, float y, Light *LightSource)
 		{
 			assert(!"Encountered a light source of an unknown type.");
 		} break;
-    }
-
-    Result *= LightSource->intensity;
-	
+    }	
 	//float const LIGHTING_STEP_SIZE = 0.25f;
 	//Result = LIGHTING_STEP_SIZE * floorf(Result / LIGHTING_STEP_SIZE);
 

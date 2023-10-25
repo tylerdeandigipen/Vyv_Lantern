@@ -134,8 +134,6 @@ Engine::EngineCode TestScene::Init()
     tempLight.minAngle = -25;
     tempLight.angle = 200;
     tempLight.intensity = 25.0f;
-    tempLight.radialMult1 = 0.4f;
-    tempLight.radialMult2 = 0.0f;
     tempLight.radialWeight = 1;
     tempLight.angularWeight = 2.0f;
     tempLight.volumetricIntensity = .25f;
@@ -145,8 +143,6 @@ Engine::EngineCode TestScene::Init()
     tempLight2.color = { 255, 0, 0, 255 };
 
     tempLight2.intensity = 50;
-    tempLight2.radialMult1 = 0.4f;
-    tempLight2.radialMult2 = 0.0f;
     tempLight2.radialWeight = 1;
     tempLight2.angularWeight = 2.0f;
     tempLight2.volumetricIntensity = .25f;
@@ -157,8 +153,6 @@ Engine::EngineCode TestScene::Init()
     tempLight3.color = { 255, 182, 76, 255 };
 
     tempLight3.intensity = 50;
-    tempLight3.radialMult1 = 0.4f;
-    tempLight3.radialMult2 = 0;
     tempLight3.radialWeight = 1;
     tempLight3.angularWeight = 0;
     tempLight3.volumetricIntensity = .25f;

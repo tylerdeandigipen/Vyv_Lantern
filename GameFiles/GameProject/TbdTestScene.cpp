@@ -97,8 +97,6 @@ Engine::EngineCode TbdTestScene::Init()
     tempLight.minAngle = -25;
     tempLight.angle = 200;
     tempLight.intensity = 50.0f;
-    tempLight.radialMult1 = 0.4f;
-    tempLight.radialMult2 = 0.0f;
     tempLight.radialWeight = 1;
     tempLight.angularWeight = 2.0f;
     tempLight.volumetricIntensity = .25f;
@@ -107,19 +105,19 @@ Engine::EngineCode TbdTestScene::Init()
     tempLight2.position.x = 200;
     tempLight2.position.y = 90;
 
-    tempLight2.color = { 255, 182, 76, 255 };
+    tempLight2.color = { 216, 247, 255, 255 };
 
-    tempLight2.intensity = 50;
-    tempLight2.radialMult1 = 0.4f;
-    tempLight2.radialMult2 = 0;
+    tempLight2.intensity = 2;
+    tempLight2.radius = 100;
+    tempLight2.radialFalloff = 4;
     tempLight2.radialWeight = 1;
     tempLight2.angularWeight = 0;
     tempLight2.volumetricIntensity = .25f;
 
     TbdPixelRenderer.AddLight(tempLight);
+    TbdPixelRenderer.AddLight(tempLight2);
 
-//    TbdPixelRenderer.objects[0]->type = PLAYER;
-	return Engine::NothingBad;
+    return Engine::NothingBad;
 }
 
 int TbdCanPlaceLight = 0;

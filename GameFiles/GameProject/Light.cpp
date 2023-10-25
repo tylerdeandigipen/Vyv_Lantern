@@ -13,8 +13,8 @@ Light::Light(const Light& rhs)
 	maxAngle = rhs.maxAngle;
 	angle = rhs.angle;
 	intensity = rhs.intensity;
-	radialMult1 = rhs.radialMult1;
-	radialMult2 = rhs.radialMult2;
+	radius = rhs.radius;
+	radialFalloff = rhs.radialFalloff;
 	radialWeight = rhs.radialWeight;
 	angularWeight = rhs.angularWeight;
 	volumetricIntensity = rhs.volumetricIntensity;
@@ -29,8 +29,8 @@ Light::Light()
 	maxAngle = 0;
 	angle = 0;
 	intensity = 0;
-	radialMult1 = 0;
-	radialMult2 = 0;
+	radius = 0;
+	radialFalloff = 0;
 	radialWeight = 0;
 	angularWeight = 0;
 	volumetricIntensity = 0;
