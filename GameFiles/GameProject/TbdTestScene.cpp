@@ -117,7 +117,6 @@ Engine::EngineCode TbdTestScene::Init()
     tempLight2.volumetricIntensity = .25f;
 
     TbdPixelRenderer.AddLight(tempLight);
-    TbdPixelRenderer.AddLight(tempLight2);
 
 //    TbdPixelRenderer.objects[0]->type = PLAYER;
 	return Engine::NothingBad;

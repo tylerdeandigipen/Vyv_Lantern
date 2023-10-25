@@ -93,7 +93,7 @@ void Renderer::RenderLightingPass()
             }
             Color& DestPixel = outputBuffer->SampleColor(x, y);
             //force glowing eyes, maybe make an emisive mask later
-            if (inputBuffer->SampleColor(x, y) == Color{ 196,215,164,255 })
+            if (inputBuffer->SampleColor(x, y) == Color{ 196,215,165,255 })
             {
                 DestPixel = inputBuffer->SampleColor(x, y);
             }
