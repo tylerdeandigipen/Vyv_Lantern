@@ -88,22 +88,7 @@ Engine::EngineCode TbdTestScene::Init()
     ImGui_ImplSDL2_InitForOpenGL(TbdWindow, TbdGlContext);
     ImGui_ImplOpenGL3_Init("#version 330");
 
-
-	tempLight.Type = LightSourceType_Directional;
-	tempLight.position.x = 80;
-    tempLight.position.y = 90;
-    tempLight.color = { 216, 247, 255, 255 };
-    tempLight.maxAngle = 25;
-    tempLight.minAngle = -25;
-    tempLight.angle = 200;
-    tempLight.intensity = 1.5f;
-    tempLight.radius = 100;
-    tempLight.radialFalloff = 4;
-    tempLight.radialWeight = 1;
-    tempLight.angularWeight = 2.0f;
-    tempLight.frustumWeight = 0.15f;
-    tempLight.volumetricIntensity = .25f;
-
+    FileIO::GetInstance()->ReadLight("./Data/TestLight.json", tempLight);
 
     tempLight2.position.x = 200;
     tempLight2.position.y = 90;

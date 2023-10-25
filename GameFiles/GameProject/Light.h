@@ -3,6 +3,8 @@
 #define LIGHT_H
 
 #include "Color.h"
+
+#include "Component.h"
 #include "Vector.h"
 
 enum light_source_type
@@ -12,13 +14,17 @@ enum light_source_type
     LightSourceType_EnumCount
 };
 
-class Light
+class Light : public Component 
 {
 public:
 	Light();
 	Light(const Light &rhs);
 
-    enum light_source_type Type = LightSourceType_Point;
+	Component* Clone() const override;
+	void Update(float dt) override;
+	void Read(json jsonData) override;
+	std::string GetName() override;
+	enum light_source_type Type = LightSourceType_Point;
     
     gfxVector2 position;
 	Color color;

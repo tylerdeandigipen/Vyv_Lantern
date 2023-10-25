@@ -15,12 +15,7 @@ FileIO::~FileIO()
 		delete instance;
 }
 
-FileIO* FileIO::GetInstance()
-{
-	return instance;
-}
-
-void FileIO::ReadTileMap(std::string filename, Renderer* pixel)
+json FileIO::OpenJSON(std::string filename)
 {
 	json jsonData;
 	std::fstream file(filename);
@@ -32,8 +27,84 @@ void FileIO::ReadTileMap(std::string filename, Renderer* pixel)
 	else
 	{
 		perror("JSON file does not exist");
-		return;
+		exit(-1);
 	}
+	return jsonData;
+}
+
+void FileIO::ReadLight(Light& light, json& jsonData)
+{
+	light.Type = ReadLightEnum(jsonData["Type"]);
+
+	if (jsonData["position"].is_object())
+	{
+		json position = jsonData["position"];
+		light.position.x = position["x"];
+		light.position.y = position["y"];
+	}
+
+	//light.leftAnglePos = jsonData["leftAnglePos"];
+	//if (jsonData["leftAnglePos"].is_object())
+	//{
+	//	json leftAngle = jsonData["leftAnglePos"];
+	//	light.leftAnglePos.x = leftAngle["x"];
+	//	light.leftAnglePos.y = leftAngle["y"];
+	//}
+
+	//light.rightAnglePos = jsonData["rightAnglePos"];
+	//if (jsonData["rightAnglePos"].is_object())
+	//{
+	//	json rightAngle = jsonData["rightAnglePos"];
+	//	light.leftAnglePos.x = rightAngle["x"];
+	//	light.leftAnglePos.y = rightAngle["y"];
+	//}
+
+	//light.color = jsonData["color"];
+	if (jsonData["color"].is_object())
+	{
+		json color = jsonData["color"];
+		light.color = { color["r"], color["g"], color["b"], color["a"] };
+	}
+	
+	light.minAngle = jsonData["minAngle"];
+	light.maxAngle = jsonData["maxAngle"];
+	light.angle = jsonData["angle"];
+	light.intensity = jsonData["intensity"];
+	light.radius = jsonData["radius"];
+	light.radialFalloff = jsonData["radialFalloff"];
+	light.radialWeight = jsonData["radialWeight"];
+	light.angularWeight = jsonData["angularWeight"];
+	light.volumetricIntensity = jsonData["volumetricIntensity"];
+	light.frustumWeight = jsonData["frustumWeight"];
+}
+
+void FileIO::ReadLight(std::string filename, Light& light)
+{
+	json jsonData = OpenJSON(filename);
+	ReadLight(light, jsonData);
+}
+
+light_source_type FileIO::ReadLightEnum(std::string jsonString)
+{
+	std::string enumString = jsonString;
+	if (enumString.compare("LightSourceType_Point") == 0)
+		return LightSourceType_Point;
+	if (enumString.compare("LightSourceType_Directional") == 0)
+		return LightSourceType_Directional;
+	if (enumString.compare("LightSourceType_EnumCount") == 0)
+		return LightSourceType_EnumCount;
+
+	return light_source_type::LightSourceType_Point;
+}
+
+FileIO* FileIO::GetInstance()
+{
+	return instance;
+}
+
+void FileIO::ReadTileMap(std::string filename, Renderer* pixel)
+{
+	json jsonData = OpenJSON(filename);
 	Vector2 frameSize;
 
 	if (jsonData["FrameSize"].is_object())

@@ -1,6 +1,6 @@
 #include "Light.h"
 
-Light::Light(const Light& rhs)
+Light::Light(const Light& rhs) : Component(rhs)
 {
 	Type = rhs.Type;
 
@@ -22,7 +22,7 @@ Light::Light(const Light& rhs)
 
     memcpy(Attenuation, rhs.Attenuation, sizeof(Attenuation));
 }
-Light::Light()
+Light::Light() : Component(Component::cLight)
 {
 	minAngle = 0;
 	maxAngle = 0;
@@ -39,3 +39,21 @@ Light::Light()
     Attenuation[1] = 1.0f;
     Attenuation[2] = 1.0f;
 }
+
+Component* Light::Clone() const
+{
+	return new Light(*this);
+}
+void Light::Update(float dt)
+{
+	UNREFERENCED_PARAMETER(dt);
+}
+void Light::Read(json jsonData)
+{
+	UNREFERENCED_PARAMETER(jsonData);
+}
+std::string Light::GetName()
+{
+	return std::string();
+}
+
