@@ -16,12 +16,14 @@
 #include "BaseSystem.h"
 #include "PlatformSystem.h"
 
+// singleton instance
 PlatformSystem* PlatformSystem::instance = new PlatformSystem();
 
 Engine::EngineCode PlatformSystem::Init()
 {
-	if(SDL_Init(SDL_INIT_VIDEO | SDL_INIT_EVENTS) != 0) {
-		// @TODO: Log failuer to initialize SDL
+    // init SDL library 
+	if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_EVENTS) != 0) 
+    {
 	}
 
 	assert(winHandle != NULL);
@@ -33,14 +35,18 @@ void PlatformSystem::Update(float dt)
     UNREFERENCED_PARAMETER(dt);
 }
 
-void PlatformSystem::Render() { }
+void PlatformSystem::Render()
+{ 
+}
 
+// Close it all down
 Engine::EngineCode PlatformSystem::Close()
 {
     assert(instance != NULL);
     return Engine::NothingBad;
 }
 
+// get the singleton instance
 PlatformSystem* PlatformSystem::GetInstance()
 {
     return instance;

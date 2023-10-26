@@ -1,26 +1,46 @@
 #include "EventManager.h"
 
-EventManager& EventManager::GetInstance()
+// Used to register listener
+// Event type is which event the listener is gonna look for
+// and then listener will be executed when a specified event occurs
+void EventManager::AddListener(int eventType, std::function<void(const Event&)> listener)
 {
-	static EventManager instance;
-	return instance;
+    // stores and associates even types with their listener
+    eventListeners.push_back({ eventType, listener });
 }
 
-void EventManager::RegisterEvent(const std::function<void(Event&)>& callback, Event& event) 
+// Removes a listener
+// Event Type is which event a listener should be removed from
+// Which listener to remove
+void EventManager::RemoveListener(int eventType, std::function<void(const Event&)> listener)
 {
-	/* adds an elemnt (in this case, an event or function) to the end of the vector */
-	eventCallbacks.emplace_back(callback, event);
+    //Loops through the list of listeners
+    for (auto it = eventListeners.begin(); it != eventListeners.end(); ++it)
+    {
+        // checks if the event and listener match the ones passed in
+        if (it->first == eventType && it->second.target<void(const Event&)>() == listener.target<void(const Event&)>())
+        {
+            // gets rid of the listener if found
+            eventListeners.erase(it);
+            return; // Found and removed the listener, exit the loop
+        }
+    }
 }
 
-void EventManager::TriggerEvent(Event& event)
+// Triggers event listeners when a specific event occurs
+// Event is which event to dispatch
+void EventManager::DispatchEvent(const Event& event)
 {
-	/* for each loop, callbackPair is each element, and eventCallbacks is the container
-	   aka, for each pair in the callback container, do this */
-	for (const std::pair<std::function<void(Event&)>, Event&> &callbackPair : eventCallbacks) 
-	{
-		if (&event == &(callbackPair.second)) 
-		{
-			callbackPair.first(event);
-		}
-	}
+    // loops through all registered event listeners
+    for (const auto& listener : eventListeners)
+    {
+        // for every listener, if theyre looking for that event...
+        if (listener.first == event.GetType())
+        {
+            // passes in the event, allowing them to respond
+            listener.second(event);
+        }
+    }
 }
+
+// this was a major pain in my ass to do btw
