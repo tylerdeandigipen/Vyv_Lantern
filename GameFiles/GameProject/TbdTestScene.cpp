@@ -33,7 +33,7 @@
 Logging& TbdLogger = Logging::GetInstance("debugLog.log");
 
 SDL_Renderer* TbdRenderer;
-Renderer TbdPixelRenderer;
+Renderer* TbdPixelRenderer = Renderer::GetInstance();
 
 SDL_Window* TbdWindow;
 
@@ -66,16 +66,16 @@ Engine::EngineCode TbdTestScene::Init()
 
     // Create SDL Window
     TbdWindow = SDL_CreateWindow("MAIN SCENE", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
-                              TbdPixelRenderer.outputBuffer->BufferSizeX * TbdPixelRenderer.outputBuffer->screenScale,
-                              TbdPixelRenderer.outputBuffer->BufferSizeY * TbdPixelRenderer.outputBuffer->screenScale,
-                              SDL_WINDOW_OPENGL);
-    TbdPixelRenderer.window = TbdWindow;
+        TbdPixelRenderer->outputBuffer->BufferSizeX * TbdPixelRenderer->outputBuffer->screenScale,
+        TbdPixelRenderer->outputBuffer->BufferSizeY * TbdPixelRenderer->outputBuffer->screenScale,
+        SDL_WINDOW_OPENGL);
+    TbdPixelRenderer->window = TbdWindow;
 
     TbdGlContext = SDL_GL_CreateContext(TbdWindow);
     SDL_GL_SetSwapInterval(0);
     gladLoadGLLoader(SDL_GL_GetProcAddress);
-    FileIO::GetInstance()->ReadTileMap("./Data/TileMapSprites.json", &TbdPixelRenderer);
-	LevelBuilder::GetInstance()->LoadLevel(&TbdPixelRenderer, "./Data/Tbd_TestLevel.json");
+    FileIO::GetInstance()->ReadTileMap("./Data/TileMapSprites.json", TbdPixelRenderer);
+    LevelBuilder::GetInstance()->LoadLevel(TbdPixelRenderer, "./Data/Tbd_TestLevel.json");
 
     IMGUI_CHECKVERSION();
     ImGui::CreateContext();
@@ -95,15 +95,23 @@ Engine::EngineCode TbdTestScene::Init()
 
     tempLight2.color = { 216, 247, 255, 255 };
 
-    tempLight2.intensity = 1.5f;
-    tempLight2.radius = 100;
+    tempLight2.intensity = 3.5f;
+    tempLight2.radius = 75;
     tempLight2.radialFalloff = 4;
     tempLight2.radialWeight = 1;
     tempLight2.angularWeight = 0;
     tempLight2.volumetricIntensity = .25f;
 
-    TbdPixelRenderer.AddLight(tempLight);
-    TbdPixelRenderer.AddLight(tempLight2);
+    TbdPixelRenderer->AddLight(tempLight);
+    TbdPixelRenderer->AddLight(tempLight2);
+    Color tempColor = { 226, 230, 179, 255 };
+
+    int numTestParticles = 30;
+    for (int i = 0; i < numTestParticles; i++)
+    {
+        Particle* testParticle = new Particle(Vector2{ 120, 75 }, Vector2{ -.25f,-.8f }, Vector2{ 0.15f,0.15f }, tempColor, Particle_Moth);
+        TbdPixelRenderer->particleManager->AddParticle(testParticle);
+    }
 
     return Engine::NothingBad;
 }
@@ -117,20 +125,25 @@ void TbdPlayerMovement(float dt)
     if (inputHandler->keyPressed(SDL_SCANCODE_E) && TbdCanPlaceLight == 1)
     {
         //TbdPixelRenderer.AddLight(TbdPixelRenderer.lightSource[0]);
-        TbdPixelRenderer.animatedObjects[0][0]->FlipSprite();
+        //TbdPixelRenderer.animatedObjects[0][0]->FlipSprite();
+        TbdPixelRenderer->faceState += 1;
+        if (TbdPixelRenderer->faceState > 3)
+        {
+            TbdPixelRenderer->faceState = 0;
+        }
         TbdCanPlaceLight = 0;
     }
-
     if (!inputHandler->keyPressed(SDL_SCANCODE_E))
     {
         TbdCanPlaceLight = 1;
     }
+
     if (inputHandler->keyPressed(SDL_SCANCODE_GRAVE) && TbdCanToggleFullBright == true)
     {
-        if(TbdPixelRenderer.isFullBright == false)
-            TbdPixelRenderer.isFullBright = true;
+        if(TbdPixelRenderer->isFullBright == false)
+            TbdPixelRenderer->isFullBright = true;
         else
-            TbdPixelRenderer.isFullBright = false;
+            TbdPixelRenderer->isFullBright = false;
         TbdCanToggleFullBright = false;
     }
     if (!inputHandler->keyPressed(SDL_SCANCODE_GRAVE))
@@ -142,18 +155,18 @@ void TbdPlayerMovement(float dt)
     Uint32 buttons = SDL_GetMouseState(&x, &y);
 
     Vector2 CursourP = {(float)x, (float)y};
-    CursourP *= 1.0f / TbdPixelRenderer.screenScale;
-    CursourP += TbdPixelRenderer.GetCameraPosition();
+    CursourP *= 1.0f / TbdPixelRenderer->screenScale;
+    CursourP += TbdPixelRenderer->GetCameraPosition();
 
-    Vector2 LightP = TbdPixelRenderer.lightSource[0].position;
+    Vector2 LightP = TbdPixelRenderer->lightSource[0].position;
     Vector2 D = LightP - CursourP;
     float Angle = atan2f(D.x, D.y) * (180.0f / 3.14f) + 180.0f;
-    TbdPixelRenderer.lightSource[0].angle = Angle;
+    TbdPixelRenderer->lightSource[0].angle = Angle;
     
-	ImageBuffer *playerEntity = TbdPixelRenderer.animatedObjects[0][0];
+	ImageBuffer *playerEntity = TbdPixelRenderer->animatedObjects[0][0];
 	Vector2 ScreenHalfSize = 0.5f*Vector2(SCREEN_SIZE_X, SCREEN_SIZE_Y);
 	Vector2 BitmapHalfDim = 0.5f*playerEntity->size;
-	TbdPixelRenderer.SetCameraPosition(playerEntity->position - ScreenHalfSize + BitmapHalfDim);
+	TbdPixelRenderer->SetCameraPosition(playerEntity->position - ScreenHalfSize + BitmapHalfDim);
 }
 
 void TbdTestScene::Update(float dt)
@@ -173,8 +186,9 @@ void TbdTestScene::Update(float dt)
     LevelBuilder::GetInstance()->LevelUpdate(dt);
     AudioManager.Update();
     inputHandler->handleInput();
-    TbdPixelRenderer.UpdateObjects();
-    TbdPixelRenderer.UpdateAnimations(dt);
+    TbdPixelRenderer->UpdateObjects();
+    TbdPixelRenderer->UpdateAnimations(dt);
+    TbdPixelRenderer->UpdateFace(TbdPixelRenderer->faceState);
 
     TbdPlayerMovement(dt);
 
@@ -186,7 +200,7 @@ void TbdTestScene::Update(float dt)
 
 void TbdTestScene::Render()
 {
-    TbdPixelRenderer.Update();
+    TbdPixelRenderer->Update();
 	return;
 }
 

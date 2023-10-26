@@ -4,11 +4,12 @@
 // Author(s):	TayLee Young, Doug Schilling (dschilling)
 // Purpose:		handles scenes (thumbs up)
 //
-// Copyright © 2023 DigiPen (USA) Corporation.
+// Copyright  2023 DigiPen (USA) Corporation.
 //
 //------------------------------------------------------------------------------
 #include <cassert>
 #include "SceneSystem.h"
+#include "Renderer.h"
 #include "PlatformSystem.h"
 #include "Scene.h"
 #include "Engine.h"
@@ -132,8 +133,8 @@ SceneSystem* SceneSystem::GetInstance()
 // IM MAKING THIS PURPOSELY BIG SO I SEE IT MORE CLEARLY
 // IGNORE THIS PRACTICALLY EVERYONE ELSE
 // - taylee
-SceneSystem::SceneSystem() : BaseSystem("SceneSystem"), DefaultSceneInstance(TbdTestSceneGetInstance()),
-activeScene(nullptr), nextScene(nullptr), timer(0), rate(0.01f), isRestarting(false)
+SceneSystem::SceneSystem() : BaseSystem("SceneSystem"), DefaultSceneInstance(TestSceneGetInstance()),
+activeScene(NULL), nextScene(NULL), timer(0), rate(0.01f), isRestarting(false)
 { }
 
 SceneSystem::~SceneSystem()
@@ -141,6 +142,7 @@ SceneSystem::~SceneSystem()
 	if (instance != NULL)
 	{
 		delete instance;
+		delete Renderer::GetInstance();
 	}
 }
 

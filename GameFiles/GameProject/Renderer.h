@@ -4,6 +4,7 @@
 
 #include "ImageBuffer.h"
 #include "Light.h"
+#include "ParticleManager.h"
 #include <SDL/SDL.h>
 
 #define MAX_LIGHT_SOURCES 20
@@ -32,9 +33,12 @@ public:
 	ImageBuffer* objects[MAX_OBJECTS];
 	ImageBuffer* animatedObjects[MAX_ANIMATED_OBJECTS][MAX_ANIMATION_FRAMES];
 	ImageBuffer* tileSet[128];
+	ParticleManager* particleManager;
 	float screenScale = 6;
 	Vector2 tileMapSize;
 	bool isFullBright = false;
+
+	static Renderer* GetInstance();
 
 	Vector2 GetCameraPosition(void);
 	void SetCameraPosition(Vector2 NewCameraP);
@@ -47,10 +51,10 @@ public:
 	ImageBuffer* GetObjectByName(std::string name_);
     
 	void ResizeBuffers();
+	void RenderParticles();
 	void MakeTileMap(int** tileMapArray);
 	void AddTileToTileset(ImageBuffer* tile);
 	void AddObject(ImageBuffer* sprite);
-	void AddAnimatedObject(const std::string filename, Vector2 frameSize);
 	ImageBuffer* CreateAnimatedObject(const std::string filename, Vector2 frameSize);
 	void AddLight(Light light);
 	void UpdateAnimations(float dt);
@@ -58,10 +62,15 @@ public:
 	void Update();
 	int returnObjCnt();
 	void brensenhamalgo(int x1, int y1, int x2, int y2);
+	// 0 = forward, 1 = down, 2 = up, 3 = blink
+	void UpdateFace(int& faceState_);
+	int faceState;
+
 private:
+	static Renderer* instance;
 
 	ImageBuffer *DebugBuffer;
-
+	int faceIndex = -1;
 	Vector2 CameraP;
 	int numTiles = 0;
 	int numObjects = 0;

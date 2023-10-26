@@ -28,6 +28,13 @@
 
 #define OneOver255 (1.0f / 255.0f)
 
+Renderer* Renderer::instance = new Renderer;
+
+Renderer* Renderer::GetInstance()
+{
+    return Renderer::instance;
+}
+
 Vector2 Renderer::GetCameraPosition(void)
 {
 	return CameraP;
@@ -63,9 +70,10 @@ void Renderer::RenderLightingPass()
 	backgroundLayer->Blit(inputBuffer, -CameraOffsetX, -CameraOffsetY);
 	objectLayer->Blit(inputBuffer);
 	foregroundLayer->Blit(inputBuffer, -CameraOffsetX, -CameraOffsetY);
-
+    particleManager->UpdateParticles();
+        
 #if 1
-	
+    RenderParticles();
 	for (x = 0; x < inputBuffer->size.x; ++x)
     {
         for (y = 0; y < inputBuffer->size.y; ++y)
@@ -177,10 +185,28 @@ float Renderer::FindPixelLuminosity(float x, float y, Light *LightSource)
 		} break;
     }	
 	
-    //float const LIGHTING_STEP_SIZE = 0.35f;
-	//Result = LIGHTING_STEP_SIZE * floorf(Result / LIGHTING_STEP_SIZE);
+    float const LIGHTING_STEP_SIZE = 0.35f;
+	Result = LIGHTING_STEP_SIZE * floorf(Result / LIGHTING_STEP_SIZE);
 
     return(Result);
+}
+
+void Renderer::RenderParticles()
+{
+    Vector2 tempPos;
+    for (int i = 0; i < particleManager->totalParticles; i++)
+    {
+        if (particleManager->particleArray[i] != NULL)
+        {
+            tempPos = particleManager->particleArray[i]->position;
+            tempPos -= CameraP;
+            if (tempPos.x >= 0 && tempPos.x < inputBuffer->BufferSizeX && tempPos.y >= 0 && tempPos.y < inputBuffer->BufferSizeY)
+            {
+                Color& DestPixel = inputBuffer->SampleColor(tempPos.x, tempPos.y);
+                DestPixel = particleManager->particleArray[i]->color;
+            }
+        }
+    }
 }
 
 #define TILE_SIZE 8
@@ -215,37 +241,50 @@ void Renderer::AddTileToTileset(ImageBuffer* tile)
     numTiles += 1;
 }
 
-ImageBuffer* Renderer::CreateAnimatedObject(const std::string filename, Vector2 frameSize)
+// 0 = forward, 1 = down, 2 = up, 3 = blink
+void Renderer::UpdateFace(int& faceState_)
 {
-    ImageBuffer* spriteSheet = new ImageBuffer{ filename };
-    spriteSheet->position.y = 0;
-    ImageBuffer* temp;
-    for (int i = 0; i < spriteSheet->BufferSizeX / frameSize.x; i++)
+    if (faceIndex == -1)
     {
-        temp = new ImageBuffer{ frameSize.x, frameSize.y };
-        spriteSheet->position.x = -(frameSize.x * i);
-        animatedObjects[numAnimatedObjects][i] = &temp->AddSprite(spriteSheet);
+        faceIndex = numAnimatedObjects;
+        ImageBuffer* temp = CreateAnimatedObject("./Assets/PPM/Man_Faces.ppm", { 8,8 });
+        temp->isCulled = true;
     }
-    animatedObjects[numAnimatedObjects][0]->totalFrames = (spriteSheet->BufferSizeX / frameSize.x) - 1;
-    numAnimatedObjects += 1;
-    delete spriteSheet;
-    return animatedObjects[numAnimatedObjects-1][0];
+    if (faceState >= 0 && faceState <= animatedObjects[1][0]->totalFrames && faceState == faceState_)
+    {
+        faceState = faceState_;
+        if (animatedObjects[0][animatedObjects[0][0]->currentFrame]->isFlipped != animatedObjects[faceIndex][faceState]->isFlipped)
+        {
+            animatedObjects[faceIndex][faceState]->FlipSprite();
+        }
+        animatedObjects[0][animatedObjects[0][0]->currentFrame]->AddSprite(animatedObjects[faceIndex][faceState]);
+    }
 }
 
-void Renderer::AddAnimatedObject(const std::string filename, Vector2 frameSize)
+ImageBuffer* Renderer::CreateAnimatedObject(const std::string filename, Vector2 frameSize)
 {
+	ImageBuffer *Result = NULL;
     ImageBuffer* spriteSheet = new ImageBuffer{ filename };
-    spriteSheet->position.y = 0;
-    ImageBuffer* temp;
-    for(int i = 0; i < spriteSheet->BufferSizeX / frameSize.x; i++)
-    {
-        temp = new ImageBuffer{ frameSize.x, frameSize.y};
-        spriteSheet->position.x = -(frameSize.x * i);
-        animatedObjects[numAnimatedObjects][i] = &temp->AddSprite(spriteSheet);
-    }
-    animatedObjects[numAnimatedObjects][0]->totalFrames = (spriteSheet->BufferSizeX / frameSize.x) - 1;
-    numAnimatedObjects += 1;
+    if(spriteSheet->buffer && (frameSize.x > 0) && (frameSize.y > 0))
+	{
+		spriteSheet->position.y = 0;
+		ImageBuffer* temp;
+
+		for (int i = 0; i < spriteSheet->BufferSizeX / frameSize.x; i++)
+		{
+			temp = new ImageBuffer{ frameSize.x, frameSize.y };
+			spriteSheet->position.x = -(frameSize.x * i);
+			animatedObjects[numAnimatedObjects][i] = &temp->AddSprite(spriteSheet);
+		}
+
+        animatedObjects[numAnimatedObjects][0]->totalFrames = (spriteSheet->BufferSizeX / frameSize.x) - 1;
+		numAnimatedObjects += 1;
+
+        Result = animatedObjects[numAnimatedObjects - 1][0];
+	}
+
     delete spriteSheet;
+	return(Result);
 }
 
 Renderer::Renderer()
@@ -255,11 +294,14 @@ Renderer::Renderer()
     objectLayer = new ImageBuffer{ SCREEN_SIZE_X ,SCREEN_SIZE_Y };
     backgroundLayer = new ImageBuffer{ SCREEN_SIZE_X ,SCREEN_SIZE_Y };
     foregroundLayer = new ImageBuffer{ SCREEN_SIZE_X ,SCREEN_SIZE_Y };
+    particleManager = new ParticleManager;
+    faceIndex = -1;
+    faceState = NULL;
     outputBuffer->screenScale = screenScale;
 
     //temp tileset things
 
-	DebugBuffer = new ImageBuffer;
+	DebugBuffer = new ImageBuffer(SCREEN_SIZE_X, SCREEN_SIZE_Y);
 
     startTime = SDL_GetTicks();
     PreviousFrameBeginTime = startTime;
@@ -272,6 +314,7 @@ Renderer::~Renderer(void)
     delete objectLayer;
     delete backgroundLayer;
     delete foregroundLayer;
+    delete particleManager;
 
     glDeleteTextures(1, &OutputBufferTexture);
 }
@@ -312,7 +355,7 @@ void Renderer::DrawLine(Vector2 P0, Vector2 P1, const Color &LineColor)
 		{
 			Vector2 PixelD = Vector2((float)PixelX + 0.5f, (float)PixelY + 0.5f) - P0;
             float d = fabsf(Vector2::DotProduct(N, PixelD));
-			if(d <= 1.0f)
+			if(d <= 0.5f)
 			{
 				Color &DestPixel = DebugBuffer->SampleColor(PixelX, PixelY);
 				DestPixel = LineColor;
@@ -479,7 +522,7 @@ void Renderer::UpdateObjects()
     {
         for(int l = 0; l < 3; ++l)
         {
-            if (objects[i]->layer == l && objects[i]->totalFrames == 0)
+            if (objects[i]->layer == l && objects[i]->totalFrames == 0 && objects[i]->isCulled == false)
             {
                 objectLayer->AddSprite(objects[i], CameraP);
                 break;
@@ -490,7 +533,7 @@ void Renderer::UpdateObjects()
     {
         for (int l = 0; l < 3; ++l)
         {
-            if (animatedObjects[i][0]->layer == l)
+            if (animatedObjects[i][0]->layer == l && animatedObjects[i][0]->isCulled == false)
             {
                 int frame = animatedObjects[i][0]->currentFrame;
                 animatedObjects[i][frame]->position = animatedObjects[i][0]->position;

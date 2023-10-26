@@ -145,6 +145,12 @@ public:
 		Result.y = vec.y / Length(vec);
         return(Result);
 	}
+
+	static inline gfxVector2 Perp(const gfxVector2 &vec)
+	{
+		gfxVector2 Result = {-vec.y, vec.x};
+        return(Result);
+	}
     
 	//delegates
 	float x; //access to X component
