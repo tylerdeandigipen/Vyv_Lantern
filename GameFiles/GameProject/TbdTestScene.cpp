@@ -95,9 +95,9 @@ Engine::EngineCode TbdTestScene::Init()
 
     tempLight2.color = { 216, 247, 255, 255 };
 
-    tempLight2.intensity = 3.5f;
-    tempLight2.radius = 75;
-    tempLight2.radialFalloff = 4;
+    tempLight2.intensity = 2.0f;
+    tempLight2.radius = 25;
+    tempLight2.radialFalloff = 3;
     tempLight2.radialWeight = 1;
     tempLight2.angularWeight = 0;
     tempLight2.volumetricIntensity = .25f;
@@ -121,7 +121,7 @@ bool TbdCanToggleFullBright = true;
 void TbdPlayerMovement(float dt)
 {
     Inputs* inputHandler = Inputs::GetInstance();
-   
+
     if (inputHandler->keyPressed(SDL_SCANCODE_E) && TbdCanPlaceLight == 1)
     {
         //TbdPixelRenderer.AddLight(TbdPixelRenderer.lightSource[0]);
@@ -176,6 +176,9 @@ void TbdTestScene::Update(float dt)
     ImGui::ShowDemoWindow();
 
     ImGui::Render();
+
+    TbdPixelRenderer->lightSource[1].position = TbdPixelRenderer->animatedObjects[0][0]->position + Vector2{ 3,3 };
+    TbdPixelRenderer->lightSource[0].position = TbdPixelRenderer->animatedObjects[0][0]->position + Vector2{ 3,3 };
 
     Inputs* inputHandler = Inputs::GetInstance();
     LevelBuilder::GetInstance()->LevelUpdate(dt);
