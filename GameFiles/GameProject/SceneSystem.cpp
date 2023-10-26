@@ -4,7 +4,7 @@
 // Author(s):	TayLee Young, Doug Schilling (dschilling)
 // Purpose:		handles scenes (thumbs up)
 //
-// Copyright © 2023 DigiPen (USA) Corporation.
+// Copyright  2023 DigiPen (USA) Corporation.
 //
 //------------------------------------------------------------------------------
 #include <cassert>
@@ -19,7 +19,8 @@
 
 #include "Inputs.h"
 
-enum SceneType 
+// enums for different scene types
+enum class SceneType
 {
 	SCENE_TBD_TEST,
 	SCENE_TEST,
@@ -27,26 +28,32 @@ enum SceneType
 	// Add more scenes as needed
 };
 
+// singleton instance
 SceneSystem * SceneSystem::instance = new SceneSystem();
 
 Inputs* inputHandlerScene = Inputs::GetInstance();
 
 Engine::EngineCode SceneSystem::Init()
 {
-	assert(DefaultSceneInstance != NULL);
+	// make sure the default scene isn't null
+	assert(DefaultSceneInstance != nullptr);
+
+	//current scene instance set to default
 	instance->SetScene(DefaultSceneInstance);
 	return Engine::NothingBad;
 }
 
 void SceneSystem::Update(float dt)
 {
-	if (nextScene != NULL)
+	if (nextScene != nullptr)
 	{
 		ChangeScene();
 	}
 
+	// if there is an active scene and engine isn't paused
 	if (activeScene && !Engine::GetInstance()->Paused())
 	{
+		// dt stuff!
 		activeScene->Update(dt);
 
 		timer += dt;
@@ -59,7 +66,10 @@ void SceneSystem::Update(float dt)
 
 void SceneSystem::Render()
 {
-	assert(activeScene != NULL);
+	// make sure scene exists
+	assert(activeScene != nullptr);
+
+	// render active scene
 	activeScene->Render();
 }
 
@@ -67,9 +77,10 @@ Engine::EngineCode SceneSystem::Close()
 {
 	if (activeScene)
 	{
+		// exit actions and unload resources
 		activeScene->Exit();
 		activeScene->Unload();
-		activeScene = NULL;
+		activeScene = nullptr;
 	}
 
 	return Engine::NothingBad;
@@ -77,22 +88,28 @@ Engine::EngineCode SceneSystem::Close()
 
 void SceneSystem::SetScene(Scene* scene)
 {
+	// next scene to be loaded, if any
 	nextScene = scene;
 }
 
 void SceneSystem::RestartScene()
 {
-	assert(activeScene != NULL);
+	// make sure scene exists
+	assert(activeScene != nullptr);
+
+	// sets scene to be active, restarting it
 	SetScene(activeScene);
 }
 
 float SceneSystem::GetRate()
 {
+	// return refresh rate
 	return rate;
 }
 
 void SceneSystem::Exit()
 {
+	// close the window
 	throw Engine::CloseWindow;
 }
 
@@ -103,6 +120,10 @@ Scene* SceneSystem::GetActiveScene()
 
 SceneSystem* SceneSystem::GetInstance()
 {
+	if (instance == nullptr)
+	{
+		instance = new SceneSystem();
+	}
 	return instance;
 }
 
@@ -152,7 +173,6 @@ void SceneSystem::ChangeScene()
 		}
 
 		isRestarting = false;
-
 	}
 
 	nextScene = NULL;
@@ -162,22 +182,22 @@ void SceneSystem::ChangeScene()
 bool CheckGameScenes()
 {
 	SceneSystem* sceneSystem = SceneSystem::GetInstance();
-	SceneType activeSceneType = NULL_SCENE;
+	SceneType activeSceneType = SceneType::NULL_SCENE;
 
 	Scene* activeScene = sceneSystem->GetActiveScene();
 
 	if (activeScene == TbdTestSceneGetInstance()) {
-		activeSceneType = SCENE_TBD_TEST;
+		activeSceneType = SceneType::SCENE_TBD_TEST;
 	}
 	else if (activeScene == TestSceneGetInstance()) {
-		activeSceneType = SCENE_TEST;
+		activeSceneType = SceneType::SCENE_TEST;
 	}
 
-	if (inputHandlerScene->keyPressed(SDL_SCANCODE_1) && activeSceneType != SCENE_TBD_TEST)
+	if (inputHandlerScene->keyPressed(SDL_SCANCODE_1) && activeSceneType != SceneType::SCENE_TBD_TEST)
 	{
 		sceneSystem->SetScene(TbdTestSceneGetInstance());
 	}
-	else if (inputHandlerScene->keyPressed(SDL_SCANCODE_2) && activeSceneType != SCENE_TEST)
+	else if (inputHandlerScene->keyPressed(SDL_SCANCODE_2) && activeSceneType != SceneType::SCENE_TEST)
 	{
 		sceneSystem->SetScene(TestSceneGetInstance());
 	}

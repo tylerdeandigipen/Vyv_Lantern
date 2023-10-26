@@ -1,1 +1,11 @@
-/* put some event bs in here brotha!!!!!!! */
+#include "Event.h"
+
+int Event::GetType() const
+{
+	return eventType;
+}
+
+int Event::GetEntityId() const
+{
+	return entityId;
+}

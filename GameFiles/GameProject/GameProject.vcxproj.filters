@@ -1,102 +1,561 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <ClCompile Include="AudioEngine.cpp" />
-    <ClCompile Include="BaseSystem.cpp" />
-    <ClCompile Include="Behavior.cpp" />
-    <ClCompile Include="BehaviorPlayer.cpp" />
-    <ClCompile Include="Collider.cpp" />
-    <ClCompile Include="ColliderAABB.cpp" />
-    <ClCompile Include="Collision.cpp" />
-    <ClCompile Include="Color.cpp" />
-    <ClCompile Include="Component.cpp" />
-    <ClCompile Include="ComponentFactory.cpp" />
-    <ClCompile Include="Engine.cpp" />
-    <ClCompile Include="Entity.cpp" />
-    <ClCompile Include="EntityContainer.cpp" />
-    <ClCompile Include="EntityFactory.cpp" />
-    <ClCompile Include="Event.cpp" />
-    <ClCompile Include="EventManager.cpp" />
-    <ClCompile Include="FileIO.cpp" />
-    <ClCompile Include="glad.c" />
-    <ClCompile Include="ImageBuffer.cpp" />
-    <ClCompile Include="IMGUI\imgui.cpp" />
-    <ClCompile Include="IMGUI\imgui_demo.cpp" />
-    <ClCompile Include="IMGUI\imgui_draw.cpp" />
-    <ClCompile Include="IMGUI\imgui_impl_opengl3.cpp" />
-    <ClCompile Include="IMGUI\imgui_impl_sdl2.cpp" />
-    <ClCompile Include="IMGUI\imgui_tables.cpp" />
-    <ClCompile Include="IMGUI\imgui_widgets.cpp" />
-    <ClCompile Include="Inputs.cpp" />
-    <ClCompile Include="LevelBuilder.cpp" />
-    <ClCompile Include="Light.cpp" />
-    <ClCompile Include="Logging.cpp" />
-    <ClCompile Include="Main.cpp" />
-    <ClCompile Include="Physics.cpp" />
-    <ClCompile Include="PlatformSystem.cpp" />
-    <ClCompile Include="Renderer.cpp" />
-    <ClCompile Include="Scene.cpp" />
-    <ClCompile Include="SceneSystem.cpp" />
-    <ClCompile Include="StubScene.cpp" />
-    <ClCompile Include="TbdTestScene.cpp" />
-    <ClCompile Include="TestScene.cpp" />
-    <ClCompile Include="Time.cpp" />
-    <ClCompile Include="Transform.cpp" />
-    <ClCompile Include="Particle.cpp" />
-    <ClCompile Include="ParticleManager.cpp" />
+    <ClCompile Include="AudioEngine.cpp">
+      <Filter>Source Files\Engine Stuff</Filter>
+    </ClCompile>
+    <ClCompile Include="BaseSystem.cpp">
+      <Filter>Source Files\Engine Stuff</Filter>
+    </ClCompile>
+    <ClCompile Include="Behavior.cpp">
+      <Filter>Source Files\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="BehaviorPlayer.cpp">
+      <Filter>Source Files\Components\SubComponent</Filter>
+    </ClCompile>
+    <ClCompile Include="Collider.cpp">
+      <Filter>Source Files\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="ColliderAABB.cpp">
+      <Filter>Source Files\Components\SubComponent</Filter>
+    </ClCompile>
+    <ClCompile Include="Collision.cpp">
+      <Filter>Source Files\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="Color.cpp">
+      <Filter>Source Files\Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="Component.cpp">
+      <Filter>Source Files\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="ComponentFactory.cpp">
+      <Filter>Source Files\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine.cpp">
+      <Filter>Source Files\Engine Stuff</Filter>
+    </ClCompile>
+    <ClCompile Include="Entity.cpp">
+      <Filter>Source Files\Entity Stuff</Filter>
+    </ClCompile>
+    <ClCompile Include="EntityContainer.cpp">
+      <Filter>Source Files\Entity Stuff</Filter>
+    </ClCompile>
+    <ClCompile Include="EntityFactory.cpp">
+      <Filter>Source Files\Entity Stuff</Filter>
+    </ClCompile>
+    <ClCompile Include="Event.cpp">
+      <Filter>Source Files\Engine Stuff</Filter>
+    </ClCompile>
+    <ClCompile Include="EventManager.cpp">
+      <Filter>Source Files\Engine Stuff</Filter>
+    </ClCompile>
+    <ClCompile Include="FileIO.cpp">
+      <Filter>Source Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="ImageBuffer.cpp">
+      <Filter>Source Files\Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="IMGUI\imgui.cpp">
+      <Filter>Source Files\Debug\IMGUI</Filter>
+    </ClCompile>
+    <ClCompile Include="IMGUI\imgui_demo.cpp">
+      <Filter>Source Files\Debug\IMGUI</Filter>
+    </ClCompile>
+    <ClCompile Include="IMGUI\imgui_draw.cpp">
+      <Filter>Source Files\Debug\IMGUI</Filter>
+    </ClCompile>
+    <ClCompile Include="IMGUI\imgui_impl_opengl3.cpp">
+      <Filter>Source Files\Debug\IMGUI</Filter>
+    </ClCompile>
+    <ClCompile Include="IMGUI\imgui_impl_sdl2.cpp">
+      <Filter>Source Files\Debug\IMGUI</Filter>
+    </ClCompile>
+    <ClCompile Include="IMGUI\imgui_widgets.cpp">
+      <Filter>Source Files\Debug\IMGUI</Filter>
+    </ClCompile>
+    <ClCompile Include="IMGUI\imgui_tables.cpp">
+      <Filter>Source Files\Debug\IMGUI</Filter>
+    </ClCompile>
+    <ClCompile Include="Inputs.cpp">
+      <Filter>Source Files\Components\SubComponent</Filter>
+    </ClCompile>
+    <ClCompile Include="LevelBuilder.cpp">
+      <Filter>Source Files\Scene Stuff</Filter>
+    </ClCompile>
+    <ClCompile Include="Light.cpp">
+      <Filter>Source Files\Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="Logging.cpp">
+      <Filter>Source Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="Renderer.cpp">
+      <Filter>Source Files\Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="PlatformSystem.cpp">
+      <Filter>Source Files\Engine Stuff</Filter>
+    </ClCompile>
+    <ClCompile Include="Main.cpp">
+      <Filter>Source Files\Engine Stuff</Filter>
+    </ClCompile>
+    <ClCompile Include="Particle.cpp">
+      <Filter>Source Files\Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="ParticleManager.cpp">
+      <Filter>Source Files\Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="Physics.cpp">
+      <Filter>Source Files\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="Scene.cpp">
+      <Filter>Source Files\Scene Stuff</Filter>
+    </ClCompile>
+    <ClCompile Include="SceneSystem.cpp">
+      <Filter>Source Files\Scene Stuff</Filter>
+    </ClCompile>
+    <ClCompile Include="StubScene.cpp">
+      <Filter>Source Files\Scene Stuff</Filter>
+    </ClCompile>
+    <ClCompile Include="TbdTestScene.cpp">
+      <Filter>Source Files\Scene Stuff</Filter>
+    </ClCompile>
+    <ClCompile Include="TestScene.cpp">
+      <Filter>Source Files\Scene Stuff</Filter>
+    </ClCompile>
+    <ClCompile Include="Transform.cpp">
+      <Filter>Source Files\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="Time.cpp">
+      <Filter>Source Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="glad.c">
+      <Filter>Source Files\Engine Stuff</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="AudioEngine.h" />
-    <ClInclude Include="BaseSystem.h" />
-    <ClInclude Include="Behavior.h" />
-    <ClInclude Include="BehaviorPlayer.h" />
-    <ClInclude Include="Collider.h" />
-    <ClInclude Include="ColliderAABB.h" />
-    <ClInclude Include="Collision.h" />
-    <ClInclude Include="Color.h" />
-    <ClInclude Include="Component.h" />
-    <ClInclude Include="ComponentFactory.h" />
-    <ClInclude Include="Engine.h" />
-    <ClInclude Include="EntityContainer.h" />
-    <ClInclude Include="EntityFactory.h" />
-    <ClInclude Include="Event.h" />
-    <ClInclude Include="EventManager.h" />
-    <ClInclude Include="FileIO.h" />
-    <ClInclude Include="framework.h" />
-    <ClInclude Include="ImageBuffer.h" />
-    <ClInclude Include="IMGUI\imconfig.h" />
-    <ClInclude Include="IMGUI\imgui.h" />
-    <ClInclude Include="IMGUI\imgui_impl_opengl3.h" />
-    <ClInclude Include="IMGUI\imgui_impl_opengl3_loader.h" />
-    <ClInclude Include="IMGUI\imgui_impl_sdl2.h" />
-    <ClInclude Include="IMGUI\imgui_internal.h" />
-    <ClInclude Include="IMGUI\imstb_rectpack.h" />
-    <ClInclude Include="IMGUI\imstb_textedit.h" />
-    <ClInclude Include="IMGUI\imstb_truetype.h" />
-    <ClInclude Include="includes\glfw\glfw3.h" />
-    <ClInclude Include="Inputs.h" />
-    <ClInclude Include="LevelBuilder.h" />
-    <ClInclude Include="Light.h" />
-    <ClInclude Include="Logging.h" />
-    <ClInclude Include="Main.h" />
-    <ClInclude Include="Physics.h" />
-    <ClInclude Include="PlatformSystem.h" />
-    <ClInclude Include="Renderer.h" />
-    <ClInclude Include="Resource.h" />
-    <ClInclude Include="Scene.h" />
-    <ClInclude Include="SceneSystem.h" />
-    <ClInclude Include="ScopeTimer.h" />
-    <ClInclude Include="StubScene.h" />
     <ClInclude Include="targetver.h" />
-    <ClInclude Include="TbdTestScene.h" />
-    <ClInclude Include="TestScene.h" />
-    <ClInclude Include="Time.h" />
-    <ClInclude Include="Transform.h" />
-    <ClInclude Include="Particle.h" />
-    <ClInclude Include="ParticleManager.h" />
+    <ClInclude Include="AudioEngine.h">
+      <Filter>Header Files\Engine Stuff</Filter>
+    </ClInclude>
+    <ClInclude Include="BaseSystem.h">
+      <Filter>Header Files\Engine Stuff</Filter>
+    </ClInclude>
+    <ClInclude Include="Behavior.h">
+      <Filter>Header Files\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="BehaviorPlayer.h">
+      <Filter>Header Files\Components\Subcomponents</Filter>
+    </ClInclude>
+    <ClInclude Include="Collider.h">
+      <Filter>Header Files\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="ColliderAABB.h">
+      <Filter>Header Files\Components\Subcomponents</Filter>
+    </ClInclude>
+    <ClInclude Include="Collision.h">
+      <Filter>Header Files\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="Color.h">
+      <Filter>Header Files\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="Component.h">
+      <Filter>Header Files\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="ComponentFactory.h">
+      <Filter>Header Files\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine.h">
+      <Filter>Header Files\Engine Stuff</Filter>
+    </ClInclude>
+    <ClInclude Include="EntityContainer.h">
+      <Filter>Header Files\Entity Stuff</Filter>
+    </ClInclude>
+    <ClInclude Include="EntityFactory.h">
+      <Filter>Header Files\Entity Stuff</Filter>
+    </ClInclude>
+    <ClInclude Include="Event.h">
+      <Filter>Header Files\Engine Stuff</Filter>
+    </ClInclude>
+    <ClInclude Include="EventManager.h">
+      <Filter>Header Files\Engine Stuff</Filter>
+    </ClInclude>
+    <ClInclude Include="FileIO.h">
+      <Filter>Header Files\Debug</Filter>
+    </ClInclude>
+    <ClInclude Include="ImageBuffer.h">
+      <Filter>Header Files\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="IMGUI\imconfig.h">
+      <Filter>Header Files\Debug\IMGUI</Filter>
+    </ClInclude>
+    <ClInclude Include="IMGUI\imgui.h">
+      <Filter>Header Files\Debug\IMGUI</Filter>
+    </ClInclude>
+    <ClInclude Include="IMGUI\imgui_impl_opengl3.h">
+      <Filter>Header Files\Debug\IMGUI</Filter>
+    </ClInclude>
+    <ClInclude Include="IMGUI\imgui_impl_opengl3_loader.h">
+      <Filter>Header Files\Debug\IMGUI</Filter>
+    </ClInclude>
+    <ClInclude Include="IMGUI\imgui_impl_sdl2.h">
+      <Filter>Header Files\Debug\IMGUI</Filter>
+    </ClInclude>
+    <ClInclude Include="IMGUI\imgui_internal.h">
+      <Filter>Header Files\Debug\IMGUI</Filter>
+    </ClInclude>
+    <ClInclude Include="IMGUI\imstb_rectpack.h">
+      <Filter>Header Files\Debug\IMGUI</Filter>
+    </ClInclude>
+    <ClInclude Include="IMGUI\imstb_textedit.h">
+      <Filter>Header Files\Debug\IMGUI</Filter>
+    </ClInclude>
+    <ClInclude Include="IMGUI\imstb_truetype.h">
+      <Filter>Header Files\Debug\IMGUI</Filter>
+    </ClInclude>
+    <ClInclude Include="Inputs.h">
+      <Filter>Header Files\Components\Subcomponents</Filter>
+    </ClInclude>
+    <ClInclude Include="LevelBuilder.h">
+      <Filter>Header Files\Scene Stuff</Filter>
+    </ClInclude>
+    <ClInclude Include="Light.h">
+      <Filter>Header Files\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="Logging.h">
+      <Filter>Header Files\Debug</Filter>
+    </ClInclude>
+    <ClInclude Include="Particle.h">
+      <Filter>Header Files\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="Main.h">
+      <Filter>Header Files\Engine Stuff</Filter>
+    </ClInclude>
+    <ClInclude Include="ScopeTimer.h">
+      <Filter>Header Files\Debug</Filter>
+    </ClInclude>
+    <ClInclude Include="Renderer.h">
+      <Filter>Header Files\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="ParticleManager.h">
+      <Filter>Header Files\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="Physics.h">
+      <Filter>Header Files\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="PlatformSystem.h">
+      <Filter>Header Files\Engine Stuff</Filter>
+    </ClInclude>
+    <ClInclude Include="Scene.h">
+      <Filter>Header Files\Scene Stuff</Filter>
+    </ClInclude>
+    <ClInclude Include="SceneSystem.h">
+      <Filter>Header Files\Scene Stuff</Filter>
+    </ClInclude>
+    <ClInclude Include="StubScene.h">
+      <Filter>Header Files\Scene Stuff</Filter>
+    </ClInclude>
+    <ClInclude Include="TbdTestScene.h">
+      <Filter>Header Files\Scene Stuff</Filter>
+    </ClInclude>
+    <ClInclude Include="TestScene.h">
+      <Filter>Header Files\Scene Stuff</Filter>
+    </ClInclude>
+    <ClInclude Include="Transform.h">
+      <Filter>Header Files\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="Time.h">
+      <Filter>Header Files\Debug</Filter>
+    </ClInclude>
+    <ClInclude Include="framework.h">
+      <Filter>Header Files\Engine Stuff</Filter>
+    </ClInclude>
+    <ClInclude Include="includes\glfw\glfw3.h">
+      <Filter>Header Files\Engine Stuff</Filter>
+    </ClInclude>
+    <ClInclude Include="Resource.h">
+      <Filter>Header Files\Engine Stuff</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="GameProject.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="GameProject.ico" />
+    <Image Include="small.ico" />
+    <ClCompile Include="AudioEngine.cpp">
+      <Filter>Source Files\Engine Stuff</Filter>
+    </ClCompile>
+    <ClCompile Include="BaseSystem.cpp">
+      <Filter>Source Files\Engine Stuff</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine.cpp">
+      <Filter>Source Files\Engine Stuff</Filter>
+    </ClCompile>
+    <ClCompile Include="IMGUI\imgui.cpp">
+      <Filter>Source Files\Debug\IMGUI</Filter>
+    </ClCompile>
+    <ClCompile Include="IMGUI\imgui_demo.cpp">
+      <Filter>Source Files\Debug\IMGUI</Filter>
+    </ClCompile>
+    <ClCompile Include="IMGUI\imgui_draw.cpp">
+      <Filter>Source Files\Debug\IMGUI</Filter>
+    </ClCompile>
+    <ClCompile Include="IMGUI\imgui_impl_opengl3.cpp">
+      <Filter>Source Files\Debug\IMGUI</Filter>
+    </ClCompile>
+    <ClCompile Include="IMGUI\imgui_impl_sdl2.cpp">
+      <Filter>Source Files\Debug\IMGUI</Filter>
+    </ClCompile>
+    <ClCompile Include="IMGUI\imgui_tables.cpp">
+      <Filter>Source Files\Debug\IMGUI</Filter>
+    </ClCompile>
+    <ClCompile Include="IMGUI\imgui_widgets.cpp">
+      <Filter>Source Files\Debug\IMGUI</Filter>
+    </ClCompile>
+    <ClCompile Include="TestScene.cpp">
+      <Filter>Source Files\Scene Stuff</Filter>
+    </ClCompile>
+    <ClCompile Include="Scene.cpp">
+      <Filter>Source Files\Scene Stuff</Filter>
+    </ClCompile>
+    <ClCompile Include="SceneSystem.cpp">
+      <Filter>Source Files\Scene Stuff</Filter>
+    </ClCompile>
+    <ClCompile Include="StubScene.cpp">
+      <Filter>Source Files\Scene Stuff</Filter>
+    </ClCompile>
+    <ClCompile Include="TbdTestScene.cpp">
+      <Filter>Source Files\Scene Stuff</Filter>
+    </ClCompile>
+    <ClCompile Include="BehaviorPlayer.cpp">
+      <Filter>Source Files\Components\SubComponent</Filter>
+    </ClCompile>
+    <ClCompile Include="Collider.cpp">
+      <Filter>Source Files\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="ColliderAABB.cpp">
+      <Filter>Source Files\Components\SubComponent</Filter>
+    </ClCompile>
+    <ClCompile Include="Collision.cpp">
+      <Filter>Source Files\Components\SubComponent</Filter>
+    </ClCompile>
+    <ClCompile Include="Component.cpp">
+      <Filter>Source Files\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="ComponentFactory.cpp">
+      <Filter>Source Files\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="FileIO.cpp">
+      <Filter>Source Files\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="Behavior.cpp">
+      <Filter>Source Files\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="Entity.cpp">
+      <Filter>Source Files\Entity Stuff</Filter>
+    </ClCompile>
+    <ClCompile Include="EntityContainer.cpp">
+      <Filter>Source Files\Entity Stuff</Filter>
+    </ClCompile>
+    <ClCompile Include="EntityFactory.cpp">
+      <Filter>Source Files\Entity Stuff</Filter>
+    </ClCompile>
+    <ClCompile Include="Logging.cpp">
+      <Filter>Source Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="Inputs.cpp">
+      <Filter>Source Files\Components\SubComponent</Filter>
+    </ClCompile>
+    <ClCompile Include="Physics.cpp">
+      <Filter>Source Files\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="Time.cpp">
+      <Filter>Source Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="Transform.cpp">
+      <Filter>Source Files\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="PlatformSystem.cpp">
+      <Filter>Source Files\Engine Stuff</Filter>
+    </ClCompile>
+    <ClCompile Include="Color.cpp">
+      <Filter>Source Files\Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="ImageBuffer.cpp">
+      <Filter>Source Files\Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="Renderer.cpp">
+      <Filter>Source Files\Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="Light.cpp">
+      <Filter>Source Files\Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="LevelBuilder.cpp">
+      <Filter>Source Files\Scene Stuff</Filter>
+    </ClCompile>
+    <ClCompile Include="Event.cpp">
+      <Filter>Source Files\Engine Stuff</Filter>
+    </ClCompile>
+    <ClCompile Include="EventManager.cpp">
+      <Filter>Source Files\Engine Stuff</Filter>
+    </ClCompile>
+    <ClCompile Include="Main.cpp">
+      <Filter>Source Files\Engine Stuff</Filter>
+    </ClCompile>
+    <ClCompile Include="glad.c">
+      <Filter>Source Files\Engine Stuff</Filter>
+    </ClCompile>
+    <ClCompile Include="EventBitmap.cpp">
+      <Filter>Source Files\Engine Stuff</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="AudioEngine.h">
+      <Filter>Header Files\Engine Stuff</Filter>
+    </ClInclude>
+    <ClInclude Include="BaseSystem.h">
+      <Filter>Header Files\Engine Stuff</Filter>
+    </ClInclude>
+    <ClInclude Include="Behavior.h">
+      <Filter>Header Files\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="BehaviorPlayer.h">
+      <Filter>Header Files\Components\Subcomponents</Filter>
+    </ClInclude>
+    <ClInclude Include="Collider.h">
+      <Filter>Header Files\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="ColliderAABB.h">
+      <Filter>Header Files\Components\Subcomponents</Filter>
+    </ClInclude>
+    <ClInclude Include="Collision.h">
+      <Filter>Header Files\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="Color.h">
+      <Filter>Header Files\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="Component.h">
+      <Filter>Header Files\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="ComponentFactory.h">
+      <Filter>Header Files\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine.h">
+      <Filter>Header Files\Engine Stuff</Filter>
+    </ClInclude>
+    <ClInclude Include="Event.h">
+      <Filter>Header Files\Engine Stuff</Filter>
+    </ClInclude>
+    <ClInclude Include="framework.h">
+      <Filter>Header Files\Engine Stuff</Filter>
+    </ClInclude>
+    <ClInclude Include="EventManager.h">
+      <Filter>Header Files\Engine Stuff</Filter>
+    </ClInclude>
+    <ClInclude Include="IMGUI\imconfig.h">
+      <Filter>Header Files\Debug\IMGUI</Filter>
+    </ClInclude>
+    <ClInclude Include="IMGUI\imgui.h">
+      <Filter>Header Files\Debug\IMGUI</Filter>
+    </ClInclude>
+    <ClInclude Include="IMGUI\imgui_impl_opengl3.h">
+      <Filter>Header Files\Debug\IMGUI</Filter>
+    </ClInclude>
+    <ClInclude Include="IMGUI\imgui_impl_opengl3_loader.h">
+      <Filter>Header Files\Debug\IMGUI</Filter>
+    </ClInclude>
+    <ClInclude Include="IMGUI\imgui_impl_sdl2.h">
+      <Filter>Header Files\Debug\IMGUI</Filter>
+    </ClInclude>
+    <ClInclude Include="IMGUI\imgui_internal.h">
+      <Filter>Header Files\Debug\IMGUI</Filter>
+    </ClInclude>
+    <ClInclude Include="IMGUI\imstb_rectpack.h">
+      <Filter>Header Files\Debug\IMGUI</Filter>
+    </ClInclude>
+    <ClInclude Include="IMGUI\imstb_textedit.h">
+      <Filter>Header Files\Debug\IMGUI</Filter>
+    </ClInclude>
+    <ClInclude Include="IMGUI\imstb_truetype.h">
+      <Filter>Header Files\Debug\IMGUI</Filter>
+    </ClInclude>
+    <ClInclude Include="Renderer.h">
+      <Filter>Header Files\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="PlatformSystem.h">
+      <Filter>Header Files\Engine Stuff</Filter>
+    </ClInclude>
+    <ClInclude Include="Transform.h">
+      <Filter>Header Files\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="Time.h">
+      <Filter>Header Files\Debug</Filter>
+    </ClInclude>
+    <ClInclude Include="TestScene.h">
+      <Filter>Header Files\Scene Stuff</Filter>
+    </ClInclude>
+    <ClInclude Include="TbdTestScene.h">
+      <Filter>Header Files\Scene Stuff</Filter>
+    </ClInclude>
+    <ClInclude Include="StubScene.h">
+      <Filter>Header Files\Scene Stuff</Filter>
+    </ClInclude>
+    <ClInclude Include="ScopeTimer.h">
+      <Filter>Header Files\Debug</Filter>
+    </ClInclude>
+    <ClInclude Include="SceneSystem.h">
+      <Filter>Header Files\Scene Stuff</Filter>
+    </ClInclude>
+    <ClInclude Include="Scene.h">
+      <Filter>Header Files\Scene Stuff</Filter>
+    </ClInclude>
+    <ClInclude Include="Physics.h">
+      <Filter>Header Files\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="Logging.h">
+      <Filter>Header Files\Debug</Filter>
+    </ClInclude>
+    <ClInclude Include="Light.h">
+      <Filter>Header Files\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="LevelBuilder.h">
+      <Filter>Header Files\Scene Stuff</Filter>
+    </ClInclude>
+    <ClInclude Include="ImageBuffer.h">
+      <Filter>Header Files\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="FileIO.h">
+      <Filter>Header Files\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="EntityFactory.h">
+      <Filter>Header Files\Entity Stuff</Filter>
+    </ClInclude>
+    <ClInclude Include="EntityContainer.h">
+      <Filter>Header Files\Entity Stuff</Filter>
+    </ClInclude>
+    <ClInclude Include="Main.h">
+      <Filter>Header Files\Engine Stuff</Filter>
+    </ClInclude>
+    <ClInclude Include="Inputs.h">
+      <Filter>Header Files\Components\Subcomponents</Filter>
+    </ClInclude>
+    <ClInclude Include="includes\glfw\glfw3.h">
+      <Filter>Header Files\Engine Stuff</Filter>
+    </ClInclude>
+    <ClInclude Include="targetver.h">
+      <Filter>Header Files\Engine Stuff</Filter>
+    </ClInclude>
+    <ClInclude Include="Resource.h">
+      <Filter>Header Files\Engine Stuff</Filter>
+    </ClInclude>
+    <ClInclude Include="EventBitmap.h">
+      <Filter>Header Files\Engine Stuff</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Library Include="glfw3.lib" />
+    <Library Include="glfw3.lib">
+      <Filter>Header Files\Engine Stuff</Filter>
+    </Library>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="GameProject.rc" />
@@ -106,21 +565,87 @@
     <Image Include="small.ico" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="TempEntity.json">
-      <Filter>Data</Filter>
+    <None Include="Data\TileMapSprites.json">
+      <Filter>JSON Files</Filter>
     </None>
     <None Include="Data\TileMapSprites.json">
       <Filter>Data</Filter>
     </None>
     <None Include="Data\FirstLevel.json">
-      <Filter>Data</Filter>
+      <Filter>JSON Files</Filter>
     </None>
-    <None Include="Data\TestLight.json" />
-    <None Include="Data\Tbd_TestLevel.json" />
+    <None Include="Data\Tbd_TestLevel.json">
+      <Filter>JSON Files</Filter>
+    </None>
+    <None Include="Data\TestLight.json">
+      <Filter>JSON Files</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Data">
       <UniqueIdentifier>{37002723-a54e-4d1c-8fef-5df1f19a4dbd}</UniqueIdentifier>
+    </Filter>
+    <None Include="TempEntity.json">
+      <Filter>JSON Files</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{4f6a0f33-fc9b-4858-8402-27c1c965de4d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{f8d22fe1-3c66-4c59-adaa-1b00c26c3c1c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="JSON Files">
+      <UniqueIdentifier>{0d3a7e1f-ed78-403b-ad0f-99e2b145706a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Engine Stuff">
+      <UniqueIdentifier>{a41dd294-6267-4794-8534-aeaaff760d3d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Scene Stuff">
+      <UniqueIdentifier>{169375ab-523a-4244-97d1-b7bc4703490b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Components">
+      <UniqueIdentifier>{3c4c42b1-f678-4db9-963d-3804b557a782}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Components\SubComponent">
+      <UniqueIdentifier>{29a07127-9867-4b71-aff1-c0ae8cb712e3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Debug">
+      <UniqueIdentifier>{a254c802-5c62-445b-b9ff-af9d5a702c3e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Debug\IMGUI">
+      <UniqueIdentifier>{d1ba81bf-9183-46d1-aaa0-6d57e5fd0d0d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Entity Stuff">
+      <UniqueIdentifier>{7a4ad738-1806-4fc0-b976-7b865c302e3c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Graphics">
+      <UniqueIdentifier>{9b6c3c87-4e9a-46a9-b6ef-8d55333a3469}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Engine Stuff">
+      <UniqueIdentifier>{d46da29c-063a-45de-b55f-a72b78d15e2d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Debug">
+      <UniqueIdentifier>{8e43ec5a-8ee4-4ace-85f7-4bd530b4a4d2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Graphics">
+      <UniqueIdentifier>{572e3397-cf63-4c1e-9573-7cd19b317b2b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Components">
+      <UniqueIdentifier>{4e6c2c68-b928-48d1-9ff1-446c3a5366ec}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Components\Subcomponents">
+      <UniqueIdentifier>{5223300f-3ebf-4af0-8c81-8b2a75a62f03}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Debug\IMGUI">
+      <UniqueIdentifier>{4613f71a-dd81-4ab8-b623-0fbe17468072}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Scene Stuff">
+      <UniqueIdentifier>{49270d2f-0e8a-4416-8907-badc48c311c2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Entity Stuff">
+      <UniqueIdentifier>{2ec71977-dffa-46c5-8cee-41899f9f84b3}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

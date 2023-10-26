@@ -14,11 +14,15 @@
 #include "Time.h"
 #include <cassert>
 
+// singleton instance
 Engine* Engine::instance = new Engine();
 
 Engine::EngineCode Engine::Start()
 {
+	// time instance
 	time = new Time();
+
+	// initalize all systems
 	for (int i = 0; i < systemCount; ++i)
 	{
 		try 
@@ -32,6 +36,7 @@ Engine::EngineCode Engine::Start()
 		}
 	}
 
+	// main game loop
 	while (isRunning && !closeRequested)
 	{
 		EngineCode code = NothingBad;
@@ -64,6 +69,7 @@ Engine::EngineCode Engine::Start()
 			break;
 	}
 
+	// stop engine
 	return Stop();
 }
 
@@ -88,10 +94,9 @@ void Engine::EngineAddSystem(BaseSystem* sys)
 bool Engine::Paused() { return paused; }
 void Engine::SetPause(bool pause) { paused = pause; }
 
+// get the singleton instance
 Engine* Engine::GetInstance() { return instance; }
 
-// Priv
-//------------------------------------------------------------------------------------------//
 Engine::Engine() : isRunning(true), systemCount(0), systems(), paused(false), time(NULL)
 {
 
@@ -106,7 +111,8 @@ Engine::~Engine()
 Engine::EngineCode Engine::Update()
 {
 	float dt = time->Delta();
-	//dt = clamp(dt, 0.0f, 0.1f);
+
+	// update all systems
 	for (int i = 0; i < systemCount; ++i)
 	{
 		try {
@@ -128,17 +134,17 @@ Engine::EngineCode Engine::Update()
 
 Engine::EngineCode Engine::Render()
 {
-	//DGL_Graphics_StartDrawing();
+	// render all systems
 	for (int i = 0; i < systemCount; ++i)
 	{
 		systems[i]->Render();
 	}
-	//DGL_Graphics_FinishDrawing();
 	return NothingBad;
 }
 
 Engine::EngineCode Engine::ShutDown()
 {
+	// close all systems
 	for (int i = systemCount - 1; i >= 0; --i)
 	{
 		systems[i]->Close();
@@ -146,10 +152,9 @@ Engine::EngineCode Engine::ShutDown()
 
 	delete time;
 	return EngineExit;
-
-	// TYLER PLEASE MAKE SURE YOU PUT STUFF TO SHUT DOWN ALL RENDERING/GRAPHICS STUFF IF THIS IS CALLED THANNNKKKSSS - taylee)
 }
 
+// set flag to close game engine for whatever reasons you want
 void Engine::SetCloseRequest(bool close)
 {
 	closeRequested = close;
