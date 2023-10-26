@@ -12,6 +12,7 @@
 #include "Engine.h"
 #include "Scene.h"
 #include "SceneSystem.h"
+#include "Renderer.h"
 #include "AudioEngine.h"
 #include "Collision.h"
 
@@ -37,7 +38,7 @@ public:
 	void Update(float dt) override;
 	void Render(void) override;
 private:
-
+	//Renderer pixelRenderer;
 #define MAX_LASER_EMITTERS 64
 	laser_emitter Emitters[MAX_LASER_EMITTERS];
 	uint32_t EmitterCount = 0;

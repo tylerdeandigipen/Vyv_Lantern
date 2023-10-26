@@ -33,6 +33,7 @@ public:
 	static void PlayerCollisionHandler(Entity* thisone, Entity* other);
 
 private:
+	int timeToBlink = 300;
 	void Controller(float dt);
 	Inputs* input;
 	float playerMoveSpeed;

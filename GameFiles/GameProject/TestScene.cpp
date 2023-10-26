@@ -29,6 +29,9 @@
 #include "Light.h"
 #include "LevelBuilder.h"
 
+// hey people this is a class you can make all of 
+// these private variables and it works the same
+
 Logging& logger = Logging::GetInstance("debugLog.log");
 
 ImageBuffer* testSprite;
@@ -38,9 +41,9 @@ ImageBuffer* topwall, *bottomwall, *leftwall, *rightwall;
 Entity* testEntity;
 Entity* jsonEntity;
 SDL_Renderer* renderer;
-Renderer pixelRenderer;
 
 SDL_Window* window;
+Renderer pixelRenderer = *Renderer::GetInstance();
 
 bool canMove = true; // Initialize to allow movement
 

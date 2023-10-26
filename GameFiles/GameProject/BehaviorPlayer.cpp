@@ -12,6 +12,7 @@
 #include "Entity.h"
 #include "Inputs.h"
 #include "Transform.h"
+#include "Renderer.h"
 
 const float pushForce = 1.0f;
 
@@ -77,21 +78,26 @@ void BehaviorPlayer::Read(json jsonData)
 
 void BehaviorPlayer::Controller(float dt)
 {
+    //Renderer::GetInstance()->UpdateFace();
+    Renderer::GetInstance()->faceState = 0;
     Transform* transform = Parent()->Has(Transform);
     gfxVector2 translation = *transform->GetTranslation();
     input = Inputs::GetInstance();
     if (input->keyPressed(SDL_SCANCODE_W))
     {
+        Renderer::GetInstance()->faceState = 2;
         translation.y -= playerMoveSpeed * dt;
         //AudioManager.PlaySFX("footsteps.ogg");
     }
     if (input->keyPressed(SDL_SCANCODE_S))
     {
+        Renderer::GetInstance()->faceState = 1;
         translation.y += playerMoveSpeed * dt;
         //AudioManager.PlaySFX("footsteps.ogg");
     }
     if (input->keyPressed(SDL_SCANCODE_D))
     {
+        //Renderer::GetInstance()->faceState = 0;
         if (Parent()->GetImage()->isFlipped == false)
         {
             Parent()->GetImage()->FlipSprite();
@@ -101,6 +107,7 @@ void BehaviorPlayer::Controller(float dt)
     }
     if (input->keyPressed(SDL_SCANCODE_A))
     {
+        //Renderer::GetInstance()->faceState = 0;
         if (Parent()->GetImage()->isFlipped == true)
         {
             Parent()->GetImage()->FlipSprite();
@@ -109,6 +116,12 @@ void BehaviorPlayer::Controller(float dt)
         //AudioManager.PlaySFX("footsteps.ogg");
     }
     transform->SetTranslation(translation);
+    timeToBlink -= dt;
+    if (timeToBlink <= 0)
+    {
+        Renderer::GetInstance()->faceState = 3;
+        timeToBlink = 300;
+    }
 }
 
 void BehaviorPlayer::PlayerCollisionHandler(Entity* entity1, Entity* entity2)

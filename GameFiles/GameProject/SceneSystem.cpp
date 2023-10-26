@@ -9,6 +9,7 @@
 //------------------------------------------------------------------------------
 #include <cassert>
 #include "SceneSystem.h"
+#include "Renderer.h"
 #include "PlatformSystem.h"
 #include "Scene.h"
 #include "Engine.h"
@@ -120,6 +121,7 @@ SceneSystem::~SceneSystem()
 	if (instance != NULL)
 	{
 		delete instance;
+		delete Renderer::GetInstance();
 	}
 }
 

@@ -38,6 +38,8 @@ public:
 	Vector2 tileMapSize;
 	bool isFullBright = false;
 
+	static Renderer* GetInstance();
+
 	Vector2 GetCameraPosition(void);
 	void SetCameraPosition(Vector2 NewCameraP);
 
@@ -65,6 +67,8 @@ public:
 	int faceState;
 
 private:
+	static Renderer* instance;
+
 	ImageBuffer *DebugBuffer;
 	int faceIndex = -1;
 	Vector2 CameraP;

@@ -28,6 +28,13 @@
 
 #define OneOver255 (1.0f / 255.0f)
 
+Renderer* Renderer::instance = new Renderer;
+
+Renderer* Renderer::GetInstance()
+{
+    return Renderer::instance;
+}
+
 Vector2 Renderer::GetCameraPosition(void)
 {
 	return CameraP;
