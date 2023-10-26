@@ -116,11 +116,16 @@ void BehaviorPlayer::Controller(float dt)
         //AudioManager.PlaySFX("footsteps.ogg");
     }
     transform->SetTranslation(translation);
-    timeToBlink -= dt;
-    if (timeToBlink <= 0)
+    timer += dt;
+    if (timer >= timeBetweenBlink)
     {
         Renderer::GetInstance()->faceState = 3;
-        timeToBlink = 300;
+        if (timer >= timeBetweenBlink + timeDuringBlink)
+        {
+            float range = MAX_RAND - MIN_RAND;
+            timeBetweenBlink = range * ((((float)rand()) / (float)RAND_MAX)) + MIN_RAND;
+            timer = 0;
+        }
     }
 }
 

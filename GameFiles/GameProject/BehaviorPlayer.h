@@ -10,6 +10,7 @@
 #pragma once
 #include "Behavior.h"
 #include "Inputs.h"
+#include <random>
 
 class BehaviorPlayer : public Behavior
 {
@@ -33,7 +34,11 @@ public:
 	static void PlayerCollisionHandler(Entity* thisone, Entity* other);
 
 private:
-	int timeToBlink = 300;
+	float timeBetweenBlink = 2.5f;
+	float timeDuringBlink = 0.115f;
+	float timer = 0;
+	bool isBlinking = false;
+	float MIN_RAND = 2.25f, MAX_RAND = 3.0f;
 	void Controller(float dt);
 	Inputs* input;
 	float playerMoveSpeed;

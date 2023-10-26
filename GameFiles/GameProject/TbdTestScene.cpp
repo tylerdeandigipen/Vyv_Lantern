@@ -125,12 +125,7 @@ void TbdPlayerMovement(float dt)
     if (inputHandler->keyPressed(SDL_SCANCODE_E) && TbdCanPlaceLight == 1)
     {
         //TbdPixelRenderer.AddLight(TbdPixelRenderer.lightSource[0]);
-        //TbdPixelRenderer.animatedObjects[0][0]->FlipSprite();
-        TbdPixelRenderer->faceState += 1;
-        if (TbdPixelRenderer->faceState > 3)
-        {
-            TbdPixelRenderer->faceState = 0;
-        }
+        TbdPixelRenderer->animatedObjects[0][0]->FlipSprite();
         TbdCanPlaceLight = 0;
     }
     if (!inputHandler->keyPressed(SDL_SCANCODE_E))
