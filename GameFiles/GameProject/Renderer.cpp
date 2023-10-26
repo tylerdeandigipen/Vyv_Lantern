@@ -389,7 +389,8 @@ void Renderer::Update()
 	char WindowTextBuffer[128];
 	sprintf_s(WindowTextBuffer, sizeof(WindowTextBuffer), "FPS: %.2f", AverageFrameRate);
     SDL_SetWindowTitle(window, WindowTextBuffer);
-
+    
+    /* Debug Count stuff code
     for (int i = 0; i < numLights * 2; i++)
     {
         if (i % 2 == 0)
@@ -397,7 +398,8 @@ void Renderer::Update()
             outputBuffer->buffer[i + 1 + (3 * outputBuffer->BufferSizeX)] = { 0,0,255,255 };
         }
     }
-
+    */
+    
     if(!OutputBufferTexture)
     {
         glGenTextures(1, &OutputBufferTexture);

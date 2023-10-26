@@ -34,11 +34,11 @@ public:
 	static void PlayerCollisionHandler(Entity* thisone, Entity* other);
 
 private:
-	float timeBetweenBlink = 2.5f;
+	float timeBetweenBlink = 8;
 	float timeDuringBlink = 0.115f;
 	float timer = 0;
 	bool isBlinking = false;
-	float MIN_RAND = 2.25f, MAX_RAND = 3.0f;
+	float MIN_RAND = 6.0f, MAX_RAND = 9.0f;
 	void Controller(float dt);
 	Inputs* input;
 	float playerMoveSpeed;
