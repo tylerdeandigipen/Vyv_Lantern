@@ -60,6 +60,7 @@ public:
 	void Update();
 	int returnObjCnt();
 	void brensenhamalgo(int x1, int y1, int x2, int y2);
+	// 0 = forward, 1 = down, 2 = up, 3 = blink
 	void UpdateFace(int& faceState_);
 	int faceState;
 

@@ -243,7 +243,7 @@ void Renderer::UpdateFace(int& faceState_)
         ImageBuffer* temp = CreateAnimatedObject("./Assets/PPM/Man_Faces.ppm", { 8,8 });
         temp->isCulled = true;
     }
-    if (faceState >= 0 && faceState <= animatedObjects[1][0]->totalFrames)
+    if (faceState >= 0 && faceState <= animatedObjects[1][0]->totalFrames && faceState == faceState_)
     {
         faceState = faceState_;
         if (animatedObjects[0][animatedObjects[0][0]->currentFrame]->isFlipped != animatedObjects[faceIndex][faceState]->isFlipped)
