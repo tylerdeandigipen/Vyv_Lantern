@@ -53,7 +53,6 @@ public:
 	void MakeTileMap(int** tileMapArray);
 	void AddTileToTileset(ImageBuffer* tile);
 	void AddObject(ImageBuffer* sprite);
-	void AddAnimatedObject(const std::string filename, Vector2 frameSize);
 	ImageBuffer* CreateAnimatedObject(const std::string filename, Vector2 frameSize);
 	void AddLight(Light light);
 	void UpdateAnimations(float dt);
@@ -61,10 +60,12 @@ public:
 	void Update();
 	int returnObjCnt();
 	void brensenhamalgo(int x1, int y1, int x2, int y2);
+	void UpdateFace(int& faceState_);
+	int faceState;
+
 private:
-
 	ImageBuffer *DebugBuffer;
-
+	int faceIndex = -1;
 	Vector2 CameraP;
 	int numTiles = 0;
 	int numObjects = 0;

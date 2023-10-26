@@ -33,6 +33,8 @@ ImageBuffer::ImageBuffer(ImageBuffer& rhs)
     
     size.x = rhs.BufferSizeX;
     size.y = rhs.BufferSizeY;
+    isCulled = rhs.isCulled;
+
 }
 
 ImageBuffer::ImageBuffer()
@@ -42,6 +44,7 @@ ImageBuffer::ImageBuffer()
 
 	size.x = BufferSizeX;
 	size.y = BufferSizeY;
+    bool isCulled = false;
 }
 
 ImageBuffer::ImageBuffer(float x, float y)
@@ -54,6 +57,7 @@ ImageBuffer::ImageBuffer(float x, float y)
     
 	size.x = x;
 	size.y = y;
+    bool isCulled = false;
 }
 
 ImageBuffer::ImageBuffer(const std::string file)
@@ -102,6 +106,7 @@ ImageBuffer::ImageBuffer(const std::string file)
             }
         }
     }
+    bool isCulled = false;
 }
 
 ImageBuffer::~ImageBuffer()

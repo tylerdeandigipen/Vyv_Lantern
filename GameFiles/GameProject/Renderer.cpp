@@ -234,6 +234,26 @@ void Renderer::AddTileToTileset(ImageBuffer* tile)
     numTiles += 1;
 }
 
+// 0 = forward, 1 = down, 2 = up, 3 = blink
+void Renderer::UpdateFace(int& faceState_)
+{
+    if (faceIndex == -1)
+    {
+        faceIndex = numAnimatedObjects;
+        ImageBuffer* temp = CreateAnimatedObject("./Assets/PPM/Man_Faces.ppm", { 8,8 });
+        temp->isCulled = true;
+    }
+    if (faceState >= 0 && faceState <= animatedObjects[1][0]->totalFrames)
+    {
+        faceState = faceState_;
+        if (animatedObjects[0][animatedObjects[0][0]->currentFrame]->isFlipped != animatedObjects[faceIndex][faceState]->isFlipped)
+        {
+            animatedObjects[faceIndex][faceState]->FlipSprite();
+        }
+        animatedObjects[0][animatedObjects[0][0]->currentFrame]->AddSprite(animatedObjects[faceIndex][faceState]);
+    }
+}
+
 ImageBuffer* Renderer::CreateAnimatedObject(const std::string filename, Vector2 frameSize)
 {
     ImageBuffer* spriteSheet = new ImageBuffer{ filename };
@@ -251,22 +271,6 @@ ImageBuffer* Renderer::CreateAnimatedObject(const std::string filename, Vector2 
     return animatedObjects[numAnimatedObjects-1][0];
 }
 
-void Renderer::AddAnimatedObject(const std::string filename, Vector2 frameSize)
-{
-    ImageBuffer* spriteSheet = new ImageBuffer{ filename };
-    spriteSheet->position.y = 0;
-    ImageBuffer* temp;
-    for(int i = 0; i < spriteSheet->BufferSizeX / frameSize.x; i++)
-    {
-        temp = new ImageBuffer{ frameSize.x, frameSize.y};
-        spriteSheet->position.x = -(frameSize.x * i);
-        animatedObjects[numAnimatedObjects][i] = &temp->AddSprite(spriteSheet);
-    }
-    animatedObjects[numAnimatedObjects][0]->totalFrames = (spriteSheet->BufferSizeX / frameSize.x) - 1;
-    numAnimatedObjects += 1;
-    delete spriteSheet;
-}
-
 Renderer::Renderer()
 {
     outputBuffer = new ImageBuffer{ SCREEN_SIZE_X ,SCREEN_SIZE_Y };
@@ -275,6 +279,8 @@ Renderer::Renderer()
     backgroundLayer = new ImageBuffer{ SCREEN_SIZE_X ,SCREEN_SIZE_Y };
     foregroundLayer = new ImageBuffer{ SCREEN_SIZE_X ,SCREEN_SIZE_Y };
     particleManager = new ParticleManager;
+    faceIndex = -1;
+    faceState = NULL;
     outputBuffer->screenScale = screenScale;
 
     //temp tileset things
@@ -500,7 +506,7 @@ void Renderer::UpdateObjects()
     {
         for(int l = 0; l < 3; ++l)
         {
-            if (objects[i]->layer == l && objects[i]->totalFrames == 0)
+            if (objects[i]->layer == l && objects[i]->totalFrames == 0 && objects[i]->isCulled == false)
             {
                 objectLayer->AddSprite(objects[i], CameraP);
                 break;
@@ -511,7 +517,7 @@ void Renderer::UpdateObjects()
     {
         for (int l = 0; l < 3; ++l)
         {
-            if (animatedObjects[i][0]->layer == l)
+            if (animatedObjects[i][0]->layer == l && animatedObjects[i][0]->isCulled == false)
             {
                 int frame = animatedObjects[i][0]->currentFrame;
                 animatedObjects[i][frame]->position = animatedObjects[i][0]->position;

@@ -125,14 +125,19 @@ void TbdPlayerMovement(float dt)
     if (inputHandler->keyPressed(SDL_SCANCODE_E) && TbdCanPlaceLight == 1)
     {
         //TbdPixelRenderer.AddLight(TbdPixelRenderer.lightSource[0]);
-        TbdPixelRenderer.animatedObjects[0][0]->FlipSprite();
+        //TbdPixelRenderer.animatedObjects[0][0]->FlipSprite();
+        TbdPixelRenderer.faceState += 1;
+        if (TbdPixelRenderer.faceState > 3)
+        {
+            TbdPixelRenderer.faceState = 0;
+        }
         TbdCanPlaceLight = 0;
     }
-
     if (!inputHandler->keyPressed(SDL_SCANCODE_E))
     {
         TbdCanPlaceLight = 1;
     }
+
     if (inputHandler->keyPressed(SDL_SCANCODE_GRAVE) && TbdCanToggleFullBright == true)
     {
         if(TbdPixelRenderer.isFullBright == false)
@@ -183,6 +188,7 @@ void TbdTestScene::Update(float dt)
     inputHandler->handleInput();
     TbdPixelRenderer.UpdateObjects();
     TbdPixelRenderer.UpdateAnimations(dt);
+    TbdPixelRenderer.UpdateFace(TbdPixelRenderer.faceState);
 
     TbdPlayerMovement(dt);
 

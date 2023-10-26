@@ -31,6 +31,7 @@ public:
     int currentFrame = 0;
     int totalFrames = 0;
     bool isFlipped = false;
+    bool isCulled = false;
     Color* buffer;
     AABB aabb;
 
