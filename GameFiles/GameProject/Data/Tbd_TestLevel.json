@@ -41,7 +41,7 @@
         {
           "Type": "Object",
           "Name": "Player",
-          "file": "./Assets/PPM/Animated_Man3.ppm",
+          "file": "./Assets/PPM/Animated_Man_Red.ppm",
           "isAnimated": true,
           "frameSize": [ 8, 8 ],
           "Components": [
