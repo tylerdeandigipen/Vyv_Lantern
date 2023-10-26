@@ -24,6 +24,13 @@ struct laser_emitter
 	Vector2 Direction;
 };
 
+struct reflector
+{
+    Vector2 P;
+    Vector2 Direction;
+    float Radius;
+};
+
 class TestScene : public Scene
 {
 public:
@@ -39,9 +46,14 @@ public:
 	void Render(void) override;
 private:
 	//Renderer pixelRenderer;
+
 #define MAX_LASER_EMITTERS 64
 	laser_emitter Emitters[MAX_LASER_EMITTERS];
-	uint32_t EmitterCount = 0;
+	uint32_t EmitterCount;
+
+#define MAX_REFLECTORS 64
+    reflector Reflectors[MAX_REFLECTORS];
+    uint32_t ReflectorCount;
 };
 
 Scene* TestSceneGetInstance(void);

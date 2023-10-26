@@ -288,8 +288,10 @@ void Entity::AddToRenderer(Renderer* pixel, std::string _file)
 	else
 	{
 		image = pixel->CreateAnimatedObject(_file, FrameSize);
-		Has(Transform)->SetTranslation(&image->position);
-
+		if(image)
+		{
+			Has(Transform)->SetTranslation(&image->position);
+		}
 	}
 }
 

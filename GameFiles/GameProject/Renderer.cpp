@@ -263,19 +263,28 @@ void Renderer::UpdateFace(int& faceState_)
 
 ImageBuffer* Renderer::CreateAnimatedObject(const std::string filename, Vector2 frameSize)
 {
+	ImageBuffer *Result = NULL;
     ImageBuffer* spriteSheet = new ImageBuffer{ filename };
-    spriteSheet->position.y = 0;
-    ImageBuffer* temp;
-    for (int i = 0; i < spriteSheet->BufferSizeX / frameSize.x; i++)
-    {
-        temp = new ImageBuffer{ frameSize.x, frameSize.y };
-        spriteSheet->position.x = -(frameSize.x * i);
-        animatedObjects[numAnimatedObjects][i] = &temp->AddSprite(spriteSheet);
-    }
-    animatedObjects[numAnimatedObjects][0]->totalFrames = (spriteSheet->BufferSizeX / frameSize.x) - 1;
-    numAnimatedObjects += 1;
+    if(spriteSheet->buffer && (frameSize.x > 0) && (frameSize.y > 0))
+	{
+		spriteSheet->position.y = 0;
+		ImageBuffer* temp;
+
+		for (int i = 0; i < spriteSheet->BufferSizeX / frameSize.x; i++)
+		{
+			temp = new ImageBuffer{ frameSize.x, frameSize.y };
+			spriteSheet->position.x = -(frameSize.x * i);
+			animatedObjects[numAnimatedObjects][i] = &temp->AddSprite(spriteSheet);
+		}
+
+        animatedObjects[numAnimatedObjects][0]->totalFrames = (spriteSheet->BufferSizeX / frameSize.x) - 1;
+		numAnimatedObjects += 1;
+
+        Result = animatedObjects[numAnimatedObjects - 1][0];
+	}
+
     delete spriteSheet;
-    return animatedObjects[numAnimatedObjects-1][0];
+	return(Result);
 }
 
 Renderer::Renderer()
@@ -292,7 +301,7 @@ Renderer::Renderer()
 
     //temp tileset things
 
-	DebugBuffer = new ImageBuffer;
+	DebugBuffer = new ImageBuffer(SCREEN_SIZE_X, SCREEN_SIZE_Y);
 
     startTime = SDL_GetTicks();
     PreviousFrameBeginTime = startTime;
@@ -346,7 +355,7 @@ void Renderer::DrawLine(Vector2 P0, Vector2 P1, const Color &LineColor)
 		{
 			Vector2 PixelD = Vector2((float)PixelX + 0.5f, (float)PixelY + 0.5f) - P0;
             float d = fabsf(Vector2::DotProduct(N, PixelD));
-			if(d <= 1.0f)
+			if(d <= 0.5f)
 			{
 				Color &DestPixel = DebugBuffer->SampleColor(PixelX, PixelY);
 				DestPixel = LineColor;
