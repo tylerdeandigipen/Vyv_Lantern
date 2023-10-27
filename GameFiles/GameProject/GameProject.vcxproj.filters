@@ -130,6 +130,7 @@
     <ClCompile Include="glad.c">
       <Filter>Source Files\Engine Stuff</Filter>
     </ClCompile>
+    <ClCompile Include="LaserSystem.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="targetver.h" />
@@ -274,6 +275,7 @@
     <ClInclude Include="Resource.h">
       <Filter>Header Files\Engine Stuff</Filter>
     </ClInclude>
+    <ClInclude Include="LaserSystem.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="GameProject.rc" />

@@ -305,6 +305,7 @@ Renderer::Renderer()
 
     startTime = SDL_GetTicks();
     PreviousFrameBeginTime = startTime;
+
 }
 
 Renderer::~Renderer(void)
@@ -321,6 +322,9 @@ Renderer::~Renderer(void)
 
 void Renderer::DrawLine(Vector2 P0, Vector2 P1, const Color &LineColor)
 {
+    P0 -= CameraP;
+    P1 -= CameraP;
+    
 	int MinX = (int)min(P0.x, P1.x);
 	int MinY = (int)min(P0.y, P1.y);
 	int MaxX = (int)max(P0.x, P1.x);
@@ -390,7 +394,8 @@ void Renderer::Update()
 	sprintf_s(WindowTextBuffer, sizeof(WindowTextBuffer), "FPS: %.2f", AverageFrameRate);
     SDL_SetWindowTitle(window, WindowTextBuffer);
     
-    /* Debug Count stuff code
+
+#ifdef _DEBUG
     for (int i = 0; i < numLights * 2; i++)
     {
         if (i % 2 == 0)
@@ -398,7 +403,7 @@ void Renderer::Update()
             outputBuffer->buffer[i + 1 + (3 * outputBuffer->BufferSizeX)] = { 0,0,255,255 };
         }
     }
-    */
+#endif
     
     if(!OutputBufferTexture)
     {

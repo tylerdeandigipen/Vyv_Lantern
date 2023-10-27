@@ -43,7 +43,7 @@ Entity* jsonEntity;
 SDL_Renderer* renderer;
 
 SDL_Window* window;
-Renderer pixelRenderer = *Renderer::GetInstance();
+Renderer &pixelRenderer = *Renderer::GetInstance();
 
 bool canMove = true; // Initialize to allow movement
 
@@ -78,8 +78,58 @@ Engine::EngineCode TestScene::Load()
 	return Engine::NothingBad;
 }
 
+static laser_emitter *
+NewEmitter(void)
+{
+    laser_emitter *Result = NULL;
+
+    emitter_id ResultID = LaserSystem::GetInstance()->CreateEmitter();
+    Result = LaserSystem::GetInstance()->GetEmitter(ResultID);
+    
+    return(Result);
+}
+
+static reflector *
+NewReflector(void)
+{
+    reflector *Result = NULL;
+
+    reflector_id ResultID = LaserSystem::GetInstance()->CreateReflector();
+    Result = LaserSystem::GetInstance()->GetReflector(ResultID);
+    
+    return(Result);
+}
+
 Engine::EngineCode TestScene::Init()
 {
+    {
+        ControlledEmitter = LaserSystem::GetInstance()->CreateEmitter();
+
+        // @NOTE: Setup lasers
+        laser_emitter *TestLaser = LaserSystem::GetInstance()->GetEmitter(ControlledEmitter);
+        TestLaser->P = Vector2(40.0f, 60.0f);
+        TestLaser->Direction = Vector2::Normalize(Vector2(0.0f, 1.0f));
+
+        laser_emitter *TestLaser1 = NewEmitter();
+        TestLaser1->P = Vector2(50.0f, 30.0f);
+        TestLaser1->Direction = Vector2::Normalize(Vector2(1.0f, -1.0f));
+
+        reflector *Reflector = NewReflector();
+        Reflector->Radius = 10.0f;
+        Reflector->P = Vector2(100.0f, 100.0f);
+        Reflector->Direction = Vector2::Normalize(Vector2(-1.0f, -1.0f));
+
+        reflector *Reflector1 = NewReflector();
+        Reflector1->Radius = 20.0f;
+        Reflector1->P = Vector2(100.0f, 30.0f);
+        Reflector1->Direction = Vector2::Normalize(Vector2(0.0f, 1.0f));
+
+        reflector *Reflector2 = NewReflector();
+        Reflector2->Radius = 100.0f;
+        Reflector2->P = Vector2(200.0f, 50.0f);
+        Reflector2->Direction = Vector2::Normalize(Vector2(-1.0f, 0.0f));
+    }
+    
     /*BGM*/
     //AudioManager.PlayMusic("bgm.ogg");
 
@@ -100,33 +150,7 @@ Engine::EngineCode TestScene::Init()
                               SDL_WINDOW_OPENGL);
     pixelRenderer.window = window;
 
-	// @NOTE: Setup lasers
-    EmitterCount = 0;
-    ReflectorCount = 0;
     
-	laser_emitter *TestLaser = Emitters + EmitterCount++;
-	TestLaser->P = Vector2(40.0f, 60.0f);
-	TestLaser->Direction = Vector2::Normalize(Vector2(0.0f, 1.0f));
-
-	laser_emitter *TestLaser1 = Emitters + EmitterCount++;
-	TestLaser1->P = Vector2(50.0f, 30.0f);
-	TestLaser1->Direction = Vector2::Normalize(Vector2(1.0f, -1.0f));
-
-    reflector *Reflector = Reflectors + ReflectorCount++;
-    Reflector->Radius = 10.0f;
-    Reflector->P = Vector2(100.0f, 100.0f);
-    Reflector->Direction = Vector2::Normalize(Vector2(-1.0f, -1.0f));
-
-    reflector *Reflector1 = Reflectors + ReflectorCount++;
-    Reflector1->Radius = 20.0f;
-    Reflector1->P = Vector2(100.0f, 30.0f);
-    Reflector1->Direction = Vector2::Normalize(Vector2(0.0f, 1.0f));
-
-    reflector *Reflector2 = Reflectors + ReflectorCount++;
-    Reflector2->Radius = 100.0f;
-    Reflector2->P = Vector2(200.0f, 50.0f);
-    Reflector2->Direction = Vector2::Normalize(Vector2(-1.0f, 0.0f));
-
     // Specify Major version and minor version
     // SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 3);
     // SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 3);
@@ -428,8 +452,6 @@ void TestScene::Update(float dt)
                 //AudioManager.PlaySFX("oof.ogg");
             }
         }
-    //logger.LogLine("Debug info: Things are being done. (testScene updated)");
-
     // Update the cooldown timer.
     soundCooldown -= dt;
     if (soundCooldown < 0.0f) {
@@ -445,106 +467,14 @@ void TestScene::Update(float dt)
         CursourP *= 1.0f / pixelRenderer.screenScale;
         CursourP += pixelRenderer.GetCameraPosition();
         
-        Vector2 Delta = CursourP - Emitters[0].P;
-        float Angle = atan2f(Delta.y, Delta.x);
-        Emitters[0].Direction = Vector2(cosf(Angle), sinf(Angle));
-    }
-    
-	// @NOTE: Laser test
-	float MaxLaserTravelDistance = 100000.0f;
-    Vector2 CameraP = pixelRenderer.GetCameraPosition();
-	for(uint32_t EmitterIndex = 0;
-		EmitterIndex < EmitterCount;
-		++EmitterIndex)
-	{
-		laser_emitter *Emitter = Emitters + EmitterIndex;
+		laser_emitter* Emitter = LaserSystem::GetInstance()->GetEmitter(ControlledEmitter);
 
-        int BounceCount = 0;
-        Vector2 RayP = Emitter->P;
-        Vector2 RayD = Emitter->Direction;
-        for(uint32_t IterationCount = 4;
-			IterationCount;
-            --IterationCount)
+        if(Emitter)
         {
-            reflector *HitReflector = NULL;
-            float MinDistance = MaxLaserTravelDistance;
-
-            for(uint32_t ReflectorIndex = 0;
-                ReflectorIndex < ReflectorCount;
-                ++ReflectorIndex)
-            {
-                reflector *Reflector = Reflectors + ReflectorIndex;
-
-                // @NOTE: Only test reflectors that towards the ray's direction
-                float Denom = Vector2::DotProduct(Reflector->Direction, RayD);
-                float DENOM_EPSILON = 0.1f;
-                if(Denom < 0.0f)
-                {
-                    float t = Vector2::DotProduct(Reflector->P - RayP, Reflector->Direction) / Denom;
-                    if((t > 0.0f) && (t < MinDistance))
-                    {
-                        // @NOTE: Ensure the ray actually intersectst the plane 
-                        Vector2 IntersectionP = RayP + t*RayD;
-                        float k = Vector2::DotProduct(Reflector->P - IntersectionP, Vector2::Perp(Reflector->Direction));
-                        if(fabsf(k) <= Reflector->Radius)
-                        {
-                            MinDistance = t;
-                            HitReflector = Reflector;
-                        }
-                    }
-                }
-            }
-        
-            Vector2 EndP = RayP + MinDistance*RayD;
-            Vector2 HitPoint = EndP;
-            
-            pixelRenderer.DrawLine(RayP - CameraP,
-                                   EndP - CameraP,
-                                   Color(255, 255, 255, 255));
-
-            if(HitReflector)
-            {
-#if 0
-                pixelRenderer.DrawLine(RayP - CameraP,
-                                       HitReflector->P - CameraP,
-                                       Color(0x00, 0x00, 0xff, 0xff));
-#endif
-                RayP = HitPoint;
-                RayD -= 2.0f*Vector2::DotProduct(HitReflector->Direction, RayD)*HitReflector->Direction;
-                RayD = Vector2::Normalize(RayD);
-                ++BounceCount;
-            }
-            else
-            {
-                // @NOTE: No other more reflectors face this ray
-                break;
-            }
+			Vector2 Delta = CursourP - Emitter->P;
+			float Angle = atan2f(Delta.y, Delta.x);
+			Emitter->Direction = Vector2(cosf(Angle), sinf(Angle));
         }
-
-        Vector2 P0 = Vector2(10.0f, 10.0f + (float)EmitterIndex);
-        Vector2 P1 = P0 + Vector2(4.0f*(float)BounceCount, 0.0f);
-
-        uint32_t Color_u32 = 0xff << (8*(EmitterIndex % 3));
-        pixelRenderer.DrawLine(P0, P1, Color(Color_u32 & 0xff,
-                                             (Color_u32 >> 8) & 0xff,
-                                             (Color_u32 >> 16) & 0xff,
-                                             0xff));
-	}
-
-    for(uint32_t ReflectorIndex = 0;
-        ReflectorIndex < ReflectorCount;
-        ++ReflectorIndex)
-    {
-        reflector *Reflector = Reflectors + ReflectorIndex;
-        
-        Vector2 Tangent = Vector2::Perp(Reflector->Direction);
-        Vector2 StartP = Reflector->P - Reflector->Radius*Tangent;
-        Vector2 EndP = Reflector->P + Reflector->Radius*Tangent;
-
-        StartP -= pixelRenderer.GetCameraPosition();
-        EndP -= pixelRenderer.GetCameraPosition();
-
-        pixelRenderer.DrawLine(StartP, EndP, Color(0xff, 0x00, 0x00, 0xff));
     }
 }
 

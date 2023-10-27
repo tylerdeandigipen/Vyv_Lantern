@@ -17,6 +17,7 @@
 #include "Main.h"
 #include "Renderer.h"
 #include "ImageBuffer.h"
+#include "LaserSystem.h"
 #include <SDL/SDL.h>
 
 #define MAX_LOADSTRING 100
@@ -48,7 +49,8 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
     engine->EngineAddSystem(ComponentFactory::GetInstance());
     engine->EngineAddSystem(EntityFactory::GetInstance());
     engine->EngineAddSystem(LevelBuilder::GetInstance());
-
+   	engine->EngineAddSystem(LaserSystem::GetInstance());
+    
     Engine::EngineCode returnCode = engine->Start(); 
 
     switch (returnCode)

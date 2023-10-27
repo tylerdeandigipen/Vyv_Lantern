@@ -177,6 +177,7 @@
     <ClInclude Include="IMGUI\imstb_truetype.h" />
     <ClInclude Include="includes\glfw\glfw3.h" />
     <ClInclude Include="Inputs.h" />
+    <ClInclude Include="LaserSystem.h" />
     <ClInclude Include="LevelBuilder.h" />
     <ClInclude Include="Light.h" />
     <ClInclude Include="Logging.h" />
@@ -226,6 +227,7 @@
     <ClCompile Include="IMGUI\imgui_tables.cpp" />
     <ClCompile Include="IMGUI\imgui_widgets.cpp" />
     <ClCompile Include="Inputs.cpp" />
+    <ClCompile Include="LaserSystem.cpp" />
     <ClCompile Include="LevelBuilder.cpp" />
     <ClCompile Include="Light.cpp" />
     <ClCompile Include="Logging.cpp" />
