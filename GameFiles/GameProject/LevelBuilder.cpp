@@ -140,3 +140,18 @@ void LevelBuilder::FreeLevel()
 {
     entity_container->FreeAll();
 }
+
+int** LevelBuilder::GetTileMap()
+{
+    return TileMap;
+}
+
+int LevelBuilder::GetX()
+{
+    return SizeX;
+}
+
+int LevelBuilder::GetY()
+{
+    return SizeY;
+}

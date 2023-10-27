@@ -26,6 +26,9 @@ public:
 	void ReLoadLevel();
 	void FreeLevel();
 	int** GetTileMap();
+	int GetX();
+
+	int GetY();
 private:
 	static LevelBuilder* instance;
 	EntityContainer* entity_container;
