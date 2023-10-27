@@ -13,6 +13,8 @@
 #include "Inputs.h"
 #include "Transform.h"
 #include "Renderer.h"
+#include "LevelBuilder.h"
+#include "Maths/Vector.h"
 
 const float pushForce = 1.0f;
 
@@ -115,7 +117,8 @@ void BehaviorPlayer::Controller(float dt)
         translation.x -= playerMoveSpeed * dt;
         //AudioManager.PlaySFX("footsteps.ogg");
     }
-    transform->SetTranslation(translation);
+    if (!checkWalls(translation))
+        transform->SetTranslation(translation);
     timer += dt;
     if (timer >= timeBetweenBlink)
     {
@@ -128,6 +131,46 @@ void BehaviorPlayer::Controller(float dt)
         }
     }
 }
+
+bool BehaviorPlayer::checkWalls(gfxVector2 position)
+{
+    int** walls = LevelBuilder::GetInstance()->GetTileMap();
+    for (int x = 0; x < LevelBuilder::GetInstance()->GetX(); ++x)
+    {
+        for (int y = 0; y < LevelBuilder::GetInstance()->GetY(); ++y)
+        {
+            for (int i = 0; i < 19; ++i)
+            {
+                if (walls[x][y] == wehavewalls[i])
+                {
+                    gfxVector2 wallworld = { (float)(x * 8), (float)(y * 8) };
+                    gfxVector2 playerMin, playerMax, wallMin, wallMax;
+                    wallMin = wallworld;
+                    wallMax = { wallworld.x + 8, wallworld.y + 8 };
+                    playerMin = position;
+                    playerMax = { position.x + 6, position.y + 6 };
+                    /* Check for wall collision */
+                    if (playerMax.x < wallMin.x || playerMin.x > wallMax.x ||
+                        playerMax.y < wallMin.y || playerMin.y > wallMax.y)
+                    {
+                        continue;
+                    }
+                    else
+                    {
+                        /* There is collision */
+                        return true;
+                    }
+                }
+            }
+            
+        }
+
+    }
+    return false;
+    
+}
+
+
 
 void BehaviorPlayer::PlayerCollisionHandler(Entity* entity1, Entity* entity2)
 {
@@ -155,4 +198,31 @@ void BehaviorPlayer::PlayerCollisionHandler(Entity* entity1, Entity* entity2)
         entity2->GetImage()->position.x += pushDirX * pushForce;
         entity2->GetImage()->position.y += pushDirY * pushForce;
     }
+    if (entity1->GetRealName().compare("Player") == 0 && entity2->GetRealName().compare("Object") == 0)
+    {
+        // Calculate the vector from object 'a' to object 'b'
+        float pushDirX = entity2->GetImage()->position.x - entity1->GetImage()->position.x;
+        float pushDirY = entity2->GetImage()->position.y - entity1->GetImage()->position.y;
+        // Calculate the length of the vector
+        float pushDirLength = sqrt(pushDirX * pushDirX + pushDirY * pushDirY);
+
+        // Normalize the vector to obtain a unit vector
+        if (pushDirLength > 0)
+        {
+            pushDirX /= pushDirLength;
+            pushDirY /= pushDirLength;
+
+            // Define the minimum distance (overlap) to prevent overlap
+            float overlap = 10.0f; // You can adjust this value as needed
+
+            // Apply the push force only if there is overlap
+            if (pushDirLength < overlap)
+            {
+                entity1->GetImage()->position.x -= pushDirX * (overlap - pushDirLength);
+                entity1->GetImage()->position.y -= pushDirY * (overlap - pushDirLength);
+            }
+        }
+    }
+
+    
 }
