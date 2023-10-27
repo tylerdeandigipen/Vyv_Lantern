@@ -160,8 +160,6 @@
     <ClInclude Include="Engine.h" />
     <ClInclude Include="EntityContainer.h" />
     <ClInclude Include="EntityFactory.h" />
-    <ClInclude Include="Event.h" />
-    <ClInclude Include="EventSystem.h" />
     <ClInclude Include="FileIO.h" />
     <ClInclude Include="framework.h" />
     <ClInclude Include="ImageBuffer.h" />
@@ -212,8 +210,6 @@
     <ClCompile Include="Entity.cpp" />
     <ClCompile Include="EntityContainer.cpp" />
     <ClCompile Include="EntityFactory.cpp" />
-    <ClCompile Include="Event.cpp" />
-    <ClCompile Include="EventSystem.cpp" />
     <ClCompile Include="FileIO.cpp" />
     <ClCompile Include="glad.c" />
     <ClCompile Include="ImageBuffer.cpp" />
