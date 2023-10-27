@@ -21,6 +21,7 @@ private:
     EventSystem() = default;
     EventSystem(const EventSystem&) = delete;
     EventSystem& operator=(const EventSystem&) = delete;
+    bool AreCallbacksEqual(const EventCallback& callback1, const EventCallback& callback2);
 
     std::unordered_map<std::string, std::vector<EventCallback>> eventCallbacks;
 };
