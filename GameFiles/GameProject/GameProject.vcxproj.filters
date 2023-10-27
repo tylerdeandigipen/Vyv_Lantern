@@ -43,12 +43,6 @@
     <ClCompile Include="EntityFactory.cpp">
       <Filter>Source Files\Entity Stuff</Filter>
     </ClCompile>
-    <ClCompile Include="Event.cpp">
-      <Filter>Source Files\Engine Stuff</Filter>
-    </ClCompile>
-    <ClCompile Include="EventManager.cpp">
-      <Filter>Source Files\Engine Stuff</Filter>
-    </ClCompile>
     <ClCompile Include="FileIO.cpp">
       <Filter>Source Files\Debug</Filter>
     </ClCompile>
@@ -131,6 +125,12 @@
       <Filter>Source Files\Engine Stuff</Filter>
     </ClCompile>
     <ClCompile Include="LaserSystem.cpp" />
+    <ClCompile Include="EventSystem.cpp">
+      <Filter>Source Files\Engine Stuff</Filter>
+    </ClCompile>
+    <ClCompile Include="Event.cpp">
+      <Filter>Source Files\Engine Stuff</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="targetver.h" />
@@ -172,12 +172,6 @@
     </ClInclude>
     <ClInclude Include="EntityFactory.h">
       <Filter>Header Files\Entity Stuff</Filter>
-    </ClInclude>
-    <ClInclude Include="Event.h">
-      <Filter>Header Files\Engine Stuff</Filter>
-    </ClInclude>
-    <ClInclude Include="EventManager.h">
-      <Filter>Header Files\Engine Stuff</Filter>
     </ClInclude>
     <ClInclude Include="FileIO.h">
       <Filter>Header Files\Debug</Filter>
@@ -276,6 +270,12 @@
       <Filter>Header Files\Engine Stuff</Filter>
     </ClInclude>
     <ClInclude Include="LaserSystem.h" />
+    <ClInclude Include="EventSystem.h">
+      <Filter>Header Files\Engine Stuff</Filter>
+    </ClInclude>
+    <ClInclude Include="Event.h">
+      <Filter>Header Files\Engine Stuff</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="GameProject.rc" />
@@ -404,9 +404,6 @@
       <Filter>Source Files\Engine Stuff</Filter>
     </ClCompile>
     <ClCompile Include="glad.c">
-      <Filter>Source Files\Engine Stuff</Filter>
-    </ClCompile>
-    <ClCompile Include="EventBitmap.cpp">
       <Filter>Source Files\Engine Stuff</Filter>
     </ClCompile>
   </ItemGroup>
@@ -547,9 +544,6 @@
       <Filter>Header Files\Engine Stuff</Filter>
     </ClInclude>
     <ClInclude Include="Resource.h">
-      <Filter>Header Files\Engine Stuff</Filter>
-    </ClInclude>
-    <ClInclude Include="EventBitmap.h">
       <Filter>Header Files\Engine Stuff</Filter>
     </ClInclude>
   </ItemGroup>
