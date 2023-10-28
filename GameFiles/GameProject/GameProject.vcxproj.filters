@@ -125,10 +125,10 @@
       <Filter>Source Files\Engine Stuff</Filter>
     </ClCompile>
     <ClCompile Include="LaserSystem.cpp" />
-    <ClCompile Include="EventSystem.cpp">
-      <Filter>Source Files\Engine Stuff</Filter>
+    <ClCompile Include="Observer.cpp">
+      <Filter>Source Files\Entity Stuff</Filter>
     </ClCompile>
-    <ClCompile Include="Event.cpp">
+    <ClCompile Include="Subject.cpp">
       <Filter>Source Files\Engine Stuff</Filter>
     </ClCompile>
   </ItemGroup>
@@ -270,8 +270,11 @@
       <Filter>Header Files\Engine Stuff</Filter>
     </ClInclude>
     <ClInclude Include="LaserSystem.h" />
-    <ClInclude Include="EventSystem.h">
+    <ClInclude Include="Subject.h">
       <Filter>Header Files\Engine Stuff</Filter>
+    </ClInclude>
+    <ClInclude Include="Observer.h">
+      <Filter>Header Files\Entity Stuff</Filter>
     </ClInclude>
     <ClInclude Include="Event.h">
       <Filter>Header Files\Engine Stuff</Filter>
@@ -397,9 +400,6 @@
     <ClCompile Include="Event.cpp">
       <Filter>Source Files\Engine Stuff</Filter>
     </ClCompile>
-    <ClCompile Include="EventManager.cpp">
-      <Filter>Source Files\Engine Stuff</Filter>
-    </ClCompile>
     <ClCompile Include="Main.cpp">
       <Filter>Source Files\Engine Stuff</Filter>
     </ClCompile>
@@ -445,9 +445,6 @@
       <Filter>Header Files\Engine Stuff</Filter>
     </ClInclude>
     <ClInclude Include="framework.h">
-      <Filter>Header Files\Engine Stuff</Filter>
-    </ClInclude>
-    <ClInclude Include="EventManager.h">
       <Filter>Header Files\Engine Stuff</Filter>
     </ClInclude>
     <ClInclude Include="IMGUI\imconfig.h">
