@@ -27,7 +27,7 @@ void Subject::removeObserver(Observer* observer)
     }
 }
 
-void Subject::notify(const Entity& entity, Event event)
+void Subject::notify(const Entity& entity, EventType event)
 {
     Observer* observer = head_;
 

@@ -1,7 +1,8 @@
 #pragma once
 #include "Observer.h"
 
-class Subject {
+class Subject 
+{
 private:
     Observer* head_;
 
@@ -12,6 +13,6 @@ public:
 
     void removeObserver(Observer* observer);
 
-    void notify(const Entity& entity, Event event);
+    void notify(const Entity& entity, EventType event);
 };
 

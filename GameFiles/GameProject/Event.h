@@ -1,10 +1,12 @@
 #pragma once
 
-enum class EventType {
-    // put events here
+enum class EventType 
+{
+    PLAYER_MOVED_LEFT,
 };
 
-class Event {
+class Event 
+{
 public:
     Event(EventType type) : type_(type) {}
 
