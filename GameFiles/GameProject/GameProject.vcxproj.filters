@@ -125,9 +125,13 @@
       <Filter>Source Files\Engine Stuff</Filter>
     </ClCompile>
     <ClCompile Include="LaserSystem.cpp" />
+    <ClCompile Include="Observer.cpp">
+      <Filter>Source Files\Entity Stuff</Filter>
     <ClCompile Include="Math.cpp">
       <Filter>Source Files\Maths</Filter>
     </ClCompile>
+    <ClCompile Include="Subject.cpp">
+      <Filter>Source Files\Engine Stuff</Filter>
     <ClCompile Include="Matrix.cpp">
       <Filter>Source Files\Maths</Filter>
     </ClCompile>
@@ -273,6 +277,8 @@
       <Filter>Header Files\Engine Stuff</Filter>
     </ClInclude>
     <ClInclude Include="LaserSystem.h" />
+    <ClInclude Include="Subject.h">
+      <Filter>Header Files\Engine Stuff</Filter>
     <ClInclude Include="Vector.h">
       <Filter>Header Files\Maths</Filter>
     </ClInclude>
@@ -282,6 +288,11 @@
     <ClInclude Include="Math_Header.h">
       <Filter>Header Files\Maths</Filter>
     </ClInclude>
+    <ClInclude Include="Observer.h">
+      <Filter>Header Files\Entity Stuff</Filter>
+    </ClInclude>
+    <ClInclude Include="Event.h">
+      <Filter>Header Files\Engine Stuff</Filter>
     <ClInclude Include="Matrix.h">
       <Filter>Header Files\Maths</Filter>
     </ClInclude>
