@@ -19,10 +19,8 @@ class gfxVector2
 
 public:
 	//constructors & destructors
-	gfxVector2() : x(), y() {};
-	gfxVector2(float x, float y) : x(x), y(y)
-	{
-	};
+	gfxVector2();
+	gfxVector2(float x, float y);
 	gfxVector2(const gfxVector2& v) : x(v.x), y(v.y) {};
 	~gfxVector2() { /*delete[] &mVec[2];*/ };
 
@@ -35,47 +33,17 @@ public:
 		return *this;
 	}
 	//arithmetic operators
-	friend gfxVector2 operator+(const gfxVector2& l, const gfxVector2& r)
-	{
-		gfxVector2 result;
-		result.x = l.x + r.x;
-		result.y = l.y + r.y;
-		return result;
-	}
-	friend gfxVector2 operator-(const gfxVector2& l, const gfxVector2& r)
-	{
-		gfxVector2 result;
-		result.x = l.x - r.x;
-		result.y = l.y - r.y;
-		return result;
-	}
-	friend gfxVector2 operator*(float l, const gfxVector2& r)
-	{
-		gfxVector2 result;
-		result.x = l * r.x;
-		result.y = l * r.y;
-		return result;
-	}
-	friend gfxVector2 operator*(const gfxVector2& r, float l)
-	{
-		gfxVector2 result;
-		result.x = r.x * l;
-		result.y = r.y * l;
-		return result;
-	}
+	friend gfxVector2 operator+(const gfxVector2& l, const gfxVector2& r);
+	friend gfxVector2 operator-(const gfxVector2& l, const gfxVector2& r);
+	friend gfxVector2 operator*(float l, const gfxVector2& r);
+	friend gfxVector2 operator*(const gfxVector2& r, float l);
 
 	//dot product between 2 vectors
-	friend float operator*(const gfxVector2& l, const gfxVector2& r)
-	{
-		return (l.x * r.x + l.y * r.y);
-	}
+	friend float operator*(const gfxVector2& l, const gfxVector2& r);
 
 
 	//cross product between 2 vectors
-	friend float operator^(const gfxVector2& l, const gfxVector2& r)
-	{
-		return (l.x * r.x - l.y * r.y);
-	}
+	friend float operator^(const gfxVector2& l, const gfxVector2& r);
 
 	//arithmetic vector operations
 	gfxVector2& operator+=(const gfxVector2& v)

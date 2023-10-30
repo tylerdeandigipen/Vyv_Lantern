@@ -125,11 +125,14 @@
       <Filter>Source Files\Engine Stuff</Filter>
     </ClCompile>
     <ClCompile Include="LaserSystem.cpp" />
-    <ClCompile Include="EventSystem.cpp">
-      <Filter>Source Files\Engine Stuff</Filter>
+    <ClCompile Include="Math.cpp">
+      <Filter>Source Files\Maths</Filter>
     </ClCompile>
-    <ClCompile Include="Event.cpp">
-      <Filter>Source Files\Engine Stuff</Filter>
+    <ClCompile Include="Matrix.cpp">
+      <Filter>Source Files\Maths</Filter>
+    </ClCompile>
+    <ClCompile Include="Vector.cpp">
+      <Filter>Source Files\Maths</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -270,11 +273,17 @@
       <Filter>Header Files\Engine Stuff</Filter>
     </ClInclude>
     <ClInclude Include="LaserSystem.h" />
-    <ClInclude Include="EventSystem.h">
-      <Filter>Header Files\Engine Stuff</Filter>
+    <ClInclude Include="Vector.h">
+      <Filter>Header Files\Maths</Filter>
     </ClInclude>
-    <ClInclude Include="Event.h">
-      <Filter>Header Files\Engine Stuff</Filter>
+    <ClInclude Include="Math.h">
+      <Filter>Header Files\Maths</Filter>
+    </ClInclude>
+    <ClInclude Include="Math_Header.h">
+      <Filter>Header Files\Maths</Filter>
+    </ClInclude>
+    <ClInclude Include="Matrix.h">
+      <Filter>Header Files\Maths</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -397,9 +406,6 @@
     <ClCompile Include="Event.cpp">
       <Filter>Source Files\Engine Stuff</Filter>
     </ClCompile>
-    <ClCompile Include="EventManager.cpp">
-      <Filter>Source Files\Engine Stuff</Filter>
-    </ClCompile>
     <ClCompile Include="Main.cpp">
       <Filter>Source Files\Engine Stuff</Filter>
     </ClCompile>
@@ -445,9 +451,6 @@
       <Filter>Header Files\Engine Stuff</Filter>
     </ClInclude>
     <ClInclude Include="framework.h">
-      <Filter>Header Files\Engine Stuff</Filter>
-    </ClInclude>
-    <ClInclude Include="EventManager.h">
       <Filter>Header Files\Engine Stuff</Filter>
     </ClInclude>
     <ClInclude Include="IMGUI\imconfig.h">
@@ -584,6 +587,12 @@
     <None Include="TempEntity.json">
       <Filter>JSON Files</Filter>
     </None>
+    <Filter Include="Header Files\Maths">
+      <UniqueIdentifier>{8d4daf22-96c7-4851-9bdf-85c4fc401483}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Maths">
+      <UniqueIdentifier>{ff46920d-0bb6-4af8-97e7-e000c677b135}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Header Files">

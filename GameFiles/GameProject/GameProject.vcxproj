@@ -179,6 +179,9 @@
     <ClInclude Include="Light.h" />
     <ClInclude Include="Logging.h" />
     <ClInclude Include="Main.h" />
+    <ClInclude Include="Math.h" />
+    <ClInclude Include="Math_Header.h" />
+    <ClInclude Include="Matrix.h" />
     <ClInclude Include="Particle.h" />
     <ClInclude Include="ParticleManager.h" />
     <ClInclude Include="Physics.h" />
@@ -194,6 +197,7 @@
     <ClInclude Include="TestScene.h" />
     <ClInclude Include="Time.h" />
     <ClInclude Include="Transform.h" />
+    <ClInclude Include="Vector.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AudioEngine.cpp" />
@@ -226,6 +230,8 @@
     <ClCompile Include="Light.cpp" />
     <ClCompile Include="Logging.cpp" />
     <ClCompile Include="Main.cpp" />
+    <ClCompile Include="Math.cpp" />
+    <ClCompile Include="Matrix.cpp" />
     <ClCompile Include="Particle.cpp" />
     <ClCompile Include="ParticleManager.cpp" />
     <ClCompile Include="Physics.cpp" />
@@ -240,6 +246,7 @@
     </ClCompile>
     <ClCompile Include="Time.cpp" />
     <ClCompile Include="Transform.cpp" />
+    <ClCompile Include="Vector.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="GameProject.rc" />

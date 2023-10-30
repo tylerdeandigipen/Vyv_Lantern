@@ -286,6 +286,10 @@ gfxMatrix3& gfxMatrix3::operator=(const gfxMatrix3& rhs)
 	return *this;
 }
 
+float deg2rad(float degrees) {
+	return degrees * 3.14159265359 / 180.0; // Convert degrees to radians
+}
+
 float gfxMatrix3::operator[](int elem) const
 {
 	return this->a[elem];
