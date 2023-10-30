@@ -64,7 +64,8 @@ std::string BehaviorPlayer::Name()
 
 void BehaviorPlayer::Update(float dt)
 {
-	Controller(dt);
+    if (Parent())
+	    Controller(dt);
 }
 
 void BehaviorPlayer::SetInputHandler(Inputs* _input)
@@ -139,7 +140,7 @@ bool BehaviorPlayer::checkWalls(gfxVector2 position)
     {
         for (int y = 0; y < LevelBuilder::GetInstance()->GetY(); ++y)
         {
-            for (int i = 0; i < 19; ++i)
+            for (int i = 0; i < 20; ++i)
             {
                 if (walls[x][y] == wehavewalls[i])
                 {
@@ -147,8 +148,8 @@ bool BehaviorPlayer::checkWalls(gfxVector2 position)
                     gfxVector2 playerMin, playerMax, wallMin, wallMax;
                     wallMin = wallworld;
                     wallMax = { wallworld.x + 8, wallworld.y + 8 };
-                    playerMin = position;
-                    playerMax = { position.x + 6, position.y + 6 };
+                    playerMin = { position.x + 1, position.y + 1 };
+                    playerMax = { position.x + 7, position.y + 7 };
                     /* Check for wall collision */
                     if (playerMax.x < wallMin.x || playerMin.x > wallMax.x ||
                         playerMax.y < wallMin.y || playerMin.y > wallMax.y)

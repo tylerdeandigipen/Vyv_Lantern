@@ -29,9 +29,6 @@
 #include "Light.h"
 #include "LevelBuilder.h"
 
-// hey people this is a class you can make all of 
-// these private variables and it works the same
-
 Logging& logger = Logging::GetInstance("debugLog.log");
 
 ImageBuffer* testSprite;

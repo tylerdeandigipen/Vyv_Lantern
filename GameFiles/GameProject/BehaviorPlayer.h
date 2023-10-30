@@ -43,7 +43,7 @@ private:
 	void Controller(float dt);
 	Inputs* input;
 	float playerMoveSpeed;
-	int wehavewalls[19] = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 45, 46, 48, 29, 26, 31, 41, 39 };
+	int wehavewalls[20] = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 45, 46, 48, 29, 26, 31, 41, 39, 36 };
 
 	bool checkWalls(gfxVector2 position);
 };

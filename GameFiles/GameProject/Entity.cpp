@@ -246,7 +246,10 @@ const char* Entity::GetName() const
 
 ImageBuffer* Entity::GetImage()
 {
-	return image;
+	if (image)
+		return image;
+	else
+		return NULL;
 }
 
 void Entity::SetImage(ImageBuffer* _image)
