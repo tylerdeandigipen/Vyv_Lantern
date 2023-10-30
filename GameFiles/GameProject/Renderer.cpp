@@ -184,7 +184,15 @@ float Renderer::FindPixelLuminosity(float x, float y, Light *LightSource)
 			assert(!"Encountered a light source of an unknown type.");
 		} break;
     }	
-	
+    // normal map scaling
+	// Get normal buffer here
+    // multiply by 2
+    // subtract 1
+    // convert to vector
+    // find direction to light source as a vector
+    // normalize
+    // get dot product between normal vector and dir
+    // multiply result by that number
     float const LIGHTING_STEP_SIZE = 0.35f;
 	Result = LIGHTING_STEP_SIZE * floorf(Result / LIGHTING_STEP_SIZE);
 
@@ -231,6 +239,11 @@ void Renderer::MakeTileMap(int** tileMapArray)
                     foregroundLayer->AddSprite(tileSet[tileMapArray[x][y]]);
                 }
             }
+            if (normalTileSet[tileMapArray[x][y]] != NULL)
+            {
+                normalTileSet[tileMapArray[x][y]]->position = { (float)(x * TILE_SIZE), (float)(y * TILE_SIZE) };
+                normalBuffer->AddSprite(normalTileSet[tileMapArray[x][y]]);
+            }
         }
     }
 }
@@ -241,6 +254,10 @@ void Renderer::AddTileToTileset(ImageBuffer* tile)
     numTiles += 1;
 }
 
+void Renderer::AddNormalToNormalTileset(ImageBuffer* tile)
+{
+    normalTileSet[numTiles] = tile;
+}
 // 0 = forward, 1 = down, 2 = up, 3 = blink
 void Renderer::UpdateFace(int& faceState_)
 {
@@ -294,6 +311,7 @@ Renderer::Renderer()
     objectLayer = new ImageBuffer{ SCREEN_SIZE_X ,SCREEN_SIZE_Y };
     backgroundLayer = new ImageBuffer{ SCREEN_SIZE_X ,SCREEN_SIZE_Y };
     foregroundLayer = new ImageBuffer{ SCREEN_SIZE_X ,SCREEN_SIZE_Y };
+    normalBuffer = new ImageBuffer{ SCREEN_SIZE_X ,SCREEN_SIZE_Y };
     particleManager = new ParticleManager;
     faceIndex = -1;
     faceState = NULL;
@@ -315,6 +333,7 @@ Renderer::~Renderer(void)
     delete objectLayer;
     delete backgroundLayer;
     delete foregroundLayer;
+    delete normalBuffer;
     delete particleManager;
 
     glDeleteTextures(1, &OutputBufferTexture);

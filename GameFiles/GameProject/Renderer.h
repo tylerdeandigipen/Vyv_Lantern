@@ -29,10 +29,12 @@ public:
 	ImageBuffer* objectLayer; //layer 1
 	ImageBuffer* backgroundLayer; //layer 0
 
+	ImageBuffer* normalBuffer;
 	Light lightSource[MAX_LIGHT_SOURCES];
 	ImageBuffer* objects[MAX_OBJECTS];
 	ImageBuffer* animatedObjects[MAX_ANIMATED_OBJECTS][MAX_ANIMATION_FRAMES];
 	ImageBuffer* tileSet[128];
+	ImageBuffer* normalTileSet[128];
 	ParticleManager* particleManager;
 	float screenScale = 6;
 	Vector2 tileMapSize;
@@ -54,6 +56,7 @@ public:
 	void RenderParticles();
 	void MakeTileMap(int** tileMapArray);
 	void AddTileToTileset(ImageBuffer* tile);
+	void AddNormalToNormalTileset(ImageBuffer* tile);
 	void AddObject(ImageBuffer* sprite);
 	ImageBuffer* CreateAnimatedObject(const std::string filename, Vector2 frameSize);
 	void AddLight(Light light);

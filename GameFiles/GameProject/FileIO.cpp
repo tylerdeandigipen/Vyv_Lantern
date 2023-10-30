@@ -102,7 +102,7 @@ FileIO* FileIO::GetInstance()
 	return instance;
 }
 
-void FileIO::ReadTileMap(std::string filename, Renderer* pixel)
+void FileIO::ReadTileMap(std::string filename, Renderer* pixel, bool IsNormal)
 {
 	json jsonData = OpenJSON(filename);
 	Vector2 frameSize;
@@ -124,7 +124,14 @@ void FileIO::ReadTileMap(std::string filename, Renderer* pixel)
 			spriteSheet->position.x = -(frameSize.x * j);
 			spriteSheet->position.y = -(frameSize.y * i);
 			temp->AddSprite(spriteSheet);
-			pixel->AddTileToTileset(temp);
+			if (IsNormal == false)
+			{
+				pixel->AddTileToTileset(temp);
+			}
+			else
+			{
+				pixel->AddNormalToNormalTileset(temp);
+			}
 		}
 	}
 	delete spriteSheet;
