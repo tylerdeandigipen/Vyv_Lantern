@@ -71,7 +71,11 @@ void Renderer::RenderLightingPass()
 	objectLayer->Blit(inputBuffer);
 	foregroundLayer->Blit(inputBuffer, -CameraOffsetX, -CameraOffsetY);
     particleManager->UpdateParticles();
-        
+  
+    //becasue thomas's camera isnt acurate
+    normalBufferPostCam->ClearImageBuffer();
+    normalBuffer->Blit(normalBufferPostCam, -CameraOffsetX, -CameraOffsetY);
+
 #if 1
     RenderParticles();
 	for (x = 0; x < inputBuffer->size.x; ++x)
@@ -111,6 +115,10 @@ void Renderer::RenderLightingPass()
             {
                 DestPixel = inputBuffer->SampleColor(x, y);
             }
+            if (renderNormalMap == true)
+            {
+                DestPixel = normalBufferPostCam->SampleColor(x, y);
+            }
 		}
     }
 #else
@@ -120,6 +128,7 @@ void Renderer::RenderLightingPass()
 
 float Renderer::FindPixelLuminosity(float x, float y, Light *LightSource)
 {
+    float normalMin = 1;
     Vector2 LightP = LightSource->position - CameraP;
     float Result = 0.0f;
 
@@ -184,15 +193,21 @@ float Renderer::FindPixelLuminosity(float x, float y, Light *LightSource)
 			assert(!"Encountered a light source of an unknown type.");
 		} break;
     }	
-    // normal map scaling
-	// Get normal buffer here
-    // multiply by 2
-    // subtract 1
-    // convert to vector
-    // find direction to light source as a vector
-    // normalize
-    // get dot product between normal vector and dir
-    // multiply result by that number
+
+    Vector2 pos = (Vector2(x, y));
+    Vector2 distFromLight = LightP - pos;
+    Vector2 distNormalized;
+    float normalR = (float)normalBufferPostCam->SampleColor(x, y).r;
+    float normalG = (float)normalBufferPostCam->SampleColor(x, y).g;
+    Vector2 normalDir = Vector2{ normalR / 255.0f, normalG / 255.0f };
+    normalDir *= 2;
+    normalDir -= Vector2{ 1,1 };
+    distNormalized.Normalize(distNormalized, distFromLight);
+    float normalFalloff = -Vector2::DotProduct(distNormalized, normalDir);
+    normalFalloff += normalMin;
+    normalFalloff = clamp(normalFalloff, 0.0f, 1.0f);
+    Result = normalFalloff * Result;
+
     float const LIGHTING_STEP_SIZE = 0.35f;
 	Result = LIGHTING_STEP_SIZE * floorf(Result / LIGHTING_STEP_SIZE);
 
@@ -238,12 +253,14 @@ void Renderer::MakeTileMap(int** tileMapArray)
                     tileSet[tileMapArray[x][y]]->position = { (float)(x * TILE_SIZE), (float)(y * TILE_SIZE) };
                     foregroundLayer->AddSprite(tileSet[tileMapArray[x][y]]);
                 }
+
+                if (normalTileSet[tileMapArray[x][y]])
+                {
+                    normalTileSet[tileMapArray[x][y]]->position = { (float)(x * TILE_SIZE), (float)(y * TILE_SIZE) };
+                    normalBuffer->AddSprite(normalTileSet[tileMapArray[x][y]]);
+                }
             }
-            if (normalTileSet[tileMapArray[x][y]] != NULL)
-            {
-                normalTileSet[tileMapArray[x][y]]->position = { (float)(x * TILE_SIZE), (float)(y * TILE_SIZE) };
-                normalBuffer->AddSprite(normalTileSet[tileMapArray[x][y]]);
-            }
+            
         }
     }
 }
@@ -256,7 +273,8 @@ void Renderer::AddTileToTileset(ImageBuffer* tile)
 
 void Renderer::AddNormalToNormalTileset(ImageBuffer* tile)
 {
-    normalTileSet[numTiles] = tile;
+    normalTileSet[numNormalTiles] = tile;
+    numNormalTiles += 1;
 }
 // 0 = forward, 1 = down, 2 = up, 3 = blink
 void Renderer::UpdateFace(int& faceState_)
@@ -312,6 +330,7 @@ Renderer::Renderer()
     backgroundLayer = new ImageBuffer{ SCREEN_SIZE_X ,SCREEN_SIZE_Y };
     foregroundLayer = new ImageBuffer{ SCREEN_SIZE_X ,SCREEN_SIZE_Y };
     normalBuffer = new ImageBuffer{ SCREEN_SIZE_X ,SCREEN_SIZE_Y };
+    normalBufferPostCam = new ImageBuffer{ SCREEN_SIZE_X ,SCREEN_SIZE_Y };
     particleManager = new ParticleManager;
     faceIndex = -1;
     faceState = NULL;
@@ -334,6 +353,7 @@ Renderer::~Renderer(void)
     delete backgroundLayer;
     delete foregroundLayer;
     delete normalBuffer;
+    delete normalBufferPostCam;
     delete particleManager;
 
     glDeleteTextures(1, &OutputBufferTexture);

@@ -119,6 +119,7 @@ Engine::EngineCode TbdTestScene::Init()
 
 int TbdCanPlaceLight = 0;
 bool TbdCanToggleFullBright = true;
+bool TbdCanToggleNormalDisplay = true;
 void TbdPlayerMovement(float dt)
 {
     Inputs* inputHandler = Inputs::GetInstance();
@@ -145,6 +146,19 @@ void TbdPlayerMovement(float dt)
     if (!inputHandler->keyPressed(SDL_SCANCODE_GRAVE))
     {
         TbdCanToggleFullBright = true;
+    }
+
+    if (inputHandler->keyPressed(SDL_SCANCODE_N) && TbdCanToggleNormalDisplay == true)
+    {
+        if (TbdPixelRenderer->renderNormalMap == false)
+            TbdPixelRenderer->renderNormalMap = true;
+        else
+            TbdPixelRenderer->renderNormalMap = false;
+        TbdCanToggleNormalDisplay = false;
+    }
+    if (!inputHandler->keyPressed(SDL_SCANCODE_N))
+    {
+        TbdCanToggleNormalDisplay = true;
     }
 
     int x, y;

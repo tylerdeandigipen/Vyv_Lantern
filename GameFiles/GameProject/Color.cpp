@@ -68,7 +68,14 @@ bool Color::operator ==(const Color& rhs)&
 	}
 	return false;
 }
-
+bool Color::operator !=(const Color& rhs)&
+{
+	if (r != rhs.r || g != rhs.g || b != rhs.b)
+	{
+		return true;
+	}
+	return false;
+}
 Color& Color::operator =(Color const& rhs)& {
 	r = rhs.r;
 	g = rhs.g;

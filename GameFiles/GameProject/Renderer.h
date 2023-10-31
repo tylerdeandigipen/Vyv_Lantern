@@ -30,6 +30,7 @@ public:
 	ImageBuffer* backgroundLayer; //layer 0
 
 	ImageBuffer* normalBuffer;
+	ImageBuffer* normalBufferPostCam;
 	Light lightSource[MAX_LIGHT_SOURCES];
 	ImageBuffer* objects[MAX_OBJECTS];
 	ImageBuffer* animatedObjects[MAX_ANIMATED_OBJECTS][MAX_ANIMATION_FRAMES];
@@ -39,7 +40,7 @@ public:
 	float screenScale = 6;
 	Vector2 tileMapSize;
 	bool isFullBright = false;
-
+	bool renderNormalMap = false;
 	static Renderer* GetInstance();
 
 	Vector2 GetCameraPosition(void);
@@ -76,6 +77,7 @@ private:
 	int faceIndex = -1;
 	Vector2 CameraP;
 	int numTiles = 0;
+	int numNormalTiles = 0;
 	int numObjects = 0;
 	int numAnimatedObjects = 0;
 	int numLights = 0;
