@@ -1,8 +1,11 @@
 #include <stdint.h>
+#include "stdafx.h"
+#include "Inputs.h"
 #include "Vector.h"
 #include "BaseSystem.h"
 #include "LaserSystem.h"
 #include "Renderer.h"
+#include "Logging.h"
 
 static LaserSystem GlobalInstance;
 
@@ -13,8 +16,10 @@ LaserSystem *LaserSystem::GetInstance(void)
 
 LaserSystem::LaserSystem(void)
     :
-    BaseSystem("LaserSystem")
+    BaseSystem("LaserSystem"),
+	DEBUGVisualizeReflectorBounces(false)
 {
+    ErrorLog = &Logging::GetInstance("debugLog.log");
 }
 
 LaserSystem::~LaserSystem(void)
@@ -34,14 +39,38 @@ Engine::EngineCode LaserSystem::Init(void)
     return(Result);
 }
 
+bool LaserSystem::DEBUGKeyPressed(int KeyCode, Inputs *InputManager)
+{
+    // @TODO: Add support for querying key presses in the input manager
+    bool Result = false;
+    if((DEBUGPreviousScancode != KeyCode) && InputManager->keyPressed(KeyCode))
+    {
+        Result = true;
+        DEBUGPreviousScancode = KeyCode;
+    }
+
+    return(Result);
+}
+
 void LaserSystem::Update(float dt)
 {
-    
+    static Inputs *InputManager = Inputs::GetInstance();
+
+    if(InputManager->keyPressed(SDL_SCANCODE_LCTRL))
+    {
+        if(DEBUGKeyPressed(SDL_SCANCODE_B, InputManager))
+        {
+			DEBUGVisualizeReflectorBounces = !DEBUGVisualizeReflectorBounces;
+        }
+        else
+        {
+            DEBUGPreviousScancode = 0;
+        }
+    }
 }
 
 void LaserSystem::Render(void)
 {
-    // @NOTE: Laser test
 	float MaxLaserTravelDistance = 100000.0f;
     reflector *PreviousReflector = NULL;
     
@@ -93,15 +122,17 @@ void LaserSystem::Render(void)
 
             if(HitReflector)
             {
-#if 1
-                // @NOTE: Illuminate the line from the previous reflector to the current hit
-                if(PreviousReflector)
+                if(DEBUGVisualizeReflectorBounces)
                 {
-                    Renderer::GetInstance()->DrawLine(PreviousReflector->P,
-                                                      HitReflector->P,
-                                                      Color(0x00, 0x00, 0xff, 0xff));
+                    // @NOTE: Illuminate the line from the previous reflector to the current hit
+                    if(PreviousReflector)
+                    {
+                        Renderer::GetInstance()->DrawLine(PreviousReflector->P,
+                                                          HitReflector->P,
+                                                          Color(0x00, 0x00, 0xff, 0xff));
+                    }
                 }
-#endif
+
                 RayP = HitPoint;
                 RayD -= 2.0f*Vector2::DotProduct(HitReflector->Direction, RayD)*HitReflector->Direction;
                 RayD = Vector2::Normalize(RayD);
@@ -109,7 +140,7 @@ void LaserSystem::Render(void)
             }
             else
             {
-                // @NOTE: No other more reflectors face this ray
+                // @NOTE: No more reflectors face this ray
                 break;
             }
 
@@ -145,6 +176,7 @@ laser_emitter *LaserSystem::GetEmitter(emitter_id ID)
     else
     {
         // TODO(thomas): Logging!
+        ErrorLog->Log("GetEmitter was passed an inavalid emitter ID of %i.", ID.Value);
     }
 
     return(Result);
@@ -163,6 +195,7 @@ emitter_id LaserSystem::CreateEmitter(void)
     else
     {
 		Result.Value = 0xffffffff; // NOTE(thomas): Arbirtarily invalid laser index
+        ErrorLog->Log("No more emitters can be created at this time.");
 	}
     
     return(Result);
@@ -179,6 +212,7 @@ reflector *LaserSystem::GetReflector(reflector_id ID)
     else
     {
         // TODO(thomas): Logging!
+        ErrorLog->Log("GetReflector was passed an inavalid reflector ID of %i.", ID.Value);
     }
 
     return(Result);
@@ -197,6 +231,7 @@ reflector_id LaserSystem::CreateReflector(void)
     else
     {
 		Result.Value = 0xffffffff; // NOTE(thomas): Arbirtarily invalid index
+        ErrorLog->Log("No more reflectors can be created at this time.");
 	}
     
     return(Result);

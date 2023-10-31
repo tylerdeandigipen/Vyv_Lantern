@@ -27,6 +27,8 @@ struct reflector_id
 };
 
 class BaseSystem;
+class Logging;
+class Inputs;
 
 class LaserSystem : public BaseSystem
 {
@@ -49,14 +51,21 @@ public:
     reflector *GetReflector(reflector_id ID);
     
 private:
+
+    bool DEBUGKeyPressed(int KeyCode, Inputs *InputManager);
     
-#define MAX_LASER_EMITTERS 64
+#define MAX_LASER_EMITTERS 256
 	laser_emitter Emitters[MAX_LASER_EMITTERS];
 	uint32_t EmitterCount;
 
-#define MAX_REFLECTORS 64
+#define MAX_REFLECTORS 256
     reflector Reflectors[MAX_REFLECTORS];
     uint32_t ReflectorCount;
+
+    Logging *ErrorLog;
+
+    int DEBUGPreviousScancode;
+    bool DEBUGVisualizeReflectorBounces;
 };
 
 
