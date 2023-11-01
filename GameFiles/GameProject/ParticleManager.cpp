@@ -8,6 +8,11 @@ ParticleManager::ParticleManager()
 		particleArray[i] = NULL;
 	}
 }
+ParticleManager::~ParticleManager()
+{
+	ClearParticles();
+}
+
 
 void ParticleManager::UpdateParticles()
 {
@@ -38,4 +43,16 @@ void ParticleManager::AddParticle(Particle* particle_)
 	}
 	particleArray[totalParticles] = particle_;
 	totalParticles += 1;
+}
+
+void ParticleManager::ClearParticles()
+{
+	for (int i = 0; i < MAX_PARTICLES; i++)
+	{
+		if (particleArray[i] == NULL)
+		{
+			delete particleArray[i];
+		}
+	}
+	totalParticles = 0;
 }

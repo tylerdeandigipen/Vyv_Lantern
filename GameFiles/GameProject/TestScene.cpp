@@ -167,7 +167,7 @@ Engine::EngineCode TestScene::Init()
 
     ImGui_ImplSDL2_InitForOpenGL(window, glContext);
     ImGui_ImplOpenGL3_Init("#version 330");
-
+    /*
 	tempLight.Type = LightSourceType_Directional;
 	tempLight.position.x = 80;
     tempLight.position.y = 90;
@@ -209,7 +209,7 @@ Engine::EngineCode TestScene::Init()
     testSprite->layer = 1;
     pixelRenderer.AddObject(testSprite);
 
-    /*Add another testsprite to check for collision*/
+    //Add another testsprite to check for collision
     testSprite1 = new ImageBuffer(30, 30);
     for (int x = 0; x < testSprite1->BufferSizeX; ++x)
     {
@@ -227,7 +227,7 @@ Engine::EngineCode TestScene::Init()
     testSprite1->layer = 1;
     pixelRenderer.AddObject(testSprite1);
     testSprite1->type = SWITCH;
-    /*Walls here*/
+    //Walls here
     topwall = new ImageBuffer(pixelRenderer.outputBuffer->BufferSizeX * pixelRenderer.outputBuffer->screenScale, 2);
     for (int x = 0; x < topwall->BufferSizeX; ++x)
     {
@@ -259,9 +259,9 @@ Engine::EngineCode TestScene::Init()
 
 
     ObjCount = pixelRenderer.returnObjCnt();
-    /*temp fix to set object[0] to player type*/
+    //temp fix to set object[0] to player type
     pixelRenderer.objects[0]->type = PLAYER;
-
+    */
     logger.LogLine("Debug info: Lights, camera, action! (testScene init)");
 	return Engine::NothingBad;
 }
@@ -353,16 +353,17 @@ void TestScene::Update(float dt)
     {
         Engine::GetInstance()->SetCloseRequest(true);
     }
-    /*object[2] is the goose*/
-    /*object[1] is the square*/
+    /*
+    //object[2] is the goose
+    //object[1] is the square
     for (int i = 0; i < ObjCount; i++)
     {
         pixelRenderer.objects[i]->aabb.min = { pixelRenderer.objects[i]->position.x, pixelRenderer.objects[i]->position.y };
         pixelRenderer.objects[i]->aabb.max = { pixelRenderer.objects[i]->position.x + pixelRenderer.objects[i]->BufferSizeX, pixelRenderer.objects[i]->position.y + pixelRenderer.objects[i]->BufferSizeY };
     };
-
+    */
     /*This will make ALL objects collidable*/
-
+    /*
         for (int b = 1; b < ObjCount; b++)
         {
             if (!CollisionCheck(pixelRenderer.objects[0]->aabb, pixelRenderer.objects[b]->aabb))
@@ -454,7 +455,7 @@ void TestScene::Update(float dt)
     if (soundCooldown < 0.0f) {
         soundCooldown = 0.0f;
     }
-
+    */
     {
         int CursourX = 0;
         int CursourY = 0;

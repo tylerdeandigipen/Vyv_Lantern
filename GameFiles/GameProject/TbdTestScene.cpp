@@ -224,6 +224,7 @@ void TbdTestScene::Render()
 Engine::EngineCode TbdTestScene::Exit()
 {
     // Remember to clean up
+    TbdPixelRenderer->CleanRenderer();
     ImGui_ImplOpenGL3_Shutdown();
     ImGui_ImplSDL2_Shutdown();
     ImGui::DestroyContext();

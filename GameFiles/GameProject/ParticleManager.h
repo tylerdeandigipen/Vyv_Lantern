@@ -9,8 +9,11 @@ class ParticleManager
 {
 public:
 	ParticleManager();
+	~ParticleManager();
+
 	void UpdateParticles();
 	void AddParticle(Particle* particle_);
+	void ClearParticles();
 
 	Particle* particleArray[MAX_PARTICLES];
 	int totalParticles;

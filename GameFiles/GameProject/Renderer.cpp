@@ -345,6 +345,29 @@ Renderer::Renderer()
 
 }
 
+void Renderer::CleanRenderer()
+{
+    outputBuffer->ClearImageBuffer();
+    inputBuffer->ClearImageBuffer();
+    objectLayer->ClearImageBuffer();
+    backgroundLayer->ClearImageBuffer();
+    foregroundLayer->ClearImageBuffer();
+    normalBuffer->ClearImageBuffer();
+    normalBufferPostCam->ClearImageBuffer();
+    DebugBuffer->ClearImageBuffer();
+    particleManager->ClearParticles();
+    ClearObjects();
+    ClearTilesets();
+    faceIndex = -1;
+    numTiles = 0;
+    numNormalTiles = 0;
+    numObjects = 0;
+    numAnimatedObjects = 0;
+    numLights = 0;
+    frameCount = 0;
+    timer = 0;
+    CameraP = Vector2{ 0,0 };
+}
 Renderer::~Renderer(void)
 {
     delete outputBuffer;
@@ -354,7 +377,11 @@ Renderer::~Renderer(void)
     delete foregroundLayer;
     delete normalBuffer;
     delete normalBufferPostCam;
+    delete DebugBuffer;
     delete particleManager;
+
+    ClearObjects();
+    ClearTilesets();
 
     glDeleteTextures(1, &OutputBufferTexture);
 }
@@ -503,6 +530,32 @@ int Renderer::returnObjCnt()
         }
     }
     return countObjects;
+}
+
+void Renderer::ClearObjects()
+{
+    for (int i = 0; i < MAX_OBJECTS; ++i) 
+    {
+        if (objects[i] != nullptr) 
+        {
+            delete objects[i];
+        }
+    }
+}
+
+void Renderer::ClearTilesets()
+{
+    for (int i = 0; i < 128; i++)
+    {
+        if (tileSet[i] != NULL)
+        {
+            delete tileSet[i];
+        }
+        if (normalTileSet[i] != NULL)
+        {
+            delete normalTileSet[i];
+        }
+    }
 }
 
 void Renderer::ResizeBuffers()
