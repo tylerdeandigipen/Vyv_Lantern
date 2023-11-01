@@ -10,6 +10,7 @@
 #pragma once
 #include "stdafx.h"
 #include "Component.h"
+#include "Vector.h"
 
 class Physics : public Component
 {
@@ -20,14 +21,10 @@ public:
 	Component* Clone() const override;
 	std::string GetName() override;
 	static std::string Name();
-	// const Vector2D* GetOldTranslation() const 
-	// const Vector2D* GetAcceleration() const;
-	// const Vector2D* GetVelocity() const;
+	const gfxVector2 GetOldTranslation();
 	void Read(json jsonData) override;
 	void Update(float dt);
 private:
-	// Variables and functions will need to be custom made
-	// CS230 examples are set up for a moving rocket 
-
+	gfxVector2 oldTranslation;
 };
 

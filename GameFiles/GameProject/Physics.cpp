@@ -8,6 +8,8 @@
 //
 //------------------------------------------------------------------------------
 #include "Physics.h"
+#include "Entity.h"
+#include "Transform.h"
 
 Physics::Physics() : Component(Component::cPhysics)
 {
@@ -32,6 +34,11 @@ std::string Physics::Name()
 	return "Physics";
 }
 
+const gfxVector2 Physics::GetOldTranslation()
+{
+	return oldTranslation;
+}
+
 std::string Physics::GetName()
 {
 	return std::string();
@@ -39,25 +46,22 @@ std::string Physics::GetName()
 
 void Physics::Read(json jsonData)
 {
-	// for when we get json
-	// 
+	if (jsonData["OldTranslation"].is_object())
+	{
+		json old = jsonData["OldTranslation"];
+		oldTranslation.x = old["x"];
+		oldTranslation.y = old["y"];
+	}
 }
 
 void Physics::Update(float dt)
 {
 	UNREFERENCED_PARAMETER(dt);
-	/*Transform* transform = Parent()->Has(Transform);
+	Transform* transform = Parent()->Has(Transform);
 	if (transform)
 	{
 		float _rotation = transform->GetRotation();
-		const Vector2D* _translation = transform->GetTranslation();
-		Vector2D temp = { 0, 0 };
-
+		const gfxVector2* _translation = transform->GetTranslation();
 		oldTranslation = *_translation;
-		_rotation += rotationalVelocity * dt;
-		Vector2DScaleAdd(&velocity, &acceleration, &velocity, dt);
-		Vector2DScaleAdd(&temp, &velocity, _translation, dt);
-		transform->SetTranslation(&temp);
-		transform->SetRotation(_rotation);
-	}*/
+	}
 }

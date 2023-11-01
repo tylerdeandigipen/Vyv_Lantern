@@ -12,6 +12,7 @@
 #include "Entity.h"
 #include "Inputs.h"
 #include "Transform.h"
+#include "Physics.h"
 #include "Renderer.h"
 #include "LevelBuilder.h"
 #include "Maths/Vector.h"
@@ -120,6 +121,7 @@ void BehaviorPlayer::Controller(float dt)
     }
     if (!checkWalls(translation))
         transform->SetTranslation(translation);
+
     timer += dt;
     if (timer >= timeBetweenBlink)
     {
@@ -158,7 +160,21 @@ bool BehaviorPlayer::checkWalls(gfxVector2 position)
                     }
                     else
                     {
-                        /* There is collision */
+
+                        // too tired will do in moring
+
+                        //if (!(playerMax.x < wallMin.x || playerMin.x > wallMax.x))
+                        //{
+                        //    position.x = Parent()->Has(Physics)->GetOldTranslation().x;
+                        //}
+                        //else
+                        //{
+                        //   position.y = Parent()->Has(Physics)->GetOldTranslation().y;
+                        //}
+
+                        // Update the position to the adjusted value
+                        //Transform* transform = Parent()->Has(Transform);
+                        //transform->SetTranslation(position);
                         return true;
                     }
                 }

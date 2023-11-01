@@ -31,6 +31,7 @@ private:
 	static Component& CreateBehaviorPlayer(void);
 	static Component& CreateColliderAABB(void);
 	static Component& CreateTransform(void);
+	static Component& CreatePhysics(void);
 	//static Component& CreateLight(void);
 	static ComponentFactory* instance;
 	std::unordered_map<std::string, std::function<Component&()>> component_map;

@@ -12,6 +12,7 @@
 #include "ColliderAABB.h"
 #include "Transform.h"
 #include "BehaviorPlayer.h"
+#include "Physics.h"
 
 ComponentFactory* ComponentFactory::instance = new ComponentFactory();
 
@@ -30,6 +31,7 @@ Engine::EngineCode ComponentFactory::Init()
     Add(BehaviorPlayer::Name(), &ComponentFactory::CreateBehaviorPlayer);
     Add(ColliderAABB::Name(), &ComponentFactory::CreateColliderAABB);
     Add(Transform::Name(), &ComponentFactory::CreateTransform);
+    Add(Physics::Name(), &ComponentFactory::CreatePhysics);
     assert(winHandle != NULL);
     return Engine::NothingBad;
 }
@@ -86,6 +88,12 @@ Component& ComponentFactory::CreateTransform()
 {
     Component* transform = new Transform();
     return *transform;
+}
+
+Component& ComponentFactory::CreatePhysics()
+{
+    Component* physics = new Physics();
+    return *physics;
 }
 
 //Component& ComponentFactory::CreateLight()
