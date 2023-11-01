@@ -33,6 +33,7 @@ private:
     FMOD::Channel* musicChannel = nullptr;
     FMOD::Channel* voiceChannel = nullptr;
     FMOD::ChannelGroup* channelGroup = nullptr;
+    FMOD::ChannelGroup* musicChannelGroup = nullptr;
     std::map<std::string, FMOD::Sound*> soundDatabase;
     std::map<std::string, FMOD::Sound*> musicDatabase;
     std::map<std::string, FMOD::Sound*> voiceDatabase;

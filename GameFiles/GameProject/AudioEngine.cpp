@@ -14,6 +14,9 @@
     std::random_device random;
     std::mt19937 generator(random());
     std::uniform_int_distribution<int> distributor(0, 2);
+    const int MAX_MUSIC_TRACKS = 10;
+    FMOD::Channel* musicChannels[MAX_MUSIC_TRACKS]; // Define an array of music channels
+
         /*
        *   Instances
        ----------------------------------------------------------------------------- */
@@ -53,7 +56,17 @@
         ----------------------------------------------------------------------------- */
         musicChannel->setCallback(&channelGroupCallback);
 
+        for (int i = 0; i < MAX_MUSIC_TRACKS; i++) {
+            fmodSystem->playSound(nullptr, musicChannelGroup, true, &musicChannels[i]); // Create music channels
+        }
+
+
+        /*New channel for Musics, like bgm and stuff that plays parallel*/
+        fmodSystem->createChannelGroup("Music", &musicChannelGroup);
+
     }
+
+
 
     /*                                                                  Destructor
     ----------------------------------------------------------------------------- */
@@ -88,30 +101,25 @@
     void _audioManager::PlayMusic(std::string musicTrack)
     {
         // Create the sound.
-        FMOD::Sound* audioClip = 0;
+        FMOD::Sound* audioClip = nullptr;
         auto search = musicDatabase.find(musicTrack);
         if (search != musicDatabase.end())
             audioClip = search->second;
 
-        // Play the music.
-        bool check{ true };
-        StopMusic();
-        while (check)
-        {
-            musicChannel->isPlaying(&check); //waits
+        // Check if the audioClip is valid.
+        if (audioClip) {
+            // Create a new channel for this music track.
+            FMOD::Channel* musicChannel = nullptr;
+            fmodSystem->playSound(audioClip, musicChannelGroup, false, &musicChannel);
+
+            // Handle channel-specific settings (fade, etc.) here if needed.
+
+            // Set the channel group and play the music.
+            musicChannel->setChannelGroup(musicChannelGroup);
         }
-        fmodSystem->playSound(audioClip, channelGroup, false, &musicChannel);
-        unsigned long long dspclock;
-        FMOD::Sound* snd;
-        int rate;
-        musicChannel->setPaused(true);
-        musicChannel->getCurrentSound(&snd);
-        musicChannel->getDSPClock(0, &dspclock);
-        fmodSystem->getSoftwareFormat(&rate, 0, 0);
-        musicChannel->addFadePoint(dspclock, 0.0f);
-        musicChannel->addFadePoint(dspclock + rate, 1.0f);
-        musicChannel->setPaused(false);
     }
+
+
 
     /*!				void _audioManager::PlayVoice(string voiceClip)
     @param			string voiceClip
