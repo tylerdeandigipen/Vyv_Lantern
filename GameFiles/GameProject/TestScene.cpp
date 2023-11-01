@@ -487,6 +487,7 @@ void TestScene::Render()
 Engine::EngineCode TestScene::Exit()
 {
     // Remember to clean up
+    pixelRenderer.CleanRenderer();
     ImGui_ImplOpenGL3_Shutdown();
     ImGui_ImplSDL2_Shutdown();
     ImGui::DestroyContext();
