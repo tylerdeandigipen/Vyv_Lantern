@@ -155,7 +155,7 @@ Engine::EngineCode TestScene::Init()
     SDL_GL_SetSwapInterval(0);
     
     gladLoadGLLoader(SDL_GL_GetProcAddress);
-	LevelBuilder::GetInstance()->LoadLevel(&pixelRenderer, "./Data/FirstLevel.json");
+	//LevelBuilder::GetInstance()->LoadLevel(&pixelRenderer, "./Data/FirstLevel.json");
 
     IMGUI_CHECKVERSION();
     ImGui::CreateContext();
@@ -344,7 +344,7 @@ void TestScene::Update(float dt)
     ImGui::Render();
 
     Inputs* inputHandler = Inputs::GetInstance();
-    LevelBuilder::GetInstance()->LevelUpdate(dt);
+    //LevelBuilder::GetInstance()->LevelUpdate(dt);
     AudioManager.Update();
     inputHandler->handleInput();
     pixelRenderer.UpdateObjects();
@@ -503,7 +503,7 @@ Engine::EngineCode TestScene::Unload()
     //delete testEntity;
     //delete jsonEntity;
 
-    LevelBuilder::GetInstance()->FreeLevel();
+  //  LevelBuilder::GetInstance()->FreeLevel();
 
     logger.LogLine("Debug info: entities destroyed :( (testScene unloaded)");
 	return Engine::NothingBad;

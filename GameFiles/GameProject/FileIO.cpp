@@ -27,7 +27,6 @@ json FileIO::OpenJSON(std::string filename)
 	else
 	{
 		perror("JSON file does not exist");
-		exit(-1);
 	}
 	return jsonData;
 }
