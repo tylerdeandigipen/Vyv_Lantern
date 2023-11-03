@@ -549,13 +549,21 @@ void Renderer::ClearTilesets()
 {
     for (int i = 0; i < 128; i++)
     {
-        if (tileSet[i] != NULL)
+        if (tileSet)
         {
-            delete tileSet[i];
+            if (tileSet[i] != NULL)
+            {
+                delete tileSet[i];
+                tileSet[i] = NULL;
+            }
         }
-        if (normalTileSet[i] != NULL)
+        if (normalTileSet)
         {
-            delete normalTileSet[i];
+            if (normalTileSet[i] != NULL)
+            {
+                delete normalTileSet[i];
+                normalTileSet[i] = NULL;
+            }
         }
     }
 }
