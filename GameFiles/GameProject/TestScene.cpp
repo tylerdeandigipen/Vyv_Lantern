@@ -58,6 +58,9 @@ float soundCooldown = 0.0f;
 int ObjCount;
 const float pushForce = 1.0f;
 
+static bool tabKeyPreviouslyPressed = false;
+static bool show_demo_window = false;
+
 /* NOTICE !!!!!!!!!! Feel free to "turn off" debug messages as you please. You can see them in the debugLog.txt in the game files, or in the output tab when debugging. Literally
    you can call for the logger anywhere as long as you get an instance first. Use it in ur functions or something - taylee */
 
@@ -308,9 +311,23 @@ void tempPlayerMovementLol(float dt)
         pixelRenderer.AddLight(pixelRenderer.lightSource[0]);
         canPlaceMoreLight = 0;
     }
+
     if (!inputHandler->keyPressed(SDL_SCANCODE_E))
     {
         canPlaceMoreLight = 1;
+    }
+
+    if (inputHandler->keyPressed(SDL_SCANCODE_TAB))
+    {
+        if (!tabKeyPreviouslyPressed)
+        {
+            show_demo_window = !show_demo_window;
+        }
+        tabKeyPreviouslyPressed = true;
+    }
+    else
+    {
+        tabKeyPreviouslyPressed = false;
     }
 
     int x, y;

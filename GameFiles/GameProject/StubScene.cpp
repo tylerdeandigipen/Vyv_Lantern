@@ -1,3 +1,12 @@
+//------------------------------------------------------------------------------
+//
+// File Name:	StubScene.cpp
+// Author(s):	
+// Purpose:		Change this to whatever you need
+//
+// Copyright © 2023 DigiPen (USA) Corporation.
+//
+//------------------------------------------------------------------------------
 #include "StubScene.h"
 #include "Scene.h"
 #include "SceneSystem.h"

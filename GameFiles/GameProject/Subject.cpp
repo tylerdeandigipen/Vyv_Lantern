@@ -1,3 +1,12 @@
+//------------------------------------------------------------------------------
+//
+// File Name:	Subject.cpp
+// Author(s):	TayLee Young
+// Purpose:		Maintains a list of observers to notify if the subject changes
+//
+// Copyright © 2023 DigiPen (USA) Corporation.
+//
+//------------------------------------------------------------------------------
 #include "Subject.h"
 #include "Observer.h"
 
