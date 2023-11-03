@@ -41,6 +41,9 @@ SDL_GLContext TbdGlContext;
 
 Scene* TbdTestSceneinstance = NULL; 
 
+static bool tabKeyPreviouslyPressed = false;
+static bool show_demo_window = false;
+
 TbdTestScene::TbdTestScene() : Scene("test")
 {
 
@@ -166,6 +169,19 @@ void TbdPlayerMovement(float dt)
         TbdCanToggleNormalDisplay = true;
     }
 
+    if (inputHandler->keyPressed(SDL_SCANCODE_TAB))
+    {
+        if (!tabKeyPreviouslyPressed)
+        {
+            show_demo_window = !show_demo_window;
+        }
+        tabKeyPreviouslyPressed = true;
+    }
+    else
+    {
+        tabKeyPreviouslyPressed = false;
+    }
+
     int x, y;
     Uint32 buttons = SDL_GetMouseState(&x, &y);
 
@@ -193,7 +209,10 @@ void TbdTestScene::Update(float dt)
     ImGui_ImplSDL2_NewFrame();
     ImGui::NewFrame();
 
-    ImGui::ShowDemoWindow();
+    if (show_demo_window)
+    {
+        ImGui::ShowDemoWindow(&show_demo_window);
+    }
 
     ImGui::Render();
 
@@ -204,16 +223,12 @@ void TbdTestScene::Update(float dt)
     LevelBuilder::GetInstance()->LevelUpdate(dt);
     AudioManager.Update();
     inputHandler->handleInput();
+
     TbdPixelRenderer->UpdateObjects();
     TbdPixelRenderer->UpdateAnimations(dt);
     TbdPixelRenderer->UpdateFace(TbdPixelRenderer->faceState);
 
     TbdPlayerMovement(dt);
-
-    if (inputHandler->keyPressed(SDLK_ESCAPE) == true)
-    {
-        Engine::GetInstance()->SetCloseRequest(true);
-    }
 }
 
 void TbdTestScene::Render()
