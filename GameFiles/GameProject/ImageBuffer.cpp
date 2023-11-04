@@ -40,7 +40,7 @@ ImageBuffer::ImageBuffer(ImageBuffer& rhs)
 
 ImageBuffer::ImageBuffer()
 {
-    buffer = new Color[BufferSizeX*BufferSizeY];
+    buffer = new Color[BufferSizeX * BufferSizeY];
     ClearImageBuffer();
 
 	size.x = BufferSizeX;

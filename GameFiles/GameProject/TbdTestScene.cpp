@@ -108,6 +108,7 @@ Engine::EngineCode TbdTestScene::Init()
 
     TbdPixelRenderer->AddLight(tempLight);
     TbdPixelRenderer->AddLight(tempLight2);
+
     Color tempColor( 226, 230, 179, 255 );
 
     int numTestParticles = 30;

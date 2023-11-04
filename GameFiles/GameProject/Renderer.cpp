@@ -201,6 +201,50 @@ float Renderer::FindPixelLuminosity(float x, float y, Light *LightSource)
     return(Result);
 }
 
+void Renderer::CalculateShadows()
+{
+    const int xSize = (int)inputBuffer->size.x;
+    const int ySize = (int)inputBuffer->size.y;
+    Color black{ 0,0,0,255 };
+    const Vector2 cameraPos = CameraP;
+    Vector2 lightPos;
+    int shadowsCast = 0;
+    lightBuffer->ClearImageBuffer();
+    foregroundLayer->Blit(lightBuffer, -CameraP.x, -CameraP.y);
+    #pragma omp parallel for collapse(3) shared(black, cameraPos) private(lightPos, shadowsCast)
+    for (int x = 0; x < xSize; ++x)
+    {
+        for (int y = 0; y < ySize; ++y)
+        {
+            for (int i = 0; i < numLights; ++i)
+            {
+                lightPos = lightSource[i].position;
+
+                if (CheckLineForObject(x, y, lightPos.x - cameraPos.x, lightPos.y - cameraPos.y) == true)
+                {
+                    shadowsCast += 1;
+
+                    //remove break later when trying to do multiple shadow casters
+                    break;
+                }
+            }
+            if (lightBuffer->SampleColor(x, y).GetAlpha() != 0)
+            {
+                //maybe here do ham algo with the tilemap instead of pixels and if any tiles inbetween player and target tile then dont sub?
+                shadowsCast -= 1;
+            }
+            
+            if (shadowsCast >= 1)
+            {
+                lightR[x][y] = 0;
+                lightG[x][y] = 0;
+                lightB[x][y] = 0;
+            }
+            shadowsCast = 0;
+        }
+    }
+}
+
 void Renderer::RenderParticles()
 {
     Vector2 tempPos;
@@ -220,25 +264,44 @@ void Renderer::RenderParticles()
 }
 
 #define TILE_SIZE 8
+#define NUM_WALL_SPRITES 24
+const int wallSpriteIndexes[NUM_WALL_SPRITES] = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 45, 46, 48, 29, 26, 31, 41, 39, 36, 27, 28, 34, 35 };
 void Renderer::MakeTileMap(int** tileMapArray)
 {
     foregroundLayer->ClearImageBuffer();
     backgroundLayer->ClearImageBuffer();
+    ImageBuffer* clearTile = new ImageBuffer{8,8};
+
     for (int x = 0; x < tileMapSize.x; ++x)
     {
         for (int y = 0; y < tileMapSize.y; ++y)
         {
             if (tileSet[tileMapArray[x][y]])
             {
-                if (tileSet[tileMapArray[x][y]]->layer == 0)
+                bool isWall = false;
+                for (int i = 0; i < NUM_WALL_SPRITES; i++)
+                {
+                    if (tileMapArray[x][y] == wallSpriteIndexes[i])
+                    {
+                        isWall = true;
+                        break;
+                    }
+                }
+                if (isWall == false)
                 {
                     tileSet[tileMapArray[x][y]]->position = { (float)(x * TILE_SIZE), (float)(y * TILE_SIZE) };
                     backgroundLayer->AddSprite(tileSet[tileMapArray[x][y]]);
+
+                    clearTile->position = { (float)(x * TILE_SIZE), (float)(y * TILE_SIZE) };
+                    foregroundLayer->AddSprite(clearTile);
                 }
                 else
                 {
                     tileSet[tileMapArray[x][y]]->position = { (float)(x * TILE_SIZE), (float)(y * TILE_SIZE) };
                     foregroundLayer->AddSprite(tileSet[tileMapArray[x][y]]);
+
+                    clearTile->position = { (float)(x * TILE_SIZE), (float)(y * TILE_SIZE) };
+                    backgroundLayer->AddSprite(clearTile);
                 }
 
                 if (normalTileSet[tileMapArray[x][y]])
@@ -477,6 +540,7 @@ void Renderer::DitherLights()
     int i3;
     const int xSize = (int)inputBuffer->size.x;
     const int ySize = (int)inputBuffer->size.y;
+    Color black{ 0,0,0,255 };
 
     #pragma omp parallel for collapse(2) shared(xSize, ySize) private(red, green, blue, bayerNum, corr, i1, i2, i3)
     for (int x = 0; x < xSize; ++x)
@@ -485,6 +549,10 @@ void Renderer::DitherLights()
         {
             Color& DestPixel = inputBuffer->SampleColor(x, y);
             Color scaledWhite{ 255,255,255,255 };
+            if (inputBuffer->SampleColor(x, y) == black)
+            {
+                scaledWhite = black;
+            }
             scaledWhite = scaledWhite.ScaleIndividual(lightR[x][y], lightG[x][y], lightB[x][y]);
 
             red = scaledWhite.GetRed();
@@ -528,6 +596,7 @@ void Renderer::RenderToOutbuffer()
 {
     const int xSize = (int)inputBuffer->size.x;
     const int ySize = (int)inputBuffer->size.y;
+    foregroundLayer->Blit(lightBuffer, -CameraP.x, -CameraP.y);
 
     #pragma omp parallel for collapse(2)
     for (int x = 0; x < xSize; ++x)
@@ -540,19 +609,24 @@ void Renderer::RenderToOutbuffer()
             //Debug conditions
             if (renderNormalMap == true)
             {
-                DestPixel = normalBufferPostCam->SampleColor(x, y);
+                DestPixel = lightBuffer->SampleColor(x, y);
             }
         }
     }
 }
+
 void Renderer::Update()
 {
     Uint32 currentTime = SDL_GetTicks();
     ScopeTimer TestScopeTimer("Renderer::Update");
 
     RenderLightingPass();
+    
+CalculateShadows();
+
     DitherLights();
     RenderToOutbuffer();
+
     DebugBuffer->Blit(outputBuffer);
     DebugBuffer->ClearImageBuffer();
 
@@ -698,7 +772,7 @@ void Renderer::ResizeBuffers()
     outputBuffer->screenScale = screenScale;
 }
 
-void Renderer::brensenhamalgo(int x1, int y1, int x2, int y2)
+bool Renderer::CheckLineForObject(int x1, int y1, int x2, int y2)
 {
     int dx = abs(x2 - x1);
     int dy = abs(y2 - y1);
@@ -709,9 +783,12 @@ void Renderer::brensenhamalgo(int x1, int y1, int x2, int y2)
     int x = x1;
     int y = y1;
 
-    while (x != x2 || y != y2) {
-        // Draw the current point (x, y) here
-        std::cout << "(" << x << ", " << y << ")" << std::endl;
+    while (x != x2 || y != y2) 
+    {
+        if (lightBuffer->SampleColor(x, y).GetAlpha() != 0)
+        {
+           return true;
+        }
 
         int error2 = 2 * error;
 
@@ -725,7 +802,7 @@ void Renderer::brensenhamalgo(int x1, int y1, int x2, int y2)
             y += sy;
         }
     }
-    /*DO THE DRAWINGS HERE TO DRAW THE LINE*/
+    return false;
 }
 
 void Renderer::AddObject(ImageBuffer* sprite)
