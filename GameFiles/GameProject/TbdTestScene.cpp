@@ -44,7 +44,7 @@ Scene* TbdTestSceneinstance = NULL;
 static bool tabKeyPreviouslyPressed = false;
 static bool show_demo_window = false;
 
-TbdTestScene::TbdTestScene() : Scene("test")
+TbdTestScene::TbdTestScene() : Scene("tbdtest")
 {
 
 }
@@ -108,7 +108,7 @@ Engine::EngineCode TbdTestScene::Init()
 
     TbdPixelRenderer->AddLight(tempLight);
     TbdPixelRenderer->AddLight(tempLight2);
-    Color tempColor = { 226, 230, 179, 255 };
+    Color tempColor( 226, 230, 179, 255 );
 
     int numTestParticles = 30;
     for (int i = 0; i < numTestParticles; i++)
@@ -240,6 +240,7 @@ void TbdTestScene::Render()
 Engine::EngineCode TbdTestScene::Exit()
 {
     // Remember to clean up
+    Inputs::GetInstance()->InputKeyClear();
     TbdPixelRenderer->CleanRenderer();
     ImGui_ImplOpenGL3_Shutdown();
     ImGui_ImplSDL2_Shutdown();
@@ -253,6 +254,7 @@ Engine::EngineCode TbdTestScene::Exit()
 Engine::EngineCode TbdTestScene::Unload()
 {
     delete TbdTestSceneinstance;
+    TbdTestSceneinstance = nullptr;
     LevelBuilder::GetInstance()->FreeLevel();
 	return Engine::NothingBad;
 }

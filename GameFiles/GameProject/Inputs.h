@@ -30,6 +30,8 @@ public:
 	int getMouseX() const;
 	int getMouseY() const;
 
+	void InputKeyClear();
+
 	void SetWindow(SDL_Window* window);
 private:
 	static Inputs* instance;
