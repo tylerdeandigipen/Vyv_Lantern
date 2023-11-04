@@ -70,9 +70,9 @@ void LevelBuilder::LoadLevel(Renderer* pixel, std::string filename)
     {
         for (auto& levelData : jsonData["Levels"])
         {
-            if (levelData["TileData"].is_object())
+            if (levelData["TylerTileData"].is_object())
             {
-                json Data = levelData["TileData"];
+                json Data = levelData["TylerTileData"];
                 int i = 0, j = 0, hatelife = 0;
                 SizeX = Data["SizeX"];
                 SizeY = Data["SizeY"];

@@ -77,8 +77,8 @@ Engine::EngineCode TbdTestScene::Init()
     TbdGlContext = SDL_GL_CreateContext(TbdWindow);
     SDL_GL_SetSwapInterval(0);
     gladLoadGLLoader(SDL_GL_GetProcAddress);
-    FileIO::GetInstance()->ReadTileMap("./Data/TileMapSprites.json", TbdPixelRenderer);
-    FileIO::GetInstance()->ReadTileMap("./Data/TileMapNormals.json", TbdPixelRenderer, true);
+    FileIO::GetInstance()->ReadTileSet("./Data/TileMapSprites.json", TbdPixelRenderer);
+    FileIO::GetInstance()->ReadTileSet("./Data/TileMapNormals.json", TbdPixelRenderer, true);
     LevelBuilder::GetInstance()->LoadLevel(TbdPixelRenderer, "./Data/Tbd_TestLevel.json");
 
     IMGUI_CHECKVERSION();
