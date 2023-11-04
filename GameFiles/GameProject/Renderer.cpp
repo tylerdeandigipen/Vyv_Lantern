@@ -467,6 +467,20 @@ const	int BAYER_PATTERN_4X4[4][4] = {	//	4x4 Bayer Dithering Matrix. Color level
 {	 45, 225,  30, 210	},
 {	165, 105, 150,  90	}
 };
+
+const	int BAYER_PATTERN_8X8[8][8] = {	//	8x8 Bayer Dithering Matrix. Color levels: 65
+{	  0, 128,  32, 160,   8, 136,  40, 168	},
+{	192,  64, 224,  96, 200,  72, 232, 104	},
+{	 48, 176,  16, 144,  56, 184,  24, 152	},
+{	240, 112, 208,  80, 248, 120, 216,  88	},
+{	 12, 140,  44, 172,   4, 132,  36, 164	},
+{	204,  76, 236, 108, 196,  68, 228, 100	},
+{	 60, 188,  28, 156,  52, 180,  20, 148	},
+{	252, 124, 220,  92, 244, 116, 212,  84	}
+};
+
+int bayerSize = 8;
+
 uint8_t lightPallet[16] = {0, 17, 34, 51, 68, 85, 102, 119, 136, 153, 170, 187, 204, 221, 238, 255};
 
 void Renderer::DitherLights()
@@ -477,23 +491,38 @@ void Renderer::DitherLights()
     }
     int y = 0;
     int x = 0;
+    Color scaledWhite{ 255,255,255,255 };
+    float red;
+    float green;
+    float blue;
+    float bayerNum;
+    int corr;
+    int	i1;
+    int	i2;
+    int	i3;
     for (x = 0; x < inputBuffer->size.x; ++x)
     {
         for (y = 0; y < inputBuffer->size.y; ++y)
         {
             Color& DestPixel = inputBuffer->SampleColor(x, y);
-            Color scaledWhite{ 255,255,255,255 };
+            scaledWhite = Color{ 255,255,255,255 };
             scaledWhite = scaledWhite.ScaleIndividual(lightR[x][y], lightG[x][y], lightB[x][y]);
 
-            float red = scaledWhite.GetRed();
-            float green = scaledWhite.GetGreen();
-            float blue = scaledWhite.GetBlue();
-            float bayerNum = BAYER_PATTERN_4X4[x % 4][y % 4];
-            //this method only returns max or min sadly need fix later
-            uint8_t red8 = (uint8_t)(red > bayerNum ? 255 : 0);
-            uint8_t green8 = (uint8_t)(green > bayerNum ? 255 : 0);
-            uint8_t blue8 = (uint8_t)(blue > bayerNum ? 255 : 0);
-      
+            red = scaledWhite.GetRed();
+            green = scaledWhite.GetGreen();
+            blue = scaledWhite.GetBlue();
+  
+            bayerNum = BAYER_PATTERN_8X8[x % bayerSize][y % bayerSize];
+            corr = (bayerNum / 7) - 2;	//	 -2 because: 256/7=36  36*7=252  256-252=4   4/2=2 - correction -2
+
+            i1 = (blue + corr) / 36;
+            i2 = (green + corr) / 36;
+            i3 = (red + corr) / 36;		
+
+            clamp(i1, 0, 7);
+            clamp(i2, 0, 7);
+            clamp(i3, 0, 7);
+
             //force glowing eyes, maybe make an emisive mask later
             if (renderOnlyLights == false)
             {
@@ -503,12 +532,12 @@ void Renderer::DitherLights()
                 }
                 else
                 {
-                    DestPixel = DestPixel.ScaleIndividual((float)(red8 / 255), (float)(green8 / 255), (float)(blue8 / 255));
+                    DestPixel = DestPixel.ScaleIndividual(((float)i1 / 7), ((float)i1 / 7), ((float)i1 / 7));
                 }
             }
             else
             {
-                DestPixel = Color{red8, green8, blue8, 255};
+                DestPixel = Color{ (uint8_t)(i1 * 36), (uint8_t)(i2 * 36), (uint8_t)(i3 * 36), 255 };
             }
         }
     }
@@ -564,6 +593,7 @@ void Renderer::Update()
     
 
 #ifdef _DEBUG
+    /*
     for (int i = 0; i < numLights * 2; i++)
     {
         if (i % 2 == 0)
@@ -571,6 +601,7 @@ void Renderer::Update()
             outputBuffer->buffer[i + 1 + (3 * outputBuffer->BufferSizeX)] = { 0,0,255,255 };
         }
     }
+    */
 #endif
     
     if(!OutputBufferTexture)
