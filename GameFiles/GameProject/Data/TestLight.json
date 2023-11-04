@@ -15,7 +15,7 @@
   "angle": 200,
   "intensity": 2,
   "radius": 100,
-  "radialFalloff": 5,
+  "radialFalloff": 4,
   "radialWeight": 1,
   "angularWeight": 2.0,
   "frustumWeight": 0.15,

@@ -78,6 +78,8 @@ void Renderer::RenderLightingPass()
 
 #if 1
     RenderParticles();
+    //parallel loop idk if working or not
+    //#pragma omp parallel for
 	for (x = 0; x < inputBuffer->size.x; ++x)
     {
         for (y = 0; y < inputBuffer->size.y; ++y)
@@ -98,11 +100,16 @@ void Renderer::RenderLightingPass()
                     float B_F32 = ((float)LightSource->color.GetBlue())   * OneOver255;
                     lightMultiplier *= LightSource->volumetricIntensity;
                     
-                    IntensityR += lightMultiplier * R_F32;
-                    IntensityG += lightMultiplier * G_F32;
-                    IntensityB += lightMultiplier * B_F32;
+                    IntensityR += (lightMultiplier * R_F32);
+                    IntensityG += (lightMultiplier * G_F32);
+                    IntensityB += (lightMultiplier * B_F32);
 				}
             }
+            lightR[x][y] = IntensityR;
+            lightG[x][y] = IntensityG;
+            lightB[x][y] = IntensityB;
+
+            /*
             Color& DestPixel = outputBuffer->SampleColor(x, y);
             //force glowing eyes, maybe make an emisive mask later
             if (inputBuffer->SampleColor(x, y) == Color{ 196,215,165,255 })
@@ -119,6 +126,7 @@ void Renderer::RenderLightingPass()
             {
                 DestPixel = normalBufferPostCam->SampleColor(x, y);
             }
+            */
 		}
     }
 #else
@@ -210,8 +218,8 @@ float Renderer::FindPixelLuminosity(float x, float y, Light *LightSource)
     Result = normalFalloff * Result;
 
 
-    float const LIGHTING_STEP_SIZE = 0.35f;
-	Result = LIGHTING_STEP_SIZE * floorf(Result / LIGHTING_STEP_SIZE);
+    //float const LIGHTING_STEP_SIZE = 0.35f;
+	//Result = LIGHTING_STEP_SIZE * floorf(Result / LIGHTING_STEP_SIZE);
 
     return(Result);
 }
@@ -333,12 +341,27 @@ Renderer::Renderer()
     foregroundLayer = new ImageBuffer{ SCREEN_SIZE_X ,SCREEN_SIZE_Y };
     normalBuffer = new ImageBuffer{ SCREEN_SIZE_X ,SCREEN_SIZE_Y };
     normalBufferPostCam = new ImageBuffer{ SCREEN_SIZE_X ,SCREEN_SIZE_Y };
+    lightBuffer = new ImageBuffer{ SCREEN_SIZE_X ,SCREEN_SIZE_Y };
     particleManager = new ParticleManager;
     faceIndex = -1;
     faceState = NULL;
     outputBuffer->screenScale = screenScale;
 
-    //temp tileset things
+    //i hate this fix later
+    lightR = new float*[SCREEN_SIZE_X];
+    lightG = new float*[SCREEN_SIZE_X];
+    lightB = new float*[SCREEN_SIZE_X];
+
+    for (int x = 0; x < SCREEN_SIZE_X; ++x) 
+    {
+        for (int y = 0; y < SCREEN_SIZE_Y; ++y) 
+        {
+            lightR[x] = new float[y];
+            lightG[x] = new float[y];
+            lightB[x] = new float[y];
+        }
+    }
+    //end of hate
 
 	DebugBuffer = new ImageBuffer(SCREEN_SIZE_X, SCREEN_SIZE_Y);
 
@@ -357,6 +380,7 @@ void Renderer::CleanRenderer()
     normalBuffer->ClearImageBuffer();
     normalBufferPostCam->ClearImageBuffer();
     DebugBuffer->ClearImageBuffer();
+    lightBuffer->ClearImageBuffer();
     particleManager->ClearParticles();
     ClearObjects();
     ClearTilesets();
@@ -380,6 +404,7 @@ Renderer::~Renderer(void)
     delete normalBuffer;
     delete normalBufferPostCam;
     delete DebugBuffer;
+    delete lightBuffer;
     delete particleManager;
 
     ClearObjects();
@@ -436,14 +461,89 @@ void Renderer::DrawLine(Vector2 P0, Vector2 P1, const Color &LineColor)
 	}
 }
 
+const	int BAYER_PATTERN_4X4[4][4] = {	//	4x4 Bayer Dithering Matrix. Color levels: 17
+{	 15, 195,  60, 240	},
+{	135,  75, 180, 120	},
+{	 45, 225,  30, 210	},
+{	165, 105, 150,  90	}
+};
+uint8_t lightPallet[16] = {0, 17, 34, 51, 68, 85, 102, 119, 136, 153, 170, 187, 204, 221, 238, 255};
+
+void Renderer::DitherLights()
+{
+    if(isFullBright == true)
+    {
+        return;
+    }
+    int y = 0;
+    int x = 0;
+    for (x = 0; x < inputBuffer->size.x; ++x)
+    {
+        for (y = 0; y < inputBuffer->size.y; ++y)
+        {
+            Color& DestPixel = inputBuffer->SampleColor(x, y);
+            Color scaledWhite{ 255,255,255,255 };
+            scaledWhite = scaledWhite.ScaleIndividual(lightR[x][y], lightG[x][y], lightB[x][y]);
+
+            float red = scaledWhite.GetRed();
+            float green = scaledWhite.GetGreen();
+            float blue = scaledWhite.GetBlue();
+            float bayerNum = BAYER_PATTERN_4X4[x % 4][y % 4];
+            //this method only returns max or min sadly need fix later
+            uint8_t red8 = (uint8_t)(red > bayerNum ? 255 : 0);
+            uint8_t green8 = (uint8_t)(green > bayerNum ? 255 : 0);
+            uint8_t blue8 = (uint8_t)(blue > bayerNum ? 255 : 0);
+      
+            //force glowing eyes, maybe make an emisive mask later
+            if (renderOnlyLights == false)
+            {
+                if (DestPixel == Color{ 196,215,165,255 })
+                {
+                    DestPixel = inputBuffer->SampleColor(x, y);
+                }
+                else
+                {
+                    DestPixel = DestPixel.ScaleIndividual((float)(red8 / 255), (float)(green8 / 255), (float)(blue8 / 255));
+                }
+            }
+            else
+            {
+                DestPixel = Color{red8, green8, blue8, 255};
+            }
+        }
+    }
+}
+
+void Renderer::RenderToOutbuffer()
+{
+    int y = 0;
+    int x = 0;
+    for (x = 0; x < inputBuffer->size.x; ++x)
+    {
+        for (y = 0; y < inputBuffer->size.y; ++y)
+        {
+            Color& DestPixel = outputBuffer->SampleColor(x, y);
+            DestPixel = inputBuffer->SampleColor(x, y);
+
+            //Debug conditions
+            if (renderNormalMap == true)
+            {
+                DestPixel = normalBufferPostCam->SampleColor(x, y);
+            }
+        }
+    }
+}
 void Renderer::Update()
 {
     Uint32 currentTime = SDL_GetTicks();
     ScopeTimer TestScopeTimer("Renderer::Update");
 
     RenderLightingPass();
-	DebugBuffer->Blit(outputBuffer);
-	DebugBuffer->ClearImageBuffer();
+    DitherLights();
+    RenderToOutbuffer();
+    DebugBuffer->Blit(outputBuffer);
+    DebugBuffer->ClearImageBuffer();
+
 
     float AverageFrameLength = 0.0f;
 	for(uint32_t FrameIndex = 1; FrameIndex < _countof(PreviousFrameLengths); ++FrameIndex)

@@ -99,7 +99,7 @@ Engine::EngineCode TbdTestScene::Init()
 
     tempLight2.color = { 216, 247, 255, 255 };
 
-    tempLight2.intensity = 2.5f;
+    tempLight2.intensity = 5.0f;
     tempLight2.radius = 25;
     tempLight2.radialFalloff = 3;
     tempLight2.radialWeight = 1;
@@ -128,6 +128,7 @@ Engine::EngineCode TbdTestScene::Init()
 int TbdCanPlaceLight = 0;
 bool TbdCanToggleFullBright = true;
 bool TbdCanToggleNormalDisplay = true;
+bool TbdCanToggleOnlyLights = true;
 void TbdPlayerMovement(float dt)
 {
     Inputs* inputHandler = Inputs::GetInstance();
@@ -155,7 +156,18 @@ void TbdPlayerMovement(float dt)
     {
         TbdCanToggleFullBright = true;
     }
-
+    if (inputHandler->keyPressed(SDL_SCANCODE_Q) && TbdCanToggleOnlyLights == true)
+    {
+        if (TbdPixelRenderer->renderOnlyLights == false)
+            TbdPixelRenderer->renderOnlyLights = true;
+        else
+            TbdPixelRenderer->renderOnlyLights = false;
+        TbdCanToggleOnlyLights = false;
+    }
+    if (!inputHandler->keyPressed(SDL_SCANCODE_Q))
+    {
+        TbdCanToggleOnlyLights = true;
+    }
     if (inputHandler->keyPressed(SDL_SCANCODE_N) && TbdCanToggleNormalDisplay == true)
     {
         if (TbdPixelRenderer->renderNormalMap == false)
