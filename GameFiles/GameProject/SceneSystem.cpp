@@ -22,8 +22,8 @@
 // enums for different scene types
 enum class SceneType
 {
-	SCENE_TBD_TEST,
-	SCENE_TEST,
+	SCENE_TBD_TEST = 0,
+	SCENE_TEST = 1,
 	NULL_SCENE,
 	// Add more scenes as needed
 };
@@ -134,7 +134,7 @@ SceneSystem* SceneSystem::GetInstance()
 // IGNORE THIS PRACTICALLY EVERYONE ELSE
 // - taylee
 SceneSystem::SceneSystem() : BaseSystem("SceneSystem"), DefaultSceneInstance(TbdTestSceneGetInstance()),
-activeScene(NULL), nextScene(NULL), timer(0), rate(0.01f), isRestarting(false)
+activeScene(nullptr), nextScene(nullptr), timer(0), rate(0.01f), isRestarting(false)
 { }
 
 SceneSystem::~SceneSystem()
@@ -142,7 +142,7 @@ SceneSystem::~SceneSystem()
 	if (instance != NULL)
 	{
 		delete instance;
-		delete Renderer::GetInstance();
+		//delete Renderer::GetInstance();
 	}
 }
 
@@ -158,8 +158,13 @@ void SceneSystem::ChangeScene()
 	{
 		activeScene = nextScene;
 		if (!activeScene && !nextScene)
+		{
 			activeScene = DefaultSceneInstance;
-		activeScene->Load();
+		}
+		if (activeScene)
+		{
+			activeScene->Load();
+		}
 	}
 	else
 	{
@@ -169,13 +174,28 @@ void SceneSystem::ChangeScene()
 		{
 			activeScene->Unload();
 			activeScene = nextScene;
-			activeScene->Load();
+			if (activeScene)
+			{
+				activeScene->Load();
+			}
 		}
 
 		isRestarting = false;
 	}
 
+	if (!nextScene)
+	{
+		nextScene = DefaultSceneInstance;
+	}
+
 	nextScene = NULL;
+
+	if (!activeScene)
+	{
+		assert(false && "activeScene is NULL!");
+		throw(Engine::AllScenesNull);
+	}
+
 	activeScene->Init();
 }
 
@@ -193,13 +213,19 @@ bool CheckGameScenes()
 		activeSceneType = SceneType::SCENE_TEST;
 	}
 
-	if (inputHandlerScene->keyPressed(SDL_SCANCODE_1) && activeSceneType != SceneType::SCENE_TBD_TEST)
+	if (inputHandlerScene->keyPressed(SDL_SCANCODE_1))
 	{
-		sceneSystem->SetScene(TbdTestSceneGetInstance());
+		if (activeSceneType == SceneType::SCENE_TBD_TEST)
+			sceneSystem->RestartScene();
+		else
+			sceneSystem->SetScene(TbdTestSceneGetInstance());
 	}
-	else if (inputHandlerScene->keyPressed(SDL_SCANCODE_2) && activeSceneType != SceneType::SCENE_TEST)
+	else if (inputHandlerScene->keyPressed(SDL_SCANCODE_2))
 	{
-		sceneSystem->SetScene(TestSceneGetInstance());
+		if (activeSceneType == SceneType::SCENE_TEST)
+			sceneSystem->RestartScene();
+		else
+			sceneSystem->SetScene(TestSceneGetInstance());
 	}
 	else
 	{

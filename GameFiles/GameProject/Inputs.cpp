@@ -124,6 +124,12 @@ void Inputs::handleInput()
     }
 }
 
+void Inputs::InputKeyClear()
+{
+    for (int i = 0; i < SDL_NUM_SCANCODES; ++i)
+        this->keyStates[i] = false;
+}
+
 // could be depreciated now, but may have dependancies
 bool Inputs::Quitting() const
 {

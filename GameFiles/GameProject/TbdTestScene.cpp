@@ -44,7 +44,7 @@ Scene* TbdTestSceneinstance = NULL;
 static bool tabKeyPreviouslyPressed = false;
 static bool show_demo_window = false;
 
-TbdTestScene::TbdTestScene() : Scene("test")
+TbdTestScene::TbdTestScene() : Scene("tbdtest")
 {
 
 }
@@ -77,8 +77,8 @@ Engine::EngineCode TbdTestScene::Init()
     TbdGlContext = SDL_GL_CreateContext(TbdWindow);
     SDL_GL_SetSwapInterval(0);
     gladLoadGLLoader(SDL_GL_GetProcAddress);
-    FileIO::GetInstance()->ReadTileMap("./Data/TileMapSprites.json", TbdPixelRenderer);
-    FileIO::GetInstance()->ReadTileMap("./Data/TileMapNormals.json", TbdPixelRenderer, true);
+    FileIO::GetInstance()->ReadTileSet("./Data/TileMapSprites.json", TbdPixelRenderer);
+    FileIO::GetInstance()->ReadTileSet("./Data/TileMapNormals.json", TbdPixelRenderer, true);
     LevelBuilder::GetInstance()->LoadLevel(TbdPixelRenderer, "./Data/Tbd_TestLevel.json");
 
     IMGUI_CHECKVERSION();
@@ -108,7 +108,7 @@ Engine::EngineCode TbdTestScene::Init()
 
     TbdPixelRenderer->AddLight(tempLight);
     TbdPixelRenderer->AddLight(tempLight2);
-    Color tempColor = { 226, 230, 179, 255 };
+    Color tempColor( 226, 230, 179, 255 );
 
     int numTestParticles = 30;
     for (int i = 0; i < numTestParticles; i++)
@@ -252,6 +252,7 @@ void TbdTestScene::Render()
 Engine::EngineCode TbdTestScene::Exit()
 {
     // Remember to clean up
+    Inputs::GetInstance()->InputKeyClear();
     TbdPixelRenderer->CleanRenderer();
     ImGui_ImplOpenGL3_Shutdown();
     ImGui_ImplSDL2_Shutdown();
@@ -265,6 +266,7 @@ Engine::EngineCode TbdTestScene::Exit()
 Engine::EngineCode TbdTestScene::Unload()
 {
     delete TbdTestSceneinstance;
+    TbdTestSceneinstance = nullptr;
     LevelBuilder::GetInstance()->FreeLevel();
 	return Engine::NothingBad;
 }

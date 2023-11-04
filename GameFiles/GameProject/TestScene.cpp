@@ -504,6 +504,7 @@ void TestScene::Render()
 Engine::EngineCode TestScene::Exit()
 {
     // Remember to clean up
+    Inputs::GetInstance()->InputKeyClear();
     pixelRenderer->CleanRenderer();
     ImGui_ImplOpenGL3_Shutdown();
     ImGui_ImplSDL2_Shutdown();
@@ -519,6 +520,7 @@ Engine::EngineCode TestScene::Exit()
 Engine::EngineCode TestScene::Unload()
 {
     delete TestSceneinstance;
+    TestSceneinstance = nullptr;
     //delete testEntity;
     //delete jsonEntity;
 
