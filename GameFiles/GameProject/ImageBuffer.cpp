@@ -1,5 +1,6 @@
 #include "ImageBuffer.h"
 #include <inttypes.h>
+#include <omp.h>
 
 inline int min(int x, int y)
 {
@@ -119,6 +120,7 @@ ImageBuffer& ImageBuffer::ClearImageBuffer()
     Color trans = { 0,0,0,0 };
 
 	Color *DestBuffer = buffer;
+    
 	for(int PixelIndex = 0; PixelIndex < (BufferSizeX * BufferSizeY); ++PixelIndex)
 	{
 		*DestBuffer++ = trans;
@@ -193,6 +195,7 @@ void ImageBuffer::Blit(ImageBuffer *Destination, int OffsetX, int OffsetY)
 		SourceOffsetY = -OffsetY;
 	}
 
+    #pragma omp parallel for collapse(2)
     for(int y = MinY; y < MaxY; ++y)
     {
         Color *DestPixel = Destination->buffer + (y * Destination->BufferSizeX) + MinX;

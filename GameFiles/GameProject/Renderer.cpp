@@ -25,6 +25,7 @@
 #include <iostream>
 #include <string>
 #include <assert.h>
+#include <omp.h>
 
 #define OneOver255 (1.0f / 255.0f)
 
@@ -47,20 +48,13 @@ void Renderer::SetCameraPosition(Vector2 NewCameraP)
 
 void Renderer::RenderLightingPass()
 {
-    int x = 0;
-    int y = 0;
-    int i = 0;
     float lightMultiplier = 0;
-    float rScale = 0;
-    float gScale = 0;
-    float bScale = 0;
+
     float IntensityR = 0.0f;
     float IntensityG = 0.0f;
     float IntensityB = 0.0f;
     Color trans{ 0,0,0,0 };
-    float R_F32 = 0;
-    float G_F32 = 0;
-    float B_F32 = 0;
+
 	int CameraOffsetX = (int)CameraP.x;
 	int CameraOffsetY = (int)CameraP.y;
 
@@ -78,17 +72,19 @@ void Renderer::RenderLightingPass()
 
 #if 1
     RenderParticles();
-    //parallel loop idk if working or not
-    //#pragma omp parallel for
-	for (x = 0; x < inputBuffer->size.x; ++x)
+
+    const int xSize = (int)inputBuffer->size.x;
+    const int ySize = (int)inputBuffer->size.y;
+    #pragma omp parallel for collapse(3) private(lightMultiplier, IntensityR, IntensityG, IntensityB)
+	for (int x = 0; x < xSize; ++x)
     {
-        for (y = 0; y < inputBuffer->size.y; ++y)
+        for (int y = 0; y < ySize; ++y)
         {
 			IntensityR = 0.0f;
 			IntensityG = 0.0f;
 			IntensityB = 0.0f;
 
-            for (i = 0; i < numLights; ++i)
+            for (int i = 0; i < numLights; ++i)
             {
 				Light *LightSource = lightSource + i;
                 float lightMultiplier = FindPixelLuminosity((float)x, (float)y, LightSource);
@@ -108,25 +104,6 @@ void Renderer::RenderLightingPass()
             lightR[x][y] = IntensityR;
             lightG[x][y] = IntensityG;
             lightB[x][y] = IntensityB;
-
-            /*
-            Color& DestPixel = outputBuffer->SampleColor(x, y);
-            //force glowing eyes, maybe make an emisive mask later
-            if (inputBuffer->SampleColor(x, y) == Color{ 196,215,165,255 })
-            {
-                DestPixel = inputBuffer->SampleColor(x, y);
-            }
-            else
-                DestPixel = inputBuffer->SampleColor(x, y).ScaleIndividual(IntensityR, IntensityG, IntensityB);
-            if (isFullBright == true)
-            {
-                DestPixel = inputBuffer->SampleColor(x, y);
-            }
-            if (renderNormalMap == true)
-            {
-                DestPixel = normalBufferPostCam->SampleColor(x, y);
-            }
-            */
 		}
     }
 #else
@@ -394,6 +371,7 @@ void Renderer::CleanRenderer()
     timer = 0;
     CameraP = Vector2{ 0,0 };
 }
+
 Renderer::~Renderer(void)
 {
     delete outputBuffer;
@@ -478,50 +456,52 @@ const	int BAYER_PATTERN_8X8[8][8] = {	//	8x8 Bayer Dithering Matrix. Color level
 {	 60, 188,  28, 156,  52, 180,  20, 148	},
 {	252, 124, 220,  92, 244, 116, 212,  84	}
 };
-
 int bayerSize = 8;
-
-uint8_t lightPallet[16] = {0, 17, 34, 51, 68, 85, 102, 119, 136, 153, 170, 187, 204, 221, 238, 255};
 
 void Renderer::DitherLights()
 {
-    if(isFullBright == true)
+    if (isFullBright == true)
     {
         return;
     }
-    int y = 0;
-    int x = 0;
-    Color scaledWhite{ 255,255,255,255 };
+
     float red;
     float green;
     float blue;
+
     float bayerNum;
     int corr;
-    int	i1;
-    int	i2;
-    int	i3;
-    for (x = 0; x < inputBuffer->size.x; ++x)
+
+    int i1;
+    int i2;
+    int i3;
+    const int xSize = (int)inputBuffer->size.x;
+    const int ySize = (int)inputBuffer->size.y;
+
+    #pragma omp parallel for collapse(2) shared(xSize, ySize) private(red, green, blue, bayerNum, corr, i1, i2, i3)
+    for (int x = 0; x < xSize; ++x)
     {
-        for (y = 0; y < inputBuffer->size.y; ++y)
+        for (int y = 0; y < ySize; ++y)
         {
             Color& DestPixel = inputBuffer->SampleColor(x, y);
-            scaledWhite = Color{ 255,255,255,255 };
+            Color scaledWhite{ 255,255,255,255 };
             scaledWhite = scaledWhite.ScaleIndividual(lightR[x][y], lightG[x][y], lightB[x][y]);
 
             red = scaledWhite.GetRed();
             green = scaledWhite.GetGreen();
             blue = scaledWhite.GetBlue();
-  
+
             bayerNum = BAYER_PATTERN_8X8[x % bayerSize][y % bayerSize];
             corr = (bayerNum / 7) - 2;	//	 -2 because: 256/7=36  36*7=252  256-252=4   4/2=2 - correction -2
 
             i1 = (blue + corr) / 36;
             i2 = (green + corr) / 36;
-            i3 = (red + corr) / 36;		
+            i3 = (red + corr) / 36;
 
             clamp(i1, 0, 7);
             clamp(i2, 0, 7);
             clamp(i3, 0, 7);
+
 
             //force glowing eyes, maybe make an emisive mask later
             if (renderOnlyLights == false)
@@ -541,15 +521,18 @@ void Renderer::DitherLights()
             }
         }
     }
+    
 }
 
 void Renderer::RenderToOutbuffer()
 {
-    int y = 0;
-    int x = 0;
-    for (x = 0; x < inputBuffer->size.x; ++x)
+    const int xSize = (int)inputBuffer->size.x;
+    const int ySize = (int)inputBuffer->size.y;
+
+    #pragma omp parallel for collapse(2)
+    for (int x = 0; x < xSize; ++x)
     {
-        for (y = 0; y < inputBuffer->size.y; ++y)
+        for (int y = 0; y < ySize; ++y)
         {
             Color& DestPixel = outputBuffer->SampleColor(x, y);
             DestPixel = inputBuffer->SampleColor(x, y);
