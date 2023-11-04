@@ -43,6 +43,8 @@ Scene* TbdTestSceneinstance = NULL;
 
 static bool tabKeyPreviouslyPressed = false;
 static bool show_demo_window = false;
+static bool show_tool_metrics = false;
+static bool show_custom_window = false;
 
 TbdTestScene::TbdTestScene() : Scene("tbdtest")
 {
@@ -187,6 +189,9 @@ void TbdPlayerMovement(float dt)
         if (!tabKeyPreviouslyPressed)
         {
             show_demo_window = !show_demo_window;
+            show_tool_metrics = !show_tool_metrics;
+            show_custom_window = !show_custom_window;
+
         }
         tabKeyPreviouslyPressed = true;
     }
@@ -238,11 +243,25 @@ void TbdTestScene::Render()
     ImGui_ImplOpenGL3_NewFrame();
     ImGui_ImplSDL2_NewFrame();
     ImGui::NewFrame();
+    if (show_custom_window)
+    {
+        ImGui::Begin("custom window");
+        ImGui::Text("hey bbg how you doin ;)");
 
-    ImGui::Begin("Custom Window");
-    ImGui::Text("hey bbg how you doin ;)");
+        if (show_tool_metrics)
+        {
+            ImGui::Text("metrics:");
+            ImGui::Separator();
+            ImGui::ShowMetricsWindow(&show_tool_metrics);
+        }
 
-    ImGui::End();
+        ImGui::End();
+    }
+
+    //if (ImGui::Button("toggle metrics"))
+    //{
+    //    show_tool_metrics = !show_tool_metrics;
+    //}
 
     if (show_demo_window)
     {
