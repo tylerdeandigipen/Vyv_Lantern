@@ -195,8 +195,8 @@ float Renderer::FindPixelLuminosity(float x, float y, Light *LightSource)
     Result = normalFalloff * Result;
 
 
-    //float const LIGHTING_STEP_SIZE = 0.35f;
-	//Result = LIGHTING_STEP_SIZE * floorf(Result / LIGHTING_STEP_SIZE);
+    float const LIGHTING_STEP_SIZE = 0.25f;
+	Result = LIGHTING_STEP_SIZE * floorf(Result / LIGHTING_STEP_SIZE);
 
     return(Result);
 }
