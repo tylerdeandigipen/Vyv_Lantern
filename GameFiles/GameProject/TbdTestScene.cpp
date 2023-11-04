@@ -218,17 +218,6 @@ void TbdTestScene::Update(float dt)
     if (CheckGameScenes() || CheckRestart())
         return;
 
-    ImGui_ImplOpenGL3_NewFrame();
-    ImGui_ImplSDL2_NewFrame();
-    ImGui::NewFrame();
-
-    if (show_demo_window)
-    {
-        ImGui::ShowDemoWindow(&show_demo_window);
-    }
-
-    ImGui::Render();
-
     TbdPixelRenderer->lightSource[1].position = TbdPixelRenderer->animatedObjects[0][0]->position + Vector2{ 3,3 };
     TbdPixelRenderer->lightSource[0].position = TbdPixelRenderer->animatedObjects[0][0]->position + Vector2{ 3,3 };
 
@@ -246,6 +235,22 @@ void TbdTestScene::Update(float dt)
 
 void TbdTestScene::Render()
 {
+    ImGui_ImplOpenGL3_NewFrame();
+    ImGui_ImplSDL2_NewFrame();
+    ImGui::NewFrame();
+
+    ImGui::Begin("Custom Window");
+    ImGui::Text("hey bbg how you doin ;)");
+
+    ImGui::End();
+
+    if (show_demo_window)
+    {
+        ImGui::ShowDemoWindow(&show_demo_window);
+    }
+
+    ImGui::Render();
+
     TbdPixelRenderer->Update();
 	return;
 }
