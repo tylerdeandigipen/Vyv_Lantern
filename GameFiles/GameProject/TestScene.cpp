@@ -40,7 +40,7 @@ Entity* jsonEntity;
 SDL_Renderer* renderer;
 
 SDL_Window* window;
-Renderer &pixelRenderer = *Renderer::GetInstance();
+Renderer *pixelRenderer = Renderer::GetInstance();
 
 bool canMove = true; // Initialize to allow movement
 
@@ -57,6 +57,9 @@ float soundCooldown = 0.0f;
 
 int ObjCount;
 const float pushForce = 1.0f;
+
+static bool tabKeyPreviouslyPressed = false;
+static bool show_demo_window = false;
 
 /* NOTICE !!!!!!!!!! Feel free to "turn off" debug messages as you please. You can see them in the debugLog.txt in the game files, or in the output tab when debugging. Literally
    you can call for the logger anywhere as long as you get an instance first. Use it in ur functions or something - taylee */
@@ -142,10 +145,10 @@ Engine::EngineCode TestScene::Init()
 
     // Create SDL Window
     window = SDL_CreateWindow("MAIN SCENE", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
-                              pixelRenderer.outputBuffer->BufferSizeX * pixelRenderer.outputBuffer->screenScale,
-                              pixelRenderer.outputBuffer->BufferSizeY * pixelRenderer.outputBuffer->screenScale,
+                              pixelRenderer->outputBuffer->BufferSizeX * pixelRenderer->outputBuffer->screenScale,
+                              pixelRenderer->outputBuffer->BufferSizeY * pixelRenderer->outputBuffer->screenScale,
                               SDL_WINDOW_OPENGL);
-    pixelRenderer.window = window;
+    pixelRenderer->window = window;
 
     
     // Specify Major version and minor version
@@ -274,7 +277,7 @@ void tempPlayerMovementLol(float dt)
     {
         if (inputHandler->keyPressed(SDL_SCANCODE_W))
         {
-            pixelRenderer.objects[2]->position.y -= moveSpeed * dt;
+            pixelRenderer->objects[2]->position.y -= moveSpeed * dt;
 
             logger.LogLine("Debug info: Vyv Up pressed.");
             //pixelRenderer.AddLight(pixelRenderer.staticLightSource[0]);
@@ -282,21 +285,21 @@ void tempPlayerMovementLol(float dt)
         }
         if (inputHandler->keyPressed(SDL_SCANCODE_S))
         {
-            pixelRenderer.objects[2]->position.y += moveSpeed * dt;
+            pixelRenderer->objects[2]->position.y += moveSpeed * dt;
 
             logger.LogLine("Debug info: Vyv Down pressed.");
             //AudioManager.PlaySFX("footsteps.ogg");
         }
         if (inputHandler->keyPressed(SDL_SCANCODE_D))
         {
-            pixelRenderer.objects[2]->position.x += moveSpeed * dt;
+            pixelRenderer->objects[2]->position.x += moveSpeed * dt;
 
             logger.LogLine("Debug info: Vyv Right pressed.");
             //AudioManager.PlaySFX("footsteps.ogg");
         }
         if (inputHandler->keyPressed(SDL_SCANCODE_A))
         {
-            pixelRenderer.objects[2]->position.x -= moveSpeed * dt;
+            pixelRenderer->objects[2]->position.x -= moveSpeed * dt;
 
             logger.LogLine("Debug info: Vyv Left pressed.");
             //AudioManager.PlaySFX("footsteps.ogg");
@@ -305,30 +308,44 @@ void tempPlayerMovementLol(float dt)
 
     if (inputHandler->keyPressed(SDL_SCANCODE_E) && canPlaceMoreLight == 1)
     {
-        pixelRenderer.AddLight(pixelRenderer.lightSource[0]);
+        pixelRenderer->AddLight(pixelRenderer->lightSource[0]);
         canPlaceMoreLight = 0;
     }
+
     if (!inputHandler->keyPressed(SDL_SCANCODE_E))
     {
         canPlaceMoreLight = 1;
+    }
+
+    if (inputHandler->keyPressed(SDL_SCANCODE_TAB))
+    {
+        if (!tabKeyPreviouslyPressed)
+        {
+            show_demo_window = !show_demo_window;
+        }
+        tabKeyPreviouslyPressed = true;
+    }
+    else
+    {
+        tabKeyPreviouslyPressed = false;
     }
 
     int x, y;
     Uint32 buttons = SDL_GetMouseState(&x, &y);
 
     Vector2 CursourP = {(float)x, (float)y};
-    CursourP *= 1.0f / pixelRenderer.screenScale;
-    CursourP += pixelRenderer.GetCameraPosition();
+    CursourP *= 1.0f / pixelRenderer->screenScale;
+    CursourP += pixelRenderer->GetCameraPosition();
 
-    Vector2 LightP = pixelRenderer.lightSource[0].position;
+    Vector2 LightP = pixelRenderer->lightSource[0].position;
     Vector2 D = LightP - CursourP;
     float Angle = atan2f(D.x, D.y) * (180.0f / 3.14f) + 180.0f;
-    pixelRenderer.lightSource[0].angle = Angle;
+    pixelRenderer->lightSource[0].angle = Angle;
 
-    ImageBuffer *playerEntity = pixelRenderer.objects[1];
+    ImageBuffer *playerEntity = pixelRenderer->objects[1];
     Vector2 ScreenHalfSize = 0.5f*Vector2(SCREEN_SIZE_X, SCREEN_SIZE_Y);
 	Vector2 BitmapHalfDim = 0.5f*playerEntity->size;
-	pixelRenderer.SetCameraPosition(playerEntity->position - ScreenHalfSize + BitmapHalfDim);
+	pixelRenderer->SetCameraPosition(playerEntity->position - ScreenHalfSize + BitmapHalfDim);
 }
 
 void TestScene::Update(float dt)
@@ -347,7 +364,7 @@ void TestScene::Update(float dt)
     //LevelBuilder::GetInstance()->LevelUpdate(dt);
     AudioManager.Update();
     inputHandler->handleInput();
-    pixelRenderer.UpdateObjects();
+    pixelRenderer->UpdateObjects();
 
     if (inputHandler->keyPressed(SDLK_ESCAPE) == true)
     {
@@ -462,8 +479,8 @@ void TestScene::Update(float dt)
         uint32_t Buttons = SDL_GetMouseState(&CursourX, &CursourY);
         
         Vector2 CursourP = Vector2((float)CursourX, (float)CursourY);
-        CursourP *= 1.0f / pixelRenderer.screenScale;
-        CursourP += pixelRenderer.GetCameraPosition();
+        CursourP *= 1.0f / pixelRenderer->screenScale;
+        CursourP += pixelRenderer->GetCameraPosition();
         
 		laser_emitter* Emitter = LaserSystem::GetInstance()->GetEmitter(ControlledEmitter);
 
@@ -478,7 +495,7 @@ void TestScene::Update(float dt)
 
 void TestScene::Render()
 {
-    pixelRenderer.Update();
+    pixelRenderer->Update();
 
     //logger.LogLine("Debug info: Things are being rendered. (testScene rendered)");
 	return;
@@ -487,7 +504,7 @@ void TestScene::Render()
 Engine::EngineCode TestScene::Exit()
 {
     // Remember to clean up
-    pixelRenderer.CleanRenderer();
+    pixelRenderer->CleanRenderer();
     ImGui_ImplOpenGL3_Shutdown();
     ImGui_ImplSDL2_Shutdown();
     ImGui::DestroyContext();

@@ -1,3 +1,12 @@
+//------------------------------------------------------------------------------
+//
+// File Name:	Observer.cpp
+// Author(s):	TayLee Young
+// Purpose:		Allows for objects to observe an event and react to it
+//
+// Copyright © 2023 DigiPen (USA) Corporation.
+//
+//------------------------------------------------------------------------------
 #include "Observer.h"
 #include "Logging.h"
 
