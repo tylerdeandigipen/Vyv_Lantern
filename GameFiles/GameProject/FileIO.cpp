@@ -42,23 +42,6 @@ void FileIO::ReadLight(Light& light, json& jsonData)
 		light.position.y = position["y"];
 	}
 
-	//light.leftAnglePos = jsonData["leftAnglePos"];
-	//if (jsonData["leftAnglePos"].is_object())
-	//{
-	//	json leftAngle = jsonData["leftAnglePos"];
-	//	light.leftAnglePos.x = leftAngle["x"];
-	//	light.leftAnglePos.y = leftAngle["y"];
-	//}
-
-	//light.rightAnglePos = jsonData["rightAnglePos"];
-	//if (jsonData["rightAnglePos"].is_object())
-	//{
-	//	json rightAngle = jsonData["rightAnglePos"];
-	//	light.leftAnglePos.x = rightAngle["x"];
-	//	light.leftAnglePos.y = rightAngle["y"];
-	//}
-
-	//light.color = jsonData["color"];
 	if (jsonData["color"].is_object())
 	{
 		json color = jsonData["color"];
@@ -101,7 +84,7 @@ FileIO* FileIO::GetInstance()
 	return instance;
 }
 
-void FileIO::ReadTileMap(std::string filename, Renderer* pixel, bool IsNormal)
+void FileIO::ReadTileSet(std::string filename, Renderer* pixel, bool IsNormal)
 {
 	json jsonData = OpenJSON(filename);
 	Vector2 frameSize;

@@ -1,7 +1,7 @@
 {
   "Levels": [
     {
-      "TileData": {
+      "TylerTileData": {
         "SizeX": 30,
         "SizeY": 17,
         "WallValues": [],

@@ -29,6 +29,7 @@ public:
 	ImageBuffer* objectLayer; //layer 1
 	ImageBuffer* backgroundLayer; //layer 0
 
+	ImageBuffer* lightBuffer;
 	ImageBuffer* normalBuffer;
 	ImageBuffer* normalBufferPostCam;
 	Light lightSource[MAX_LIGHT_SOURCES];
@@ -41,6 +42,7 @@ public:
 	Vector2 tileMapSize;
 	bool isFullBright = false;
 	bool renderNormalMap = false;
+	bool renderOnlyLights = false;
 	static Renderer* GetInstance();
 
 	Vector2 GetCameraPosition(void);
@@ -71,7 +73,15 @@ public:
 	// 0 = forward, 1 = down, 2 = up, 3 = blink
 	void UpdateFace(int& faceState_);
 	void CleanRenderer();
+	void DitherLights();
+	void RenderToOutbuffer();
 	int faceState;
+
+	//i hate this make it better later tho
+	float** lightR;
+	float** lightG;
+	float** lightB;
+
 
 private:
 	static Renderer* instance;
