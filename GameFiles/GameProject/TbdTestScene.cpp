@@ -45,6 +45,7 @@ static bool tabKeyPreviouslyPressed = false;
 static bool show_demo_window = false;
 static bool show_tool_metrics = false;
 static bool show_custom_window = false;
+static bool show_metrics_debug_bar = false;
 
 TbdTestScene::TbdTestScene() : Scene("tbdtest")
 {
@@ -248,25 +249,29 @@ void TbdTestScene::Render()
         ImGui::Begin("custom window");
         ImGui::Text("hey bbg how you doin ;)");
 
-        if (show_tool_metrics)
+        if (ImGui::Button("Toggle Metrics/Debug Bar"))
         {
-            ImGui::Text("metrics:");
+            show_metrics_debug_bar = !show_metrics_debug_bar;
+        }
+
+        if (show_metrics_debug_bar)
+        {
+            ImGui::Text("Metrics/Debugger:");
             ImGui::Separator();
-            ImGui::ShowMetricsWindow(&show_tool_metrics);
+            ImGui::Text("Frame Time: %.3f ms/frame", 1000.0f / ImGui::GetIO().Framerate);
+            ImGui::Text("Framerate: %.1f FPS", ImGui::GetIO().Framerate);
+            //ImGui::Text("Allocations: %d", ImGui::GetIO().MetricsAllocs);
+
+            ImGui::Separator();
         }
 
         ImGui::End();
     }
 
-    //if (ImGui::Button("toggle metrics"))
+    //if (show_demo_window)
     //{
-    //    show_tool_metrics = !show_tool_metrics;
+    //    ImGui::ShowDemoWindow(&show_demo_window);
     //}
-
-    if (show_demo_window)
-    {
-        ImGui::ShowDemoWindow(&show_demo_window);
-    }
 
     ImGui::Render();
 
