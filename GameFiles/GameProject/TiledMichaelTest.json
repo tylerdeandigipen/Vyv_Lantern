@@ -1,0 +1,41 @@
+{
+  "Levels": [
+    {
+      "TiledData": {
+        "TileMapFile": "./Data/TiledLevelMap.json"
+      },
+      "Entities": [
+        {
+          "Type": "Object",
+          "Name": "Player",
+          "file": "./Assets/PPM/Animated_Man_Red_2.4.ppm",
+          "isAnimated": true,
+          "frameSize": [ 8, 8 ],
+          "Components": [
+            {
+              "Type": "ColliderAABB"
+            },
+            {
+              "Type": "Transform",
+              "translation": {
+                "x": 90,
+                "y": 30
+              }
+            },
+            {
+              "Type": "Physics",
+              "OldTranslation": {
+                "x": 90,
+                "y": 30
+              }
+            },
+            {
+              "Type": "BehaviorPlayer",
+              "MoveSpeed": 35
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

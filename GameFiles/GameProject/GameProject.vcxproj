@@ -272,8 +272,10 @@
     <None Include="Data\ScutSample(ALT).json" />
     <None Include="Data\Tbd_TestLevel.json" />
     <None Include="Data\TestLight.json" />
+    <None Include="Data\TiledLevelMap.json" />
     <None Include="Data\TileMapSprites.json" />
     <None Include="TempEntity.json" />
+    <None Include="TiledMichaelTest.json" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
