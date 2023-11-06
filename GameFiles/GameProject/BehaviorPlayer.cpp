@@ -138,48 +138,43 @@ void BehaviorPlayer::Controller(float dt)
 
 bool BehaviorPlayer::checkWalls(gfxVector2 position)
 {
-    int** walls = LevelBuilder::GetInstance()->GetTileMap();
+    int* walls = LevelBuilder::GetInstance()->GetWalls();
     for (int x = 0; x < LevelBuilder::GetInstance()->GetX(); ++x)
     {
         for (int y = 0; y < LevelBuilder::GetInstance()->GetY(); ++y)
         {
-            for (int i = 0; i < 20; ++i)
+            if (walls[y * LevelBuilder::GetInstance()->GetX() + x] != 0)
             {
-                if (walls[x][y] == wehavewalls[i])
+                gfxVector2 wallworld = { (float)(x * 8), (float)(y * 8) };
+                gfxVector2 playerMin, playerMax, wallMin, wallMax;
+                wallMin = wallworld;
+                wallMax = { wallworld.x + 8, wallworld.y + 8 };
+                playerMin = { position.x + 1, position.y + 1 };
+                playerMax = { position.x + 7, position.y + 7 };
+                /* Check for wall collision */
+                if (playerMax.x < wallMin.x || playerMin.x > wallMax.x ||
+                    playerMax.y < wallMin.y || playerMin.y > wallMax.y)
                 {
-                    gfxVector2 wallworld = { (float)(x * 8), (float)(y * 8) };
-                    gfxVector2 playerMin, playerMax, wallMin, wallMax;
-                    wallMin = wallworld;
-                    wallMax = { wallworld.x + 8, wallworld.y + 8 };
-                    playerMin = { position.x + 1, position.y + 1 };
-                    playerMax = { position.x + 7, position.y + 7 };
-                    /* Check for wall collision */
-                    if (playerMax.x < wallMin.x || playerMin.x > wallMax.x ||
-                        playerMax.y < wallMin.y || playerMin.y > wallMax.y)
-                    {
-                        continue;
-                    }
-                    else
-                    {
-                        // This audio no working i think
-                        //AudioManager.PlaySFX("creaks");
-                        // 
-                        // too tired will do in moring
+                    continue;
+                }
+                else
+                {
 
-                        //if (!(playerMax.x < wallMin.x || playerMin.x > wallMax.x))
-                        //{
-                        //    position.x = Parent()->Has(Physics)->GetOldTranslation().x;
-                        //}
-                        //else
-                        //{
-                        //   position.y = Parent()->Has(Physics)->GetOldTranslation().y;
-                        //}
+                    // too tired will do in moring
 
-                        // Update the position to the adjusted value
-                        //Transform* transform = Parent()->Has(Transform);
-                        //transform->SetTranslation(position);
-                        return true;
-                    }
+                    //if (!(playerMax.x < wallMin.x || playerMin.x > wallMax.x))
+                    //{
+                    //    position.x = Parent()->Has(Physics)->GetOldTranslation().x;
+                    //}
+                    //else
+                    //{
+                    //   position.y = Parent()->Has(Physics)->GetOldTranslation().y;
+                    //}
+
+                    // Update the position to the adjusted value
+                    //Transform* transform = Parent()->Has(Transform);
+                    //transform->SetTranslation(position);
+                    return true;
                 }
             }
             

@@ -1,4 +1,5 @@
 #include "FileIO.h"
+#include "LevelBuilder.h"
 #include "Renderer.h"
 #include <nlohmann/json.hpp>
 using json = nlohmann::json;
@@ -79,10 +80,106 @@ light_source_type FileIO::ReadLightEnum(std::string jsonString)
 	return light_source_type::LightSourceType_Point;
 }
 
+int** FileIO::ReadTiledMap(json jsonData)
+{
+	if (jsonData["TiledData"].is_object())
+	{
+		json tiles = jsonData["TiledData"];
+		tiles = OpenJSON(tiles["TileMapFile"]);
+		//int i = 0, j = 0; //, hatelife = 0; used to debug
+		int SizeX = tiles["width"];
+		int SizeY = tiles["height"];
+		int newindex = 0;
+
+		LevelBuilder::GetInstance()->SetX(SizeX);
+		LevelBuilder::GetInstance()->SetY(SizeY);
+
+
+		if (tiles["layers"].is_array())
+		{
+			int** TileMap = new int* [SizeX];
+			for (int i = 0; i < SizeX; ++i)
+			{
+				TileMap[i] = new int[SizeY];
+			}
+			for (auto& layerData : tiles["layers"])
+			{
+				std::string name = layerData["name"];
+				if (name.compare("Walls") != 0)
+				{
+					if (layerData["data"].is_array())
+					{
+						json Array = layerData["data"];
+						for (int i = 0; i < SizeX; ++i)
+						{
+							for (int j = 0; j < SizeY; ++j)
+							{
+								newindex = j * SizeX + i;
+								int newVal = Array[newindex];
+								TileMap[i][j] = newVal - 1;
+								//++hatelife; used to debug json
+							}
+						}
+					}
+				}
+				if (name.compare("Walls") == 0)
+				{
+					if (layerData["data"].is_array())
+					{
+						int* walls = new int[SizeX * SizeY];
+						json Array = layerData["data"];
+						for (int i = 0; i < SizeX * SizeY; ++i)
+						{
+							walls[i] = Array[i];
+						}
+						LevelBuilder::GetInstance()->SetWalls(walls);
+					}
+				}
+			}
+			return TileMap;
+		}
+	}
+	return NULL;
+}
+
+int** FileIO::ReadTylerTileMap(json jsonData)
+{
+	json Data = jsonData["TylerTileData"];
+	int i = 0, j = 0; //, hatelife = 0; used to debug
+	int SizeX = Data["SizeX"];
+	int SizeY = Data["SizeY"];
+
+	LevelBuilder::GetInstance()->SetX(SizeX);
+	LevelBuilder::GetInstance()->SetY(SizeY);
+
+	int** TileMap = new int* [SizeX];
+	for (int i = 0; i < SizeX; ++i)
+	{
+		TileMap[i] = new int[SizeY];
+	}
+	if (Data["TileMap"].is_array())
+	{
+		json Array = Data["TileMap"];
+		for (i = 0; i < SizeX; ++i)
+		{
+			for (j = 0; j < SizeY; ++j)
+			{
+				if (Array[i][j].is_number())
+				{
+					TileMap[i][j] = Array[i][j];
+					//++hatelife; used to debug json
+				}
+			}
+		}
+	}
+	return TileMap;
+}
+
 FileIO* FileIO::GetInstance()
 {
 	return instance;
 }
+
 
 void FileIO::ReadTileSet(std::string filename, Renderer* pixel, bool IsNormal)
 {

@@ -331,7 +331,11 @@
     <None Include="Data\FirstLevel.json">
       <Filter>JSON</Filter>
     </None>
-    <None Include="Data\ScutSample(ALT).json">
+    <None Include="Data\ScutSample(ALT).json" />
+    <None Include="Data\TiledLevelMap.json">
+      <Filter>JSON</Filter>
+    </None>
+    <None Include="TiledMichaelTest.json">
       <Filter>JSON</Filter>
     </None>
   </ItemGroup>

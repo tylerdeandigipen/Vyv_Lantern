@@ -25,15 +25,20 @@ public:
 	void LoadLevel(Renderer* pixel, std::string filename);
 	void ReLoadLevel();
 	void FreeLevel();
+	void SetTileMap(int** tiles);
 	int** GetTileMap();
+	void SetWalls(int* walls);
+	int* GetWalls();
+	void SetX(int size);
+	void SetY(int siye);
 	int GetX();
-
 	int GetY();
 private:
 	static LevelBuilder* instance;
 	EntityContainer* entity_container;
 	json jsonData;
 	int** TileMap;
+	int* Walls;
 	int SizeX;
 	int SizeY;
 };

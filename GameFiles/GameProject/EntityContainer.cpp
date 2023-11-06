@@ -20,6 +20,7 @@ EntityContainer::EntityContainer() : entities()
 
 EntityContainer::~EntityContainer()
 {
+
 }
 
 bool EntityContainer::AddEntity(Entity* entity)
@@ -105,14 +106,20 @@ void EntityContainer::RenderAll()
 
 void EntityContainer::FreeAll()
 {
-	for (auto it : entities)
+	if (this)
 	{
-		if (it)
+		if (!entities.empty())
 		{
-			it->FreeComponents();
-			delete it;
-			it = NULL;
+			for (auto it : entities)
+			{
+				if (it)
+				{
+					it->FreeComponents();
+					delete it;
+					it = NULL;
+				}
+			}
+			entities.clear();
 		}
 	}
-	entities.clear();
 }

@@ -18,6 +18,13 @@ public:
 	int ReadInt(FILE* stream);
 	float ReadFloat(FILE* stream);
 	ImageBuffer* ReadPPM(const char* filename);
+
+	int** ReadTiledMap(std::string filename, int** tilemap);
+	int** ReadTylerTileMap(std::string filename, int** tilemap);
+
+	int** ReadTiledMap(json jsonData);
+	int** ReadTylerTileMap(json jsonData);
+
 	static FileIO* GetInstance();
 private:
 	static FileIO* instance;

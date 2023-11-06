@@ -1,5 +1,6 @@
 #include "LevelBuilder.h"
 #include "EntityFactory.h"
+#include "FileIO.h"
 #include "Transform.h"
 
 LevelBuilder* LevelBuilder::instance = new LevelBuilder();
@@ -18,6 +19,10 @@ LevelBuilder::~LevelBuilder()
             delete[] TileMap[i];
         }
         delete[] TileMap;
+    }
+    if (Walls)
+    {
+        delete[] Walls;
     }
     delete entity_container;
 }
@@ -72,35 +77,20 @@ void LevelBuilder::LoadLevel(Renderer* pixel, std::string filename)
         {
             if (levelData["TylerTileData"].is_object())
             {
-                json Data = levelData["TylerTileData"];
-                int i = 0, j = 0, hatelife = 0;
-                SizeX = Data["SizeX"];
-                SizeY = Data["SizeY"];
+                TileMap = FileIO::GetInstance()->ReadTylerTileMap(levelData);
                 pixel->tileMapSize.x = SizeX;
                 pixel->tileMapSize.y = SizeY;
+                pixel->MakeTileMap(TileMap);
 
-                TileMap = new int *[SizeX];
-                for (int i = 0; i < SizeX; ++i)
-                {
-                    TileMap[i] = new int[SizeY];
-                }
-                if (Data["TileMap"].is_array())
-                {
-                    json Array = Data["TileMap"];
-                    for (i = 0; i < SizeX; ++i)
-                    {
-                        for (j = 0; j < SizeY; ++j)
-                        {
-                            if (Array[i][j].is_number())
-                            {
-                                TileMap[i][j] = Array[i][j];
-                                ++hatelife;
-                            }
-                        }
-                    }
-                }
+            }
+            else
+            {
+                TileMap = FileIO::GetInstance()->ReadTiledMap(levelData);
+                pixel->tileMapSize.x = SizeX;
+                pixel->tileMapSize.y = SizeY;
                 pixel->MakeTileMap(TileMap);
             }
+
             Read(levelData, pixel);
         }
     }
@@ -123,6 +113,8 @@ void LevelBuilder::Render()
 
 Engine::EngineCode LevelBuilder::Close()
 {
+    if (instance)
+        delete instance;
 	return Engine::NothingBad;
 }
 
@@ -146,6 +138,23 @@ int** LevelBuilder::GetTileMap()
     return TileMap;
 }
 
+void LevelBuilder::SetWalls(int* walls)
+{
+    Walls = walls;
+}
+
+int* LevelBuilder::GetWalls()
+{
+    if (Walls)
+    {
+        return Walls;
+    }
+    else
+    {
+        return NULL;
+    }
+}
+
 int LevelBuilder::GetX()
 {
     return SizeX;
@@ -154,4 +163,14 @@ int LevelBuilder::GetX()
 int LevelBuilder::GetY()
 {
     return SizeY;
+}
+
+void LevelBuilder::SetX(int size)
+{
+    SizeX = size;
+}
+
+void LevelBuilder::SetY(int size)
+{
+    SizeY = size;
 }

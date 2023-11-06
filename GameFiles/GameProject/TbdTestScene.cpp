@@ -81,7 +81,7 @@ Engine::EngineCode TbdTestScene::Init()
     gladLoadGLLoader(SDL_GL_GetProcAddress);
     FileIO::GetInstance()->ReadTileSet("./Data/TileMapSprites.json", TbdPixelRenderer);
     FileIO::GetInstance()->ReadTileSet("./Data/TileMapNormals.json", TbdPixelRenderer, true);
-    LevelBuilder::GetInstance()->LoadLevel(TbdPixelRenderer, "./Data/Tbd_TestLevel.json");
+    LevelBuilder::GetInstance()->LoadLevel(TbdPixelRenderer, "./TiledMichaelTest.json");
 
     IMGUI_CHECKVERSION();
     ImGui::CreateContext();
