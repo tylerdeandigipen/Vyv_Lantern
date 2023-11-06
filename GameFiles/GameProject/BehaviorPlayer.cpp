@@ -16,6 +16,7 @@
 #include "Renderer.h"
 #include "LevelBuilder.h"
 #include "Maths/Vector.h"
+#include "AudioEngine.h"
 
 const float pushForce = 1.0f;
 
@@ -160,7 +161,9 @@ bool BehaviorPlayer::checkWalls(gfxVector2 position)
                     }
                     else
                     {
-
+                        // This audio no working i think
+                        //AudioManager.PlaySFX("creaks");
+                        // 
                         // too tired will do in moring
 
                         //if (!(playerMax.x < wallMin.x || playerMin.x > wallMax.x))

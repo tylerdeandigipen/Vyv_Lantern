@@ -71,9 +71,6 @@ TestScene::TestScene() : Scene("test")
 
 Engine::EngineCode TestScene::Load()
 {
-    AudioManager.LoadMusic("bgm.ogg");
-    AudioManager.LoadSFX("footsteps.ogg");
-    AudioManager.LoadSFX("oof.ogg");
 
 	return Engine::NothingBad;
 }

@@ -54,9 +54,8 @@ TbdTestScene::TbdTestScene() : Scene("tbdtest")
 
 Engine::EngineCode TbdTestScene::Load()
 {
-    AudioManager.LoadMusic("bgm.ogg");
-    AudioManager.LoadMusic("drips.ogg");
-    AudioManager.LoadMusic("forest.ogg");
+    AudioManager.LoadMusicFromJSON("./Data/music.json");
+    AudioManager.LoadSFXFromJSON("./Data/SFX.json");
 
 	return Engine::NothingBad;
 }
@@ -120,12 +119,10 @@ Engine::EngineCode TbdTestScene::Init()
         Particle* testParticle = new Particle(Vector2{ 120, 75 }, Vector2{ -.25f,-.8f }, Vector2{ 0.15f,0.15f }, tempColor, Particle_Moth);
         TbdPixelRenderer->particleManager->AddParticle(testParticle);
     }
-    /*
-    //AudioManager.PlayMusic("bgm.ogg");
-    AudioManager.PlayMusic("drips.ogg");
+    AudioManager.PlayMusic("drips");
     
-    AudioManager.PlayMusic("forest.ogg");
-    */
+    AudioManager.PlayMusic("forest");
+
     return Engine::NothingBad;
 }
 

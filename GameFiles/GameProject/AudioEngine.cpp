@@ -283,6 +283,51 @@
         fmodSystem->update();
     }
 
+    void _audioManager::LoadMusicFromJSON(std::string jsonFilePath)
+    {
+        // load in the file
+        std::ifstream file(jsonFilePath);
+        if (!file.is_open()) {
+            perror("JSON file does not exist");
+            return;
+        }
+        /*Parse file contents into this shiate*/
+        file >> jsonData;
+        for (auto it = jsonData.begin(); it != jsonData.end(); ++it) {
+            const std::string musicName = it.key();
+            const std::string filePath = it.value();
+
+            // Now you can use the filePath to load the music
+            LoadMusic(musicName, filePath);
+        }
+    }
+
+    void _audioManager::LoadSFXFromJSON(std::string jsonFilePath)
+    {
+        // load in the file
+        std::ifstream file(jsonFilePath);
+        if (!file.is_open()) {
+            perror("JSON file does not exist");
+            return;
+        }
+        /*Parse file contents into this shiate*/
+        file >> jsonData;
+        for (auto it = jsonData.begin(); it != jsonData.end(); ++it) {
+            const std::string musicName = it.key();
+            const std::string filePath = it.value();
+
+            // Now you can use the filePath to load the music
+            LoadSFX(musicName, filePath);
+        }
+    }
+
+    /*For next semester if needed*/
+    void _audioManager::LoadVoiceFromJSON(std::string jsonFilePath)
+    {
+
+    }
+
+
 
     /*!				void _audioManager::LoadSFX(string name)
     {
@@ -291,16 +336,15 @@
 
                    Load sound into directory
     */
-    void _audioManager::LoadSFX(std::string name)
+    void _audioManager::LoadSFX(std::string musicName, std::string filePath)
     {
-        if (soundDatabase.find(name) == soundDatabase.end())
+        if (soundDatabase.find(musicName) == soundDatabase.end())
         {
-            std::string pathString = "Assets/Audio/SFX/" + name + '\0';
-            char* pathName = new char[pathString.length() + 1];
-            std::copy(pathString.begin(), pathString.end(), pathName);
+            char* pathName = new char[filePath.length() + 1];
+            std::copy(filePath.begin(), filePath.end(), pathName);
             FMOD::Sound* sound = 0;
             fmodSystem->createSound(pathName, FMOD_DEFAULT, nullptr, &sound);
-            soundDatabase[name] = sound;
+            soundDatabase[musicName] = sound;
             delete[] pathName;
         }
     }
@@ -326,23 +370,22 @@
         }
     }
 
-    /*!				void _audioManager::LoadMusic(string name)
+    /*!				void _audioManager::LoadMusic(std::string musicName, std::string filePath)
     {
-    @param          string name
+    @param          std::string musicName, std::string filePath
     @return none
 
                    Load music into directory
     */
-    void _audioManager::LoadMusic(std::string name)
+    void _audioManager::LoadMusic(std::string musicName, std::string filePath)
     {
-        if (musicDatabase.find(name) == musicDatabase.end())
+        if (musicDatabase.find(musicName) == musicDatabase.end())
         {
-            std::string pathString = "Assets/Audio/Music/" + name + '\0';
-            char* pathName = new char[pathString.length() + 1];
-            std::copy(pathString.begin(), pathString.end(), pathName);
+            char* pathName = new char[filePath.length() + 1];
+            std::copy(filePath.begin(), filePath.end(), pathName);
             FMOD::Sound* music = 0;
             fmodSystem->createSound(pathName, FMOD_LOOP_NORMAL, nullptr, &music);
-            musicDatabase[name] = music;
+            musicDatabase[musicName] = music;
             delete[] pathName;
         }
     }

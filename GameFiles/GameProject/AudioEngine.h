@@ -13,8 +13,10 @@
 #include <fmod.hpp>
 #include <fmod_errors.h>
 #include <map>
+#include <fstream>
+#include <nlohmann/json.hpp>
 
-
+using json = nlohmann::json;
 /*                                                                   instances
 ----------------------------------------------------------------------------- */
 #define AudioManager _audioManager::Instance()
@@ -38,6 +40,7 @@ private:
     std::map<std::string, FMOD::Sound*> musicDatabase;
     std::map<std::string, FMOD::Sound*> voiceDatabase;
     bool isActive = true;
+    json jsonData;
 
     /*                                                             Public Class
     ----------------------------------------------------------------------------- */
@@ -62,8 +65,11 @@ private:
         void DecreaseSFXVolume();
         void DecreaseVoiceVolume();
         void Update(void);
-        void LoadSFX(std::string name);
-        void LoadMusic(std::string name);
+        void LoadMusicFromJSON(std::string jsonFilePath);
+        void LoadSFXFromJSON(std::string jsonFilePath);
+        void LoadVoiceFromJSON(std::string jsonFilePath);
+        void LoadSFX(std::string musicName, std::string filePath);
+        void LoadMusic(std::string musicName, std::string filePath);
         void LoadVoice(std::string name);
         void UnLoadSFX(std::string name);
         void UnloadMusic(std::string name);
