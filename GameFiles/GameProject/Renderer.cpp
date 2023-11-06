@@ -216,31 +216,34 @@ void Renderer::CalculateShadows()
     {
         for (int y = 0; y < ySize; ++y)
         {
-            for (int i = 0; i < numLights; ++i)
+            if (lightR[x][y] != 0 && lightG[x][y] != 0 && lightB[x][y] != 0)
             {
-                lightPos = lightSource[i].position;
-
-                if (CheckLineForObject(x, y, lightPos.x - cameraPos.x, lightPos.y - cameraPos.y) == true)
+                for (int i = 0; i < numLights; ++i)
                 {
-                    shadowsCast += 1;
+                    lightPos = lightSource[i].position;
 
-                    //remove break later when trying to do multiple shadow casters
-                    break;
+                    if (CheckLineForObject(lightPos.x - cameraPos.x, lightPos.y - cameraPos.y, x, y) == true)
+                    {
+                        shadowsCast += 1;
+
+                        //remove break later when trying to do multiple shadow casters
+                        break;
+                    }
                 }
+                if (lightBuffer->SampleColor(x, y).GetAlpha() != 0)
+                {
+                    //maybe here do ham algo with the tilemap instead of pixels and if any tiles inbetween player and target tile then dont sub?
+                    shadowsCast -= 1;
+                }
+
+                if (shadowsCast >= 1)
+                {
+                    lightR[x][y] = 0;
+                    lightG[x][y] = 0;
+                    lightB[x][y] = 0;
+                }
+                shadowsCast = 0;
             }
-            if (lightBuffer->SampleColor(x, y).GetAlpha() != 0)
-            {
-                //maybe here do ham algo with the tilemap instead of pixels and if any tiles inbetween player and target tile then dont sub?
-                shadowsCast -= 1;
-            }
-            
-            if (shadowsCast >= 1)
-            {
-                lightR[x][y] = 0;
-                lightG[x][y] = 0;
-                lightB[x][y] = 0;
-            }
-            shadowsCast = 0;
         }
     }
 }
@@ -622,7 +625,7 @@ void Renderer::Update()
 
     RenderLightingPass();
     
-CalculateShadows();
+    CalculateShadows();
 
     DitherLights();
     RenderToOutbuffer();
