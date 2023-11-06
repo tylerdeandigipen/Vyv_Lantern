@@ -210,42 +210,52 @@ void Renderer::CalculateShadows()
     Vector2 lightPos;
     int shadowsCast = 0;
     lightBuffer->ClearImageBuffer();
+
     foregroundLayer->Blit(lightBuffer, -CameraP.x, -CameraP.y);
-    #pragma omp parallel for collapse(3) shared(black, cameraPos) private(lightPos, shadowsCast)
-    for (int x = 0; x < xSize; ++x)
+    #pragma omp parallel
     {
-        for (int y = 0; y < ySize; ++y)
+        #pragma omp for nowait collapse(3) private(lightPos, shadowsCast)
+        for (int x = 0; x < xSize; ++x)
         {
-            if (lightR[x][y] != 0 && lightG[x][y] != 0 && lightB[x][y] != 0)
+            for (int y = 0; y < ySize; ++y)
             {
-                for (int i = 0; i < numLights; ++i)
+                if (lightR[x][y] != 0 && lightG[x][y] != 0 && lightB[x][y] != 0)
                 {
-                    lightPos = lightSource[i].position;
-
-                    if (CheckLineForObject(lightPos.x - cameraPos.x, lightPos.y - cameraPos.y, x, y) == true)
+                    for (int i = 0; i < numLights; ++i)
                     {
-                        shadowsCast += 1;
+                        if (lightSource[i].intensity != 0)
+                        {
+                            lightPos = lightSource[i].position;
 
-                        //remove break later when trying to do multiple shadow casters
-                        break;
+                            if (CheckLineForObject(lightPos.x - cameraPos.x, lightPos.y - cameraPos.y, x, y) == true)
+                            {
+                                shadowsCast += 1;
+                                //remove break later when trying to do multiple shadow casters
+                            }
+                            else if (distanceSquared(lightPos.x - cameraPos.x, lightPos.y - cameraPos.y, x, y) <= lightSource[i].radius * lightSource[i].radius)
+                            {
+                                shadowsCast -= 1;
+                            }
+                        }
                     }
-                }
-                if (lightBuffer->SampleColor(x, y).GetAlpha() != 0)
-                {
-                    //maybe here do ham algo with the tilemap instead of pixels and if any tiles inbetween player and target tile then dont sub?
-                    shadowsCast -= 1;
-                }
+                    if (lightBuffer->SampleColor(x, y).GetAlpha() != 0)
+                    {
+                        //maybe here do ham algo with the tilemap instead of pixels and if any tiles inbetween player and target tile then dont sub?
+                        shadowsCast -= 1;
+                    }
 
-                if (shadowsCast >= 1)
-                {
-                    lightR[x][y] = 0;
-                    lightG[x][y] = 0;
-                    lightB[x][y] = 0;
+                    if (shadowsCast >= 1)
+                    {
+                        lightR[x][y] = 0;
+                        lightG[x][y] = 0;
+                        lightB[x][y] = 0;
+                    }
+                    shadowsCast = 0;
                 }
-                shadowsCast = 0;
             }
         }
     }
+    
 }
 
 void Renderer::RenderParticles()
@@ -267,8 +277,8 @@ void Renderer::RenderParticles()
 }
 
 #define TILE_SIZE 8
-#define NUM_WALL_SPRITES 24
-const int wallSpriteIndexes[NUM_WALL_SPRITES] = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 45, 46, 48, 29, 26, 31, 41, 39, 36, 27, 28, 34, 35 };
+#define NUM_WALL_SPRITES 17
+const int wallSpriteIndexes[NUM_WALL_SPRITES] = { 1, 2, 4, 5, 6, 7, 8, 9, 10, 11, 26, 36, 27, 28, 34, 35, 12 };
 void Renderer::MakeTileMap(int** tileMapArray)
 {
     foregroundLayer->ClearImageBuffer();
@@ -349,7 +359,7 @@ void Renderer::UpdateFace(int& faceState_)
     }
 }
 
-ImageBuffer* Renderer::CreateAnimatedObject(const std::string filename, Vector2 frameSize)
+ImageBuffer* Renderer::CreateAnimatedObject(const std::string filename, Vector2 frameSize)  
 {
 	ImageBuffer *Result = NULL;
     ImageBuffer* spriteSheet = new ImageBuffer{ filename };
