@@ -20,6 +20,10 @@ LaserSystem::LaserSystem(void)
 	DEBUGVisualizeReflectorBounces(false)
 {
     ErrorLog = &Logging::GetInstance("debugLog.log");
+
+    PathNodeCount = 0;
+    EmitterCount = 0;
+    ReflectorCount = 0;
 }
 
 LaserSystem::~LaserSystem(void)
@@ -67,24 +71,25 @@ void LaserSystem::Update(float dt)
             DEBUGPreviousScancode = 0;
         }
     }
-}
 
-void LaserSystem::Render(void)
-{
+    PathNodeCount = 0;
+    
 	float MaxLaserTravelDistance = 100000.0f;
     reflector *PreviousReflector = NULL;
     
-	for(uint32_t EmitterIndex = 0;
+    for(uint32_t EmitterIndex = 0;
 		EmitterIndex < EmitterCount;
 		++EmitterIndex)
 	{
 		laser_emitter *Emitter = Emitters + EmitterIndex;
 
+        Emitter->FirstPathNodeIndex = PathNodeCount;
+        
         int BounceCount = 0;
         Vector2 RayP = Emitter->P;
         Vector2 RayD = Emitter->Direction;
 
-        for(uint32_t IterationCount = 1000;
+        for(uint32_t IterationCount = 1024;
 			IterationCount;
             --IterationCount)
         {
@@ -120,6 +125,10 @@ void LaserSystem::Render(void)
             Vector2 HitPoint = RayP + MinDistance*RayD;
             Renderer::GetInstance()->DrawLine(RayP, HitPoint, Color(255, 255, 255, 255));
 
+            beam_path_node *NewNode = BeamPathNodes + PathNodeCount++;
+            NewNode->P = HitPoint;
+            NewNode->AtInfinity = false;
+            
             if(HitReflector)
             {
                 if(DEBUGVisualizeReflectorBounces)
@@ -141,13 +150,43 @@ void LaserSystem::Render(void)
             else
             {
                 // @NOTE: No more reflectors face this ray
+                NewNode->AtInfinity = true;
                 break;
             }
 
             PreviousReflector = HitReflector;
         }
-	}
 
+        Emitter->OnePastLastPathNodeIndex = PathNodeCount;
+	}
+}
+
+void LaserSystem::Render(void)
+{
+    for(uint32_t EmitterIndex = 0;
+        EmitterIndex < EmitterCount;
+        ++EmitterIndex)
+    {
+        laser_emitter *Emitter = Emitters + EmitterIndex;
+
+        beam_path_node *LastNode = NULL;
+        for(uint32_t NodeIndex = Emitter->FirstPathNodeIndex;
+            NodeIndex < Emitter->OnePastLastPathNodeIndex;
+            ++NodeIndex)
+        {
+            beam_path_node *PathNode = BeamPathNodes + NodeIndex;
+
+            Vector2 LineBeginP = Emitter->P;
+            if(LastNode)
+            {
+                LineBeginP = LastNode->P;
+            }
+            
+            Renderer::GetInstance()->DrawLine(PathNode->P, LineBeginP, Color(0xff, 0xff, 0xff, 0xff));
+            LastNode = PathNode;
+        }
+    }
+    
     for(uint32_t ReflectorIndex = 0;
         ReflectorIndex < ReflectorCount;
         ++ReflectorIndex)

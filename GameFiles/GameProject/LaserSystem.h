@@ -7,6 +7,9 @@ struct laser_emitter
 {
     Vector2 P;
     Vector2 Direction;
+
+	uint32_t FirstPathNodeIndex;
+	uint32_t OnePastLastPathNodeIndex;
 };
 
 struct reflector
@@ -14,6 +17,12 @@ struct reflector
     Vector2 P;
     Vector2 Direction;
     float Radius;
+};
+
+struct beam_path_node
+{
+    Vector2 P;
+    bool AtInfinity;
 };
 
 struct emitter_id
@@ -66,6 +75,9 @@ private:
 
     int DEBUGPreviousScancode;
     bool DEBUGVisualizeReflectorBounces;
+
+    beam_path_node BeamPathNodes[4096];
+    uint32_t PathNodeCount;
 };
 
 

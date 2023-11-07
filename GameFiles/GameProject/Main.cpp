@@ -44,12 +44,12 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
     UNREFERENCED_PARAMETER(lpCmdLine);
 
     Engine* engine = Engine::GetInstance();
+   	engine->EngineAddSystem(LaserSystem::GetInstance());
     engine->EngineAddSystem(LevelBuilder::GetInstance());
     engine->EngineAddSystem(EntityFactory::GetInstance());
     engine->EngineAddSystem(ComponentFactory::GetInstance());
     engine->EngineAddSystem(PlatformSystem::GetInstance());
     engine->EngineAddSystem(SceneSystem::GetInstance());
-   	engine->EngineAddSystem(LaserSystem::GetInstance());
     
     Engine::EngineCode returnCode = engine->Start(); 
 
