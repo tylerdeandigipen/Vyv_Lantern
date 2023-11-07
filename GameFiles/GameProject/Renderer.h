@@ -51,6 +51,7 @@ public:
 	void DrawLine(Vector2 P0, Vector2 P1, const Color &LineColor);
 
 	void RenderLightingPass();
+	bool CalculateIfPixelIsLit(int x, int y, int i);
 	float FindPixelLuminosity(float x, float y, Light *LightSource);
 
 	ImageBuffer* GetObjectByName(std::string name_);

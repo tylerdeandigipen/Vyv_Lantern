@@ -65,7 +65,11 @@ void Renderer::RenderLightingPass()
 	objectLayer->Blit(inputBuffer);
 	foregroundLayer->Blit(inputBuffer, -CameraOffsetX, -CameraOffsetY);
     particleManager->UpdateParticles();
-  
+
+    //for shadow casting
+    lightBuffer->ClearImageBuffer();
+    foregroundLayer->Blit(lightBuffer, -CameraP.x, -CameraP.y);
+
     //becasue thomas's camera isnt acurate
     normalBufferPostCam->ClearImageBuffer();
     normalBuffer->Blit(normalBufferPostCam, -CameraOffsetX, -CameraOffsetY);
@@ -86,21 +90,25 @@ void Renderer::RenderLightingPass()
 
             for (int i = 0; i < numLights; ++i)
             {
-				Light *LightSource = lightSource + i;
-                float lightMultiplier = FindPixelLuminosity((float)x, (float)y, LightSource);
-
-				if (lightMultiplier != 0)
+                if (CalculateIfPixelIsLit(x, y, i) == true)
                 {
-                    float R_F32 = ((float)LightSource->color.GetRed())    * OneOver255;
-                    float G_F32 = ((float)LightSource->color.GetGreen())  * OneOver255;
-                    float B_F32 = ((float)LightSource->color.GetBlue())   * OneOver255;
-                    lightMultiplier *= LightSource->volumetricIntensity;
-                    
-                    IntensityR += (lightMultiplier * R_F32);
-                    IntensityG += (lightMultiplier * G_F32);
-                    IntensityB += (lightMultiplier * B_F32);
-				}
+                    Light* LightSource = lightSource + i;
+                    float lightMultiplier = FindPixelLuminosity((float)x, (float)y, LightSource);
+
+                    if (lightMultiplier != 0)
+                    {
+                        float R_F32 = ((float)LightSource->color.GetRed()) * OneOver255;
+                        float G_F32 = ((float)LightSource->color.GetGreen()) * OneOver255;
+                        float B_F32 = ((float)LightSource->color.GetBlue()) * OneOver255;
+                        lightMultiplier *= LightSource->volumetricIntensity;
+
+                        IntensityR += (lightMultiplier * R_F32);
+                        IntensityG += (lightMultiplier * G_F32);
+                        IntensityB += (lightMultiplier * B_F32);
+                    }
+                }
             }
+
             lightR[x][y] = IntensityR;
             lightG[x][y] = IntensityG;
             lightB[x][y] = IntensityB;
@@ -116,7 +124,7 @@ float Renderer::FindPixelLuminosity(float x, float y, Light *LightSource)
     float normalMin = 1;
     Vector2 LightP = LightSource->position - CameraP;
     float Result = 0.0f;
-
+   
     switch(LightSource->Type)
     {
         case LightSourceType_Point:
@@ -209,9 +217,7 @@ void Renderer::CalculateShadows()
     const Vector2 cameraPos = CameraP;
     Vector2 lightPos;
     int shadowsCast = 0;
-    lightBuffer->ClearImageBuffer();
 
-    foregroundLayer->Blit(lightBuffer, -CameraP.x, -CameraP.y);
     #pragma omp parallel
     {
         #pragma omp for nowait collapse(3) private(lightPos, shadowsCast)
@@ -256,6 +262,43 @@ void Renderer::CalculateShadows()
         }
     }
     
+}
+
+bool Renderer::CalculateIfPixelIsLit(int x,int y, int i)
+{
+    const Vector2 cameraPos = CameraP;
+    int diameter = 0;
+    Vector2 lightPos;
+    bool isLit = true;
+    if (lightSource[i].intensity != 0)
+    {
+        diameter = lightSource[i].radius * lightSource[i].radius;
+        lightPos = lightSource[i].position;
+
+        if (distanceSquared(x, y, lightPos.x - cameraPos.x, lightPos.y - cameraPos.y) <= diameter)
+        {
+            if (CheckLineForObject(lightPos.x - cameraPos.x, lightPos.y - cameraPos.y, x, y) == true)
+            {
+                isLit = false;
+            }
+            else
+            {
+                isLit = true;
+            }
+        }
+        else
+        {
+            isLit = false;
+        }
+    }
+
+    if (isLit == false && lightBuffer->SampleColor(x, y).GetAlpha() != 0)
+    {
+        //maybe here do ham algo with the tilemap instead of pixels and if any tiles inbetween player and target tile then dont sub?
+        isLit = true;
+    }
+
+    return isLit;
 }
 
 void Renderer::RenderParticles()
@@ -634,9 +677,7 @@ void Renderer::Update()
     ScopeTimer TestScopeTimer("Renderer::Update");
 
     RenderLightingPass();
-    
-    CalculateShadows();
-
+    //CalculateShadows();
     DitherLights();
     RenderToOutbuffer();
 
