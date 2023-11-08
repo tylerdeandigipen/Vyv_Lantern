@@ -43,6 +43,7 @@ public:
 	bool isFullBright = false;
 	bool renderNormalMap = false;
 	bool renderOnlyLights = false;
+	bool doBlur = true;
 	static Renderer* GetInstance();
 
 	Vector2 GetCameraPosition(void);
@@ -56,6 +57,7 @@ public:
 
 	ImageBuffer* GetObjectByName(std::string name_);
     
+	void BlurLights();
 	void ResizeBuffers();
 	void RenderParticles();
 	void MakeTileMap(int** tileMapArray);
@@ -83,6 +85,10 @@ public:
 	float** lightR;
 	float** lightG;
 	float** lightB;
+
+	float** blurLightR;
+	float** blurLightG;
+	float** blurLightB;
 
 
 private:

@@ -53,30 +53,31 @@ void Renderer::RenderLightingPass()
     float IntensityR = 0.0f;
     float IntensityG = 0.0f;
     float IntensityB = 0.0f;
-    Color trans{ 0,0,0,0 };
 
 	int CameraOffsetX = (int)CameraP.x;
 	int CameraOffsetY = (int)CameraP.y;
 
-	inputBuffer->ClearImageBuffer();
-	outputBuffer->ClearImageBuffer();
-	
-	backgroundLayer->Blit(inputBuffer, -CameraOffsetX, -CameraOffsetY);
-	objectLayer->Blit(inputBuffer);
-	foregroundLayer->Blit(inputBuffer, -CameraOffsetX, -CameraOffsetY);
+    inputBuffer->ClearImageBuffer();
+    outputBuffer->ClearImageBuffer();
+
+    lightBuffer->ClearImageBuffer();
+
+    lightBuffer->Blit(inputBuffer);
+    backgroundLayer->Blit(inputBuffer, -CameraOffsetX, -CameraOffsetY);
+    objectLayer->Blit(inputBuffer);
+    foregroundLayer->Blit(inputBuffer, -CameraOffsetX, -CameraOffsetY);
     particleManager->UpdateParticles();
 
     //for shadow casting
-    lightBuffer->ClearImageBuffer();
-    foregroundLayer->Blit(lightBuffer, -CameraP.x, -CameraP.y);
+    foregroundLayer->Blit(lightBuffer, -CameraOffsetX, -CameraOffsetY);
 
     //becasue thomas's camera isnt acurate
     normalBufferPostCam->ClearImageBuffer();
     normalBuffer->Blit(normalBufferPostCam, -CameraOffsetX, -CameraOffsetY);
 
-#if 1
     RenderParticles();
 
+#if 1
     const int xSize = (int)inputBuffer->size.x;
     const int ySize = (int)inputBuffer->size.y;
     #pragma omp parallel for collapse(3) private(lightMultiplier, IntensityR, IntensityG, IntensityB)
@@ -117,6 +118,58 @@ void Renderer::RenderLightingPass()
 #else
 	inputBuffer->Blit(outputBuffer);
 #endif
+}
+
+int blurRangeHigh = 3;
+int blurRangeLow = -2;
+void Renderer::BlurLights()
+{
+    if (doBlur == true)
+    {
+        const int xSize = (int)inputBuffer->size.x;
+        const int ySize = (int)inputBuffer->size.y;
+
+        #pragma omp parallel for collapse(2)    
+        for (int x = 0; x < xSize; ++x)
+        {
+            for (int y = 0; y < ySize; ++y)
+            {
+                blurLightR[x][y] = lightR[x][y];
+                blurLightG[x][y] = lightG[x][y];
+                blurLightB[x][y] = lightB[x][y];
+            }
+        }
+
+        int count;
+        #pragma omp parallel for collapse(2) private(count)
+        for (int x = 0; x < xSize; ++x)
+        {
+            for (int y = 0; y < ySize; ++y)
+            {
+                lightR[x][y] = 0.0f;
+                lightG[x][y] = 0.0f;
+                lightB[x][y] = 0.0f;
+
+                count = 0;
+                for (int w = blurRangeLow; w < blurRangeHigh; ++w)
+                {
+                    for (int h = blurRangeLow; h < blurRangeHigh; ++h)
+                    {
+                        if (x + w < SCREEN_SIZE_X && y + h < SCREEN_SIZE_Y && x + w >= 0 && y + h >= 0)
+                        {
+                            lightR[x][y] += blurLightR[x + w][y + h];
+                            lightG[x][y] += blurLightG[x + w][y + h];
+                            lightB[x][y] += blurLightB[x + w][y + h];
+                            count += 1;
+                        }
+                    }
+                }
+                lightR[x][y] /= count;
+                lightG[x][y] /= count;
+                lightB[x][y] /= count;
+            }
+        }   
+    }
 }
 
 float Renderer::FindPixelLuminosity(float x, float y, Light *LightSource)
@@ -457,6 +510,20 @@ Renderer::Renderer()
             lightB[x] = new float[y];
         }
     }
+
+    blurLightR = new float* [SCREEN_SIZE_X];
+    blurLightG = new float* [SCREEN_SIZE_X];
+    blurLightB = new float* [SCREEN_SIZE_X];
+
+    for (int x = 0; x < SCREEN_SIZE_X; ++x)
+    {
+        for (int y = 0; y < SCREEN_SIZE_Y; ++y)
+        {
+            blurLightR[x] = new float[y];
+            blurLightG[x] = new float[y];
+            blurLightB[x] = new float[y];
+        }
+    }
     //end of hate
 
 	DebugBuffer = new ImageBuffer(SCREEN_SIZE_X, SCREEN_SIZE_Y);
@@ -503,6 +570,8 @@ Renderer::~Renderer(void)
     delete DebugBuffer;
     delete lightBuffer;
     delete particleManager;
+
+    //Delete the lightR g and b and blur here later
 
     ClearObjects();
     ClearTilesets();
@@ -636,12 +705,14 @@ void Renderer::DitherLights()
                 }
                 else
                 {
-                    DestPixel = DestPixel.ScaleIndividual(((float)i1 / 7), ((float)i1 / 7), ((float)i1 / 7));
+                     DestPixel = DestPixel.ScaleIndividual(((float)i1 / 7), ((float)i1 / 7), ((float)i1 / 7));
                 }
             }
             else
             {
-                DestPixel = Color{ (uint8_t)(i1 * 36), (uint8_t)(i2 * 36), (uint8_t)(i3 * 36), 255 };
+                //DestPixel = Color{ (uint8_t)(i1 * 36), (uint8_t)(i2 * 36), (uint8_t)(i3 * 36), 255 };
+                DestPixel = scaledWhite;
+
             }
         }
     }
@@ -652,8 +723,6 @@ void Renderer::RenderToOutbuffer()
 {
     const int xSize = (int)inputBuffer->size.x;
     const int ySize = (int)inputBuffer->size.y;
-    foregroundLayer->Blit(lightBuffer, -CameraP.x, -CameraP.y);
-
     #pragma omp parallel for collapse(2)
     for (int x = 0; x < xSize; ++x)
     {
@@ -677,7 +746,7 @@ void Renderer::Update()
     ScopeTimer TestScopeTimer("Renderer::Update");
 
     RenderLightingPass();
-    //CalculateShadows();
+    BlurLights();
     DitherLights();
     RenderToOutbuffer();
 
