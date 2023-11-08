@@ -102,13 +102,13 @@ Engine::EngineCode TbdTestScene::Init()
     tempLight2.color = { 216, 247, 255, 255 };
 
     tempLight2.intensity = 3.0f;
-    tempLight2.radius = 100;
+    tempLight2.radius = 20;
     tempLight2.radialFalloff = 3;
     tempLight2.radialWeight = 1;
     tempLight2.angularWeight = 0;
     tempLight2.volumetricIntensity = .25f;
 
-    tempLight.intensity = 0;
+    //tempLight.intensity = 0;
 
 
     TbdPixelRenderer->AddLight(tempLight);
@@ -116,7 +116,7 @@ Engine::EngineCode TbdTestScene::Init()
 
     tempLight2.intensity = 5.0f;
     tempLight2.radius = 25;
-    TbdPixelRenderer->AddLight(tempLight2);
+    //TbdPixelRenderer->AddLight(tempLight2);
 
     Color tempColor( 226, 230, 179, 255 );
 
@@ -211,7 +211,7 @@ void TbdPlayerMovement(float dt)
     Vector2 CursourP = {(float)x, (float)y};
     CursourP *= 1.0f / TbdPixelRenderer->screenScale;
     CursourP += TbdPixelRenderer->GetCameraPosition();
-    TbdPixelRenderer->lightSource[2].position = CursourP;
+   // TbdPixelRenderer->lightSource[2].position = CursourP;
 
     Vector2 LightP = TbdPixelRenderer->lightSource[0].position;
     Vector2 D = LightP - CursourP;
