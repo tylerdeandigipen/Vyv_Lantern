@@ -97,7 +97,7 @@ Engine::EngineCode TbdTestScene::Init()
     tempLight2.radialFalloff = 3;
     tempLight2.radialWeight = 1;
     tempLight2.angularWeight = 0;
-    tempLight2.volumetricIntensity = .25f;
+    tempLight2.volumetricIntensity = 0.25f;
 
     //tempLight.intensity = 0;
 
@@ -134,8 +134,10 @@ void TbdPlayerMovement(float dt)
 
     if (inputHandler->keyPressed(SDL_SCANCODE_E) && TbdCanPlaceLight == 1)
     {
-        //TbdPixelRenderer.AddLight(TbdPixelRenderer.lightSource[0]);
-        TbdPixelRenderer->animatedObjects[0][0]->FlipSprite();
+        if (TbdPixelRenderer->doBlur == false)
+            TbdPixelRenderer->doBlur = true;
+        else
+            TbdPixelRenderer->doBlur = false;
         TbdCanPlaceLight = 0;
     }
     if (!inputHandler->keyPressed(SDL_SCANCODE_E))
