@@ -83,18 +83,9 @@ Engine::EngineCode TbdTestScene::Init()
     FileIO::GetInstance()->ReadTileSet("./Data/TileMapNormals.json", TbdPixelRenderer, true);
     LevelBuilder::GetInstance()->LoadLevel(TbdPixelRenderer, "./TiledMichaelTest.json");
 
-    IMGUI_CHECKVERSION();
-    ImGui::CreateContext();
-    ImGuiIO& io = ImGui::GetIO(); (void)io;
-    io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;     // Enable Keyboard Controls
-    io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;
-
-    ImGui::StyleColorsLight();
-
-    ImGui_ImplSDL2_InitForOpenGL(TbdWindow, TbdGlContext);
-    ImGui_ImplOpenGL3_Init("#version 330");
-
     FileIO::GetInstance()->ReadLight("./Data/TestLight.json", tempLight);
+
+    InitImGui();
 
     tempLight2.position.x = 200;
     tempLight2.position.y = 90;
@@ -246,39 +237,7 @@ void TbdTestScene::Update(float dt)
 
 void TbdTestScene::Render()
 {
-    ImGui_ImplOpenGL3_NewFrame();
-    ImGui_ImplSDL2_NewFrame();
-    ImGui::NewFrame();
-    if (show_custom_window)
-    {
-        ImGui::Begin("custom window");
-        ImGui::Text("hey bbg how you doin ;)");
-
-        if (ImGui::Button("Toggle Metrics/Debug Bar"))
-        {
-            show_metrics_debug_bar = !show_metrics_debug_bar;
-        }
-
-        if (show_metrics_debug_bar)
-        {
-            ImGui::Text("Metrics/Debugger:");
-            ImGui::Separator();
-            ImGui::Text("Frame Time: %.3f ms/frame", 1000.0f / ImGui::GetIO().Framerate);
-            ImGui::Text("Framerate: %.1f FPS", ImGui::GetIO().Framerate);
-            //ImGui::Text("Allocations: %d", ImGui::GetIO().MetricsAllocs);
-
-            ImGui::Separator();
-        }
-
-        ImGui::End();
-    }
-
-    //if (show_demo_window)
-    //{
-    //    ImGui::ShowDemoWindow(&show_demo_window);
-    //}
-
-    ImGui::Render();
+    ImGuiInterg();
 
     TbdPixelRenderer->Update();
 	return;
@@ -289,9 +248,6 @@ Engine::EngineCode TbdTestScene::Exit()
     // Remember to clean up
     Inputs::GetInstance()->InputKeyClear();
     TbdPixelRenderer->CleanRenderer();
-    ImGui_ImplOpenGL3_Shutdown();
-    ImGui_ImplSDL2_Shutdown();
-    ImGui::DestroyContext();
     SDL_GL_DeleteContext(TbdGlContext);
     SDL_DestroyWindow(TbdWindow);
     SDL_Quit();
@@ -313,4 +269,65 @@ Scene* TbdTestSceneGetInstance(void)
         TbdTestSceneinstance = new TbdTestScene();
     }
     return TbdTestSceneinstance;
+}
+
+/**********************************************************************/
+
+void TbdTestScene::InitImGui()
+{
+    // Initialize ImGui
+    IMGUI_CHECKVERSION();
+    ImGui::CreateContext();
+    ImGuiIO& io = ImGui::GetIO();
+    io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;
+    io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;
+    ImGui::StyleColorsLight();
+    ImGui_ImplSDL2_InitForOpenGL(TbdWindow, TbdGlContext);
+    ImGui_ImplOpenGL3_Init("#version 330");
+}
+
+void TbdTestScene::ImGuiInterg()
+{
+    ImGui_ImplOpenGL3_NewFrame();
+    ImGui_ImplSDL2_NewFrame();
+    ImGui::NewFrame();
+
+    if (show_custom_window)
+    {
+        ImGuiWindow();
+    }
+
+    ImGui::Render();
+}
+
+void TbdTestScene::ImGuiWindow()
+{
+    if (show_custom_window)
+    {
+        ImGui::Begin("custom window");
+        ImGui::Text("hey bbg how you doin ;)");
+
+        if (ImGui::Button("Toggle Metrics/Debug Bar"))
+        {
+            show_metrics_debug_bar = !show_metrics_debug_bar;
+        }
+
+        if (show_metrics_debug_bar)
+        {
+            ImGui::Text("Metrics/Debugger:");
+            ImGui::Separator();
+            ImGui::Text("Frame Time: %.3f ms/frame", 1000.0f / ImGui::GetIO().Framerate);
+            ImGui::Text("Framerate: %.1f FPS", ImGui::GetIO().Framerate);
+
+            ImGui::Separator();
+        }
+
+        ImGui::End();
+    }
+}
+void TbdTestScene::ImGuiExit()
+{
+    ImGui_ImplOpenGL3_Shutdown();
+    ImGui_ImplSDL2_Shutdown();
+    ImGui::DestroyContext();
 }

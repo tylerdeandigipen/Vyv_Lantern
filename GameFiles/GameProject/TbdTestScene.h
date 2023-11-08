@@ -31,6 +31,10 @@ public:
 	void Update(float dt) override;
 	void Render(void) override;
 private:
+	void InitImGui();
+	void ImGuiInterg();
+	void ImGuiWindow();
+	void ImGuiExit();
 };
 
 Scene* TbdTestSceneGetInstance(void);
