@@ -15,6 +15,7 @@
 #include "Vector.h"
 #include "ImageBuffer.h"
 #include "ScopeTimer.h"
+#include "Engine.h"
 
 #include <windows.h>
 #include <SDL/SDL.h>
@@ -62,7 +63,6 @@ void Renderer::RenderLightingPass()
 
     lightBuffer->ClearImageBuffer();
 
-    lightBuffer->Blit(inputBuffer);
     backgroundLayer->Blit(inputBuffer, -CameraOffsetX, -CameraOffsetY);
     objectLayer->Blit(inputBuffer);
     foregroundLayer->Blit(inputBuffer, -CameraOffsetX, -CameraOffsetY);
@@ -491,6 +491,7 @@ Renderer::Renderer()
     normalBuffer = new ImageBuffer{ SCREEN_SIZE_X ,SCREEN_SIZE_Y };
     normalBufferPostCam = new ImageBuffer{ SCREEN_SIZE_X ,SCREEN_SIZE_Y };
     lightBuffer = new ImageBuffer{ SCREEN_SIZE_X ,SCREEN_SIZE_Y };
+
     particleManager = new ParticleManager;
     faceIndex = -1;
     faceState = NULL;
@@ -545,6 +546,10 @@ void Renderer::CleanRenderer()
     DebugBuffer->ClearImageBuffer();
     lightBuffer->ClearImageBuffer();
     particleManager->ClearParticles();
+    if (menuBuffer != NULL)
+    {
+        menuBuffer->ClearImageBuffer();
+    }
     ClearObjects();
     ClearTilesets();
     faceIndex = -1;
@@ -570,6 +575,10 @@ Renderer::~Renderer(void)
     delete DebugBuffer;
     delete lightBuffer;
     delete particleManager;
+    if (menuBuffer != NULL)
+    {
+        delete menuBuffer;
+    }
 
     //Delete the lightR g and b and blur here later
 
@@ -740,6 +749,35 @@ void Renderer::RenderToOutbuffer()
     }
 }
 
+void Renderer::RenderMenu()
+{
+    if (menuBuffer == NULL)
+    {
+        MakeMenu("./Assets/PPM/Pause_Menu.ppm");
+    }
+
+    const int xSize = (int)inputBuffer->size.x;
+    const int ySize = (int)inputBuffer->size.y;
+    #pragma omp parallel for collapse(2)
+    for (int x = 0; x < xSize; ++x)
+    {
+        for (int y = 0; y < ySize; ++y)
+        {
+            Color& DestPixel = outputBuffer->SampleColor(x, y);
+            DestPixel = DestPixel / 2;
+        }
+    }
+
+    menuBuffer->Blit(outputBuffer);
+
+    //do pause stuff here
+}
+
+void Renderer::MakeMenu(const std::string filename)
+{
+    menuBuffer = new ImageBuffer{filename};
+}
+
 void Renderer::Update()
 {
     Uint32 currentTime = SDL_GetTicks();
@@ -749,6 +787,11 @@ void Renderer::Update()
     BlurLights();
     DitherLights();
     RenderToOutbuffer();
+
+    if (Engine::GetInstance()->Paused() == true)
+    {
+        RenderMenu();
+    }
 
     DebugBuffer->Blit(outputBuffer);
     DebugBuffer->ClearImageBuffer();

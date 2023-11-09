@@ -22,22 +22,24 @@ public:
     
 	SDL_Window* window;
 
-	ImageBuffer* outputBuffer;
-	ImageBuffer* inputBuffer;
+	ImageBuffer* outputBuffer = NULL;
+	ImageBuffer* inputBuffer = NULL;
 
-	ImageBuffer* foregroundLayer; //layer 2
-	ImageBuffer* objectLayer; //layer 1
-	ImageBuffer* backgroundLayer; //layer 0
+	ImageBuffer* foregroundLayer = NULL; //layer 2
+	ImageBuffer* objectLayer = NULL; //layer 1
+	ImageBuffer* backgroundLayer = NULL; //layer 0
+	ImageBuffer* menuBuffer = NULL;
 
-	ImageBuffer* lightBuffer;
-	ImageBuffer* normalBuffer;
-	ImageBuffer* normalBufferPostCam;
+
+	ImageBuffer* lightBuffer = NULL;
+	ImageBuffer* normalBuffer = NULL;
+	ImageBuffer* normalBufferPostCam = NULL;
 	Light lightSource[MAX_LIGHT_SOURCES];
 	ImageBuffer* objects[MAX_OBJECTS];
 	ImageBuffer* animatedObjects[MAX_ANIMATED_OBJECTS][MAX_ANIMATION_FRAMES];
 	ImageBuffer* tileSet[128];
 	ImageBuffer* normalTileSet[128];
-	ParticleManager* particleManager;
+	ParticleManager* particleManager = NULL;
 	float screenScale = 6;
 	Vector2 tileMapSize;
 	bool isFullBright = false;
@@ -78,6 +80,8 @@ public:
 	void CleanRenderer();
 	void DitherLights();
 	void RenderToOutbuffer();
+	void RenderMenu();
+	void MakeMenu(const std::string filename);
 	void CalculateShadows();
 	int faceState;
 

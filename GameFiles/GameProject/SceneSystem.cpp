@@ -62,6 +62,10 @@ void SceneSystem::Update(float dt)
 			timer -= rate;
 		}
 	}
+	else
+	{
+		activeScene->Update(0);
+	}
 }
 
 void SceneSystem::Render()

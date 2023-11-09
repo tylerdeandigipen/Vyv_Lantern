@@ -128,6 +128,7 @@ int TbdCanPlaceLight = 0;
 bool TbdCanToggleFullBright = true;
 bool TbdCanToggleNormalDisplay = true;
 bool TbdCanToggleOnlyLights = true;
+bool CanPause = true;
 void TbdPlayerMovement(float dt)
 {
     Inputs* inputHandler = Inputs::GetInstance();
@@ -157,6 +158,7 @@ void TbdPlayerMovement(float dt)
     {
         TbdCanToggleFullBright = true;
     }
+
     if (inputHandler->keyPressed(SDL_SCANCODE_Q) && TbdCanToggleOnlyLights == true)
     {
         if (TbdPixelRenderer->renderOnlyLights == false)
@@ -169,6 +171,7 @@ void TbdPlayerMovement(float dt)
     {
         TbdCanToggleOnlyLights = true;
     }
+
     if (inputHandler->keyPressed(SDL_SCANCODE_N) && TbdCanToggleNormalDisplay == true)
     {
         if (TbdPixelRenderer->renderNormalMap == false)
@@ -180,6 +183,19 @@ void TbdPlayerMovement(float dt)
     if (!inputHandler->keyPressed(SDL_SCANCODE_N))
     {
         TbdCanToggleNormalDisplay = true;
+    }
+
+    if (inputHandler->keyPressed(SDL_SCANCODE_LSHIFT))
+    {
+        if (Engine::GetInstance()->Paused() == false)
+            Engine::GetInstance()->SetPause(true);
+        else
+            Engine::GetInstance()->SetPause(false);
+        CanPause = false;
+    }
+    else
+    {
+        CanPause = true;
     }
 
     if (inputHandler->keyPressed(SDL_SCANCODE_TAB))
