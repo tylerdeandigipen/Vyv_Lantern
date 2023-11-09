@@ -84,7 +84,7 @@ public:
 	void MakeMenu(const std::string filename);
 	void CalculateShadows();
 	int faceState;
-
+	float normalStrength = 0.5f;
 	//i hate this make it better later tho
 	float** lightR;
 	float** lightG;

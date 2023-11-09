@@ -120,8 +120,8 @@ void Renderer::RenderLightingPass()
 #endif
 }
 
-int blurRangeHigh = 3;
-int blurRangeLow = -2;
+int blurRangeHigh = 2;
+int blurRangeLow = -1;
 void Renderer::BlurLights()
 {
     if (doBlur == true)
@@ -174,7 +174,7 @@ void Renderer::BlurLights()
 
 float Renderer::FindPixelLuminosity(float x, float y, Light *LightSource)
 {
-    float normalMin = 1;
+    float normalMin = 0.75f;
     Vector2 LightP = LightSource->position - CameraP;
     float Result = 0.0f;
    
@@ -241,11 +241,15 @@ float Renderer::FindPixelLuminosity(float x, float y, Light *LightSource)
     }	
 
     //Normal map calculations
+    float normalR = (float)normalBufferPostCam->SampleColor(x, y).r;
+    float normalG = (float)normalBufferPostCam->SampleColor(x, y).g;
+    if (normalR == 0 && normalG == 0)
+    {
+        return Result;
+    }
     Vector2 pos = (Vector2(x, y));
     Vector2 distFromLight = LightP - pos;
     Vector2 distNormalized;
-    float normalR = (float)normalBufferPostCam->SampleColor(x, y).r;
-    float normalG = (float)normalBufferPostCam->SampleColor(x, y).g;
     Vector2 normalDir = Vector2{ normalR / 255.0f, normalG / 255.0f };
     normalDir *= 2;
     normalDir -= Vector2{ 1,1 };
@@ -259,7 +263,7 @@ float Renderer::FindPixelLuminosity(float x, float y, Light *LightSource)
     //float const LIGHTING_STEP_SIZE = 0.25f;
 	//Result = LIGHTING_STEP_SIZE * floorf(Result / LIGHTING_STEP_SIZE);
 
-    return(Result);
+    return Result;
 }
 
 void Renderer::CalculateShadows()

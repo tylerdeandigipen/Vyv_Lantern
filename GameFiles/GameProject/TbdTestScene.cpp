@@ -186,15 +186,18 @@ void TbdPlayerMovement(float dt)
         TbdCanToggleNormalDisplay = true;
     }
 
-    if (inputHandler->keyPressed(SDL_SCANCODE_LSHIFT) && CanPause == true)
+    if (inputHandler->keyPressed(SDL_SCANCODE_LSHIFT))
     {
-        if (Engine::GetInstance()->Paused() == false)
-            Engine::GetInstance()->SetPause(true);
-        else
-            Engine::GetInstance()->SetPause(false);
+        if (CanPause == true)
+        {
+            if (Engine::GetInstance()->Paused() == false)
+                Engine::GetInstance()->SetPause(true);
+            else
+                Engine::GetInstance()->SetPause(false);
+        }
         CanPause = false;
     }
-    if (inputHandler->keyPressed(SDL_SCANCODE_LSHIFT))
+    else
     {
         CanPause = true;
     }
