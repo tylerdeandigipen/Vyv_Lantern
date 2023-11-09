@@ -186,7 +186,7 @@ void TbdPlayerMovement(float dt)
         TbdCanToggleNormalDisplay = true;
     }
 
-    if (inputHandler->keyPressed(SDL_SCANCODE_LSHIFT))
+    if (inputHandler->keyPressed(SDL_SCANCODE_LSHIFT) && CanPause == true)
     {
         if (Engine::GetInstance()->Paused() == false)
             Engine::GetInstance()->SetPause(true);
@@ -194,7 +194,7 @@ void TbdPlayerMovement(float dt)
             Engine::GetInstance()->SetPause(false);
         CanPause = false;
     }
-    else
+    if (inputHandler->keyPressed(SDL_SCANCODE_LSHIFT))
     {
         CanPause = true;
     }
@@ -215,23 +215,26 @@ void TbdPlayerMovement(float dt)
         tabKeyPreviouslyPressed = false;
     }
 
-    int x, y;
-    Uint32 buttons = SDL_GetMouseState(&x, &y);
+    if (Engine::GetInstance()->Paused() == false)
+    {
+        int x, y;
+        Uint32 buttons = SDL_GetMouseState(&x, &y);
 
-    Vector2 CursourP = {(float)x, (float)y};
-    CursourP *= 1.0f / TbdPixelRenderer->screenScale;
-    CursourP += TbdPixelRenderer->GetCameraPosition();
-   // TbdPixelRenderer->lightSource[2].position = CursourP;
+        Vector2 CursourP = { (float)x, (float)y };
+        CursourP *= 1.0f / TbdPixelRenderer->screenScale;
+        CursourP += TbdPixelRenderer->GetCameraPosition();
+        // TbdPixelRenderer->lightSource[2].position = CursourP;
 
-    Vector2 LightP = TbdPixelRenderer->lightSource[0].position;
-    Vector2 D = LightP - CursourP;
-    float Angle = atan2f(D.x, D.y) * (180.0f / 3.14f) + 180.0f;
-    TbdPixelRenderer->lightSource[0].angle = Angle;
-    
-	ImageBuffer *playerEntity = TbdPixelRenderer->animatedObjects[0][0];
-	Vector2 ScreenHalfSize = 0.5f*Vector2(SCREEN_SIZE_X, SCREEN_SIZE_Y);
-	Vector2 BitmapHalfDim = 0.5f*playerEntity->size;
-	TbdPixelRenderer->SetCameraPosition(playerEntity->position - ScreenHalfSize + BitmapHalfDim);
+        Vector2 LightP = TbdPixelRenderer->lightSource[0].position;
+        Vector2 D = LightP - CursourP;
+        float Angle = atan2f(D.x, D.y) * (180.0f / 3.14f) + 180.0f;
+        TbdPixelRenderer->lightSource[0].angle = Angle;
+
+        ImageBuffer* playerEntity = TbdPixelRenderer->animatedObjects[0][0];
+        Vector2 ScreenHalfSize = 0.5f * Vector2(SCREEN_SIZE_X, SCREEN_SIZE_Y);
+        Vector2 BitmapHalfDim = 0.5f * playerEntity->size;
+        TbdPixelRenderer->SetCameraPosition(playerEntity->position - ScreenHalfSize + BitmapHalfDim);
+    }
 }
 
 void TbdTestScene::Update(float dt)

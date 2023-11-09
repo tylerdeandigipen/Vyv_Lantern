@@ -54,8 +54,6 @@ void SceneSystem::Update(float dt)
 	if (activeScene && !Engine::GetInstance()->Paused())
 	{
 		// dt stuff!
-		activeScene->Update(dt);
-
 		timer += dt;
 		while (timer >= rate)
 		{
@@ -64,8 +62,10 @@ void SceneSystem::Update(float dt)
 	}
 	else
 	{
-		activeScene->Update(0);
+		dt = 0;
 	}
+	activeScene->Update(dt);
+
 }
 
 void SceneSystem::Render()

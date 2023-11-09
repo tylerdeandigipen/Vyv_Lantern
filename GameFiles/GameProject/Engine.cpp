@@ -41,20 +41,17 @@ Engine::EngineCode Engine::Start()
 	{
 		EngineCode code = NothingBad;
 
-		if (!paused)
+		try
 		{
-			try 
-			{
-				code = Update();
-			}
-			catch (EngineCode updateFailure)
-			{
-				assert(updateFailure && "update failed!");
-				return updateFailure;
-			}
-			if (code == CloseWindow)
-				break;
+			code = Update();
 		}
+		catch (EngineCode updateFailure)
+		{
+			assert(updateFailure && "update failed!");
+			return updateFailure;
+		}
+		if (code == CloseWindow)
+			break;
 
 		try 
 		{
