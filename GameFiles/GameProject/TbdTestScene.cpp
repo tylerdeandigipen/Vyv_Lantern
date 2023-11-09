@@ -20,6 +20,7 @@
 #include "PlatformSystem.h"
 #include "Engine.h"
 #include "Entity.h"
+#include "EntityContainer.h"
 #include "FileIO.h"
 #include "SceneSystem.h"
 #include "Renderer.h"
@@ -324,6 +325,9 @@ void TbdTestScene::ImGuiWindow()
     {
         ImGui::Begin("custom window");
         ImGui::Text("hey bbg how you doin ;)");
+
+        int numEntities = EntityContainer::CountEntities();
+        ImGui::Text("Number of Entities: %d", numEntities);
 
         if (ImGui::Button("Toggle Metrics/Debug Bar"))
         {

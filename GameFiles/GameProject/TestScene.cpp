@@ -61,6 +61,12 @@ const float pushForce = 1.0f;
 static bool tabKeyPreviouslyPressed = false;
 static bool show_demo_window = false;
 
+static bool TStabKeyPreviouslyPressed = false;
+static bool TSshow_demo_window = false;
+static bool TSshow_tool_metrics = false;
+static bool TSshow_custom_window = true;
+static bool TSshow_metrics_debug_bar = false;
+
 /* NOTICE !!!!!!!!!! Feel free to "turn off" debug messages as you please. You can see them in the debugLog.txt in the game files, or in the output tab when debugging. Literally
    you can call for the logger anywhere as long as you get an instance first. Use it in ur functions or something - taylee */
 
@@ -155,18 +161,10 @@ Engine::EngineCode TestScene::Init()
     SDL_GL_SetSwapInterval(0);
     
     gladLoadGLLoader(SDL_GL_GetProcAddress);
+
+    InitImGui();
+
 	//LevelBuilder::GetInstance()->LoadLevel(&pixelRenderer, "./Data/FirstLevel.json");
-
-    IMGUI_CHECKVERSION();
-    ImGui::CreateContext();
-    ImGuiIO& io = ImGui::GetIO(); (void)io;
-    io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;     // Enable Keyboard Controls
-    io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;
-
-    ImGui::StyleColorsLight();
-
-    ImGui_ImplSDL2_InitForOpenGL(window, glContext);
-    ImGui_ImplOpenGL3_Init("#version 330");
     /*
 	tempLight.Type = LightSourceType_Directional;
 	tempLight.position.x = 80;
@@ -316,15 +314,18 @@ void tempPlayerMovementLol(float dt)
 
     if (inputHandler->keyPressed(SDL_SCANCODE_TAB))
     {
-        if (!tabKeyPreviouslyPressed)
+        if (!TStabKeyPreviouslyPressed)
         {
-            show_demo_window = !show_demo_window;
+            TSshow_demo_window = !TSshow_demo_window;
+            TSshow_tool_metrics = !TSshow_tool_metrics;
+            TSshow_custom_window = !TSshow_custom_window;
+
         }
-        tabKeyPreviouslyPressed = true;
+        TStabKeyPreviouslyPressed = true;
     }
     else
     {
-        tabKeyPreviouslyPressed = false;
+        TStabKeyPreviouslyPressed = false;
     }
 
     int x, y;
@@ -349,13 +350,6 @@ void TestScene::Update(float dt)
 {
     if (CheckGameScenes() || CheckRestart())
         return;
-    ImGui_ImplOpenGL3_NewFrame();
-    ImGui_ImplSDL2_NewFrame();
-    ImGui::NewFrame();
-
-    ImGui::ShowDemoWindow();
-
-    ImGui::Render();
 
     Inputs* inputHandler = Inputs::GetInstance();
     //LevelBuilder::GetInstance()->LevelUpdate(dt);
@@ -492,6 +486,7 @@ void TestScene::Update(float dt)
 
 void TestScene::Render()
 {
+    ImGuiInterg();
     pixelRenderer->Update();
 
     //logger.LogLine("Debug info: Things are being rendered. (testScene rendered)");
@@ -503,9 +498,7 @@ Engine::EngineCode TestScene::Exit()
     // Remember to clean up
     Inputs::GetInstance()->InputKeyClear();
     pixelRenderer->CleanRenderer();
-    ImGui_ImplOpenGL3_Shutdown();
-    ImGui_ImplSDL2_Shutdown();
-    ImGui::DestroyContext();
+    ImGuiExit();
     SDL_GL_DeleteContext(glContext);
     SDL_DestroyWindow(window);
     SDL_Quit();
@@ -534,5 +527,69 @@ Scene* TestSceneGetInstance(void)
         TestSceneinstance = new TestScene();
     }
     return TestSceneinstance;
+}
+
+/**********************************************************************/
+
+void TestScene::InitImGui()
+{
+    // Initialize ImGui
+    IMGUI_CHECKVERSION();
+    ImGui::CreateContext();
+    ImGuiIO& io = ImGui::GetIO();
+    io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;
+    io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;
+    ImGui::StyleColorsLight();
+    ImGui_ImplSDL2_InitForOpenGL(window, glContext);
+    ImGui_ImplOpenGL3_Init("#version 330");
+}
+
+void TestScene::ImGuiInterg()
+{
+    ImGui_ImplOpenGL3_NewFrame();
+    ImGui_ImplSDL2_NewFrame();
+    ImGui::NewFrame();
+
+    if (TSshow_custom_window)
+    {
+        ImGuiWindow();
+    }
+
+    ImGui::Render();
+}
+
+void TestScene::ImGuiWindow()
+{
+    if (TSshow_custom_window)
+    {
+        ImGui::Begin("custom window");
+        ImGui::Text("hey bbg how you doin ;)");
+
+        int numEntities = EntityContainer::CountEntities();
+        ImGui::Text("Number of Entities: %d", numEntities);
+
+        if (ImGui::Button("Toggle Metrics/Debug Bar"))
+        {
+            TSshow_metrics_debug_bar = !TSshow_metrics_debug_bar;
+        }
+
+        if (TSshow_metrics_debug_bar)
+        {
+            ImGui::Text("Metrics/Debugger:");
+            ImGui::Separator();
+            ImGui::Text("Frame Time: %.3f ms/frame", 1000.0f / ImGui::GetIO().Framerate);
+            ImGui::Text("Framerate: %.1f FPS", ImGui::GetIO().Framerate);
+
+            ImGui::Separator();
+        }
+
+        ImGui::End();
+    }
+}
+void TestScene::ImGuiExit()
+{
+    ImGui_ImplOpenGL3_Shutdown();
+    ImGui_ImplSDL2_Shutdown();
+    ImGui::DestroyContext();
 }
 

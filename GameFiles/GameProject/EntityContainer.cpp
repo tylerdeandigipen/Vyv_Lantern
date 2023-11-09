@@ -13,6 +13,8 @@
 #include "Collider.h"
 #include "Entity.h"
 
+int EntityContainer::entityCount = 0;
+
 EntityContainer::EntityContainer() : entities()
 {
 
@@ -26,6 +28,7 @@ EntityContainer::~EntityContainer()
 bool EntityContainer::AddEntity(Entity* entity)
 {
 	entities.push_back(entity);
+	++entityCount;
 	return true;
 }
 
@@ -122,4 +125,9 @@ void EntityContainer::FreeAll()
 			entities.clear();
 		}
 	}
+}
+
+int EntityContainer::CountEntities()
+{
+	return entityCount;
 }

@@ -30,7 +30,10 @@ public:
 	void CheckCollisions();
 	void RenderAll();
 	void FreeAll();
+
+	static int CountEntities();
 private:
+	static int entityCount;
 	std::vector<Entity*> entities;
 };
 
