@@ -757,7 +757,7 @@ void Renderer::RenderMenu()
 {
     if (menuBuffer == NULL)
     {
-        MakeMenu("./Assets/PPM/Pause_Menu.ppm");
+        MakeMenu("./Assets/PPM/Pause_Temp.ppm");
     }
 
     const int xSize = (int)inputBuffer->size.x;
