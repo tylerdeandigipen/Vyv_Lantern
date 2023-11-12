@@ -69,7 +69,7 @@ const gfxVector2* Transform::GetScale() { return scale; }
 void Transform::SetTranslation(gfxVector2* _translation)
 {
 	isDirty = true;
-	if (_translation->x = 0.0f)
+	if (_translation->x == 0.0f)
 	{
 		*translation = *translation;
 	}

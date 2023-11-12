@@ -19,14 +19,17 @@ void ParticleManager::UpdateParticles()
 	//Loop through each particle here
 	for (int i = 0; i < totalParticles; i++)
 	{
-		if (particleArray[i]->isDead == true)
+		if (particleArray[i] != NULL)
 		{
-			delete particleArray[i];
-			particleArray[i] = NULL;
-		}
-		else if (particleArray[i] != NULL)
-		{
-			particleArray[i]->Update();
+			if (particleArray[i]->isDead)
+			{
+				delete particleArray[i];
+				particleArray[i] = NULL;
+			}
+			else
+			{
+				particleArray[i]->Update();
+			}
 		}
 	}
 }
@@ -49,9 +52,10 @@ void ParticleManager::ClearParticles()
 {
 	for (int i = 0; i < MAX_PARTICLES; i++)
 	{
-		if (particleArray[i] == NULL)
+		if (particleArray[i] != NULL)
 		{
 			delete particleArray[i];
+			particleArray[i] = NULL;
 		}
 	}
 	totalParticles = 0;

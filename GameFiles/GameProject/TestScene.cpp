@@ -568,6 +568,50 @@ void TestScene::ImGuiWindow()
         int numEntities = EntityContainer::CountEntities();
         ImGui::Text("Number of Entities: %d", numEntities);
 
+        ImGui::Text("Mouse Position: (%d, %d)", Inputs::GetInstance()->getMouseX(), Inputs::GetInstance()->getMouseY());
+
+        ImGui::Text("Keys Pressed:");
+        for (int i = 0; i < SDL_NUM_SCANCODES; ++i)
+        {
+            if (Inputs::GetInstance()->keyPressed(i))
+            {
+                const char* keyName = SDL_GetKeyName(SDL_GetKeyFromScancode(static_cast<SDL_Scancode>(i)));
+                ImGui::BulletText("%s is being pressed", keyName);
+            }
+        }
+
+        ImGui::Text("Particle System:");
+        ImGui::Separator();
+
+        Particle** particles = pixelRenderer->particleManager->GetParticles();
+
+        if (ImGui::TreeNode("All Active Particles"))
+        {
+            for (int i = 0; i < MAX_PARTICLES; ++i)
+            {
+                if (particles[i] != nullptr)
+                {
+                    if (ImGui::TreeNode(("Particle " + std::to_string(i)).c_str()))
+                    {
+                        ImGui::Text("Position: (%.2f, %.2f)", particles[i]->position.x, particles[i]->position.y);
+                        ImGui::Text("Direction: (%.2f, %.2f)", particles[i]->direction.x, particles[i]->direction.y);
+                        ImGui::Text("Speed: (%.2f, %.2f)", particles[i]->speed.x, particles[i]->speed.y);
+                        ImGui::Text("Color: (%d, %d, %d, %d)", particles[i]->color.r, particles[i]->color.g, particles[i]->color.b, particles[i]->color.a);
+
+                        ImGui::TreePop();
+                    }
+                }
+            }
+            ImGui::TreePop();
+        }
+
+        if (ImGui::TreeNode("Tilesets in use:"))
+        {
+            ImGui::BulletText("TileMapSprites.json");
+            ImGui::BulletText("TileMapNormals.json");
+            ImGui::TreePop();
+        }
+
         if (ImGui::Button("Toggle Metrics/Debug Bar"))
         {
             TSshow_metrics_debug_bar = !TSshow_metrics_debug_bar;

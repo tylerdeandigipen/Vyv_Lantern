@@ -372,10 +372,12 @@ void TbdTestScene::ImGuiWindow()
             ImGui::TreePop();
         }
 
-        ImGui::Separator();
-        ImGui::Text("Tilesets in use:");
-        ImGui::BulletText("TileMapSprites.json");
-        ImGui::BulletText("TileMapNormals.json");
+        if (ImGui::TreeNode("Tilesets in use:"))
+        {
+            ImGui::BulletText("TileMapSprites.json");
+            ImGui::BulletText("TileMapNormals.json");
+            ImGui::TreePop();
+        }
 
         if (ImGui::Button("Toggle Metrics/Debug Bar"))
         {
