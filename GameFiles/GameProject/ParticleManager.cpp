@@ -56,3 +56,8 @@ void ParticleManager::ClearParticles()
 	}
 	totalParticles = 0;
 }
+
+Particle** ParticleManager::GetParticles()
+{
+	return particleArray;
+}

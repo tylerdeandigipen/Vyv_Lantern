@@ -17,6 +17,9 @@ public:
 
 	Particle* particleArray[MAX_PARTICLES];
 	int totalParticles;
+
+	// thanks ty
+	Particle** GetParticles();
 };
 
 #endif 

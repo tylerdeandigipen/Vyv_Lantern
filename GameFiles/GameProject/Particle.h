@@ -25,6 +25,7 @@ public:
 	Vector2 speed;
 	Color color;
 	bool isDead = false;
+
 };
 
 #endif 
