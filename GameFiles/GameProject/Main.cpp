@@ -20,6 +20,8 @@
 #include "LaserSystem.h"
 #include <SDL/SDL.h>
 
+#include <crtdbg.h>
+
 #define MAX_LOADSTRING 100
 #define APIENTRY    WINAPI
 #define WINAPI __stdcall
@@ -52,6 +54,8 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
     engine->EngineAddSystem(SceneSystem::GetInstance());
     
     Engine::EngineCode returnCode = engine->Start(); 
+
+    //_CrtDumpMemoryLeaks();
 
     switch (returnCode)
     {
