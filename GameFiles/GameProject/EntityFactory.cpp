@@ -18,7 +18,6 @@ EntityFactory::EntityFactory()
 
 EntityFactory::~EntityFactory()
 {
-    delete instance;
 }
 
 Engine::EngineCode EntityFactory::Init()
@@ -57,6 +56,7 @@ Entity* EntityFactory::CreateEntity(std::string const& type, const std::string f
 Engine::EngineCode EntityFactory::Close()
 {
     assert(instance != NULL);
+    delete instance;
     return Engine::NothingBad;
 }
 

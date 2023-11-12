@@ -1,4 +1,5 @@
 #include "Light.h"
+#include "FileIO.h"
 
 Light::Light(const Light& rhs) : Component(rhs)
 {
@@ -44,16 +45,24 @@ Component* Light::Clone() const
 {
 	return new Light(*this);
 }
+
 void Light::Update(float dt)
 {
 	UNREFERENCED_PARAMETER(dt);
 }
+
 void Light::Read(json jsonData)
 {
-	UNREFERENCED_PARAMETER(jsonData);
+	FileIO::GetInstance()->ReadLight(*this, jsonData);
 }
-std::string Light::GetName()
-{
-	return std::string();
-}
+
+//std::string Light::Name()
+//{
+//	return "Light";
+//}
+
+//std::string Light::GetName()
+//{
+//	return std::string();
+//}
 

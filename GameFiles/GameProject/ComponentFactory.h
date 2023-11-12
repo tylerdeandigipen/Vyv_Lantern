@@ -32,7 +32,7 @@ private:
 	static Component& CreateColliderAABB(void);
 	static Component& CreateTransform(void);
 	static Component& CreatePhysics(void);
-	//static Component& CreateLight(void);
+	static Component& CreateLight(void);
 	static ComponentFactory* instance;
 	std::unordered_map<std::string, std::function<Component&()>> component_map;
 	const char* name;

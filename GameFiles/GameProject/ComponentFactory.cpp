@@ -13,6 +13,7 @@
 #include "Transform.h"
 #include "BehaviorPlayer.h"
 #include "Physics.h"
+#include "Light.h"
 
 ComponentFactory* ComponentFactory::instance = new ComponentFactory();
 
@@ -23,7 +24,6 @@ ComponentFactory::ComponentFactory()
 
 ComponentFactory::~ComponentFactory()
 {
-    delete instance;
 }
 
 Engine::EngineCode ComponentFactory::Init()
@@ -32,6 +32,7 @@ Engine::EngineCode ComponentFactory::Init()
     Add(ColliderAABB::Name(), &ComponentFactory::CreateColliderAABB);
     Add(Transform::Name(), &ComponentFactory::CreateTransform);
     Add(Physics::Name(), &ComponentFactory::CreatePhysics);
+ //   Add(Light::Name(), &ComponentFactory::CreateLight);
     assert(winHandle != NULL);
     return Engine::NothingBad;
 }
@@ -62,6 +63,7 @@ Component* ComponentFactory::CreateComponent(std::string const& type)
 Engine::EngineCode ComponentFactory::Close()
 {
     assert(instance != NULL);
+    delete instance;
     return Engine::NothingBad;
 }
 
@@ -96,8 +98,8 @@ Component& ComponentFactory::CreatePhysics()
     return *physics;
 }
 
-//Component& ComponentFactory::CreateLight()
-//{
-//    Light* light = new Light();
-//    return *light;
-//}
+Component& ComponentFactory::CreateLight()
+{
+    Component* light = new Light();
+    return *light;
+}

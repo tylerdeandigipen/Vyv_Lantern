@@ -3,9 +3,10 @@
 #define LIGHT_H
 
 #include "Color.h"
-
 #include "Component.h"
 #include "Vector.h"
+
+#include <string>
 
 enum light_source_type
 {
@@ -13,7 +14,7 @@ enum light_source_type
     LightSourceType_Directional,
     LightSourceType_EnumCount
 };
-
+using string = std::string;
 class Light : public Component 
 {
 public:
@@ -23,15 +24,13 @@ public:
 	Component* Clone() const override;
 	void Update(float dt) override;
 	void Read(json jsonData) override;
-	std::string GetName() override;
-	enum light_source_type Type = LightSourceType_Point;
-    
     gfxVector2 position;
 	Color color;
 
 	gfxVector2 leftAnglePos;
 	gfxVector2 rightAnglePos;
 
+	enum light_source_type Type = LightSourceType_Point;
     float minAngle = 0;
 	float maxAngle = 0;
 	float angle = 0;

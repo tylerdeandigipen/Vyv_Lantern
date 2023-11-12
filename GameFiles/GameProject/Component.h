@@ -31,7 +31,7 @@ public:
 
 	Component(Component::TypeEnum type);
 	Component(Component const& other);
-	virtual std::string GetName() = 0;
+	virtual std::string GetName() { return "Component"; };
 	//virtual CreateComponent(mType);
 	virtual ~Component();
 

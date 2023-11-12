@@ -5,7 +5,7 @@
 
 LevelBuilder* LevelBuilder::instance = new LevelBuilder();
 
-LevelBuilder::LevelBuilder()
+LevelBuilder::LevelBuilder() : entity_container(new EntityContainer()), jsonData(), TileMap(NULL), Walls(NULL), SizeX(0), SizeY(0)
 {
     entity_container = new EntityContainer();
 }
@@ -78,16 +78,16 @@ void LevelBuilder::LoadLevel(Renderer* pixel, std::string filename)
             if (levelData["TylerTileData"].is_object())
             {
                 TileMap = FileIO::GetInstance()->ReadTylerTileMap(levelData);
-                pixel->tileMapSize.x = SizeX;
-                pixel->tileMapSize.y = SizeY;
+                pixel->tileMapSize.x = static_cast<float>(SizeX);
+                pixel->tileMapSize.y = static_cast<float>(SizeY);
                 pixel->MakeTileMap(TileMap);
 
             }
             else
             {
                 TileMap = FileIO::GetInstance()->ReadTiledMap(levelData);
-                pixel->tileMapSize.x = SizeX;
-                pixel->tileMapSize.y = SizeY;
+                pixel->tileMapSize.x = static_cast<float>(SizeX);
+                pixel->tileMapSize.y = static_cast<float>(SizeY);
                 pixel->MakeTileMap(TileMap);
             }
 
