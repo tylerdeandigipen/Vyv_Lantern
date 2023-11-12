@@ -12,6 +12,7 @@
 #include "ColliderAABB.h"
 #include "Transform.h"
 #include "BehaviorPlayer.h"
+#include "BehaviorSwitch.h"
 #include "Physics.h"
 #include "Light.h"
 
@@ -78,6 +79,12 @@ Component& ComponentFactory::CreateBehaviorPlayer()
 {
     Behavior* behavior = new BehaviorPlayer();
     return *behavior;
+}
+
+Component& ComponentFactory::CreateBehaviorSwitch()
+{
+    Behavior* behaviorSwitch = new BehaviorSwitch();
+    return *behaviorSwitch;
 }
 
 Component& ComponentFactory::CreateColliderAABB(void)

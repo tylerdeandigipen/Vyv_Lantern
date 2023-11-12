@@ -142,6 +142,9 @@
     <ClCompile Include="glad.c">
       <Filter>Misc</Filter>
     </ClCompile>
+    <ClCompile Include="BehaviorSwitch.cpp">
+      <Filter>Source FIles\Components\Sub Components</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AudioEngine.h">
@@ -305,6 +308,9 @@
     </ClInclude>
     <ClInclude Include="targetver.h">
       <Filter>Misc</Filter>
+    </ClInclude>
+    <ClInclude Include="BehaviorSwitch.h">
+      <Filter>Header FIles\Components\SubComponents</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
