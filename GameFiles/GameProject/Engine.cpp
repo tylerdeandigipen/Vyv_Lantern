@@ -107,7 +107,7 @@ Engine::~Engine()
 
 Engine::EngineCode Engine::Update()
 {
-	float dt = time->Delta();
+	float dt = Time::Instance().Delta();
 
 	// update all systems
 	for (int i = 0; i < systemCount; ++i)

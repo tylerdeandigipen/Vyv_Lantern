@@ -8,6 +8,8 @@ public:
     Time();
     ~Time();
     float Delta();
+    static Time& Instance();
+
 private:
     float last_tick_time;
     float delta;

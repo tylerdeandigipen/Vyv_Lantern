@@ -31,3 +31,9 @@ float Time::Delta()
 	}
     //delta = clamp(delta, 0.0f, 1.0f);
 }
+
+Time& Time::Instance()
+{
+	static Time instance;
+	return instance;
+}
