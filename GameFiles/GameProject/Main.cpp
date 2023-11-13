@@ -6,6 +6,7 @@
 // Copyright © 2023 DigiPen (USA) Corporation.
 //
 //------------------------------------------------------------------------------
+#define _CRTDBG_MAP_ALLOC
 
 #include "framework.h"
 #include "Engine.h"
@@ -55,8 +56,12 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
     
     Engine::EngineCode returnCode = engine->Start(); 
 
-    //_CrtDumpMemoryLeaks();
-
+//    _CrtDumpMemoryLeaks();
+        // Enable run-time memory check for debug builds.
+    #if defined(DEBUG) | defined(_DEBUG)
+    _CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF); //do not remove this line!!!
+    _CrtSetBreakAlloc(34555); //use this to detect memory leaks, replace the number with mem leak location    
+    #endif
     switch (returnCode)
     {
     case Engine::NullWindowHandle:
