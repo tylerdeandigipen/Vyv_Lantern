@@ -43,6 +43,7 @@ public:
 	float volumetricIntensity = 0;
 
     float Attenuation[3];
+	static std::string TheName();
 private:
 };
 

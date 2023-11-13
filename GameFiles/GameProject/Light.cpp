@@ -56,6 +56,11 @@ void Light::Read(json jsonData)
 	FileIO::GetInstance()->ReadLight(*this, jsonData);
 }
 
+std::string Light::TheName()
+{
+	return "Light";
+}
+
 //std::string Light::Name()
 //{
 //	return "Light";

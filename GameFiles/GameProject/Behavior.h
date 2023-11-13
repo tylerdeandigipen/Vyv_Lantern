@@ -15,7 +15,7 @@
 class Behavior : public Component
 {
 public:
-	enum BehaviorType { Player, Switch };
+	enum BehaviorType { Player, Switch, Door };
 	_inline Behavior::BehaviorType type() const { return bType; };
 	_inline Behavior* Type() const { return _type; };
 

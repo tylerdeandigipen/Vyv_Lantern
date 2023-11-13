@@ -145,6 +145,9 @@
     <ClCompile Include="BehaviorSwitch.cpp">
       <Filter>Source FIles\Components\Sub Components</Filter>
     </ClCompile>
+    <ClCompile Include="BehaviorDoor.cpp">
+      <Filter>Source FIles\Components\Sub Components</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AudioEngine.h">
@@ -310,6 +313,9 @@
       <Filter>Misc</Filter>
     </ClInclude>
     <ClInclude Include="BehaviorSwitch.h">
+      <Filter>Header FIles\Components\SubComponents</Filter>
+    </ClInclude>
+    <ClInclude Include="BehaviorDoor.h">
       <Filter>Header FIles\Components\SubComponents</Filter>
     </ClInclude>
   </ItemGroup>

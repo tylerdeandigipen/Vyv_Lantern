@@ -12,6 +12,7 @@
 #include "ColliderAABB.h"
 #include "Transform.h"
 #include "BehaviorPlayer.h"
+#include "BehaviorDoor.h"
 #include "BehaviorSwitch.h"
 #include "Physics.h"
 #include "Light.h"
@@ -30,10 +31,11 @@ ComponentFactory::~ComponentFactory()
 Engine::EngineCode ComponentFactory::Init()
 {
     Add(BehaviorPlayer::Name(), &ComponentFactory::CreateBehaviorPlayer);
+    Add(BehaviorDoor::Name(), & ComponentFactory::CreateBehaviorDoor);
     Add(ColliderAABB::Name(), &ComponentFactory::CreateColliderAABB);
     Add(Transform::Name(), &ComponentFactory::CreateTransform);
     Add(Physics::Name(), &ComponentFactory::CreatePhysics);
- //   Add(Light::Name(), &ComponentFactory::CreateLight);
+    Add(Light::TheName(), &ComponentFactory::CreateLight);
     assert(winHandle != NULL);
     return Engine::NothingBad;
 }
@@ -81,6 +83,12 @@ Component& ComponentFactory::CreateBehaviorPlayer()
     return *behavior;
 }
 
+Component& ComponentFactory::CreateBehaviorDoor(void)
+{
+    Behavior* behavior = new BehaviorDoor();
+    return *behavior;
+}
+
 Component& ComponentFactory::CreateBehaviorSwitch()
 {
     Behavior* behaviorSwitch = new BehaviorSwitch();
@@ -104,6 +112,7 @@ Component& ComponentFactory::CreatePhysics()
     Component* physics = new Physics();
     return *physics;
 }
+
 
 Component& ComponentFactory::CreateLight()
 {

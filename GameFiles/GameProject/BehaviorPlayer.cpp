@@ -20,12 +20,12 @@
 
 const float pushForce = 1.0f;
 
-BehaviorPlayer::BehaviorPlayer() : Behavior(Behavior::Player)
+BehaviorPlayer::BehaviorPlayer() : Behavior(Behavior::Player), playerMoveSpeed(0)
 {
     _type = this;
 }
 
-BehaviorPlayer::BehaviorPlayer(BehaviorPlayer const& other) : Behavior(other)
+BehaviorPlayer::BehaviorPlayer(BehaviorPlayer const& other) : Behavior(other), playerMoveSpeed(other.playerMoveSpeed)
 {
     _type = this;
 }
@@ -70,11 +70,6 @@ void BehaviorPlayer::Update(float dt)
 	    Controller(dt);
 }
 
-void BehaviorPlayer::SetInputHandler(Inputs* _input)
-{
-    input = _input;
-}
-
 void BehaviorPlayer::Read(json jsonData)
 {
     Init();
@@ -87,7 +82,7 @@ void BehaviorPlayer::Controller(float dt)
     Renderer::GetInstance()->faceState = 0;
     Transform* transform = Parent()->Has(Transform);
     gfxVector2 translation = *transform->GetTranslation();
-    input = Inputs::GetInstance();
+    Inputs* input = Inputs::GetInstance();
     if (input->keyPressed(SDL_SCANCODE_W))
     {
         Renderer::GetInstance()->faceState = 2;
@@ -238,6 +233,4 @@ void BehaviorPlayer::PlayerCollisionHandler(Entity* entity1, Entity* entity2)
             }
         }
     }
-
-    
 }

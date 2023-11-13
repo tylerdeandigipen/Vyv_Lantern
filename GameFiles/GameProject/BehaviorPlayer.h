@@ -24,8 +24,6 @@ public:
 	std::string GetName() override;
 	static std::string Name();
 
-	void SetInputHandler(Inputs* _input) override;
-
 	void Init() override;
 
 	Behavior* Clone() const override;
@@ -41,7 +39,6 @@ private:
 	bool isBlinking = false;
 	float MIN_RAND = 6.0f, MAX_RAND = 9.0f;
 	void Controller(float dt);
-	Inputs* input;
 	float playerMoveSpeed;
 	int wehavewalls[20] = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 45, 46, 48, 29, 26, 31, 41, 39, 36 };
 
