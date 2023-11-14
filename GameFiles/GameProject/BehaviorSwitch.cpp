@@ -70,12 +70,14 @@ void BehaviorSwitch::Read(json jsonData)
 
 void BehaviorSwitch::SwitchCollisionHandler(Entity* entity1, Entity* entity2)
 {
-    if (entity1->GetRealName().compare("Player") == 0 && entity2->GetRealName().compare("Switch") == 0)
+    if (entity1->GetRealName().compare("Player") == 0 && entity2->GetRealName().compare("Switch") == 0 || entity1->GetRealName().compare("Switch") == 0 && entity2->GetRealName().compare("Player") == 0)
     {
         /*Check if player is inside switch*/
         int colliding = CollisionCheck(entity1->GetImage()->aabb, entity2->GetImage()->aabb);
     }
 }
+
+
 
 void BehaviorSwitch::Controller(float dt)
 {

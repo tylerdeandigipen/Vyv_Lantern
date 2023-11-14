@@ -31,6 +31,7 @@ ComponentFactory::~ComponentFactory()
 Engine::EngineCode ComponentFactory::Init()
 {
     Add(BehaviorPlayer::Name(), &ComponentFactory::CreateBehaviorPlayer);
+    Add(BehaviorSwitch::Name(), &ComponentFactory::CreateBehaviorSwitch);
     Add(BehaviorDoor::Name(), & ComponentFactory::CreateBehaviorDoor);
     Add(ColliderAABB::Name(), &ComponentFactory::CreateColliderAABB);
     Add(Transform::Name(), &ComponentFactory::CreateTransform);
