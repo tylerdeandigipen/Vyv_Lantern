@@ -78,7 +78,6 @@ public:
 	void UpdateObjects();
 	void Update();
 	int returnObjCnt();
-	void ClearObjects();
 	void ClearTilesets();
 	void RenderWallCollidersToDebugBuffer();
 	int CheckLineForObject(int x1, int y1, int x2, int y2);

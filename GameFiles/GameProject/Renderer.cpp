@@ -28,6 +28,11 @@
 #include <assert.h>
 #include <omp.h>
 
+#include "DebugNew.h"
+#ifdef _DEBUG
+#define new DEBUG_NEW
+#endif
+
 #define OneOver255 (1.0f / 255.0f)
 
 Renderer* Renderer::instance = new Renderer;
@@ -546,7 +551,7 @@ ImageBuffer* Renderer::CreateAnimatedObject(const std::string filename, Vector2 
 	return(Result);
 }
 
-Renderer::Renderer()
+Renderer::Renderer() : objects{ NULL }
 {
     outputBuffer = new ImageBuffer{ SCREEN_SIZE_X ,SCREEN_SIZE_Y };
     inputBuffer = new ImageBuffer{ SCREEN_SIZE_X ,SCREEN_SIZE_Y };
@@ -640,7 +645,6 @@ void Renderer::CleanRenderer()
     {
         menuBuffer->ClearImageBuffer();
     }
-    ClearObjects();
     ClearTilesets();
     faceIndex = -1;
     numTiles = 0;
@@ -672,7 +676,6 @@ Renderer::~Renderer(void)
 
     //Delete the lightR g and b and blur here later
 
-    ClearObjects();
     ClearTilesets();
 
     glDeleteTextures(1, &OutputBufferTexture);
@@ -986,16 +989,7 @@ int Renderer::returnObjCnt()
     return countObjects;
 }
 
-void Renderer::ClearObjects()
-{
-    for (int i = 0; i < MAX_OBJECTS; ++i) 
-    {
-        if (objects[i] != nullptr) 
-        {
-            delete objects[i];
-        }
-    }
-}
+// clear objects was here but may no longer be needed //
 
 void Renderer::ClearTilesets()
 {

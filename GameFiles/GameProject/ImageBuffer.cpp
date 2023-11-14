@@ -39,9 +39,9 @@ ImageBuffer::ImageBuffer(ImageBuffer& rhs)
 
 }
 
-ImageBuffer::ImageBuffer()
+ImageBuffer::ImageBuffer() : buffer(new Color[BufferSizeX * BufferSizeY])
 {
-    buffer = new Color[BufferSizeX * BufferSizeY];
+    //buffer = new Color[BufferSizeX * BufferSizeY];
     ClearImageBuffer();
 
 	size.x = (float)BufferSizeX;
@@ -115,7 +115,11 @@ ImageBuffer::ImageBuffer(const std::string file)
 
 ImageBuffer::~ImageBuffer()
 {
-    delete[] buffer;
+    if (buffer != NULL)
+    {
+        delete[] buffer;
+        buffer = NULL;
+    }
 }
 
 ImageBuffer& ImageBuffer::ClearImageBuffer()
