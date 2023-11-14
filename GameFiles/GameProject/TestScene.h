@@ -36,7 +36,29 @@ private:
 	void ImGuiInterg();
 	void ImGuiWindow();
 	void ImGuiExit();
+	
 	emitter_id ControlledEmitter;
+
+
+	laser_emitter *NewEmitter(void)
+	{
+		laser_emitter* Result = NULL;
+
+		emitter_id ResultID = LaserSystem::GetInstance()->CreateEmitter();
+		Result = LaserSystem::GetInstance()->GetEmitter(ResultID);
+
+		return(Result);
+	}
+
+	reflector *NewReflector(void)
+	{
+		reflector* Result = NULL;
+
+		reflector_id ResultID = LaserSystem::GetInstance()->CreateReflector();
+		Result = LaserSystem::GetInstance()->GetReflector(ResultID);
+
+		return(Result);
+	}
 };
 
 Scene* TestSceneGetInstance(void);

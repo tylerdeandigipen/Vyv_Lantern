@@ -56,6 +56,12 @@ bool LaserSystem::DEBUGKeyPressed(int KeyCode, Inputs *InputManager)
     return(Result);
 }
 
+beam_path_node* LaserSystem::GetPathNode(uint32_t NodeIndex)
+{
+	beam_path_node *Result = BeamPathNodes + NodeIndex;
+	return(Result);
+}
+
 void LaserSystem::Update(float dt)
 {
     static Inputs *InputManager = Inputs::GetInstance();
@@ -86,7 +92,7 @@ void LaserSystem::Update(float dt)
         Emitter->FirstPathNodeIndex = PathNodeCount;
         
         int BounceCount = 0;
-        Vector2 RayP = Emitter->P;
+        Vector2 RayP = Emitter->Position;
         Vector2 RayD = Emitter->Direction;
 
         for(uint32_t IterationCount = 1024;
@@ -107,12 +113,12 @@ void LaserSystem::Update(float dt)
                 
                 if(Denom < 0.0f)
                 {
-                    float t = Vector2::DotProduct(Reflector->P - RayP, Reflector->Direction) / Denom;
+                    float t = Vector2::DotProduct(Reflector->Position - RayP, Reflector->Direction) / Denom;
                     if((t > 0.0f) && (t < MinDistance))
                     {
                         // @NOTE: Ensure the ray actually intersectst the plane 
                         Vector2 IntersectionP = RayP + t*RayD;
-                        float k = Vector2::DotProduct(Reflector->P - IntersectionP, Vector2::Perp(Reflector->Direction));
+                        float k = Vector2::DotProduct(Reflector->Position - IntersectionP, Vector2::Perp(Reflector->Direction));
                         if(fabsf(k) <= Reflector->Radius)
                         {
                             MinDistance = t;
@@ -126,7 +132,7 @@ void LaserSystem::Update(float dt)
             Renderer::GetInstance()->DrawLine(RayP, HitPoint, Color(255, 255, 255, 255));
 
             beam_path_node *NewNode = BeamPathNodes + PathNodeCount++;
-            NewNode->P = HitPoint;
+            NewNode->Position = HitPoint;
             NewNode->AtInfinity = false;
             
             if(HitReflector)
@@ -136,8 +142,8 @@ void LaserSystem::Update(float dt)
                     // @NOTE: Illuminate the line from the previous reflector to the current hit
                     if(PreviousReflector)
                     {
-                        Renderer::GetInstance()->DrawLine(PreviousReflector->P,
-                                                          HitReflector->P,
+                        Renderer::GetInstance()->DrawLine(PreviousReflector->Position,
+                                                          HitReflector->Position,
                                                           Color(0x00, 0x00, 0xff, 0xff));
                     }
                 }
@@ -168,7 +174,7 @@ void LaserSystem::Render(void)
         ++EmitterIndex)
     {
         laser_emitter *Emitter = Emitters + EmitterIndex;
-
+#if 1
         beam_path_node *LastNode = NULL;
         for(uint32_t NodeIndex = Emitter->FirstPathNodeIndex;
             NodeIndex < Emitter->OnePastLastPathNodeIndex;
@@ -176,15 +182,16 @@ void LaserSystem::Render(void)
         {
             beam_path_node *PathNode = BeamPathNodes + NodeIndex;
 
-            Vector2 LineBeginP = Emitter->P;
+            Vector2 LineBeginP = Emitter->Position;
             if(LastNode)
             {
-                LineBeginP = LastNode->P;
+                LineBeginP = LastNode->Position;
             }
             
-            Renderer::GetInstance()->DrawLine(PathNode->P, LineBeginP, Color(0xff, 0xff, 0xff, 0xff));
+            Renderer::GetInstance()->DrawLine(PathNode->Position, LineBeginP, Color(0xff, 0xff, 0xff, 0xff));
             LastNode = PathNode;
         }
+#endif
     }
     
     for(uint32_t ReflectorIndex = 0;
@@ -193,7 +200,7 @@ void LaserSystem::Render(void)
     {
         reflector *Reflector = Reflectors + ReflectorIndex;
 
-        Vector2 ReflectorP = Reflector->P;
+        Vector2 ReflectorP = Reflector->Position;
         Vector2 Tangent = Vector2::Perp(Reflector->Direction);
         Vector2 StartP = ReflectorP - Reflector->Radius*Tangent;
         Vector2 EndP = ReflectorP + Reflector->Radius*Tangent;
@@ -203,6 +210,21 @@ void LaserSystem::Render(void)
         Renderer::GetInstance()->DrawLine(ReflectorP, ReflectorP + 10.0f*Reflector->Direction,
                                           Color(0x00, 0xff, 0x00, 0xff));
     }
+}
+
+LaserSystem::beam_path_iterator LaserSystem::IterateEmitterPath(emitter_id EmitterID)
+{
+	beam_path_iterator Result;
+
+	laser_emitter *Emitter = GetEmitter(EmitterID);
+	if(Emitter)
+	{
+		Result.Emitter = Emitter;
+		Result.CurrentNodeIndex = Emitter->FirstPathNodeIndex;
+		Result.CurrentNode = BeamPathNodes + Result.CurrentNodeIndex;
+	}
+		
+	return(Result);
 }
 
 laser_emitter *LaserSystem::GetEmitter(emitter_id ID)

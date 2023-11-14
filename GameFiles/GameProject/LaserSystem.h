@@ -5,7 +5,7 @@
 
 struct laser_emitter
 {
-    Vector2 P;
+    Vector2 Position;
     Vector2 Direction;
 
 	uint32_t FirstPathNodeIndex;
@@ -14,14 +14,14 @@ struct laser_emitter
 
 struct reflector
 {
-    Vector2 P;
+    Vector2 Position;
     Vector2 Direction;
     float Radius;
 };
 
 struct beam_path_node
 {
-    Vector2 P;
+    Vector2 Position;
     bool AtInfinity;
 };
 
@@ -42,6 +42,31 @@ class Inputs;
 class LaserSystem : public BaseSystem
 {
 public:
+	struct beam_path_iterator
+	{
+		laser_emitter* Emitter;
+		beam_path_node* CurrentNode;
+		uint32_t CurrentNodeIndex;
+
+		bool IsValid(void)
+		{
+			bool Result = false;
+			if(Emitter)
+			{
+				Result = (CurrentNodeIndex < Emitter->OnePastLastPathNodeIndex);
+			}
+
+			return(Result);
+		}
+
+		void Advance(void)
+		{
+			++CurrentNodeIndex;
+			CurrentNode = LaserSystem::GetInstance()->GetPathNode(CurrentNodeIndex);
+		}
+	};
+
+public:
 
     static LaserSystem *GetInstance(void);
     
@@ -53,7 +78,9 @@ public:
 	void Update(float dt);
 	void Render();
 
-    emitter_id CreateEmitter(void);
+	beam_path_iterator IterateEmitterPath(emitter_id Emitter);
+	
+	emitter_id CreateEmitter(void);
     laser_emitter *GetEmitter(emitter_id ID);
 
     reflector_id CreateReflector(void);
@@ -78,7 +105,8 @@ private:
 
     beam_path_node BeamPathNodes[4096];
     uint32_t PathNodeCount;
-};
 
+	beam_path_node *GetPathNode(uint32_t NodeIndex);
+};
 
 #endif
