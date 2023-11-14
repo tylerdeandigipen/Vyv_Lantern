@@ -10,6 +10,10 @@
 #include "AudioEngine.h"
 #include "Collision.h"
 
+int BehaviorSwitch::count = 0;
+int BehaviorSwitch::maxCount = 3;
+
+
 BehaviorSwitch::BehaviorSwitch() : Behavior(Behavior::Switch)
 {
 	_type = this;
@@ -40,6 +44,8 @@ void BehaviorSwitch::SetInputHandler(Inputs* _input)
 
 void BehaviorSwitch::Init()
 {
+
+
     if (Parent())
     {
         // Set collision handler for switches
@@ -70,10 +76,25 @@ void BehaviorSwitch::Read(json jsonData)
 
 void BehaviorSwitch::SwitchCollisionHandler(Entity* entity1, Entity* entity2)
 {
+    Inputs* input = Inputs::GetInstance();
+
     if (entity1->GetRealName().compare("Player") == 0 && entity2->GetRealName().compare("Switch") == 0 || entity1->GetRealName().compare("Switch") == 0 && entity2->GetRealName().compare("Player") == 0)
     {
         /*Check if player is inside switch*/
-        int colliding = CollisionCheck(entity1->GetImage()->aabb, entity2->GetImage()->aabb);
+        if (CollisionCheck(entity1->GetImage()->aabb, entity2->GetImage()->aabb))
+        {
+            if (input->keyPressed(SDL_SCANCODE_E))
+            {
+                if (count < maxCount)
+                {
+                    count++;
+                }
+                else
+                {
+                    count = 0;
+                }
+            }
+        }
     }
 }
 

@@ -60,6 +60,49 @@
               }
             },
             {
+              "Type": "BehaviorSwitch",
+              "pos": [
+                {
+                  "x": 10,
+                  "y": 10
+                },
+                {
+                  "x": 20,
+                  "y": 10
+                },
+                {
+                  "x": 30,
+                  "y": 10
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "Type": "Object",
+          "Name": "Switch",
+          "file": "./Assets/PPM/Vyv_Logo.ppm",
+          "isAnimated": false,
+          "frameSize": [ 8, 8 ],
+          "Components": [
+            {
+              "Type": "ColliderAABB"
+            },
+            {
+              "Type": "Transform",
+              "translation": {
+                "x": 10,
+                "y": 30
+              }
+            },
+            {
+              "Type": "Physics",
+              "OldTranslation": {
+                "x": 90,
+                "y": 30
+              }
+            },
+            {
               "Type": "BehaviorSwitch"
             }
           ]

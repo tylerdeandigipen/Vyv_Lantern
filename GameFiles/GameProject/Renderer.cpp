@@ -28,6 +28,7 @@
 #include <assert.h>
 #include <omp.h>
 
+
 #include "DebugNew.h"
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -678,7 +679,27 @@ Renderer::~Renderer(void)
         delete menuBuffer;
     }
 
-    //Delete the lightR g and b and blur here later
+
+    /*To delete the lights*/
+
+    /*Test*/
+    for (int x = 0; x < SCREEN_SIZE_X; ++x) {
+        delete[] lightR[x];
+        delete[] lightG[x];
+        delete[] lightB[x];
+        delete[] blurLightR[x];
+        delete[] blurLightG[x];
+        delete[] blurLightB[x];
+    }
+
+    // Delete memory for main arrays
+    delete[] lightR;
+    delete[] lightG;
+    delete[] lightB;
+    delete[] blurLightR;
+    delete[] blurLightG;
+    delete[] blurLightB;
+
 
     ClearTilesets();
 
