@@ -14,7 +14,8 @@ public:
 	void ReadLight(Light& light, json& jsonData);
 	void ReadLight(std::string filename, Light& light);
 	light_source_type ReadLightEnum(std::string); //pass json["enumpart"]
-	void ReadTileSet(std::string filename, Renderer* pixel, bool IsNormal = false);
+	// 0 = regular tileset, 1 = normal tileset, 2 = shadow tileset
+	void ReadTileSet(std::string filename, Renderer* pixel, int tileSetType = 0);
 	int ReadInt(FILE* stream);
 	float ReadFloat(FILE* stream);
 	ImageBuffer* ReadPPM(const char* filename);

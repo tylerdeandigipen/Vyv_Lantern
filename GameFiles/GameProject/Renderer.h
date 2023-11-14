@@ -30,6 +30,7 @@ public:
 	ImageBuffer* objectLayer = NULL; //layer 1
 	ImageBuffer* backgroundLayer = NULL; //layer 0
 	ImageBuffer* menuBuffer = NULL;
+	ImageBuffer* shadowCasterBuffer = NULL;
 
 
 	ImageBuffer* lightBuffer = NULL;
@@ -38,8 +39,10 @@ public:
 	Light lightSource[MAX_LIGHT_SOURCES];
 	ImageBuffer* objects[MAX_OBJECTS];
 	ImageBuffer* animatedObjects[MAX_ANIMATED_OBJECTS][MAX_ANIMATION_FRAMES];
-	ImageBuffer* tileSet[80];
-	ImageBuffer* normalTileSet[80];
+	ImageBuffer* tileSet[MAX_TILES];
+	ImageBuffer* normalTileSet[MAX_TILES];
+	ImageBuffer* shadowCasterTileset[MAX_TILES];
+
 	ParticleManager* particleManager = NULL;
 	float screenScale = 6;
 	Vector2 tileMapSize;
@@ -66,6 +69,7 @@ public:
 	void MakeTileMap(int** tileMapArray);
 	void AddTileToTileset(ImageBuffer* tile);
 	void AddNormalToNormalTileset(ImageBuffer* tile);
+	void AddShadowCasterToShadowCasterTileset(ImageBuffer* tile);
 	void AddObject(ImageBuffer* sprite);
 	ImageBuffer* CreateAnimatedObject(const std::string filename, Vector2 frameSize);
 	void AddLight(Light light);
@@ -104,6 +108,7 @@ private:
 	Vector2 CameraP;
 	int numTiles = 0;
 	int numNormalTiles = 0;
+	int numShadowCasterTiles = 0;
 	int numObjects = 0;
 	int numAnimatedObjects = 0;
 	int numLights = 0;

@@ -63,7 +63,7 @@ void Renderer::RenderLightingPass()
     particleManager->UpdateParticles();
 
     //for shadow casting
-    foregroundLayer->Blit(lightBuffer, -CameraOffsetX, -CameraOffsetY);
+    shadowCasterBuffer->Blit(lightBuffer, -CameraOffsetX, -CameraOffsetY);
 
     //becasue thomas's camera isnt acurate
     normalBufferPostCam->ClearImageBuffer();
@@ -421,6 +421,12 @@ void Renderer::MakeTileMap(int** tileMapArray)
                     normalTileSet[tileMapArray[x][y]]->position = { (float)(x * TILE_SIZE), (float)(y * TILE_SIZE) };
                     normalBuffer->AddSprite(normalTileSet[tileMapArray[x][y]]);
                 }
+
+                if (shadowCasterTileset[tileMapArray[x][y]])
+                {
+                    shadowCasterTileset[tileMapArray[x][y]]->position = { (float)(x * TILE_SIZE), (float)(y * TILE_SIZE) };
+                    shadowCasterBuffer->AddSprite(shadowCasterTileset[tileMapArray[x][y]]);
+                }
             }
             
         }
@@ -438,6 +444,13 @@ void Renderer::AddNormalToNormalTileset(ImageBuffer* tile)
     normalTileSet[numNormalTiles] = tile;
     numNormalTiles += 1;
 }
+
+void Renderer::AddShadowCasterToShadowCasterTileset(ImageBuffer* tile)
+{
+    shadowCasterTileset[numShadowCasterTiles] = tile;
+    numShadowCasterTiles += 1;
+}
+
 // 0 = forward, 1 = down, 2 = up, 3 = blink
 void Renderer::UpdateFace(int& faceState_)
 {
@@ -494,7 +507,7 @@ Renderer::Renderer()
     normalBuffer = new ImageBuffer{ SCREEN_SIZE_X ,SCREEN_SIZE_Y };
     normalBufferPostCam = new ImageBuffer{ SCREEN_SIZE_X ,SCREEN_SIZE_Y };
     lightBuffer = new ImageBuffer{ SCREEN_SIZE_X ,SCREEN_SIZE_Y };
-
+    shadowCasterBuffer = new ImageBuffer{ SCREEN_SIZE_X ,SCREEN_SIZE_Y };
     particleManager = new ParticleManager;
     faceIndex = -1;
     faceState = NULL;
@@ -522,6 +535,7 @@ Renderer::Renderer()
     {
         tileSet[i] = NULL;
         normalTileSet[i] = NULL;
+        shadowCasterTileset[i] = NULL;
     }
 
     //i hate this fix later

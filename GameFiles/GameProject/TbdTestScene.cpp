@@ -81,7 +81,8 @@ Engine::EngineCode TbdTestScene::Init()
     SDL_GL_SetSwapInterval(0);
     gladLoadGLLoader(SDL_GL_GetProcAddress);
     FileIO::GetInstance()->ReadTileSet("./Data/TileMapSprites.json", TbdPixelRenderer);
-    FileIO::GetInstance()->ReadTileSet("./Data/TileMapNormals.json", TbdPixelRenderer, true);
+    FileIO::GetInstance()->ReadTileSet("./Data/TileMapNormals.json", TbdPixelRenderer, 1);
+    FileIO::GetInstance()->ReadTileSet("./Data/TileMapShadows.json", TbdPixelRenderer, 2);
     LevelBuilder::GetInstance()->LoadLevel(TbdPixelRenderer, "./TiledMichaelTest.json");
 
     FileIO::GetInstance()->ReadLight("./Data/TestLight.json", tempLight);
