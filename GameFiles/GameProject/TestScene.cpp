@@ -81,28 +81,6 @@ Engine::EngineCode TestScene::Load()
 	return Engine::NothingBad;
 }
 
-static laser_emitter *
-NewEmitter(void)
-{
-    laser_emitter *Result = NULL;
-
-    emitter_id ResultID = LaserSystem::GetInstance()->CreateEmitter();
-    Result = LaserSystem::GetInstance()->GetEmitter(ResultID);
-    
-    return(Result);
-}
-
-static reflector *
-NewReflector(void)
-{
-    reflector *Result = NULL;
-
-    reflector_id ResultID = LaserSystem::GetInstance()->CreateReflector();
-    Result = LaserSystem::GetInstance()->GetReflector(ResultID);
-    
-    return(Result);
-}
-
 Engine::EngineCode TestScene::Init()
 {
     {
@@ -110,26 +88,26 @@ Engine::EngineCode TestScene::Init()
 
         // @NOTE: Setup lasers
         laser_emitter *TestLaser = LaserSystem::GetInstance()->GetEmitter(ControlledEmitter);
-        TestLaser->P = Vector2(40.0f, 60.0f);
+        TestLaser->Position = Vector2(40.0f, 60.0f);
         TestLaser->Direction = Vector2::Normalize(Vector2(0.0f, 1.0f));
 
         laser_emitter *TestLaser1 = NewEmitter();
-        TestLaser1->P = Vector2(50.0f, 30.0f);
+        TestLaser1->Position = Vector2(50.0f, 30.0f);
         TestLaser1->Direction = Vector2::Normalize(Vector2(1.0f, -1.0f));
 
         reflector *Reflector = NewReflector();
         Reflector->Radius = 10.0f;
-        Reflector->P = Vector2(100.0f, 100.0f);
+        Reflector->Position = Vector2(100.0f, 100.0f);
         Reflector->Direction = Vector2::Normalize(Vector2(-1.0f, -1.0f));
 
         reflector *Reflector1 = NewReflector();
         Reflector1->Radius = 20.0f;
-        Reflector1->P = Vector2(100.0f, 30.0f);
+        Reflector1->Position = Vector2(100.0f, 30.0f);
         Reflector1->Direction = Vector2::Normalize(Vector2(0.0f, 1.0f));
 
         reflector *Reflector2 = NewReflector();
         Reflector2->Radius = 100.0f;
-        Reflector2->P = Vector2(200.0f, 50.0f);
+        Reflector2->Position = Vector2(200.0f, 50.0f);
         Reflector2->Direction = Vector2::Normalize(Vector2(-1.0f, 0.0f));
     }
     
@@ -477,7 +455,7 @@ void TestScene::Update(float dt)
 
         if(Emitter)
         {
-			Vector2 Delta = CursourP - Emitter->P;
+			Vector2 Delta = CursourP - Emitter->Position;
 			float Angle = atan2f(Delta.y, Delta.x);
 			Emitter->Direction = Vector2(cosf(Angle), sinf(Angle));
         }
@@ -487,9 +465,25 @@ void TestScene::Update(float dt)
 void TestScene::Render()
 {
     ImGuiInterg();
-    pixelRenderer->Update();
 
-    //logger.LogLine("Debug info: Things are being rendered. (testScene rendered)");
+#if 1
+	{
+		// NOTE(thomas): Demonstration of beam path iteration
+		laser_emitter *Emitter = LaserSystem::GetInstance()->GetEmitter(ControlledEmitter);
+		Vector2 LastNodeP = Emitter->Position;
+		LaserSystem::beam_path_iterator Iterator = LaserSystem::GetInstance()->IterateEmitterPath(ControlledEmitter);
+		while(Iterator.IsValid())
+		{
+			beam_path_node* Node = Iterator.CurrentNode;
+			Renderer::GetInstance()->DrawLine(Node->Position, Node->Position + Vector2(0, -4), Color(0x00, 0xff, 0xff, 0xff));
+
+			LastNodeP = Node->Position;
+			Iterator.Advance();
+		}
+	}
+#endif
+
+	pixelRenderer->Update();
 	return;
 }
 

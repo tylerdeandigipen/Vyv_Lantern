@@ -851,23 +851,27 @@ void Renderer::RenderToOutbuffer()
     {
         for (int y = 0; y < ySize; ++y)
         {
-            Color& DestPixel = outputBuffer->SampleColor(x, y);
-            DestPixel = inputBuffer->SampleColor(x, y);
+            if (renderWallHitboxes != true && renderNormalMap != true)
+            {
+                Color& DestPixel = outputBuffer->SampleColor(x, y);
+                DestPixel = inputBuffer->SampleColor(x, y);
+            }
 
             //Debug conditions
             if (renderNormalMap == true)
             {
+                Color& DestPixel = outputBuffer->SampleColor(x, y);
                 DestPixel = normalBufferPostCam->SampleColor(x, y);
             }
 
             if (renderWallHitboxes == true)
             {
-                RenderWallCollidersToDebugBuffer();
+                //RenderWallCollidersToDebugBuffer();
                 Vector2 camPos = GetCameraPosition();
                 DebugBuffer->Blit(outputBuffer, -camPos.x, -camPos.y);
             }
-            //end of debug conditions
 
+            //end of debug conditions
             if (Engine::GetInstance()->Paused() == true)
             {
                 RenderMenu();
@@ -885,6 +889,7 @@ void Renderer::RenderMenu()
 
     const int xSize = (int)inputBuffer->size.x;
     const int ySize = (int)inputBuffer->size.y;
+
     #pragma omp parallel for collapse(2)
     for (int x = 0; x < xSize; ++x)
     {
