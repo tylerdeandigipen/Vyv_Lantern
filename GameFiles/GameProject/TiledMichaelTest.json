@@ -8,7 +8,7 @@
         {
           "Type": "Object",
           "Name": "Player",
-          "file": "./Assets/PPM/Animated_Man_Red_2.4.ppm",
+          "file": "./Assets/PPM/Player_Sprites.ppm",
           "isAnimated": true,
           "frameSize": [ 8, 8 ],
           "Components": [
@@ -38,7 +38,7 @@
         {
           "Type": "Object",
           "Name": "Switch",
-          "file": "./Assets/PPM/goose2.ppm",
+          "file": "./Assets/PPM/Circle_2x2.ppm",
           "isAnimated": false,
           "frameSize": [ 8, 8 ],
           "Components": [
@@ -81,7 +81,7 @@
         {
           "Type": "Object",
           "Name": "Switch",
-          "file": "./Assets/PPM/Vyv_Logo.ppm",
+          "file": "./Assets/PPM/Circle_4x4.ppm",
           "isAnimated": false,
           "frameSize": [ 8, 8 ],
           "Components": [
