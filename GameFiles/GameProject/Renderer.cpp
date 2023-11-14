@@ -833,7 +833,20 @@ void Renderer::RenderToOutbuffer()
             //Debug conditions
             if (renderNormalMap == true)
             {
-                DestPixel = lightBuffer->SampleColor(x, y);
+                DestPixel = normalBufferPostCam->SampleColor(x, y);
+            }
+
+            if (renderWallHitboxes == true)
+            {
+                RenderWallCollidersToDebugBuffer();
+                Vector2 camPos = GetCameraPosition();
+                DebugBuffer->Blit(outputBuffer, -camPos.x, -camPos.y);
+            }
+            //end of debug conditions
+
+            if (Engine::GetInstance()->Paused() == true)
+            {
+                RenderMenu();
             }
         }
     }
@@ -877,18 +890,6 @@ void Renderer::Update()
     BlurLights();
     DitherLights();
     RenderToOutbuffer();
-    
-    if (renderWallHitboxes == true)
-    {
-        RenderWallCollidersToDebugBuffer();
-        Vector2 camPos = GetCameraPosition();
-        DebugBuffer->Blit(outputBuffer, -camPos.x, -camPos.y);
-    }
-
-    if (Engine::GetInstance()->Paused() == true)
-    {
-        RenderMenu();
-    }
 
     //DebugBuffer->Blit(outputBuffer);
     //DebugBuffer->ClearImageBuffer();
