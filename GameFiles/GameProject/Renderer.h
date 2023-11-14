@@ -13,6 +13,7 @@
 #define MAX_ANIMATION_FRAMES 8
 #define SCREEN_SIZE_X 240
 #define SCREEN_SIZE_Y 136
+#define MAX_TILES 80
 
 class Renderer
 {
@@ -20,7 +21,7 @@ public:
 	Renderer();
     ~Renderer(void);
     
-	SDL_Window* window;
+	SDL_Window* window = NULL;
 
 	ImageBuffer* outputBuffer = NULL;
 	ImageBuffer* inputBuffer = NULL;
@@ -37,8 +38,8 @@ public:
 	Light lightSource[MAX_LIGHT_SOURCES];
 	ImageBuffer* objects[MAX_OBJECTS];
 	ImageBuffer* animatedObjects[MAX_ANIMATED_OBJECTS][MAX_ANIMATION_FRAMES];
-	ImageBuffer* tileSet[128];
-	ImageBuffer* normalTileSet[128];
+	ImageBuffer* tileSet[80];
+	ImageBuffer* normalTileSet[80];
 	ParticleManager* particleManager = NULL;
 	float screenScale = 6;
 	Vector2 tileMapSize;
@@ -74,7 +75,7 @@ public:
 	int returnObjCnt();
 	void ClearObjects();
 	void ClearTilesets();
-	bool CheckLineForObject(int x1, int y1, int x2, int y2);
+	int CheckLineForObject(int x1, int y1, int x2, int y2);
 	// 0 = forward, 1 = down, 2 = up, 3 = blink
 	void UpdateFace(int& faceState_);
 	void CleanRenderer();
@@ -112,8 +113,8 @@ private:
 
     Uint32 startTime;
     
-	uint32_t OutputBufferTexture;
-    uint32_t PreviousFrameBeginTime;
+	uint32_t OutputBufferTexture = NULL;
+    uint32_t PreviousFrameBeginTime = NULL;
     float PreviousFrameLengths[15];
 };
 

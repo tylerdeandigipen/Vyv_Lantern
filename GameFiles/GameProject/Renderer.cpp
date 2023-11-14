@@ -49,12 +49,6 @@ void Renderer::SetCameraPosition(Vector2 NewCameraP)
 
 void Renderer::RenderLightingPass()
 {
-    float lightMultiplier = 0;
-
-    float IntensityR = 0.0f;
-    float IntensityG = 0.0f;
-    float IntensityB = 0.0f;
-
 	int CameraOffsetX = (int)CameraP.x;
 	int CameraOffsetY = (int)CameraP.y;
 
@@ -80,6 +74,13 @@ void Renderer::RenderLightingPass()
 #if 1
     const int xSize = (int)inputBuffer->size.x;
     const int ySize = (int)inputBuffer->size.y;
+
+    float lightMultiplier = 0;
+
+    float IntensityR = 0.0f;
+    float IntensityG = 0.0f;
+    float IntensityB = 0.0f;
+
     #pragma omp parallel for collapse(3) private(lightMultiplier, IntensityR, IntensityG, IntensityB)
 	for (int x = 0; x < xSize; ++x)
     {
@@ -189,7 +190,7 @@ float Renderer::FindPixelLuminosity(float x, float y, Light *LightSource)
             if (s >= 1.0)
                 return 0.0;
             float s2 = s * s;
-            Result = LightSource->intensity * pow((1 - s2), 2) / (1 + LightSource->radialFalloff * s);
+            Result = LightSource->intensity * (float)pow((1 - s2), 2) / (1 + LightSource->radialFalloff * s);
         } break;
 
         case LightSourceType_Directional:
@@ -219,7 +220,7 @@ float Renderer::FindPixelLuminosity(float x, float y, Light *LightSource)
                 if (s >= 1.0)
                     return 0.0;
                 float s2 = s * s;
-                float EmitterDistance = LightSource->intensity * pow((1 - s2), 2) / (1 + LightSource->radialFalloff * s);
+                float EmitterDistance = LightSource->intensity * (float)pow((1 - s2), 2) / (1 + LightSource->radialFalloff * s);
                 float FrustumDistance = (Radius - (fabsf(Vector2::DotProduct(EmissionTangent, ToPixel))));
                 if(FrustumDistance < 0.0f)
                 {
@@ -241,8 +242,8 @@ float Renderer::FindPixelLuminosity(float x, float y, Light *LightSource)
     }	
 
     //Normal map calculations
-    float normalR = (float)normalBufferPostCam->SampleColor(x, y).r;
-    float normalG = (float)normalBufferPostCam->SampleColor(x, y).g;
+    float normalR = (float)normalBufferPostCam->SampleColor((int)x, (int)y).r;
+    float normalG = (float)normalBufferPostCam->SampleColor((int)x, (int)y).g;
     if (normalR == 0 && normalG == 0)
     {
         return Result;
@@ -290,12 +291,12 @@ void Renderer::CalculateShadows()
                         {
                             lightPos = lightSource[i].position;
 
-                            if (CheckLineForObject(lightPos.x - cameraPos.x, lightPos.y - cameraPos.y, x, y) == true)
+                            if (CheckLineForObject((int)lightPos.x - (int)cameraPos.x, (int)lightPos.y - (int)cameraPos.y, (int)x, (int)y) == true)
                             {
                                 shadowsCast += 1;
                                 //remove break later when trying to do multiple shadow casters
                             }
-                            else if (distanceSquared(lightPos.x - cameraPos.x, lightPos.y - cameraPos.y, x, y) <= lightSource[i].radius * lightSource[i].radius)
+                            else if (distanceSquared(lightPos.x - cameraPos.x, lightPos.y - cameraPos.y, (float)x, (float)y) <= lightSource[i].radius * lightSource[i].radius)
                             {
                                 shadowsCast -= 1;
                             }
@@ -324,19 +325,23 @@ void Renderer::CalculateShadows()
 bool Renderer::CalculateIfPixelIsLit(int x,int y, int i)
 {
     const Vector2 cameraPos = CameraP;
-    int diameter = 0;
+    float diameter = 0;
     Vector2 lightPos;
     bool isLit = true;
     if (lightSource[i].intensity != 0)
     {
         diameter = lightSource[i].radius * lightSource[i].radius;
         lightPos = lightSource[i].position;
-
-        if (distanceSquared(x, y, lightPos.x - cameraPos.x, lightPos.y - cameraPos.y) <= diameter)
+        if (distanceSquared((float)x, (float)y, lightPos.x - cameraPos.x, lightPos.y - cameraPos.y) <= diameter)
         {
-            if (CheckLineForObject(lightPos.x - cameraPos.x, lightPos.y - cameraPos.y, x, y) == true)
+            int inOutCount = CheckLineForObject((int)(lightPos.x - cameraPos.x), (int)(lightPos.y - cameraPos.y), x, y);
+            if (inOutCount > 0)
             {
                 isLit = false;
+                if (lightBuffer->SampleColor(x, y).GetAlpha() != 0 && inOutCount == 1)
+                {
+                    isLit = true;
+                }
             }
             else
             {
@@ -347,12 +352,6 @@ bool Renderer::CalculateIfPixelIsLit(int x,int y, int i)
         {
             isLit = false;
         }
-    }
-
-    if (isLit == false && lightBuffer->SampleColor(x, y).GetAlpha() != 0)
-    {
-        //maybe here do ham algo with the tilemap instead of pixels and if any tiles inbetween player and target tile then dont sub?
-        isLit = true;
     }
 
     return isLit;
@@ -367,9 +366,9 @@ void Renderer::RenderParticles()
         {
             tempPos = particleManager->particleArray[i]->position;
             tempPos -= CameraP;
-            if (tempPos.x >= 0 && tempPos.x < inputBuffer->BufferSizeX && tempPos.y >= 0 && tempPos.y < inputBuffer->BufferSizeY)
+            if (tempPos.x >= 0 && tempPos.x < inputBuffer->size.x && tempPos.y >= 0 && tempPos.y < inputBuffer->size.y)
             {
-                Color& DestPixel = inputBuffer->SampleColor(tempPos.x, tempPos.y);
+                Color& DestPixel = inputBuffer->SampleColor((int)tempPos.x, (int)tempPos.y);
                 DestPixel = particleManager->particleArray[i]->color;
             }
         }
@@ -468,14 +467,14 @@ ImageBuffer* Renderer::CreateAnimatedObject(const std::string filename, Vector2 
 		spriteSheet->position.y = 0;
 		ImageBuffer* temp;
 
-		for (int i = 0; i < spriteSheet->BufferSizeX / frameSize.x; i++)
+		for (int i = 0; i < spriteSheet->size.x / frameSize.x; i++)
 		{
 			temp = new ImageBuffer{ frameSize.x, frameSize.y };
 			spriteSheet->position.x = -(frameSize.x * i);
 			animatedObjects[numAnimatedObjects][i] = &temp->AddSprite(spriteSheet);
 		}
 
-        animatedObjects[numAnimatedObjects][0]->totalFrames = (spriteSheet->BufferSizeX / frameSize.x) - 1;
+        animatedObjects[numAnimatedObjects][0]->totalFrames = (int)((spriteSheet->size.x / frameSize.x) - 1);
 		numAnimatedObjects += 1;
 
         Result = animatedObjects[numAnimatedObjects - 1][0];
@@ -500,6 +499,30 @@ Renderer::Renderer()
     faceIndex = -1;
     faceState = NULL;
     outputBuffer->screenScale = screenScale;
+
+    for (int i = 0; i < 15; ++i)
+    {
+        PreviousFrameLengths[i] = 0;
+    }
+    
+    for (int i = 0; i < MAX_OBJECTS; ++i)
+    {
+        objects[i] = NULL;
+    }
+
+    for (int i = 0; i < MAX_ANIMATED_OBJECTS; ++i)
+    {
+        for (int j = 0; j < MAX_ANIMATION_FRAMES; ++j)
+        {
+            animatedObjects[i][j] = NULL;
+        }
+    }
+
+    for (int i = 0; i < MAX_TILES; ++i)
+    {
+        tileSet[i] = NULL;
+        normalTileSet[i] = NULL;
+    }
 
     //i hate this fix later
     lightR = new float*[SCREEN_SIZE_X];
@@ -614,13 +637,13 @@ void Renderer::DrawLine(Vector2 P0, Vector2 P1, const Color &LineColor)
 	{
 		ClippedMinY = 0;
 	}
-	if(ClippedMaxX > (DebugBuffer->BufferSizeX - 1))
+	if(ClippedMaxX > (DebugBuffer->size.x - 1))
 	{
-		ClippedMaxX = DebugBuffer->BufferSizeX - 1;
+		ClippedMaxX = DebugBuffer->size.x - 1;
 	}
-	if(ClippedMaxY > (DebugBuffer->BufferSizeY - 1))
+	if(ClippedMaxY > (DebugBuffer->size.y - 1))
 	{
-		ClippedMaxY = DebugBuffer->BufferSizeY - 1;
+		ClippedMaxY = DebugBuffer->size.y - 1;
 	}
 
 	Vector2 D = P1 - P0;
@@ -670,7 +693,7 @@ void Renderer::DitherLights()
     float green;
     float blue;
 
-    float bayerNum;
+    int bayerNum;
     int corr;
 
     int i1;
@@ -698,15 +721,15 @@ void Renderer::DitherLights()
             blue = scaledWhite.GetBlue();
 
             bayerNum = BAYER_PATTERN_8X8[x % bayerSize][y % bayerSize];
-            corr = (bayerNum / 7) - 2;	//	 -2 because: 256/7=36  36*7=252  256-252=4   4/2=2 - correction -2
+            corr = (int)((bayerNum / 7) - 2);	//	 -2 because: 256/7=36  36*7=252  256-252=4   4/2=2 - correction -2
 
-            i1 = (blue + corr) / 36;
-            i2 = (green + corr) / 36;
-            i3 = (red + corr) / 36;
+            i1 = (int)((blue + corr) / 36);
+            i2 = (int)((green + corr) / 36);
+            i3 = (int)((red + corr) / 36);
 
-            clamp(i1, 0, 7);
-            clamp(i2, 0, 7);
-            clamp(i3, 0, 7);
+            clamp((float)i1, 0, 7);
+            clamp((float)i2, 0, 7);
+            clamp((float)i3, 0, 7);
 
 
             //force glowing eyes, maybe make an emisive mask later
@@ -847,7 +870,7 @@ void Renderer::Update()
     glActiveTexture(GL_TEXTURE0);
     glBindTexture(GL_TEXTURE_2D, OutputBufferTexture);
     glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8,
-                 outputBuffer->BufferSizeX, outputBuffer->BufferSizeY,
+                 outputBuffer->size.x, outputBuffer->size.y,
                  0,
                  GL_RGBA, GL_UNSIGNED_BYTE,
                  (void *)outputBuffer->buffer);
@@ -905,7 +928,7 @@ void Renderer::ClearObjects()
 
 void Renderer::ClearTilesets()
 {
-    for (int i = 0; i < 128; i++)
+    for (int i = 0; i < MAX_TILES; i++)
     {
         if (tileSet)
         {
@@ -942,7 +965,7 @@ void Renderer::ResizeBuffers()
     outputBuffer->screenScale = screenScale;
 }
 
-bool Renderer::CheckLineForObject(int x1, int y1, int x2, int y2)
+int Renderer::CheckLineForObject(int x1, int y1, int x2, int y2)
 {
     int dx = abs(x2 - x1);
     int dy = abs(y2 - y1);
@@ -953,11 +976,31 @@ bool Renderer::CheckLineForObject(int x1, int y1, int x2, int y2)
     int x = x1;
     int y = y1;
 
+    bool inOut = false;
+    int inOutCount = 0;
+
     while (x != x2 || y != y2) 
     {
-        if (lightBuffer->SampleColor(x, y).GetAlpha() != 0)
+        if (inOut == false)
         {
-           return true;
+            if (lightBuffer->SampleColor(x, y).GetAlpha() != 0)
+            {
+                inOutCount += 1;
+                inOut = true;
+            }
+        }
+        else
+        {
+            if (lightBuffer->SampleColor(x, y).GetAlpha() == 0)
+            {
+                inOutCount += 1;
+                inOut = false;
+            }
+        }
+
+        if (inOutCount > 1)
+        {
+            return 2;
         }
 
         int error2 = 2 * error;
@@ -972,7 +1015,7 @@ bool Renderer::CheckLineForObject(int x1, int y1, int x2, int y2)
             y += sy;
         }
     }
-    return false;
+    return inOutCount;
 }
 
 void Renderer::AddObject(ImageBuffer* sprite)

@@ -12,7 +12,8 @@ enum ImageType
 	COLLIDABLE,
 	SWITCH,
 	PLAYER,
-    WALL
+    WALL,
+    NA
 };
 
 class ImageBuffer

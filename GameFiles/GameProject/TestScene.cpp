@@ -55,7 +55,7 @@ Color blue(50, 100, 255, 255);
 
 float soundCooldown = 0.0f;
 
-int ObjCount;
+int ObjCount = 0;
 const float pushForce = 1.0f;
 
 static bool tabKeyPreviouslyPressed = false;
@@ -148,8 +148,8 @@ Engine::EngineCode TestScene::Init()
 
     // Create SDL Window
     window = SDL_CreateWindow("MAIN SCENE", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
-                              pixelRenderer->outputBuffer->BufferSizeX * pixelRenderer->outputBuffer->screenScale,
-                              pixelRenderer->outputBuffer->BufferSizeY * pixelRenderer->outputBuffer->screenScale,
+                              (int)(pixelRenderer->outputBuffer->BufferSizeX * pixelRenderer->outputBuffer->screenScale),
+                              (int)(pixelRenderer->outputBuffer->BufferSizeY * pixelRenderer->outputBuffer->screenScale),
                               SDL_WINDOW_OPENGL);
     pixelRenderer->window = window;
 

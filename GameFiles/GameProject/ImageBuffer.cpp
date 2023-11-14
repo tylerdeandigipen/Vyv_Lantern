@@ -29,11 +29,12 @@ ImageBuffer::ImageBuffer(ImageBuffer& rhs)
     buffer = new Color [rhs.BufferSizeX*rhs.BufferSizeY];
     memcpy(buffer, rhs.buffer, rhs.BufferSizeX*rhs.BufferSizeY*sizeof(Color));
 
+    type = rhs.type;
     BufferSizeX = rhs.BufferSizeX;
     BufferSizeY = rhs.BufferSizeY;
     
-    size.x = rhs.BufferSizeX;
-    size.y = rhs.BufferSizeY;
+    size.x = (float)rhs.BufferSizeX;
+    size.y = (float)rhs.BufferSizeY;
     isCulled = rhs.isCulled;
 
 }
@@ -43,15 +44,15 @@ ImageBuffer::ImageBuffer()
     buffer = new Color[BufferSizeX * BufferSizeY];
     ClearImageBuffer();
 
-	size.x = BufferSizeX;
-	size.y = BufferSizeY;
+	size.x = (float)BufferSizeX;
+	size.y = (float)BufferSizeY;
     bool isCulled = false;
 }
 
 ImageBuffer::ImageBuffer(float x, float y)
 {
-	BufferSizeX = x;
-	BufferSizeY = y;
+	BufferSizeX = (int)x;
+	BufferSizeY = (int)y;
 
 	buffer = new Color[BufferSizeX * BufferSizeY];
     ClearImageBuffer();
@@ -63,6 +64,7 @@ ImageBuffer::ImageBuffer(float x, float y)
 
 ImageBuffer::ImageBuffer(const std::string file)
 {
+    buffer = NULL;
     FILE* fp;
     const char* filename = file.c_str();
     fopen_s(&fp, filename, "r");
@@ -70,9 +72,9 @@ ImageBuffer::ImageBuffer(const std::string file)
     {
         int temp;
         char hold;
-        uint8_t red = 0.0f;
-        uint8_t green = 0.0f;
-        uint8_t blue = 0.0f;
+        uint8_t red = 0;
+        uint8_t green = 0;
+        uint8_t blue = 0;
         
         fscanf_s(fp, "%c", &hold);
         fscanf_s(fp, "%c", &hold);
@@ -84,9 +86,9 @@ ImageBuffer::ImageBuffer(const std::string file)
 
         buffer = new Color[BufferSizeX*BufferSizeY];
 
-		Color trans(0.0f, 0.0f, 0.0f, 0.0f);
-		size.x = BufferSizeX;
-        size.y = BufferSizeY;
+		Color trans((uint8_t)0, (uint8_t)0, (uint8_t)0, (uint8_t)0);
+		size.x = (float)BufferSizeX;
+        size.y = (float)BufferSizeY;
         
         for (int j = 0; j < BufferSizeY; ++j)
         {
@@ -107,6 +109,7 @@ ImageBuffer::ImageBuffer(const std::string file)
             }
         }
     }
+    type = NA;
     bool isCulled = false;
 }
 
@@ -217,8 +220,8 @@ void ImageBuffer::Blit(ImageBuffer *Destination, int OffsetX, int OffsetY)
 void ImageBuffer::FlipSprite()
 {
     Color temp;
-    int ySize = size.y;
-    int xSize = size.x;
+    int ySize = (int)size.y;
+    int xSize = (int)size.x;
     for (int y = 0; y < size.y; ++y)
     {
         for (int x = 0; x < size.x / 2; ++x)

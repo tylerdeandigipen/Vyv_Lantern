@@ -36,7 +36,7 @@ private:
 	void ImGuiInterg();
 	void ImGuiWindow();
 	void ImGuiExit();
-    emitter_id ControlledEmitter;
+	emitter_id ControlledEmitter;
 };
 
 Scene* TestSceneGetInstance(void);
