@@ -27,6 +27,6 @@ public:
 private:
 	void Controller(float dt);
 	bool OnOff = false;
-	int count = 3;
-	//int pos[2];
+	static int count;
+	static int maxCount;
 };
