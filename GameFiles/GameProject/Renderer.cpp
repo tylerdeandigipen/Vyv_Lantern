@@ -387,8 +387,7 @@ const int wallTileIndexes[NUM_WALL_TILES] = { 1, 2, 4, 5, 6, 7, 8, 9, 10, 11, 26
 int nonWalkableTiles[NUM_NON_WALKABLE_TILES] = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 45, 46, 48, 29, 26, 31, 41, 39, 36 };
 void Renderer::MakeTileMap(int** tileMapArray)
 {
-    foregroundLayer->ClearImageBuffer();
-    backgroundLayer->ClearImageBuffer();
+    ResizeBuffers();
     tileMap = tileMapArray;
 
     ImageBuffer* clearTile = new ImageBuffer{8,8};
@@ -462,9 +461,12 @@ void Renderer::RenderWallCollidersToDebugBuffer()
         }
     }
 
-    for (int x = 0; x < tileMapSize.x; ++x)
+    const int xSize = (int)tileMapSize.x;
+    const int ySize = (int)tileMapSize.y;
+    #pragma omp parallel for collapse(2)
+    for (int x = 0; x < xSize; ++x)
     {
-        for (int y = 0; y < tileMapSize.y; ++y)
+        for (int y = 0; y < ySize; ++y)
         {
             bool isWalkable = true;
             for (int i = 0; i < NUM_NON_WALKABLE_TILES; i++)
@@ -555,10 +557,12 @@ Renderer::Renderer() : objects{ NULL }
 {
     outputBuffer = new ImageBuffer{ SCREEN_SIZE_X ,SCREEN_SIZE_Y };
     inputBuffer = new ImageBuffer{ SCREEN_SIZE_X ,SCREEN_SIZE_Y };
+    /*
     objectLayer = new ImageBuffer{ SCREEN_SIZE_X ,SCREEN_SIZE_Y };
     backgroundLayer = new ImageBuffer{ SCREEN_SIZE_X ,SCREEN_SIZE_Y };
     foregroundLayer = new ImageBuffer{ SCREEN_SIZE_X ,SCREEN_SIZE_Y };
     normalBuffer = new ImageBuffer{ SCREEN_SIZE_X ,SCREEN_SIZE_Y };
+    */
     normalBufferPostCam = new ImageBuffer{ SCREEN_SIZE_X ,SCREEN_SIZE_Y };
     lightBuffer = new ImageBuffer{ SCREEN_SIZE_X ,SCREEN_SIZE_Y };
     shadowCasterBuffer = new ImageBuffer{ SCREEN_SIZE_X ,SCREEN_SIZE_Y };
@@ -836,26 +840,24 @@ void Renderer::RenderToOutbuffer()
                 DestPixel = inputBuffer->SampleColor(x, y);
             }
 
-            //Debug conditions
             if (renderNormalMap == true)
             {
                 Color& DestPixel = outputBuffer->SampleColor(x, y);
                 DestPixel = normalBufferPostCam->SampleColor(x, y);
             }
-
-            if (renderWallHitboxes == true)
-            {
-                //RenderWallCollidersToDebugBuffer();
-                Vector2 camPos = GetCameraPosition();
-                DebugBuffer->Blit(outputBuffer, -camPos.x, -camPos.y);
-            }
-
-            //end of debug conditions
-            if (Engine::GetInstance()->Paused() == true)
-            {
-                RenderMenu();
-            }
         }
+    }
+
+    if (renderWallHitboxes == true)
+    {
+        RenderWallCollidersToDebugBuffer();
+        Vector2 camPos = GetCameraPosition();
+        DebugBuffer->Blit(outputBuffer, -camPos.x, -camPos.y);
+    }
+
+    if (Engine::GetInstance()->Paused() == true)
+    {
+        RenderMenu();
     }
 }
 
@@ -1021,18 +1023,20 @@ void Renderer::ClearTilesets()
 
 void Renderer::ResizeBuffers()
 {
-    delete outputBuffer;
-    delete inputBuffer;
-    delete objectLayer;
-    delete backgroundLayer;
-    delete foregroundLayer;
+    if (backgroundLayer != NULL)
+    {
+        delete objectLayer;
+        delete backgroundLayer;
+        delete foregroundLayer;
+        delete normalBuffer;
+        delete shadowCasterBuffer;
+    }
 
-    outputBuffer = new ImageBuffer{tileMapSize.x * (TILE_SIZE + 1), tileMapSize.y * (TILE_SIZE + 1) };
-    inputBuffer = new ImageBuffer{ tileMapSize.x * (TILE_SIZE + 1), tileMapSize.y * (TILE_SIZE + 1) };
-    objectLayer = new ImageBuffer{ tileMapSize.x * (TILE_SIZE + 1), tileMapSize.y * (TILE_SIZE + 1) };
-    backgroundLayer = new ImageBuffer{ tileMapSize.x * (TILE_SIZE + 1), tileMapSize.y * (TILE_SIZE + 1) };
-    foregroundLayer = new ImageBuffer{ tileMapSize.x * (TILE_SIZE + 1), tileMapSize.y * (TILE_SIZE + 1) };
-    outputBuffer->screenScale = screenScale;
+    objectLayer = new ImageBuffer{ tileMapSize.x * (TILE_SIZE), tileMapSize.y * (TILE_SIZE) };
+    backgroundLayer = new ImageBuffer{ tileMapSize.x * (TILE_SIZE), tileMapSize.y * (TILE_SIZE) };
+    foregroundLayer = new ImageBuffer{ tileMapSize.x * (TILE_SIZE), tileMapSize.y * (TILE_SIZE) };
+    normalBuffer = new ImageBuffer{ tileMapSize.x * (TILE_SIZE), tileMapSize.y * (TILE_SIZE) };
+    shadowCasterBuffer = new ImageBuffer{ tileMapSize.x * (TILE_SIZE), tileMapSize.y * (TILE_SIZE) };
 }
 
 int Renderer::CheckLineForObject(int x1, int y1, int x2, int y2)
