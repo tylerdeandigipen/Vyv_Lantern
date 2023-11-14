@@ -131,6 +131,7 @@ bool TbdCanToggleFullBright = true;
 bool TbdCanToggleNormalDisplay = true;
 bool TbdCanToggleOnlyLights = true;
 bool CanPause = true;
+bool TbdCanRenderWallHitboxes = true;
 void TbdPlayerMovement(float dt)
 {
     Inputs* inputHandler = Inputs::GetInstance();
@@ -201,6 +202,19 @@ void TbdPlayerMovement(float dt)
     else
     {
         CanPause = true;
+    }
+
+    if (inputHandler->keyPressed(SDL_SCANCODE_C) && TbdCanRenderWallHitboxes == 1)
+    {
+        if (TbdPixelRenderer->renderWallHitboxes == false)
+            TbdPixelRenderer->renderWallHitboxes = true;
+        else
+            TbdPixelRenderer->renderWallHitboxes = false;
+        TbdCanRenderWallHitboxes = 0;
+    }
+    if (!inputHandler->keyPressed(SDL_SCANCODE_C))
+    {
+        TbdCanRenderWallHitboxes = 1;
     }
 
     if (inputHandler->keyPressed(SDL_SCANCODE_TAB))

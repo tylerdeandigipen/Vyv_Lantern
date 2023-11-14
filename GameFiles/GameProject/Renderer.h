@@ -49,6 +49,7 @@ public:
 	bool isFullBright = false;
 	bool renderNormalMap = false;
 	bool renderOnlyLights = false;
+	bool renderWallHitboxes = false;
 	bool doBlur = true;
 	static Renderer* GetInstance();
 
@@ -79,6 +80,7 @@ public:
 	int returnObjCnt();
 	void ClearObjects();
 	void ClearTilesets();
+	void RenderWallCollidersToDebugBuffer();
 	int CheckLineForObject(int x1, int y1, int x2, int y2);
 	// 0 = forward, 1 = down, 2 = up, 3 = blink
 	void UpdateFace(int& faceState_);
@@ -99,7 +101,6 @@ public:
 	float** blurLightG;
 	float** blurLightB;
 
-
 private:
 	static Renderer* instance;
 
@@ -115,6 +116,7 @@ private:
 	int frameCount = 0;
 	float timer = 0;
 	float timeBetweenFrames = 0.1f;
+	int** tileMap = NULL;
 
     Uint32 startTime;
     

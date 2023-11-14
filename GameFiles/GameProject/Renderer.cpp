@@ -376,13 +376,18 @@ void Renderer::RenderParticles()
 }
 
 #define TILE_SIZE 8
-#define NUM_WALL_SPRITES 17
-const int wallSpriteIndexes[NUM_WALL_SPRITES] = { 1, 2, 4, 5, 6, 7, 8, 9, 10, 11, 26, 36, 27, 28, 34, 35, 12 };
+#define NUM_WALL_TILES 17
+#define NUM_NON_WALKABLE_TILES 20
+const int wallTileIndexes[NUM_WALL_TILES] = { 1, 2, 4, 5, 6, 7, 8, 9, 10, 11, 26, 36, 27, 28, 34, 35, 12 };
+int nonWalkableTiles[NUM_NON_WALKABLE_TILES] = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 45, 46, 48, 29, 26, 31, 41, 39, 36 };
 void Renderer::MakeTileMap(int** tileMapArray)
 {
     foregroundLayer->ClearImageBuffer();
     backgroundLayer->ClearImageBuffer();
+    tileMap = tileMapArray;
+
     ImageBuffer* clearTile = new ImageBuffer{8,8};
+
 
     for (int x = 0; x < tileMapSize.x; ++x)
     {
@@ -391,9 +396,9 @@ void Renderer::MakeTileMap(int** tileMapArray)
             if (tileSet[tileMapArray[x][y]])
             {
                 bool isWall = false;
-                for (int i = 0; i < NUM_WALL_SPRITES; i++)
+                for (int i = 0; i < NUM_WALL_TILES; i++)
                 {
-                    if (tileMapArray[x][y] == wallSpriteIndexes[i])
+                    if (tileMapArray[x][y] == wallTileIndexes[i])
                     {
                         isWall = true;
                         break;
@@ -431,6 +436,50 @@ void Renderer::MakeTileMap(int** tileMapArray)
             
         }
     }
+}
+
+void Renderer::RenderWallCollidersToDebugBuffer()
+{
+    DebugBuffer->ClearImageBuffer();
+
+    //make debug tile here
+    ImageBuffer* debugOutlineTile = new ImageBuffer{ 8,8 };
+    Color* temp;
+    for (int x = 0; x < debugOutlineTile->size.x; ++x)
+    {
+        for (int y = 0; y < debugOutlineTile->size.y; ++y)
+        {
+            if (x == 0 || x == debugOutlineTile->size.x - 1 || y == debugOutlineTile->size.y - 1 || y == 0)
+            {
+                temp = &debugOutlineTile->SampleColor(x, y);
+                *temp = Color{ 255, 0, 0, 255 };
+            }
+        }
+    }
+
+    for (int x = 0; x < tileMapSize.x; ++x)
+    {
+        for (int y = 0; y < tileMapSize.y; ++y)
+        {
+            bool isWalkable = true;
+            for (int i = 0; i < NUM_NON_WALKABLE_TILES; i++)
+            {
+                if (tileMap[x][y] == nonWalkableTiles[i])
+                {
+                    isWalkable = false;
+                    break;
+                }
+            }
+            if (isWalkable == false)
+            {
+                debugOutlineTile->position = { (float)(x * TILE_SIZE), (float)(y * TILE_SIZE) };
+                DebugBuffer->AddSprite(debugOutlineTile);
+            }
+        }
+    }
+
+    debugOutlineTile->position = animatedObjects[0][0]->position;
+    DebugBuffer->AddSprite(debugOutlineTile);
 }
 
 void Renderer::AddTileToTileset(ImageBuffer* tile)
@@ -828,14 +877,21 @@ void Renderer::Update()
     BlurLights();
     DitherLights();
     RenderToOutbuffer();
+    
+    if (renderWallHitboxes == true)
+    {
+        RenderWallCollidersToDebugBuffer();
+        Vector2 camPos = GetCameraPosition();
+        DebugBuffer->Blit(outputBuffer, -camPos.x, -camPos.y);
+    }
 
     if (Engine::GetInstance()->Paused() == true)
     {
         RenderMenu();
     }
 
-    DebugBuffer->Blit(outputBuffer);
-    DebugBuffer->ClearImageBuffer();
+    //DebugBuffer->Blit(outputBuffer);
+    //DebugBuffer->ClearImageBuffer();
 
 
     float AverageFrameLength = 0.0f;
