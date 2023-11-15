@@ -16,6 +16,7 @@
 #include "ImageBuffer.h"
 #include "ScopeTimer.h"
 #include "Engine.h"
+#include "Time.h"
 
 #include <windows.h>
 #include <SDL/SDL.h>
@@ -64,7 +65,7 @@ void Renderer::RenderLightingPass()
     lightBuffer->ClearImageBuffer();
 
     backgroundLayer->Blit(inputBuffer, -CameraOffsetX, -CameraOffsetY);
-    objectLayer->Blit(inputBuffer);
+    objectLayer->Blit(inputBuffer, -CameraOffsetX, -CameraOffsetY);
     foregroundLayer->Blit(inputBuffer, -CameraOffsetX, -CameraOffsetY);
     particleManager->UpdateParticles();
 
@@ -741,13 +742,6 @@ void Renderer::DrawLine(Vector2 P0, Vector2 P1, const Color &LineColor)
 	}
 }
 
-const	int BAYER_PATTERN_4X4[4][4] = {	//	4x4 Bayer Dithering Matrix. Color levels: 17
-{	 15, 195,  60, 240	},
-{	135,  75, 180, 120	},
-{	 45, 225,  30, 210	},
-{	165, 105, 150,  90	}
-};
-
 const	int BAYER_PATTERN_8X8[8][8] = {	//	8x8 Bayer Dithering Matrix. Color levels: 65
 {	  0, 128,  32, 160,   8, 136,  40, 168	},
 {	192,  64, 224,  96, 200,  72, 232, 104	},
@@ -899,11 +893,13 @@ void Renderer::MakeMenu(const std::string filename)
     menuBuffer = new ImageBuffer{filename};
 }
 
-void Renderer::Update()
+void Renderer::Update(float dt)
 {
     Uint32 currentTime = SDL_GetTicks();
     ScopeTimer TestScopeTimer("Renderer::Update");
-
+    UpdateAnimations(dt);
+    UpdateFace(faceState);
+    UpdateObjects();
     RenderLightingPass();
     BlurLights();
     DitherLights();
@@ -1121,7 +1117,7 @@ void Renderer::UpdateObjects()
         {
             if (objects[i]->layer == l && objects[i]->totalFrames == 0 && objects[i]->isCulled == false)
             {
-                objectLayer->AddSprite(objects[i], CameraP);
+                objectLayer->AddSprite(objects[i]);
                 break;
             }
         }
@@ -1138,7 +1134,7 @@ void Renderer::UpdateObjects()
                 {
                     animatedObjects[i][frame]->FlipSprite();
                 }
-                objectLayer->AddSprite(animatedObjects[i][frame], CameraP);
+                objectLayer->AddSprite(animatedObjects[i][frame]);
                 break;
             }
         }

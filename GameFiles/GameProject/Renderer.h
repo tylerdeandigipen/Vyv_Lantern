@@ -76,7 +76,7 @@ public:
 	void AddLight(Light light);
 	void UpdateAnimations(float dt);
 	void UpdateObjects();
-	void Update();
+	void Update(float dt);
 	int returnObjCnt();
 	void ClearTilesets();
 	void RenderWallCollidersToDebugBuffer();

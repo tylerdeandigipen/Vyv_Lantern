@@ -26,6 +26,7 @@
 #include "Renderer.h"
 #include "Inputs.h"
 #include "Logging.h"
+#include "Time.h"
 
 #include "ImageBuffer.h"
 #include "Light.h"
@@ -301,24 +302,19 @@ void TbdTestScene::Update(float dt)
     AudioManager.Update();
     inputHandler->handleInput();
 
-    TbdPixelRenderer->UpdateObjects();
-    TbdPixelRenderer->UpdateAnimations(dt);
-    TbdPixelRenderer->UpdateFace(TbdPixelRenderer->faceState);
-
     TbdPlayerMovement(dt);
+
+    ImGuiInterg();
+    TbdPixelRenderer->Update(dt);
 }
 
 void TbdTestScene::Render()
 {
-    ImGuiInterg();
-
-    TbdPixelRenderer->Update();
 	return;
 }
 
 Engine::EngineCode TbdTestScene::Exit()
 {
-    // Remember to clean up
     Inputs::GetInstance()->InputKeyClear();
     TbdPixelRenderer->CleanRenderer();
     SDL_GL_DeleteContext(TbdGlContext);

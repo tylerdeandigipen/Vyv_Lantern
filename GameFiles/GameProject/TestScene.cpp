@@ -460,6 +460,7 @@ void TestScene::Update(float dt)
 			Emitter->Direction = Vector2(cosf(Angle), sinf(Angle));
         }
     }
+    pixelRenderer->Update(dt);
 }
 
 void TestScene::Render()
@@ -482,8 +483,6 @@ void TestScene::Render()
 		}
 	}
 #endif
-
-	pixelRenderer->Update();
 	return;
 }
 
