@@ -3,7 +3,7 @@
 #define PARTICLE_MANAGER_H
 #include "Particle.h"
 
-#define MAX_PARTICLES 100
+#define MAX_PARTICLES 150
 
 class ParticleManager
 {
@@ -18,8 +18,8 @@ public:
 	Particle* particleArray[MAX_PARTICLES];
 	int totalParticles;
 
-	// thanks ty
 	Particle** GetParticles();
+	Vector2 tileMapSize{ 240,136 };
 };
 
 #endif 

@@ -8,6 +8,7 @@ public:
     Time();
     ~Time();
     float Delta();
+    float GetDt();
     static Time& Instance();
 
 private:

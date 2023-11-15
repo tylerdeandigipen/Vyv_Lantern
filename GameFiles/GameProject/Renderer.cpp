@@ -367,6 +367,9 @@ bool Renderer::CalculateIfPixelIsLit(int x,int y, int i)
 void Renderer::RenderParticles()
 {
     Vector2 tempPos;
+    particleManager->tileMapSize = Vector2{ (float)foregroundLayer->BufferSizeX, (float)foregroundLayer->BufferSizeY };
+    
+    #pragma omp for private(tempPos)
     for (int i = 0; i < particleManager->totalParticles; i++)
     {
         if (particleManager->particleArray[i] != NULL)

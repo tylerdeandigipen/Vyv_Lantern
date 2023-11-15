@@ -13,7 +13,7 @@ enum Particle_Type
 class Particle
 {
 public:
-	Particle(Vector2 pos, Vector2 dir, Vector2 spd, Color otherColor, Particle_Type partType);
+	Particle(Vector2 pos, Vector2 dir, Vector2 spd, Vector2 attractPoint, Color otherColor, Particle_Type partType);
 	Particle();
 	void Update();
 
@@ -25,7 +25,8 @@ public:
 	Vector2 speed;
 	Color color;
 	bool isDead = false;
-
+	Vector2 mothAttractionPoint{ 0,0 };
+	Vector2 tileMapSize{240,136};
 };
 
 #endif 

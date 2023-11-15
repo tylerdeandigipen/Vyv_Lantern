@@ -17,19 +17,16 @@ float Time::Delta()
     delta = tick_time - last_tick_time;
     last_tick_time = tick_time;
 	delta /= 1000;
-	if (delta <= 1.0f && delta >= 0.0f)
-	{
-		return delta;
-	}
-	else if (delta < 0.0f)
+    if (delta < 0.0f)
 	{
 		return 0.0f;
 	}
-	else
-	{
-		return 1.0f;
-	}
-    //delta = clamp(delta, 0.0f, 1.0f);
+    return delta;
+}
+
+float Time::GetDt()
+{
+    return delta;
 }
 
 Time& Time::Instance()
