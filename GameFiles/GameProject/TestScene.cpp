@@ -587,6 +587,7 @@ void TestScene::ImGuiWindow()
                 {
                     if (ImGui::TreeNode(("Particle " + std::to_string(i)).c_str()))
                     {
+                        ImGui::Text("Particle Type: %d", particles[i]->particleType);
                         ImGui::Text("Position: (%.2f, %.2f)", particles[i]->position.x, particles[i]->position.y);
                         ImGui::Text("Direction: (%.2f, %.2f)", particles[i]->direction.x, particles[i]->direction.y);
                         ImGui::Text("Speed: (%.2f, %.2f)", particles[i]->speed.x, particles[i]->speed.y);
