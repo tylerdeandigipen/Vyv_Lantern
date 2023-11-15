@@ -633,12 +633,12 @@ void Renderer::CleanRenderer()
     normalBufferPostCam->ClearImageBuffer();
     DebugBuffer->ClearImageBuffer();
     lightBuffer->ClearImageBuffer();
-    particleManager->ClearParticles();
     if (menuBuffer != NULL)
     {
         menuBuffer->ClearImageBuffer();
     }
 
+    particleManager->ClearParticles();
     ClearTilesets();
     //ClearSprites();
     //ClearLights();

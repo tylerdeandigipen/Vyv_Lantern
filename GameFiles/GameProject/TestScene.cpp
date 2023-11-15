@@ -507,7 +507,7 @@ Engine::EngineCode TestScene::Unload()
     //delete testEntity;
     //delete jsonEntity;
 
-  //  LevelBuilder::GetInstance()->FreeLevel();
+    LevelBuilder::GetInstance()->FreeLevel();
 
     logger.LogLine("Debug info: entities destroyed :( (testScene unloaded)");
 	return Engine::NothingBad;
