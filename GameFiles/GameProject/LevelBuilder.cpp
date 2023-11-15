@@ -174,3 +174,8 @@ void LevelBuilder::SetY(int size)
 {
     SizeY = size;
 }
+
+int LevelBuilder::CountEntities()
+{
+    return entity_container->CountEntities();
+}

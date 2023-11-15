@@ -558,7 +558,7 @@ void TestScene::ImGuiWindow()
         ImGui::Begin("custom window");
         ImGui::Text("hey bbg how you doin ;)");
 
-        int numEntities = EntityContainer::CountEntities();
+        int numEntities = LevelBuilder::GetInstance()->CountEntities();
         ImGui::Text("Number of Entities: %d", numEntities);
 
         ImGui::Text("Mouse Position: (%d, %d)", Inputs::GetInstance()->getMouseX(), Inputs::GetInstance()->getMouseY());

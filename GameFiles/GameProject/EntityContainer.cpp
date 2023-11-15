@@ -129,5 +129,5 @@ void EntityContainer::FreeAll()
 
 int EntityContainer::CountEntities()
 {
-	return entityCount;
+	return entities.size();
 }

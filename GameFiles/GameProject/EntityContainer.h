@@ -31,7 +31,7 @@ public:
 	void RenderAll();
 	void FreeAll();
 
-	static int CountEntities();
+	int CountEntities();
 private:
 	static int entityCount;
 	std::vector<Entity*> entities;

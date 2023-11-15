@@ -27,6 +27,7 @@ public:
 	void FreeLevel();
 	void SetTileMap(int** tiles);
 	int** GetTileMap();
+	int CountEntities();
 	void SetWalls(int* walls);
 	int* GetWalls();
 	void SetX(int size);
