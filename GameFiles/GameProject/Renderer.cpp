@@ -513,13 +513,13 @@ void Renderer::AddShadowCasterToShadowCasterTileset(ImageBuffer* tile)
 // 0 = forward, 1 = down, 2 = up, 3 = blink
 void Renderer::UpdateFace(int& faceState_)
 {
-    if (faceIndex == -1)
+    if (faceIndex == -1 || faceIndex > MAX_ANIMATED_OBJECTS)
     {
         faceIndex = numAnimatedObjects;
         ImageBuffer* temp = CreateAnimatedObject("./Assets/PPM/Man_Faces.ppm", { 8,8 });
         temp->isCulled = true;
     }
-    if (faceState >= 0 && faceState <= animatedObjects[1][0]->totalFrames && faceState == faceState_)
+    else if (faceState >= 0 && animatedObjects[faceIndex][0] != NULL && faceState <= animatedObjects[faceIndex][0]->totalFrames && faceState == faceState_)
     {
         faceState = faceState_;
         if (animatedObjects[0][animatedObjects[0][0]->currentFrame]->isFlipped != animatedObjects[faceIndex][faceState]->isFlipped)
@@ -565,7 +565,7 @@ Renderer::Renderer() : objects{ NULL }
     shadowCasterBuffer = new ImageBuffer{ SCREEN_SIZE_X ,SCREEN_SIZE_Y };
     particleManager = new ParticleManager;
     faceIndex = -1;
-    faceState = NULL;
+    faceState = 0;
     outputBuffer->screenScale = screenScale;
 
     for (int i = 0; i < 15; ++i)
@@ -594,28 +594,7 @@ Renderer::Renderer() : objects{ NULL }
     }
 
     //i hate this fix later
-    lightR = new float* [SCREEN_SIZE_X];
-    lightG = new float* [SCREEN_SIZE_X];
-    lightB = new float* [SCREEN_SIZE_X];
-
-    for (int x = 0; x < SCREEN_SIZE_X; ++x) 
-    {
-        lightR[x] = new float[SCREEN_SIZE_Y];
-        lightG[x] = new float[SCREEN_SIZE_Y];
-        lightB[x] = new float[SCREEN_SIZE_Y];
-    }
-
-    blurLightR = new float* [SCREEN_SIZE_X];
-    blurLightG = new float* [SCREEN_SIZE_X];
-    blurLightB = new float* [SCREEN_SIZE_X];
-
-    for (int x = 0; x < SCREEN_SIZE_X; ++x)
-    {
-        blurLightR[x] = new float[SCREEN_SIZE_Y];
-        blurLightG[x] = new float[SCREEN_SIZE_Y];
-        blurLightB[x] = new float[SCREEN_SIZE_Y];
-    }
-    //end of hate
+    ReallocateLightArrays();
 
     startTime = SDL_GetTicks();
     PreviousFrameBeginTime = startTime;
@@ -639,6 +618,7 @@ void Renderer::CleanRenderer()
     }
 
     particleManager->ClearParticles();
+    ReallocateLightArrays();
     ClearTilesets();
     //ClearSprites();
     //ClearLights();
@@ -656,7 +636,7 @@ void Renderer::CleanRenderer()
 
 void Renderer::ClearLights()
 {
-   // delete[] lightSource;
+   delete[] lightSource;
 }
 
 void Renderer::ClearSprites()
@@ -669,6 +649,7 @@ void Renderer::ClearSprites()
             objects[i] = NULL;
         }
     }
+    numObjects = 0;
     for (int i = 0; i < numAnimatedObjects; ++i)
     {
         if (objects[i] != NULL)
@@ -680,6 +661,8 @@ void Renderer::ClearSprites()
             }
         }
     }
+    numAnimatedObjects = 0;
+    faceIndex = -1;
 }
 
 Renderer::~Renderer(void)
@@ -720,6 +703,53 @@ Renderer::~Renderer(void)
 
     glDeleteTextures(1, &OutputBufferTexture);
 }
+
+void Renderer::ReallocateLightArrays()
+{
+    if (lightR != NULL)
+    {
+        //Free indexes
+        for (int x = 0; x < SCREEN_SIZE_X; ++x) {
+            delete[] lightR[x];
+            delete[] lightG[x];
+            delete[] lightB[x];
+            delete[] blurLightR[x];
+            delete[] blurLightG[x];
+            delete[] blurLightB[x];
+        }
+
+        //Free main array
+        delete[] lightR;
+        delete[] lightG;
+        delete[] lightB;
+        delete[] blurLightR;
+        delete[] blurLightG;
+        delete[] blurLightB;
+    }
+
+    lightR = new float* [SCREEN_SIZE_X];
+    lightG = new float* [SCREEN_SIZE_X];
+    lightB = new float* [SCREEN_SIZE_X];
+
+    for (int x = 0; x < SCREEN_SIZE_X; ++x)
+    {
+        lightR[x] = new float[SCREEN_SIZE_Y];
+        lightG[x] = new float[SCREEN_SIZE_Y];
+        lightB[x] = new float[SCREEN_SIZE_Y];
+    }
+
+    blurLightR = new float* [SCREEN_SIZE_X];
+    blurLightG = new float* [SCREEN_SIZE_X];
+    blurLightB = new float* [SCREEN_SIZE_X];
+
+    for (int x = 0; x < SCREEN_SIZE_X; ++x)
+    {
+        blurLightR[x] = new float[SCREEN_SIZE_Y];
+        blurLightG[x] = new float[SCREEN_SIZE_Y];
+        blurLightB[x] = new float[SCREEN_SIZE_Y];
+    }
+}
+
 
 void Renderer::DrawLine(Vector2 P0, Vector2 P1, const Color &LineColor)
 {
@@ -1049,6 +1079,9 @@ void Renderer::ClearTilesets()
             shadowCasterTileset[i] = NULL;
         }
     }
+    numTiles = 0;
+    numNormalTiles = 0;
+    numShadowCasterTiles = 0;
 }
 
 void Renderer::ResizeBuffers()

@@ -89,18 +89,19 @@ public:
 	void DitherLights();
 	void RenderToOutbuffer();
 	void RenderMenu();
+	void ReallocateLightArrays();
 	void MakeMenu(const std::string filename);
 	void CalculateShadows();
-	int faceState;
+	int faceState = 0;
 	float normalStrength = 0.5f;
 	//i hate this make it better later tho
-	float** lightR;
-	float** lightG;
-	float** lightB;
+	float** lightR = NULL;
+	float** lightG = NULL;
+	float** lightB = NULL;
 
-	float** blurLightR;
-	float** blurLightG;
-	float** blurLightB;
+	float** blurLightR = NULL;
+	float** blurLightG = NULL;
+	float** blurLightB = NULL;
 
 private:
 	static Renderer* instance;
