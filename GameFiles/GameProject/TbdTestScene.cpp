@@ -48,6 +48,11 @@ static bool show_tool_metrics = false;
 static bool show_custom_window = false;
 static bool show_metrics_debug_bar = false;
 
+bool isGravePressedForCheat = false;
+bool isQPressedForCheat = false;
+bool isNPressedForCheat = false;
+bool isCPressedForCheat = false;
+
 TbdTestScene::TbdTestScene() : Scene("tbdtest")
 {
 
@@ -149,6 +154,15 @@ void TbdPlayerMovement(float dt)
         else
             TbdPixelRenderer->isFullBright = false;
         TbdCanToggleFullBright = false;
+
+        if (!isGravePressedForCheat)
+        {
+            isGravePressedForCheat = true;
+        }
+        else
+        {
+            isGravePressedForCheat = false;
+        }
     }
     if (!inputHandler->keyPressed(SDL_SCANCODE_GRAVE))
     {
@@ -162,6 +176,15 @@ void TbdPlayerMovement(float dt)
         else
             TbdPixelRenderer->renderOnlyLights = false;
         TbdCanToggleOnlyLights = false;
+
+        if (!isQPressedForCheat)
+        {
+            isQPressedForCheat = true;
+        }
+        else
+        {
+            isQPressedForCheat = false;
+        }
     }
     if (!inputHandler->keyPressed(SDL_SCANCODE_Q))
     {
@@ -175,6 +198,15 @@ void TbdPlayerMovement(float dt)
         else
             TbdPixelRenderer->renderNormalMap = false;
         TbdCanToggleNormalDisplay = false;
+
+        if (!isNPressedForCheat)
+        {
+            isNPressedForCheat = true;
+        }
+        else
+        {
+            isNPressedForCheat = false;
+        }
     }
     if (!inputHandler->keyPressed(SDL_SCANCODE_N))
     {
@@ -204,6 +236,15 @@ void TbdPlayerMovement(float dt)
         else
             TbdPixelRenderer->renderWallHitboxes = false;
         TbdCanRenderWallHitboxes = 0;
+
+        if (!isCPressedForCheat)
+        {
+            isCPressedForCheat = true;
+        }
+        else
+        {
+            isCPressedForCheat = false;
+        }
     }
     if (!inputHandler->keyPressed(SDL_SCANCODE_C))
     {
@@ -354,6 +395,13 @@ void TbdTestScene::ImGuiWindow()
             }
         }
 
+        ImGui::Separator();
+        ImGui::Text("Cheat Status:");
+        ImGui::Text("` Cheat: %s", isGravePressedForCheat ? "Active" : "Inactive");
+        ImGui::Text("Q Cheat: %s", isQPressedForCheat ? "Active" : "Inactive");
+        ImGui::Text("N Cheat: %s", isNPressedForCheat ? "Active" : "Inactive");
+        ImGui::Text("C Cheat: %s", isCPressedForCheat ? "Active" : "Inactive");
+
         ImGui::Text("Particle System:");
         ImGui::Separator();
 
@@ -367,6 +415,7 @@ void TbdTestScene::ImGuiWindow()
                 {
                     if (ImGui::TreeNode(("Particle " + std::to_string(i)).c_str()))
                     {
+                        ImGui::Text("Particle Type: %d", particles[i]->particleType);
                         ImGui::Text("Position: (%.2f, %.2f)", particles[i]->position.x, particles[i]->position.y);
                         ImGui::Text("Direction: (%.2f, %.2f)", particles[i]->direction.x, particles[i]->direction.y);
                         ImGui::Text("Speed: (%.2f, %.2f)", particles[i]->speed.x, particles[i]->speed.y);
