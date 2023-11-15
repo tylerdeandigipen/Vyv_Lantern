@@ -55,12 +55,11 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
     engine->EngineAddSystem(SceneSystem::GetInstance());
 	
     Engine::EngineCode returnCode = engine->Start(); 
-
-//    _CrtDumpMemoryLeaks();
+    _CrtDumpMemoryLeaks();
         // Enable run-time memory check for debug builds.
     #if defined(DEBUG) | defined(_DEBUG)
-   // _CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF); //do not remove this line!!!
-    //_CrtSetBreakAlloc(34555); //use this to detect memory leaks, replace the number with mem leak location    
+    _CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF); //do not remove this line!!!
+   _CrtSetBreakAlloc(34555); //use this to detect memory leaks, replace the number with mem leak location    
     #endif
     switch (returnCode)
     {

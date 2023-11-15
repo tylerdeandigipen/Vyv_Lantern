@@ -593,18 +593,15 @@ Renderer::Renderer() : objects{ NULL }
     }
 
     //i hate this fix later
-    lightR = new float*[SCREEN_SIZE_X];
-    lightG = new float*[SCREEN_SIZE_X];
-    lightB = new float*[SCREEN_SIZE_X];
+    lightR = new float* [SCREEN_SIZE_X];
+    lightG = new float* [SCREEN_SIZE_X];
+    lightB = new float* [SCREEN_SIZE_X];
 
     for (int x = 0; x < SCREEN_SIZE_X; ++x) 
     {
-        for (int y = 0; y < SCREEN_SIZE_Y; ++y) 
-        {
-            lightR[x] = new float[y];
-            lightG[x] = new float[y];
-            lightB[x] = new float[y];
-        }
+        lightR[x] = new float[SCREEN_SIZE_Y];
+        lightG[x] = new float[SCREEN_SIZE_Y];
+        lightB[x] = new float[SCREEN_SIZE_Y];
     }
 
     blurLightR = new float* [SCREEN_SIZE_X];
@@ -613,12 +610,9 @@ Renderer::Renderer() : objects{ NULL }
 
     for (int x = 0; x < SCREEN_SIZE_X; ++x)
     {
-        for (int y = 0; y < SCREEN_SIZE_Y; ++y)
-        {
-            blurLightR[x] = new float[y];
-            blurLightG[x] = new float[y];
-            blurLightB[x] = new float[y];
-        }
+        blurLightR[x] = new float[SCREEN_SIZE_Y];
+        blurLightG[x] = new float[SCREEN_SIZE_Y];
+        blurLightB[x] = new float[SCREEN_SIZE_Y];
     }
     //end of hate
 
