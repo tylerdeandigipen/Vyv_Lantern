@@ -464,7 +464,8 @@ void Renderer::RenderWallCollidersToDebugBuffer()
 
     const int xSize = (int)tileMapSize.x;
     const int ySize = (int)tileMapSize.y;
-    #pragma omp parallel for collapse(2)
+    //for some reason paralell makes it freak out so imma not do that even though it makes preformance a bit worse
+    //#pragma omp parallel for collapse(2)
     for (int x = 0; x < xSize; ++x)
     {
         for (int y = 0; y < ySize; ++y)
@@ -558,12 +559,6 @@ Renderer::Renderer() : objects{ NULL }
 {
     outputBuffer = new ImageBuffer{ SCREEN_SIZE_X ,SCREEN_SIZE_Y };
     inputBuffer = new ImageBuffer{ SCREEN_SIZE_X ,SCREEN_SIZE_Y };
-    /*
-    objectLayer = new ImageBuffer{ SCREEN_SIZE_X ,SCREEN_SIZE_Y };
-    backgroundLayer = new ImageBuffer{ SCREEN_SIZE_X ,SCREEN_SIZE_Y };
-    foregroundLayer = new ImageBuffer{ SCREEN_SIZE_X ,SCREEN_SIZE_Y };
-    normalBuffer = new ImageBuffer{ SCREEN_SIZE_X ,SCREEN_SIZE_Y };
-    */
     normalBufferPostCam = new ImageBuffer{ SCREEN_SIZE_X ,SCREEN_SIZE_Y };
     lightBuffer = new ImageBuffer{ SCREEN_SIZE_X ,SCREEN_SIZE_Y };
     shadowCasterBuffer = new ImageBuffer{ SCREEN_SIZE_X ,SCREEN_SIZE_Y };
@@ -626,8 +621,6 @@ Renderer::Renderer() : objects{ NULL }
         }
     }
     //end of hate
-
-	DebugBuffer = new ImageBuffer(SCREEN_SIZE_X, SCREEN_SIZE_Y);
 
     startTime = SDL_GetTicks();
     PreviousFrameBeginTime = startTime;
@@ -1051,6 +1044,7 @@ void Renderer::ResizeBuffers()
         delete foregroundLayer;
         delete normalBuffer;
         delete shadowCasterBuffer;
+        delete DebugBuffer;
     }
 
     objectLayer = new ImageBuffer{ tileMapSize.x * (TILE_SIZE), tileMapSize.y * (TILE_SIZE) };
@@ -1058,6 +1052,7 @@ void Renderer::ResizeBuffers()
     foregroundLayer = new ImageBuffer{ tileMapSize.x * (TILE_SIZE), tileMapSize.y * (TILE_SIZE) };
     normalBuffer = new ImageBuffer{ tileMapSize.x * (TILE_SIZE), tileMapSize.y * (TILE_SIZE) };
     shadowCasterBuffer = new ImageBuffer{ tileMapSize.x * (TILE_SIZE), tileMapSize.y * (TILE_SIZE) };
+    DebugBuffer = new ImageBuffer{ tileMapSize.x * (TILE_SIZE), tileMapSize.y * (TILE_SIZE) };
 }
 
 int Renderer::CheckLineForObject(int x1, int y1, int x2, int y2)
