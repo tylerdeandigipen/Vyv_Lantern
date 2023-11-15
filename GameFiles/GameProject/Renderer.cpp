@@ -614,7 +614,8 @@ void Renderer::CleanRenderer()
     lightBuffer->ClearImageBuffer();
     if (menuBuffer != NULL)
     {
-        menuBuffer->ClearImageBuffer();
+        delete menuBuffer;
+        menuBuffer = NULL;
     }
 
     particleManager->ClearParticles();
