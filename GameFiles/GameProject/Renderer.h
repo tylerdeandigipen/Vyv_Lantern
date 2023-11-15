@@ -79,6 +79,8 @@ public:
 	void Update(float dt);
 	int returnObjCnt();
 	void ClearTilesets();
+	void ClearSprites();
+	void ClearLights();
 	void RenderWallCollidersToDebugBuffer();
 	int CheckLineForObject(int x1, int y1, int x2, int y2);
 	// 0 = forward, 1 = down, 2 = up, 3 = blink

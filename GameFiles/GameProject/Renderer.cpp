@@ -537,7 +537,7 @@ ImageBuffer* Renderer::CreateAnimatedObject(const std::string filename, Vector2 
     if(spriteSheet->buffer && (frameSize.x > 0) && (frameSize.y > 0))
 	{
 		spriteSheet->position.y = 0;
-		ImageBuffer* temp;
+		ImageBuffer* temp = NULL;
 
 		for (int i = 0; i < spriteSheet->size.x / frameSize.x; i++)
 		{
@@ -638,7 +638,11 @@ void Renderer::CleanRenderer()
     {
         menuBuffer->ClearImageBuffer();
     }
+
     ClearTilesets();
+    //ClearSprites();
+    //ClearLights();
+
     faceIndex = -1;
     numTiles = 0;
     numNormalTiles = 0;
@@ -650,8 +654,37 @@ void Renderer::CleanRenderer()
     CameraP = Vector2{ 0,0 };
 }
 
+void Renderer::ClearLights()
+{
+   // delete[] lightSource;
+}
+
+void Renderer::ClearSprites()
+{
+    for (int i = 0; i < numObjects; ++i)
+    {
+        if (objects[i] != NULL)
+        {
+            delete objects[i];
+            objects[i] = NULL;
+        }
+    }
+    for (int i = 0; i < numAnimatedObjects; ++i)
+    {
+        if (objects[i] != NULL)
+        {
+            for (int f = 0; f < MAX_ANIMATION_FRAMES; ++f)
+            {
+                delete animatedObjects[i][f];
+                animatedObjects[i][f] = NULL;
+            }
+        }
+    }
+}
+
 Renderer::~Renderer(void)
 {
+    CleanRenderer();
     delete outputBuffer;
     delete inputBuffer;
     delete objectLayer;
@@ -667,10 +700,7 @@ Renderer::~Renderer(void)
         delete menuBuffer;
     }
 
-
-    /*To delete the lights*/
-
-    /*Test*/
+    //Free indexes
     for (int x = 0; x < SCREEN_SIZE_X; ++x) {
         delete[] lightR[x];
         delete[] lightG[x];
@@ -680,16 +710,13 @@ Renderer::~Renderer(void)
         delete[] blurLightB[x];
     }
 
-    // Delete memory for main arrays
+    //Free main array
     delete[] lightR;
     delete[] lightG;
     delete[] lightB;
     delete[] blurLightR;
     delete[] blurLightG;
     delete[] blurLightB;
-
-
-    ClearTilesets();
 
     glDeleteTextures(1, &OutputBufferTexture);
 }
@@ -1006,21 +1033,20 @@ void Renderer::ClearTilesets()
 {
     for (int i = 0; i < MAX_TILES; i++)
     {
-        if (tileSet)
+        if (tileSet[i] != NULL)
         {
-            if (tileSet[i] != NULL)
-            {
-                delete tileSet[i];
-                tileSet[i] = NULL;
-            }
+            delete tileSet[i];
+            tileSet[i] = NULL;
         }
-        if (normalTileSet)
+        if (normalTileSet[i] != NULL)
         {
-            if (normalTileSet[i] != NULL)
-            {
-                delete normalTileSet[i];
-                normalTileSet[i] = NULL;
-            }
+            delete normalTileSet[i];
+            normalTileSet[i] = NULL;
+        }
+        if (shadowCasterTileset[i] != NULL)
+        {
+            delete shadowCasterTileset[i];
+            shadowCasterTileset[i] = NULL;
         }
     }
 }
