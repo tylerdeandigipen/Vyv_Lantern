@@ -110,24 +110,25 @@ Engine::EngineCode TbdTestScene::Init()
     TbdPixelRenderer->AddLight(tempLight);
     TbdPixelRenderer->AddLight(tempLight2);
 
+    /*
     Color tempColor( 226, 230, 179, 255 );
-
+    Vector2 tempAttractPoint{ 100, 50 };
     int numTestMoths = 30;
     for (int i = 0; i < numTestMoths; i++)
     {
-        Particle* testParticle = new Particle(Vector2(120,75), Vector2{ -0.25f,-0.8f }, Vector2{ 25.0f,25.0f }, Vector2{135, 90}, tempColor, Particle_Moth);
+        Particle* testParticle = new Particle(Vector2(120,75), Vector2{ -0.8f,-0.25f }, Vector2{ 34.0f,30.0f }, tempColor, Particle_Moth, tempAttractPoint);
         TbdPixelRenderer->particleManager->AddParticle(testParticle);
     }
+    */
 
-    tempColor = Color{ 141,141,141,255 };
+    Color tempColor{ 141,141,141,255 };
     int numTestDust = 120;
     Vector2 tempRandNum;
-    Vector2 tempAttractPoint{240,110};
     for (int i = 0; i < numTestDust; i++)
     {
         tempRandNum = Vector2{ (float)(rand() % SCREEN_SIZE_X - 10), (float)(rand() % SCREEN_SIZE_Y - 10) };
         tempRandNum += Vector2{10,10};
-        Particle* testParticle = new Particle(tempRandNum, Vector2{ -0.8f,-0.25f }, Vector2{ 17.0f, 15.0f }, tempAttractPoint, tempColor, Particle_Dust);
+        Particle* testParticle = new Particle(tempRandNum, Vector2{ -0.8f,-0.25f }, Vector2{ 17.0f, 15.0f }, tempColor, Particle_Dust);
         TbdPixelRenderer->particleManager->AddParticle(testParticle);
     }
     AudioManager.PlayMusic("drips");

@@ -13,7 +13,7 @@ enum Particle_Type
 class Particle
 {
 public:
-	Particle(Vector2 pos, Vector2 dir, Vector2 spd, Vector2 attractPoint, Color otherColor, Particle_Type partType);
+	Particle(Vector2 pos, Vector2 dir, Vector2 spd, Color otherColor, Particle_Type partType, Vector2 attractPoint = {0,0});
 	Particle();
 	void Update();
 

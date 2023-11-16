@@ -1,8 +1,9 @@
 #include "Particle.h"
 #include "Time.h"
 #include "Math.h"
-
-Particle::Particle(Vector2 pos,Vector2 dir, Vector2 spd, Vector2 attractPoint, Color otherColor, Particle_Type partType)
+#include <math.h>
+#include <cmath>
+Particle::Particle(Vector2 pos, Vector2 dir, Vector2 spd, Color otherColor, Particle_Type partType, Vector2 attractPoint)
 {
 	particleType = partType;
 	position = pos;
@@ -23,7 +24,14 @@ Particle::Particle()
 	isDead = false;
 }
 
-#define RAND_RANGE 12
+//credit to u/waterproof on stackoverflow
+float lerp(float a, float b, float f)
+{
+	return a + f * (b - a);
+}
+
+#define RAND_RANGE_MOTH 12
+#define RAND_RANGE_DUST 12
 #define PARTICLE_EDGE_BUFFER 10
 void Particle::Update()
 {
@@ -31,27 +39,42 @@ void Particle::Update()
 	{
 		case Particle_Moth:
 		{
+			/* For the life of me i cant figure out how to make moth go moth things
+			float smoothVal = 0.05f;
+			Vector2 newDir{0,0};
 			float dt = Time::Instance().GetDt();
+			Vector2 temp = {(float)(rand() % RAND_RANGE_MOTH), (float)(rand() % RAND_RANGE_MOTH)};
+			temp -= {RAND_RANGE_MOTH / 2, RAND_RANGE_MOTH / 2};
+			temp /= RAND_RANGE_MOTH;
 
-			Vector2 temp = {(float)(rand() % RAND_RANGE), (float)(rand() % RAND_RANGE)};
-			temp -= {RAND_RANGE / 2, RAND_RANGE / 2};
-			temp /= RAND_RANGE;
-			direction += temp;
-			temp = (mothAttractionPoint - position);
-			temp /= 100.0f;
-			direction += temp;
+			newDir += temp * 2;
+			newDir.x = cos(newDir.x) * speed.x * dt;
+			newDir.y = sin(newDir.y) * speed.y * dt;
 
-			position.x += cos(direction.x) * speed.x * dt;
-			position.y += sin(direction.y) * speed.y * dt;
+			if (distance(mothAttractionPoint.x, mothAttractionPoint.y, position.x, position.y) > 16)
+			{
+				temp = (mothAttractionPoint - position);
+				newDir /= newDir.length(newDir);
+
+				newDir.x += lerp(newDir.x, temp.x, smoothVal);
+				newDir.y += lerp(newDir.y, temp.y, smoothVal);
+				newDir /= 2;
+			}
+
+			direction.x = lerp(direction.x, newDir.x, 0.25f);
+			direction.y = lerp(direction.y, newDir.y, 0.25f);
+			position.x += (direction.x * speed.x) * dt;
+			position.y += (direction.y * speed.y) * dt;
+			*/
 		}
 		break;
 		case Particle_Dust:
 		{
 			float dt = Time::Instance().GetDt();
 
-			Vector2 temp = { (float)(rand() % RAND_RANGE), (float)(rand() % RAND_RANGE) };
-			temp -= {RAND_RANGE / 2, RAND_RANGE / 2};
-			temp /= RAND_RANGE;
+			Vector2 temp = { (float)(rand() % RAND_RANGE_DUST), (float)(rand() % RAND_RANGE_DUST) };
+			temp -= {RAND_RANGE_DUST / 2, RAND_RANGE_DUST / 2};
+			temp /= RAND_RANGE_DUST;
 			direction += temp;
 
 			position.x += cos(direction.x) * speed.x * dt;
