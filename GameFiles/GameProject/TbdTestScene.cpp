@@ -32,6 +32,8 @@
 #include "Light.h"
 #include "LevelBuilder.h"
 
+#include "TestScene.h"
+
 Logging& TbdLogger = Logging::GetInstance("debugLog.log");
 
 SDL_Renderer* TbdRenderer;
@@ -402,7 +404,8 @@ void TbdTestScene::ImGuiWindow()
     if (show_custom_window)
     {
         ImGui::Begin("custom window");
-        ImGui::Text("hey bbg how you doin ;)");
+        ImGui::Text("hey how you doin ;)");
+        ImGui::Text("welcome to the tbdtestscene debug window");
 
         int numEntities = LevelBuilder::GetInstance()->CountEntities();
         ImGui::Text("Number of Entities: %d", numEntities);
@@ -462,6 +465,17 @@ void TbdTestScene::ImGuiWindow()
         if (ImGui::Button("Toggle Metrics/Debug Bar"))
         {
             show_metrics_debug_bar = !show_metrics_debug_bar;
+        }
+
+        if (ImGui::Button("Reset Scene"))
+        {
+            SceneSystem::GetInstance()->RestartScene();
+        }
+
+        if (ImGui::Button("Switch Scene"))
+        {
+            // this crashes :(
+            //SceneSystem::GetInstance()->SetScene(TestSceneGetInstance());
         }
 
         if (show_metrics_debug_bar)

@@ -242,7 +242,7 @@ bool CheckGameScenes()
 
 bool CheckRestart()
 {
-	if (inputHandlerScene->keyPressed(SDL_SCANCODE_R) && dynamic_cast<TestScene*>(SceneSystem::GetInstance()->GetActiveScene()))
+	if (inputHandlerScene->keyPressed(SDL_SCANCODE_R) /* && dynamic_cast<TestScene*>(SceneSystem::GetInstance()->GetActiveScene())*/)
 	{
 		SceneSystem::GetInstance()->RestartScene();
 		return true;
