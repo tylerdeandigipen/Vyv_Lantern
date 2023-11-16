@@ -902,7 +902,7 @@ void Renderer::RenderToOutbuffer()
                 Color& DestPixel = outputBuffer->SampleColor(x, y);
                 if (y % 2 == 0 && doScanLines == true)
                 {
-                    DestPixel = (inputBuffer->SampleColor(x, y) / 0.95f);
+                    DestPixel = (inputBuffer->SampleColor(x, y) * scanLineOpacity);
                 }
                 else
                 {

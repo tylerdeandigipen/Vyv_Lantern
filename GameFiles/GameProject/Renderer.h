@@ -52,6 +52,7 @@ public:
 	bool renderWallHitboxes = false;
 	bool doBlur = true;
 	bool doScanLines = true;
+	float scanLineOpacity = 0.935f;
 	static Renderer* GetInstance();
 
 	Vector2 GetCameraPosition(void);
