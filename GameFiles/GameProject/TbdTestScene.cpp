@@ -133,6 +133,9 @@ Engine::EngineCode TbdTestScene::Init()
         Particle* testParticle = new Particle(tempRandNum, Vector2{ -0.8f,-0.25f }, Vector2{ 17.0f, 15.0f }, tempColor, Particle_Dust);
         TbdPixelRenderer->particleManager->AddParticle(testParticle);
     }
+
+    TbdPixelRenderer->GenerateVornoiPoints();
+
     AudioManager.PlayMusic("drips");
     
     AudioManager.PlayMusic("forest");

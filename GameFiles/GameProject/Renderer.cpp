@@ -971,6 +971,9 @@ void Renderer::Update(float dt)
     RenderLightingPass();
     BlurLights();
     DitherLights();
+
+    MakeVornoiNoiseBuffer();
+
     RenderToOutbuffer();
 
     //DebugBuffer->Blit(outputBuffer);
@@ -1252,4 +1255,42 @@ void Renderer::AddLight(Light light)
     {
 		lightSource[numLights++] = light;
 	}
+}
+
+void Renderer::GenerateVornoiPoints()
+{
+    for (int i = 0; i < MAX_NUM_VORNOI_POINTS; ++i)
+    {
+        vornoiPoints[i] = Vector2{ (float)(rand() % SCREEN_SIZE_X), (float)(rand() % SCREEN_SIZE_Y) };
+    }
+}
+
+void Renderer::MakeVornoiNoiseBuffer()
+{
+    /*
+    normalBuffer->ClearImageBuffer();
+    const int xSize = (int)inputBuffer->size.x;
+    const int ySize = (int)inputBuffer->size.y;
+
+
+    #pragma omp parallel for collapse(3)
+    for (int x = 0; x < xSize; ++x)
+    {
+        for (int y = 0; y < ySize; ++y)
+        {
+            float oldDist = 9999;
+            for (int i = 0; i < MAX_NUM_VORNOI_POINTS; ++i)
+            {
+                float tempDist = distance(vornoiPoints[i].x, vornoiPoints[i].y, x, y);
+                if (oldDist > tempDist)
+                {
+                    oldDist = tempDist;
+                }
+            }
+            oldDist = 100 - oldDist;
+            Color& DestPixel = normalBuffer->SampleColor(x, y);
+            DestPixel = Color{ (uint8_t)oldDist ,(uint8_t)oldDist ,(uint8_t)oldDist ,255 };
+        }
+    }
+    */
 }

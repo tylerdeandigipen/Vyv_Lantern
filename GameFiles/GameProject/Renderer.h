@@ -14,6 +14,7 @@
 #define SCREEN_SIZE_X 240
 #define SCREEN_SIZE_Y 136
 #define MAX_TILES 80
+#define MAX_NUM_VORNOI_POINTS 10
 
 class Renderer
 {
@@ -94,6 +95,8 @@ public:
 	void ReallocateLightArrays();
 	void MakeMenu(const std::string filename);
 	void CalculateShadows();
+	void MakeVornoiNoiseBuffer();
+	void GenerateVornoiPoints();
 	int faceState = 0;
 	float normalStrength = 0.5f;
 	//i hate this make it better later tho
@@ -108,6 +111,7 @@ public:
 private:
 	static Renderer* instance;
 
+	Vector2 vornoiPoints[MAX_NUM_VORNOI_POINTS] = { Vector2{0,0} };
 	ImageBuffer *DebugBuffer;
 	int faceIndex = -1;
 	Vector2 CameraP;
