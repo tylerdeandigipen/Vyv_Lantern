@@ -51,6 +51,7 @@ public:
 	bool renderOnlyLights = false;
 	bool renderWallHitboxes = false;
 	bool doBlur = true;
+	bool doScanLines = true;
 	static Renderer* GetInstance();
 
 	Vector2 GetCameraPosition(void);

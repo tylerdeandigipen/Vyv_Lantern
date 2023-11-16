@@ -143,6 +143,7 @@ bool TbdCanToggleFullBright = true;
 bool TbdCanToggleNormalDisplay = true;
 bool TbdCanToggleOnlyLights = true;
 bool CanPause = true;
+bool canToggleScanLines = true;
 bool TbdCanRenderWallHitboxes = true;
 void TbdPlayerMovement(float dt)
 {
@@ -263,6 +264,19 @@ void TbdPlayerMovement(float dt)
     if (!inputHandler->keyPressed(SDL_SCANCODE_C))
     {
         TbdCanRenderWallHitboxes = 1;
+    }
+
+    if (inputHandler->keyPressed(SDL_SCANCODE_F) && canToggleScanLines == 1)
+    {
+        if (TbdPixelRenderer->doScanLines == false)
+            TbdPixelRenderer->doScanLines = true;
+        else
+            TbdPixelRenderer->doScanLines = false;
+        canToggleScanLines = 0;
+    }
+    if (!inputHandler->keyPressed(SDL_SCANCODE_F))
+    {
+        canToggleScanLines = 1;
     }
 
     if (inputHandler->keyPressed(SDL_SCANCODE_TAB))

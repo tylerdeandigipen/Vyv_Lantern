@@ -387,9 +387,9 @@ void Renderer::RenderParticles()
 
 #define TILE_SIZE 8
 #define NUM_WALL_TILES 17
-#define NUM_NON_WALKABLE_TILES 20
+#define NUM_NON_WALKABLE_TILES 25
 const int wallTileIndexes[NUM_WALL_TILES] = { 1, 2, 4, 5, 6, 7, 8, 9, 10, 11, 26, 36, 27, 28, 34, 35, 12 };
-int nonWalkableTiles[NUM_NON_WALKABLE_TILES] = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 45, 46, 48, 29, 26, 31, 41, 39, 36 };
+int nonWalkableTiles[NUM_NON_WALKABLE_TILES] = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 45, 46, 48, 29, 26, 31, 41, 39, 36, 27, 28, 34, 35, 12 };
 void Renderer::MakeTileMap(int** tileMapArray)
 {
     ResizeBuffers();
@@ -900,7 +900,14 @@ void Renderer::RenderToOutbuffer()
             if (renderWallHitboxes != true && renderNormalMap != true)
             {
                 Color& DestPixel = outputBuffer->SampleColor(x, y);
-                DestPixel = inputBuffer->SampleColor(x, y);
+                if (y % 2 == 0 && doScanLines == true)
+                {
+                    DestPixel = (inputBuffer->SampleColor(x, y) / 0.95f);
+                }
+                else
+                {
+                    DestPixel = inputBuffer->SampleColor(x, y);
+                }
             }
 
             if (renderNormalMap == true)
