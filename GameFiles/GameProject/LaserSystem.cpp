@@ -21,9 +21,7 @@ LaserSystem::LaserSystem(void)
 {
     ErrorLog = &Logging::GetInstance("debugLog.log");
 
-    PathNodeCount = 0;
-    EmitterCount = 0;
-    ReflectorCount = 0;
+	HandleSceneChange();
 }
 
 LaserSystem::~LaserSystem(void)
@@ -210,6 +208,13 @@ void LaserSystem::Render(void)
         Renderer::GetInstance()->DrawLine(ReflectorP, ReflectorP + 10.0f*Reflector->Direction,
                                           Color(0x00, 0xff, 0x00, 0xff));
     }
+}
+
+void LaserSystem::HandleSceneChange(void)
+{
+	PathNodeCount = 0;
+	EmitterCount = 0;
+	ReflectorCount = 0;
 }
 
 LaserSystem::beam_path_iterator LaserSystem::IterateEmitterPath(emitter_id EmitterID)

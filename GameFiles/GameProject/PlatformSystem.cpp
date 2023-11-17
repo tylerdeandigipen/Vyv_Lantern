@@ -11,8 +11,12 @@
 #include "stdafx.h"
 #include <Windows.h>
 #include <SDL/SDL.h>
+#include <glad/glad.h>
 #include <cassert>
 
+#include "imgui.h"
+#include "imgui_impl_sdl2.h"
+#include "imgui_impl_opengl3.h"
 #include "BaseSystem.h"
 #include "PlatformSystem.h"
 
@@ -37,6 +41,21 @@ Engine::EngineCode PlatformSystem::Init()
         return Engine::NullWindowHandle;
     }
 
+	// NOTE(thomas): Creating the ONE-AND-ONLY OpenGL context 
+	oglContext = SDL_GL_CreateContext(winHandle);
+	SDL_GL_SetSwapInterval(0);
+	gladLoadGLLoader(SDL_GL_GetProcAddress);
+
+	// Initialize ImGui
+	IMGUI_CHECKVERSION();
+	ImGui::CreateContext();
+	ImGuiIO& io = ImGui::GetIO();
+	io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;
+	io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;
+	ImGui::StyleColorsLight();
+	ImGui_ImplSDL2_InitForOpenGL(winHandle, oglContext);
+	ImGui_ImplOpenGL3_Init("#version 330");
+
 	assert(winHandle != NULL);
     return Engine::NothingBad;
 }
@@ -54,7 +73,14 @@ void PlatformSystem::Render()
 Engine::EngineCode PlatformSystem::Close()
 {
     assert(instance != NULL);
-    SDL_DestroyWindow(winHandle);
+	
+	ImGui_ImplOpenGL3_Shutdown();
+	ImGui_ImplSDL2_Shutdown();
+	ImGui::DestroyContext();
+
+	SDL_GL_DeleteContext(oglContext);
+	
+	SDL_DestroyWindow(winHandle);
     SDL_Quit();
     return Engine::NothingBad;
 }

@@ -34,6 +34,8 @@ private:
 
 	static PlatformSystem* instance;
 	SDL_Window* winHandle;
+
+	SDL_GLContext oglContext;
 };
 
 LRESULT CALLBACK PlatformSystemCallback(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam);

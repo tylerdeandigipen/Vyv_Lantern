@@ -7,14 +7,13 @@
 // Copyright  © 2023 DigiPen (USA) Corporation.
 //
 //------------------------------------------------------------------------------
-#include "imgui.h"
-#include "imgui_impl_sdl2.h"
-#include "imgui_impl_opengl3.h"
 #include <SDL/SDL.h>
-#include <glad/glad.h>
 #include <iostream>
 #include <algorithm>
 
+#include "imgui.h"
+#include "imgui_impl_sdl2.h"
+#include "imgui_impl_opengl3.h"
 #include "TestScene.h"
 #include "Scene.h"
 #include "PlatformSystem.h"
@@ -127,17 +126,6 @@ Engine::EngineCode TestScene::Init()
     // Create SDL Window
     window = PlatformSystem::GetInstance()->GetWindowHandle();
     pixelRenderer->window = window;
-
-    
-    // Specify Major version and minor version
-    // SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 3);
-    // SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 3);
-    glContext = SDL_GL_CreateContext(window);
-    SDL_GL_SetSwapInterval(0);
-    
-    gladLoadGLLoader(SDL_GL_GetProcAddress);
-
-    InitImGui();
 
 	//LevelBuilder::GetInstance()->LoadLevel(&pixelRenderer, "./Data/FirstLevel.json");
     /*
@@ -457,6 +445,7 @@ void TestScene::Update(float dt)
 			Emitter->Direction = Vector2(cosf(Angle), sinf(Angle));
         }
     }
+
     pixelRenderer->Update(dt);
 }
 
@@ -488,11 +477,7 @@ Engine::EngineCode TestScene::Exit()
     // Remember to clean up
     Inputs::GetInstance()->InputKeyClear();
     pixelRenderer->CleanRenderer();
-    ImGuiExit();
-    SDL_GL_DeleteContext(glContext);
-    //SDL_DestroyWindow(window);
-    //SDL_Quit();
-
+    
     logger.LogLine("Debug info: Bye-Bye! (testScene exit)");
 	return Engine::NothingBad;
 }
@@ -501,8 +486,6 @@ Engine::EngineCode TestScene::Unload()
 {
     delete TestSceneinstance;
     TestSceneinstance = nullptr;
-    //delete testEntity;
-    //delete jsonEntity;
 
     LevelBuilder::GetInstance()->FreeLevel();
 
@@ -520,20 +503,6 @@ Scene* TestSceneGetInstance(void)
 }
 
 /**********************************************************************/
-
-void TestScene::InitImGui()
-{
-    // Initialize ImGui
-    IMGUI_CHECKVERSION();
-    ImGui::CreateContext();
-    ImGuiIO& io = ImGui::GetIO();
-    io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;
-    io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;
-    ImGui::StyleColorsLight();
-    ImGui_ImplSDL2_InitForOpenGL(window, glContext);
-    ImGui_ImplOpenGL3_Init("#version 330");
-}
-
 void TestScene::ImGuiInterg()
 {
     ImGui_ImplOpenGL3_NewFrame();
@@ -620,11 +589,5 @@ void TestScene::ImGuiWindow()
 
         ImGui::End();
     }
-}
-void TestScene::ImGuiExit()
-{
-    ImGui_ImplOpenGL3_Shutdown();
-    ImGui_ImplSDL2_Shutdown();
-    ImGui::DestroyContext();
 }
 

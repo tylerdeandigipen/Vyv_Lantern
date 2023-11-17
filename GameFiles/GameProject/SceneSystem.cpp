@@ -174,6 +174,9 @@ void SceneSystem::ChangeScene()
 	{
 		activeScene->Exit();
 
+		// NOTE(thomas): Reset the pools for the active lasers and emitters once we change scenes
+		LaserSystem::GetInstance()->HandleSceneChange();
+
 		if (activeScene != nextScene || isRestarting)
 		{
 			activeScene->Unload();

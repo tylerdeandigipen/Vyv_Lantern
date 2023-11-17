@@ -82,17 +82,12 @@ Engine::EngineCode TbdTestScene::Init()
     TbdWindow = PlatformSystem::GetInstance()->GetWindowHandle();
     TbdPixelRenderer->window = TbdWindow;
 
-    TbdGlContext = SDL_GL_CreateContext(TbdWindow);
-    SDL_GL_SetSwapInterval(0);
-    gladLoadGLLoader(SDL_GL_GetProcAddress);
     FileIO::GetInstance()->ReadTileSet("./Data/TileMapSprites.json", TbdPixelRenderer);
     FileIO::GetInstance()->ReadTileSet("./Data/TileMapNormals.json", TbdPixelRenderer, 1);
     FileIO::GetInstance()->ReadTileSet("./Data/TileMapShadows.json", TbdPixelRenderer, 2);
     LevelBuilder::GetInstance()->LoadLevel(TbdPixelRenderer, "./TiledMichaelTest.json");
 
     FileIO::GetInstance()->ReadLight("./Data/TestLight.json", tempLight);
-
-    InitImGui();
 
     tempLight2.position.x = 200;
     tempLight2.position.y = 90;
@@ -347,9 +342,6 @@ Engine::EngineCode TbdTestScene::Exit()
     LevelBuilder::GetInstance()->FreeLevel();
     Inputs::GetInstance()->InputKeyClear();
     TbdPixelRenderer->CleanRenderer();
-    SDL_GL_DeleteContext(TbdGlContext);
-    //SDL_DestroyWindow(TbdWindow);
-    //SDL_Quit();
 	return Engine::NothingBad;
 }
 
@@ -371,20 +363,6 @@ Scene* TbdTestSceneGetInstance(void)
 }
 
 /**********************************************************************/
-
-void TbdTestScene::InitImGui()
-{
-    // Initialize ImGui
-    IMGUI_CHECKVERSION();
-    ImGui::CreateContext();
-    ImGuiIO& io = ImGui::GetIO();
-    io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;
-    io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;
-    ImGui::StyleColorsLight();
-    ImGui_ImplSDL2_InitForOpenGL(TbdWindow, TbdGlContext);
-    ImGui_ImplOpenGL3_Init("#version 330");
-}
-
 void TbdTestScene::ImGuiInterg()
 {
     ImGui_ImplOpenGL3_NewFrame();
@@ -490,10 +468,4 @@ void TbdTestScene::ImGuiWindow()
 
         ImGui::End();
     }
-}
-void TbdTestScene::ImGuiExit()
-{
-    ImGui_ImplOpenGL3_Shutdown();
-    ImGui_ImplSDL2_Shutdown();
-    ImGui::DestroyContext();
 }

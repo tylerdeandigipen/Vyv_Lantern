@@ -78,6 +78,8 @@ public:
 	void Update(float dt);
 	void Render();
 
+	void HandleSceneChange(void);
+
 	beam_path_iterator IterateEmitterPath(emitter_id Emitter);
 	
 	emitter_id CreateEmitter(void);
