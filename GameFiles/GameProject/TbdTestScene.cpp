@@ -133,9 +133,9 @@ Engine::EngineCode TbdTestScene::Init()
 
     TbdPixelRenderer->GenerateVornoiPoints();
 
-    AudioManager.PlayMusic("drips");
+  //  AudioManager.PlayMusic("drips");
     
-    AudioManager.PlayMusic("forest");
+  //  AudioManager.PlayMusic("forest");
 
     return Engine::NothingBad;
 }
