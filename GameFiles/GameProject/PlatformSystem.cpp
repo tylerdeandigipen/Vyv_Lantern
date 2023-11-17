@@ -16,8 +16,8 @@
 #include "BaseSystem.h"
 #include "PlatformSystem.h"
 
-#define SCREEN_SIZE_X (240 * 6)
-#define SCREEN_SIZE_Y (136 * 6)
+#define SCREEN_SIZE_X 240
+#define SCREEN_SIZE_Y 136
 
 // singleton instance
 PlatformSystem* PlatformSystem::instance = new PlatformSystem();
@@ -29,7 +29,7 @@ Engine::EngineCode PlatformSystem::Init()
     {
 	}
 
-    winHandle = SDL_CreateWindow("LanternGame", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, SCREEN_SIZE_X, SCREEN_SIZE_Y, SDL_WINDOW_OPENGL);
+    winHandle = SDL_CreateWindow("LanternGame", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, (SCREEN_SIZE_X * 6), (SCREEN_SIZE_Y * 6), SDL_WINDOW_OPENGL);
 
     if (!winHandle)
     {
