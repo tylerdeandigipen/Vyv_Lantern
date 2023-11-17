@@ -97,6 +97,7 @@ public:
 	void CalculateShadows();
 	void MakeVornoiNoiseBuffer();
 	void GenerateVornoiPoints();
+	Color BlendColors(Color a, Color b);
 	int faceState = 0;
 	float normalStrength = 0.5f;
 	//i hate this make it better later tho

@@ -897,7 +897,7 @@ void Renderer::RenderToOutbuffer()
     {
         for (int y = 0; y < ySize; ++y)
         {
-            if (renderWallHitboxes != true && renderNormalMap != true)
+            if (renderWallHitboxes != true)
             {
                 Color& DestPixel = outputBuffer->SampleColor(x, y);
                 if (y % 2 == 0 && doScanLines == true)
@@ -913,7 +913,11 @@ void Renderer::RenderToOutbuffer()
             if (renderNormalMap == true)
             {
                 Color& DestPixel = outputBuffer->SampleColor(x, y);
-                DestPixel = normalBufferPostCam->SampleColor(x, y);
+                Color& fogPixel = normalBufferPostCam->SampleColor(x, y);
+                if (DestPixel.a != 0 || fogPixel.a != 0)
+                {
+                    DestPixel = BlendColors(fogPixel, DestPixel);
+                }
             }
         }
     }
@@ -1267,7 +1271,7 @@ void Renderer::GenerateVornoiPoints()
 
 void Renderer::MakeVornoiNoiseBuffer()
 {
-    /*
+    
     normalBuffer->ClearImageBuffer();
     const int xSize = (int)inputBuffer->size.x;
     const int ySize = (int)inputBuffer->size.y;
@@ -1289,8 +1293,24 @@ void Renderer::MakeVornoiNoiseBuffer()
             }
             oldDist = 100 - oldDist;
             Color& DestPixel = normalBuffer->SampleColor(x, y);
-            DestPixel = Color{ (uint8_t)oldDist ,(uint8_t)oldDist ,(uint8_t)oldDist ,255 };
+            DestPixel = Color{ (uint8_t)oldDist ,(uint8_t)oldDist ,(uint8_t)oldDist , 240 };
         }
     }
-    */
+}
+
+Color Renderer::BlendColors(Color a, Color b)
+{
+    //its crude but it works somehow, kinda, not really
+    Color result;
+   // result = (b * (1 - (b.a / 255))) + (a * (1 - (a.a / 255)));
+    float P = 50;
+    if(b.r >= a.r)
+    {
+        result.r = (b.r - a.r) * (P * 0.01) + a.r;
+    }
+    else
+        result.r = (a.r - b.r) * ((100 - P) * 0.01) + b.r;
+
+//https://cplusplus.com/forum/beginner/3474/
+    return result;
 }

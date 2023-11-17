@@ -76,6 +76,7 @@ bool Color::operator !=(const Color& rhs)&
 	}
 	return false;
 }
+
 Color& Color::operator =(Color const& rhs)& {
 	r = rhs.r;
 	g = rhs.g;
