@@ -15,6 +15,7 @@
 #include "imgui_impl_sdl2.h"
 #include "imgui_impl_opengl3.h"
 #include "TestScene.h"
+#include "TbdTestScene.h"
 #include "Scene.h"
 #include "PlatformSystem.h"
 #include "Engine.h"
@@ -522,7 +523,7 @@ void TestScene::ImGuiWindow()
     if (TSshow_custom_window)
     {
         ImGui::Begin("custom window");
-        ImGui::Text("hey bbg how you doin ;)");
+        ImGui::Text("hey how you doin ;)");
 
         int numEntities = LevelBuilder::GetInstance()->CountEntities();
         ImGui::Text("Number of Entities: %d", numEntities);
@@ -570,6 +571,16 @@ void TestScene::ImGuiWindow()
             ImGui::BulletText("TileMapSprites.json");
             ImGui::BulletText("TileMapNormals.json");
             ImGui::TreePop();
+        }
+
+        if (ImGui::Button("Reset Scene"))
+        {
+            SceneSystem::GetInstance()->RestartScene();
+        }
+
+        if (ImGui::Button("Switch Scene"))
+        {
+            SceneSystem::GetInstance()->SetScene(TbdTestSceneGetInstance());
         }
 
         if (ImGui::Button("Toggle Metrics/Debug Bar"))

@@ -452,8 +452,7 @@ void TbdTestScene::ImGuiWindow()
 
         if (ImGui::Button("Switch Scene"))
         {
-            // this crashes :(
-            //SceneSystem::GetInstance()->SetScene(TestSceneGetInstance());
+            SceneSystem::GetInstance()->SetScene(TestSceneGetInstance());
         }
 
         if (show_metrics_debug_bar)
