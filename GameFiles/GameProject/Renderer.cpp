@@ -980,9 +980,8 @@ void Renderer::Update(float dt)
 
     RenderToOutbuffer();
 
-    //DebugBuffer->Blit(outputBuffer);
-    //DebugBuffer->ClearImageBuffer();
-
+    DebugBuffer->Blit(outputBuffer);
+    DebugBuffer->ClearImageBuffer();
 
     float AverageFrameLength = 0.0f;
 	for(uint32_t FrameIndex = 1; FrameIndex < _countof(PreviousFrameLengths); ++FrameIndex)
