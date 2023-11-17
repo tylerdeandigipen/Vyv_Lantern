@@ -79,10 +79,7 @@ Engine::EngineCode TbdTestScene::Init()
     Light tempLight2;
 
     // Create SDL Window
-    TbdWindow = SDL_CreateWindow("MAIN SCENE", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
-        TbdPixelRenderer->outputBuffer->BufferSizeX * TbdPixelRenderer->outputBuffer->screenScale,
-        TbdPixelRenderer->outputBuffer->BufferSizeY * TbdPixelRenderer->outputBuffer->screenScale,
-        SDL_WINDOW_OPENGL);
+    TbdWindow = PlatformSystem::GetInstance()->GetWindowHandle();
     TbdPixelRenderer->window = TbdWindow;
 
     TbdGlContext = SDL_GL_CreateContext(TbdWindow);
@@ -351,8 +348,8 @@ Engine::EngineCode TbdTestScene::Exit()
     Inputs::GetInstance()->InputKeyClear();
     TbdPixelRenderer->CleanRenderer();
     SDL_GL_DeleteContext(TbdGlContext);
-    SDL_DestroyWindow(TbdWindow);
-    SDL_Quit();
+    //SDL_DestroyWindow(TbdWindow);
+    //SDL_Quit();
 	return Engine::NothingBad;
 }
 

@@ -32,6 +32,9 @@ HINSTANCE hInst;                                // current instance
 WCHAR szTitle[MAX_LOADSTRING];                  // The title bar text
 WCHAR szWindowClass[MAX_LOADSTRING];            // the main window class name
 
+SDL_Window* mainWindow;
+SDL_GLContext mainGlContext;
+
 // Forward declarations of functions included in this code module:
 ATOM                MyRegisterClass(HINSTANCE hInstance);
 BOOL                InitInstance(HINSTANCE, int);
@@ -45,6 +48,9 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 {
     UNREFERENCED_PARAMETER(hPrevInstance);
     UNREFERENCED_PARAMETER(lpCmdLine);
+
+    mainWindow = SDL_CreateWindow("lantern game", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, SCREEN_SIZE_X, SCREEN_SIZE_Y, SDL_WINDOW_OPENGL);
+    mainGlContext = SDL_GL_CreateContext(mainWindow);
 
     Engine* engine = Engine::GetInstance();
 	engine->EngineAddSystem(LaserSystem::GetInstance());

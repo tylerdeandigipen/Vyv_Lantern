@@ -16,6 +16,9 @@
 #include "BaseSystem.h"
 #include "PlatformSystem.h"
 
+#define SCREEN_SIZE_X (240 * 6)
+#define SCREEN_SIZE_Y (136 * 6)
+
 // singleton instance
 PlatformSystem* PlatformSystem::instance = new PlatformSystem();
 
@@ -25,6 +28,14 @@ Engine::EngineCode PlatformSystem::Init()
 	if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_EVENTS) != 0) 
     {
 	}
+
+    winHandle = SDL_CreateWindow("LanternGame", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, SCREEN_SIZE_X, SCREEN_SIZE_Y, SDL_WINDOW_OPENGL);
+
+    if (!winHandle)
+    {
+        SDL_Quit();
+        return Engine::NullWindowHandle;
+    }
 
 	assert(winHandle != NULL);
     return Engine::NothingBad;
@@ -43,6 +54,8 @@ void PlatformSystem::Render()
 Engine::EngineCode PlatformSystem::Close()
 {
     assert(instance != NULL);
+    SDL_DestroyWindow(winHandle);
+    SDL_Quit();
     return Engine::NothingBad;
 }
 
@@ -55,13 +68,15 @@ PlatformSystem* PlatformSystem::GetInstance()
 void PlatformSystem::ChangeTitle(const char* title)
 {
     assert(title != NULL);
-    SetWindowTextA(winHandle, title);
+    SDL_SetWindowTitle(winHandle, title);
 }
 
-int PlatformSystem::GetHeight() { return windowHeight; }
-int PlatformSystem::GetWidth() { return windowWidth; }
+SDL_Window* PlatformSystem::GetWindowHandle()
+{
+    return winHandle;
+}
 
-PlatformSystem::PlatformSystem() : BaseSystem("PlatformSystem"), windowHeight(600), windowWidth(960), winHandle(NULL) {}
+PlatformSystem::PlatformSystem() : BaseSystem("PlatformSystem"), winHandle(NULL) {}
 PlatformSystem::~PlatformSystem()
 {
     if (instance)

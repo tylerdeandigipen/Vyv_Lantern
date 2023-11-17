@@ -125,10 +125,7 @@ Engine::EngineCode TestScene::Init()
     Color transparent(0, 0, 0, 0);
 
     // Create SDL Window
-    window = SDL_CreateWindow("MAIN SCENE", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
-                              (int)(pixelRenderer->outputBuffer->BufferSizeX * pixelRenderer->outputBuffer->screenScale),
-                              (int)(pixelRenderer->outputBuffer->BufferSizeY * pixelRenderer->outputBuffer->screenScale),
-                              SDL_WINDOW_OPENGL);
+    window = PlatformSystem::GetInstance()->GetWindowHandle();
     pixelRenderer->window = window;
 
     
@@ -493,8 +490,8 @@ Engine::EngineCode TestScene::Exit()
     pixelRenderer->CleanRenderer();
     ImGuiExit();
     SDL_GL_DeleteContext(glContext);
-    SDL_DestroyWindow(window);
-    SDL_Quit();
+    //SDL_DestroyWindow(window);
+    //SDL_Quit();
 
     logger.LogLine("Debug info: Bye-Bye! (testScene exit)");
 	return Engine::NothingBad;
