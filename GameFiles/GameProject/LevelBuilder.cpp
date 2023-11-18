@@ -113,8 +113,10 @@ void LevelBuilder::Render()
 
 Engine::EngineCode LevelBuilder::Close()
 {
-    if (instance)
+    if (instance != NULL)
+    {
         delete instance;
+    }
 	return Engine::NothingBad;
 }
 

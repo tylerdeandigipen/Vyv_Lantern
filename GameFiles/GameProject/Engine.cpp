@@ -31,7 +31,7 @@ Engine::EngineCode Engine::Start()
 		}
 		catch (EngineCode engineFailure) 
 		{
-			assert(engineFailure && "engine failed!");
+			assert(engineFailure && "Engine failed to initialize. Location: Engine::Start(), Init()");
 			return engineFailure;
 		}
 	}
@@ -47,7 +47,7 @@ Engine::EngineCode Engine::Start()
 		}
 		catch (EngineCode updateFailure)
 		{
-			assert(updateFailure && "update failed!");
+			assert(updateFailure && "Engine failed during update. Location: Engine::Start(), Update()");
 			return updateFailure;
 		}
 		if (code == CloseWindow)
@@ -59,7 +59,7 @@ Engine::EngineCode Engine::Start()
 		}
 		catch (EngineCode renderFailure)
 		{
-			assert(renderFailure && "render failed!");
+			assert(renderFailure && "Engine failed during render. Location: Engine::Start(), Render()");
 			return renderFailure;
 		}
 		if (code == CloseWindow)
@@ -76,7 +76,9 @@ Engine::EngineCode Engine::Stop()
 	{
 		ShutDown();
 	}
-	catch (EngineCode shutdown) {
+	catch (EngineCode shutdown) 
+	{
+		assert(shutdown, "Engine failed to shut down. Location: Engine::Stop(), ShutDown()");
 		return shutdown;
 	}
 
@@ -88,21 +90,37 @@ void Engine::EngineAddSystem(BaseSystem* sys)
 	systems[systemCount++] = sys;
 }
 
-bool Engine::Paused() { return paused; }
-void Engine::SetPause(bool pause) { paused = pause; }
+bool Engine::Paused() 
+{ 
+	return paused; 
+}
+
+void Engine::SetPause(bool pause) 
+{ 
+	paused = pause; 
+}
 
 // get the singleton instance
-Engine* Engine::GetInstance() { return instance; }
+Engine* Engine::GetInstance() 
+{ 
+	if (instance == nullptr)
+	{
+		instance = new Engine();
+	}
+	return instance;
+}
 
-Engine::Engine() : isRunning(true), systemCount(0), systems(), paused(false), time(NULL)
+Engine::Engine() : isRunning(true), systemCount(0), systems(), paused(false), time(NULL), closeRequested(false)
 {
 
 }
 
 Engine::~Engine()
 {
-	if (instance != 0)
+	if (instance != NULL)
+	{
 		delete instance;
+	}
 }
 
 Engine::EngineCode Engine::Update()
@@ -122,6 +140,7 @@ Engine::EngineCode Engine::Update()
 			case CloseWindow:
 				return updateFailure;
 			default:
+				assert(updateFailure && "Engine failed during system update. Location: Engine::Update()");
 				throw(updateFailure);
 			}
 		}

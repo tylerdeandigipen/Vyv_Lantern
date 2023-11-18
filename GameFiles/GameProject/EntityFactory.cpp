@@ -39,6 +39,10 @@ void EntityFactory::Render() { }
 
 EntityFactory* EntityFactory::GetInstance()
 {
+    if (instance == nullptr)
+    {
+        instance = new EntityFactory();
+    }
     return instance;
 }
 
@@ -55,8 +59,10 @@ Entity* EntityFactory::CreateEntity(std::string const& type, const std::string f
 
 Engine::EngineCode EntityFactory::Close()
 {
-    assert(instance != NULL);
-    delete instance;
+    if (instance != NULL)
+    {
+        delete instance;
+    }
     return Engine::NothingBad;
 }
 

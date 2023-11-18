@@ -37,11 +37,15 @@
 
 #define OneOver255 (1.0f / 255.0f)
 
-Renderer* Renderer::instance = new Renderer;
+Renderer* Renderer::instance = new Renderer();
 
 Renderer* Renderer::GetInstance()
 {
-    return Renderer::instance;
+    if (instance == nullptr)
+    {
+        instance = new Renderer();
+    }
+    return instance;
 }
 
 Vector2 Renderer::GetCameraPosition(void)
@@ -706,6 +710,11 @@ Renderer::~Renderer(void)
     delete[] blurLightB;
 
     glDeleteTextures(1, &OutputBufferTexture);
+
+    if (instance != NULL)
+    {
+        delete instance;
+    }
 }
 
 void Renderer::ReallocateLightArrays()
