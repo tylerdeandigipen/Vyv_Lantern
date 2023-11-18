@@ -14,7 +14,7 @@
 #define SCREEN_SIZE_X 240
 #define SCREEN_SIZE_Y 136
 #define MAX_TILES 80
-#define MAX_NUM_VORNOI_POINTS 10
+#define MAX_NUM_VORNOI_POINTS 20
 
 class Renderer
 {
@@ -35,6 +35,7 @@ public:
 
 
 	ImageBuffer* lightBuffer = NULL;
+	ImageBuffer* fogBuffer = NULL;
 	ImageBuffer* normalBuffer = NULL;
 	ImageBuffer* normalBufferPostCam = NULL;
 	Light lightSource[MAX_LIGHT_SOURCES];
@@ -51,8 +52,10 @@ public:
 	bool renderNormalMap = false;
 	bool renderOnlyLights = false;
 	bool renderWallHitboxes = false;
+	bool drawRawFog = false;
 	bool doBlur = true;
 	bool doScanLines = true;
+	bool doFog = true;
 	float scanLineOpacity = 0.935f;
 	static Renderer* GetInstance();
 
@@ -89,15 +92,18 @@ public:
 	// 0 = forward, 1 = down, 2 = up, 3 = blink
 	void UpdateFace(int& faceState_);
 	void CleanRenderer();
-	void DitherLights();
+	void DitherBuffer(ImageBuffer* input, ImageBuffer* output, bool useLightIntensity = false);
 	void RenderToOutbuffer();
 	void RenderMenu();
 	void ReallocateLightArrays();
 	void MakeMenu(const std::string filename);
 	void CalculateShadows();
-	void MakeVornoiNoiseBuffer();
+	void MakeVornoiNoiseBuffer(float brightnessModifier, float brightnessMultiplier, float minBrightness);
 	void GenerateVornoiPoints();
-	Color BlendColors(Color a, Color b);
+	Color BlendColors(Color top, Color bottom, float p);
+	void BlurBuffer(ImageBuffer* buffer);
+	void FloorBrightness(ImageBuffer* buffer, float floor);
+	void UpdateVornoiPoints();
 	int faceState = 0;
 	float normalStrength = 0.5f;
 	//i hate this make it better later tho

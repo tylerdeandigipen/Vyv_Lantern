@@ -39,6 +39,206 @@
 
 Renderer* Renderer::instance = new Renderer();
 
+Renderer::Renderer() : objects{ NULL }
+{
+    outputBuffer = new ImageBuffer{ SCREEN_SIZE_X ,SCREEN_SIZE_Y };
+    inputBuffer = new ImageBuffer{ SCREEN_SIZE_X ,SCREEN_SIZE_Y };
+    normalBufferPostCam = new ImageBuffer{ SCREEN_SIZE_X ,SCREEN_SIZE_Y };
+    lightBuffer = new ImageBuffer{ SCREEN_SIZE_X ,SCREEN_SIZE_Y };
+    shadowCasterBuffer = new ImageBuffer{ SCREEN_SIZE_X ,SCREEN_SIZE_Y };
+    fogBuffer = new ImageBuffer{ SCREEN_SIZE_X ,SCREEN_SIZE_Y };
+    particleManager = new ParticleManager;
+    faceIndex = -1;
+    faceState = 0;
+    outputBuffer->screenScale = screenScale;
+
+    for (int i = 0; i < 15; ++i)
+    {
+        PreviousFrameLengths[i] = 0;
+    }
+
+    for (int i = 0; i < MAX_OBJECTS; ++i)
+    {
+        objects[i] = NULL;
+    }
+
+    for (int i = 0; i < MAX_ANIMATED_OBJECTS; ++i)
+    {
+        for (int j = 0; j < MAX_ANIMATION_FRAMES; ++j)
+        {
+            animatedObjects[i][j] = NULL;
+        }
+    }
+
+    for (int i = 0; i < MAX_TILES; ++i)
+    {
+        tileSet[i] = NULL;
+        normalTileSet[i] = NULL;
+        shadowCasterTileset[i] = NULL;
+    }
+
+    //i hate this fix later
+    ReallocateLightArrays();
+
+    startTime = SDL_GetTicks();
+    PreviousFrameBeginTime = startTime;
+
+}
+
+Renderer::~Renderer(void)
+{
+    CleanRenderer();
+    delete outputBuffer;
+    delete inputBuffer;
+    delete objectLayer;
+    delete backgroundLayer;
+    delete foregroundLayer;
+    delete normalBuffer;
+    delete normalBufferPostCam;
+    delete DebugBuffer;
+    delete lightBuffer;
+    delete fogBuffer;
+    delete particleManager;
+
+    if (menuBuffer != NULL)
+    {
+        delete menuBuffer;
+    }
+
+    //Free indexes
+    for (int x = 0; x < SCREEN_SIZE_X; ++x) {
+        delete[] lightR[x];
+        delete[] lightG[x];
+        delete[] lightB[x];
+        delete[] blurLightR[x];
+        delete[] blurLightG[x];
+        delete[] blurLightB[x];
+    }
+
+    //Free main array
+    delete[] lightR;
+    delete[] lightG;
+    delete[] lightB;
+    delete[] blurLightR;
+    delete[] blurLightG;
+    delete[] blurLightB;
+
+    glDeleteTextures(1, &OutputBufferTexture);
+}
+
+void Renderer::CleanRenderer()
+{
+    outputBuffer->ClearImageBuffer();
+    inputBuffer->ClearImageBuffer();
+    objectLayer->ClearImageBuffer();
+    backgroundLayer->ClearImageBuffer();
+    foregroundLayer->ClearImageBuffer();
+    normalBuffer->ClearImageBuffer();
+    normalBufferPostCam->ClearImageBuffer();
+    DebugBuffer->ClearImageBuffer();
+    lightBuffer->ClearImageBuffer();
+    fogBuffer->ClearImageBuffer();
+
+    if (menuBuffer != NULL)
+    {
+        delete menuBuffer;
+        menuBuffer = NULL;
+    }
+
+    particleManager->ClearParticles();
+    ReallocateLightArrays();
+    ClearTilesets();
+    //ClearSprites();
+    //ClearLights();
+
+    faceIndex = -1;
+    numTiles = 0;
+    numNormalTiles = 0;
+    numObjects = 0;
+    numAnimatedObjects = 0;
+    numLights = 0;
+    frameCount = 0;
+    timer = 0;
+    CameraP = Vector2{ 0,0 };
+}
+
+void Renderer::ClearLights()
+{
+    delete[] lightSource;
+}
+
+void Renderer::ClearSprites()
+{
+    for (int i = 0; i < numObjects; ++i)
+    {
+        if (objects[i] != NULL)
+        {
+            delete objects[i];
+            objects[i] = NULL;
+        }
+    }
+    numObjects = 0;
+    for (int i = 0; i < numAnimatedObjects; ++i)
+    {
+        if (objects[i] != NULL)
+        {
+            for (int f = 0; f < MAX_ANIMATION_FRAMES; ++f)
+            {
+                delete animatedObjects[i][f];
+                animatedObjects[i][f] = NULL;
+            }
+        }
+    }
+    numAnimatedObjects = 0;
+    faceIndex = -1;
+}
+
+void Renderer::ReallocateLightArrays()
+{
+    if (lightR != NULL)
+    {
+        //Free indexes
+        for (int x = 0; x < SCREEN_SIZE_X; ++x) {
+            delete[] lightR[x];
+            delete[] lightG[x];
+            delete[] lightB[x];
+            delete[] blurLightR[x];
+            delete[] blurLightG[x];
+            delete[] blurLightB[x];
+        }
+
+        //Free main array
+        delete[] lightR;
+        delete[] lightG;
+        delete[] lightB;
+        delete[] blurLightR;
+        delete[] blurLightG;
+        delete[] blurLightB;
+    }
+
+    lightR = new float* [SCREEN_SIZE_X];
+    lightG = new float* [SCREEN_SIZE_X];
+    lightB = new float* [SCREEN_SIZE_X];
+
+    for (int x = 0; x < SCREEN_SIZE_X; ++x)
+    {
+        lightR[x] = new float[SCREEN_SIZE_Y];
+        lightG[x] = new float[SCREEN_SIZE_Y];
+        lightB[x] = new float[SCREEN_SIZE_Y];
+    }
+
+    blurLightR = new float* [SCREEN_SIZE_X];
+    blurLightG = new float* [SCREEN_SIZE_X];
+    blurLightB = new float* [SCREEN_SIZE_X];
+
+    for (int x = 0; x < SCREEN_SIZE_X; ++x)
+    {
+        blurLightR[x] = new float[SCREEN_SIZE_Y];
+        blurLightG[x] = new float[SCREEN_SIZE_Y];
+        blurLightB[x] = new float[SCREEN_SIZE_Y];
+    }
+}
+
 Renderer* Renderer::GetInstance()
 {
     if (instance == nullptr)
@@ -91,41 +291,43 @@ void Renderer::RenderLightingPass()
     float IntensityR = 0.0f;
     float IntensityG = 0.0f;
     float IntensityB = 0.0f;
-
-    #pragma omp parallel for collapse(3) private(lightMultiplier, IntensityR, IntensityG, IntensityB)
-	for (int x = 0; x < xSize; ++x)
+    #pragma omp parallel
     {
-        for (int y = 0; y < ySize; ++y)
+        #pragma omp for collapse(3) nowait private(lightMultiplier, IntensityR, IntensityG, IntensityB)
+        for (int x = 0; x < xSize; ++x)
         {
-			IntensityR = 0.0f;
-			IntensityG = 0.0f;
-			IntensityB = 0.0f;
-
-            for (int i = 0; i < numLights; ++i)
+            for (int y = 0; y < ySize; ++y)
             {
-                if (CalculateIfPixelIsLit(x, y, i) == true)
+                IntensityR = 0.0f;
+                IntensityG = 0.0f;
+                IntensityB = 0.0f;
+
+                for (int i = 0; i < numLights; ++i)
                 {
-                    Light* LightSource = lightSource + i;
-                    float lightMultiplier = FindPixelLuminosity((float)x, (float)y, LightSource);
-
-                    if (lightMultiplier != 0)
+                    if (CalculateIfPixelIsLit(x, y, i) == true)
                     {
-                        float R_F32 = ((float)LightSource->color.GetRed()) * OneOver255;
-                        float G_F32 = ((float)LightSource->color.GetGreen()) * OneOver255;
-                        float B_F32 = ((float)LightSource->color.GetBlue()) * OneOver255;
-                        lightMultiplier *= LightSource->volumetricIntensity;
+                        Light* LightSource = lightSource + i;
+                        float lightMultiplier = FindPixelLuminosity((float)x, (float)y, LightSource);
 
-                        IntensityR += (lightMultiplier * R_F32);
-                        IntensityG += (lightMultiplier * G_F32);
-                        IntensityB += (lightMultiplier * B_F32);
+                        if (lightMultiplier != 0)
+                        {
+                            float R_F32 = ((float)LightSource->color.GetRed()) * OneOver255;
+                            float G_F32 = ((float)LightSource->color.GetGreen()) * OneOver255;
+                            float B_F32 = ((float)LightSource->color.GetBlue()) * OneOver255;
+                            lightMultiplier *= LightSource->volumetricIntensity;
+
+                            IntensityR += (lightMultiplier * R_F32);
+                            IntensityG += (lightMultiplier * G_F32);
+                            IntensityB += (lightMultiplier * B_F32);
+                        }
                     }
                 }
-            }
 
-            lightR[x][y] = IntensityR;
-            lightG[x][y] = IntensityG;
-            lightB[x][y] = IntensityB;
-		}
+                lightR[x][y] = IntensityR;
+                lightG[x][y] = IntensityG;
+                lightB[x][y] = IntensityB;
+            }
+        }
     }
 #else
 	inputBuffer->Blit(outputBuffer);
@@ -563,207 +765,6 @@ ImageBuffer* Renderer::CreateAnimatedObject(const std::string filename, Vector2 
 	return(Result);
 }
 
-Renderer::Renderer() : objects{ NULL }
-{
-    outputBuffer = new ImageBuffer{ SCREEN_SIZE_X ,SCREEN_SIZE_Y };
-    inputBuffer = new ImageBuffer{ SCREEN_SIZE_X ,SCREEN_SIZE_Y };
-    normalBufferPostCam = new ImageBuffer{ SCREEN_SIZE_X ,SCREEN_SIZE_Y };
-    lightBuffer = new ImageBuffer{ SCREEN_SIZE_X ,SCREEN_SIZE_Y };
-    shadowCasterBuffer = new ImageBuffer{ SCREEN_SIZE_X ,SCREEN_SIZE_Y };
-    particleManager = new ParticleManager;
-    faceIndex = -1;
-    faceState = 0;
-    outputBuffer->screenScale = screenScale;
-
-    for (int i = 0; i < 15; ++i)
-    {
-        PreviousFrameLengths[i] = 0;
-    }
-    
-    for (int i = 0; i < MAX_OBJECTS; ++i)
-    {
-        objects[i] = NULL;
-    }
-
-    for (int i = 0; i < MAX_ANIMATED_OBJECTS; ++i)
-    {
-        for (int j = 0; j < MAX_ANIMATION_FRAMES; ++j)
-        {
-            animatedObjects[i][j] = NULL;
-        }
-    }
-
-    for (int i = 0; i < MAX_TILES; ++i)
-    {
-        tileSet[i] = NULL;
-        normalTileSet[i] = NULL;
-        shadowCasterTileset[i] = NULL;
-    }
-
-    //i hate this fix later
-    ReallocateLightArrays();
-
-    startTime = SDL_GetTicks();
-    PreviousFrameBeginTime = startTime;
-
-}
-
-void Renderer::CleanRenderer()
-{
-    outputBuffer->ClearImageBuffer();
-    inputBuffer->ClearImageBuffer();
-    objectLayer->ClearImageBuffer();
-    backgroundLayer->ClearImageBuffer();
-    foregroundLayer->ClearImageBuffer();
-    normalBuffer->ClearImageBuffer();
-    normalBufferPostCam->ClearImageBuffer();
-    DebugBuffer->ClearImageBuffer();
-    lightBuffer->ClearImageBuffer();
-    if (menuBuffer != NULL)
-    {
-        delete menuBuffer;
-        menuBuffer = NULL;
-    }
-
-    particleManager->ClearParticles();
-    ReallocateLightArrays();
-    ClearTilesets();
-    //ClearSprites();
-    //ClearLights();
-
-    faceIndex = -1;
-    numTiles = 0;
-    numNormalTiles = 0;
-    numObjects = 0;
-    numAnimatedObjects = 0;
-    numLights = 0;
-    frameCount = 0;
-    timer = 0;
-    CameraP = Vector2{ 0,0 };
-}
-
-void Renderer::ClearLights()
-{
-   delete[] lightSource;
-}
-
-void Renderer::ClearSprites()
-{
-    for (int i = 0; i < numObjects; ++i)
-    {
-        if (objects[i] != NULL)
-        {
-            delete objects[i];
-            objects[i] = NULL;
-        }
-    }
-    numObjects = 0;
-    for (int i = 0; i < numAnimatedObjects; ++i)
-    {
-        if (objects[i] != NULL)
-        {
-            for (int f = 0; f < MAX_ANIMATION_FRAMES; ++f)
-            {
-                delete animatedObjects[i][f];
-                animatedObjects[i][f] = NULL;
-            }
-        }
-    }
-    numAnimatedObjects = 0;
-    faceIndex = -1;
-}
-
-Renderer::~Renderer(void)
-{
-    CleanRenderer();
-    delete outputBuffer;
-    delete inputBuffer;
-    delete objectLayer;
-    delete backgroundLayer;
-    delete foregroundLayer;
-    delete normalBuffer;
-    delete normalBufferPostCam;
-    delete DebugBuffer;
-    delete lightBuffer;
-    delete particleManager;
-    if (menuBuffer != NULL)
-    {
-        delete menuBuffer;
-    }
-
-    //Free indexes
-    for (int x = 0; x < SCREEN_SIZE_X; ++x) {
-        delete[] lightR[x];
-        delete[] lightG[x];
-        delete[] lightB[x];
-        delete[] blurLightR[x];
-        delete[] blurLightG[x];
-        delete[] blurLightB[x];
-    }
-
-    //Free main array
-    delete[] lightR;
-    delete[] lightG;
-    delete[] lightB;
-    delete[] blurLightR;
-    delete[] blurLightG;
-    delete[] blurLightB;
-
-    glDeleteTextures(1, &OutputBufferTexture);
-
-    if (instance != NULL)
-    {
-        delete instance;
-    }
-}
-
-void Renderer::ReallocateLightArrays()
-{
-    if (lightR != NULL)
-    {
-        //Free indexes
-        for (int x = 0; x < SCREEN_SIZE_X; ++x) {
-            delete[] lightR[x];
-            delete[] lightG[x];
-            delete[] lightB[x];
-            delete[] blurLightR[x];
-            delete[] blurLightG[x];
-            delete[] blurLightB[x];
-        }
-
-        //Free main array
-        delete[] lightR;
-        delete[] lightG;
-        delete[] lightB;
-        delete[] blurLightR;
-        delete[] blurLightG;
-        delete[] blurLightB;
-    }
-
-    lightR = new float* [SCREEN_SIZE_X];
-    lightG = new float* [SCREEN_SIZE_X];
-    lightB = new float* [SCREEN_SIZE_X];
-
-    for (int x = 0; x < SCREEN_SIZE_X; ++x)
-    {
-        lightR[x] = new float[SCREEN_SIZE_Y];
-        lightG[x] = new float[SCREEN_SIZE_Y];
-        lightB[x] = new float[SCREEN_SIZE_Y];
-    }
-
-    blurLightR = new float* [SCREEN_SIZE_X];
-    blurLightG = new float* [SCREEN_SIZE_X];
-    blurLightB = new float* [SCREEN_SIZE_X];
-
-    for (int x = 0; x < SCREEN_SIZE_X; ++x)
-    {
-        blurLightR[x] = new float[SCREEN_SIZE_Y];
-        blurLightG[x] = new float[SCREEN_SIZE_Y];
-        blurLightB[x] = new float[SCREEN_SIZE_Y];
-    }
-}
-
-
 void Renderer::DrawLine(Vector2 P0, Vector2 P1, const Color &LineColor)
 {
     P0 -= CameraP;
@@ -824,7 +825,7 @@ const	int BAYER_PATTERN_8X8[8][8] = {	//	8x8 Bayer Dithering Matrix. Color level
 };
 int bayerSize = 8;
 
-void Renderer::DitherLights()
+void Renderer::DitherBuffer(ImageBuffer* input, ImageBuffer* output, bool useLightIntensity)
 {
     if (isFullBright == true)
     {
@@ -850,17 +851,16 @@ void Renderer::DitherLights()
     {
         for (int y = 0; y < ySize; ++y)
         {
-            Color& DestPixel = inputBuffer->SampleColor(x, y);
-            Color scaledWhite{ 255,255,255,255 };
-            if (inputBuffer->SampleColor(x, y) == black)
+            Color& SourcePixel = input->SampleColor(x, y);
+            Color tempColor = SourcePixel;
+            if (useLightIntensity == true)
             {
-                scaledWhite = black;
+                Color white{ 255,255,255,255 };
+                tempColor = white.ScaleIndividual(lightR[x][y], lightG[x][y], lightB[x][y]);
             }
-            scaledWhite = scaledWhite.ScaleIndividual(lightR[x][y], lightG[x][y], lightB[x][y]);
-
-            red = scaledWhite.GetRed();
-            green = scaledWhite.GetGreen();
-            blue = scaledWhite.GetBlue();
+            red = tempColor.GetRed();
+            green = tempColor.GetGreen();
+            blue = tempColor.GetBlue();
 
             bayerNum = BAYER_PATTERN_8X8[x % bayerSize][y % bayerSize];
             corr = (int)((bayerNum / 7) - 2);	//	 -2 because: 256/7=36  36*7=252  256-252=4   4/2=2 - correction -2
@@ -874,6 +874,7 @@ void Renderer::DitherLights()
             clamp((float)i3, 0, 7);
 
 
+            Color& DestPixel = output->SampleColor(x, y);
             //force glowing eyes, maybe make an emisive mask later
             if (renderOnlyLights == false)
             {
@@ -883,14 +884,13 @@ void Renderer::DitherLights()
                 }
                 else
                 {
-                     DestPixel = DestPixel.ScaleIndividual(((float)i1 / 7), ((float)i1 / 7), ((float)i1 / 7));
+                     DestPixel = SourcePixel.ScaleIndividual(((float)i1 / 7), ((float)i1 / 7), ((float)i1 / 7));
                 }
             }
             else
             {
-                //DestPixel = Color{ (uint8_t)(i1 * 36), (uint8_t)(i2 * 36), (uint8_t)(i3 * 36), 255 };
-                DestPixel = scaledWhite;
-
+                Color white{ 255,255,255,255 };
+                DestPixel = white.ScaleIndividual(((float)i1 / 7), ((float)i1 / 7), ((float)i1 / 7));
             }
         }
     }
@@ -899,16 +899,17 @@ void Renderer::DitherLights()
 
 void Renderer::RenderToOutbuffer()
 {
+    Color black{ 0,0,0,255 };
     const int xSize = (int)inputBuffer->size.x;
     const int ySize = (int)inputBuffer->size.y;
-    #pragma omp parallel for collapse(2)
+    #pragma omp parallel for collapse(2) shared(black)
     for (int x = 0; x < xSize; ++x)
     {
         for (int y = 0; y < ySize; ++y)
         {
-            if (renderWallHitboxes != true)
+            Color& DestPixel = outputBuffer->SampleColor(x, y);
+            if (renderWallHitboxes != true && drawRawFog != true)
             {
-                Color& DestPixel = outputBuffer->SampleColor(x, y);
                 if (y % 2 == 0 && doScanLines == true)
                 {
                     DestPixel = (inputBuffer->SampleColor(x, y) * scanLineOpacity);
@@ -918,15 +919,21 @@ void Renderer::RenderToOutbuffer()
                     DestPixel = inputBuffer->SampleColor(x, y);
                 }
             }
-
+            if (doFog == true)
+            {
+                Color temp = fogBuffer->SampleColor(x, y);
+                if (temp != black && DestPixel != black)
+                {
+                    DestPixel = BlendColors(DestPixel, temp, 50);
+                }
+            }
             if (renderNormalMap == true)
             {
-                Color& DestPixel = outputBuffer->SampleColor(x, y);
-                Color& fogPixel = normalBufferPostCam->SampleColor(x, y);
-                if (DestPixel.a != 0 || fogPixel.a != 0)
-                {
-                    DestPixel = BlendColors(fogPixel, DestPixel);
-                }
+                DestPixel = normalBufferPostCam->SampleColor(x, y);
+            }
+            if (drawRawFog == true)
+            {
+                DestPixel = fogBuffer->SampleColor(x, y);
             }
         }
     }
@@ -983,13 +990,18 @@ void Renderer::Update(float dt)
     UpdateObjects();
     RenderLightingPass();
     BlurLights();
-    DitherLights();
-
-    MakeVornoiNoiseBuffer();
-
+    DitherBuffer(inputBuffer, inputBuffer, true);
+    if (doFog == true)
+    {
+        UpdateVornoiPoints();
+        MakeVornoiNoiseBuffer(200, 1, 70);
+        BlurBuffer(fogBuffer);
+        FloorBrightness(fogBuffer, 150);
+        DitherBuffer(fogBuffer, fogBuffer);
+    }
     RenderToOutbuffer();
 
-    DebugBuffer->Blit(outputBuffer);
+    DebugBuffer->Blit(outputBuffer, -GetCameraPosition().x, -GetCameraPosition().y);
     DebugBuffer->ClearImageBuffer();
 
     float AverageFrameLength = 0.0f;
@@ -1082,8 +1094,6 @@ int Renderer::returnObjCnt()
     }
     return countObjects;
 }
-
-// clear objects was here but may no longer be needed //
 
 void Renderer::ClearTilesets()
 {
@@ -1277,48 +1287,156 @@ void Renderer::GenerateVornoiPoints()
     }
 }
 
-void Renderer::MakeVornoiNoiseBuffer()
+void Renderer::UpdateVornoiPoints()
 {
-    
-    normalBuffer->ClearImageBuffer();
-    const int xSize = (int)inputBuffer->size.x;
-    const int ySize = (int)inputBuffer->size.y;
-
-
-    #pragma omp parallel for collapse(3)
-    for (int x = 0; x < xSize; ++x)
+    for (int i = 0; i < MAX_NUM_VORNOI_POINTS; ++i)
     {
-        for (int y = 0; y < ySize; ++y)
+        if (vornoiPoints[i].x < SCREEN_SIZE_X + 15 && vornoiPoints[i].y < SCREEN_SIZE_Y + 15 && vornoiPoints[i].x > 0 - 15 && vornoiPoints[i].y > 0 - 15)
         {
-            float oldDist = 9999;
-            for (int i = 0; i < MAX_NUM_VORNOI_POINTS; ++i)
-            {
-                float tempDist = distance(vornoiPoints[i].x, vornoiPoints[i].y, x, y);
-                if (oldDist > tempDist)
-                {
-                    oldDist = tempDist;
-                }
-            }
-            oldDist = 100 - oldDist;
-            Color& DestPixel = normalBuffer->SampleColor(x, y);
-            DestPixel = Color{ (uint8_t)oldDist ,(uint8_t)oldDist ,(uint8_t)oldDist , 240 };
+            vornoiPoints[i] += {-1.08, -.02};
+        }
+        else
+        {
+            vornoiPoints[i].x = SCREEN_SIZE_X + 9;
+            vornoiPoints[i].y = (float)(rand() % (int)SCREEN_SIZE_Y);
         }
     }
 }
 
-Color Renderer::BlendColors(Color a, Color b)
+void Renderer::MakeVornoiNoiseBuffer(float falloffModifier, float brightnessMultiplier, float minBrightness)
 {
-    //its crude but it works somehow, kinda, not really
-    Color result;
-   // result = (b * (1 - (b.a / 255))) + (a * (1 - (a.a / 255)));
-    float P = 50;
-    if(b.r >= a.r)
+    fogBuffer->ClearImageBuffer();
+    const int xSize = (int)inputBuffer->size.x;
+    const int ySize = (int)inputBuffer->size.y;
+    Vector2 camPos = GetCameraPosition();
+    #pragma omp parallel
     {
-        result.r = (b.r - a.r) * (P * 0.01) + a.r;
+        #pragma omp for nowait collapse(3)
+        for (int x = 0; x < xSize; ++x)
+        {
+            for (int y = 0; y < ySize; ++y)
+            {
+                Color& checkLight = inputBuffer->SampleColor(x, y);
+                if (checkLight.r != 0 || checkLight.g != 0 || checkLight.b != 0)
+                {
+                    float oldDist = 9999;
+                    for (int i = 0; i < MAX_NUM_VORNOI_POINTS; ++i)
+                    {
+                        float tempDist = distanceSquared(vornoiPoints[i].x - camPos.x, vornoiPoints[i].y - camPos.y, x, y);
+                        if (oldDist > tempDist)
+                        {
+                            oldDist = tempDist;
+                        }
+                    }
+                    oldDist = clamp((100 - oldDist) + falloffModifier, 0, 255);
+
+                    Color& DestPixel = fogBuffer->SampleColor(x, y);
+                    if (oldDist != 0)
+                    {
+                        float finalColor = (float)((oldDist * brightnessMultiplier) + minBrightness);
+                        finalColor = clamp(finalColor,0,255);
+                        DestPixel = Color{(uint8_t)finalColor, (uint8_t)finalColor, (uint8_t)finalColor, 255 };
+                    }
+                    else
+                    {
+                        DestPixel = Color{ 0, 0, 0, 0 };
+                    }
+                }
+            }
+        }
+    }
+}
+
+Color Renderer::BlendColors(Color top, Color bottom, float blendPercent)
+{
+    Color result;
+    if(bottom.r >= top.r)
+    {
+        result.r = (bottom.r - top.r) * (blendPercent * 0.01) + top.r;
     }
     else
-        result.r = (a.r - b.r) * ((100 - P) * 0.01) + b.r;
+        result.r = (top.r - bottom.r) * ((100 - blendPercent) * 0.01) + bottom.r;
+    if (bottom.g >= top.g)
+    {
+        result.g = (bottom.g - top.g) * (blendPercent * 0.01) + top.g;
+    }
+    else
+        result.g = (top.g - bottom.g) * ((100 - blendPercent) * 0.01) + bottom.g;
+    if (bottom.b >= top.b)
+    {
+        result.b = (bottom.b - top.b) * (blendPercent * 0.01) + top.b;
+    }
+    else
+        result.b = (top.b - bottom.b) * ((100 - blendPercent) * 0.01) + bottom.b;
 
-//https://cplusplus.com/forum/beginner/3474/
     return result;
+}
+
+void Renderer::FloorBrightness(ImageBuffer* buffer, float floor)
+{
+    Color clear{ 0, 0, 0, 0 };
+    const int xSize = (int)inputBuffer->size.x;
+    const int ySize = (int)inputBuffer->size.y;
+#pragma omp parallel for collapse(2) shared(clear)
+    for (int x = 0; x < xSize; ++x)
+    {
+        for (int y = 0; y < ySize; ++y)
+        {
+            Color& DestPixel = buffer->SampleColor(x, y);
+            if ((DestPixel.r + DestPixel.g + DestPixel.b) <= (floor * 3))
+            {
+                DestPixel = clear;
+            }
+        }
+    }
+}
+
+int imageBlurRangeHigh = 5;
+int imageBlurRangelow = -4;
+void Renderer::BlurBuffer(ImageBuffer* buffer)
+{
+    if (doBlur == true)
+    {
+        const int xSize = (int)inputBuffer->size.x;
+        const int ySize = (int)inputBuffer->size.y;
+
+        ImageBuffer* tempBuffer = new ImageBuffer{ *buffer };
+        int count;
+        #pragma omp parallel for collapse(2) private(count)
+        for (int x = 0; x < xSize; ++x)
+        {
+            for (int y = 0; y < ySize; ++y)
+            {
+                Color& dest = buffer->SampleColor(x, y);
+                if (dest.a != 0)
+                {
+                    float r = 0;
+                    float g = 0;
+                    float b = 0;
+
+                    count = 0;
+                    for (int w = imageBlurRangelow; w < imageBlurRangeHigh; ++w)
+                    {
+                        for (int h = imageBlurRangelow; h < imageBlurRangeHigh; ++h)
+                        {
+                            if (x + w < SCREEN_SIZE_X && y + h < SCREEN_SIZE_Y && x + w >= 0 && y + h >= 0)
+                            {
+                                Color temp = tempBuffer->SampleColor(x + w, y + h);
+
+                                r += temp.r;
+                                g += temp.g;
+                                b += temp.b;
+                                count += 1;
+                            }
+                        }
+                    }
+                    r /= count;
+                    g /= count;
+                    b /= count;
+                    dest = Color{ (uint8_t)r,(uint8_t)g,(uint8_t)b,(uint8_t)255 };
+                }
+            }
+        }
+        delete tempBuffer;
+    }
 }

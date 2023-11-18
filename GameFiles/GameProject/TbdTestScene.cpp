@@ -142,6 +142,9 @@ bool TbdCanToggleOnlyLights = true;
 bool CanPause = true;
 bool canToggleScanLines = true;
 bool TbdCanRenderWallHitboxes = true;
+bool canRenderRawFog = true;
+bool canToggleFog = true;
+
 void TbdPlayerMovement(float dt)
 {
     Inputs* inputHandler = Inputs::GetInstance();
@@ -274,6 +277,32 @@ void TbdPlayerMovement(float dt)
     if (!inputHandler->keyPressed(SDL_SCANCODE_F))
     {
         canToggleScanLines = 1;
+    }
+    
+    if (inputHandler->keyPressed(SDL_SCANCODE_H) && canRenderRawFog == 1)
+    {
+        if (TbdPixelRenderer->drawRawFog == false)
+            TbdPixelRenderer->drawRawFog = true;
+        else
+            TbdPixelRenderer->drawRawFog = false;
+        canRenderRawFog = 0;
+    }
+    if (!inputHandler->keyPressed(SDL_SCANCODE_H))
+    {
+        canRenderRawFog = 1;
+    }
+
+    if (inputHandler->keyPressed(SDL_SCANCODE_G) && canToggleFog == 1)
+    {
+        if (TbdPixelRenderer->doFog == false)
+            TbdPixelRenderer->doFog = true;
+        else
+            TbdPixelRenderer->doFog = false;
+        canToggleFog = 0;
+    }
+    if (!inputHandler->keyPressed(SDL_SCANCODE_G))
+    {
+        canToggleFog = 1;
     }
 
     if (inputHandler->keyPressed(SDL_SCANCODE_TAB))
