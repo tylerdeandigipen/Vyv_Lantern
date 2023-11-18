@@ -924,7 +924,7 @@ void Renderer::RenderToOutbuffer()
                 Color temp = fogBuffer->SampleColor(x, y);
                 if (temp != black && DestPixel != black)
                 {
-                    DestPixel = BlendColors(DestPixel, temp, 50);
+                    DestPixel = BlendColors(DestPixel, temp, 10);
                 }
             }
             if (renderNormalMap == true)
@@ -1293,7 +1293,7 @@ void Renderer::UpdateVornoiPoints()
     {
         if (vornoiPoints[i].x < SCREEN_SIZE_X + 15 && vornoiPoints[i].y < SCREEN_SIZE_Y + 15 && vornoiPoints[i].x > 0 - 15 && vornoiPoints[i].y > 0 - 15)
         {
-            vornoiPoints[i] += {-1.08, -.02};
+            vornoiPoints[i] += {-.08, -.02};
         }
         else
         {
@@ -1377,7 +1377,7 @@ void Renderer::FloorBrightness(ImageBuffer* buffer, float floor)
     Color clear{ 0, 0, 0, 0 };
     const int xSize = (int)inputBuffer->size.x;
     const int ySize = (int)inputBuffer->size.y;
-#pragma omp parallel for collapse(2) shared(clear)
+    #pragma omp parallel for collapse(2) shared(clear)
     for (int x = 0; x < xSize; ++x)
     {
         for (int y = 0; y < ySize; ++y)

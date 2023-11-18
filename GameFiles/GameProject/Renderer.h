@@ -55,7 +55,7 @@ public:
 	bool drawRawFog = false;
 	bool doBlur = true;
 	bool doScanLines = true;
-	bool doFog = true;
+	bool doFog = false;
 	float scanLineOpacity = 0.935f;
 	static Renderer* GetInstance();
 
