@@ -9,9 +9,13 @@
 #include "Maths/Vector.h"
 #include "AudioEngine.h"
 #include "Collision.h"
+#include <cassert>
+#include <cmath>
+#include <iostream>
 
 int BehaviorSwitch::count = 0;
-int BehaviorSwitch::maxCount = 3;
+int BehaviorSwitch::maxCount = 4;
+std::vector<gfxVector2> BehaviorSwitch::pos;
 
 
 BehaviorSwitch::BehaviorSwitch() : Behavior(Behavior::Switch)
@@ -72,6 +76,25 @@ void BehaviorSwitch::Read(json jsonData)
 {
     Init();
     /*What values to load into the switches here*/
+    for (auto& positions : jsonData["pos"])
+    {
+        // Extract "x" and "y" values, convert them to integers, and store in the vector
+        float x = std::stoi(positions["x"].get<std::string>());
+        float y = std::stoi(positions["y"].get<std::string>());
+        
+        
+        pos.push_back({ x,y });
+    }
+}
+
+gfxVector2 lerpValue(gfxVector2 a, gfxVector2 b, float t)
+{
+    gfxVector2 lerpedVector;
+
+    lerpedVector.x = a.x + t * (b.x - a.x);
+    lerpedVector.y = a.y + t * (b.y - a.y);
+
+    return lerpedVector;
 }
 
 void BehaviorSwitch::SwitchCollisionHandler(Entity* entity1, Entity* entity2)
@@ -87,12 +110,34 @@ void BehaviorSwitch::SwitchCollisionHandler(Entity* entity1, Entity* entity2)
             {
                 if (count < maxCount)
                 {
+                    float progress = 0.0f; // Progress value for lerping
+                    if (entity2->GetRealName().compare("Switch") == 0)
+                    {
+                        //gfxVector2 lerped = lerpValue(entity2->GetImage()->position, pos[count], progress);
+                        entity2->GetImage()->position = pos[count];
+                    }
+                    else if (entity1->GetRealName().compare("Switch") == 0)
+                    {
+                        //gfxVector2 lerped = lerpValue(entity1->GetImage()->position, pos[count], progress);
+                        entity1->GetImage()->position = pos[count];
+                    }
+                    progress += 0.001f;
                     count++;
                 }
                 else
                 {
                     count = 0;
+                    if (entity2->GetRealName().compare("Switch") == 0)
+                    {
+                        entity2->GetImage()->position = pos[count];
+                    }
+                    else if (entity1->GetRealName().compare("Switch") == 0)
+                    {
+                        entity1->GetImage()->position = pos[count];
+                    }
                 }
+
+                /*Move switch*/
             }
         }
     }

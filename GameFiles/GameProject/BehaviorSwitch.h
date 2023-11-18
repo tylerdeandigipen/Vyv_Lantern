@@ -29,4 +29,5 @@ private:
 	bool OnOff = false;
 	static int count;
 	static int maxCount;
+	static std::vector<gfxVector2> pos;
 };
