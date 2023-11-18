@@ -82,13 +82,23 @@ Engine::EngineCode PlatformSystem::Close()
 	
 	SDL_DestroyWindow(winHandle);
     SDL_Quit();
+
+	if (instance != NULL)
+	{
+		delete instance;
+	}
+
     return Engine::NothingBad;
 }
 
 // get the singleton instance
 PlatformSystem* PlatformSystem::GetInstance()
 {
-    return instance;
+	if (instance == nullptr)
+	{
+		instance = new PlatformSystem();
+	}
+	return instance;
 }
 
 void PlatformSystem::ChangeTitle(const char* title)
@@ -105,6 +115,4 @@ SDL_Window* PlatformSystem::GetWindowHandle()
 PlatformSystem::PlatformSystem() : BaseSystem("PlatformSystem"), winHandle(NULL) {}
 PlatformSystem::~PlatformSystem()
 {
-    if (instance)
-        delete instance;
 }

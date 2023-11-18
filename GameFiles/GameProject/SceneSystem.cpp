@@ -36,8 +36,7 @@ Inputs* inputHandlerScene = Inputs::GetInstance();
 Engine::EngineCode SceneSystem::Init()
 {
 	// make sure the default scene isn't null
-	assert(DefaultSceneInstance != nullptr);
-
+	assert(DefaultSceneInstance != nullptr && "Default scene is NULL. Location: SceneSystem::Init()");
 	//current scene instance set to default
 	instance->SetScene(DefaultSceneInstance);
 	return Engine::NothingBad;
@@ -64,6 +63,8 @@ void SceneSystem::Update(float dt)
 	{
 		dt = 0;
 	}
+
+	assert(activeScene != nullptr && "Active scene is NULL. Location: SceneSystem::Update()");
 	activeScene->Update(dt);
 
 }
@@ -71,7 +72,7 @@ void SceneSystem::Update(float dt)
 void SceneSystem::Render()
 {
 	// make sure scene exists
-	assert(activeScene != nullptr);
+	assert(activeScene != nullptr && "Active scene is NULL. Location: SceneSystem::Render()");
 
 	// render active scene
 	activeScene->Render();
@@ -85,6 +86,11 @@ Engine::EngineCode SceneSystem::Close()
 		activeScene->Exit();
 		activeScene->Unload();
 		activeScene = nullptr;
+	}
+
+	if (instance != NULL)
+	{
+		delete instance;
 	}
 
 	return Engine::NothingBad;
@@ -143,18 +149,13 @@ activeScene(nullptr), nextScene(nullptr), timer(0), rate(0.01f), isRestarting(fa
 
 SceneSystem::~SceneSystem()
 {
-	if (instance != NULL)
-	{
-		delete instance;
-		//delete Renderer::GetInstance();
-	}
 }
 
 void SceneSystem::ChangeScene()
 {
 	if (!nextScene)
 	{
-		assert(false && "nextScene is NULL!");
+		assert(false && "nextScene is NULL! Location: SceneSystem::ChangeScene()");
 		throw(Engine::AllScenesNull);
 	}
 
@@ -199,7 +200,7 @@ void SceneSystem::ChangeScene()
 
 	if (!activeScene)
 	{
-		assert(false && "activeScene is NULL!");
+		assert(false && "activeScene is NULL! Location: SceneSystem::ChangeScene()");
 		throw(Engine::AllScenesNull);
 	}
 
@@ -213,26 +214,40 @@ bool CheckGameScenes()
 
 	Scene* activeScene = sceneSystem->GetActiveScene();
 
-	if (activeScene == TbdTestSceneGetInstance()) {
+	assert(activeScene != nullptr && "Active scene is NULL. Location: CheckGameScenes()");
+
+	if (activeScene == TbdTestSceneGetInstance()) 
+	{
 		activeSceneType = SceneType::SCENE_TBD_TEST;
 	}
-	else if (activeScene == TestSceneGetInstance()) {
+	else if (activeScene == TestSceneGetInstance()) 
+	{
 		activeSceneType = SceneType::SCENE_TEST;
 	}
+
+	assert(activeSceneType != SceneType::NULL_SCENE && "Active scene type is NULL. Location: CheckGameScenes()");
 
 	if (inputHandlerScene->keyPressed(SDL_SCANCODE_1))
 	{
 		if (activeSceneType == SceneType::SCENE_TBD_TEST)
+		{
 			sceneSystem->RestartScene();
+		}
 		else
+		{
 			sceneSystem->SetScene(TbdTestSceneGetInstance());
+		}
 	}
 	else if (inputHandlerScene->keyPressed(SDL_SCANCODE_2))
 	{
 		if (activeSceneType == SceneType::SCENE_TEST)
+		{
 			sceneSystem->RestartScene();
+		}
 		else
+		{
 			sceneSystem->SetScene(TestSceneGetInstance());
+		}
 	}
 	else
 	{
@@ -245,7 +260,7 @@ bool CheckGameScenes()
 
 bool CheckRestart()
 {
-	if (inputHandlerScene->keyPressed(SDL_SCANCODE_R) /* && dynamic_cast<TestScene*>(SceneSystem::GetInstance()->GetActiveScene())*/)
+	if (inputHandlerScene->keyPressed(SDL_SCANCODE_R))
 	{
 		SceneSystem::GetInstance()->RestartScene();
 		return true;

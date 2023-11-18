@@ -12,8 +12,10 @@ FileIO::FileIO()
 
 FileIO::~FileIO()
 {
-	if (instance)
+	if (instance != NULL)
+	{
 		delete instance;
+	}
 }
 
 json FileIO::OpenJSON(std::string filename)
@@ -177,6 +179,10 @@ int** FileIO::ReadTylerTileMap(json jsonData)
 
 FileIO* FileIO::GetInstance()
 {
+	if (instance == nullptr)
+	{
+		instance = new FileIO();
+	}
 	return instance;
 }
 

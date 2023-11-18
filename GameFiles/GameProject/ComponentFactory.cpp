@@ -50,6 +50,10 @@ void ComponentFactory::Render() { }
 
 ComponentFactory* ComponentFactory::GetInstance()
 {
+    if (instance == nullptr)
+    {
+        instance = new ComponentFactory();
+    }
     return instance;
 }
 
@@ -66,8 +70,11 @@ Component* ComponentFactory::CreateComponent(std::string const& type)
 
 Engine::EngineCode ComponentFactory::Close()
 {
-    assert(instance != NULL);
-    delete instance;
+    if (instance != NULL)
+    {
+        delete instance;
+    }
+
     return Engine::NothingBad;
 }
 
