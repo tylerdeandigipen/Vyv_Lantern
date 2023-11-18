@@ -28,6 +28,11 @@ public:
 
 	virtual void SetInputHandler(Inputs* input) {};
 	Component* Clone(void) const override;
+	
+	virtual void SetCurr(int state);
+	virtual void SetNext(int state);
+	virtual int GetCurr() const;
+	virtual int GetNext() const;
 
 	virtual void Init() {} ;
 	void Update(float dt);
@@ -35,7 +40,7 @@ public:
 
 private:
 	BehaviorType bType;
-
-
+	int currState;
+	int nextState;
 };
 

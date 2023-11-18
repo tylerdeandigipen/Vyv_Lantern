@@ -8,6 +8,8 @@
 //
 //------------------------------------------------------------------------------
 
+
+
 #pragma once
 #include "Engine.h"
 #include "Scene.h"
@@ -22,7 +24,6 @@ class TbdTestScene : public Scene
 public:
 	
 	TbdTestScene();
-	~TbdTestScene();
 
 	Engine::EngineCode Load(void) override;
 	Engine::EngineCode Init(void) override;
@@ -30,6 +31,7 @@ public:
 	Engine::EngineCode Unload(void) override;
 	void Update(float dt) override;
 	void Render(void) override;
+	bool winState = false;
 private:
 	void ImGuiInterg();
 	void ImGuiWindow();

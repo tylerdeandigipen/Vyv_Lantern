@@ -18,13 +18,15 @@
 #include "Physics.h"
 #include "Renderer.h"
 #include "Transform.h"
+#include "Renderer.h"
+#include "TbdTestScene.h"
 
-BehaviorDoor::BehaviorDoor() : Behavior(Behavior::Door), isDoorClosed(false)
+BehaviorDoor::BehaviorDoor() : Behavior(Behavior::Door), isDoorClosed(false), AddedToForeGround(false)
 {
     _type = this;
 }
 
-BehaviorDoor::BehaviorDoor(BehaviorDoor const& other) : Behavior(other), isDoorClosed(other.isDoorClosed)
+BehaviorDoor::BehaviorDoor(BehaviorDoor const& other) : Behavior(other), isDoorClosed(other.isDoorClosed), AddedToForeGround(false)
 {
     _type = this;
 }
@@ -63,12 +65,34 @@ std::string BehaviorDoor::Name()
 
 void BehaviorDoor::Update(float dt)
 {
+   // if (!AddedToForeGround)
+   // {
+   //     Renderer::GetInstance()->foregroundLayer->AddSprite(Parent()->GetImage());
+   //     AddedToForeGround = true;
+   // }
+    UNREFERENCED_PARAMETER(dt);
+    if (GetCurr() != GetNext())
+    {
+        SetCurr(GetNext());
+    }
 }
 
 
 void BehaviorDoor::Read(json jsonData)
 {
     Init();
+    if (jsonData["DoorState"].is_boolean())
+    {
+        isDoorClosed = jsonData["DoorState"];
+        if (isDoorClosed = false)
+        {
+            SetCurr(cClosed);
+        }
+        else
+        {
+            SetCurr(cOpen);
+        }
+    }
 }
 
 void BehaviorDoor::DoorCollisionHandler(Entity* entity1, Entity* entity2)
@@ -76,12 +100,11 @@ void BehaviorDoor::DoorCollisionHandler(Entity* entity1, Entity* entity2)
     // check the player the door
     if (entity1->GetRealName().compare("Player") == 0 && entity2->GetRealName().compare("Door") == 0)
     {
-        // use schillings finite state machine example to implement a set door closed 
-        //entity2->Has(Behavior)->se
+        LevelBuilder::SetWinState(true);
     }
     if (entity1->GetRealName().compare("Door") == 0 && entity2->GetRealName().compare("Player") == 0)
     {
-
+        LevelBuilder::SetWinState(true);
     }
 }
 

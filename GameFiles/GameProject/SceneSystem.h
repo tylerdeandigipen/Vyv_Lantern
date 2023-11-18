@@ -21,7 +21,7 @@ public:
 	void Update(float dt);
 	void Render();
 	void Exit();
-	void RestartScene();
+	static void RestartScene();
 	void SetScene(Scene* scene);
 	Scene* GetActiveScene();
 

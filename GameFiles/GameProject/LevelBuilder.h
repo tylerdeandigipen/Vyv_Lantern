@@ -25,6 +25,8 @@ public:
 	void LoadLevel(Renderer* pixel, std::string filename);
 	void ReLoadLevel();
 	void FreeLevel();
+	static void SetWinState(bool state);
+	static bool GetWinState();
 	void SetTileMap(int** tiles);
 	int** GetTileMap();
 	int CountEntities();
@@ -36,6 +38,7 @@ public:
 	int GetY();
 private:
 	static LevelBuilder* instance;
+	static bool WinState;
 	EntityContainer* entity_container;
 	json jsonData;
 	int** TileMap;

@@ -108,7 +108,7 @@ void SceneSystem::RestartScene()
 	assert(activeScene != nullptr);
 
 	// sets scene to be active, restarting it
-	SetScene(activeScene);
+	SceneSystem::GetInstance()->SetScene(SceneSystem::GetInstance()->GetActiveScene());
 }
 
 float SceneSystem::GetRate()

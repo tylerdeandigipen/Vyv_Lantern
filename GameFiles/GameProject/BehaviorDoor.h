@@ -6,7 +6,7 @@ public:
 	BehaviorDoor();
 	BehaviorDoor(BehaviorDoor const& other);
 	~BehaviorDoor();
-
+	enum { cClosed, cOpen };
 
 	std::string GetName() override;
 	static std::string Name();
@@ -23,5 +23,6 @@ public:
 
 private:
 	bool isDoorClosed;
+	bool AddedToForeGround;
 };
 

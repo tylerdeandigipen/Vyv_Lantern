@@ -3,6 +3,8 @@
 #include "FileIO.h"
 #include "Transform.h"
 
+bool LevelBuilder::WinState = false;
+
 LevelBuilder* LevelBuilder::instance = new LevelBuilder();
 
 LevelBuilder::LevelBuilder() : entity_container(new EntityContainer()), jsonData(), TileMap(NULL), Walls(NULL), SizeX(0), SizeY(0)
@@ -83,7 +85,7 @@ void LevelBuilder::LoadLevel(Renderer* pixel, std::string filename)
                 pixel->MakeTileMap(TileMap);
 
             }
-            else
+            else if (levelData["TiledData"].is_object())
             {
                 TileMap = FileIO::GetInstance()->ReadTiledMap(levelData);
                 pixel->tileMapSize.x = static_cast<float>(SizeX);
@@ -133,6 +135,16 @@ void LevelBuilder::ReLoadLevel()
 void LevelBuilder::FreeLevel()
 {
     entity_container->FreeAll();
+}
+
+void LevelBuilder::SetWinState(bool state)
+{
+    WinState = state;
+}
+
+bool LevelBuilder::GetWinState()
+{
+    return WinState;
 }
 
 int** LevelBuilder::GetTileMap()

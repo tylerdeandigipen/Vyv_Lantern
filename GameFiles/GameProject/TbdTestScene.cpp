@@ -51,10 +51,10 @@ static bool show_tool_metrics = false;
 static bool show_custom_window = false;
 static bool show_metrics_debug_bar = false;
 
-bool isGravePressedForCheat = false;
-bool isQPressedForCheat = false;
-bool isNPressedForCheat = false;
-bool isCPressedForCheat = false;
+static bool isGravePressedForCheat = false;
+static bool isQPressedForCheat = false;
+static bool isNPressedForCheat = false;
+static bool isCPressedForCheat = false;
 
 TbdTestScene::TbdTestScene() : Scene("tbdtest")
 {
@@ -325,7 +325,27 @@ void TbdTestScene::Update(float dt)
     LevelBuilder::GetInstance()->LevelUpdate(dt);
     AudioManager.Update();
     inputHandler->handleInput();
+    bool check = winState;
+    if (inputHandler->keyPressed(SDL_SCANCODE_Y))
+    {
+        winState = (check ? false : true);
+        
+    }
+    if (LevelBuilder::GetWinState()) 
+    {
+        if (dt != 0)
+        {
+            TbdPixelRenderer->menuBuffer = new ImageBuffer{SCREEN_SIZE_X,SCREEN_SIZE_Y};
+            ImageBuffer* temp = new ImageBuffer{"./Assets/PPM/TemporaryWinScreen.ppm"};
+            TbdPixelRenderer->menuBuffer->AddSprite(temp,Vector2{-20,-5});
+            Engine::GetInstance()->SetPause(true);
+        }
+        if (inputHandler->keyPressed(SDL_SCANCODE_RETURN))
+        {
+            SceneSystem::RestartScene();
+        }
 
+    }
     TbdPlayerMovement(dt);
 
     ImGuiInterg();
@@ -340,16 +360,18 @@ void TbdTestScene::Render()
 Engine::EngineCode TbdTestScene::Exit()
 {
     LevelBuilder::GetInstance()->FreeLevel();
+    LevelBuilder::SetWinState(false);
     Inputs::GetInstance()->InputKeyClear();
     TbdPixelRenderer->CleanRenderer();
-	return Engine::NothingBad;
+    winState = false;
+    return Engine::NothingBad;
 }
 
 Engine::EngineCode TbdTestScene::Unload()
 {
+    winState = false;
     delete TbdTestSceneinstance;
     TbdTestSceneinstance = nullptr;
-    LevelBuilder::GetInstance()->FreeLevel();
 	return Engine::NothingBad;
 }
 
@@ -468,3 +490,4 @@ void TbdTestScene::ImGuiWindow()
         ImGui::End();
     }
 }
+

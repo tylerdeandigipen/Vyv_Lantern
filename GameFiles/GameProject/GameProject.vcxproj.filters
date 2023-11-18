@@ -148,6 +148,9 @@
     <ClCompile Include="BehaviorDoor.cpp">
       <Filter>Source FIles\Components\Sub Components</Filter>
     </ClCompile>
+    <ClCompile Include="WinScene.cpp">
+      <Filter>Source FIles\Scenes</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AudioEngine.h">
@@ -318,6 +321,10 @@
     <ClInclude Include="BehaviorDoor.h">
       <Filter>Header FIles\Components\SubComponents</Filter>
     </ClInclude>
+    <ClInclude Include="DebugNew.h" />
+    <ClInclude Include="WinScene.h">
+      <Filter>Header FIles\Scenes</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="GameProject.ico">
@@ -348,6 +355,9 @@
       <Filter>JSON</Filter>
     </None>
     <None Include="TiledMichaelTest.json">
+      <Filter>JSON</Filter>
+    </None>
+    <None Include="MichaelTempWinScene.json">
       <Filter>JSON</Filter>
     </None>
   </ItemGroup>
