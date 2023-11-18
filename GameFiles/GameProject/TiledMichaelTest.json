@@ -80,7 +80,34 @@
                   "y": "30"
                 }
               ]
-
+            }
+          ]
+        },
+        {
+          "Type": "Object",
+          "Name": "Door",
+          "file": "./Assets/PPM/Door_Temp.ppm",
+          "isAnimated": false,
+          "Components": [
+            {
+              "Type": "ColliderAABB"
+            },
+            {
+              "Type": "Transform",
+              "translation": {
+                "x": 184,
+                "y": 48
+              }
+            },
+            {
+              "Type": "Physics",
+              "OldTranslation": {
+                "x": 90,
+                "y": 30
+              }
+            },
+            {
+              "Type": "BehaviorDoor"
             }
           ]
         }
