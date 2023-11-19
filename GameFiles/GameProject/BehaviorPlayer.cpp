@@ -116,13 +116,9 @@ void BehaviorPlayer::Controller(float dt)
         //AudioManager.PlaySFX("footsteps.ogg");
     }
 
-#if 0
-	if (!checkWalls(translation))
-        transform->SetTranslation(translation);
-#else
 	moveEntityTowards(translation);
-#endif
-    timer += dt;
+
+	timer += dt;
     if (timer >= timeBetweenBlink)
     {
         Renderer::GetInstance()->faceState = 3;
