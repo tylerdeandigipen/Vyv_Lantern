@@ -115,9 +115,13 @@ void BehaviorPlayer::Controller(float dt)
         translation.x -= playerMoveSpeed * dt;
         //AudioManager.PlaySFX("footsteps.ogg");
     }
-    if (!checkWalls(translation))
-        transform->SetTranslation(translation);
 
+#if 0
+	if (!checkWalls(translation))
+        transform->SetTranslation(translation);
+#else
+	moveEntityTowards(translation);
+#endif
     timer += dt;
     if (timer >= timeBetweenBlink)
     {
@@ -131,9 +135,114 @@ void BehaviorPlayer::Controller(float dt)
     }
 }
 
+inline void
+testWallAxis(float wallMinX, float wallMaxX, float wallMinY, float wallMaxY,
+			 float playerX, float playerY, float playerDeltaX, float playerDeltaY,
+			 Vector2 wallMinEdgeNormal, Vector2 wallMaxEdgeNormal, 
+			 float *tMin, Vector2 *collisionNormal)
+{
+	float denom = playerDeltaX;
+	if(denom != 0.0f)
+	{
+		float tX0 = (wallMinX - playerX) / denom;
+		float tX1 = (wallMaxX - playerX) / denom;
+		float tX = min(tX0, tX1);
+
+		Vector2 wallNormal = wallMinEdgeNormal;
+		if(tX1 < tX0)
+		{
+			wallNormal = wallMaxEdgeNormal;
+		}
+
+		if((tX >= 0.0f) && (*tMin > tX))
+		{
+			float testY = playerY + (tX * playerDeltaY);
+			if((testY < wallMaxY) && (testY > wallMinY))
+			{
+				*tMin = tX;
+				*collisionNormal = wallNormal;
+			}
+		}
+	}
+}
+
+
+void BehaviorPlayer::moveEntityTowards(Vector2 targetPosition)
+{
+	Transform* transform = Parent()->Has(Transform);
+	Vector2 oldPosition = *transform->GetTranslation();
+	Vector2 newPosition = oldPosition;
+
+	Vector2 playerDisplacement = targetPosition - oldPosition;
+    float playerRadius = Parent()->GetImage()->BufferSizeX / 2.0f;
+
+#define TILE_SIZE_IN_PIXELS 8
+	int minTileX = (int)((oldPosition.x - TILE_SIZE_IN_PIXELS) / TILE_SIZE_IN_PIXELS);
+	int minTileY = (int)((oldPosition.y - TILE_SIZE_IN_PIXELS) / TILE_SIZE_IN_PIXELS);
+	int maxTileX = (int)ceilf((targetPosition.x + TILE_SIZE_IN_PIXELS) / TILE_SIZE_IN_PIXELS);
+    int maxTileY = (int)ceilf((targetPosition.y + TILE_SIZE_IN_PIXELS) / TILE_SIZE_IN_PIXELS);
+
+    int mapWidth = LevelBuilder::GetInstance()->GetX();
+    int mapHeight = LevelBuilder::GetInstance()->GetY();
+    
+    minTileX = max(0, minTileX);
+    minTileY = max(0, minTileY);
+    maxTileX = min(mapWidth - 1, maxTileX);
+    maxTileY = min(mapHeight - 1, maxTileY);
+
+    Vector2 collisionNormal = Vector2(0, 0);
+    
+    float tRemaining = 1.0f;
+	int iterationCount = 4;
+    while((iterationCount--) && (tRemaining > 0.0f))
+    {
+        float tMin = 1.0f;
+        int *wallTiles = LevelBuilder::GetInstance()->GetWalls();
+        
+        for(int Y = minTileY; Y <= maxTileY; ++Y)
+        {
+            for(int X = minTileX; X <= maxTileX; ++X)
+            {
+                int tileValue = wallTiles[(Y * mapWidth) + X];
+                if(tileValue)
+                {
+                    Vector2 wallMinP = {TILE_SIZE_IN_PIXELS*(float)X, TILE_SIZE_IN_PIXELS*(float)Y};
+                    Vector2 wallMaxP = wallMinP + Vector2(TILE_SIZE_IN_PIXELS, TILE_SIZE_IN_PIXELS);
+                    wallMinP.x -= playerRadius;
+                    wallMinP.y -= playerRadius;
+					wallMinP.x -= playerRadius;
+					wallMinP.y -= playerRadius;
+
+					testWallAxis(wallMinP.x, wallMaxP.x, wallMinP.y, wallMaxP.y,
+								 newPosition.x, newPosition.y, 
+								 playerDisplacement.x, playerDisplacement.y,
+								 Vector2(-1, 0), Vector2(1, 0),
+								 &tMin, &collisionNormal); 
+					testWallAxis(wallMinP.y, wallMaxP.y, wallMinP.x, wallMaxP.x,
+								 newPosition.y, newPosition.x, 
+								 playerDisplacement.y, playerDisplacement.x,
+								 Vector2(0, -1), Vector2(0, 1),
+								 &tMin, &collisionNormal);
+                }
+            }
+        }
+        
+        newPosition += (tMin*playerDisplacement);
+        playerDisplacement -= Vector2::DotProduct(collisionNormal, playerDisplacement)*collisionNormal;
+
+        tRemaining -= tMin*tRemaining;
+    }
+    
+	if(transform)
+	{
+		transform->SetTranslation(newPosition);
+	}
+#undef TILE_SIZE_IN_PIXELS
+}
+
 bool BehaviorPlayer::checkWalls(gfxVector2 position)
 {
-    int* walls = LevelBuilder::GetInstance()->GetWalls();
+	int* walls = LevelBuilder::GetInstance()->GetWalls();
     for (int x = 0; x < LevelBuilder::GetInstance()->GetX(); ++x)
     {
         for (int y = 0; y < LevelBuilder::GetInstance()->GetY(); ++y)
