@@ -25,24 +25,25 @@ void PauseMenu::HandleInput()
     HandleButtonInput();
 }
 
-void PauseMenu::RenderButtons() {
-    // Render your buttons here, you can use the existing code from Renderer::RenderMenu
-
-    // Example button rendering code:
-    // Draw a back button
-    // Draw an exit button
+void PauseMenu::RenderButtons() 
+{
+    
 }
 
 void PauseMenu::HandleButtonInput() 
 {
-    if (IsMouseOverBackButton()) {
-        if (Inputs::GetInstance()->mouseButtonPressed(SDL_BUTTON_LEFT)) {
+    if (IsMouseOverBackButton()) 
+    {
+        if (Inputs::GetInstance()->mouseButtonPressed(SDL_BUTTON_LEFT)) 
+        {
             Engine::GetInstance()->SetPause(false);
         }
     }
 
-    if (IsMouseOverExitButton()) {
-        if (Inputs::GetInstance()->mouseButtonPressed(SDL_BUTTON_LEFT)) {
+    if (IsMouseOverExitButton()) 
+    {
+        if (Inputs::GetInstance()->mouseButtonPressed(SDL_BUTTON_LEFT)) 
+        {
             Engine::GetInstance()->SetCloseRequest(true);
         }
     }
