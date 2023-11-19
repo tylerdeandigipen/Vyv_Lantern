@@ -193,6 +193,7 @@
     <ClInclude Include="Matrix.h" />
     <ClInclude Include="Particle.h" />
     <ClInclude Include="ParticleManager.h" />
+    <ClInclude Include="PauseMenu.h" />
     <ClInclude Include="Physics.h" />
     <ClInclude Include="PlatformSystem.h" />
     <ClInclude Include="Renderer.h" />
@@ -248,6 +249,7 @@
     <ClCompile Include="Observer.cpp" />
     <ClCompile Include="Particle.cpp" />
     <ClCompile Include="ParticleManager.cpp" />
+    <ClCompile Include="PauseMenu.cpp" />
     <ClCompile Include="Physics.cpp" />
     <ClCompile Include="PlatformSystem.cpp" />
     <ClCompile Include="Renderer.cpp" />

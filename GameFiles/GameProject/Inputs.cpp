@@ -164,3 +164,17 @@ void Inputs::SetWindow(SDL_Window* _window)
 {
     window = _window;
 }
+
+bool Inputs::mouseButtonPressed(Uint8 button) const
+{
+    if (button == SDL_BUTTON_LEFT)
+    {
+        return leftMouseB;
+    }
+    else if (button == SDL_BUTTON_RIGHT)
+    {
+        return rightMouseB;
+    }
+
+    return false;
+}
