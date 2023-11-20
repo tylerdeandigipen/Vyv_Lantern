@@ -55,6 +55,10 @@ static bool isGravePressedForCheat = false;
 static bool isQPressedForCheat = false;
 static bool isNPressedForCheat = false;
 static bool isCPressedForCheat = false;
+static bool isFPressedForCheat = false;
+static bool isEPressedForCheat = false;
+static bool isHPressedForCheat = false;
+static bool isGPressedForCheat = false;
 
 TbdTestScene::TbdTestScene() : Scene("tbdtest")
 {
@@ -156,6 +160,15 @@ void TbdPlayerMovement(float dt)
         else
             TbdPixelRenderer->doBlur = false;
         TbdCanPlaceLight = 0;
+
+        if (!isEPressedForCheat)
+        {
+            isEPressedForCheat = true;
+        }
+        else
+        {
+            isEPressedForCheat = false;
+        }
     }
     if (!inputHandler->keyPressed(SDL_SCANCODE_E))
     {
@@ -273,6 +286,15 @@ void TbdPlayerMovement(float dt)
         else
             TbdPixelRenderer->doScanLines = false;
         canToggleScanLines = 0;
+
+        if (!isFPressedForCheat)
+        {
+            isFPressedForCheat = true;
+        }
+        else
+        {
+            isFPressedForCheat = false;
+        }
     }
     if (!inputHandler->keyPressed(SDL_SCANCODE_F))
     {
@@ -286,6 +308,15 @@ void TbdPlayerMovement(float dt)
         else
             TbdPixelRenderer->drawRawFog = false;
         canRenderRawFog = 0;
+
+        if (!isHPressedForCheat)
+        {
+            isHPressedForCheat = true;
+        }
+        else
+        {
+            isHPressedForCheat = false;
+        }
     }
     if (!inputHandler->keyPressed(SDL_SCANCODE_H))
     {
@@ -299,6 +330,15 @@ void TbdPlayerMovement(float dt)
         else
             TbdPixelRenderer->doFog = false;
         canToggleFog = 0;
+
+        if (!isGPressedForCheat)
+        {
+            isGPressedForCheat = true;
+        }
+        else
+        {
+            isGPressedForCheat = false;
+        }
     }
     if (!inputHandler->keyPressed(SDL_SCANCODE_G))
     {
@@ -436,8 +476,7 @@ void TbdTestScene::ImGuiWindow()
         ImGui::Text("hey how you doin ;)");
         ImGui::Text("welcome to the tbdtestscene debug window");
 
-        int numEntities = LevelBuilder::GetInstance()->CountEntities();
-        ImGui::Text("Number of Entities: %d", numEntities);
+        ImGui::Separator();
 
         ImGui::Text("Mouse Position: (%d, %d)", Inputs::GetInstance()->getMouseX(), Inputs::GetInstance()->getMouseY());
 
@@ -454,7 +493,7 @@ void TbdTestScene::ImGuiWindow()
         ImGui::Separator();
         ImGui::Text("Cheat Status:");
 
-        if (ImGui::Button("` Cheat:"))
+        if (ImGui::Button("FullBright Cheat:"))
         {
             isGravePressedForCheat = !isGravePressedForCheat;
 
@@ -467,7 +506,7 @@ void TbdTestScene::ImGuiWindow()
         ImGui::SameLine();
         ImGui::Text(isGravePressedForCheat ? "Active" : "Inactive");
 
-        if (ImGui::Button("Q Cheat:"))
+        if (ImGui::Button("Render Only Lights Cheat:"))
         {
             isQPressedForCheat = !isQPressedForCheat;
 
@@ -480,7 +519,7 @@ void TbdTestScene::ImGuiWindow()
         ImGui::SameLine();
         ImGui::Text(isQPressedForCheat ? "Active" : "Inactive");
 
-        if (ImGui::Button("N Cheat:"))
+        if (ImGui::Button("NormalMap Cheat:"))
         {
             isNPressedForCheat = !isNPressedForCheat;
 
@@ -493,7 +532,7 @@ void TbdTestScene::ImGuiWindow()
         ImGui::SameLine();
         ImGui::Text(isNPressedForCheat ? "Active" : "Inactive");
 
-        if (ImGui::Button("C Cheat:"))
+        if (ImGui::Button("Wall Hitboxes Cheat:"))
         {
             isCPressedForCheat = !isCPressedForCheat;
 
@@ -506,10 +545,65 @@ void TbdTestScene::ImGuiWindow()
         ImGui::SameLine();
         ImGui::Text(isCPressedForCheat ? "Active" : "Inactive");
 
+        if (ImGui::Button("ScanLines Cheat:"))
+        {
+            isFPressedForCheat = !isFPressedForCheat;
+
+            if (TbdPixelRenderer->doScanLines == false)
+                TbdPixelRenderer->doScanLines = true;
+            else
+                TbdPixelRenderer->doScanLines = false;
+            canToggleScanLines = 0;
+        }
+
+        ImGui::SameLine();
+        ImGui::Text(isFPressedForCheat ? "Active" : "Inactive");
+
+        if (ImGui::Button("Blur Cheat:"))
+        {
+            isEPressedForCheat = !isEPressedForCheat;
+
+            if (TbdPixelRenderer->doBlur == false)
+                TbdPixelRenderer->doBlur = true;
+            else
+                TbdPixelRenderer->doBlur = false;
+            TbdCanPlaceLight = 0;
+        }
+
+        ImGui::SameLine();
+        ImGui::Text(isEPressedForCheat ? "Active" : "Inactive");
+
+        if (ImGui::Button("Render Justa Fog Cheat:"))
+        {
+            isHPressedForCheat = !isHPressedForCheat;
+
+            if (TbdPixelRenderer->drawRawFog == false)
+                TbdPixelRenderer->drawRawFog = true;
+            else
+                TbdPixelRenderer->drawRawFog = false;
+            canRenderRawFog = 0;
+        }
+
+        ImGui::SameLine();
+        ImGui::Text(isHPressedForCheat ? "Active" : "Inactive");
+
+        if (ImGui::Button("Render Fog Cheat:"))
+        {
+            isGPressedForCheat = !isGPressedForCheat;
+
+            if (TbdPixelRenderer->doFog == false)
+                TbdPixelRenderer->doFog = true;
+            else
+                TbdPixelRenderer->doFog = false;
+            canToggleFog = 0;
+        }
+
+        ImGui::SameLine();
+        ImGui::Text(isGPressedForCheat ? "Active" : "Inactive");
+
         ImGui::Separator();
 
         ImGui::Text("Particle System:");
-        ImGui::Separator();
 
         Particle** particles = TbdPixelRenderer->particleManager->GetParticles();
 
@@ -534,12 +628,20 @@ void TbdTestScene::ImGuiWindow()
             ImGui::TreePop();
         }
 
+        ImGui::Separator();
+
         if (ImGui::TreeNode("Tilesets in use:"))
         {
             ImGui::BulletText("TileMapSprites.json");
             ImGui::BulletText("TileMapNormals.json");
             ImGui::TreePop();
         }
+
+        ImGui::Separator();
+        ImGui::Text("Scene Tools:");
+
+        int numEntities = LevelBuilder::GetInstance()->CountEntities();
+        ImGui::Text("Number of Entities: %d", numEntities);
 
         if (ImGui::Button("Toggle Metrics/Debug Bar"))
         {

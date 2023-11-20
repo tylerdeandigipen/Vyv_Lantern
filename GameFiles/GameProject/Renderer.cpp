@@ -814,6 +814,14 @@ void Renderer::DrawLine(Vector2 P0, Vector2 P1, const Color &LineColor)
 	}
 }
 
+
+const	int BAYER_PATTERN_4X4[4][4] = {	//	4x4 Bayer Dithering Matrix. Color levels: 17
+{	 15, 195,  60, 240	},
+{	135,  75, 180, 120	},
+{	 45, 225,  30, 210	},
+{	165, 105, 150,  90	}
+};
+
 const	int BAYER_PATTERN_8X8[8][8] = {	//	8x8 Bayer Dithering Matrix. Color levels: 65
 {	  0, 128,  32, 160,   8, 136,  40, 168	},
 {	192,  64, 224,  96, 200,  72, 232, 104	},
