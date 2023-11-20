@@ -95,9 +95,9 @@ Engine::EngineCode TbdTestScene::Init()
     tempLight2.color = { 216, 247, 255, 255 };
 
     tempLight2.intensity = 3.0f;
-    tempLight2.radius = 20;
-    tempLight2.radialFalloff = 3;
-    tempLight2.radialWeight = 1;
+    tempLight2.radius = 23;
+    tempLight2.radialFalloff = .2;
+    tempLight2.radialWeight = 2;
     tempLight2.angularWeight = 0;
     tempLight2.volumetricIntensity = 0.25f;
 
