@@ -52,6 +52,12 @@ public:
 		this->y += v.y;
 		return *this;
 	}
+
+	// Overloading the equality operator (==)
+	bool operator==(const gfxVector2& other) const {
+		return (x == other.x && y == other.y);
+	}
+
 	gfxVector2& operator-=(const gfxVector2& v)
 	{
 		this->x -= v.x;
