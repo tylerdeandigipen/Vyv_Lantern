@@ -453,10 +453,60 @@ void TbdTestScene::ImGuiWindow()
 
         ImGui::Separator();
         ImGui::Text("Cheat Status:");
-        ImGui::Text("` Cheat: %s", isGravePressedForCheat ? "Active" : "Inactive");
-        ImGui::Text("Q Cheat: %s", isQPressedForCheat ? "Active" : "Inactive");
-        ImGui::Text("N Cheat: %s", isNPressedForCheat ? "Active" : "Inactive");
-        ImGui::Text("C Cheat: %s", isCPressedForCheat ? "Active" : "Inactive");
+
+        if (ImGui::Button("` Cheat:"))
+        {
+            isGravePressedForCheat = !isGravePressedForCheat;
+
+            if (TbdPixelRenderer->isFullBright == false)
+                TbdPixelRenderer->isFullBright = true;
+            else
+                TbdPixelRenderer->isFullBright = false;
+            TbdCanToggleFullBright = false;
+        }
+        ImGui::SameLine();
+        ImGui::Text(isGravePressedForCheat ? "Active" : "Inactive");
+
+        if (ImGui::Button("Q Cheat:"))
+        {
+            isQPressedForCheat = !isQPressedForCheat;
+
+            if (TbdPixelRenderer->renderOnlyLights == false)
+                TbdPixelRenderer->renderOnlyLights = true;
+            else
+                TbdPixelRenderer->renderOnlyLights = false;
+            TbdCanToggleOnlyLights = false;
+        }
+        ImGui::SameLine();
+        ImGui::Text(isQPressedForCheat ? "Active" : "Inactive");
+
+        if (ImGui::Button("N Cheat:"))
+        {
+            isNPressedForCheat = !isNPressedForCheat;
+
+            if (TbdPixelRenderer->renderNormalMap == false)
+                TbdPixelRenderer->renderNormalMap = true;
+            else
+                TbdPixelRenderer->renderNormalMap = false;
+            TbdCanToggleNormalDisplay = false;
+        }
+        ImGui::SameLine();
+        ImGui::Text(isNPressedForCheat ? "Active" : "Inactive");
+
+        if (ImGui::Button("C Cheat:"))
+        {
+            isCPressedForCheat = !isCPressedForCheat;
+
+            if (TbdPixelRenderer->renderWallHitboxes == false)
+                TbdPixelRenderer->renderWallHitboxes = true;
+            else
+                TbdPixelRenderer->renderWallHitboxes = false;
+            TbdCanRenderWallHitboxes = 0;
+        }
+        ImGui::SameLine();
+        ImGui::Text(isCPressedForCheat ? "Active" : "Inactive");
+
+        ImGui::Separator();
 
         ImGui::Text("Particle System:");
         ImGui::Separator();
