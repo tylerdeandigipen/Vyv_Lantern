@@ -38,7 +38,7 @@
         {
           "Type": "Object",
           "Name": "Door",
-          "file": "./Assets/PPM/Door_Temp.ppm",
+          "file": "./Assets/PPM/Door_Open.ppm",
           "isAnimated": false,
           "Components": [
             {
@@ -47,14 +47,14 @@
             {
               "Type": "Transform",
               "translation": {
-                "x": 184,
+                "x": 192,
                 "y": 48
               }
             },
             {
               "Type": "Physics",
               "OldTranslation": {
-                "x": 90,
+                "x": 94,
                 "y": 30
               }
             },
