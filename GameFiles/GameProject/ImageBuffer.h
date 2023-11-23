@@ -6,6 +6,8 @@
 #include "Vector.h"
 #include "Collision.h"
 
+#define MAX_NUM_VORNOI_POINTS 20
+
 enum ImageType
 {
 	/*Add what type of object is it*/
@@ -53,8 +55,16 @@ public:
     ImageBuffer& ClearImageBuffer();
     void MergeLayers(ImageBuffer* bottom, ImageBuffer* top);
     void MergeLayersIndvPixel(ImageBuffer* bottom, ImageBuffer* middle, ImageBuffer* top, int x, int y);
-    
+    void BlurBuffer(int imageBlurRangelow, int imageBlurRangeHigh);
+    void FloorBrightness(float floor);
+    void GenerateVornoiPoints();
+    void MakeVornoiNoiseBuffer(Vector2 camPos, float falloffModifier, float brightnessMultiplier, float minBrightness);
+    void DitherBuffer(ImageBuffer* output = NULL, bool renderOnlyLights = false, bool isFullbright = false, float** lightR = NULL, float** lightG = NULL, float** lightB = NULL);
+
     ImageBuffer& operator =(const ImageBuffer& rhs);
-private:
+
+    private:
+    Vector2 vornoiPoints[MAX_NUM_VORNOI_POINTS] = { Vector2{0,0} };
+
 };
 #endif

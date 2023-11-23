@@ -1,4 +1,5 @@
 #include "ImageBuffer.h"
+#include "Math.h"
 #include <inttypes.h>
 #include <omp.h>
 
@@ -255,4 +256,211 @@ ImageBuffer& ImageBuffer::operator =(const ImageBuffer& rhs)
 {
     memcpy(buffer, rhs.buffer, BufferSizeX*BufferSizeY);
     return *this;
+}
+
+void ImageBuffer::BlurBuffer(int imageBlurRangelow, int imageBlurRangeHigh)
+{
+    ImageBuffer* tempBuffer = new ImageBuffer{*this};
+    int count;
+    int xSize = size.x;
+    int ySize = size.y;
+    #pragma omp parallel for collapse(4) private(count)
+    for (int x = 0; x < xSize; ++x)
+    {
+        for (int y = 0; y < ySize; ++y)
+        {
+            Color& dest = buffer[x + (BufferSizeX * y)];
+            if (dest.a != 0)
+            {
+                float r = 0;
+                float g = 0;
+                float b = 0;
+
+                count = 0;
+                for (int w = imageBlurRangelow; w < imageBlurRangeHigh; ++w)
+                {
+                    for (int h = imageBlurRangelow; h < imageBlurRangeHigh; ++h)
+                    {
+                        if (x + w < size.x && y + h < size.y && x + w >= 0 && y + h >= 0)
+                        {
+                            Color temp = tempBuffer->SampleColor(x + w, y + h);
+
+                            r += temp.r;
+                            g += temp.g;
+                            b += temp.b;
+                            count += 1;
+                        }
+                    }
+                }
+                r /= count;
+                g /= count;
+                b /= count;
+                dest = Color{ (uint8_t)r,(uint8_t)g,(uint8_t)b,(uint8_t)255 };
+            }
+        }
+    }
+    
+    delete tempBuffer;
+    
+}
+
+void ImageBuffer::FloorBrightness(float floor)
+{
+    Color clear{ 0, 0, 0, 0 };
+    const int xSize = size.x;
+    const int ySize = size.y;
+    #pragma omp parallel for collapse(2) shared(clear)
+    for (int x = 0; x < xSize; ++x)
+    {
+        for (int y = 0; y < ySize; ++y)
+        {
+            Color& DestPixel = buffer[x + (BufferSizeX * y)];
+            if ((DestPixel.r + DestPixel.g + DestPixel.b) <= (floor * 3))
+            {
+                DestPixel = clear;
+            }
+        }
+    }
+}
+
+void ImageBuffer::GenerateVornoiPoints()
+{
+    for (int i = 0; i < MAX_NUM_VORNOI_POINTS; ++i)
+    {
+        vornoiPoints[i] = Vector2{ (float)(rand() % (int)(size.x)), (float)(rand() % (int)(size.y)) };
+    }
+}
+
+void ImageBuffer::MakeVornoiNoiseBuffer(Vector2 camPos, float falloffModifier, float brightnessMultiplier, float minBrightness)
+{
+    const int xSize = size.x;
+    const int ySize = size.y;
+    #pragma omp parallel
+    {
+    #pragma omp for nowait collapse(3)
+        for (int x = 0; x < xSize; ++x)
+        {
+            for (int y = 0; y < ySize; ++y)
+            {
+                float oldDist = 9999;
+                for (int i = 0; i < MAX_NUM_VORNOI_POINTS; ++i)
+                {
+                    float tempDist = distanceSquared(vornoiPoints[i].x - camPos.x, vornoiPoints[i].y - camPos.y, x, y);
+                    if (oldDist > tempDist)
+                    {
+                        oldDist = tempDist;
+                    }
+                }
+                oldDist = clamp((100 - oldDist) + falloffModifier, 0, 255);
+
+                Color& DestPixel = buffer[x + (BufferSizeX * y)];
+                if (oldDist != 0)
+                {
+                    float finalColor = (float)((oldDist * brightnessMultiplier) + minBrightness);
+                    finalColor = clamp(finalColor, 0, 255);
+                    DestPixel = Color{ (uint8_t)finalColor, (uint8_t)finalColor, (uint8_t)finalColor, 255 };
+                }
+                else
+                {
+                    DestPixel = Color{ 0, 0, 0, 0 };
+                }
+            }
+        }
+    }
+}
+
+
+const	int BAYER_PATTERN_4X4[4][4] = {	//	4x4 Bayer Dithering Matrix. Color levels: 17
+{	 15, 195,  60, 240	},
+{	135,  75, 180, 120	},
+{	 45, 225,  30, 210	},
+{	165, 105, 150,  90	}
+};
+
+const	int BAYER_PATTERN_8X8[8][8] = {	//	8x8 Bayer Dithering Matrix. Color levels: 65
+{	  0, 128,  32, 160,   8, 136,  40, 168	},
+{	192,  64, 224,  96, 200,  72, 232, 104	},
+{	 48, 176,  16, 144,  56, 184,  24, 152	},
+{	240, 112, 208,  80, 248, 120, 216,  88	},
+{	 12, 140,  44, 172,   4, 132,  36, 164	},
+{	204,  76, 236, 108, 196,  68, 228, 100	},
+{	 60, 188,  28, 156,  52, 180,  20, 148	},
+{	252, 124, 220,  92, 244, 116, 212,  84	}
+};
+int bayerSize = 8;
+
+void ImageBuffer::DitherBuffer(ImageBuffer* output, bool renderOnlyLights, bool isFullbright, float** lightR, float** lightG, float** lightB)
+{
+    if (output == NULL)
+    {
+        output = this;
+    }
+    float red;
+    float green;
+    float blue;
+
+    int bayerNum;
+    int corr;
+
+    int i1;
+    int i2;
+    int i3;
+    const int xSize = (int)size.x;
+    const int ySize = (int)size.y;
+    Color black{ 0,0,0,255 };
+    #pragma omp parallel
+    {
+        #pragma omp for nowait collapse(2) private(red, green, blue, bayerNum, corr, i1, i2, i3)
+        for (int x = 0; x < xSize; ++x)
+        {
+            for (int y = 0; y < ySize; ++y)
+            {
+                if (isFullbright != true)
+                {
+                    Color& SourcePixel = buffer[x + (BufferSizeX * y)];
+                    Color tempColor = SourcePixel;
+                    if (lightR != NULL && lightG != NULL && lightB != NULL)
+                    {
+                        Color white{ 255,255,255,255 };
+                        tempColor = white.ScaleIndividual(lightR[x][y], lightG[x][y], lightB[x][y]);
+                    }
+                    red = tempColor.GetRed();
+                    green = tempColor.GetGreen();
+                    blue = tempColor.GetBlue();
+
+                    bayerNum = BAYER_PATTERN_8X8[x % bayerSize][y % bayerSize];
+                    corr = (int)((bayerNum / 7) - 2);	//	 -2 because: 256/7=36  36*7=252  256-252=4   4/2=2 - correction -2
+
+                    i1 = (int)((blue + corr) / 36);
+                    i2 = (int)((green + corr) / 36);
+                    i3 = (int)((red + corr) / 36);
+
+                    clamp((float)i1, 0, 7);
+                    clamp((float)i2, 0, 7);
+                    clamp((float)i3, 0, 7);
+
+
+                    Color& DestPixel = output->SampleColor(x, y);
+                    //force glowing eyes, maybe make an emisive mask later
+                    if (renderOnlyLights == false)
+                    {
+                        if (DestPixel == Color{ 196,215,165,255 })
+                        {
+                            DestPixel = buffer[x + (BufferSizeX * y)];
+                        }
+                        else
+                        {
+                            DestPixel = SourcePixel.ScaleIndividual(((float)i1 / 7), ((float)i1 / 7), ((float)i1 / 7));
+                        }
+                    }
+                    else
+                    {
+                        Color white{ 255,255,255,255 };
+                        DestPixel = white.ScaleIndividual(((float)i1 / 7), ((float)i1 / 7), ((float)i1 / 7));
+                    }
+                }
+            }
+        }
+    }
+
 }

@@ -1,4 +1,5 @@
 #include "ParticleManager.h"
+#include "Time.h"
 
 ParticleManager::ParticleManager()
 {
@@ -17,7 +18,8 @@ ParticleManager::~ParticleManager()
 void ParticleManager::UpdateParticles()
 {
 	//Loop through each particle here
-    #pragma omp for
+	float dt = Time::Instance().GetDt();
+    #pragma omp parallel for
 	for (int i = 0; i < totalParticles; i++)
 	{
 		if (particleArray[i] != NULL)
@@ -30,7 +32,7 @@ void ParticleManager::UpdateParticles()
 			else
 			{
 				particleArray[i]->tileMapSize = tileMapSize;
-				particleArray[i]->Update();
+				particleArray[i]->Update(dt);
 			}
 		}
 	}

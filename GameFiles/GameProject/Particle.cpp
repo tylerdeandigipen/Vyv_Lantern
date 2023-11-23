@@ -1,5 +1,4 @@
 #include "Particle.h"
-#include "Time.h"
 #include "Math.h"
 #include <math.h>
 #include <cmath>
@@ -33,7 +32,7 @@ float lerp(float a, float b, float f)
 #define RAND_RANGE_MOTH 12
 #define RAND_RANGE_DUST 12
 #define PARTICLE_EDGE_BUFFER 10
-void Particle::Update()
+void Particle::Update(float dt)
 {
 	switch (particleType)
 	{
@@ -70,8 +69,6 @@ void Particle::Update()
 		break;
 		case Particle_Dust:
 		{
-			float dt = Time::Instance().GetDt();
-
 			Vector2 temp = { (float)(rand() % RAND_RANGE_DUST), (float)(rand() % RAND_RANGE_DUST) };
 			temp -= {RAND_RANGE_DUST / 2, RAND_RANGE_DUST / 2};
 			temp /= RAND_RANGE_DUST;

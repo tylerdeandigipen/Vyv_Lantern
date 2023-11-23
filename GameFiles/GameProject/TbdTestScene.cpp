@@ -130,8 +130,6 @@ Engine::EngineCode TbdTestScene::Init()
         TbdPixelRenderer->particleManager->AddParticle(testParticle);
     }
 
-    TbdPixelRenderer->GenerateVornoiPoints();
-
   //  AudioManager.PlayMusic("drips");
     
   //  AudioManager.PlayMusic("forest");
@@ -177,10 +175,10 @@ void TbdPlayerMovement(float dt)
 
     if (inputHandler->keyPressed(SDL_SCANCODE_GRAVE) && TbdCanToggleFullBright == true)
     {
-        if(TbdPixelRenderer->isFullBright == false)
-            TbdPixelRenderer->isFullBright = true;
+        if(TbdPixelRenderer->isFullbright == false)
+            TbdPixelRenderer->isFullbright = true;
         else
-            TbdPixelRenderer->isFullBright = false;
+            TbdPixelRenderer->isFullbright = false;
         TbdCanToggleFullBright = false;
 
         if (!isGravePressedForCheat)
@@ -497,10 +495,10 @@ void TbdTestScene::ImGuiWindow()
         {
             isGravePressedForCheat = !isGravePressedForCheat;
 
-            if (TbdPixelRenderer->isFullBright == false)
-                TbdPixelRenderer->isFullBright = true;
+            if (TbdPixelRenderer->isFullbright == false)
+                TbdPixelRenderer->isFullbright = true;
             else
-                TbdPixelRenderer->isFullBright = false;
+                TbdPixelRenderer->isFullbright = false;
             TbdCanToggleFullBright = false;
         }
         ImGui::SameLine();

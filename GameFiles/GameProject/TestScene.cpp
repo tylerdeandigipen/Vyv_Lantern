@@ -319,7 +319,6 @@ void TestScene::Update(float dt)
     //LevelBuilder::GetInstance()->LevelUpdate(dt);
     AudioManager.Update();
     inputHandler->handleInput();
-    pixelRenderer->UpdateObjects();
 
     if (inputHandler->keyPressed(SDLK_ESCAPE) == true)
     {

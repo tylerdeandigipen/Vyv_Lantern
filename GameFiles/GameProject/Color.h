@@ -15,7 +15,7 @@ public:
 	uint8_t GetRed();
 	uint8_t GetBlue();
 	uint8_t GetGreen();
-
+	Color BlendColors(Color top, Color bottom, float blendPercent);
 	void SetAlpha(uint8_t a_);
 	Color ScaleIndividual(float rScale, float gScale, float bScale);
 	Color& operator =(const Color& rhs)&;

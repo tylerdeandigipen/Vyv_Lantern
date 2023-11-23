@@ -51,6 +51,30 @@ void Color::SetAlpha(uint8_t a_)
 	a = a_;
 }
 
+Color Color::BlendColors(Color top, Color bottom, float blendPercent)
+{
+	Color result;
+	if (bottom.r >= top.r)
+	{
+		result.r = (bottom.r - top.r) * (blendPercent * 0.01) + top.r;
+	}
+	else
+		result.r = (top.r - bottom.r) * ((100 - blendPercent) * 0.01) + bottom.r;
+	if (bottom.g >= top.g)
+	{
+		result.g = (bottom.g - top.g) * (blendPercent * 0.01) + top.g;
+	}
+	else
+		result.g = (top.g - bottom.g) * ((100 - blendPercent) * 0.01) + bottom.g;
+	if (bottom.b >= top.b)
+	{
+		result.b = (bottom.b - top.b) * (blendPercent * 0.01) + top.b;
+	}
+	else
+		result.b = (top.b - bottom.b) * ((100 - blendPercent) * 0.01) + bottom.b;
+
+	return result;
+}
 
 Color Color::ScaleIndividual(float rScale, float gScale, float bScale)
 {
