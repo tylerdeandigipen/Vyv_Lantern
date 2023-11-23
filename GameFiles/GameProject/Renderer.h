@@ -36,6 +36,7 @@ public:
 
 	ImageBuffer* lightBuffer = NULL;
 	ImageBuffer* fogBuffer = NULL;
+	ImageBuffer* fogBufferPostCam = NULL;
 	ImageBuffer* normalBuffer = NULL;
 	ImageBuffer* normalBufferPostCam = NULL;
 	Light lightSource[MAX_LIGHT_SOURCES];
@@ -98,12 +99,11 @@ public:
 	void ReallocateLightArrays();
 	void MakeMenu(const std::string filename);
 	void CalculateShadows();
-	void MakeVornoiNoiseBuffer(float brightnessModifier, float brightnessMultiplier, float minBrightness);
+	void MakeVornoiNoiseBuffer(ImageBuffer* out, float brightnessModifier, float brightnessMultiplier, float minBrightness);
 	void GenerateVornoiPoints();
 	Color BlendColors(Color top, Color bottom, float p);
 	void BlurBuffer(ImageBuffer* buffer);
 	void FloorBrightness(ImageBuffer* buffer, float floor);
-	void UpdateVornoiPoints();
 	int faceState = 0;
 	float normalStrength = 0.5f;
 	//i hate this make it better later tho
@@ -118,7 +118,13 @@ public:
 private:
 	static Renderer* instance;
 
-	Vector2 vornoiPoints[MAX_NUM_VORNOI_POINTS] = { Vector2{0,0} };
+	Vector2 vornoiPoints[MAX_NUM_VORNOI_POINTS] = {Vector2{0,0}};
+	bool fogIsDirty = true;
+	Vector2 fogOffSet{0,0};
+	Vector2 fogPos{0,0};
+	Vector2 fogMoveDir{0.08, 0.01};
+	float fogOpacity = 5;
+
 	ImageBuffer *DebugBuffer;
 	int faceIndex = -1;
 	Vector2 CameraP;

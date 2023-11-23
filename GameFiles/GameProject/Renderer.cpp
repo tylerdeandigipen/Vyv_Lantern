@@ -40,6 +40,139 @@
 
 Renderer* Renderer::instance = new Renderer();
 
+void Renderer::Update(float dt)
+{
+    Uint32 currentTime = SDL_GetTicks();
+    ScopeTimer TestScopeTimer("Renderer::Update");
+    UpdateAnimations(dt);
+    UpdateFace(faceState);
+    UpdateObjects();
+    RenderLightingPass();
+    BlurLights();
+    DitherBuffer(inputBuffer, inputBuffer, true);
+    //idk why but fog is being kinda cringe :(
+    if (doFog == true)
+    {
+        //MakeVornoiNoiseBuffer(fogBuffer, 200, 1, 70);
+        if (fogIsDirty == true)
+        {
+            delete fogBuffer;
+            fogBuffer = new ImageBuffer{ "./Assets/PPM/Premade_Fog_2.ppm" };
+            BlurBuffer(fogBuffer);
+            FloorBrightness(fogBuffer, 150);
+            fogIsDirty = false;
+        }
+        fogPos += fogMoveDir;
+        fogPos += GetCameraPosition();
+        if (fogPos.x > SCREEN_SIZE_X || fogPos.x < -SCREEN_SIZE_X)
+        {
+            fogPos.x = 0;
+        }
+        if (fogPos.y > SCREEN_SIZE_Y || fogPos.y < -SCREEN_SIZE_Y)
+        {
+            fogPos.y = 0;
+        }
+        fogBufferPostCam->ClearImageBuffer();
+
+        fogBuffer->Blit(fogBufferPostCam, -fogPos.x, -fogPos.y);
+
+        fogBuffer->Blit(fogBufferPostCam, -fogPos.x + SCREEN_SIZE_X, -fogPos.y);
+        fogBuffer->Blit(fogBufferPostCam, -fogPos.x, -fogPos.y + SCREEN_SIZE_Y);
+        fogBuffer->Blit(fogBufferPostCam, -fogPos.x - SCREEN_SIZE_X, -fogPos.y);
+        fogBuffer->Blit(fogBufferPostCam, -fogPos.x, -fogPos.y - SCREEN_SIZE_Y);
+
+        fogBuffer->Blit(fogBufferPostCam, -fogPos.x + SCREEN_SIZE_X, -fogPos.y + SCREEN_SIZE_Y);
+        fogBuffer->Blit(fogBufferPostCam, -fogPos.x + SCREEN_SIZE_X, -fogPos.y - SCREEN_SIZE_Y);
+        fogBuffer->Blit(fogBufferPostCam, -fogPos.x - SCREEN_SIZE_X, -fogPos.y + SCREEN_SIZE_Y);
+        fogBuffer->Blit(fogBufferPostCam, -fogPos.x - SCREEN_SIZE_X, -fogPos.y - SCREEN_SIZE_Y);
+        fogPos -= GetCameraPosition();
+        DitherBuffer(fogBufferPostCam, fogBufferPostCam);
+    }
+    RenderToOutbuffer();
+
+    DebugBuffer->Blit(outputBuffer, -GetCameraPosition().x, -GetCameraPosition().y);
+    DebugBuffer->ClearImageBuffer();
+
+    float AverageFrameLength = 0.0f;
+    for (uint32_t FrameIndex = 1; FrameIndex < _countof(PreviousFrameLengths); ++FrameIndex)
+    {
+        AverageFrameLength += PreviousFrameLengths[FrameIndex - 1];
+        PreviousFrameLengths[FrameIndex] = PreviousFrameLengths[FrameIndex - 1];
+    }
+
+    float dtThisFrame = (float)(currentTime - PreviousFrameBeginTime) / 1000.0f;
+    PreviousFrameLengths[0] = dtThisFrame;
+    AverageFrameLength += dtThisFrame;
+    AverageFrameLength /= (float)_countof(PreviousFrameLengths);
+
+    float AverageFrameRate = 1.0f / AverageFrameLength;
+    char WindowTextBuffer[128];
+    sprintf_s(WindowTextBuffer, sizeof(WindowTextBuffer), "FPS: %.2f", AverageFrameRate);
+    SDL_SetWindowTitle(window, WindowTextBuffer);
+
+
+#ifdef _DEBUG
+    /*
+    for (int i = 0; i < numLights * 2; i++)
+    {
+        if (i % 2 == 0)
+        {
+            outputBuffer->buffer[i + 1 + (3 * outputBuffer->BufferSizeX)] = { 0,0,255,255 };
+        }
+    }
+    */
+#endif
+
+    if (!OutputBufferTexture)
+    {
+        glGenTextures(1, &OutputBufferTexture);
+    }
+
+    // @TODO: Maybe rework image buffers to be alligned to GPU memory layouts
+    assert(sizeof(Color) == sizeof(uint32_t));
+
+    glClearColor(1.0f, 0.0f, 1.0f, 0.0f);
+    glClear(GL_COLOR_BUFFER_BIT);
+
+    glEnable(GL_TEXTURE_2D);
+
+    glActiveTexture(GL_TEXTURE0);
+    glBindTexture(GL_TEXTURE_2D, OutputBufferTexture);
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8,
+        outputBuffer->size.x, outputBuffer->size.y,
+        0,
+        GL_RGBA, GL_UNSIGNED_BYTE,
+        (void*)outputBuffer->buffer);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_BORDER);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_BORDER);
+
+    glBegin(GL_QUADS);
+    glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
+
+    glTexCoord2f(0.0f, 0.0f);
+    glVertex2f(-1.0f, 1.0f);
+
+    glTexCoord2f(1.0f, 0.0f);
+    glVertex2f(1.0f, 1.0f);
+
+    glTexCoord2f(1.0f, 1.0f);
+    glVertex2f(1.0f, -1.0f);
+
+    glTexCoord2f(0.0f, 1.0f);
+    glVertex2f(-1.0f, -1.0f);
+
+    glEnd();
+
+    ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+
+    SDL_GL_SwapWindow(window);
+
+    objectLayer->ClearImageBuffer();
+    PreviousFrameBeginTime = currentTime;
+}
+
 Renderer::Renderer() : objects{ NULL }
 {
     outputBuffer = new ImageBuffer{ SCREEN_SIZE_X ,SCREEN_SIZE_Y };
@@ -48,6 +181,7 @@ Renderer::Renderer() : objects{ NULL }
     lightBuffer = new ImageBuffer{ SCREEN_SIZE_X ,SCREEN_SIZE_Y };
     shadowCasterBuffer = new ImageBuffer{ SCREEN_SIZE_X ,SCREEN_SIZE_Y };
     fogBuffer = new ImageBuffer{ SCREEN_SIZE_X ,SCREEN_SIZE_Y };
+    fogBufferPostCam = new ImageBuffer{ SCREEN_SIZE_X ,SCREEN_SIZE_Y };
     particleManager = new ParticleManager;
     faceIndex = -1;
     faceState = 0;
@@ -99,6 +233,7 @@ Renderer::~Renderer(void)
     delete DebugBuffer;
     delete lightBuffer;
     delete fogBuffer;
+    delete fogBufferPostCam;
     delete particleManager;
 
     if (menuBuffer != NULL)
@@ -139,6 +274,7 @@ void Renderer::CleanRenderer()
     DebugBuffer->ClearImageBuffer();
     lightBuffer->ClearImageBuffer();
     fogBuffer->ClearImageBuffer();
+    fogBufferPostCam->ClearImageBuffer();
 
     if (menuBuffer != NULL)
     {
@@ -160,6 +296,7 @@ void Renderer::CleanRenderer()
     numLights = 0;
     frameCount = 0;
     timer = 0;
+    fogIsDirty = true;
     CameraP = Vector2{ 0,0 };
 }
 
@@ -854,52 +991,54 @@ void Renderer::DitherBuffer(ImageBuffer* input, ImageBuffer* output, bool useLig
     const int xSize = (int)inputBuffer->size.x;
     const int ySize = (int)inputBuffer->size.y;
     Color black{ 0,0,0,255 };
-
-    #pragma omp parallel for collapse(2) shared(xSize, ySize) private(red, green, blue, bayerNum, corr, i1, i2, i3)
-    for (int x = 0; x < xSize; ++x)
+    #pragma omp parallel
     {
-        for (int y = 0; y < ySize; ++y)
+        #pragma omp for nowait collapse(2) private(red, green, blue, bayerNum, corr, i1, i2, i3)
+        for (int x = 0; x < xSize; ++x)
         {
-            Color& SourcePixel = input->SampleColor(x, y);
-            Color tempColor = SourcePixel;
-            if (useLightIntensity == true)
+            for (int y = 0; y < ySize; ++y)
             {
-                Color white{ 255,255,255,255 };
-                tempColor = white.ScaleIndividual(lightR[x][y], lightG[x][y], lightB[x][y]);
-            }
-            red = tempColor.GetRed();
-            green = tempColor.GetGreen();
-            blue = tempColor.GetBlue();
-
-            bayerNum = BAYER_PATTERN_8X8[x % bayerSize][y % bayerSize];
-            corr = (int)((bayerNum / 7) - 2);	//	 -2 because: 256/7=36  36*7=252  256-252=4   4/2=2 - correction -2
-
-            i1 = (int)((blue + corr) / 36);
-            i2 = (int)((green + corr) / 36);
-            i3 = (int)((red + corr) / 36);
-
-            clamp((float)i1, 0, 7);
-            clamp((float)i2, 0, 7);
-            clamp((float)i3, 0, 7);
-
-
-            Color& DestPixel = output->SampleColor(x, y);
-            //force glowing eyes, maybe make an emisive mask later
-            if (renderOnlyLights == false)
-            {
-                if (DestPixel == Color{ 196,215,165,255 })
+                Color& SourcePixel = input->SampleColor(x, y);
+                Color tempColor = SourcePixel;
+                if (useLightIntensity == true)
                 {
-                    DestPixel = inputBuffer->SampleColor(x, y);
+                    Color white{ 255,255,255,255 };
+                    tempColor = white.ScaleIndividual(lightR[x][y], lightG[x][y], lightB[x][y]);
+                }
+                red = tempColor.GetRed();
+                green = tempColor.GetGreen();
+                blue = tempColor.GetBlue();
+
+                bayerNum = BAYER_PATTERN_8X8[x % bayerSize][y % bayerSize];
+                corr = (int)((bayerNum / 7) - 2);	//	 -2 because: 256/7=36  36*7=252  256-252=4   4/2=2 - correction -2
+
+                i1 = (int)((blue + corr) / 36);
+                i2 = (int)((green + corr) / 36);
+                i3 = (int)((red + corr) / 36);
+
+                clamp((float)i1, 0, 7);
+                clamp((float)i2, 0, 7);
+                clamp((float)i3, 0, 7);
+
+
+                Color& DestPixel = output->SampleColor(x, y);
+                //force glowing eyes, maybe make an emisive mask later
+                if (renderOnlyLights == false)
+                {
+                    if (DestPixel == Color{ 196,215,165,255 })
+                    {
+                        DestPixel = inputBuffer->SampleColor(x, y);
+                    }
+                    else
+                    {
+                        DestPixel = SourcePixel.ScaleIndividual(((float)i1 / 7), ((float)i1 / 7), ((float)i1 / 7));
+                    }
                 }
                 else
                 {
-                     DestPixel = SourcePixel.ScaleIndividual(((float)i1 / 7), ((float)i1 / 7), ((float)i1 / 7));
+                    Color white{ 255,255,255,255 };
+                    DestPixel = white.ScaleIndividual(((float)i1 / 7), ((float)i1 / 7), ((float)i1 / 7));
                 }
-            }
-            else
-            {
-                Color white{ 255,255,255,255 };
-                DestPixel = white.ScaleIndividual(((float)i1 / 7), ((float)i1 / 7), ((float)i1 / 7));
             }
         }
     }
@@ -930,19 +1069,19 @@ void Renderer::RenderToOutbuffer()
             }
             if (doFog == true)
             {
-                Color temp = fogBuffer->SampleColor(x, y);
-                if (temp != black && DestPixel != black)
+                Color fog = fogBufferPostCam->SampleColor(x, y);
+                if (fog != black && DestPixel != black)
                 {
-                    DestPixel = BlendColors(DestPixel, temp, 10);
+                    DestPixel = BlendColors(DestPixel, fog, fogOpacity);
                 }
+            }
+            if (drawRawFog == true)
+            {
+                DestPixel = fogBufferPostCam->SampleColor(x, y);
             }
             if (renderNormalMap == true)
             {
                 DestPixel = normalBufferPostCam->SampleColor(x, y);
-            }
-            if (drawRawFog == true)
-            {
-                DestPixel = fogBuffer->SampleColor(x, y);
             }
         }
     }
@@ -950,8 +1089,6 @@ void Renderer::RenderToOutbuffer()
     if (renderWallHitboxes == true)
     {
         RenderWallCollidersToDebugBuffer();
-        Vector2 camPos = GetCameraPosition();
-        DebugBuffer->Blit(outputBuffer, -camPos.x, -camPos.y);
     }
 
     if (Engine::GetInstance()->Paused() == true)
@@ -1024,109 +1161,6 @@ void Renderer::RenderMenu()
 void Renderer::MakeMenu(const std::string filename)
 {
     menuBuffer = new ImageBuffer{filename};
-}
-
-void Renderer::Update(float dt)
-{
-    Uint32 currentTime = SDL_GetTicks();
-    ScopeTimer TestScopeTimer("Renderer::Update");
-    UpdateAnimations(dt);
-    UpdateFace(faceState);
-    UpdateObjects();
-    RenderLightingPass();
-    BlurLights();
-    DitherBuffer(inputBuffer, inputBuffer, true);
-    if (doFog == true)
-    {
-        UpdateVornoiPoints();
-        MakeVornoiNoiseBuffer(200, 1, 70);
-        BlurBuffer(fogBuffer);
-        FloorBrightness(fogBuffer, 150);
-        DitherBuffer(fogBuffer, fogBuffer);
-    }
-    RenderToOutbuffer();
-
-    DebugBuffer->Blit(outputBuffer, -GetCameraPosition().x, -GetCameraPosition().y);
-    DebugBuffer->ClearImageBuffer();
-
-    float AverageFrameLength = 0.0f;
-	for(uint32_t FrameIndex = 1; FrameIndex < _countof(PreviousFrameLengths); ++FrameIndex)
-	{
-        AverageFrameLength += PreviousFrameLengths[FrameIndex - 1];
-        PreviousFrameLengths[FrameIndex] = PreviousFrameLengths[FrameIndex - 1];
-	}
-
-    float dtThisFrame = (float)(currentTime - PreviousFrameBeginTime) / 1000.0f;
-    PreviousFrameLengths[0] = dtThisFrame;
-    AverageFrameLength += dtThisFrame;
-    AverageFrameLength /= (float)_countof(PreviousFrameLengths);
-    
-	float AverageFrameRate = 1.0f / AverageFrameLength;
-	char WindowTextBuffer[128];
-	sprintf_s(WindowTextBuffer, sizeof(WindowTextBuffer), "FPS: %.2f", AverageFrameRate);
-    SDL_SetWindowTitle(window, WindowTextBuffer);
-    
-
-#ifdef _DEBUG
-    /*
-    for (int i = 0; i < numLights * 2; i++)
-    {
-        if (i % 2 == 0)
-        {
-            outputBuffer->buffer[i + 1 + (3 * outputBuffer->BufferSizeX)] = { 0,0,255,255 };
-        }
-    }
-    */
-#endif
-    
-    if(!OutputBufferTexture)
-    {
-        glGenTextures(1, &OutputBufferTexture);
-    }
-
-	// @TODO: Maybe rework image buffers to be alligned to GPU memory layouts
-	assert(sizeof(Color) == sizeof(uint32_t));
-
-    glClearColor(1.0f, 0.0f, 1.0f, 0.0f);
-    glClear(GL_COLOR_BUFFER_BIT);
-    
-    glEnable(GL_TEXTURE_2D);
-    
-    glActiveTexture(GL_TEXTURE0);
-    glBindTexture(GL_TEXTURE_2D, OutputBufferTexture);
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8,
-                 outputBuffer->size.x, outputBuffer->size.y,
-                 0,
-                 GL_RGBA, GL_UNSIGNED_BYTE,
-                 (void *)outputBuffer->buffer);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_BORDER);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_BORDER);
-    
-    glBegin(GL_QUADS);
-    glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
-
-    glTexCoord2f(0.0f, 0.0f);
-    glVertex2f(-1.0f, 1.0f);
-
-    glTexCoord2f(1.0f, 0.0f);
-    glVertex2f(1.0f, 1.0f);
-
-    glTexCoord2f(1.0f, 1.0f);
-    glVertex2f(1.0f, -1.0f);
-
-    glTexCoord2f(0.0f, 1.0f);
-    glVertex2f(-1.0f, -1.0f);
-
-    glEnd();
-
-    ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
-    
-    SDL_GL_SwapWindow(window);
-    
-    objectLayer->ClearImageBuffer();
-    PreviousFrameBeginTime = currentTime;
 }
 
 int Renderer::returnObjCnt()
@@ -1332,60 +1366,39 @@ void Renderer::GenerateVornoiPoints()
     }
 }
 
-void Renderer::UpdateVornoiPoints()
+void Renderer::MakeVornoiNoiseBuffer(ImageBuffer* out, float falloffModifier, float brightnessMultiplier, float minBrightness)
 {
-    for (int i = 0; i < MAX_NUM_VORNOI_POINTS; ++i)
-    {
-        if (vornoiPoints[i].x < SCREEN_SIZE_X + 15 && vornoiPoints[i].y < SCREEN_SIZE_Y + 15 && vornoiPoints[i].x > 0 - 15 && vornoiPoints[i].y > 0 - 15)
-        {
-            vornoiPoints[i] += {-.08, -.02};
-        }
-        else
-        {
-            vornoiPoints[i].x = SCREEN_SIZE_X + 9;
-            vornoiPoints[i].y = (float)(rand() % (int)SCREEN_SIZE_Y);
-        }
-    }
-}
-
-void Renderer::MakeVornoiNoiseBuffer(float falloffModifier, float brightnessMultiplier, float minBrightness)
-{
-    fogBuffer->ClearImageBuffer();
+    Vector2 camPos = GetCameraPosition();
     const int xSize = (int)inputBuffer->size.x;
     const int ySize = (int)inputBuffer->size.y;
-    Vector2 camPos = GetCameraPosition();
     #pragma omp parallel
     {
-        #pragma omp for nowait collapse(3)
+    #pragma omp for nowait collapse(3)
         for (int x = 0; x < xSize; ++x)
         {
             for (int y = 0; y < ySize; ++y)
             {
-                Color& checkLight = inputBuffer->SampleColor(x, y);
-                if (checkLight.r != 0 || checkLight.g != 0 || checkLight.b != 0)
+                float oldDist = 9999;
+                for (int i = 0; i < MAX_NUM_VORNOI_POINTS; ++i)
                 {
-                    float oldDist = 9999;
-                    for (int i = 0; i < MAX_NUM_VORNOI_POINTS; ++i)
+                    float tempDist = distanceSquared(vornoiPoints[i].x - camPos.x, vornoiPoints[i].y - camPos.y, x, y);
+                    if (oldDist > tempDist)
                     {
-                        float tempDist = distanceSquared(vornoiPoints[i].x - camPos.x, vornoiPoints[i].y - camPos.y, x, y);
-                        if (oldDist > tempDist)
-                        {
-                            oldDist = tempDist;
-                        }
+                        oldDist = tempDist;
                     }
-                    oldDist = clamp((100 - oldDist) + falloffModifier, 0, 255);
+                }
+                oldDist = clamp((100 - oldDist) + falloffModifier, 0, 255);
 
-                    Color& DestPixel = fogBuffer->SampleColor(x, y);
-                    if (oldDist != 0)
-                    {
-                        float finalColor = (float)((oldDist * brightnessMultiplier) + minBrightness);
-                        finalColor = clamp(finalColor,0,255);
-                        DestPixel = Color{(uint8_t)finalColor, (uint8_t)finalColor, (uint8_t)finalColor, 255 };
-                    }
-                    else
-                    {
-                        DestPixel = Color{ 0, 0, 0, 0 };
-                    }
+                Color& DestPixel = out->SampleColor(x, y);
+                if (oldDist != 0)
+                {
+                    float finalColor = (float)((oldDist * brightnessMultiplier) + minBrightness);
+                    finalColor = clamp(finalColor, 0, 255);
+                    DestPixel = Color{ (uint8_t)finalColor, (uint8_t)finalColor, (uint8_t)finalColor, 255 };
+                }
+                else
+                {
+                    DestPixel = Color{ 0, 0, 0, 0 };
                 }
             }
         }
