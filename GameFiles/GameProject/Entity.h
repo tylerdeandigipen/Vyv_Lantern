@@ -30,7 +30,7 @@ public:
 	void CreateAnimatedImage(const std::string);
 
 	bool IsNamed(const char* name);
-	void Read(json const& stream);
+	void Read(json &stream);
 	void FreeComponents();
 	void Add(Component*);
 	void AddToRenderer(Renderer* pixel, std::string _file = "");
@@ -38,7 +38,7 @@ public:
 	void Destroy();
 
 	static std::string ObjectName();
-	//static std::string LightName();
+	static std::string LightName();
 
 	void SetName(const char* name);
 	void SetInputHandler(Inputs* input);
@@ -66,7 +66,7 @@ public:
 	void Update(float dt);
 	void Render();
 #define Has(type) GetComponent<type>(Component::c##type)
-
+	std::string lightFile;
 private:
 	Component* BinarySearch(Component::TypeEnum type) const;
 

@@ -1,4 +1,14 @@
+//------------------------------------------------------------------------------
+//
+// File Name:	LevelBuilder.cpp
+// Author(s):	Michael Howard
+// Purpose:		Sets up the tilemap and game objects for each level
+//
+// Copyright  © 2023 DigiPen (USA) Corporation.
+//
+//------------------------------------------------------------------------------
 #include "LevelBuilder.h"
+#include "EntityContainer.h"
 #include "EntityFactory.h"
 #include "FileIO.h"
 #include "Transform.h"
@@ -34,9 +44,11 @@ Engine::EngineCode LevelBuilder::Init()
 	return Engine::NothingBad;
 }
 
-void LevelBuilder::Read(json const& _jsonData, Renderer* pixel)
+void LevelBuilder::Read(json &_jsonData)
 {
     EntityFactory* factory = EntityFactory::GetInstance();
+    Renderer* pixel = Renderer::GetInstance();
+
     //if (jsonData["Entities"].is_array())
     //{
         for (auto& entityData : _jsonData["Entities"])
@@ -57,12 +69,17 @@ void LevelBuilder::Read(json const& _jsonData, Renderer* pixel)
                     newEnt->AddToRenderer(pixel);
                 }
             }
+            if (newEnt->IsLight())
+            {
+
+            }
         }
     //}
 }
 
-void LevelBuilder::LoadLevel(Renderer* pixel, std::string filename)
+void LevelBuilder::LoadLevel(std::string filename)
 {
+    Renderer* pixel = Renderer::GetInstance();
     std::fstream file(filename);
     if (file.is_open())
     {
@@ -75,6 +92,7 @@ void LevelBuilder::LoadLevel(Renderer* pixel, std::string filename)
     }
     if (jsonData["Levels"].is_array())
     {
+        AddTileSets();
         for (auto& levelData : jsonData["Levels"])
         {
             if (levelData["TylerTileData"].is_object())
@@ -93,7 +111,7 @@ void LevelBuilder::LoadLevel(Renderer* pixel, std::string filename)
                 pixel->MakeTileMap(TileMap);
             }
 
-            Read(levelData, pixel);
+            Read(levelData);
         }
     }
     //pixel->ResizeBuffers();
@@ -179,6 +197,11 @@ int LevelBuilder::GetY()
     return SizeY;
 }
 
+const EntityContainer* LevelBuilder::GetContainer()
+{
+    return entity_container;
+}
+
 void LevelBuilder::SetX(int size)
 {
     SizeX = size;
@@ -192,4 +215,13 @@ void LevelBuilder::SetY(int size)
 int LevelBuilder::CountEntities()
 {
     return entity_container->CountEntities();
+}
+
+
+void LevelBuilder::AddTileSets()
+{
+    Renderer* pixel = Renderer::GetInstance();
+    FileIO::GetInstance()->ReadTileSet("./Data/TileMapSprites.json", pixel);
+    FileIO::GetInstance()->ReadTileSet("./Data/TileMapNormals.json", pixel, 1);
+    FileIO::GetInstance()->ReadTileSet("./Data/TileMapShadows.json", pixel, 2);
 }

@@ -52,8 +52,8 @@ ImageBuffer::ImageBuffer() : buffer(new Color[BufferSizeX * BufferSizeY])
 
 ImageBuffer::ImageBuffer(float x, float y)
 {
-	BufferSizeX = (int)x;
-	BufferSizeY = (int)y;
+	BufferSizeX = static_cast<int>(x);
+	BufferSizeY = static_cast<int>(y);
 
 	buffer = new Color[BufferSizeX * BufferSizeY];
     ClearImageBuffer();

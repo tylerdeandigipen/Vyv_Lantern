@@ -152,6 +152,7 @@
       <Filter>Source FIles\Scenes</Filter>
     </ClCompile>
     <ClCompile Include="PauseMenu.cpp" />
+    <ClCompile Include="PauseMenu.cpp" />
     <ClCompile Include="BehaviorMirror.cpp">
       <Filter>Source FIles\Components\Sub Components</Filter>
     </ClCompile>
@@ -330,6 +331,7 @@
       <Filter>Header FIles\Scenes</Filter>
     </ClInclude>
     <ClInclude Include="PauseMenu.h" />
+    <ClInclude Include="PauseMenu.h" />
     <ClInclude Include="BehaviorMirror.h">
       <Filter>Header FIles\Components\SubComponents</Filter>
     </ClInclude>
@@ -349,9 +351,6 @@
     <None Include="TempEntity.json">
       <Filter>JSON</Filter>
     </None>
-    <None Include="Data\TestLight.json">
-      <Filter>JSON</Filter>
-    </None>
     <None Include="Data\TileMapSprites.json">
       <Filter>JSON</Filter>
     </None>
@@ -367,6 +366,12 @@
     </None>
     <None Include="MichaelTempWinScene.json">
       <Filter>JSON</Filter>
+    </None>
+    <None Include="Data\Lights\PlayerDirectionalLight.json">
+      <Filter>JSON\PlayerInfo</Filter>
+    </None>
+    <None Include="Data\Lights\PlayerDomeLight.json">
+      <Filter>JSON\PlayerInfo</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>
@@ -441,6 +446,9 @@
     </Filter>
     <Filter Include="Misc">
       <UniqueIdentifier>{2ffef8f6-b2f1-4463-89d0-1b2a001c38ef}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="JSON\PlayerInfo">
+      <UniqueIdentifier>{08dc41b4-6903-4de6-8280-c2b717b0869f}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

@@ -85,28 +85,9 @@ Engine::EngineCode TbdTestScene::Init()
     // Create SDL Window
     TbdWindow = PlatformSystem::GetInstance()->GetWindowHandle();
     TbdPixelRenderer->window = TbdWindow;
-
-    FileIO::GetInstance()->ReadTileSet("./Data/TileMapSprites.json", TbdPixelRenderer);
-    FileIO::GetInstance()->ReadTileSet("./Data/TileMapNormals.json", TbdPixelRenderer, 1);
-    FileIO::GetInstance()->ReadTileSet("./Data/TileMapShadows.json", TbdPixelRenderer, 2);
-    LevelBuilder::GetInstance()->LoadLevel(TbdPixelRenderer, "./TiledMichaelTest.json");
-
-    FileIO::GetInstance()->ReadLight("./Data/TestLight.json", tempLight);
-
-    tempLight2.position.x = 200;
-    tempLight2.position.y = 90;
-
-    tempLight2.color = { 216, 247, 255, 255 };
-
-    tempLight2.intensity = 3.0f;
-    tempLight2.radius = 23;
-    tempLight2.radialFalloff = .2;
-    tempLight2.radialWeight = 2;
-    tempLight2.angularWeight = 0;
-    tempLight2.volumetricIntensity = 0.25f;
-
-    TbdPixelRenderer->AddLight(tempLight);
-    TbdPixelRenderer->AddLight(tempLight2);
+    
+    //initialize level data
+    LevelBuilder::GetInstance()->LoadLevel("./TiledMichaelTest.json");
 
     /*
     Color tempColor( 226, 230, 179, 255 );
@@ -600,6 +581,30 @@ void TbdTestScene::ImGuiWindow()
         ImGui::Text(isGPressedForCheat ? "Active" : "Inactive");
 
         ImGui::Separator();
+        ImGui::Text("Entities:");
+        const EntityContainer entityContainer = *LevelBuilder::GetInstance()->GetContainer();
+        int numEntities = LevelBuilder::GetInstance()->CountEntities();
+
+        if (ImGui::TreeNode("All Entities"))
+        {
+            for (int i = 0; i < numEntities; i++)
+            {
+                Entity* entity = entityContainer[i];
+                if (entity)
+                {
+                    if (ImGui::TreeNode(("Entity %s", entity->GetRealName().c_str())))
+                    {
+                        ImGui::Text("Name: %s", entity->GetRealName().c_str());
+                        ImGui::Text("Entity Number: %d", i);
+
+                        ImGui::TreePop();
+                    }
+                }
+            }
+            ImGui::TreePop();
+        }
+
+        ImGui::Separator();
 
         ImGui::Text("Particle System:");
 
@@ -637,9 +642,6 @@ void TbdTestScene::ImGuiWindow()
 
         ImGui::Separator();
         ImGui::Text("Scene Tools:");
-
-        int numEntities = LevelBuilder::GetInstance()->CountEntities();
-        ImGui::Text("Number of Entities: %d", numEntities);
 
         if (ImGui::Button("Toggle Metrics/Debug Bar"))
         {

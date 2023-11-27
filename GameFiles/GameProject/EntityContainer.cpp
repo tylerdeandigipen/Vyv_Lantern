@@ -27,6 +27,7 @@ EntityContainer::~EntityContainer()
 
 bool EntityContainer::AddEntity(Entity* entity)
 {
+	// add logging info
 	entities.push_back(entity);
 	++entityCount;
 	return true;
@@ -42,6 +43,27 @@ Entity* EntityContainer::FindByName(const char* name)
 	}
 	return NULL;
 
+}
+
+// allows the ability to loop through and get the information of each entity/game-object
+Entity* EntityContainer::operator[](int index) const
+{
+	if (!entities.empty())
+	{
+		if (entities[index] != NULL)
+		{
+			return entities[index];
+		}
+		else
+		{
+			//add logging info
+			return NULL;
+		}
+	}
+	else
+	{
+		return NULL;
+	}
 }
 
 bool EntityContainer::IsEmpty()

@@ -25,6 +25,7 @@ public:
 	~EntityContainer();
 	bool AddEntity(Entity* _entity);
 	Entity* FindByName(const char* entity_name);
+	Entity* operator[](int index) const;
 	bool IsEmpty();
 	void UpdateAll(float dt);
 	void CheckCollisions();

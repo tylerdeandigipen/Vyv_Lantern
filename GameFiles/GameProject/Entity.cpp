@@ -12,6 +12,7 @@
 #include <algorithm>
 #include "Component.h"
 #include "ComponentFactory.h"
+#include "FileIO.h"
 #include "Behavior.h"
 #include "BehaviorPlayer.h"
 #include "Entity.h"
@@ -30,12 +31,12 @@ struct ComponentSorter
 	}
 };
 
-Entity::Entity() : isDestroyed(false), components(), name{}, image(NULL), mName(), isLight(false), isObject(false), isAnimated(false)
+Entity::Entity() : isDestroyed(false), components(), name{}, image(NULL), mName(), isLight(false), isObject(false), isAnimated(false), AnimationArray()
 {
 
 }
 
-Entity::Entity(std::string type, const std::string file, json Animated) : isDestroyed(0), components(), name{}, image(NULL), mName(), isLight(false), isObject(false), isAnimated(false)
+Entity::Entity(std::string type, const std::string file, json Animated) : isDestroyed(0), components(), name{}, image(NULL), mName(), isLight(false), isObject(false), isAnimated(false), AnimationArray()
 {
 	if (type.compare("Object") == 0)
 	{	
@@ -52,17 +53,11 @@ Entity::Entity(std::string type, const std::string file, json Animated) : isDest
 			isObject = true;
 		}
 	}
-	else if (type.compare("Image") == 0)
+	else if (type.compare("Light") == 0)
 	{
-
-		//CreateLight();
+		lightFile = file;
 		isLight = true;
 	}
-	else
-	{
-
-	}
-
 }
 
 
@@ -82,10 +77,8 @@ Entity::Entity(Entity const& ent) : isDestroyed(ent.isDestroyed), name{}, compon
 
 Entity::~Entity()
 {
-	if (image)
+	if (image != NULL)
 		delete image;
-//	if (light)
-//		delete light;
 }
 
 Entity* Entity::Clone()
@@ -118,13 +111,13 @@ bool Entity::IsLight() { return isLight; };
 bool Entity::IsObject() { return isObject; };
 bool Entity::IsAnimated() { return isAnimated; }
 
-void Entity::Read(json const& jsonData)
+void Entity::Read(json &jsonData)
 {
 	ComponentFactory* factory = ComponentFactory::GetInstance();
 
 	mName = jsonData["Name"];
 
-	for (auto componentData : jsonData["Components"])
+	for (auto& componentData : jsonData["Components"])
 	{
 		std::string type = componentData["Type"];
 		if (Component* component = factory->CreateComponent(type))
@@ -162,15 +155,15 @@ std::string Entity::ObjectName()
 	return "Object";
 }
 
+std::string Entity::LightName()
+{
+	return "Light";
+}
+
 std::string Entity::GetRealName()
 {
 	return mName;
 }
-
-//std::string Entity::ObjectName()
-//{
-//	return "Light";
-//}
 
 void Entity::SetName(const char* _name)
 {

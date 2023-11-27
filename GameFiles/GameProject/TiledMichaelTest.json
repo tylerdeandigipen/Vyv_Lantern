@@ -62,6 +62,40 @@
               "Type": "BehaviorDoor"
             }
           ]
+        },
+        {
+          "Type": "Light",
+          "Name": "PlayerDirectional",
+          "file": "./Data/Lights/PlayerDirectionalLight.json",
+          "Components": [
+            {
+              "Type": "Transform",
+              "translation": {
+                "x": 192,
+                "y": 48
+              }
+            },
+            {
+              "Type": "Light"
+            }
+          ]
+        },
+        {
+          "Type": "Light",
+          "Name": "PlayerDome",
+          "file": "./Data/Lights/PlayerDomeLight.json",
+          "Components": [
+            {
+              "Type": "Transform",
+              "translation": {
+                "x": 200,
+                "y": 90
+              }
+            },
+            {
+              "Type": "Light"
+            }
+          ]
         }
       ]
     }

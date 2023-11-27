@@ -2,27 +2,27 @@
 
 #include "stdafx.h"
 #include "BaseSystem.h"
-#include "EntityContainer.h"
-#include "Renderer.h"
 #include <nlohmann/json.hpp>
 
 using json = nlohmann::json;
+class EntityContainer;
+class Renderer;
 
 class LevelBuilder : public BaseSystem
 {
 public:
 	LevelBuilder();
 	~LevelBuilder();
-	void Read(json const& jsonData, Renderer* pixel);
+	void Read(json &jsonData);
 	Engine::EngineCode Init();
 	void Update(float dt);
 	void LevelUpdate(float dt);
 
 	void Render();
 	Engine::EngineCode Close();
-
+	
 	static LevelBuilder* GetInstance();
-	void LoadLevel(Renderer* pixel, std::string filename);
+	void LoadLevel(std::string filename);
 	void ReLoadLevel();
 	void FreeLevel();
 	static void SetWinState(bool state);
@@ -36,7 +36,10 @@ public:
 	void SetY(int siye);
 	int GetX();
 	int GetY();
+	const EntityContainer* GetContainer();
+
 private:
+	void AddTileSets();
 	static LevelBuilder* instance;
 	static bool WinState;
 	EntityContainer* entity_container;
