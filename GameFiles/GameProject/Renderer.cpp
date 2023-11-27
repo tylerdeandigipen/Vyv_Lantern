@@ -32,6 +32,8 @@
 #include <assert.h>
 #include <omp.h>
 
+#include "PauseMenu.h"
+
 #define OneOver255 (1.0f / 255.0f)
 
 #ifdef _DEBUG
@@ -469,42 +471,7 @@ void Renderer::RenderMenu()
         }
     }
 
-    int mouseX = Inputs::GetInstance()->getMouseX();
-    int mouseY = Inputs::GetInstance()->getMouseY();
-
-    int backButtonTopLeftX = 40;
-    int backButtonTopLeftY = 336;
-    int backButtonBottomRightX = 240;
-    int backButtonBottomRightY = 440;
-
-    int exitButtonTopLeftX = 300;
-    int exitButtonTopLeftY = 250;
-    int exitButtonBottomRightX = 490;
-    int exitButtonBottomRightY = 370;
-
-    bool isMouseOverbackButton =
-        mouseX >= backButtonTopLeftX && mouseX <= backButtonBottomRightX &&
-        mouseY >= backButtonTopLeftY && mouseY <= backButtonBottomRightY;
-
-    bool isMouseOverExitButton =
-        mouseX >= exitButtonTopLeftX && mouseX <= exitButtonBottomRightX &&
-        mouseY >= exitButtonTopLeftY && mouseY <= exitButtonBottomRightY;
-
-    if (isMouseOverbackButton == true)
-    {
-        if (Inputs::GetInstance()->mouseButtonPressed(SDL_BUTTON_LEFT))
-        {
-            Engine::GetInstance()->SetPause(false);
-        }
-    }
-    if (isMouseOverExitButton == true)
-    {
-        if (Inputs::GetInstance()->mouseButtonPressed(SDL_BUTTON_LEFT))
-        {
-            Engine::GetInstance()->SetCloseRequest(true);
-        }
-    }
-
+    PauseMenu::GetInstance()->HandleInput();
 
     menuBuffer->Blit(outputBuffer);
 
