@@ -36,7 +36,7 @@ public:
 	void SetY(int siye);
 	int GetX();
 	int GetY();
-	const EntityContainer* GetContainer() const;
+	const EntityContainer* GetContainer();
 
 private:
 	void AddTileSets();

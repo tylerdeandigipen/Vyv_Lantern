@@ -197,7 +197,7 @@ int LevelBuilder::GetY()
     return SizeY;
 }
 
-const EntityContainer* LevelBuilder::GetContainer() const
+const EntityContainer* LevelBuilder::GetContainer()
 {
     return entity_container;
 }

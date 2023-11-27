@@ -581,6 +581,30 @@ void TbdTestScene::ImGuiWindow()
         ImGui::Text(isGPressedForCheat ? "Active" : "Inactive");
 
         ImGui::Separator();
+        ImGui::Text("Entities:");
+        const EntityContainer entityContainer = *LevelBuilder::GetInstance()->GetContainer();
+        int numEntities = LevelBuilder::GetInstance()->CountEntities();
+
+        if (ImGui::TreeNode("All Entities"))
+        {
+            for (int i = 0; i < numEntities; i++)
+            {
+                Entity* entity = entityContainer[i];
+                if (entity)
+                {
+                    if (ImGui::TreeNode(("Entity %s", entity->GetRealName().c_str())))
+                    {
+                        ImGui::Text("Name: %s", entity->GetRealName().c_str());
+                        ImGui::Text("Entity Number: %d", i);
+
+                        ImGui::TreePop();
+                    }
+                }
+            }
+            ImGui::TreePop();
+        }
+
+        ImGui::Separator();
 
         ImGui::Text("Particle System:");
 
@@ -618,9 +642,6 @@ void TbdTestScene::ImGuiWindow()
 
         ImGui::Separator();
         ImGui::Text("Scene Tools:");
-
-        int numEntities = LevelBuilder::GetInstance()->CountEntities();
-        ImGui::Text("Number of Entities: %d", numEntities);
 
         if (ImGui::Button("Toggle Metrics/Debug Bar"))
         {
