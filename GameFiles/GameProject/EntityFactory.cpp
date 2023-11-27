@@ -23,6 +23,7 @@ EntityFactory::~EntityFactory()
 Engine::EngineCode EntityFactory::Init()
 {
     Add(Entity::ObjectName(), &EntityFactory::CreateObject);
+    Add(Entity::LightName(), &EntityFactory::CreateLight);
     //entity_map.emplace(Entity::LightName(), &EntityFactory::CreateLight);
     assert(winHandle != NULL);
     return Engine::NothingBad;
@@ -48,12 +49,12 @@ EntityFactory* EntityFactory::GetInstance()
 
 Entity* EntityFactory::CreateEntity(std::string const& type, const std::string file, json thing)
 {
-    if (entity_map.count(type))
-    {
-        return &entity_map[type](type, file, thing);
-    }
-    else
-        return NULL;
+    //if (entity_map.count(type))
+    //{
+    return &entity_map[type](type, file, thing);
+    //}
+    //else
+    //    return NULL;
 }
 
 
@@ -73,6 +74,12 @@ void EntityFactory::Add(std::string type, std::function<Entity& (std::string typ
 }
 
 Entity& EntityFactory::CreateObject(std::string type, const std::string file, json thing)
+{
+    Entity* entity = new Entity(type, file, thing);
+    return *entity;
+}
+
+Entity& EntityFactory::CreateLight(std::string type, const std::string file, json thing)
 {
     Entity* entity = new Entity(type, file, thing);
     return *entity;

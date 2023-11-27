@@ -1,5 +1,7 @@
 #include "Light.h"
 #include "FileIO.h"
+#include "Entity.h"
+#include "Renderer.h"
 
 Light::Light(const Light& rhs) : Component(rhs)
 {
@@ -53,7 +55,9 @@ void Light::Update(float dt)
 
 void Light::Read(json jsonData)
 {
-	FileIO::GetInstance()->ReadLight(*this, jsonData);
+	FileIO::GetInstance()->ReadLight(Parent()->lightFile, *this);
+	Renderer::GetInstance()->AddLight(*this);
+
 }
 
 std::string Light::TheName()

@@ -151,6 +151,7 @@
     <ClCompile Include="WinScene.cpp">
       <Filter>Source FIles\Scenes</Filter>
     </ClCompile>
+    <ClCompile Include="PauseMenu.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AudioEngine.h">
@@ -325,6 +326,7 @@
     <ClInclude Include="WinScene.h">
       <Filter>Header FIles\Scenes</Filter>
     </ClInclude>
+    <ClInclude Include="PauseMenu.h" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="GameProject.ico">
@@ -339,9 +341,6 @@
       <Filter>JSON</Filter>
     </None>
     <None Include="TempEntity.json">
-      <Filter>JSON</Filter>
-    </None>
-    <None Include="Data\TestLight.json">
       <Filter>JSON</Filter>
     </None>
     <None Include="Data\TileMapSprites.json">
@@ -359,6 +358,12 @@
     </None>
     <None Include="MichaelTempWinScene.json">
       <Filter>JSON</Filter>
+    </None>
+    <None Include="Data\Lights\PlayerDirectionalLight.json">
+      <Filter>JSON\PlayerInfo</Filter>
+    </None>
+    <None Include="Data\Lights\PlayerDomeLight.json">
+      <Filter>JSON\PlayerInfo</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>
@@ -433,6 +438,9 @@
     </Filter>
     <Filter Include="Misc">
       <UniqueIdentifier>{2ffef8f6-b2f1-4463-89d0-1b2a001c38ef}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="JSON\PlayerInfo">
+      <UniqueIdentifier>{08dc41b4-6903-4de6-8280-c2b717b0869f}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

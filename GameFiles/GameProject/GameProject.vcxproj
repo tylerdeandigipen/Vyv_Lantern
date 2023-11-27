@@ -278,9 +278,10 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Data\FirstLevel.json" />
+    <None Include="Data\Lights\PlayerDirectionalLight.json" />
+    <None Include="Data\Lights\PlayerDomeLight.json" />
     <None Include="Data\ScutSample(ALT).json" />
     <None Include="Data\Tbd_TestLevel.json" />
-    <None Include="Data\TestLight.json" />
     <None Include="Data\TiledLevelMap.json" />
     <None Include="Data\TileMapSprites.json" />
     <None Include="MichaelTempWinScene.json" />

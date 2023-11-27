@@ -1,8 +1,18 @@
+//------------------------------------------------------------------------------
+//
+// File Name:	FileIO.cpp
+// Author(s):	Michael Howard
+// Purpose:		Reading JSON data
+//
+// Copyright  © 2023 DigiPen (USA) Corporation.
+//
+//------------------------------------------------------------------------------
 #include "FileIO.h"
+#include "ImageBuffer.h"
+#include "Light.h"
 #include "LevelBuilder.h"
 #include "Renderer.h"
-#include <nlohmann/json.hpp>
-using json = nlohmann::json;
+
 
 FileIO* FileIO::instance = new FileIO;
 
@@ -30,6 +40,7 @@ json FileIO::OpenJSON(std::string filename)
 	else
 	{
 		perror("JSON file does not exist");
+		assert("File did not exist");
 	}
 	return jsonData;
 }
@@ -176,6 +187,8 @@ int** FileIO::ReadTylerTileMap(json jsonData)
 	}
 	return TileMap;
 }
+
+
 
 FileIO* FileIO::GetInstance()
 {
