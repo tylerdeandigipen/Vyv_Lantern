@@ -6,11 +6,13 @@
 
 class PauseMenu {
 public:
-    PauseMenu(const std::string& filename);
+    PauseMenu();
     ~PauseMenu();
 
     void Render();
     void HandleInput();
+
+    static PauseMenu* GetInstance();
 
 private:
     void RenderButtons();
@@ -18,4 +20,11 @@ private:
 
     bool IsMouseOverBackButton();
     bool IsMouseOverExitButton();
+    bool IsMouseOverSettingsButton();
+
+    void HandleBack();
+    void HandleExit();
+    void HandleSettings();
+
+    static PauseMenu* instance;
 };
