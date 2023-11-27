@@ -151,6 +151,10 @@
     <ClCompile Include="WinScene.cpp">
       <Filter>Source FIles\Scenes</Filter>
     </ClCompile>
+    <ClCompile Include="PauseMenu.cpp" />
+    <ClCompile Include="BehaviorMirror.cpp">
+      <Filter>Source FIles\Components\Sub Components</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AudioEngine.h">
@@ -324,6 +328,10 @@
     <ClInclude Include="DebugNew.h" />
     <ClInclude Include="WinScene.h">
       <Filter>Header FIles\Scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="PauseMenu.h" />
+    <ClInclude Include="BehaviorMirror.h">
+      <Filter>Header FIles\Components\SubComponents</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

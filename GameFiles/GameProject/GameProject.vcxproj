@@ -154,6 +154,7 @@
     <ClInclude Include="AudioEngine.h" />
     <ClInclude Include="BaseSystem.h" />
     <ClInclude Include="Behavior.h" />
+    <ClInclude Include="BehaviorMirror.h" />
     <ClInclude Include="BehaviorPlayer.h" />
     <ClInclude Include="BehaviorSwitch.h" />
     <ClInclude Include="Collider.h" />
@@ -215,6 +216,7 @@
     <ClCompile Include="AudioEngine.cpp" />
     <ClCompile Include="BaseSystem.cpp" />
     <ClCompile Include="Behavior.cpp" />
+    <ClCompile Include="BehaviorMirror.cpp" />
     <ClCompile Include="BehaviorPlayer.cpp" />
     <ClCompile Include="BehaviorSwitch.cpp" />
     <ClCompile Include="Collider.cpp" />
