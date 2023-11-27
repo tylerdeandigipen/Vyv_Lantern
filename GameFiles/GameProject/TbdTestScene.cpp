@@ -117,6 +117,8 @@ Engine::EngineCode TbdTestScene::Init()
     AudioManager.PlayMusic("drips");
     
     AudioManager.PlayMusic("forest");
+
+    Engine::GetInstance()->SetPause(false);
     return Engine::NothingBad;
 }
 
