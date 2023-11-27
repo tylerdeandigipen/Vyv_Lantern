@@ -111,10 +111,12 @@ Engine::EngineCode TbdTestScene::Init()
         TbdPixelRenderer->particleManager->AddParticle(testParticle);
     }
 
-  //  AudioManager.PlayMusic("drips");
-    
-  //  AudioManager.PlayMusic("forest");
+    //AudioManager.PlayMusic("bgm");
 
+
+    AudioManager.PlayMusic("drips");
+    
+    AudioManager.PlayMusic("forest");
     return Engine::NothingBad;
 }
 

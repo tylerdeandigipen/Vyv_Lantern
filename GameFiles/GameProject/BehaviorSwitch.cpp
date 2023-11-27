@@ -108,6 +108,7 @@ void BehaviorSwitch::SwitchCollisionHandler(Entity* entity1, Entity* entity2)
         {
             if (input->keyPressed(SDL_SCANCODE_E))
             {
+                AudioManager.PlaySFX("creak");
                 if (count < maxCount)
                 {
                     float progress = 0.0f; // Progress value for lerping

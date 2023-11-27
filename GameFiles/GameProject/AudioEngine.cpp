@@ -342,6 +342,8 @@
         {
             char* pathName = new char[filePath.length() + 1];
             std::copy(filePath.begin(), filePath.end(), pathName);
+            // Add null character at the end to terminate the string
+            pathName[filePath.length()] = '\0'; // Ensure proper termination
             FMOD::Sound* sound = 0;
             fmodSystem->createSound(pathName, FMOD_DEFAULT, nullptr, &sound);
             soundDatabase[musicName] = sound;
@@ -383,6 +385,8 @@
         {
             char* pathName = new char[filePath.length() + 1];
             std::copy(filePath.begin(), filePath.end(), pathName);
+            // Add null character at the end to terminate the string
+            pathName[filePath.length()] = '\0'; // Ensure proper termination
             FMOD::Sound* music = 0;
             fmodSystem->createSound(pathName, FMOD_LOOP_NORMAL, nullptr, &music);
             musicDatabase[musicName] = music;

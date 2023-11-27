@@ -35,6 +35,55 @@
             }
           ]
         },
+
+        {
+          "Type": "Object",
+          "Name": "Switch",
+          "file": "./Assets/PPM/Circle_2x2.ppm",
+          "isAnimated": false,
+          "frameSize": [ 8, 8 ],
+          "Components": [
+            {
+              "Type": "ColliderAABB"
+            },
+            {
+              "Type": "Transform",
+              "translation": {
+                "x": 80,
+                "y": 30
+              }
+            },
+            {
+              "Type": "Physics",
+              "OldTranslation": {
+                "x": 90,
+                "y": 30
+              }
+            },
+            {
+              "Type": "BehaviorSwitch",
+              "key": "1",
+              "pos": [
+                {
+                  "x": "60",
+                  "y": "30"
+                },
+                {
+                  "x": "40",
+                  "y": "30"
+                },
+                {
+                  "x": "20",
+                  "y": "30"
+                },
+                {
+                  "x": "80",
+                  "y": "30"
+                }
+              ]
+            }
+          ]
+        },
         {
           "Type": "Object",
           "Name": "Door",
