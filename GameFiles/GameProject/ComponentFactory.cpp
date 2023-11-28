@@ -14,6 +14,7 @@
 #include "BehaviorPlayer.h"
 #include "BehaviorDoor.h"
 #include "BehaviorSwitch.h"
+#include "BehaviorMirror.h"
 #include "Physics.h"
 #include "Light.h"
 
@@ -33,6 +34,7 @@ Engine::EngineCode ComponentFactory::Init()
     Add(BehaviorPlayer::Name(), &ComponentFactory::CreateBehaviorPlayer);
     Add(BehaviorSwitch::Name(), &ComponentFactory::CreateBehaviorSwitch);
     Add(BehaviorDoor::Name(), & ComponentFactory::CreateBehaviorDoor);
+    Add(BehaviorMirror::Name(), &ComponentFactory::CreateBehaviorMirror);
     Add(ColliderAABB::Name(), &ComponentFactory::CreateColliderAABB);
     Add(Transform::Name(), &ComponentFactory::CreateTransform);
     Add(Physics::Name(), &ComponentFactory::CreatePhysics);
@@ -101,6 +103,12 @@ Component& ComponentFactory::CreateBehaviorSwitch()
 {
     Behavior* behaviorSwitch = new BehaviorSwitch();
     return *behaviorSwitch;
+}
+
+Component& ComponentFactory::CreateBehaviorMirror()
+{
+    Behavior* behaviorMirror = new BehaviorMirror();
+    return *behaviorMirror;
 }
 
 Component& ComponentFactory::CreateColliderAABB(void)

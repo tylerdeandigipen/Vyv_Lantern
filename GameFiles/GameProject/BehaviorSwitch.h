@@ -2,6 +2,7 @@
 #include "Behavior.h"
 #include "Inputs.h"
 #include "Vector.h"
+#include "BehaviorMirror.h"
 #include <random>
 
 class BehaviorSwitch : public Behavior
@@ -26,7 +27,7 @@ public:
 
 private:
 	void Controller(float dt);
-	bool OnOff = false;
+	static bool OnOff;
 	static int count;
 	static int maxCount;
 	static std::vector<gfxVector2> pos;

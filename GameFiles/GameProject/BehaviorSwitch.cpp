@@ -108,6 +108,9 @@ void BehaviorSwitch::SwitchCollisionHandler(Entity* entity1, Entity* entity2)
         {
             if (input->keyPressed(SDL_SCANCODE_E))
             {
+                OnOff = true;
+                /*Mirror will move here*/
+                BehaviorMirror::SwitchOn(OnOff);
                 AudioManager.PlaySFX("creak");
                 if (count < maxCount)
                 {
@@ -137,7 +140,7 @@ void BehaviorSwitch::SwitchCollisionHandler(Entity* entity1, Entity* entity2)
                         entity1->GetImage()->position = pos[count];
                     }
                 }
-
+                OnOff = false;
                 /*Move switch*/
             }
         }
