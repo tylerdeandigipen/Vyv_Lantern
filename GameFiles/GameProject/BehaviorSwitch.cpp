@@ -16,6 +16,7 @@
 int BehaviorSwitch::count = 0;
 int BehaviorSwitch::maxCount = 4;
 std::vector<gfxVector2> BehaviorSwitch::pos;
+bool BehaviorSwitch::OnOff = false;
 
 
 BehaviorSwitch::BehaviorSwitch() : Behavior(Behavior::Switch)
@@ -127,9 +128,16 @@ void BehaviorSwitch::SwitchCollisionHandler(Entity* entity1, Entity* entity2)
                     }
                     progress += 0.001f;
                     count++;
+                    if (count == 4)
+                    {
+                        AudioManager.PlaySFX("door");
+                        LevelBuilder::setDoor(true);
+                    }
                 }
+                /*
                 else
                 {
+                    
                     count = 0;
                     if (entity2->GetRealName().compare("Switch") == 0)
                     {
@@ -139,7 +147,10 @@ void BehaviorSwitch::SwitchCollisionHandler(Entity* entity1, Entity* entity2)
                     {
                         entity1->GetImage()->position = pos[count];
                     }
+                    
+
                 }
+                */
                 OnOff = false;
                 /*Move switch*/
             }

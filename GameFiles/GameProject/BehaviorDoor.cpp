@@ -97,14 +97,18 @@ void BehaviorDoor::Read(json jsonData)
 
 void BehaviorDoor::DoorCollisionHandler(Entity* entity1, Entity* entity2)
 {
-    // check the player the door
-    if (entity1->GetRealName().compare("Player") == 0 && entity2->GetRealName().compare("Door") == 0)
-    {
-        LevelBuilder::SetWinState(true);
-    }
-    if (entity1->GetRealName().compare("Door") == 0 && entity2->GetRealName().compare("Player") == 0)
-    {
-        LevelBuilder::SetWinState(true);
+    // Check if the win state is already set
+    if (!LevelBuilder::IsWinStateSet() && LevelBuilder::getDoor()) {
+        // Check the player and the door collision
+        if ((entity1->GetRealName().compare("Player") == 0 && entity2->GetRealName().compare("Door") == 0) ||
+            (entity1->GetRealName().compare("Door") == 0 && entity2->GetRealName().compare("Player") == 0))
+        {
+            LevelBuilder::SetWinState(true);
+
+            // Play sound effects only when the win state is set for the first time
+            AudioManager.PlaySFX("cheer");
+            
+        }
     }
 }
 

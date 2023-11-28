@@ -27,6 +27,7 @@ public:
 	void FreeLevel();
 	static void SetWinState(bool state);
 	static bool GetWinState();
+	static bool IsWinStateSet();
 	void SetTileMap(int** tiles);
 	int** GetTileMap();
 	int CountEntities();
@@ -38,10 +39,14 @@ public:
 	int GetY();
 	const EntityContainer* GetContainer();
 
+	static void setDoor(bool door);
+	static bool getDoor();
+
 private:
 	void AddTileSets();
 	static LevelBuilder* instance;
 	static bool WinState;
+	static bool door;
 	EntityContainer* entity_container;
 	json jsonData;
 	int** TileMap;

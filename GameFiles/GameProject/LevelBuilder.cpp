@@ -15,6 +15,8 @@
 
 bool LevelBuilder::WinState = false;
 
+bool LevelBuilder::door = false;
+
 LevelBuilder* LevelBuilder::instance = new LevelBuilder();
 
 LevelBuilder::LevelBuilder() : entity_container(new EntityContainer()), jsonData(), TileMap(NULL), Walls(NULL), SizeX(0), SizeY(0)
@@ -164,6 +166,22 @@ bool LevelBuilder::GetWinState()
 {
     return WinState;
 }
+
+// Function to check if the win state is set
+bool LevelBuilder::IsWinStateSet() {
+    return WinState;
+}
+
+void LevelBuilder::setDoor(bool closeOpen)
+{
+    door = closeOpen;
+}
+
+bool LevelBuilder::getDoor()
+{
+    return door;
+}
+
 
 int** LevelBuilder::GetTileMap()
 {
