@@ -1,5 +1,6 @@
 #pragma once
 #include "Renderer.h"
+#include "ImageBuffer.h"
 
 class Animation
 {
@@ -9,6 +10,9 @@ class Animation
 	void Update(float dt);
 	void AddFrame(ImageBuffer* frame);
 	void SetCurrentFrame(int index);
+
+	ImageBuffer* CreateAnimatedObject(const std::string filename, Vector2 frameSize);
+	void UpdateFace(int& faceState);
 
 private:
 	std::vector<ImageBuffer*> frames;

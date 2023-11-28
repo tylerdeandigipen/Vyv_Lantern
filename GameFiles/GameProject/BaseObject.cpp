@@ -1,4 +1,3 @@
-// BaseObject.cpp
 #include "BaseObject.h"
 
 BaseObject::BaseObject() : transform(), sprite()
