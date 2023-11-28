@@ -87,7 +87,7 @@ Engine::EngineCode TbdTestScene::Init()
     TbdPixelRenderer->window = TbdWindow;
     
     //initialize level data
-    LevelBuilder::GetInstance()->LoadLevel("./TiledMichaelTest.json");
+    LevelBuilder::GetInstance()->LoadLevel("./Data/TiledMichaelSceneTest.json");
 
     /*
     Color tempColor( 226, 230, 179, 255 );
@@ -413,6 +413,7 @@ Engine::EngineCode TbdTestScene::Exit()
 {
     LevelBuilder::GetInstance()->FreeLevel();
     LevelBuilder::SetWinState(false);
+    LevelBuilder::setDoor(false);
     Inputs::GetInstance()->InputKeyClear();
     TbdPixelRenderer->CleanRenderer();
     winState = false;

@@ -1,12 +1,15 @@
 #pragma once
 #include "Behavior.h"
+
+class ImageBuffer;
+
 class BehaviorDoor : public Behavior
 {
 public:
 	BehaviorDoor();
 	BehaviorDoor(BehaviorDoor const& other);
 	~BehaviorDoor();
-	enum { cClosed, cOpen };
+	enum { cClosed, cOpen, cIdle };
 
 	std::string GetName() override;
 	static std::string Name();
@@ -24,5 +27,8 @@ public:
 private:
 	bool isDoorClosed;
 	bool AddedToForeGround;
+	std::string closedPPM;
+	std::string openPPM;
+	ImageBuffer* tempImage;
 };
 

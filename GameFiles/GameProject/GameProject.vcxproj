@@ -288,11 +288,9 @@
     <None Include="Data\Lights\PlayerDomeLight.json" />
     <None Include="Data\ScutSample(ALT).json" />
     <None Include="Data\Tbd_TestLevel.json" />
-    <None Include="Data\TiledLevelMap.json" />
+    <None Include="Data\TiledMichaelSceneTest.json" />
     <None Include="Data\TileMapSprites.json" />
-    <None Include="MichaelTempWinScene.json" />
-    <None Include="TempEntity.json" />
-    <None Include="TiledMichaelTest.json" />
+    <None Include="Data\TileMaps\TiledLevelMap.json" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

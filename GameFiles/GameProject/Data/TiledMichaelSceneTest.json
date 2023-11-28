@@ -2,7 +2,7 @@
   "Levels": [
     {
       "TiledData": {
-        "TileMapFile": "./Data/TiledLevelMap.json"
+        "TileMapFile": "./Data/TileMaps/TiledLevelMap.json"
       },
       "Entities": [
         {
@@ -87,7 +87,7 @@
         {
           "Type": "Object",
           "Name": "Door",
-          "file": "./Assets/PPM/Door_Open.ppm",
+          "file": "./Assets/PPM/Door_Closed.ppm",
           "isAnimated": false,
           "Components": [
             {
@@ -108,7 +108,10 @@
               }
             },
             {
-              "Type": "BehaviorDoor"
+              "Type": "BehaviorDoor",
+              "DoorClosed": true,
+              "ClosedSprite": "./Assets/PPM/Door_Closed.ppm",
+              "OpenSprite": "./Assets/PPM/Door_Open.ppm"
             }
           ]
         },
