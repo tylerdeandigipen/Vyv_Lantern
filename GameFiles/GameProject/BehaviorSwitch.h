@@ -24,7 +24,7 @@ public:
 
 	void Update(float dt);
 	void Read(json jsonData) override;
-	void SwitchCollisionHandler(Entity* entity1, Entity* entity2, Renderer* render = NULL);
+	static void SwitchCollisionHandler(Entity* entity1, Entity* entity2);
 
 private:
 	void Controller(float dt);

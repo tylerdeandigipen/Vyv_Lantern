@@ -100,28 +100,31 @@ gfxVector2 lerpValue(gfxVector2 a, gfxVector2 b, float t)
 
 
 ImageBuffer* prompt = NULL;
-void BehaviorSwitch::SwitchCollisionHandler(Entity* entity1, Entity* entity2, Renderer* render)
+void BehaviorSwitch::SwitchCollisionHandler(Entity* entity1, Entity* entity2)
 {
     Inputs* input = Inputs::GetInstance();
-
+    
     if (entity1->GetRealName().compare("Player") == 0 && entity2->GetRealName().compare("Switch") == 0 || entity1->GetRealName().compare("Switch") == 0 && entity2->GetRealName().compare("Player") == 0)
     {
         /*Check if player is inside switch*/
-        if (prompt == NULL && render != NULL)
+        if (prompt == NULL)
         {
-            prompt = new ImageBuffer{"filepath here HEHEHEHE"};
-            render->AddObject(prompt);
+            prompt = new ImageBuffer{"./Assets/PPM/Press_E.ppm"};
+            Renderer::GetInstance()->AddObject(prompt);
         }
         if (CollisionCheck(entity1->GetImage()->aabb, entity2->GetImage()->aabb))
         {
 
             if (entity2->GetRealName().compare("Switch") == 0)
             {
-                prompt->position.y = entity2->GetImage()->position.y + 10;
+                prompt->position.x = entity2->GetImage()->position.x + 10;
+                prompt->position.y = entity2->GetImage()->position.y - 10;
+                
             }
             if (entity1->GetRealName().compare("Switch") == 0)
             {
-                prompt->position.y = entity1->GetImage()->position.y + 10;
+                prompt->position.x = entity1->GetImage()->position.x + 10;
+                prompt->position.y = entity2->GetImage()->position.y - 10;
             }
 
             if (input->keyPressed(SDL_SCANCODE_E))
@@ -150,6 +153,7 @@ void BehaviorSwitch::SwitchCollisionHandler(Entity* entity1, Entity* entity2, Re
                         AudioManager.PlaySFX("door");
                         LevelBuilder::setDoor(true);
                     }
+                    //prompt->isCulled = true;
                 }
                 /*
                 else
