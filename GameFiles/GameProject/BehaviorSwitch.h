@@ -2,6 +2,7 @@
 #include "Behavior.h"
 #include "Inputs.h"
 #include "Vector.h"
+#include "Renderer.h"
 #include "BehaviorMirror.h"
 #include <random>
 
@@ -23,7 +24,7 @@ public:
 
 	void Update(float dt);
 	void Read(json jsonData) override;
-	static void SwitchCollisionHandler(Entity* thisone, Entity* other);
+	void SwitchCollisionHandler(Entity* entity1, Entity* entity2, Renderer* render = NULL);
 
 private:
 	void Controller(float dt);

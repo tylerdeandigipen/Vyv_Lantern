@@ -53,7 +53,7 @@ Color black(0, 0, 0, 255);
 Color grey(150, 150, 150, 255);
 Color blue(50, 100, 255, 255);
 
-float soundCooldown = 0.0f;
+//float soundCooldown = 0.0f;
 
 int ObjCount = 0;
 const float pushForce = 1.0f;

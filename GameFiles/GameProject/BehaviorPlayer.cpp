@@ -20,6 +20,7 @@
 #include "AudioEngine.h"
 
 const float pushForce = 1.0f;
+float soundCooldown = 0.0f;
 
 BehaviorPlayer::BehaviorPlayer() : Behavior(Behavior::Player), playerMoveSpeed(0)
 {
@@ -117,6 +118,12 @@ void BehaviorPlayer::Controller(float dt)
         //AudioManager.PlaySFX("footsteps.ogg");
     }
 
+    if (soundCooldown <= 0.0f)
+    {
+        AudioManager.PlaySFX("footsteps.ogg");
+        soundCooldown = 1.0f; // Set the cooldown time
+    }
+
 	moveEntityTowards(translation);
 
 	timer += dt;
@@ -129,6 +136,10 @@ void BehaviorPlayer::Controller(float dt)
             timeBetweenBlink = range * ((((float)rand()) / (float)RAND_MAX)) + MIN_RAND;
             timer = 0;
         }
+    }
+    soundCooldown -= dt;
+    if (soundCooldown < 0.0f) {
+        soundCooldown = 0.0f;
     }
 }
 

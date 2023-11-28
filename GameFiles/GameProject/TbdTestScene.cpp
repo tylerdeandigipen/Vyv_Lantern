@@ -67,7 +67,7 @@ TbdTestScene::TbdTestScene() : Scene("tbdtest")
 
 Engine::EngineCode TbdTestScene::Load()
 {
-    AudioManager.LoadMusicFromJSON("./Data/music.json");
+    //AudioManager.LoadMusicFromJSON("./Data/music.json");
     AudioManager.LoadSFXFromJSON("./Data/SFX.json");
 
 	return Engine::NothingBad;
@@ -228,6 +228,7 @@ void TbdPlayerMovement(float dt)
     {
         if (CanPause == true)
         {
+            AudioManager.PlaySFX("creak");
             if (Engine::GetInstance()->Paused() == false)
                 Engine::GetInstance()->SetPause(true);
             else
