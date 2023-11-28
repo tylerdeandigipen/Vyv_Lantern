@@ -245,9 +245,16 @@ ImageBuffer* Entity::GetImage()
 		return NULL;
 }
 
-void Entity::SetImage(ImageBuffer* _image)
+void Entity::SetImage(std::string file)
 {
-	image = image;
+	ImageBuffer temp(*image);
+	Vector2 position = *Has(Transform)->GetTranslation();
+	delete image;
+	image = NULL;
+	CreateImage(file);
+	Has(Transform)->SetTranslation(position);
+	image->position = *Has(Transform)->GetTranslation();
+	AddToRenderer(Renderer::GetInstance());
 }
 
 void Entity::Update(float dt)

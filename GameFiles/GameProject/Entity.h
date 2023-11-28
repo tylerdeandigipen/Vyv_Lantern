@@ -51,7 +51,7 @@ public:
 	const char* GetName() const;
 
 	ImageBuffer* GetImage();
-	void SetImage(ImageBuffer* image);
+	void SetImage(std::string ppm);
 	template<typename type_>
 	type_* GetComponent(Component::TypeEnum typeId) const
 	{

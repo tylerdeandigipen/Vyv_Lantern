@@ -13,6 +13,7 @@
 #include "Entity.h"
 #include "Collider.h"
 #include "Inputs.h"
+#include "ImageBuffer.h"
 #include "LevelBuilder.h"
 #include "Maths/Vector.h"
 #include "Physics.h"
@@ -21,12 +22,12 @@
 #include "Renderer.h"
 #include "TbdTestScene.h"
 
-BehaviorDoor::BehaviorDoor() : Behavior(Behavior::Door), isDoorClosed(false), AddedToForeGround(false)
+BehaviorDoor::BehaviorDoor() : Behavior(Behavior::Door), isDoorClosed(false), AddedToForeGround(false), closedPPM(), openPPM(), tempImage(nullptr)
 {
     _type = this;
 }
 
-BehaviorDoor::BehaviorDoor(BehaviorDoor const& other) : Behavior(other), isDoorClosed(other.isDoorClosed), AddedToForeGround(false)
+BehaviorDoor::BehaviorDoor(BehaviorDoor const& other) : Behavior(other), isDoorClosed(other.isDoorClosed), AddedToForeGround(false), closedPPM(other.closedPPM), openPPM(other.openPPM), tempImage(other.tempImage)
 {
     _type = this;
 }
@@ -70,10 +71,20 @@ void BehaviorDoor::Update(float dt)
    //     Renderer::GetInstance()->foregroundLayer->AddSprite(Parent()->GetImage());
    //     AddedToForeGround = true;
    // }
+    if ((LevelBuilder::getDoor() == true) && (isDoorClosed == true))
+    {
+        SetNext(1);
+        isDoorClosed = false;
+    }
     UNREFERENCED_PARAMETER(dt);
     if (GetCurr() != GetNext())
     {
         SetCurr(GetNext());
+    }
+    if (GetCurr() == 1)
+    {   
+        Parent()->SetImage(openPPM);
+        SetNext(cIdle);
     }
 }
 
@@ -81,10 +92,10 @@ void BehaviorDoor::Update(float dt)
 void BehaviorDoor::Read(json jsonData)
 {
     Init();
-    if (jsonData["DoorState"].is_boolean())
+    if (jsonData["DoorClosed"].is_boolean())
     {
-        isDoorClosed = jsonData["DoorState"];
-        if (isDoorClosed = false)
+        isDoorClosed = jsonData["DoorClosed"];
+        if (isDoorClosed == true)
         {
             SetCurr(cClosed);
         }
@@ -93,6 +104,8 @@ void BehaviorDoor::Read(json jsonData)
             SetCurr(cOpen);
         }
     }
+    closedPPM = jsonData["ClosedSprite"];
+    openPPM = jsonData["OpenSprite"];
 }
 
 void BehaviorDoor::DoorCollisionHandler(Entity* entity1, Entity* entity2)

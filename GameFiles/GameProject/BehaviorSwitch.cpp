@@ -30,6 +30,7 @@ BehaviorSwitch::BehaviorSwitch(BehaviorSwitch const& other) : Behavior(other)
 
 BehaviorSwitch::~BehaviorSwitch()
 {
+    count = 0;
 }
 
 std::string BehaviorSwitch::GetName()

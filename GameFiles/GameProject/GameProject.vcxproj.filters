@@ -362,9 +362,6 @@
     <None Include="Data\Tbd_TestLevel.json">
       <Filter>JSON</Filter>
     </None>
-    <None Include="TempEntity.json">
-      <Filter>JSON</Filter>
-    </None>
     <None Include="Data\TileMapSprites.json">
       <Filter>JSON</Filter>
     </None>
@@ -375,17 +372,14 @@
     <None Include="Data\TiledLevelMap.json">
       <Filter>JSON</Filter>
     </None>
-    <None Include="TiledMichaelTest.json">
-      <Filter>JSON</Filter>
-    </None>
-    <None Include="MichaelTempWinScene.json">
-      <Filter>JSON</Filter>
-    </None>
     <None Include="Data\Lights\PlayerDirectionalLight.json">
       <Filter>JSON\PlayerInfo</Filter>
     </None>
     <None Include="Data\Lights\PlayerDomeLight.json">
       <Filter>JSON\PlayerInfo</Filter>
+    </None>
+    <None Include="Data\TiledMichaelTest.json">
+      <Filter>JSON</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>
