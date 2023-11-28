@@ -35,10 +35,10 @@
       <Filter>Source FIles\Engine</Filter>
     </ClCompile>
     <ClCompile Include="Entity.cpp">
-      <Filter>Source FIles\Entity</Filter>
+      <Filter>Source FIles\Objects</Filter>
     </ClCompile>
     <ClCompile Include="EntityContainer.cpp">
-      <Filter>Source FIles\Entity</Filter>
+      <Filter>Source FIles\Objects</Filter>
     </ClCompile>
     <ClCompile Include="EntityFactory.cpp">
       <Filter>Source FIles\Engine\Systems</Filter>
@@ -152,9 +152,17 @@
       <Filter>Source FIles\Scenes</Filter>
     </ClCompile>
     <ClCompile Include="PauseMenu.cpp" />
-    <ClCompile Include="PauseMenu.cpp" />
     <ClCompile Include="BehaviorMirror.cpp">
       <Filter>Source FIles\Components\Sub Components</Filter>
+    </ClCompile>
+    <ClCompile Include="PauseMenu.cpp">
+      <Filter>Source FIles\Scenes</Filter>
+    </ClCompile>
+    <ClCompile Include="Sprite.cpp">
+      <Filter>Source FIles\Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="BaseObject.cpp">
+      <Filter>Source FIles\Objects</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -192,7 +200,7 @@
       <Filter>Header FIles\Engine</Filter>
     </ClInclude>
     <ClInclude Include="EntityContainer.h">
-      <Filter>Header FIles\Entity</Filter>
+      <Filter>Header FIles\Objects</Filter>
     </ClInclude>
     <ClInclude Include="EntityFactory.h">
       <Filter>Header FIles\Engine\Systems</Filter>
@@ -335,6 +343,12 @@
     <ClInclude Include="BehaviorMirror.h">
       <Filter>Header FIles\Components\SubComponents</Filter>
     </ClInclude>
+    <ClInclude Include="Sprite.h">
+      <Filter>Header FIles\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="BaseObject.h">
+      <Filter>Header FIles\Objects</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="GameProject.ico">
@@ -390,9 +404,6 @@
     <Filter Include="Source FIles\Other">
       <UniqueIdentifier>{67adfd13-8595-412a-9279-29aebf8b80c7}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source FIles\Entity">
-      <UniqueIdentifier>{9d2303e3-307c-4c47-976b-43bdd3062079}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source FIles\Components">
       <UniqueIdentifier>{a1fb3ca0-ba95-4aaf-92db-61cb5df28aa1}</UniqueIdentifier>
     </Filter>
@@ -420,9 +431,6 @@
     <Filter Include="Header FIles\Graphics">
       <UniqueIdentifier>{9ba2d1d8-df33-483f-b64b-d8907a8917dd}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header FIles\Entity">
-      <UniqueIdentifier>{f151f551-13ab-4f39-b1d5-950231f39b99}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Header FIles\Components">
       <UniqueIdentifier>{f8a86454-b5ec-4ade-96c8-3e27ac807661}</UniqueIdentifier>
     </Filter>
@@ -449,6 +457,12 @@
     </Filter>
     <Filter Include="JSON\PlayerInfo">
       <UniqueIdentifier>{08dc41b4-6903-4de6-8280-c2b717b0869f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source FIles\Objects">
+      <UniqueIdentifier>{9d2303e3-307c-4c47-976b-43bdd3062079}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header FIles\Objects">
+      <UniqueIdentifier>{f151f551-13ab-4f39-b1d5-950231f39b99}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

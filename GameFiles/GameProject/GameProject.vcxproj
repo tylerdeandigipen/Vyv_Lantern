@@ -152,6 +152,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="AudioEngine.h" />
+    <ClInclude Include="BaseObject.h" />
     <ClInclude Include="BaseSystem.h" />
     <ClInclude Include="Behavior.h" />
     <ClInclude Include="BehaviorMirror.h" />
@@ -202,6 +203,7 @@
     <ClInclude Include="Scene.h" />
     <ClInclude Include="SceneSystem.h" />
     <ClInclude Include="ScopeTimer.h" />
+    <ClInclude Include="Sprite.h" />
     <ClInclude Include="StubScene.h" />
     <ClInclude Include="Subject.h" />
     <ClInclude Include="targetver.h" />
@@ -214,6 +216,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AudioEngine.cpp" />
+    <ClCompile Include="BaseObject.cpp" />
     <ClCompile Include="BaseSystem.cpp" />
     <ClCompile Include="Behavior.cpp" />
     <ClCompile Include="BehaviorMirror.cpp" />
@@ -257,6 +260,7 @@
     <ClCompile Include="Renderer.cpp" />
     <ClCompile Include="Scene.cpp" />
     <ClCompile Include="SceneSystem.cpp" />
+    <ClCompile Include="Sprite.cpp" />
     <ClCompile Include="StubScene.cpp" />
     <ClCompile Include="Subject.cpp" />
     <ClCompile Include="TbdTestScene.cpp" />
