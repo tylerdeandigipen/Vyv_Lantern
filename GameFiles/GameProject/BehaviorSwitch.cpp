@@ -112,7 +112,7 @@ void BehaviorSwitch::SwitchCollisionHandler(Entity* entity1, Entity* entity2)
                 OnOff = true;
                 /*Mirror will move here*/
                 BehaviorMirror::SwitchOn(OnOff);
-                AudioManager.PlaySFX("creak");
+                AudioManager.PlaySFX("laser");
                 if (count < maxCount)
                 {
                     float progress = 0.0f; // Progress value for lerping
