@@ -187,6 +187,9 @@ ImageBuffer& ImageBuffer::AddSprite(ImageBuffer *sprite, Vector2 CameraP)
 
 void ImageBuffer::Blit(ImageBuffer *Destination, int OffsetX, int OffsetY)
 {
+	if(!buffer)
+		return;
+
     int MinX = max(OffsetX, 0);
     int MinY = max(OffsetY, 0);
     int MaxX = min(OffsetX + BufferSizeX, Destination->BufferSizeX);
