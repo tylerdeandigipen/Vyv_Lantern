@@ -99,21 +99,25 @@ gfxVector2 lerpValue(gfxVector2 a, gfxVector2 b, float t)
 
 
 ImageBuffer* prompt = NULL;
+static bool isColliding = false;
 void BehaviorSwitch::SwitchCollisionHandler(Entity* entity1, Entity* entity2)
 {
     Inputs* input = Inputs::GetInstance();
-    
+    if (prompt != NULL)
+        prompt->isCulled = true;
+
     if (entity1->GetRealName().compare("Player") == 0 && entity2->GetRealName().compare("Switch") == 0 || entity1->GetRealName().compare("Switch") == 0 && entity2->GetRealName().compare("Player") == 0)
     {
         /*Check if player is inside switch*/
+        isColliding = true;
         if (prompt == NULL)
         {
             prompt = new ImageBuffer{"./Assets/PPM/Press_E.ppm"};
             Renderer::GetInstance()->AddObject(prompt);
         }
-        if (CollisionCheck(entity1->GetImage()->aabb, entity2->GetImage()->aabb))
+        if (isColliding)
         {
-
+            prompt->isCulled = false;
             if (entity2->GetRealName().compare("Switch") == 0)
             {
                 prompt->position.x = entity2->GetImage()->position.x + 10;
@@ -153,6 +157,10 @@ void BehaviorSwitch::SwitchCollisionHandler(Entity* entity1, Entity* entity2)
                         LevelBuilder::setDoor(true);
                     }
                     //prompt->isCulled = true;
+                    if (prompt->isCulled == false)
+                    {
+                        prompt->isCulled = true;
+                    }
                 }
                 /*
                 else
@@ -174,6 +182,12 @@ void BehaviorSwitch::SwitchCollisionHandler(Entity* entity1, Entity* entity2)
                 OnOff = false;
                 /*Move switch*/
             }
+        }
+        else
+        {
+            isColliding = false;
+            if (prompt)
+                prompt->isCulled = false;
         }
     }
 }
