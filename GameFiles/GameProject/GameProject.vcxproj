@@ -71,7 +71,7 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <IncludePath>$(IncludePath);$(ProjectDir)JSON;$(ProjectDir)IMGUI;$(ProjectDir)IMGUI</IncludePath>
+    <IncludePath>$(IncludePath);$(ProjectDir)JSON;$(ProjectDir)IMGUI;$(ProjectDir)SDL2_ttf\include</IncludePath>
     <LibraryPath>$(LibraryPath);IMGUI</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -114,17 +114,18 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_WINDOWS;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(ProjectDir)glfw-3.3.8.bin.WIN64\glfw-3.3.8.bin.WIN64\include;$(ProjectDir)lib\Fmod\inc;$(ProjectDir)IMGUI;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)glfw-3.3.8.bin.WIN64\glfw-3.3.8.bin.WIN64\include;$(ProjectDir)lib\Fmod\inc;$(ProjectDir)IMGUI;$(ProjectDir)SDL2_ttf\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <OpenMPSupport>true</OpenMPSupport>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>opengl32.lib;glfw3.lib;glu32.lib;SDL2.lib;fmodL_vc.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>$(ProjectDir)glfw-3.3.8.bin.WIN64\glfw-3.3.8.bin.WIN64\lib-vc2022;$(ProjectDir)lib\Fmod\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>opengl32.lib;glfw3.lib;glu32.lib;SDL2.lib;fmodL_vc.lib;SDL2_ttf.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(ProjectDir)glfw-3.3.8.bin.WIN64\glfw-3.3.8.bin.WIN64\lib-vc2022;$(ProjectDir)lib\Fmod\lib;$(ProjectDir)SDL2_ttf\lib\x64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
     <PostBuildEvent>
-      <Command>xcopy "$(ProjectDir)Fmod\*.dll" "$(OutDir)" /s /r /y /q /i</Command>
+      <Command>xcopy "$(ProjectDir)Fmod\*.dll" "$(OutDir)" /s /r /y /q /i
+xcopy "$(ProjectDir)SDL2_ttf\lib\x64\*.dll" "$(OutDir)" /s /r /y /q /i</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -171,6 +172,7 @@
     <ClInclude Include="EntityFactory.h" />
     <ClInclude Include="Event.h" />
     <ClInclude Include="FileIO.h" />
+    <ClInclude Include="FontSystem.h" />
     <ClInclude Include="framework.h" />
     <ClInclude Include="ImageBuffer.h" />
     <ClInclude Include="IMGUI\imconfig.h" />
@@ -234,6 +236,7 @@
     <ClCompile Include="EntityContainer.cpp" />
     <ClCompile Include="EntityFactory.cpp" />
     <ClCompile Include="FileIO.cpp" />
+    <ClCompile Include="FontSystem.cpp" />
     <ClCompile Include="glad.c" />
     <ClCompile Include="ImageBuffer.cpp" />
     <ClCompile Include="IMGUI\imgui.cpp" />

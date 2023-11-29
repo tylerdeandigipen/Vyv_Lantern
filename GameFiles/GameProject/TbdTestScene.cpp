@@ -31,6 +31,7 @@
 #include "ImageBuffer.h"
 #include "Light.h"
 #include "LevelBuilder.h"
+#include "FontSystem.h"
 
 #include "TestScene.h"
 
@@ -117,6 +118,10 @@ Engine::EngineCode TbdTestScene::Init()
     AudioManager.PlayMusic("drips");
     
     AudioManager.PlayMusic("forest");
+
+    FontSystem fontSystem;
+
+    fontSystem.init("Font/MouldyCheeseRegular-WyMWG.ttf", 10);
 
     Engine::GetInstance()->SetPause(false);
     return Engine::NothingBad;
@@ -403,6 +408,7 @@ void TbdTestScene::Update(float dt)
 
     ImGuiInterg();
     TbdPixelRenderer->Update(dt);
+    FontSystem::renderText("HELLO", 30, 30, TbdRenderer);
 }
 
 void TbdTestScene::Render()

@@ -8,6 +8,7 @@
 #include "Maths/Vector.h"
 #include "AudioEngine.h"
 #include "Collision.h"
+#include "FontSystem.h"
 #include <cassert>
 #include <cmath>
 #include <iostream>
