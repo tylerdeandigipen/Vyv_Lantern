@@ -83,7 +83,6 @@ void BehaviorSwitch::Read(json jsonData)
         float x = std::stoi(positions["x"].get<std::string>());
         float y = std::stoi(positions["y"].get<std::string>());
         
-        
         pos.push_back({ x,y });
     }
 }
