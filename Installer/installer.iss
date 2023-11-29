@@ -26,9 +26,5 @@ Source: "../GameFiles/GameProject/SDL2.dll"; DestDir: "{app}"; DestName: "SDL2.d
 Source: "../GameFiles/GameProject/Assets/*"; DestDir: "{app}\Assets"; Flags: recursesubdirs
 Source: "../GameFiles/GameProject/Data/*"; DestDir: "{app}\Data"; Flags: recursesubdirs
 
-// NOTE(thomas): There are currently stray JSON files lying around in the game's source code directory
-// that were likely meant to be placed into the "Data" directory.
-Source: "../GameFiles/GameProject/*.json"; DestDir: "{app}";
-
 [Icons]
 Name: "{group}\GameProject"; Filename: "../GameProject/GameProject/x64/Release/GameProject.ico"
