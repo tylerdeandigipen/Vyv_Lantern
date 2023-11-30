@@ -2,11 +2,11 @@
 ;; - Settle on a name for the game that we can redistribute with.
 
 [Setup]
-AppName=Name TBD                                                                                   
+AppName=Refraction                                                                                   
 AppVersion=1.0
 WizardStyle=modern
-DefaultDirName={autopf}\Name TBD
-DefaultGroupName=My Program
+DefaultDirName={autopf}\DigiPen\Refraction
+DefaultGroupName=Refraction
 UninstallDisplayIcon={app}\GameProject.ico
 Compression=lzma2
 SolidCompression=yes
@@ -20,9 +20,10 @@ ArchitecturesAllowed=x64
 ArchitecturesInstallIn64BitMode=x64
 
 [Files]
-Source: "../GameFiles/GameProject/x64/Release/GameProject.exe"; DestDir: "{app}"; DestName: "GameProject.exe"
-Source: "../GameFiles/GameProject/Fmod/fmod.dll"; DestDir: "{app}"; DestName: "fmod.dll"
+Source: "../GameFiles/GameProject/x64/Release/GameProject.exe"; DestDir: "{app}"; DestName: "Refraction.exe"
+Source: "../GameFiles/GameProject/Fmod/fmodL.dll"; DestDir: "{app}"; DestName: "fmodL.dll"
 Source: "../GameFiles/GameProject/SDL2.dll"; DestDir: "{app}"; DestName: "SDL2.dll"
+Source: "../GameFiles/GameProject/SDL2_ttf/SDL2_ttf.dll"; DestDir: "{app}"; DestName: "SDL2_ttf.dll"
 Source: "../GameFiles/GameProject/Assets/*"; DestDir: "{app}\Assets"; Flags: recursesubdirs
 Source: "../GameFiles/GameProject/Data/*"; DestDir: "{app}\Data"; Flags: recursesubdirs
 
