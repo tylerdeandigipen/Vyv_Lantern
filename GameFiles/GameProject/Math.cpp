@@ -112,3 +112,43 @@ uint8_t clampInt8(uint8_t value, uint8_t min, uint8_t max)
 		return max;
 	}
 }
+
+/*Lerping*/
+template<typename T>
+inline T lerp(const T& start, const T& end, float t)
+{
+	return start * (1 - t) + end * t;
+}
+
+/*Absolute value*/
+template<typename T>
+inline T abs(const T& value)
+{
+	return value < 0 ? -value : value;
+}
+
+/*squared*/
+template<typename T>
+inline T square(const T& value)
+{
+	return value * value;
+}
+
+/*round off*/
+template<typename T>
+inline T floor(const T& value)
+{
+	return static_cast<T>(std::floor(value));
+}
+
+template<typename T>
+inline T ceil(const T& value)
+{
+	return static_cast<T>(std::ceil(value));
+}
+
+template<typename T>
+inline T round(const T& value)
+{
+	return static_cast<T>(std::round(value));
+}

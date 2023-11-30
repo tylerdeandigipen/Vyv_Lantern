@@ -21,6 +21,7 @@
 #include "Inputs.h"
 #include "DebugNew.h"
 #include "imgui_impl_opengl3.h"
+#include "FrameRate.h"
 
 #include <windows.h>
 #include <SDL/SDL.h>
@@ -33,6 +34,7 @@
 #include <omp.h>
 
 #include "PauseMenu.h"
+#include <thread>
 
 #define OneOver255 (1.0f / 255.0f)
 
@@ -41,6 +43,8 @@
 #endif
 
 Renderer* Renderer::instance = new Renderer();
+
+
 
 void Renderer::Update(float dt)
 {
@@ -57,22 +61,12 @@ void Renderer::Update(float dt)
     DebugBuffer->Blit(outputBuffer, -GetCameraPosition().x, -GetCameraPosition().y);
     DebugBuffer->ClearImageBuffer();
 
-    float AverageFrameLength = 0.0f;
-    for (uint32_t FrameIndex = 1; FrameIndex < _countof(PreviousFrameLengths); ++FrameIndex)
-    {
-        AverageFrameLength += PreviousFrameLengths[FrameIndex - 1];
-        PreviousFrameLengths[FrameIndex] = PreviousFrameLengths[FrameIndex - 1];
-    }
+    float AverageFrameRate = FrameRate::CalculateAverageFrameRate(PreviousFrameLengths, _countof(PreviousFrameLengths), currentTime, PreviousFrameBeginTime);
 
-    float dtThisFrame = (float)(currentTime - PreviousFrameBeginTime) / 1000.0f;
-    PreviousFrameLengths[0] = dtThisFrame;
-    AverageFrameLength += dtThisFrame;
-    AverageFrameLength /= (float)_countof(PreviousFrameLengths);
+    FrameRate::UpdateWindowTitle(window, AverageFrameRate);
 
-    float AverageFrameRate = 1.0f / AverageFrameLength;
-    char WindowTextBuffer[128];
-    sprintf_s(WindowTextBuffer, sizeof(WindowTextBuffer), "FPS: %.2f", AverageFrameRate);
-    SDL_SetWindowTitle(window, WindowTextBuffer);
+    FrameRate::capFrame(dt);
+
 
 
 #ifdef _DEBUG

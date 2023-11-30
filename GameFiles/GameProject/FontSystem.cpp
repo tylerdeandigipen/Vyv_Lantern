@@ -46,8 +46,8 @@ bool FontSystem::loadFont(const std::string& fontPath) {
     return true;
 }
 
-void FontSystem::renderText(const std::string& text, int x, int y, SDL_Renderer* renderer) {
-    SDL_Color textColor = {255, 255, 255}; // White color
+void FontSystem::renderText(const std::string& text, int x, int y, SDL_Renderer* renderer, SDL_Color color) {
+    SDL_Color textColor = color;
     SDL_Surface* textSurface = TTF_RenderText_Solid(font, text.c_str(), textColor);
     if (textSurface) {
         SDL_Texture* textTexture = SDL_CreateTextureFromSurface(renderer, textSurface);
@@ -75,4 +75,31 @@ void FontSystem::setFontStyle(TTF_Font* font, int style) {
 
 TTF_Font* FontSystem::getFont() const {
     return font;
+}
+
+void FontSystem::renderMultilineText(const std::string& text, int x, int y, int maxWidth, SDL_Renderer* renderer, SDL_Color textColor) {
+    std::istringstream words(text);
+    std::string word;
+    std::string line;
+    int lineHeight = TTF_FontLineSkip(font); // Line height based on the font
+
+    while (words >> word) {
+        // Check if adding the next word exceeds the maxWidth
+        int wordWidth, wordHeight;
+        TTF_SizeText(font, (word + " ").c_str(), &wordWidth, &wordHeight);
+
+        if (x + wordWidth > maxWidth) {
+            // Render the line and adjust y position
+            renderText(line, x, y, renderer, textColor);
+            y += lineHeight; // Move to the next line
+            line.clear();
+        }
+
+        line += word + " ";
+    }
+
+    // Render the last line if there's remaining text
+    if (!line.empty()) {
+        renderText(line, x, y, renderer, textColor);
+    }
 }
