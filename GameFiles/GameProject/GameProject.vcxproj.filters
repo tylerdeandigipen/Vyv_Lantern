@@ -164,6 +164,7 @@
     <ClCompile Include="BaseObject.cpp">
       <Filter>Source FIles\Objects</Filter>
     </ClCompile>
+    <ClCompile Include="FontSystem.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AudioEngine.h">
@@ -349,6 +350,7 @@
     <ClInclude Include="BaseObject.h">
       <Filter>Header FIles\Objects</Filter>
     </ClInclude>
+    <ClInclude Include="FontSystem.h" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="GameProject.ico">
@@ -369,18 +371,14 @@
       <Filter>JSON</Filter>
     </None>
     <None Include="Data\ScutSample(ALT).json" />
-    <None Include="Data\TiledLevelMap.json">
-      <Filter>JSON</Filter>
-    </None>
     <None Include="Data\Lights\PlayerDirectionalLight.json">
       <Filter>JSON\PlayerInfo</Filter>
     </None>
     <None Include="Data\Lights\PlayerDomeLight.json">
       <Filter>JSON\PlayerInfo</Filter>
     </None>
-    <None Include="Data\TiledMichaelTest.json">
-      <Filter>JSON</Filter>
-    </None>
+    <None Include="Data\TiledMichaelSceneTest.json" />
+    <None Include="Data\TileMaps\TiledLevelMap.json" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Header FIles">
