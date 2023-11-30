@@ -1,0 +1,7 @@
+{
+  "TilePPM": "./Assets/PPM/TestTileSetNormals.ppm",
+  "FrameSize": {
+    "X": 8,
+    "Y": 8
+  }
+}
