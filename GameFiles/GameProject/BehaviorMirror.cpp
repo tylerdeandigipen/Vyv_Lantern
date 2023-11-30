@@ -16,7 +16,7 @@
 #include "BehaviorSwitch.h"
 
 std::vector<gfxVector2> BehaviorMirror::pos;
-int BehaviorMirror::count = 0;
+int BehaviorMirror::count = 1;
 int BehaviorMirror::maxCount = 4;
 gfxVector2 BehaviorMirror::currentPos = gfxVector2(0, 0);
 gfxVector2 BehaviorMirror::targetPos = gfxVector2(0, 0);
@@ -82,6 +82,8 @@ void BehaviorMirror::Read(json jsonData)
 
         pos.push_back({ x,y });
     }
+    currentPos = pos[0];
+    targetPos = pos[0];
 }
 
 void BehaviorMirror::SwitchOn(bool collided)
