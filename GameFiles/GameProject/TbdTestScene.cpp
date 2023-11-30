@@ -138,17 +138,85 @@ bool TbdCanRenderWallHitboxes = true;
 bool canRenderRawFog = true;
 bool canToggleFog = true;
 
-void TbdPlayerMovement(float dt)
+void TbdTestScene::cheatFullbright()
+{
+    if (TbdPixelRenderer->isFullbright == false)
+        TbdPixelRenderer->isFullbright = true;
+    else
+        TbdPixelRenderer->isFullbright = false;
+    TbdCanToggleFullBright = false;
+}
+
+void TbdTestScene::cheatBlur()
+{
+    if (TbdPixelRenderer->doBlur == false)
+        TbdPixelRenderer->doBlur = true;
+    else
+        TbdPixelRenderer->doBlur = false;
+    TbdCanPlaceLight = 0;
+}
+
+void TbdTestScene::cheatOnlyLights()
+{
+    if (TbdPixelRenderer->renderOnlyLights == false)
+        TbdPixelRenderer->renderOnlyLights = true;
+    else
+        TbdPixelRenderer->renderOnlyLights = false;
+    TbdCanToggleOnlyLights = false;
+}
+
+void TbdTestScene::cheatNormalMap()
+{
+    if (TbdPixelRenderer->renderNormalMap == false)
+        TbdPixelRenderer->renderNormalMap = true;
+    else
+        TbdPixelRenderer->renderNormalMap = false;
+    TbdCanToggleNormalDisplay = false;
+}
+
+void TbdTestScene::cheatWallHitboxes()
+{
+    if (TbdPixelRenderer->renderWallHitboxes == false)
+        TbdPixelRenderer->renderWallHitboxes = true;
+    else
+        TbdPixelRenderer->renderWallHitboxes = false;
+    TbdCanRenderWallHitboxes = 0;
+}
+
+void TbdTestScene::cheatScanlines()
+{
+    if (TbdPixelRenderer->doScanLines == false)
+        TbdPixelRenderer->doScanLines = true;
+    else
+        TbdPixelRenderer->doScanLines = false;
+    canToggleScanLines = 0;
+}
+
+void TbdTestScene::cheatOnlyFog()
+{
+    if (TbdPixelRenderer->drawRawFog == false)
+        TbdPixelRenderer->drawRawFog = true;
+    else
+        TbdPixelRenderer->drawRawFog = false;
+    canRenderRawFog = 0;
+}
+
+void TbdTestScene::cheatFog()
+{
+    if (TbdPixelRenderer->doFog == false)
+        TbdPixelRenderer->doFog = true;
+    else
+        TbdPixelRenderer->doFog = false;
+    canToggleFog = 0;
+}
+
+void TbdTestScene::handleCheatCodes()
 {
     Inputs* inputHandler = Inputs::GetInstance();
 
     if (inputHandler->keyPressed(SDL_SCANCODE_E) && TbdCanPlaceLight == 1)
     {
-        if (TbdPixelRenderer->doBlur == false)
-            TbdPixelRenderer->doBlur = true;
-        else
-            TbdPixelRenderer->doBlur = false;
-        TbdCanPlaceLight = 0;
+        cheatBlur();
 
         if (!isEPressedForCheat)
         {
@@ -166,11 +234,7 @@ void TbdPlayerMovement(float dt)
 
     if (inputHandler->keyPressed(SDL_SCANCODE_GRAVE) && TbdCanToggleFullBright == true)
     {
-        if(TbdPixelRenderer->isFullbright == false)
-            TbdPixelRenderer->isFullbright = true;
-        else
-            TbdPixelRenderer->isFullbright = false;
-        TbdCanToggleFullBright = false;
+        cheatFullbright();
 
         if (!isGravePressedForCheat)
         {
@@ -188,11 +252,7 @@ void TbdPlayerMovement(float dt)
 
     if (inputHandler->keyPressed(SDL_SCANCODE_Q) && TbdCanToggleOnlyLights == true)
     {
-        if (TbdPixelRenderer->renderOnlyLights == false)
-            TbdPixelRenderer->renderOnlyLights = true;
-        else
-            TbdPixelRenderer->renderOnlyLights = false;
-        TbdCanToggleOnlyLights = false;
+        cheatOnlyLights();
 
         if (!isQPressedForCheat)
         {
@@ -210,11 +270,7 @@ void TbdPlayerMovement(float dt)
 
     if (inputHandler->keyPressed(SDL_SCANCODE_N) && TbdCanToggleNormalDisplay == true)
     {
-        if (TbdPixelRenderer->renderNormalMap == false)
-            TbdPixelRenderer->renderNormalMap = true;
-        else
-            TbdPixelRenderer->renderNormalMap = false;
-        TbdCanToggleNormalDisplay = false;
+        cheatNormalMap();
 
         if (!isNPressedForCheat)
         {
@@ -249,11 +305,7 @@ void TbdPlayerMovement(float dt)
 
     if (inputHandler->keyPressed(SDL_SCANCODE_C) && TbdCanRenderWallHitboxes == 1)
     {
-        if (TbdPixelRenderer->renderWallHitboxes == false)
-            TbdPixelRenderer->renderWallHitboxes = true;
-        else
-            TbdPixelRenderer->renderWallHitboxes = false;
-        TbdCanRenderWallHitboxes = 0;
+        cheatWallHitboxes();
 
         if (!isCPressedForCheat)
         {
@@ -271,11 +323,7 @@ void TbdPlayerMovement(float dt)
 
     if (inputHandler->keyPressed(SDL_SCANCODE_F) && canToggleScanLines == 1)
     {
-        if (TbdPixelRenderer->doScanLines == false)
-            TbdPixelRenderer->doScanLines = true;
-        else
-            TbdPixelRenderer->doScanLines = false;
-        canToggleScanLines = 0;
+        cheatScanlines();
 
         if (!isFPressedForCheat)
         {
@@ -290,14 +338,10 @@ void TbdPlayerMovement(float dt)
     {
         canToggleScanLines = 1;
     }
-    
+
     if (inputHandler->keyPressed(SDL_SCANCODE_H) && canRenderRawFog == 1)
     {
-        if (TbdPixelRenderer->drawRawFog == false)
-            TbdPixelRenderer->drawRawFog = true;
-        else
-            TbdPixelRenderer->drawRawFog = false;
-        canRenderRawFog = 0;
+        cheatOnlyFog();
 
         if (!isHPressedForCheat)
         {
@@ -315,11 +359,7 @@ void TbdPlayerMovement(float dt)
 
     if (inputHandler->keyPressed(SDL_SCANCODE_G) && canToggleFog == 1)
     {
-        if (TbdPixelRenderer->doFog == false)
-            TbdPixelRenderer->doFog = true;
-        else
-            TbdPixelRenderer->doFog = false;
-        canToggleFog = 0;
+        cheatFog();
 
         if (!isGPressedForCheat)
         {
@@ -334,6 +374,11 @@ void TbdPlayerMovement(float dt)
     {
         canToggleFog = 1;
     }
+}
+
+void TbdPlayerMovement(float dt)
+{
+    Inputs* inputHandler = Inputs::GetInstance();
 
     if (inputHandler->keyPressed(SDL_SCANCODE_TAB))
     {
@@ -406,6 +451,7 @@ void TbdTestScene::Update(float dt)
 
     }
     TbdPlayerMovement(dt);
+    handleCheatCodes();
 
     ImGuiInterg();
     TbdPixelRenderer->Update(dt);
@@ -489,11 +535,7 @@ void TbdTestScene::ImGuiWindow()
         {
             isGravePressedForCheat = !isGravePressedForCheat;
 
-            if (TbdPixelRenderer->isFullbright == false)
-                TbdPixelRenderer->isFullbright = true;
-            else
-                TbdPixelRenderer->isFullbright = false;
-            TbdCanToggleFullBright = false;
+            cheatFullbright();
         }
         ImGui::SameLine();
         ImGui::Text(isGravePressedForCheat ? "Active" : "Inactive");
@@ -502,11 +544,7 @@ void TbdTestScene::ImGuiWindow()
         {
             isQPressedForCheat = !isQPressedForCheat;
 
-            if (TbdPixelRenderer->renderOnlyLights == false)
-                TbdPixelRenderer->renderOnlyLights = true;
-            else
-                TbdPixelRenderer->renderOnlyLights = false;
-            TbdCanToggleOnlyLights = false;
+            cheatOnlyLights();
         }
         ImGui::SameLine();
         ImGui::Text(isQPressedForCheat ? "Active" : "Inactive");
@@ -515,11 +553,7 @@ void TbdTestScene::ImGuiWindow()
         {
             isNPressedForCheat = !isNPressedForCheat;
 
-            if (TbdPixelRenderer->renderNormalMap == false)
-                TbdPixelRenderer->renderNormalMap = true;
-            else
-                TbdPixelRenderer->renderNormalMap = false;
-            TbdCanToggleNormalDisplay = false;
+            cheatNormalMap();
         }
         ImGui::SameLine();
         ImGui::Text(isNPressedForCheat ? "Active" : "Inactive");
@@ -528,11 +562,7 @@ void TbdTestScene::ImGuiWindow()
         {
             isCPressedForCheat = !isCPressedForCheat;
 
-            if (TbdPixelRenderer->renderWallHitboxes == false)
-                TbdPixelRenderer->renderWallHitboxes = true;
-            else
-                TbdPixelRenderer->renderWallHitboxes = false;
-            TbdCanRenderWallHitboxes = 0;
+            cheatWallHitboxes();
         }
         ImGui::SameLine();
         ImGui::Text(isCPressedForCheat ? "Active" : "Inactive");
@@ -541,11 +571,7 @@ void TbdTestScene::ImGuiWindow()
         {
             isFPressedForCheat = !isFPressedForCheat;
 
-            if (TbdPixelRenderer->doScanLines == false)
-                TbdPixelRenderer->doScanLines = true;
-            else
-                TbdPixelRenderer->doScanLines = false;
-            canToggleScanLines = 0;
+            cheatScanlines();
         }
 
         ImGui::SameLine();
@@ -555,11 +581,7 @@ void TbdTestScene::ImGuiWindow()
         {
             isEPressedForCheat = !isEPressedForCheat;
 
-            if (TbdPixelRenderer->doBlur == false)
-                TbdPixelRenderer->doBlur = true;
-            else
-                TbdPixelRenderer->doBlur = false;
-            TbdCanPlaceLight = 0;
+            cheatBlur();
         }
 
         ImGui::SameLine();
@@ -569,11 +591,7 @@ void TbdTestScene::ImGuiWindow()
         {
             isHPressedForCheat = !isHPressedForCheat;
 
-            if (TbdPixelRenderer->drawRawFog == false)
-                TbdPixelRenderer->drawRawFog = true;
-            else
-                TbdPixelRenderer->drawRawFog = false;
-            canRenderRawFog = 0;
+            cheatOnlyFog();
         }
 
         ImGui::SameLine();
@@ -583,11 +601,7 @@ void TbdTestScene::ImGuiWindow()
         {
             isGPressedForCheat = !isGPressedForCheat;
 
-            if (TbdPixelRenderer->doFog == false)
-                TbdPixelRenderer->doFog = true;
-            else
-                TbdPixelRenderer->doFog = false;
-            canToggleFog = 0;
+            cheatFog();
         }
 
         ImGui::SameLine();
@@ -684,4 +698,3 @@ void TbdTestScene::ImGuiWindow()
         ImGui::End();
     }
 }
-
