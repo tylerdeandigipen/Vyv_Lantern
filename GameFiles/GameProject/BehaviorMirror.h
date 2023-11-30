@@ -27,4 +27,9 @@ public:
 
 private:
 	void Controller(float dt);
+	static std::vector<gfxVector2> pos;
+	static int count;
+	static int maxCount;
+	static gfxVector2 currentPos; // Current position of the mirror
+	static gfxVector2 targetPos; // Target position for interpolation
 };

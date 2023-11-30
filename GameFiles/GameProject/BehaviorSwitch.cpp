@@ -17,6 +17,7 @@ int BehaviorSwitch::count = 0;
 int BehaviorSwitch::maxCount = 4;
 std::vector<gfxVector2> BehaviorSwitch::pos;
 bool BehaviorSwitch::OnOff = false;
+int BehaviorSwitch::key = 0;
 
 
 BehaviorSwitch::BehaviorSwitch() : Behavior(Behavior::Switch)
@@ -86,6 +87,7 @@ void BehaviorSwitch::Read(json jsonData)
         
         pos.push_back({ x,y });
     }
+    key = jsonData["key"];
 }
 
 gfxVector2 lerpValue(gfxVector2 a, gfxVector2 b, float t)
