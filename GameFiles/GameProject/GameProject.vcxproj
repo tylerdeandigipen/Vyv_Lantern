@@ -174,6 +174,7 @@ xcopy "$(ProjectDir)SDL2_ttf\*.dll" "$(OutDir)" /s /r /y /q /i</Command>
     <ClInclude Include="Event.h" />
     <ClInclude Include="FileIO.h" />
     <ClInclude Include="FontSystem.h" />
+    <ClInclude Include="FrameRate.h" />
     <ClInclude Include="framework.h" />
     <ClInclude Include="ImageBuffer.h" />
     <ClInclude Include="IMGUI\imconfig.h" />
@@ -238,6 +239,7 @@ xcopy "$(ProjectDir)SDL2_ttf\*.dll" "$(OutDir)" /s /r /y /q /i</Command>
     <ClCompile Include="EntityFactory.cpp" />
     <ClCompile Include="FileIO.cpp" />
     <ClCompile Include="FontSystem.cpp" />
+    <ClCompile Include="FrameRate.cpp" />
     <ClCompile Include="glad.c" />
     <ClCompile Include="ImageBuffer.cpp" />
     <ClCompile Include="IMGUI\imgui.cpp" />

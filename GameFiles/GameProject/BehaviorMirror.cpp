@@ -74,7 +74,18 @@ void BehaviorMirror::SwitchOn(bool collided)
 {
     if (collided == true)
     {
-        /*Move mirror position*/
+        /*
+        const EntityContainer entityContainer = *LevelBuilder::GetInstance()->GetContainer();
+        int numEntities = LevelBuilder::GetInstance()->CountEntities();
+
+            for (int i = 0; i < numEntities; i++)
+            {
+                Entity* entity = entityContainer[i];
+                if (entity)
+                {
+                }
+            }
+            */
     }
 }
 

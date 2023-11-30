@@ -409,7 +409,8 @@ void TbdTestScene::Update(float dt)
 
     ImGuiInterg();
     TbdPixelRenderer->Update(dt);
-    FontSystem::renderText("HELLO", 30, 30, TbdRenderer);
+    SDL_Color white = { 255,255,255 };
+    FontSystem::renderText("HELLO", 30, 30, TbdRenderer, white);
 }
 
 void TbdTestScene::Render()
