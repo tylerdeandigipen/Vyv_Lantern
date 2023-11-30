@@ -7,9 +7,6 @@
 // Copyright  © 2023 DigiPen (USA) Corporation.
 //
 //------------------------------------------------------------------------------
-
-
-
 #pragma once
 #include "Engine.h"
 #include "Scene.h"
@@ -35,6 +32,16 @@ public:
 private:
 	void ImGuiInterg();
 	void ImGuiWindow();
+	void handleCheatCodes();
+
+	void cheatFullbright();
+	void cheatOnlyLights();
+	void cheatNormalMap();
+	void cheatWallHitboxes();
+	void cheatScanlines();
+	void cheatBlur();
+	void cheatOnlyFog();
+	void cheatFog();
 };
 
 Scene* TbdTestSceneGetInstance(void);
