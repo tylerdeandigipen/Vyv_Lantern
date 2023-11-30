@@ -86,7 +86,7 @@
         {
           "Type": "Object",
           "Name": "Mirror",
-          "file": "./Assets/PPM/Circle_2x2.ppm",
+          "file": "./Assets/PPM/Mirror.ppm",
           "isAnimated": false,
           "frameSize": [ 8, 8 ],
           "Components": [
