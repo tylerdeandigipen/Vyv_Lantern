@@ -1,8 +1,9 @@
 //------------------------------------------------------------------------------
 //
 // File Name:	TbdTestScene.cpp
-// Author(s):	Tyler Dean
-// Purpose:     My test scene dont edit plz
+// Author(s):	Tyler Dean, Michael Howard, TayLee Young, 
+//              Thomas Stephenson, Louis Wang
+// Purpose:     Main scene for the game.
 //
 // Copyright  © 2023 DigiPen (USA) Corporation.
 //

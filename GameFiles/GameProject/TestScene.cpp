@@ -1,8 +1,9 @@
 //------------------------------------------------------------------------------
 //
 // File Name:	TestScene.cpp
-// Author(s):	TayLee Young
-// Purpose:		TEST SCENE PLEASE WORK
+// Author(s):	Tyler Dean, Michael Howard, TayLee Young, 
+//              Thomas Stephenson, Louis Wang
+// Purpose:     Main laser for the game.
 //
 // Copyright  © 2023 DigiPen (USA) Corporation.
 //

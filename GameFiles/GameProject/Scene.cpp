@@ -1,7 +1,7 @@
 //------------------------------------------------------------------------------
 //
-// File Name:	PlatformSystem.c
-// Author(s):	TayLee Young, Doug Schilling (dschilling)
+// File Name:	Scene.cpp
+// Author(s):	TayLee Young
 // Purpose:		base class for scenes
 //
 // Copyright © 2023 DigiPen (USA) Corporation.

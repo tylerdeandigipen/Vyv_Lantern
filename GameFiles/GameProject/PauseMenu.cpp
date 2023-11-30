@@ -1,4 +1,13 @@
-// pausemenu.cpp
+//------------------------------------------------------------------------------
+//
+// File Name:	PauseMeny.cpp
+// Author(s):	Tyler Dean, TayLee Young
+// Purpose:     Contains all pause menu code, such as detecting mouse hovering,
+//              and button functionality.
+//
+// Copyright  © 2023 DigiPen (USA) Corporation.
+//
+//------------------------------------------------------------------------------
 
 #include "imgui.h"
 #include "imgui_impl_sdl2.h"

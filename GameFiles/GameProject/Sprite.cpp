@@ -1,3 +1,12 @@
+//------------------------------------------------------------------------------
+//
+// File Name:	Sprite.cpp
+// Author(s):	TayLee Young
+// Purpose:		Used for baseobject, holds all sprite and animation functions.
+//
+// Copyright © 2023 DigiPen (USA) Corporation.
+//
+//------------------------------------------------------------------------------
 #include "Sprite.h"
 #include "Transform.h"
 #include "ImageBuffer.h"

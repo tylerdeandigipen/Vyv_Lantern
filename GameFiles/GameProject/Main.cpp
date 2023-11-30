@@ -1,7 +1,7 @@
 //------------------------------------------------------------------------------
 //
 // File Name:	Main.c
-// Author(s):	TayLee Young, Doug Schilling (dschilling)
+// Author(s):	TayLee Young
 // 
 // Copyright © 2023 DigiPen (USA) Corporation.
 //

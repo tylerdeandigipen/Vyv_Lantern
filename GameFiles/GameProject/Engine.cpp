@@ -1,8 +1,9 @@
 //------------------------------------------------------------------------------
 //
 // File Name:	Engine.cpp
-// Author(s):	TayLee Young, Doug Schilling (dschilling)
-// Purpose:		bro.
+// Author(s):	TayLee Young
+// Purpose:		Core of entire engine, updates, renders, initalizes, and closes
+//              all systems.
 //
 // Copyright © 2023 DigiPen (USA) Corporation.
 //
