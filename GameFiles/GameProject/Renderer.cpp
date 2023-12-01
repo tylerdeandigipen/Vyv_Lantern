@@ -44,8 +44,6 @@
 
 Renderer* Renderer::instance = new Renderer();
 
-
-
 void Renderer::Update(float dt)
 {
     Uint32 currentTime = SDL_GetTicks();
@@ -364,9 +362,9 @@ void Renderer::CalculateShadows()
     Vector2 lightPos;
     int shadowsCast = 0;
 
-#pragma omp parallel
+    #pragma omp parallel
     {
-#pragma omp for nowait collapse(3) private(lightPos, shadowsCast)
+        #pragma omp for nowait collapse(3) private(lightPos, shadowsCast)
         for (int x = 0; x < xSize; ++x)
         {
             for (int y = 0; y < ySize; ++y)
@@ -382,7 +380,6 @@ void Renderer::CalculateShadows()
                             if (CheckLineForObject((int)lightPos.x - (int)cameraPos.x, (int)lightPos.y - (int)cameraPos.y, (int)x, (int)y) == true)
                             {
                                 shadowsCast += 1;
-                                //remove break later when trying to do multiple shadow casters
                             }
                             else if (distanceSquared(lightPos.x - cameraPos.x, lightPos.y - cameraPos.y, (float)x, (float)y) <= lightSource[i].radius * lightSource[i].radius)
                             {
