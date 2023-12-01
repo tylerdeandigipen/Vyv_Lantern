@@ -292,7 +292,7 @@
         std::ifstream file(jsonFilePath);
         if (!file.is_open()) {
             Logging::GetInstance("debugLog.log").LogLine("Could not open %s", jsonFilePath.c_str());
-            perror("JSON file does not exist");
+            //perror("JSON file does not exist");
             return;
         }
         /*Parse file contents into this createion*/
@@ -313,7 +313,7 @@
         std::ifstream file(jsonFilePath);
         if (!file.is_open()) {
         Logging::GetInstance("debugLog.log").LogLine("Could not open %s", jsonFilePath.c_str());
-            perror("JSON file does not exist");
+            //perror("JSON file does not exist");
             return;
         }
         /*Parse file contents into this beatiful cration*/

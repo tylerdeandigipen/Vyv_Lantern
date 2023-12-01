@@ -42,7 +42,7 @@ json FileIO::OpenJSON(std::string filename)
 	else
 	{
 		Logging::GetInstance("debugLog.log").LogLine("Opened %s", filename.c_str());
-		perror("JSON file does not exist");
+		//perror("JSON file does not exist");
 		assert("File did not exist");
 	}
 	return jsonData;

@@ -95,7 +95,7 @@ void LevelBuilder::LoadLevel(std::string filename)
     else
     {
         Logging::GetInstance("debugLog.log").LogLine("Could not open %s", filename.c_str());
-        perror("JSON file does not exist");
+        //perror("JSON file does not exist");
     }
     if (jsonData["Levels"].is_array())
     {
