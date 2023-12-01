@@ -1,9 +1,12 @@
-/*!
-@file    Matrix.cpp
-@author	 Louis Wang
-
-Matrix functions for all matrix calculations
-*//*__________________________________________________________________________*/
+//------------------------------------------------------------------------------
+//
+// File Name:	Matrix.cpp
+// Author(s):	Louis Wang
+// Purpose:		Matrix functions for all matrix calculations
+//
+// Copyright  © 2023 DigiPen (USA) Corporation.
+//
+//------------------------------------------------------------------------------
 
 /*
 * 3x3 matrix is col major meaning

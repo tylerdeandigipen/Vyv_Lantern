@@ -1,3 +1,12 @@
+//------------------------------------------------------------------------------
+//
+// File Name:	Time.cpp
+// Author(s):	TayLee Young, Michael Howard
+// Purpose:		Calculation of delta time. 
+//
+// Copyright  © 2023 DigiPen (USA) Corporation.
+//
+//------------------------------------------------------------------------------
 #include "Time.h"
 #include <SDL/SDL.h>
 

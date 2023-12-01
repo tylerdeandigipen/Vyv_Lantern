@@ -1,3 +1,12 @@
+//------------------------------------------------------------------------------
+//
+// File Name:	ImageBuffer.cpp
+// Author(s):	
+// Purpose:		ImageBuffer class implementation for handling image data.
+//
+// Copyright © 2023 DigiPen (USA) Corporation.
+//
+//------------------------------------------------------------------------------
 #include "ImageBuffer.h"
 #include "Math.h"
 #include <inttypes.h>

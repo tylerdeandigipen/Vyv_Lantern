@@ -1,3 +1,12 @@
+//------------------------------------------------------------------------------
+//
+// File Name:	Color.cpp
+// Author(s):	Tyler Dean
+// Purpose:		Color class implementation for handling RGBA color values.
+//
+// Copyright © 2023 DigiPen (USA) Corporation.
+//
+//------------------------------------------------------------------------------
 #include "Color.h"
 
 float clamp(float value, float min, float max);

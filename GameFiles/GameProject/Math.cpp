@@ -1,9 +1,12 @@
-/*!
-@file    Math.cpp
-@author	 Louis Wang
-
-Maths functions like min max, special value like PI and deg->rad conversions
-*//*__________________________________________________________________________*/
+//------------------------------------------------------------------------------
+//
+// File Name:	Math.cpp
+// Author(s):	Louis Wang
+// Purpose:		Maths functions like min max, special value like PI and deg->rad conversions
+//
+// Copyright  © 2023 DigiPen (USA) Corporation.
+//
+//------------------------------------------------------------------------------
 
 #include "Math.h"
 

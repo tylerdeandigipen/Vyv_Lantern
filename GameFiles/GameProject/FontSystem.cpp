@@ -1,3 +1,13 @@
+//------------------------------------------------------------------------------
+//
+// File Name:	FontSystem.cpp
+// Author(s):	Louis Wang
+// Purpose:		FontSystem class implementation for handling fonds using 
+//              SDL_ttf
+//
+// Copyright  © 2023 DigiPen (USA) Corporation.
+//
+//------------------------------------------------------------------------------
 #include "FontSystem.h"
 
 TTF_Font* FontSystem::font = nullptr;

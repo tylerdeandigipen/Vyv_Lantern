@@ -1,3 +1,12 @@
+//------------------------------------------------------------------------------
+//
+// File Name:	Particle.cpp
+// Author(s):	Tyler Dean
+// Purpose:		Particle class implementation for handling particles. 
+//
+// Copyright © 2023 DigiPen (USA) Corporation.
+//
+//------------------------------------------------------------------------------
 #include "Particle.h"
 #include "Math.h"
 #include <math.h>

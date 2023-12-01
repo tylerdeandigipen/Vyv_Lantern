@@ -1,6 +1,6 @@
 //------------------------------------------------------------------------------
 //
-// File Name:	PauseMeny.cpp
+// File Name:	PauseMenu.cpp
 // Author(s):	Tyler Dean, TayLee Young
 // Purpose:     Contains all pause menu code, such as detecting mouse hovering,
 //              and button functionality.

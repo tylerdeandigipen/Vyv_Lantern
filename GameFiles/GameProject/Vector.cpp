@@ -1,9 +1,12 @@
-/*!
-@file    Vector.cpp
-@author	 Louis Wang
-
-Vector definition file for all 2D vector calculations
-*//*__________________________________________________________________________*/
+//------------------------------------------------------------------------------
+//
+// File Name:	Vector.cpp
+// Author(s):	Louis Wang
+// Purpose:		Vector definition file for all 2D vector calculations
+//
+// Copyright  © 2023 DigiPen (USA) Corporation.
+//
+//------------------------------------------------------------------------------
 #include "Vector.h"
 
 gfxVector2::gfxVector2() : x(), y() {};

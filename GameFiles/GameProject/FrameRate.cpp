@@ -1,3 +1,12 @@
+//------------------------------------------------------------------------------
+//
+// File Name:	FrameRate.cpp
+// Author(s):	Louis Wang
+// Purpose:		Frame rate control and calculation.
+//
+// Copyright  © 2023 DigiPen (USA) Corporation.
+//
+//------------------------------------------------------------------------------
 #include "FrameRate.h"
 
 const float desiredFPS = 60.0f; /*Change to desired fps here*/

@@ -1,10 +1,12 @@
-/*!
-@file    AudioEngine.cpp
-@author	 Louis Wang
-
-         Audio engine that manages all audio related functions.
-         (Adapted from my previous projects)
-*//*__________________________________________________________________________*/
+//------------------------------------------------------------------------------
+//
+// File Name:	AudioEngine.cpp
+// Author(s):	Louis Wang
+// Purpose:		Controlling of the audio using FMOD.
+//
+// Copyright  © 2023 DigiPen (USA) Corporation.
+//
+//------------------------------------------------------------------------------
 
 /*                                                                   includes
 ----------------------------------------------------------------------------- */

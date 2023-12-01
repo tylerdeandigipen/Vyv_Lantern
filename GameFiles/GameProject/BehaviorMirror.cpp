@@ -1,3 +1,13 @@
+//------------------------------------------------------------------------------
+//
+// File Name:	BehaviorMirror.cpp
+// Author(s):	
+// Purpose:		Implementation of behaviormirror class for controlling mirror 
+//              entities.
+// 
+// Copyright © 2023 DigiPen (USA) Corporation.
+//
+//------------------------------------------------------------------------------
 #include "BehaviorMirror.h"
 #include "Collider.h"
 #include "Entity.h"

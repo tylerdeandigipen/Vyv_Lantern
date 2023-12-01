@@ -151,7 +151,6 @@
     <ClCompile Include="WinScene.cpp">
       <Filter>Source FIles\Scenes</Filter>
     </ClCompile>
-    <ClCompile Include="PauseMenu.cpp" />
     <ClCompile Include="BehaviorMirror.cpp">
       <Filter>Source FIles\Components\Sub Components</Filter>
     </ClCompile>
@@ -164,7 +163,15 @@
     <ClCompile Include="BaseObject.cpp">
       <Filter>Source FIles\Objects</Filter>
     </ClCompile>
-    <ClCompile Include="FontSystem.cpp" />
+    <ClCompile Include="FontSystem.cpp">
+      <Filter>Source FIles\Other</Filter>
+    </ClCompile>
+    <ClCompile Include="FrameRate.cpp">
+      <Filter>Source FIles\Other</Filter>
+    </ClCompile>
+    <ClCompile Include="PauseMenu.cpp">
+      <Filter>Source FIles\Graphics</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AudioEngine.h">
@@ -335,12 +342,9 @@
     <ClInclude Include="BehaviorDoor.h">
       <Filter>Header FIles\Components\SubComponents</Filter>
     </ClInclude>
-    <ClInclude Include="DebugNew.h" />
     <ClInclude Include="WinScene.h">
       <Filter>Header FIles\Scenes</Filter>
     </ClInclude>
-    <ClInclude Include="PauseMenu.h" />
-    <ClInclude Include="PauseMenu.h" />
     <ClInclude Include="BehaviorMirror.h">
       <Filter>Header FIles\Components\SubComponents</Filter>
     </ClInclude>
@@ -350,7 +354,21 @@
     <ClInclude Include="BaseObject.h">
       <Filter>Header FIles\Objects</Filter>
     </ClInclude>
-    <ClInclude Include="FontSystem.h" />
+    <ClInclude Include="PauseMenu.h">
+      <Filter>Header FIles\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="DebugNew.h">
+      <Filter>Header FIles\Debug</Filter>
+    </ClInclude>
+    <ClInclude Include="FontSystem.h">
+      <Filter>Header FIles\Other</Filter>
+    </ClInclude>
+    <ClInclude Include="FrameRate.h">
+      <Filter>Header FIles\Other</Filter>
+    </ClInclude>
+    <ClInclude Include="PauseMenu.h">
+      <Filter>Header FIles\Graphics</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="GameProject.ico">

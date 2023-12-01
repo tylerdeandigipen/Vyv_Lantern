@@ -1,3 +1,12 @@
+//------------------------------------------------------------------------------
+//
+// File Name:	Behavior.cpp
+// Author(s):	
+// Purpose:		Defines entity behavior.
+//
+// Copyright © 2023 DigiPen (USA) Corporation.
+//
+//------------------------------------------------------------------------------
 #include "Behavior.h"
 
 Behavior::Behavior(Behavior::BehaviorType type) : Component(Component::cBehavior), bType(type), _type(), nextState(0), currState(0)

@@ -1,3 +1,12 @@
+//------------------------------------------------------------------------------
+//
+// File Name:	Light.cpp
+// Author(s):	
+// Purpose:		Light class implementation for handling light components.
+//
+// Copyright © 2023 DigiPen (USA) Corporation.
+//
+//------------------------------------------------------------------------------
 #include "Light.h"
 #include "FileIO.h"
 #include "Entity.h"

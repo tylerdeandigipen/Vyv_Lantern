@@ -1,3 +1,12 @@
+//------------------------------------------------------------------------------
+//
+// File Name:	ParticleManager.cpp
+// Author(s):	Tyler Dean
+// Purpose:		ParitcleManager class implementation for managing particles.
+//
+// Copyright © 2023 DigiPen (USA) Corporation.
+//
+//------------------------------------------------------------------------------
 #include "ParticleManager.h"
 #include "Time.h"
 

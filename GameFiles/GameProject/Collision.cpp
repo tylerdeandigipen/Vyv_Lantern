@@ -1,3 +1,12 @@
+//------------------------------------------------------------------------------
+//
+// File Name:	Collision.cpp
+// Author(s):	
+// Purpose:		Collision detection math. 
+//
+// Copyright © 2023 DigiPen (USA) Corporation.
+//
+//------------------------------------------------------------------------------
 #include "Collision.h"
 
 bool CollisionCheck(const AABB& aabb1, const AABB aabb2)

@@ -1,3 +1,13 @@
+//------------------------------------------------------------------------------
+//
+// File Name:	LaserSystem.cpp
+// Author(s):	Thomas Stephenson
+// Purpose:		Lasersystem class implementation for handling laser emitters
+//              and reflectors.
+//
+// Copyright © 2023 DigiPen (USA) Corporation.
+//
+//------------------------------------------------------------------------------
 #include <stdint.h>
 #include "stdafx.h"
 #include "Inputs.h"

@@ -1,3 +1,13 @@
+//------------------------------------------------------------------------------
+//
+// File Name:	BehaviorSwitch.cpp
+// Author(s):	
+// Purpose:		Implementation of behaviormirror class for controlling switch 
+//              entities.
+// 
+// Copyright © 2023 DigiPen (USA) Corporation.
+//
+//------------------------------------------------------------------------------
 #include "BehaviorSwitch.h"
 #include "Collider.h"
 #include "Entity.h"
