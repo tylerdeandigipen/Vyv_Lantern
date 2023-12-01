@@ -124,8 +124,10 @@
       <AdditionalLibraryDirectories>$(ProjectDir)glfw-3.3.8.bin.WIN64\glfw-3.3.8.bin.WIN64\lib-vc2022;$(ProjectDir)lib\Fmod\lib;$(ProjectDir)SDL2_ttf</AdditionalLibraryDirectories>
     </Link>
     <PostBuildEvent>
-      <Command>xcopy "$(ProjectDir)Fmod\*.dll" "$(OutDir)" /s /r /y /q /i
-xcopy "$(ProjectDir)SDL2_ttf\*.dll" "$(OutDir)" /s /r /y /q /i</Command>
+      <Command>xcopy "$(ProjectDir)SDL2\*.dll" "$(OutDir)" /s /r /y /q /i
+xcopy "$(ProjectDir)SDL2_ttf\*.dll" "$(OutDir)" /s /r /y /q /i
+xcopy "$(ProjectDir)Fmod\*.dll" "$(OutDir)" /s /r /y /q /i
+</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -148,8 +150,9 @@ xcopy "$(ProjectDir)SDL2_ttf\*.dll" "$(OutDir)" /s /r /y /q /i</Command>
       <AdditionalLibraryDirectories>$(ProjectDir)glfw-3.3.8.bin.WIN64\glfw-3.3.8.bin.WIN64\lib-vc2022;$(ProjectDir)lib\Fmod\lib;$(ProjectDir)SDL2_ttf</AdditionalLibraryDirectories>
     </Link>
     <PostBuildEvent>
-      <Command>xcopy "$(ProjectDir)Fmod\*.dll" "$(OutDir)" /s /r /y /q /i
-xcopy "$(ProjectDir)SDL2_ttf\*.dll" "$(OutDir)" /s /r /y /q /i</Command>
+      <Command>xcopy "$(ProjectDir)SDL2\*.dll" "$(OutDir)" /s /r /y /q /i
+xcopy "$(ProjectDir)SDL2_ttf\*.dll" "$(OutDir)" /s /r /y /q /i
+xcopy "$(ProjectDir)Fmod\*.dll" "$(OutDir)" /s /r /y /q /i</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>

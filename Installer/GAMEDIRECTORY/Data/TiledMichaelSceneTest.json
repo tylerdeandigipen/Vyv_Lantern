@@ -35,7 +35,6 @@
             }
           ]
         },
-
         {
           "Type": "Object",
           "Name": "Switch",
@@ -62,11 +61,11 @@
             },
             {
               "Type": "BehaviorSwitch",
-              "key": "1",
+              "key": 1,
               "pos": [
                 {
-                  "x": "10",
-                  "y": "30"
+                  "x": "20",
+                  "y": "80"
                 },
                 {
                   "x": "110",
@@ -79,6 +78,55 @@
                 {
                   "x": "999",
                   "y": "999"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "Type": "Object",
+          "Name": "Mirror",
+          "file": "./Assets/PPM/Mirror.ppm",
+          "isAnimated": false,
+          "frameSize": [ 8, 8 ],
+          "Components": [
+            {
+              "Type": "Transform",
+              "translation": {
+                "x": 50,
+                "y": 30
+              }
+            },
+            {
+              "Type": "Physics",
+              "OldTranslation": {
+                "x": 90,
+                "y": 30
+              }
+            },
+            {
+              "Type": "BehaviorMirror",
+              "key": 1,
+              "pos": [
+                {
+                  "x": "50",
+                  "y": "50"
+                },
+                {
+                  "x": "50",
+                  "y": "70"
+                },
+                {
+                  "x": "50",
+                  "y": "80"
+                },
+                {
+                  "x": "50",
+                  "y": "100"
+                },
+                {
+                  "x": "50",
+                  "y": "50"
                 }
               ]
             }
