@@ -1,0 +1,23 @@
+{
+  "Type": "LightSourceType_Directional",
+  "position": {
+    "x": 80,
+    "y": 90
+  },
+  "color": {
+    "r": 216,
+    "g": 247,
+    "b": 255,
+    "a": 255
+  },
+  "minAngle": 35,
+  "maxAngle": -35,
+  "angle": 200,
+  "intensity": 2,
+  "radius": 100,
+  "radialFalloff": 4,
+  "radialWeight": 1,
+  "angularWeight": 2.0,
+  "frustumWeight": 0.15,
+  "volumetricIntensity": 0.25
+}
