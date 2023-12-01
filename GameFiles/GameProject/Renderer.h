@@ -1,7 +1,7 @@
 //------------------------------------------------------------------------------
 //
 // File Name:	Renderer.h
-// Author(s):	
+// Author(s):	Tyler Dean, Thomas Stephenson, Louis Wang
 // Purpose:		Handles all rendering tasks.
 //
 // Copyright © 2023 DigiPen (USA) Corporation.

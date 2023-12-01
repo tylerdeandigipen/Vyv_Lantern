@@ -1,7 +1,7 @@
 //------------------------------------------------------------------------------
 //
 // File Name:	Collision.h
-// Author(s):	
+// Author(s):	Louis Wang
 // Purpose:		Declaration of AABB collision checking. 
 //
 // Copyright © 2023 DigiPen (USA) Corporation.

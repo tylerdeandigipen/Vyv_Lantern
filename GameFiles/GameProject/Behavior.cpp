@@ -1,7 +1,7 @@
 //------------------------------------------------------------------------------
 //
 // File Name:	Behavior.cpp
-// Author(s):	
+// Author(s):	Michael Howard
 // Purpose:		Defines entity behavior.
 //
 // Copyright © 2023 DigiPen (USA) Corporation.

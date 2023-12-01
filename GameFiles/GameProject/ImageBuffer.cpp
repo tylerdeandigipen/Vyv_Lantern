@@ -1,7 +1,7 @@
 //------------------------------------------------------------------------------
 //
 // File Name:	ImageBuffer.cpp
-// Author(s):	
+// Author(s):	Tyler Dean
 // Purpose:		ImageBuffer class implementation for handling image data.
 //
 // Copyright © 2023 DigiPen (USA) Corporation.

@@ -2,7 +2,7 @@
 //
 // File Name:	EntityContainer.h
 // Author(s):	Michael Howard
-// Purpose:		header
+// Purpose:		Entity Container class definition.
 //
 //
 // Copyright  © 2023 DigiPen (USA) Corporation.

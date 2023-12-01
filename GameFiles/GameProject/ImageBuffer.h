@@ -1,7 +1,7 @@
 //------------------------------------------------------------------------------
 //
 // File Name:	ImageBuffer.h
-// Author(s):	
+// Author(s):	Tyler Dean
 // Purpose:		ImageBuffer class declaration for handling image data.
 //
 // Copyright © 2023 DigiPen (USA) Corporation.

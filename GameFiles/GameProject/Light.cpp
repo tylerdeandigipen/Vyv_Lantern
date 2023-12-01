@@ -1,7 +1,7 @@
 //------------------------------------------------------------------------------
 //
 // File Name:	Light.cpp
-// Author(s):	
+// Author(s):	Tyler Dean
 // Purpose:		Light class implementation for handling light components.
 //
 // Copyright © 2023 DigiPen (USA) Corporation.

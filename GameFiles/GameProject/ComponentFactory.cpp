@@ -1,7 +1,7 @@
 //------------------------------------------------------------------------------
 //
 // File Name:	ComponentFactory.cpp
-// Author(s):	Michael Howard
+// Author(s):	Michael Howard, Louis Wang
 // Purpose:		Factory to construct components
 //
 // Copyright © 2023 DigiPen (USA) Corporation.

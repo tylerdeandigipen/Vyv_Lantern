@@ -1,7 +1,7 @@
 //------------------------------------------------------------------------------
 //
 // File Name:	BehaviorSwitch.h
-// Author(s):	
+// Author(s):	Louis Wang
 // Purpose:		BehaviorSwitch class declaration for switch specific behavior
 //
 // Copyright © 2023 DigiPen (USA) Corporation.

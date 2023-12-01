@@ -1,7 +1,7 @@
 //------------------------------------------------------------------------------
 //
 // File Name:	BehaviorPlayer.cpp
-// Author(s):	Michael Howard (michael.howard)
+// Author(s):	Michael Howard (michael.howard), Thomas Stephenson, Louis Wang
 // Purpose:		The players behavior
 // 
 // Copyright © 2023 DigiPen (USA) Corporation.

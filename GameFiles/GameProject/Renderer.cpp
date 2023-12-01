@@ -1,7 +1,7 @@
 //------------------------------------------------------------------------------
 //
 // File Name:	Renderer.cpp
-// Author(s):	Tyler Dean, Thomas Stephenson
+// Author(s):	Tyler Dean, Thomas Stephenson, Louis Wang
 // Purpose:		The Renderer implementation
 //
 // Copyright � 2023 DigiPen (USA) Corporation.

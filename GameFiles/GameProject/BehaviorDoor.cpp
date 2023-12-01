@@ -1,6 +1,6 @@
 //------------------------------------------------------------------------------
 //
-// File Name:	BehaviorPlayer.cpp
+// File Name:	BehaviorDoor.cpp
 // Author(s):	Michael Howard (michael.howard)
 // Purpose:		BehaviorDoor class implementation for door specific behavior
 // 

@@ -1,7 +1,7 @@
 //------------------------------------------------------------------------------
 //
 // File Name:	BehaviorSwitch.cpp
-// Author(s):	
+// Author(s):	Louis Wang
 // Purpose:		Implementation of behaviormirror class for controlling switch 
 //              entities.
 // 

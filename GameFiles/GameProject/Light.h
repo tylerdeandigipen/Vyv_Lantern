@@ -1,7 +1,7 @@
 //------------------------------------------------------------------------------
 //
 // File Name:	Light.h
-// Author(s):	
+// Author(s):	Tyler Dean
 // Purpose:		Light class declaration for handling light sources.
 //
 // Copyright © 2023 DigiPen (USA) Corporation.
