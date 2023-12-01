@@ -69,7 +69,7 @@ TbdTestScene::TbdTestScene() : Scene("tbdtest")
 
 Engine::EngineCode TbdTestScene::Load()
 {
-    //AudioManager.LoadMusicFromJSON("./Data/music.json");
+    AudioManager.LoadMusicFromJSON("./Data/music.json");
     AudioManager.LoadSFXFromJSON("./Data/SFX.json");
 
 	return Engine::NothingBad;
@@ -495,6 +495,7 @@ Scene* TbdTestSceneGetInstance(void)
 /**********************************************************************/
 void TbdTestScene::ImGuiInterg()
 {
+#ifdef _DEBUG
     ImGui_ImplOpenGL3_NewFrame();
     ImGui_ImplSDL2_NewFrame();
     ImGui::NewFrame();
@@ -505,10 +506,12 @@ void TbdTestScene::ImGuiInterg()
     }
 
     ImGui::Render();
+#endif
 }
 
 void TbdTestScene::ImGuiWindow()
 {
+#ifdef _DEBUG
     if (show_custom_window)
     {
         ImGui::Begin("custom window");
@@ -698,4 +701,5 @@ void TbdTestScene::ImGuiWindow()
 
         ImGui::End();
     }
+#endif
 }

@@ -9,6 +9,7 @@
 //
 //------------------------------------------------------------------------------
 #include "BehaviorSwitch.h"
+#include "BehaviorMirror.h"
 #include "Collider.h"
 #include "Entity.h"
 #include "Inputs.h"
@@ -22,6 +23,7 @@
 #include <cassert>
 #include <cmath>
 #include <iostream>
+#include "Vector.h"
 
 int BehaviorSwitch::count = 0;
 int BehaviorSwitch::maxCount = 4;

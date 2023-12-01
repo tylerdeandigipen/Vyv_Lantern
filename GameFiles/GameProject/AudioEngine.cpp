@@ -11,6 +11,7 @@
 /*                                                                   includes
 ----------------------------------------------------------------------------- */
 #include "AudioEngine.h"
+#include "Logging.h"
 #include <random>
 
     std::random_device random;
@@ -290,11 +291,13 @@
         // load in the file
         std::ifstream file(jsonFilePath);
         if (!file.is_open()) {
+            Logging::GetInstance("debugLog.log").LogLine("Could not open %s", jsonFilePath.c_str());
             perror("JSON file does not exist");
             return;
         }
-        /*Parse file contents into this shiate*/
+        /*Parse file contents into this createion*/
         file >> jsonData;
+        Logging::GetInstance("debugLog.log").LogLine("Opened %s", jsonFilePath.c_str());
         for (auto it = jsonData.begin(); it != jsonData.end(); ++it) {
             const std::string musicName = it.key();
             const std::string filePath = it.value();
@@ -309,11 +312,13 @@
         // load in the file
         std::ifstream file(jsonFilePath);
         if (!file.is_open()) {
+        Logging::GetInstance("debugLog.log").LogLine("Could not open %s", jsonFilePath.c_str());
             perror("JSON file does not exist");
             return;
         }
-        /*Parse file contents into this shiate*/
+        /*Parse file contents into this beatiful cration*/
         file >> jsonData;
+        Logging::GetInstance("debugLog.log").LogLine("Opened %s", jsonFilePath.c_str());
         for (auto it = jsonData.begin(); it != jsonData.end(); ++it) {
             const std::string musicName = it.key();
             const std::string filePath = it.value();

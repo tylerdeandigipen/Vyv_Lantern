@@ -10,7 +10,8 @@
 #pragma once
 #include "stdafx.h"
 #include "BaseSystem.h"
-#include "Component.h"
+
+class Component;
 
 class ComponentFactory : public BaseSystem
 {

@@ -10,7 +10,8 @@
 #pragma once
 
 #include "Component.h"
-#include "Vector.h"
+
+class gfxVector2;
 
 class Transform : public Component
 {

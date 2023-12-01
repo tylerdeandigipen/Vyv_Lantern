@@ -8,10 +8,11 @@
 //
 //------------------------------------------------------------------------------
 #include "EntityFactory.h"
+#include "Entity.h"
 
 EntityFactory* EntityFactory::instance = new EntityFactory();
 
-EntityFactory::EntityFactory()
+EntityFactory::EntityFactory() : name("EntFact")
 {
 
 }

@@ -9,6 +9,7 @@
 //------------------------------------------------------------------------------
 #include "Transform.h"
 #include "Entity.h"
+#include "Vector.h"
 
 Transform::Transform() : Component(Component::cTransform), isDirty(true), scale{ 0 }, rotation(0)
 {

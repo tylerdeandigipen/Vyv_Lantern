@@ -20,7 +20,7 @@
 
 ComponentFactory* ComponentFactory::instance = new ComponentFactory();
 
-ComponentFactory::ComponentFactory()
+ComponentFactory::ComponentFactory() : name("ComptFact")
 {
 
 }

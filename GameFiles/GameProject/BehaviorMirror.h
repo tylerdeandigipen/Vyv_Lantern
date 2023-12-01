@@ -10,9 +10,8 @@
 //------------------------------------------------------------------------------
 #pragma once
 #include "Behavior.h"
-#include "Inputs.h"
-#include "Vector.h"
-#include <random>
+
+class gfxVector2;
 
 class BehaviorMirror : public Behavior
 {
