@@ -99,7 +99,7 @@ Source: ".\INSTALLERFILES\panel_image_*.bmp"; Flags: dontcopy
 Source: .\GAMEDIRECTORY\*; DestDir: {app}; Flags: ignoreversion recursesubdirs createallsubdirs
 
 ;Chris Onorati: You need to place any redists you want to install here under files, and then install them under the RUN section
-Source: ".\REDIST\vcredist_x64.exe"; DestDir: {tmp}; Flags: deleteafterinstall
+;Source: ".\REDIST\vcredist_x64.exe"; DestDir: {tmp}; Flags: deleteafterinstall
 
 ; This is the list of shortcuts that the installer will setup for you.
 ; Of note, this will create the uninstaller automatically.
@@ -124,7 +124,7 @@ Name: {commondesktop}\{#ApplicationName}; Filename: {app}\{#ApplicationName}.exe
 ;Reference this site to see how to do so: https://silentinstallhq.com/visual-c-redistributable-silent-install-master-list/
 
 [Run]
-Filename: {tmp}\vcredist_x64.exe; Parameters: /q /Q /quiet /passive /silent /norestart /NORESTART /noreboot /NOREBOOT; StatusMsg: Installing Visual C++ {#CPlusPlusYearVersion} Redistributable...
+;Filename: {tmp}\vcredist_x64.exe; Parameters: /q /Q /quiet /passive /silent /norestart /NORESTART /noreboot /NOREBOOT; StatusMsg: Installing Visual C++ {#CPlusPlusYearVersion} Redistributable...
 ;Filename: {tmp}\dxsetup.exe; Parameters: /Q; StatusMsg: Installing DirectX...
 Filename: {app}\{#ApplicationName}.exe; Description: {cm:LaunchProgram,{#ApplicationName}}; Flags: nowait postinstall skipifsilent
 

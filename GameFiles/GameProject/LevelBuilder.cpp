@@ -85,7 +85,7 @@ void LevelBuilder::Read(json &_jsonData)
 void LevelBuilder::LoadLevel(std::string filename)
 {
     Renderer* pixel = Renderer::GetInstance();
-    std::fstream file(filename);
+    std::ifstream file(filename);
     if (file.is_open())
     {
         Logging::GetInstance("debugLog.log").LogLine("Opened %s", filename.c_str());
