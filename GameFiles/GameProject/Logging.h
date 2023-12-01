@@ -1,3 +1,12 @@
+//------------------------------------------------------------------------------
+//
+// File Name:	Logging.h
+// Author(s):	TayLee Young
+// Purpose:		Prints to both console and a log file for debugging purposes
+//
+// Copyright © 2023 DigiPen (USA) Corporation.
+//
+//------------------------------------------------------------------------------
 #pragma once
 
 #include <string>

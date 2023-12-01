@@ -1,3 +1,12 @@
+//------------------------------------------------------------------------------
+//
+// File Name:	Event.h
+// Author(s):	TayLee Young
+// Purpose:		Declaration of EventType enum and Event class.
+//
+// Copyright © 2023 DigiPen (USA) Corporation.
+//
+//------------------------------------------------------------------------------
 #pragma once
 
 enum class EventType 

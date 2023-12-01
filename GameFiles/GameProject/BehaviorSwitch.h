@@ -1,3 +1,12 @@
+//------------------------------------------------------------------------------
+//
+// File Name:	BehaviorSwitch.h
+// Author(s):	
+// Purpose:		BehaviorSwitch class declaration for switch specific behavior
+//
+// Copyright © 2023 DigiPen (USA) Corporation.
+//
+//------------------------------------------------------------------------------
 #pragma once
 #include "Behavior.h"
 #include "Inputs.h"

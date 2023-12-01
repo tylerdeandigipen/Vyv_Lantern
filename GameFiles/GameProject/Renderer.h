@@ -1,3 +1,12 @@
+//------------------------------------------------------------------------------
+//
+// File Name:	Renderer.h
+// Author(s):	
+// Purpose:		Handles all rendering tasks.
+//
+// Copyright © 2023 DigiPen (USA) Corporation.
+//
+//------------------------------------------------------------------------------
 #pragma once
 #ifndef RENDERER_H
 #define RENDERER_H

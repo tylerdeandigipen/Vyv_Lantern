@@ -1,3 +1,12 @@
+//------------------------------------------------------------------------------
+//
+// File Name:	Observer.h
+// Author(s):	TayLee Young
+// Purpose:		Observer class declaration 
+//
+// Copyright © 2023 DigiPen (USA) Corporation.
+//
+//------------------------------------------------------------------------------
 #pragma once
 #include "Entity.h"
 #include "Event.h"

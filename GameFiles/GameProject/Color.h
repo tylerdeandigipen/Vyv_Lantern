@@ -1,3 +1,12 @@
+//------------------------------------------------------------------------------
+//
+// File Name:	Color.h
+// Author(s):	Tyler Dean
+// Purpose:		Color class declaration for managing RGBA color values.
+//
+// Copyright © 2023 DigiPen (USA) Corporation.
+//
+//------------------------------------------------------------------------------
 #pragma once
 #ifndef COLOR_H
 #define COLOR_H

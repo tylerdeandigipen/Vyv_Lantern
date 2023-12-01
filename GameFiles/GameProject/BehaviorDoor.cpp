@@ -1,9 +1,8 @@
-
 //------------------------------------------------------------------------------
 //
 // File Name:	BehaviorPlayer.cpp
 // Author(s):	Michael Howard (michael.howard)
-// Purpose:		The players behavior
+// Purpose:		BehaviorDoor class implementation for door specific behavior
 // 
 // Copyright © 2023 DigiPen (USA) Corporation.
 //

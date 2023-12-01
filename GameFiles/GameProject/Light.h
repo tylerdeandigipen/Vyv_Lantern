@@ -1,3 +1,12 @@
+//------------------------------------------------------------------------------
+//
+// File Name:	Light.h
+// Author(s):	
+// Purpose:		Light class declaration for handling light sources.
+//
+// Copyright © 2023 DigiPen (USA) Corporation.
+//
+//------------------------------------------------------------------------------
 #pragma once
 #ifndef LIGHT_H
 #define LIGHT_H

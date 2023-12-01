@@ -1,3 +1,12 @@
+//------------------------------------------------------------------------------
+//
+// File Name:	Paritcle.h
+// Author(s):	Tyler Dean
+// Purpose:		Particle class declaration for handling individual particles.
+//
+// Copyright © 2023 DigiPen (USA) Corporation.
+//
+//------------------------------------------------------------------------------
 #pragma once
 #ifndef PARTICLE_H
 #define PARTICLE_H

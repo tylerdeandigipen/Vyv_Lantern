@@ -1,3 +1,13 @@
+//------------------------------------------------------------------------------
+//
+// File Name:	BehaviorMirror.h
+// Author(s):	Louis Wang
+// Purpose:		Declaration of BehaviorMirror class for controlling mirror 
+//              entities.
+// 
+// Copyright © 2023 DigiPen (USA) Corporation.
+//
+//------------------------------------------------------------------------------
 #pragma once
 #include "Behavior.h"
 #include "Inputs.h"

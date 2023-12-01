@@ -1,4 +1,12 @@
-// pausemenu.h
+//------------------------------------------------------------------------------
+//
+// File Name:	PauseMenu.h
+// Author(s):	TayLee Young
+// Purpose:		Pause class declaration for handling the pause menu.
+//
+// Copyright © 2023 DigiPen (USA) Corporation.
+//
+//------------------------------------------------------------------------------
 
 #pragma once
 

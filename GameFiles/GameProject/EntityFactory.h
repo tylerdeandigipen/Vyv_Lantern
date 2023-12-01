@@ -1,3 +1,12 @@
+//------------------------------------------------------------------------------
+//
+// File Name:	EntityFactory.h
+// Author(s):	Michael Howard
+// Purpose:		EntityFactory class declaration for creating entities.
+//
+// Copyright © 2023 DigiPen (USA) Corporation.
+//
+//------------------------------------------------------------------------------
 #pragma once
 #include "stdafx.h"
 #include "BaseSystem.h"

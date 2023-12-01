@@ -1,3 +1,13 @@
+//------------------------------------------------------------------------------
+//
+// File Name:	LaserSystem.h
+// Author(s):	Thomas Stephenson
+// Purpose:		LaserSystem class declaration for managing laser emitters and
+//              reflectors.
+//
+// Copyright © 2023 DigiPen (USA) Corporation.
+//
+//------------------------------------------------------------------------------
 #if !defined(LASER_SYSTEM_H)
 #define LASER_SYSTEM_H
 

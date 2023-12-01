@@ -1,3 +1,12 @@
+//------------------------------------------------------------------------------
+//
+// File Name:	BehaviorDoor.h
+// Author(s):	Michael Howard (michael.howard)
+// Purpose:		BehaviorDoor class declaration for door specific behavior
+//
+// Copyright © 2023 DigiPen (USA) Corporation.
+//
+//------------------------------------------------------------------------------
 #pragma once
 #include "Behavior.h"
 

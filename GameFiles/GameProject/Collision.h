@@ -1,3 +1,12 @@
+//------------------------------------------------------------------------------
+//
+// File Name:	Collision.h
+// Author(s):	
+// Purpose:		Declaration of AABB collision checking. 
+//
+// Copyright © 2023 DigiPen (USA) Corporation.
+//
+//------------------------------------------------------------------------------
 #pragma once
 #ifndef COLLISION_H_
 #define COLLISION_H_

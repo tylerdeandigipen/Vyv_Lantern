@@ -1,3 +1,12 @@
+//------------------------------------------------------------------------------
+//
+// File Name:	Subject.h
+// Author(s):	TayLee Young
+// Purpose:		Subject class declaration 
+//
+// Copyright © 2023 DigiPen (USA) Corporation.
+//
+//------------------------------------------------------------------------------
 #pragma once
 #include "Observer.h"
 

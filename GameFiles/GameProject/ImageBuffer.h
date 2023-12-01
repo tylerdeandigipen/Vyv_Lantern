@@ -1,3 +1,12 @@
+//------------------------------------------------------------------------------
+//
+// File Name:	ImageBuffer.h
+// Author(s):	
+// Purpose:		ImageBuffer class declaration for handling image data.
+//
+// Copyright © 2023 DigiPen (USA) Corporation.
+//
+//------------------------------------------------------------------------------
 #pragma once
 #ifndef IMAGEBUFFER_H
 #define IMAGEBUFFER_H
