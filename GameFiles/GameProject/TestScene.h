@@ -1,8 +1,8 @@
 //------------------------------------------------------------------------------
 //
 // File Name:	TestScene.h
-// Author(s):	TayLee Young
-// Purpose:		PLEASE
+// Author(s):	TayLee Young, Louis Wang, Michael Howard, Tyler Dean
+// Purpose:		Test scene for our game
 //
 // Copyright  © 2023 DigiPen (USA) Corporation.
 //

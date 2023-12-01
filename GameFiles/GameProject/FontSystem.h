@@ -1,3 +1,11 @@
+/*!
+@file    FontSystem.h
+@author	 Louis Wang
+
+A font system for creation of fonts
+
+         // Copyright © 2023 DigiPen (USA) Corporation.
+*//*__________________________________________________________________________*/
 #pragma once
 #ifndef FONTSYSTEM_H
 #define FONTSYSTEM_H

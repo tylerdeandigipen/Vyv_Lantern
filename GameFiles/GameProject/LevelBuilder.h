@@ -1,3 +1,12 @@
+//------------------------------------------------------------------------------
+//
+// File Name:	LevelBuilder.h
+// Author(s):	Michael Howard
+// Purpose:		Function declarations for building of the levels
+//
+// Copyright © 2023 DigiPen (USA) Corporation.
+//
+//------------------------------------------------------------------------------
 #pragma once
 
 #include "stdafx.h"

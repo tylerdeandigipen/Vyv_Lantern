@@ -1,3 +1,12 @@
+//------------------------------------------------------------------------------
+//
+// File Name:	BaseObjects.h
+// Author(s):	TayLee Young
+// Purpose:		Object class declaration for lights.
+//
+// Copyright © 2023 DigiPen (USA) Corporation.
+//
+//------------------------------------------------------------------------------
 #pragma once
 
 #include "Transform.h"

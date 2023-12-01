@@ -1,3 +1,13 @@
+//------------------------------------------------------------------------------
+//
+// File Name:	FileIO.h
+// Author(s):	Michael Howard
+// Purpose:		Reading of files from JSON.
+//
+//
+// Copyright  © 2023 DigiPen (USA) Corporation.
+//
+//------------------------------------------------------------------------------
 #pragma once
 #include "stdafx.h"
 #include "Light.h"

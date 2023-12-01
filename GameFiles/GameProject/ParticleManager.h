@@ -1,3 +1,12 @@
+//------------------------------------------------------------------------------
+//
+// File Name:	ParticleManager.h
+// Author(s):	Tyler Dean
+// Purpose:		ParticleManager class declaration for creating particles.
+//
+// Copyright © 2023 DigiPen (USA) Corporation.
+//
+//------------------------------------------------------------------------------
 #pragma once
 #ifndef PARTICLE_MANAGER_H
 #define PARTICLE_MANAGER_H

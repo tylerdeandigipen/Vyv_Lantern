@@ -1,3 +1,12 @@
+//------------------------------------------------------------------------------
+//
+// File Name:	ScopeTimer.h
+// Author(s):	TayLee Young
+// Purpose:		Timer for debugs
+//
+// Copyright © 2023 DigiPen (USA) Corporation.
+//
+//------------------------------------------------------------------------------
 #pragma once
 #include <stdlib.h>
 #include <iostream>

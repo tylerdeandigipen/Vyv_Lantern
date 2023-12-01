@@ -3,6 +3,8 @@
 @author	 Louis Wang
 
 Vector header file for all 2D vector calculations
+
+// Copyright © 2023 DigiPen (USA) Corporation.
 *//*__________________________________________________________________________*/
 
 #ifndef VECTOR_H_

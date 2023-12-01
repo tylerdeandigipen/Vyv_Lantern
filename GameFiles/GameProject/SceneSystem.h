@@ -1,6 +1,6 @@
 //------------------------------------------------------------------------------
 //
-// File Name:	SceneSystem.cpp
+// File Name:	SceneSystem.h
 // Author(s):	TayLee Young, Doug Schilling (dschilling)
 // Purpose:		handles scenes (thumbs up)
 //

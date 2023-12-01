@@ -3,6 +3,8 @@
 @author	 Louis Wang
 
 Maths functions like min max, special value like PI and deg->rad conversions
+
+// Copyright © 2023 DigiPen (USA) Corporation.
 *//*__________________________________________________________________________*/
 
 #ifndef MATH_H_

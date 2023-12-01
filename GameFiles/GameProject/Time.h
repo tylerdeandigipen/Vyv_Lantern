@@ -1,3 +1,12 @@
+//------------------------------------------------------------------------------
+//
+// File Name:	Time.h
+// Author(s):	TayLee Young, Michael Howard
+// Purpose:		Get delta time and time in general
+//
+// Copyright © 2023 DigiPen (USA) Corporation.
+//
+//------------------------------------------------------------------------------
 #pragma once
 #ifndef TIME_H
 #define TIME_H

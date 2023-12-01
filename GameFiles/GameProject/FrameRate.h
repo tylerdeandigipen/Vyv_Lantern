@@ -1,3 +1,11 @@
+/*!
+@file    FrameRate.h
+@author	 Louis Wang
+
+Frame related functions like average fps, updating the window and capping of fps
+
+// Copyright © 2023 DigiPen (USA) Corporation.
+*//*__________________________________________________________________________*/
 #pragma once
 
 #include "Renderer.h"

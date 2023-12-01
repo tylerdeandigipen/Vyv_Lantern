@@ -3,6 +3,8 @@
 @author	 Louis Wang
 
 Matrix header file for all matrix calculations
+
+// Copyright © 2023 DigiPen (USA) Corporation.
 *//*__________________________________________________________________________*/
 
 #ifndef MATRIX_H_
