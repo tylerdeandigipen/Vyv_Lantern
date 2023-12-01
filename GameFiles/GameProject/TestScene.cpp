@@ -452,8 +452,9 @@ void TestScene::Update(float dt)
 
 void TestScene::Render()
 {
+#ifdef _DEBUG
     ImGuiInterg();
-
+#endif
 #if 1
 	{
 		// NOTE(thomas): Demonstration of beam path iteration
@@ -512,7 +513,9 @@ void TestScene::ImGuiInterg()
 
     if (TSshow_custom_window)
     {
+#ifdef _DEBUG
         ImGuiWindow();
+#endif
     }
 
     ImGui::Render();

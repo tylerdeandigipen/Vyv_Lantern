@@ -61,8 +61,9 @@ void Inputs::handleInput()
     {
         // this is necessary so IMGUI doesnt confuse inputs for game
         // vs inputs for IMGUI itself 
+#ifdef _DEBUG
         ImGui_ImplSDL2_ProcessEvent(&event);
-
+#endif
         switch (event.type)
         {
 			case SDL_QUIT:

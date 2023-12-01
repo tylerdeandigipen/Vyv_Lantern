@@ -12,6 +12,7 @@
 #include "Light.h"
 #include "LevelBuilder.h"
 #include "Renderer.h"
+#include "Logging.h"
 
 
 FileIO* FileIO::instance = new FileIO;
@@ -34,11 +35,13 @@ json FileIO::OpenJSON(std::string filename)
 	std::fstream file(filename);
 	if (file.is_open())
 	{
+		Logging::GetInstance("debugLog.log").LogLine("Opened %s", filename.c_str());
 		file >> jsonData;
 		file.close();
 	}
 	else
 	{
+		Logging::GetInstance("debugLog.log").LogLine("Opened %s", filename.c_str());
 		perror("JSON file does not exist");
 		assert("File did not exist");
 	}

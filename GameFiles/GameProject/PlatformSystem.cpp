@@ -47,6 +47,7 @@ Engine::EngineCode PlatformSystem::Init()
 	gladLoadGLLoader(SDL_GL_GetProcAddress);
 
 	// Initialize ImGui
+#ifdef _DEBUG
 	IMGUI_CHECKVERSION();
 	ImGui::CreateContext();
 	ImGuiIO& io = ImGui::GetIO();
@@ -55,6 +56,7 @@ Engine::EngineCode PlatformSystem::Init()
 	ImGui::StyleColorsLight();
 	ImGui_ImplSDL2_InitForOpenGL(winHandle, oglContext);
 	ImGui_ImplOpenGL3_Init("#version 330");
+#endif
 
 	assert(winHandle != NULL);
     return Engine::NothingBad;
@@ -73,11 +75,11 @@ void PlatformSystem::Render()
 Engine::EngineCode PlatformSystem::Close()
 {
     assert(instance != NULL);
-	
+#ifdef _DEBUG
 	ImGui_ImplOpenGL3_Shutdown();
 	ImGui_ImplSDL2_Shutdown();
 	ImGui::DestroyContext();
-
+#endif
 	SDL_GL_DeleteContext(oglContext);
 	
 	SDL_DestroyWindow(winHandle);

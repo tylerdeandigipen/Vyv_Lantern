@@ -10,7 +10,7 @@
 #pragma once
 
 #include "Component.h"
-#include "Inputs.h"
+class Inputs;
 
 class Behavior : public Component
 {

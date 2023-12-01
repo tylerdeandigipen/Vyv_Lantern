@@ -8,8 +8,11 @@
 //
 //------------------------------------------------------------------------------
 #include "LevelBuilder.h"
+#include "Renderer.h"
 #include "EntityContainer.h"
+#include "Entity.h"
 #include "EntityFactory.h"
+#include "Logging.h"
 #include "FileIO.h"
 #include "Transform.h"
 
@@ -85,11 +88,13 @@ void LevelBuilder::LoadLevel(std::string filename)
     std::fstream file(filename);
     if (file.is_open())
     {
+        Logging::GetInstance("debugLog.log").LogLine("Opened %s", filename.c_str());
         file >> jsonData;
         file.close();
     }
     else
     {
+        Logging::GetInstance("debugLog.log").LogLine("Could not open %s", filename.c_str());
         perror("JSON file does not exist");
     }
     if (jsonData["Levels"].is_array())

@@ -9,11 +9,11 @@
 //------------------------------------------------------------------------------
 #pragma once
 #include "Behavior.h"
-#include "Inputs.h"
-#include "Vector.h"
-#include "Renderer.h"
-#include "BehaviorMirror.h"
+
 #include <random>
+
+class Inputs;
+class gfxVector2;
 
 class BehaviorSwitch : public Behavior
 {

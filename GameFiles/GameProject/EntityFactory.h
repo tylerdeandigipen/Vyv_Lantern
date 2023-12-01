@@ -10,7 +10,10 @@
 #pragma once
 #include "stdafx.h"
 #include "BaseSystem.h"
-#include "Entity.h"
+#include <nlohmann/json.hpp>
+
+class Entity;
+using json = nlohmann::json;
 
 class EntityFactory : public BaseSystem
 {

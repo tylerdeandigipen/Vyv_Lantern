@@ -12,7 +12,6 @@
 #include <iostream>
 #include <chrono>
 #include <string>
-#include "Logging.h"
 
 class ScopeTimer
 {
@@ -36,7 +35,7 @@ public:
 		double microseconds_elapsed = duration * 0.001f;
 
         // @TODO: Consider some kind of visual profiler to output this to.
-        Logging &Logger = Logging::GetInstance("debugLog.log");
-        Logger.LogLine("SCOPED TIMER (%s): %f", name_.c_str(), microseconds_elapsed);
+        //Logging &Logger = Logging::GetInstance("debugLog.log");
+        //Logger.LogLine("SCOPED TIMER (%s): %f", name_.c_str(), microseconds_elapsed);
 	}
 };
