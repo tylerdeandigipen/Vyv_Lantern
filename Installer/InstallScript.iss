@@ -99,7 +99,7 @@ Source: ".\INSTALLERFILES\panel_image_*.bmp"; Flags: dontcopy
 Source: .\GAMEDIRECTORY\*; DestDir: {app}; Flags: ignoreversion recursesubdirs createallsubdirs
 
 ;Chris Onorati: You need to place any redists you want to install here under files, and then install them under the RUN section
-;Source: ".\REDIST\vcredist_x64.exe"; DestDir: {tmp}; Flags: deleteafterinstall
+Source: ".\REDIST\vcredist_x64.exe"; DestDir: {tmp}; Flags: deleteafterinstall
 
 ; This is the list of shortcuts that the installer will setup for you.
 ; Of note, this will create the uninstaller automatically.
