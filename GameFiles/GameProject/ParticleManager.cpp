@@ -18,11 +18,11 @@ ParticleManager::ParticleManager()
 		particleArray[i] = NULL;
 	}
 }
+
 ParticleManager::~ParticleManager()
 {
 	ClearParticles();
 }
-
 
 void ParticleManager::UpdateParticles()
 {

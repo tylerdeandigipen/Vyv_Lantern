@@ -44,6 +44,7 @@
 
 Renderer* Renderer::instance = new Renderer();
 
+//split into Update and Render functions
 void Renderer::Update(float dt)
 {
     Uint32 currentTime = SDL_GetTicks();
@@ -556,6 +557,7 @@ void Renderer::UpdateAnimations(float dt = 0)
     }
 }
 
+//move out into own class
 ImageBuffer* Renderer::CreateAnimatedObject(const std::string filename, Vector2 frameSize)
 {
     ImageBuffer* Result = NULL;
@@ -582,6 +584,7 @@ ImageBuffer* Renderer::CreateAnimatedObject(const std::string filename, Vector2 
     return(Result);
 }
 
+//maybe move into player class or component?
 void Renderer::UpdateFace(int& faceState_)
 {
     if (faceIndex == -1 || faceIndex > MAX_ANIMATED_OBJECTS)
@@ -604,7 +607,8 @@ void Renderer::UpdateFace(int& faceState_)
 #endif
 
 #ifndef Tilemap_Functions
-
+//Refactor all these to do all at once when given a master tileset
+//using the given name + a suffix to get the normals and shadows
 void Renderer::MakeTileMap(int** tileMapArray)
 {
     ResizeBuffers();
@@ -731,6 +735,7 @@ Renderer::Renderer() : objects{ NULL }
 
 }
 
+//make more clear that its updating the *rendering*
 void Renderer::UpdateObjects(float dt)
 {
     objectLayer->ClearImageBuffer();
@@ -766,6 +771,7 @@ void Renderer::UpdateObjects(float dt)
     }
 }
 
+//remove when moving objects out
 ImageBuffer* Renderer::GetObjectByName(std::string name_)
 {
     for (int i = 0; i < numObjects; ++i)
@@ -795,6 +801,7 @@ void Renderer::AddObject(ImageBuffer* sprite)
     }
 }
 
+//remove when moving objects out
 int Renderer::ReturnObjectCount()
 {
     int countObjects = 0;
@@ -1063,6 +1070,7 @@ void Renderer::CleanRenderer()
     CameraP = Vector2{ 0,0 };
 }
 
+//Move outside into own class
 void Renderer::ClearLights()
 {
     delete[] lightSource;
@@ -1093,6 +1101,7 @@ void Renderer::ClearSprites()
     numAnimatedObjects = 0;
     faceIndex = -1;
 }
+//End of move out   
 
 void Renderer::ClearTilesets()
 {
