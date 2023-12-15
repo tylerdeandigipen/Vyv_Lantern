@@ -47,6 +47,67 @@ SDL_GLContext TbdGlContext;
 
 Scene* TbdTestSceneinstance = NULL; 
 
+TbdTestScene::TbdTestScene() : Scene("tbdtest")
+{
+
+}
+
+Engine::EngineCode TbdTestScene::Load()
+{
+    //AudioManager.LoadMusicFromJSON("./Data/music.json");
+    //AudioManager.LoadSFXFromJSON("./Data/SFX.json");
+
+	return Engine::NothingBad;
+}
+
+Engine::EngineCode TbdTestScene::Init()
+{
+    Inputs::GetInstance()->SetWindow(TbdWindow);
+
+    Light tempLight;
+    Light tempLight2;
+
+    // Create SDL Window
+    TbdWindow = PlatformSystem::GetInstance()->GetWindowHandle();
+    TbdPixelRenderer->window = TbdWindow;
+    
+    //initialize level data
+    LevelBuilder::GetInstance()->LoadLevel("./Data/Tbd_Testing_Level_Master/Tbd_Testing_Level.json");
+
+    Color tempColor{ 141,141,141,255 };
+    int numTestDust = 120;
+    Vector2 tempRandNum;
+    for (int i = 0; i < numTestDust; i++)
+    {
+        tempRandNum = Vector2{ (float)(rand() % SCREEN_SIZE_X - 10), (float)(rand() % SCREEN_SIZE_Y - 10) };
+        tempRandNum += Vector2{10,10};
+        Particle* testParticle = new Particle(tempRandNum, Vector2{ -0.8f,-0.25f }, Vector2{ 17.0f, 15.0f }, tempColor, Particle_Dust);
+        TbdPixelRenderer->particleManager->AddParticle(testParticle);
+    }
+
+    //AudioManager.PlayMusic("drips");
+    
+    //AudioManager.PlayMusic("forest");
+
+    FontSystem fontSystem;
+
+    fontSystem.init("Font/MouldyCheeseRegular-WyMWG.ttf", 10);
+
+    Engine::GetInstance()->SetPause(false);
+    return Engine::NothingBad;
+}
+
+#ifndef Render_Toggle_Functions
+int TbdCanPlaceLight = 0;
+bool TbdCanToggleFullBright = true;
+bool TbdCanToggleNormalDisplay = true;
+bool TbdCanToggleOnlyLights = true;
+bool CanPause = true;
+bool canToggleScanLines = true;
+bool TbdCanRenderWallHitboxes = true;
+bool canRenderRawFog = true;
+bool canToggleFog = true;
+
 static bool tabKeyPreviouslyPressed = false;
 static bool show_demo_window = false;
 static bool show_tool_metrics = false;
@@ -62,81 +123,6 @@ static bool isEPressedForCheat = false;
 static bool isHPressedForCheat = false;
 static bool isGPressedForCheat = false;
 
-TbdTestScene::TbdTestScene() : Scene("tbdtest")
-{
-
-}
-
-Engine::EngineCode TbdTestScene::Load()
-{
-    AudioManager.LoadMusicFromJSON("./Data/music.json");
-    AudioManager.LoadSFXFromJSON("./Data/SFX.json");
-
-	return Engine::NothingBad;
-}
-
-Engine::EngineCode TbdTestScene::Init()
-{
-    TbdLogger.LogToAll("Timestamped message: %s", "Starting TbdTestScene!!");
-
-    Inputs::GetInstance()->SetWindow(TbdWindow);
-
-    Light tempLight;
-    Light tempLight2;
-
-    // Create SDL Window
-    TbdWindow = PlatformSystem::GetInstance()->GetWindowHandle();
-    TbdPixelRenderer->window = TbdWindow;
-    
-    //initialize level data
-    LevelBuilder::GetInstance()->LoadLevel("./Data/TiledMichaelSceneTest.json");
-
-    /*
-    Color tempColor( 226, 230, 179, 255 );
-    Vector2 tempAttractPoint{ 100, 50 };
-    int numTestMoths = 30;
-    for (int i = 0; i < numTestMoths; i++)
-    {
-        Particle* testParticle = new Particle(Vector2(120,75), Vector2{ -0.8f,-0.25f }, Vector2{ 34.0f,30.0f }, tempColor, Particle_Moth, tempAttractPoint);
-        TbdPixelRenderer->particleManager->AddParticle(testParticle);
-    }
-    */
-
-    Color tempColor{ 141,141,141,255 };
-    int numTestDust = 120;
-    Vector2 tempRandNum;
-    for (int i = 0; i < numTestDust; i++)
-    {
-        tempRandNum = Vector2{ (float)(rand() % SCREEN_SIZE_X - 10), (float)(rand() % SCREEN_SIZE_Y - 10) };
-        tempRandNum += Vector2{10,10};
-        Particle* testParticle = new Particle(tempRandNum, Vector2{ -0.8f,-0.25f }, Vector2{ 17.0f, 15.0f }, tempColor, Particle_Dust);
-        TbdPixelRenderer->particleManager->AddParticle(testParticle);
-    }
-
-    //AudioManager.PlayMusic("bgm");
-
-
-    AudioManager.PlayMusic("drips");
-    
-    AudioManager.PlayMusic("forest");
-
-    FontSystem fontSystem;
-
-    fontSystem.init("Font/MouldyCheeseRegular-WyMWG.ttf", 10);
-
-    Engine::GetInstance()->SetPause(false);
-    return Engine::NothingBad;
-}
-
-int TbdCanPlaceLight = 0;
-bool TbdCanToggleFullBright = true;
-bool TbdCanToggleNormalDisplay = true;
-bool TbdCanToggleOnlyLights = true;
-bool CanPause = true;
-bool canToggleScanLines = true;
-bool TbdCanRenderWallHitboxes = true;
-bool canRenderRawFog = true;
-bool canToggleFog = true;
 
 void TbdTestScene::cheatFullbright()
 {
@@ -416,12 +402,14 @@ void TbdPlayerMovement(float dt)
         TbdPixelRenderer->SetCameraPosition(playerEntity->position - ScreenHalfSize + BitmapHalfDim);
     }
 }
+#endif
 
 void TbdTestScene::Update(float dt)
 {
     if (CheckGameScenes() || CheckRestart())
         return;
 
+    //eventally have player handle these lights
     TbdPixelRenderer->lightSource[1].position = TbdPixelRenderer->animatedObjects[0][0]->position + Vector2{ 3,3 };
     TbdPixelRenderer->lightSource[0].position = TbdPixelRenderer->animatedObjects[0][0]->position + Vector2{ 3,3 };
 
@@ -492,7 +480,8 @@ Scene* TbdTestSceneGetInstance(void)
     return TbdTestSceneinstance;
 }
 
-/**********************************************************************/
+#ifndef ImGUI_Functions
+
 void TbdTestScene::ImGuiInterg()
 {
 #ifdef _DEBUG
@@ -703,3 +692,4 @@ void TbdTestScene::ImGuiWindow()
     }
 #endif
 }
+#endif

@@ -64,21 +64,7 @@ void Renderer::Update(float dt)
 
     FrameRate::UpdateWindowTitle(window, AverageFrameRate);
 
-    FrameRate::capFrame(dt);
-
-
-
-#ifdef _DEBUG
-    /*
-    for (int i = 0; i < numLights * 2; i++)
-    {
-        if (i % 2 == 0)
-        {
-            outputBuffer->buffer[i + 1 + (3 * outputBuffer->BufferSizeX)] = { 0,0,255,255 };
-        }
-    }
-    */
-#endif
+    //FrameRate::capFrame(dt);
 
     if (!OutputBufferTexture)
     {
@@ -1069,6 +1055,7 @@ void Renderer::CleanRenderer()
     fogIsDirty = true;
     CameraP = Vector2{ 0,0 };
 }
+
 
 //Move outside into own class
 void Renderer::ClearLights()

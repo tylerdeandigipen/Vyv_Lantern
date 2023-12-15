@@ -1,0 +1,6 @@
+Sound effects persist between levels
+Framerate cap is capping framerate, but not to the desired number (and number capped to is dependent on debug / release)
+
+//To be done
+-Move all object allocation and deallocation out of renderer
+	-except tileset creation
