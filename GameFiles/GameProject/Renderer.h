@@ -152,7 +152,7 @@ private:
 	Vector2 fogPos{0,0};
 
 	//Face Variables
-	int faceIndex = -1;
+	int faceIndex = -99;
 
 	//Tilemap Variables
 	int** tileMap = NULL;
