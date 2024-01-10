@@ -15,7 +15,7 @@
 #include "Transform.h"
 #include "Physics.h"
 #include "Renderer.h"
-#include "LevelBuilder.h"
+#include "EntityContainer.h"
 #include "Maths/Vector.h"
 #include "AudioEngine.h"
 #include "Collision.h"
@@ -100,11 +100,11 @@ void BehaviorMirror::SwitchOn(bool collided)
 {
     if (collided == true)
     {
-        const EntityContainer entityContainer = *LevelBuilder::GetInstance()->GetContainer();
-        int numEntities = LevelBuilder::GetInstance()->CountEntities();
+        EntityContainer* entityContainer = EntityContainer::GetInstance();
+        int numEntities = entityContainer->CountEntities();
 
         for (int i = 0; i < numEntities; i++) {
-            Entity* entity = entityContainer[i];
+            Entity* entity = (*entityContainer)[i];
             if (entity->GetRealName() == "Mirror") {
                 if (count < maxCount) {
                     targetPos = pos[count]; // Update target position

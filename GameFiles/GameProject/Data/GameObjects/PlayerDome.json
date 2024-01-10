@@ -1,0 +1,17 @@
+{
+  "Type": "Light",
+  "Name": "PlayerDome",
+  "file": "./Data/Lights/PlayerDomeLight.json",
+  "Components": [
+    {
+      "Type": "Transform",
+      "translation": {
+        "x": 200,
+        "y": 90
+      }
+    },
+    {
+      "Type": "Light"
+    }
+  ]
+}

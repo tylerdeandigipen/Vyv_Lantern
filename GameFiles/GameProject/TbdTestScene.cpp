@@ -72,6 +72,7 @@ Engine::EngineCode TbdTestScene::Init()
     TbdPixelRenderer->window = TbdWindow;
     
     //initialize level data
+    EntityContainer::GetInstance()->ReadEntities("./Data/GameObjects/ObjectList.json");
     LevelBuilder::GetInstance()->LoadLevel("./Data/Tbd_Testing_Level_Master/Tbd_Testing_Level.json");
 
     Color tempColor{ 141,141,141,255 };
@@ -414,7 +415,6 @@ void TbdTestScene::Update(float dt)
     TbdPixelRenderer->lightSource[0].position = TbdPixelRenderer->animatedObjects[0][0]->position + Vector2{ 3,3 };
 
     Inputs* inputHandler = Inputs::GetInstance();
-    LevelBuilder::GetInstance()->LevelUpdate(dt);
     AudioManager.Update();
     inputHandler->handleInput();
     bool check = winState;
@@ -454,7 +454,7 @@ void TbdTestScene::Render()
 
 Engine::EngineCode TbdTestScene::Exit()
 {
-    LevelBuilder::GetInstance()->FreeLevel();
+    EntityContainer::GetInstance()->FreeAll();
     LevelBuilder::SetWinState(false);
     LevelBuilder::setDoor(false);
     Inputs::GetInstance()->InputKeyClear();
@@ -602,14 +602,14 @@ void TbdTestScene::ImGuiWindow()
 
         ImGui::Separator();
         ImGui::Text("Entities:");
-        const EntityContainer entityContainer = *LevelBuilder::GetInstance()->GetContainer();
-        int numEntities = LevelBuilder::GetInstance()->CountEntities();
+        EntityContainer* entityContainer = EntityContainer::GetInstance();
+        int numEntities = entityContainer->CountEntities();
 
         if (ImGui::TreeNode("All Entities"))
         {
             for (int i = 0; i < numEntities; i++)
             {
-                Entity* entity = entityContainer[i];
+                Entity* entity = (*entityContainer)[i];
                 if (entity)
                 {
                     if (ImGui::TreeNode(("Entity %s", entity->GetRealName().c_str())))

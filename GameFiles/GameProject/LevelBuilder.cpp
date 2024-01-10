@@ -24,7 +24,6 @@ LevelBuilder* LevelBuilder::instance = new LevelBuilder();
 
 LevelBuilder::LevelBuilder() : entity_container(new EntityContainer()), jsonData(), TileMap(NULL), Walls(NULL), SizeX(0), SizeY(0)
 {
-    entity_container = new EntityContainer();
 }
 
 LevelBuilder::~LevelBuilder()
@@ -47,39 +46,6 @@ LevelBuilder::~LevelBuilder()
 Engine::EngineCode LevelBuilder::Init()
 {
 	return Engine::NothingBad;
-}
-
-void LevelBuilder::Read(json &_jsonData)
-{
-    EntityFactory* factory = EntityFactory::GetInstance();
-    Renderer* pixel = Renderer::GetInstance();
-
-    //if (jsonData["Entities"].is_array())
-    //{
-        for (auto& entityData : _jsonData["Entities"])
-        {
-            Entity* newEnt = factory->CreateEntity(entityData["Type"], entityData["file"], entityData);
-            newEnt->Read(entityData);
-            entity_container->AddEntity(newEnt);
-            if (newEnt->IsObject())
-            {
-                if (newEnt->IsAnimated())
-                {
-                    newEnt->AddToRenderer(pixel, entityData["file"]);
-                    //newEnt->Has(Transform)->SetTranslation(&pixel->animatedObjects[0][0]->position);
-                    //newEnt->SetImage(pixel->animatedObjects[0][0]);
-                }
-                else
-                {
-                    newEnt->AddToRenderer(pixel);
-                }
-            }
-            if (newEnt->IsLight())
-            {
-
-            }
-        }
-    //}
 }
 
 void LevelBuilder::LoadLevel(std::string filename)
@@ -117,16 +83,9 @@ void LevelBuilder::LoadLevel(std::string filename)
                 pixel->tileMapSize.y = static_cast<float>(SizeY);
                 pixel->MakeTileMap(TileMap);
             }
-
-            Read(levelData);
         }
     }
     //pixel->ResizeBuffers();
-}
-
-void LevelBuilder::LevelUpdate(float dt)
-{
-    entity_container->UpdateAll(dt);
 }
 
 void LevelBuilder::Update(float dt)
@@ -159,7 +118,6 @@ void LevelBuilder::ReLoadLevel()
 
 void LevelBuilder::FreeLevel()
 {
-    entity_container->FreeAll();
 }
 
 void LevelBuilder::SetWinState(bool state)
@@ -220,11 +178,6 @@ int LevelBuilder::GetY()
     return SizeY;
 }
 
-const EntityContainer* LevelBuilder::GetContainer()
-{
-    return entity_container;
-}
-
 void LevelBuilder::SetX(int size)
 {
     SizeX = size;
@@ -234,12 +187,6 @@ void LevelBuilder::SetY(int size)
 {
     SizeY = size;
 }
-
-int LevelBuilder::CountEntities()
-{
-    return entity_container->CountEntities();
-}
-
 
 void LevelBuilder::AddTileSets()
 {

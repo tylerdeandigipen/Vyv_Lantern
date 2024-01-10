@@ -21,6 +21,7 @@
 #include "PlatformSystem.h"
 #include "Engine.h"
 #include "Entity.h"
+#include "EntityContainer.h"
 #include "SceneSystem.h"
 #include "Renderer.h"
 #include "Inputs.h"
@@ -528,7 +529,7 @@ void TestScene::ImGuiWindow()
         ImGui::Begin("custom window");
         ImGui::Text("hey how you doin ;)");
 
-        int numEntities = LevelBuilder::GetInstance()->CountEntities();
+        int numEntities = EntityContainer::GetInstance()->CountEntities();
         ImGui::Text("Number of Entities: %d", numEntities);
 
         ImGui::Text("Mouse Position: (%d, %d)", Inputs::GetInstance()->getMouseX(), Inputs::GetInstance()->getMouseY());

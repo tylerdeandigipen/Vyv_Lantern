@@ -25,7 +25,6 @@ public:
 	void Read(json &jsonData);
 	Engine::EngineCode Init();
 	void Update(float dt);
-	void LevelUpdate(float dt);
 
 	void Render();
 	Engine::EngineCode Close();
@@ -39,14 +38,12 @@ public:
 	static bool IsWinStateSet();
 	void SetTileMap(int** tiles);
 	int** GetTileMap();
-	int CountEntities();
 	void SetWalls(int* walls);
 	int* GetWalls();
 	void SetX(int size);
 	void SetY(int siye);
 	int GetX();
 	int GetY();
-	const EntityContainer* GetContainer();
 
 	static void setDoor(bool door);
 	static bool getDoor();

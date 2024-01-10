@@ -8,37 +8,31 @@
       <Filter>Source FIles\Engine</Filter>
     </ClCompile>
     <ClCompile Include="Behavior.cpp">
-      <Filter>Source FIles\Components</Filter>
+      <Filter>Source FIles\Objects\Components</Filter>
     </ClCompile>
     <ClCompile Include="BehaviorPlayer.cpp">
-      <Filter>Source FIles\Components\Sub Components</Filter>
+      <Filter>Source FIles\Objects\Components\Sub Components</Filter>
     </ClCompile>
     <ClCompile Include="Collider.cpp">
-      <Filter>Source FIles\Components\Sub Components</Filter>
+      <Filter>Source FIles\Objects\Components\Sub Components</Filter>
     </ClCompile>
     <ClCompile Include="ColliderAABB.cpp">
-      <Filter>Source FIles\Components\Sub Components</Filter>
+      <Filter>Source FIles\Objects\Components\Sub Components</Filter>
     </ClCompile>
     <ClCompile Include="Collision.cpp">
-      <Filter>Source FIles\Components</Filter>
+      <Filter>Source FIles\Objects\Components</Filter>
     </ClCompile>
     <ClCompile Include="Color.cpp">
       <Filter>Source FIles\Graphics</Filter>
     </ClCompile>
     <ClCompile Include="Component.cpp">
-      <Filter>Source FIles\Components</Filter>
+      <Filter>Source FIles\Objects\Components</Filter>
     </ClCompile>
     <ClCompile Include="ComponentFactory.cpp">
       <Filter>Source FIles\Engine\Systems</Filter>
     </ClCompile>
     <ClCompile Include="Engine.cpp">
       <Filter>Source FIles\Engine</Filter>
-    </ClCompile>
-    <ClCompile Include="Entity.cpp">
-      <Filter>Source FIles\Objects</Filter>
-    </ClCompile>
-    <ClCompile Include="EntityContainer.cpp">
-      <Filter>Source FIles\Objects</Filter>
     </ClCompile>
     <ClCompile Include="EntityFactory.cpp">
       <Filter>Source FIles\Engine\Systems</Filter>
@@ -71,7 +65,7 @@
       <Filter>Source FIles\Debug\IMGUI</Filter>
     </ClCompile>
     <ClCompile Include="Inputs.cpp">
-      <Filter>Source FIles\Components\Sub Components</Filter>
+      <Filter>Source FIles\Objects\Components\Sub Components</Filter>
     </ClCompile>
     <ClCompile Include="LaserSystem.cpp">
       <Filter>Source FIles\Engine\Systems</Filter>
@@ -104,7 +98,7 @@
       <Filter>Source FIles\Engine\Systems</Filter>
     </ClCompile>
     <ClCompile Include="Physics.cpp">
-      <Filter>Source FIles\Components</Filter>
+      <Filter>Source FIles\Objects\Components</Filter>
     </ClCompile>
     <ClCompile Include="Renderer.cpp">
       <Filter>Source FIles\Graphics</Filter>
@@ -137,31 +131,25 @@
       <Filter>Source FIles\Other</Filter>
     </ClCompile>
     <ClCompile Include="Transform.cpp">
-      <Filter>Source FIles\Components</Filter>
+      <Filter>Source FIles\Objects\Components</Filter>
     </ClCompile>
     <ClCompile Include="glad.c">
       <Filter>Misc</Filter>
     </ClCompile>
     <ClCompile Include="BehaviorSwitch.cpp">
-      <Filter>Source FIles\Components\Sub Components</Filter>
+      <Filter>Source FIles\Objects\Components\Sub Components</Filter>
     </ClCompile>
     <ClCompile Include="BehaviorDoor.cpp">
-      <Filter>Source FIles\Components\Sub Components</Filter>
+      <Filter>Source FIles\Objects\Components\Sub Components</Filter>
     </ClCompile>
     <ClCompile Include="WinScene.cpp">
       <Filter>Source FIles\Scenes</Filter>
     </ClCompile>
     <ClCompile Include="BehaviorMirror.cpp">
-      <Filter>Source FIles\Components\Sub Components</Filter>
+      <Filter>Source FIles\Objects\Components\Sub Components</Filter>
     </ClCompile>
     <ClCompile Include="PauseMenu.cpp">
       <Filter>Source FIles\Scenes</Filter>
-    </ClCompile>
-    <ClCompile Include="Sprite.cpp">
-      <Filter>Source FIles\Graphics</Filter>
-    </ClCompile>
-    <ClCompile Include="BaseObject.cpp">
-      <Filter>Source FIles\Objects</Filter>
     </ClCompile>
     <ClCompile Include="FontSystem.cpp">
       <Filter>Source FIles\Other</Filter>
@@ -172,6 +160,15 @@
     <ClCompile Include="PauseMenu.cpp">
       <Filter>Source FIles\Graphics</Filter>
     </ClCompile>
+    <ClCompile Include="EntityContainer.cpp">
+      <Filter>Source FIles\Engine\Systems</Filter>
+    </ClCompile>
+    <ClCompile Include="Sprite.cpp">
+      <Filter>Source FIles\Objects\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="Entity.cpp">
+      <Filter>Source FIles\Objects\Components</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AudioEngine.h">
@@ -181,34 +178,31 @@
       <Filter>Header FIles\Engine</Filter>
     </ClInclude>
     <ClInclude Include="Behavior.h">
-      <Filter>Header FIles\Components</Filter>
+      <Filter>Header FIles\Objects\Components</Filter>
     </ClInclude>
     <ClInclude Include="BehaviorPlayer.h">
-      <Filter>Header FIles\Components\SubComponents</Filter>
+      <Filter>Header FIles\Objects\Components\SubComponents</Filter>
     </ClInclude>
     <ClInclude Include="Collider.h">
-      <Filter>Header FIles\Components\SubComponents</Filter>
+      <Filter>Header FIles\Objects\Components\SubComponents</Filter>
     </ClInclude>
     <ClInclude Include="ColliderAABB.h">
-      <Filter>Header FIles\Components\SubComponents</Filter>
+      <Filter>Header FIles\Objects\Components\SubComponents</Filter>
     </ClInclude>
     <ClInclude Include="Collision.h">
-      <Filter>Header FIles\Components</Filter>
+      <Filter>Header FIles\Objects\Components</Filter>
     </ClInclude>
     <ClInclude Include="Color.h">
       <Filter>Header FIles\Graphics</Filter>
     </ClInclude>
     <ClInclude Include="Component.h">
-      <Filter>Header FIles\Components</Filter>
+      <Filter>Header FIles\Objects\Components</Filter>
     </ClInclude>
     <ClInclude Include="ComponentFactory.h">
       <Filter>Header FIles\Engine\Systems</Filter>
     </ClInclude>
     <ClInclude Include="Engine.h">
       <Filter>Header FIles\Engine</Filter>
-    </ClInclude>
-    <ClInclude Include="EntityContainer.h">
-      <Filter>Header FIles\Objects</Filter>
     </ClInclude>
     <ClInclude Include="EntityFactory.h">
       <Filter>Header FIles\Engine\Systems</Filter>
@@ -250,7 +244,7 @@
       <Filter>Header FIles\Debug\IMGUI</Filter>
     </ClInclude>
     <ClInclude Include="Inputs.h">
-      <Filter>Header FIles\Components\SubComponents</Filter>
+      <Filter>Header FIles\Objects\Components\SubComponents</Filter>
     </ClInclude>
     <ClInclude Include="LaserSystem.h">
       <Filter>Header FIles\Engine\Systems</Filter>
@@ -289,7 +283,7 @@
       <Filter>Header FIles\Engine\Systems</Filter>
     </ClInclude>
     <ClInclude Include="Physics.h">
-      <Filter>Header FIles\Components</Filter>
+      <Filter>Header FIles\Objects\Components</Filter>
     </ClInclude>
     <ClInclude Include="PlatformSystem.h">
       <Filter>Header FIles\Engine\Systems</Filter>
@@ -313,7 +307,7 @@
       <Filter>Header FIles\Engine</Filter>
     </ClInclude>
     <ClInclude Include="Transform.h">
-      <Filter>Header FIles\Components</Filter>
+      <Filter>Header FIles\Objects\Components</Filter>
     </ClInclude>
     <ClInclude Include="Vector.h">
       <Filter>Header FIles\Other</Filter>
@@ -337,22 +331,19 @@
       <Filter>Misc</Filter>
     </ClInclude>
     <ClInclude Include="BehaviorSwitch.h">
-      <Filter>Header FIles\Components\SubComponents</Filter>
+      <Filter>Header FIles\Objects\Components\SubComponents</Filter>
     </ClInclude>
     <ClInclude Include="BehaviorDoor.h">
-      <Filter>Header FIles\Components\SubComponents</Filter>
+      <Filter>Header FIles\Objects\Components\SubComponents</Filter>
     </ClInclude>
     <ClInclude Include="WinScene.h">
       <Filter>Header FIles\Scenes</Filter>
     </ClInclude>
     <ClInclude Include="BehaviorMirror.h">
-      <Filter>Header FIles\Components\SubComponents</Filter>
+      <Filter>Header FIles\Objects\Components\SubComponents</Filter>
     </ClInclude>
     <ClInclude Include="Sprite.h">
       <Filter>Header FIles\Graphics</Filter>
-    </ClInclude>
-    <ClInclude Include="BaseObject.h">
-      <Filter>Header FIles\Objects</Filter>
     </ClInclude>
     <ClInclude Include="PauseMenu.h">
       <Filter>Header FIles\Graphics</Filter>
@@ -368,6 +359,12 @@
     </ClInclude>
     <ClInclude Include="PauseMenu.h">
       <Filter>Header FIles\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="Entity.h">
+      <Filter>Header FIles</Filter>
+    </ClInclude>
+    <ClInclude Include="EntityContainer.h">
+      <Filter>Header FIles\Engine\Systems</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -414,12 +411,6 @@
     <Filter Include="Source FIles\Other">
       <UniqueIdentifier>{67adfd13-8595-412a-9279-29aebf8b80c7}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source FIles\Components">
-      <UniqueIdentifier>{a1fb3ca0-ba95-4aaf-92db-61cb5df28aa1}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source FIles\Components\Sub Components">
-      <UniqueIdentifier>{509c5c30-911b-4606-802e-10c718b049e8}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source FIles\Engine\Systems">
       <UniqueIdentifier>{3a4681fe-7830-4fac-b66a-b6c7f717fd60}</UniqueIdentifier>
     </Filter>
@@ -441,14 +432,8 @@
     <Filter Include="Header FIles\Graphics">
       <UniqueIdentifier>{9ba2d1d8-df33-483f-b64b-d8907a8917dd}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header FIles\Components">
-      <UniqueIdentifier>{f8a86454-b5ec-4ade-96c8-3e27ac807661}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Header FIles\Other">
       <UniqueIdentifier>{a01094ca-3b8b-4689-8f2c-c71609610310}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header FIles\Components\SubComponents">
-      <UniqueIdentifier>{1645cc6e-b343-4df9-a18b-30710904e527}</UniqueIdentifier>
     </Filter>
     <Filter Include="Header FIles\Debug">
       <UniqueIdentifier>{ecc7b1ee-3995-4863-833d-d808f6f0579c}</UniqueIdentifier>
@@ -473,6 +458,18 @@
     </Filter>
     <Filter Include="Header FIles\Objects">
       <UniqueIdentifier>{f151f551-13ab-4f39-b1d5-950231f39b99}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source FIles\Objects\Components">
+      <UniqueIdentifier>{a1fb3ca0-ba95-4aaf-92db-61cb5df28aa1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source FIles\Objects\Components\Sub Components">
+      <UniqueIdentifier>{509c5c30-911b-4606-802e-10c718b049e8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header FIles\Objects\Components">
+      <UniqueIdentifier>{f8a86454-b5ec-4ade-96c8-3e27ac807661}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header FIles\Objects\Components\SubComponents">
+      <UniqueIdentifier>{1645cc6e-b343-4df9-a18b-30710904e527}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

@@ -9,6 +9,8 @@
 //------------------------------------------------------------------------------
 #include "FileIO.h"
 #include "ImageBuffer.h"
+#include "Entity.h"
+#include "EntityFactory.h"
 #include "Light.h"
 #include "LevelBuilder.h"
 #include "Renderer.h"
@@ -268,6 +270,36 @@ float FileIO::ReadFloat(FILE* stream)
 	{
 		return 0.0f;
 	}
+}
+
+Entity* FileIO::ReadEntity(json entityData)
+{
+	// THIS WILL BE SHORTENED WHEN ANIMATIONS BECOME THEIR OWN COMPONENT AS WLL AS SPRITES
+	//
+	//
+	//
+	//
+	Entity* newEnt = EntityFactory::GetInstance()->CreateEntity(entityData["Type"], entityData["file"], entityData);
+	newEnt->Read(entityData);
+	if (newEnt->IsObject())
+	{
+		if (newEnt->IsAnimated())
+		{
+			newEnt->AddToRenderer(Renderer::GetInstance(), entityData["file"]);
+			//newEnt->Has(Transform)->SetTranslation(&pixel->animatedObjects[0][0]->position);
+			//newEnt->SetImage(pixel->animatedObjects[0][0]);
+		}
+		else
+		{
+			newEnt->AddToRenderer(Renderer::GetInstance());
+		}
+	}
+	if (newEnt->IsLight())
+	{
+
+	}
+
+	return newEnt;
 }
 
 ImageBuffer* ReadPPM(const char* filename)

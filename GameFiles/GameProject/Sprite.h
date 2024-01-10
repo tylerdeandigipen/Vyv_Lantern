@@ -8,14 +8,25 @@
 //
 //------------------------------------------------------------------------------
 #pragma once
+#include "Component.h"
 #include "Renderer.h"
 #include "ImageBuffer.h"
 
-class Animation
+class Animation : public Component
 {
 	Animation();
-	virtual ~Animation() = default;
+	Animation(Animation const& rhs);
+	~Animation();
 
+	// used to invoke the copy constructor
+	Component* Clone(void) const;
+
+	//component-specific render code.
+
+	void Render() const {};
+	void Read(json jsonData);
+
+	std::string GetName() { return "Component"; };
 	void Update(float dt);
 	void AddFrame(ImageBuffer* frame);
 	void SetCurrentFrame(int index);
@@ -28,16 +39,4 @@ private:
 	int currentFrame;
 	float timer;
 	float timeBetweenFrames;
-};
-
-class Sprite
-{
-public:
-	Sprite();
-	virtual ~Sprite() = default;
-
-	void Render(/*const Transform& transform*/);
-
-private:
-	Animation* animation;
 };

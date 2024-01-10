@@ -15,18 +15,31 @@
 // This file will be used to move things out of renderer. It works primarily as a skeleton base for now. 
 // it is NOT integrated currently, and will be used for the BaseObject file later on. 
 
-Sprite::Sprite()
-{
-}
 
-Animation::Animation() : frames(), currentFrame(0), timer(0.0f), timeBetweenFrames(0.1f)
+Animation::Animation() : Component(cAnimation), frames(), currentFrame(0), timer(0.0f), timeBetweenFrames(0.1f)
 {
 
 }
 
-void Sprite::Render(/*const Transform& transform*/)
+Animation::Animation(Animation const& rhs) : Component(rhs), frames(rhs.frames), currentFrame(rhs.currentFrame), timer(rhs.timer), timeBetweenFrames(rhs.timeBetweenFrames)
 {
-    
+
+}
+
+Animation::~Animation()
+{
+
+}
+
+Component* Animation::Clone(void) const
+{
+    Animation* madeNew = new Animation(*this);
+    return madeNew;
+}
+
+void Animation::Read(json jsonData)
+{
+    UNREFERENCED_PARAMETER(jsonData);
 }
 
 void Animation::Update(float dt)

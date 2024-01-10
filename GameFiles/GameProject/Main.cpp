@@ -11,6 +11,7 @@
 #include "framework.h"
 #include "Engine.h"
 #include "ComponentFactory.h"
+#include "EntityContainer.h"
 #include "EntityFactory.h"
 #include "PlatformSystem.h"
 #include "SceneSystem.h"
@@ -48,6 +49,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 
     Engine* engine = Engine::GetInstance();
 	engine->EngineAddSystem(LaserSystem::GetInstance());
+    engine->EngineAddSystem(EntityContainer::GetInstance());
 	engine->EngineAddSystem(LevelBuilder::GetInstance());
     engine->EngineAddSystem(EntityFactory::GetInstance());
     engine->EngineAddSystem(ComponentFactory::GetInstance());

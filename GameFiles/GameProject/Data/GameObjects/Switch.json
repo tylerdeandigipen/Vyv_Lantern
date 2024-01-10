@@ -1,0 +1,48 @@
+{
+  "Type": "Object",
+  "Name": "Switch",
+  "file": "./Assets/PPM/Circle_2x2.ppm",
+  "isAnimated": false,
+  "frameSize": [ 8, 8 ],
+  "Components": [
+    {
+      "Type": "ColliderAABB"
+    },
+    {
+      "Type": "Transform",
+      "translation": {
+        "x": 70,
+        "y": 30
+      }
+    },
+    {
+      "Type": "Physics",
+      "OldTranslation": {
+        "x": 90,
+        "y": 30
+      }
+    },
+    {
+      "Type": "BehaviorSwitch",
+      "key": 1,
+      "pos": [
+        {
+          "x": "20",
+          "y": "80"
+        },
+        {
+          "x": "110",
+          "y": "50"
+        },
+        {
+          "x": "20",
+          "y": "60"
+        },
+        {
+          "x": "999",
+          "y": "999"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,31 @@
+{
+  "Type": "Object",
+  "Name": "Door",
+  "file": "./Assets/PPM/Door_Closed.ppm",
+  "isAnimated": false,
+  "Components": [
+    {
+      "Type": "ColliderAABB"
+    },
+    {
+      "Type": "Transform",
+      "translation": {
+        "x": 192,
+        "y": 48
+      }
+    },
+    {
+      "Type": "Physics",
+      "OldTranslation": {
+        "x": 94,
+        "y": 30
+      }
+    },
+    {
+      "Type": "BehaviorDoor",
+      "DoorClosed": true,
+      "ClosedSprite": "./Assets/PPM/Door_Closed.ppm",
+      "OpenSprite": "./Assets/PPM/Door_Open.ppm"
+    }
+  ]
+}

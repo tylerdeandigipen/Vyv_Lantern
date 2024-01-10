@@ -28,6 +28,9 @@ public:
 	void ReadTileSet(std::string filename, Renderer* pixel, int tileSetType = 0);
 	int ReadInt(FILE* stream);
 	float ReadFloat(FILE* stream);
+
+	Entity* ReadEntity(json jsonData);
+
 	ImageBuffer* ReadPPM(const char* filename);
 
 	int** ReadTiledMap(std::string filename, int** tilemap);

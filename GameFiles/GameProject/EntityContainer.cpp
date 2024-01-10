@@ -9,11 +9,15 @@
 // Copyright  © 2023 DigiPen (USA) Corporation.
 //
 //------------------------------------------------------------------------------
+#include "stdafx.h"
 #include "EntityContainer.h"
+#include "EntityFactory.h"
+#include "FileIO.h"
 #include "Collider.h"
 #include "Entity.h"
 
 int EntityContainer::entityCount = 0;
+EntityContainer* EntityContainer::instance = new EntityContainer();
 
 EntityContainer::EntityContainer() : entities()
 {
@@ -23,6 +27,47 @@ EntityContainer::EntityContainer() : entities()
 EntityContainer::~EntityContainer()
 {
 
+}
+
+Engine::EngineCode EntityContainer::Init()
+{
+	return Engine::NothingBad;
+}
+
+void EntityContainer::Update(float dt)
+{
+	UpdateAll(dt);
+}
+
+void EntityContainer::Render()
+{
+}
+
+void EntityContainer::ReadEntities(std::string filepath)
+{
+	Renderer* pixel = Renderer::GetInstance();
+	
+	json listData = FileIO::GetInstance()->OpenJSON(filepath);
+	//if (jsonData["Entities"].is_array())
+	//{
+	for (auto& entityData : listData["Objects"])
+	{
+		std::string file = entityData["FilePath"];
+		json jsonData = FileIO::GetInstance()->OpenJSON(file); // the file to entire objects data
+
+		Entity* newEnt = FileIO::GetInstance()->ReadEntity(jsonData);
+		AddEntity(newEnt);
+	}
+	//}
+}
+
+Engine::EngineCode EntityContainer::Close()
+{
+	if (instance != NULL)
+	{
+		delete instance;
+	}
+	return Engine::NothingBad;
 }
 
 bool EntityContainer::AddEntity(Entity* entity)
@@ -46,7 +91,7 @@ Entity* EntityContainer::FindByName(const char* name)
 }
 
 // allows the ability to loop through and get the information of each entity/game-object
-Entity* EntityContainer::operator[](int index) const
+Entity* EntityContainer::operator[](int index)
 {
 	if (!entities.empty())
 	{
@@ -147,6 +192,11 @@ void EntityContainer::FreeAll()
 			entities.clear();
 		}
 	}
+}
+
+EntityContainer* EntityContainer::GetInstance()
+{
+	return instance;
 }
 
 int EntityContainer::CountEntities()

@@ -97,7 +97,6 @@ void WinScene::Update(float dt)
     WinPixelRenderer->SetCameraPosition(ScreenHalfSize);
 
     Inputs* inputHandler = Inputs::GetInstance();
-    LevelBuilder::GetInstance()->LevelUpdate(dt);
     inputHandler->handleInput();
     ImGuiInterg();
 	WinPixelRenderer->Update(dt);
@@ -155,7 +154,7 @@ void WinScene::ImGuiWindow()
         ImGui::Text("hey how you doin ;)");
         ImGui::Text("welcome to the tbdtestscene debug window");
 
-        int numEntities = LevelBuilder::GetInstance()->CountEntities();
+        int numEntities = EntityContainer::GetInstance()->CountEntities();
         ImGui::Text("Number of Entities: %d", numEntities);
 
         ImGui::Text("Mouse Position: (%d, %d)", Inputs::GetInstance()->getMouseX(), Inputs::GetInstance()->getMouseY());
