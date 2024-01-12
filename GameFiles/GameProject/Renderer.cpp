@@ -57,9 +57,11 @@ void Renderer::Update(float dt)
     RenderFog();
     RenderToOutbuffer();
 
-    DebugBuffer->Blit(outputBuffer, -GetCameraPosition().x, -GetCameraPosition().y);
-    DebugBuffer->ClearImageBuffer();
-
+    if (DebugBuffer != NULL)
+    {
+        DebugBuffer->Blit(outputBuffer, -GetCameraPosition().x, -GetCameraPosition().y);
+        DebugBuffer->ClearImageBuffer();
+    }
     float AverageFrameRate = FrameRate::CalculateAverageFrameRate(PreviousFrameLengths, _countof(PreviousFrameLengths), currentTime, PreviousFrameBeginTime);
 
     FrameRate::UpdateWindowTitle(window, AverageFrameRate);
@@ -457,6 +459,10 @@ void Renderer::RenderMenu()
 
 void Renderer::RenderParticles()
 {
+    if (this == NULL || foregroundLayer == NULL || particleManager == NULL)
+    {
+        return;
+    }
     Vector2 tempPos;
     particleManager->tileMapSize = Vector2{ (float)foregroundLayer->BufferSizeX, (float)foregroundLayer->BufferSizeY };
 
@@ -1027,7 +1033,6 @@ void Renderer::CleanRenderer()
     foregroundLayer->ClearImageBuffer();
     normalBuffer->ClearImageBuffer();
     normalBufferPostCam->ClearImageBuffer();
-    DebugBuffer->ClearImageBuffer();
     lightBuffer->ClearImageBuffer();
     fogBuffer->ClearImageBuffer();
     fogBufferPostCam->ClearImageBuffer();
@@ -1038,6 +1043,11 @@ void Renderer::CleanRenderer()
         menuBuffer = NULL;
     }
 
+    if (DebugBuffer != NULL)
+    {
+        delete DebugBuffer;
+        DebugBuffer = NULL;
+    }
     particleManager->ClearParticles();
     ReallocateLightArrays();
     ClearTilesets();

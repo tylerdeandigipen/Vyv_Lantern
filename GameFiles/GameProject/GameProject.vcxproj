@@ -193,6 +193,7 @@ xcopy "$(ProjectDir)Fmod\*.dll" "$(OutDir)" /s /r /y /q /i</Command>
     <ClInclude Include="Inputs.h" />
     <ClInclude Include="LaserSystem.h" />
     <ClInclude Include="LevelBuilder.h" />
+    <ClInclude Include="LevelCreatorScene.h" />
     <ClInclude Include="Light.h" />
     <ClInclude Include="Logging.h" />
     <ClInclude Include="Main.h" />
@@ -254,6 +255,7 @@ xcopy "$(ProjectDir)Fmod\*.dll" "$(OutDir)" /s /r /y /q /i</Command>
     <ClCompile Include="Inputs.cpp" />
     <ClCompile Include="LaserSystem.cpp" />
     <ClCompile Include="LevelBuilder.cpp" />
+    <ClCompile Include="LevelCreatorScene.cpp" />
     <ClCompile Include="Light.cpp" />
     <ClCompile Include="Logging.cpp" />
     <ClCompile Include="Main.cpp" />

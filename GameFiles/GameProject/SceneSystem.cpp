@@ -16,6 +16,7 @@
 #include "TbdTestScene.h"
 #include "TestScene.h"
 #include "TBDTestScene.h"
+#include "LevelCreatorScene.h"
 
 #include "Inputs.h"
 
@@ -247,6 +248,17 @@ bool CheckGameScenes()
 		else
 		{
 			sceneSystem->SetScene(TestSceneGetInstance());
+		}
+	}
+	else if (inputHandlerScene->keyPressed(SDL_SCANCODE_3))
+	{
+		if (activeSceneType == SceneType::SCENE_TEST)
+		{
+			sceneSystem->RestartScene();
+		}
+		else
+		{
+			sceneSystem->SetScene(LevelCreatorSceneGetInstance());
 		}
 	}
 	else

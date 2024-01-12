@@ -134,16 +134,18 @@ ImageBuffer::~ImageBuffer()
 
 ImageBuffer& ImageBuffer::ClearImageBuffer()
 {
-    Color trans = { 0,0,0,0 };
+    if (this != NULL)
+    {
+        Color trans = { 0,0,0,0 };
 
-	Color *DestBuffer = buffer;
-    
-	for(int PixelIndex = 0; PixelIndex < (BufferSizeX * BufferSizeY); ++PixelIndex)
-	{
-		*DestBuffer++ = trans;
-	}
+        Color* DestBuffer = buffer;
 
-	return *this;
+        for (int PixelIndex = 0; PixelIndex < (BufferSizeX * BufferSizeY); ++PixelIndex)
+        {
+            *DestBuffer++ = trans;
+        }
+    }
+    return *this;
 }
 
 void ImageBuffer::MergeLayers(ImageBuffer* bottom, ImageBuffer* top)
@@ -196,7 +198,7 @@ ImageBuffer& ImageBuffer::AddSprite(ImageBuffer *sprite, Vector2 CameraP)
 
 void ImageBuffer::Blit(ImageBuffer *Destination, int OffsetX, int OffsetY)
 {
-	if(!buffer)
+	if(this == NULL || this->BufferSizeX == NULL || !buffer)
 		return;
 
     int MinX = max(OffsetX, 0);

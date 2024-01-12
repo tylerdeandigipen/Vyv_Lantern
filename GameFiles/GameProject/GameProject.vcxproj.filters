@@ -169,6 +169,9 @@
     <ClCompile Include="Entity.cpp">
       <Filter>Source FIles\Objects\Components</Filter>
     </ClCompile>
+    <ClCompile Include="LevelCreatorScene.cpp">
+      <Filter>Source FIles\Scenes</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AudioEngine.h">
@@ -365,6 +368,9 @@
     </ClInclude>
     <ClInclude Include="EntityContainer.h">
       <Filter>Header FIles\Engine\Systems</Filter>
+    </ClInclude>
+    <ClInclude Include="LevelCreatorScene.h">
+      <Filter>Header FIles\Scenes</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
