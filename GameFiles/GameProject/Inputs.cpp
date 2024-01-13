@@ -179,3 +179,27 @@ bool Inputs::mouseButtonPressed(Uint8 button) const
 
     return false;
 }
+
+bool Inputs::keyDown(SDL_Keycode button) const
+{
+    assert(button >= 0 && button < SDL_NUM_SCANCODES);
+
+    if (button >= 0 && button < SDL_NUM_SCANCODES)
+    {
+        return keyStates[button];
+    }
+
+    return false;
+}
+
+bool Inputs::keyUp(SDL_Keycode button) const
+{
+    assert(button >= 0 && button < SDL_NUM_SCANCODES);
+
+    if (button >= 0 && button < SDL_NUM_SCANCODES)
+    {
+        return !keyStates[button];
+    }
+
+    return false;
+}

@@ -26,6 +26,8 @@ public:
 
 	bool Quitting() const;
 	bool keyPressed(SDL_Keycode key) const;
+	bool keyUp(SDL_Keycode key) const;
+	bool keyDown(SDL_Keycode key) const;
 	bool mouseButtonPressed(Uint8 button) const;
 
 	int getMouseX() const;
