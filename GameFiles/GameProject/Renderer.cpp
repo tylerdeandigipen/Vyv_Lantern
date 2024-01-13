@@ -1143,26 +1143,34 @@ void Renderer::ExpandTileMapInDirection(Vector2 direction, int distance)
     {
         for (int y = 0; y < tileMapSize.y; ++y)
         {
+
+            if (direction.x >= 0 && direction.y >= 0)
+            {
+                tempTileMap[x][y] = tileMap[x][y];
+            }
             if (direction.x * distance + x >= 0 && direction.y * distance + y >= 0 && direction.x * distance + x <= tileMapSize.x && direction.y * distance + y <= tileMapSize.y)
             {
                 if (direction.x < 0 || direction.y < 0)
                 {
                     tempTileMap[x][y] = tileMap[(x + (int)(direction.x * distance))][(y + (int)(direction.y * distance))];
                 }
-                else
-                {
-                    tempTileMap[x][y] = tileMap[x][y];
-                }
             }
         }
     }
-
-    for (int x = 0; x < tileMapSize.x; ++x)
+    /*
+    if (tileMap != NULL)
     {
-        delete[] tileMap[x];
+        for (int x = 0; x < tileMapSize.x; ++x)
+        {
+            if (tileMap[x] != NULL)
+            {
+                delete[] tileMap[x];
+            }
+        }
+        delete[] tileMap;
     }
-    delete[] tileMap;
-
+    */
+    //yes this causes a memory leak but for some reason having this causes a heap corruption when expanding the pos directions >:(
     tileMapSize = newTileMapSize;
     tileMap = tempTileMap;
     ResizeBuffers();

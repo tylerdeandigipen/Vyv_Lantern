@@ -114,31 +114,31 @@ void LevelCreatorPlayerMovement(float dt)
         {
             Vector2 tilePos = (CursourP + LevelCreatorPixelRenderer->GetCameraPosition());
             tilePos /= 8;
-            if ((int)tilePos.x < (int)LevelCreatorPixelRenderer->tileMapSize.x && (int)tilePos.x >= 0 && (int)tilePos.y < (int)LevelCreatorPixelRenderer->tileMapSize.y && (int)tilePos.y >= 0)
+            if ((int)tilePos.x + 1 < (int)LevelCreatorPixelRenderer->tileMapSize.x && (int)tilePos.x - 1 > 0 && (int)tilePos.y + 1 < (int)LevelCreatorPixelRenderer->tileMapSize.y && (int)tilePos.y - 1 > 0)
             {
                 LevelCreatorPixelRenderer->tileMap[(int)tilePos.x][(int)tilePos.y] = currentTile;
             }
             else
             {
-                if ((int)tilePos.x < 0)
+                if ((int)tilePos.x - 1 < 0)
                 {
                     LevelCreatorPixelRenderer->ExpandTileMapInDirection(Vector2{ -1,0 }, expansionRange);
-                    tilePos.x = expansionRange - 1;
+                    tilePos.x = expansionRange;
                     moveVector.x += expansionRange * TILE_SIZE;
                 }
-                if ((int)tilePos.x > LevelCreatorPixelRenderer->tileMapSize.x)
+                if ((int)tilePos.x + 1 > LevelCreatorPixelRenderer->tileMapSize.x)
                 {
-                    LevelCreatorPixelRenderer->ExpandTileMapInDirection(Vector2{ 1,0 }, expansionRange);
+                    LevelCreatorPixelRenderer->ExpandTileMapInDirection(Vector2{ 1,0 }, expansionRange + (tilePos.x - LevelCreatorPixelRenderer->tileMapSize.x));
                 }
-                if ((int)tilePos.y < 0)
+                if ((int)tilePos.y - 1 < 0)
                 {
                     LevelCreatorPixelRenderer->ExpandTileMapInDirection(Vector2{ 0,-1 }, expansionRange);
-                    tilePos.y = expansionRange - 1;
+                    tilePos.y = expansionRange;
                     moveVector.y += expansionRange * TILE_SIZE;
                 }
-                if ((int)tilePos.y > LevelCreatorPixelRenderer->tileMapSize.y)
+                if ((int)tilePos.y + 1 > LevelCreatorPixelRenderer->tileMapSize.y)
                 {
-                    LevelCreatorPixelRenderer->ExpandTileMapInDirection(Vector2{ 0,1 }, expansionRange);
+                    LevelCreatorPixelRenderer->ExpandTileMapInDirection(Vector2{ 0,1 }, expansionRange + (tilePos.y - LevelCreatorPixelRenderer->tileMapSize.y));
                 }
                 LevelCreatorPixelRenderer->tileMap[(int)tilePos.x][(int)tilePos.y] = currentTile;
             }
