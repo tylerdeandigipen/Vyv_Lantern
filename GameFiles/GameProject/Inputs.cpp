@@ -203,3 +203,32 @@ bool Inputs::keyUp(SDL_Keycode button) const
 
     return false;
 }
+
+bool Inputs::mouseButtonDown(SDL_Keycode button) const
+{
+    if (button == SDL_BUTTON_LEFT)
+    {
+        return leftMouseB;
+    }
+    else if (button == SDL_BUTTON_RIGHT)
+    {
+        return rightMouseB;
+    }
+
+    return false;
+}
+
+bool Inputs::mouseButtonUp(SDL_Keycode button) const
+{
+    if (button == SDL_BUTTON_LEFT)
+    {
+        return !leftMouseB;
+    }
+    else if (button == SDL_BUTTON_RIGHT)
+    {
+        return !rightMouseB;
+    }
+
+    return false;
+}
+

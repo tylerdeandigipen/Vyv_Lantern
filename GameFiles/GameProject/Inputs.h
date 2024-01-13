@@ -28,6 +28,8 @@ public:
 	bool keyPressed(SDL_Keycode key) const;
 	bool keyUp(SDL_Keycode key) const;
 	bool keyDown(SDL_Keycode key) const;
+	bool mouseButtonUp(SDL_Keycode button) const;
+	bool mouseButtonDown(SDL_Keycode button) const;
 	bool mouseButtonPressed(Uint8 button) const;
 
 	int getMouseX() const;
