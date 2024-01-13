@@ -85,6 +85,7 @@ void LevelBuilder::LoadLevel(std::string filename)
             }
         }
     }
+
     //pixel->ResizeBuffers();
 }
 

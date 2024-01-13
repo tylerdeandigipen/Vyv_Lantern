@@ -30,9 +30,7 @@ public:
 	void Render(void) override;
 	bool winState = false;
 private:
-	void ImGuiInterg();
-	void ImGuiWindow();
-	void cheatFullbright();
+
 };
 
 Scene* LevelCreatorSceneGetInstance(void);

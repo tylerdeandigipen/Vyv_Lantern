@@ -39,7 +39,7 @@
 Logging& LevelCreatorLogger = Logging::GetInstance("debugLog.log");
 
 SDL_Renderer* LevelCreatorRenderer;
-Renderer* LevelCreatorPixelRenderer = Renderer::GetInstance();
+Renderer* LevelCreatorPixelRenderer;
 
 SDL_Window* LevelCreatorWindow;
 
@@ -57,76 +57,110 @@ Engine::EngineCode LevelCreatorScene::Load()
 	return Engine::NothingBad;
 }
 
+int currentTile;
+Vector2 moveVector;
+Vector2 oldMousePos;
+Vector2 previousTile;
 Engine::EngineCode LevelCreatorScene::Init()
 {
+    LevelCreatorPixelRenderer = Renderer::GetInstance();
+    Inputs::GetInstance()->SetWindow(LevelCreatorWindow);
+
     LevelCreatorWindow = PlatformSystem::GetInstance()->GetWindowHandle();
     LevelCreatorPixelRenderer->window = LevelCreatorWindow;
 
-    Inputs::GetInstance()->SetWindow(LevelCreatorWindow);
-
     //initialize level data
-    EntityContainer::GetInstance()->ReadEntities("./Data/GameObjects/ObjectList.json");
+   // EntityContainer::GetInstance()->ReadEntities("./Data/GameObjects/ObjectListLevelBuilder.json");
     LevelBuilder::GetInstance()->LoadLevel("./Data/Tbd_Testing_Level_Master/Tbd_Testing_Level.json");
-    
+    LevelCreatorPixelRenderer->window = LevelCreatorWindow;
+
+    moveVector = { 0,0 };
+    oldMousePos = { 0,0 };
+    previousTile = { -1000,-1000 };
+    currentTile = 1;
     return Engine::NothingBad;
 }
 
-#ifndef Render_Toggle_Functions
 
-bool LevelCreatorCanToggleFullBright = true;
-
-
-static bool tabKeyPreviouslyPressed = false;
-static bool show_demo_window = false;
-static bool show_tool_metrics = false;
-static bool show_custom_window = false;
-static bool show_metrics_debug_bar = false;
-
-static bool isGravePressedForCheat = false;
-
-
-
-
-void LevelCreatorScene::cheatFullbright()
-{
-    if (LevelCreatorPixelRenderer->isFullbright == false)
-        LevelCreatorPixelRenderer->isFullbright = true;
-    else
-        LevelCreatorPixelRenderer->isFullbright = false;
-    LevelCreatorCanToggleFullBright = false;
-}
-
+bool temp;
+bool reloadTileMap = false;
+int expansionRange = 3;
 void LevelCreatorPlayerMovement(float dt)
 {
     Inputs* inputHandler = Inputs::GetInstance();
-
-    if (inputHandler->keyPressed(SDL_SCANCODE_TAB))
-    {
-        if (!tabKeyPreviouslyPressed)
-        {
-            show_demo_window = !show_demo_window;
-            show_tool_metrics = !show_tool_metrics;
-            show_custom_window = !show_custom_window;
-
-        }
-        tabKeyPreviouslyPressed = true;
-    }
-    else
-    {
-        tabKeyPreviouslyPressed = false;
-    }
 
     if (Engine::GetInstance()->Paused() == false)
     {
         int x, y;
         Uint32 buttons = SDL_GetMouseState(&x, &y);
-
         Vector2 CursourP = { (float)x, (float)y };
         CursourP *= 1.0f / LevelCreatorPixelRenderer->screenScale;
-        CursourP += LevelCreatorPixelRenderer->GetCameraPosition();
+        if (inputHandler->mouseButtonPressed(SDL_BUTTON_RIGHT))
+        {
+            if (temp == false)
+            {
+                oldMousePos = CursourP;
+            }
+            LevelCreatorPixelRenderer->SetCameraPosition(moveVector + (oldMousePos - CursourP));
+            temp = true;
+        }
+        else if (temp)
+        {
+            temp = false;
+            moveVector += oldMousePos - CursourP;
+        }
+
+        if (inputHandler->mouseButtonPressed(SDL_BUTTON_LEFT))
+        {
+            Vector2 tilePos = (CursourP + LevelCreatorPixelRenderer->GetCameraPosition());
+            tilePos /= 8;
+            if ((int)tilePos.x < (int)LevelCreatorPixelRenderer->tileMapSize.x && (int)tilePos.x >= 0 && (int)tilePos.y < (int)LevelCreatorPixelRenderer->tileMapSize.y && (int)tilePos.y >= 0)
+            {
+                LevelCreatorPixelRenderer->tileMap[(int)tilePos.x][(int)tilePos.y] = currentTile;
+            }
+            else
+            {
+                if ((int)tilePos.x < 0)
+                {
+                    LevelCreatorPixelRenderer->ExpandTileMapInDirection(Vector2{ -1,0 }, expansionRange);
+                    tilePos.x = expansionRange - 1;
+                    moveVector.x += expansionRange * TILE_SIZE;
+                }
+                if ((int)tilePos.x > LevelCreatorPixelRenderer->tileMapSize.x)
+                {
+                    LevelCreatorPixelRenderer->ExpandTileMapInDirection(Vector2{ 1,0 }, expansionRange);
+                }
+                if ((int)tilePos.y < 0)
+                {
+                    LevelCreatorPixelRenderer->ExpandTileMapInDirection(Vector2{ 0,-1 }, expansionRange);
+                    tilePos.y = expansionRange - 1;
+                    moveVector.y += expansionRange * TILE_SIZE;
+                }
+                if ((int)tilePos.y > LevelCreatorPixelRenderer->tileMapSize.y)
+                {
+                    LevelCreatorPixelRenderer->ExpandTileMapInDirection(Vector2{ 0,1 }, expansionRange);
+                }
+                LevelCreatorPixelRenderer->tileMap[(int)tilePos.x][(int)tilePos.y] = currentTile;
+            }
+            if ((int)tilePos.x != (int)previousTile.x || (int)tilePos.y != (int)previousTile.y)
+            {
+                previousTile = tilePos;
+                LevelCreatorPixelRenderer->MakeTileMap(LevelCreatorPixelRenderer->tileMap);
+
+                LevelCreatorPixelRenderer->SetCameraPosition(moveVector);
+            }
+        }
+
+        if (inputHandler->keyPressed(SDL_SCANCODE_B))
+        {
+            currentTile = 1;
+        }
+        if (inputHandler->keyPressed(SDL_SCANCODE_E))
+        {
+            currentTile = 0;
+        }
     }
 }
-#endif
 
 void LevelCreatorScene::Update(float dt)
 {
@@ -136,8 +170,9 @@ void LevelCreatorScene::Update(float dt)
     Inputs* inputHandler = Inputs::GetInstance();
     inputHandler->handleInput();
 
-   // LevelCreatorPlayerMovement(dt);
-   // cheatFullbright();
+    LevelCreatorPlayerMovement(dt);
+    LevelCreatorPixelRenderer->isFullbright = true;
+
 
     LevelCreatorPixelRenderer->Update(dt);
 }
@@ -170,123 +205,3 @@ Scene* LevelCreatorSceneGetInstance(void)
     }
     return LevelCreatorSceneinstance;
 }
-
-#ifndef ImGUI_Functions
-
-void LevelCreatorScene::ImGuiInterg()
-{
-#ifdef _DEBUG
-    ImGui_ImplOpenGL3_NewFrame();
-    ImGui_ImplSDL2_NewFrame();
-    ImGui::NewFrame();
-
-    if (show_custom_window)
-    {
-        ImGuiWindow();
-    }
-
-    ImGui::Render();
-#endif
-}
-
-void LevelCreatorScene::ImGuiWindow()
-{
-#ifdef _DEBUG
-    if (show_custom_window)
-    {
-        ImGui::Begin("custom window");
-        ImGui::Text("hey how you doin ;)");
-        ImGui::Text("welcome to the LevelCreatorScene debug window");
-
-        ImGui::Separator();
-
-        ImGui::Text("Mouse Position: (%d, %d)", Inputs::GetInstance()->getMouseX(), Inputs::GetInstance()->getMouseY());
-
-        ImGui::Text("Keys Pressed:");
-        for (int i = 0; i < SDL_NUM_SCANCODES; ++i)
-        {
-            if (Inputs::GetInstance()->keyPressed(i))
-            {
-                const char* keyName = SDL_GetKeyName(SDL_GetKeyFromScancode(static_cast<SDL_Scancode>(i)));
-                ImGui::BulletText("%s is being pressed", keyName);
-            }
-        }
-
-        ImGui::Separator();
-        ImGui::Text("Cheat Status:");
-
-        if (ImGui::Button("FullBright Cheat:"))
-        {
-            isGravePressedForCheat = !isGravePressedForCheat;
-
-            cheatFullbright();
-        }
-        ImGui::SameLine();
-        ImGui::Text(isGravePressedForCheat ? "Active" : "Inactive");
-
-        ImGui::Separator();
-        ImGui::Text("Entities:");
-        EntityContainer* entityContainer = EntityContainer::GetInstance();
-        int numEntities = entityContainer->CountEntities();
-
-        if (ImGui::TreeNode("All Entities"))
-        {
-            for (int i = 0; i < numEntities; i++)
-            {
-                Entity* entity = (*entityContainer)[i];
-                if (entity)
-                {
-                    if (ImGui::TreeNode(("Entity %s", entity->GetRealName().c_str())))
-                    {
-                        ImGui::Text("Name: %s", entity->GetRealName().c_str());
-                        ImGui::Text("Entity Number: %d", i);
-
-                        ImGui::TreePop();
-                    }
-                }
-            }
-            ImGui::TreePop();
-        }
-
-        ImGui::Separator();
-
-        if (ImGui::TreeNode("Tilesets in use:"))
-        {
-            ImGui::BulletText("TileMapSprites.json");
-            ImGui::BulletText("TileMapNormals.json");
-            ImGui::TreePop();
-        }
-
-        ImGui::Separator();
-        ImGui::Text("Scene Tools:");
-
-        if (ImGui::Button("Toggle Metrics/Debug Bar"))
-        {
-            show_metrics_debug_bar = !show_metrics_debug_bar;
-        }
-
-        if (ImGui::Button("Reset Scene"))
-        {
-            SceneSystem::GetInstance()->RestartScene();
-        }
-
-        if (ImGui::Button("Switch Scene"))
-        {
-            SceneSystem::GetInstance()->SetScene(TestSceneGetInstance());
-        }
-
-        if (show_metrics_debug_bar)
-        {
-            ImGui::Text("Metrics/Debugger:");
-            ImGui::Separator();
-            ImGui::Text("Frame Time: %.3f ms/frame", 1000.0f / ImGui::GetIO().Framerate);
-            ImGui::Text("Framerate: %.1f FPS", ImGui::GetIO().Framerate);
-
-            ImGui::Separator();
-        }
-
-        ImGui::End();
-    }
-#endif
-}
-#endif

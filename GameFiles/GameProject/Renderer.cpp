@@ -1043,11 +1043,6 @@ void Renderer::CleanRenderer()
         menuBuffer = NULL;
     }
 
-    if (DebugBuffer != NULL)
-    {
-        delete DebugBuffer;
-        DebugBuffer = NULL;
-    }
     particleManager->ClearParticles();
     ReallocateLightArrays();
     ClearTilesets();
@@ -1123,6 +1118,54 @@ void Renderer::ClearTilesets()
     numTiles = 0;
     numNormalTiles = 0;
     numShadowCasterTiles = 0;
+}
+
+void Renderer::ExpandTileMapInDirection(Vector2 direction, int distance)
+{
+    int** tempTileMap = NULL;
+    Vector2 newTileMapSize = Vector2{ tileMapSize.x + (abs(direction.x) * distance), tileMapSize.y + (abs(direction.y) * distance) };
+    tempTileMap = new int* [newTileMapSize.x];
+
+    for (int x = 0; x < newTileMapSize.x; ++x)
+    {
+        tempTileMap[x] = new int[newTileMapSize.y];
+    }
+
+    for (int x = 0; x < newTileMapSize.x; ++x)
+    {
+        for (int y = 0; y < newTileMapSize.y; ++y)
+        {
+            tempTileMap[x][y] = 0;
+        }
+    }
+
+    for (int x = 0; x < tileMapSize.x; ++x)
+    {
+        for (int y = 0; y < tileMapSize.y; ++y)
+        {
+            if (direction.x * distance + x >= 0 && direction.y * distance + y >= 0 && direction.x * distance + x <= tileMapSize.x && direction.y * distance + y <= tileMapSize.y)
+            {
+                if (direction.x < 0 || direction.y < 0)
+                {
+                    tempTileMap[x][y] = tileMap[(x + (int)(direction.x * distance))][(y + (int)(direction.y * distance))];
+                }
+                else
+                {
+                    tempTileMap[x][y] = tileMap[x][y];
+                }
+            }
+        }
+    }
+
+    for (int x = 0; x < tileMapSize.x; ++x)
+    {
+        delete[] tileMap[x];
+    }
+    delete[] tileMap;
+
+    tileMapSize = newTileMapSize;
+    tileMap = tempTileMap;
+    ResizeBuffers();
 }
 
 void Renderer::ResizeBuffers()
