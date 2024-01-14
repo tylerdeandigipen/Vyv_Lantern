@@ -372,6 +372,9 @@
     <ClInclude Include="LevelCreatorScene.h">
       <Filter>Header FIles\Scenes</Filter>
     </ClInclude>
+    <ClInclude Include="CrashHandler.hpp">
+      <Filter>Source FIles\Engine</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="GameProject.ico">
