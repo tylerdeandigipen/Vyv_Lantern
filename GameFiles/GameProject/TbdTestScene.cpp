@@ -17,6 +17,7 @@
 #include <algorithm>
 
 #include "TbdTestScene.h"
+#include "LevelCreatorScene.h"
 #include "Scene.h"
 #include "PlatformSystem.h"
 #include "Engine.h"
@@ -673,9 +674,14 @@ void TbdTestScene::ImGuiWindow()
             SceneSystem::GetInstance()->RestartScene();
         }
 
-        if (ImGui::Button("Switch Scene"))
+        if (ImGui::Button("Test Scene"))
         {
             SceneSystem::GetInstance()->SetScene(TestSceneGetInstance());
+        }
+
+        if (ImGui::Button("Level Creator Scene"))
+        {
+            SceneSystem::GetInstance()->SetScene(LevelCreatorSceneGetInstance());
         }
 
         if (show_metrics_debug_bar)

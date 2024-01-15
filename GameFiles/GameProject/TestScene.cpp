@@ -17,6 +17,7 @@
 #include "imgui_impl_opengl3.h"
 #include "TestScene.h"
 #include "TbdTestScene.h"
+#include "LevelCreatorScene.h"
 #include "Scene.h"
 #include "PlatformSystem.h"
 #include "Engine.h"
@@ -384,9 +385,14 @@ void TestScene::ImGuiWindow()
             SceneSystem::GetInstance()->RestartScene();
         }
 
-        if (ImGui::Button("Switch Scene"))
+        if (ImGui::Button("TbdTest Scene"))
         {
             SceneSystem::GetInstance()->SetScene(TbdTestSceneGetInstance());
+        }
+
+        if (ImGui::Button("Level Creator Scene"))
+        {
+            SceneSystem::GetInstance()->SetScene(LevelCreatorSceneGetInstance());
         }
 
         if (ImGui::Button("Toggle Metrics/Debug Bar"))

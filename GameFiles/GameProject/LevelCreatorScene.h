@@ -32,6 +32,10 @@ public:
 private:
 	void ImGuiInterg();
 	void ImGuiWindow();
+	void LevelCreatorPlayerMovement(float dt);
+	void ToolEyedroper();
+	void ToolCenter();
+	void ToolSquareFill();
 
 };
 
