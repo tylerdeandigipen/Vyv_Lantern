@@ -25,6 +25,7 @@ enum class SceneType
 {
 	SCENE_TBD_TEST = 0,
 	SCENE_TEST = 1,
+	SCENE_LEVELCREATOR = 2,
 	NULL_SCENE,
 	// Add more scenes as needed
 };
@@ -217,13 +218,17 @@ bool CheckGameScenes()
 
 	assert(activeScene != nullptr && "Active scene is NULL. Location: CheckGameScenes()");
 
-	if (activeScene == TbdTestSceneGetInstance()) 
+	if (activeScene == TbdTestSceneGetInstance())
 	{
 		activeSceneType = SceneType::SCENE_TBD_TEST;
 	}
-	else if (activeScene == TestSceneGetInstance()) 
+	else if (activeScene == TestSceneGetInstance())
 	{
 		activeSceneType = SceneType::SCENE_TEST;
+	}
+	else if (activeScene == LevelCreatorSceneGetInstance())
+	{
+		activeSceneType == SceneType::SCENE_LEVELCREATOR;
 	}
 
 	assert(activeSceneType != SceneType::NULL_SCENE && "Active scene type is NULL. Location: CheckGameScenes()");
@@ -252,7 +257,7 @@ bool CheckGameScenes()
 	}
 	else if (inputHandlerScene->keyPressed(SDL_SCANCODE_3))
 	{
-		if (activeSceneType == SceneType::SCENE_TEST)
+		if (activeSceneType == SceneType::SCENE_LEVELCREATOR)
 		{
 			sceneSystem->RestartScene();
 		}

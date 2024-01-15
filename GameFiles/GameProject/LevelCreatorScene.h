@@ -30,6 +30,8 @@ public:
 	void Render(void) override;
 	bool winState = false;
 private:
+	void ImGuiInterg();
+	void ImGuiWindow();
 
 };
 

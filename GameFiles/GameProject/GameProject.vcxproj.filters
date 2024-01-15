@@ -172,6 +172,9 @@
     <ClCompile Include="LevelCreatorScene.cpp">
       <Filter>Source FIles\Scenes</Filter>
     </ClCompile>
+    <ClCompile Include="ImguiFunctions.cpp">
+      <Filter>Source FIles\Debug\IMGUI</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AudioEngine.h">
@@ -371,6 +374,9 @@
     </ClInclude>
     <ClInclude Include="LevelCreatorScene.h">
       <Filter>Header FIles\Scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="ImguiFunction.h">
+      <Filter>Header FIles\Debug\IMGUI</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

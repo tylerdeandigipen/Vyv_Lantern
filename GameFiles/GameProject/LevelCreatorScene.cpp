@@ -47,6 +47,8 @@ SDL_GLContext LevelCreatorGlContext;
 
 Scene* LevelCreatorSceneinstance = NULL; 
 
+static bool showCreatorToolsWindow = true;
+
 LevelCreatorScene::LevelCreatorScene() : Scene("LevelCreatortest")
 {
 
@@ -271,6 +273,7 @@ void LevelCreatorScene::Update(float dt)
 
 
     LevelCreatorPixelRenderer->Update(dt);
+    ImGuiInterg();
 }
 
 void LevelCreatorScene::Render()
@@ -300,4 +303,36 @@ Scene* LevelCreatorSceneGetInstance(void)
         LevelCreatorSceneinstance = new LevelCreatorScene();
     }
     return LevelCreatorSceneinstance;
+}
+
+/* --------------------------------------------------------------------------------------------------------------------------------- */
+
+void LevelCreatorScene::ImGuiInterg()
+{
+#ifdef _DEBUG
+    ImGui_ImplOpenGL3_NewFrame();
+    ImGui_ImplSDL2_NewFrame();
+    ImGui::NewFrame();
+
+    if (showCreatorToolsWindow)
+    {
+        ImGuiWindow();
+    }
+
+    ImGui::Render();
+#endif
+}
+
+void LevelCreatorScene::ImGuiWindow()
+{
+    if (showCreatorToolsWindow)
+    {
+        ImGui::Begin("Design Tools");
+        ImGui::Text("have fun designers,");
+        ImGui::Text("welcome to the creator window!");
+
+        ImGui::Separator();
+
+        ImGui::End();
+    }
 }
