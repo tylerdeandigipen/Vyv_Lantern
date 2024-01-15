@@ -148,12 +148,19 @@ void BehaviorSwitch::SwitchCollisionHandler(Entity* entity1, Entity* entity2)
     {
         /*Check if player is inside switch*/
         isColliding = true;
+
+        if(prompt != NULL)
+        {
+            prompt->position.x = entity2->GetImage()->position.x + 10;
+            prompt->position.y = entity2->GetImage()->position.y - 10;
+        }
+
         if (prompt == NULL)
         {
             prompt = new ImageBuffer{"./Assets/PPM/Press_E.ppm"};
             Renderer::GetInstance()->AddObject(prompt);
         }
-        if (isColliding && theSwitch && (theSwitch->GetLerped() == false))
+        if (theSwitch && (theSwitch->GetLerped() == false))
         {
             prompt->isCulled = false;
 
@@ -189,9 +196,10 @@ void BehaviorSwitch::SwitchCollisionHandler(Entity* entity1, Entity* entity2)
         }
         else
         {
-            isColliding = false;
             if (prompt)
-                prompt->isCulled = false;
+            {
+                prompt->isCulled = true;
+            }
         }
     }
 }
