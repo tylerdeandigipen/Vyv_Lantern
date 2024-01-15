@@ -25,26 +25,21 @@
 #include <iostream>
 #include "Vector.h"
 
-int BehaviorSwitch::count = 0;
-int BehaviorSwitch::maxCount = 4;
-std::vector<gfxVector2> BehaviorSwitch::pos;
 bool BehaviorSwitch::OnOff = false;
-int BehaviorSwitch::key = 0;
 
-
-BehaviorSwitch::BehaviorSwitch() : Behavior(Behavior::Switch)
+BehaviorSwitch::BehaviorSwitch() : Behavior(Behavior::Switch), isLerping(false), currentPos(0), maxCount(0)
 {
 	_type = this;
 }
 
-BehaviorSwitch::BehaviorSwitch(BehaviorSwitch const& other) : Behavior(other)
+BehaviorSwitch::BehaviorSwitch(BehaviorSwitch const& other) : Behavior(other), isLerping(other.isLerping), currentPos(other.currentPos), maxCount(other.maxCount)
 {
 	_type = this;
 }
 
 BehaviorSwitch::~BehaviorSwitch()
 {
-    count = 0;
+    currentPos = 0;
 }
 
 std::string BehaviorSwitch::GetName()
@@ -81,16 +76,40 @@ Behavior* BehaviorSwitch::Clone() const
     return new BehaviorSwitch(*this);
 }
 
+gfxVector2 lerpValue(gfxVector2 a, gfxVector2 b, float t)
+{
+    gfxVector2 lerpedVector = a;
+
+    lerpedVector.x += t * (b.x - a.x);
+    lerpedVector.y += t * (b.y - a.y);
+
+    return lerpedVector;
+}
+
 void BehaviorSwitch::Update(float dt)
 {
     if (Parent())
         Controller(dt);
+    if (GetLerped() == true)
+    {
+        gfxVector2 lerped = lerpValue(*Parent()->Has(Transform)->GetTranslation(), pos[currentPos], 0.04f);
+        Parent()->Has(Transform)->SetTranslation(lerped);
+        if (lerped.x >= (pos[currentPos].x - 1) &&
+            lerped.x <= (pos[currentPos].x + 1) &&
+            lerped.y >= (pos[currentPos].y - 1) &&
+            lerped.y <= (pos[currentPos].y + 1))
+        {
+            Parent()->Has(Transform)->SetTranslation(pos[currentPos]);
+            SetLerped();
+        }
+    }
 }
 
 void BehaviorSwitch::Read(json jsonData)
 {
     Init();
     /*What values to load into the switches here*/
+    maxCount = jsonData["NumPositions"] - 1;
     for (auto& positions : jsonData["pos"])
     {
         // Extract "x" and "y" values, convert them to integers, and store in the vector
@@ -102,15 +121,6 @@ void BehaviorSwitch::Read(json jsonData)
     key = jsonData["key"];
 }
 
-gfxVector2 lerpValue(gfxVector2 a, gfxVector2 b, float t)
-{
-    gfxVector2 lerpedVector;
-
-    lerpedVector.x = a.x + t * (b.x - a.x);
-    lerpedVector.y = a.y + t * (b.y - a.y);
-
-    return lerpedVector;
-}
 
 
 ImageBuffer* prompt = NULL;
@@ -121,6 +131,19 @@ void BehaviorSwitch::SwitchCollisionHandler(Entity* entity1, Entity* entity2)
     if (prompt != NULL)
         prompt->isCulled = true;
 
+    // find which switch is actually a switch 
+    BehaviorSwitch* switch1 = reinterpret_cast<BehaviorSwitch*>(entity1->Has(Behavior));
+    BehaviorSwitch* switch2 = reinterpret_cast<BehaviorSwitch*>(entity2->Has(Behavior));
+    BehaviorSwitch* theSwitch = NULL;
+    if (switch2->GetName().compare("BehaviorSwitch") == 0)
+    {
+        theSwitch = switch2;
+    }
+    else if (switch1->GetName().compare("BehaviorSwitch") == 0)
+    {
+        theSwitch = switch1;
+    }
+
     if (entity1->GetRealName().compare("Player") == 0 && entity2->GetRealName().compare("Switch") == 0 || entity1->GetRealName().compare("Switch") == 0 && entity2->GetRealName().compare("Player") == 0)
     {
         /*Check if player is inside switch*/
@@ -130,71 +153,37 @@ void BehaviorSwitch::SwitchCollisionHandler(Entity* entity1, Entity* entity2)
             prompt = new ImageBuffer{"./Assets/PPM/Press_E.ppm"};
             Renderer::GetInstance()->AddObject(prompt);
         }
-        if (isColliding)
+        if (isColliding && theSwitch && (theSwitch->GetLerped() == false))
         {
             prompt->isCulled = false;
-            if (entity2->GetRealName().compare("Switch") == 0)
-            {
-                prompt->position.x = entity2->GetImage()->position.x + 10;
-                prompt->position.y = entity2->GetImage()->position.y - 10;
-                
-            }
-            if (entity1->GetRealName().compare("Switch") == 0)
-            {
-                prompt->position.x = entity1->GetImage()->position.x + 10;
-                prompt->position.y = entity2->GetImage()->position.y - 10;
-            }
 
             if (input->keyPressed(SDL_SCANCODE_E))
             {
+                // swaps bool value
+                theSwitch->SetLerped();
                 OnOff = true;
                 /*Mirror will move here*/
-                BehaviorMirror::SwitchOn(OnOff);
+                //BehaviorMirror::SwitchOn(OnOff);
                 AudioManager.PlaySFX("laser");
-                if (count < maxCount)
+
+                // temporary win condition
+                if (theSwitch->currentPos == theSwitch->maxCount)
                 {
-                    float progress = 0.0f; // Progress value for lerping
-                    if (entity2->GetRealName().compare("Switch") == 0)
-                    {
-                        //gfxVector2 lerped = lerpValue(entity2->GetImage()->position, pos[count], progress);
-                        entity2->GetImage()->position = pos[count];
-                    }
-                    else if (entity1->GetRealName().compare("Switch") == 0)
-                    {
-                        //gfxVector2 lerped = lerpValue(entity1->GetImage()->position, pos[count], progress);
-                        entity1->GetImage()->position = pos[count];
-                    }
-                    progress += 0.001f;
-                    count++;
-                    if (count == 4)
-                    {
-                        AudioManager.PlaySFX("door");
-                        LevelBuilder::setDoor(true);
-                    }
-                    //prompt->isCulled = true;
-                    if (prompt->isCulled == false)
-                    {
-                        prompt->isCulled = true;
-                    }
+                    AudioManager.PlaySFX("door");
+                    LevelBuilder::setDoor(true);
+                    theSwitch->currentPos = 0;
                 }
-                /*
                 else
                 {
-                    
-                    count = 0;
-                    if (entity2->GetRealName().compare("Switch") == 0)
-                    {
-                        entity2->GetImage()->position = pos[count];
-                    }
-                    else if (entity1->GetRealName().compare("Switch") == 0)
-                    {
-                        entity1->GetImage()->position = pos[count];
-                    }
-                    
-
+                    theSwitch->currentPos++;
                 }
-                */
+                //prompt->isCulled = true;
+                if (prompt->isCulled == false)
+                {
+                    prompt->isCulled = true;
+                }
                 OnOff = false;
+
                 /*Move switch*/
             }
         }

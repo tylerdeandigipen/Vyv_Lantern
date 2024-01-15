@@ -25,11 +25,10 @@
 #include "EntityContainer.h"
 #include "BehaviorSwitch.h"
 
-std::vector<gfxVector2> BehaviorMirror::pos;
 int BehaviorMirror::count = 1;
 int BehaviorMirror::maxCount = 4;
-gfxVector2 BehaviorMirror::currentPos = gfxVector2(0, 0);
-gfxVector2 BehaviorMirror::targetPos = gfxVector2(0, 0);
+//gfxVector2 BehaviorMirror::currentPos = gfxVector2(0, 0);
+//gfxVector2 BehaviorMirror::targetPos = gfxVector2(0, 0);
 
 BehaviorMirror::BehaviorMirror() : Behavior(Behavior::Mirror)
 {
@@ -67,6 +66,9 @@ void BehaviorMirror::Init()
     {
         // Set collision handler for mirrors with lasers maybe??
         Collider* collider = Parent()->Has(Collider);
+        if (Parent() && Parent()->Has(Transform)) {
+            //Parent()->GetImage()->position = currentPos;
+        }
     }
 }
 
@@ -89,11 +91,11 @@ void BehaviorMirror::Read(json jsonData)
         // Extract "x" and "y" values, convert them to integers, and store in the vector
         float x = std::stoi(positions["x"].get<std::string>());
         float y = std::stoi(positions["y"].get<std::string>());
-
         pos.push_back({ x,y });
     }
-    currentPos = pos[0];
-    targetPos = pos[0];
+    key = jsonData["key"];
+    //currentPos = pos[0];
+    //targetPos = pos[0];
 }
 
 void BehaviorMirror::SwitchOn(bool collided)
@@ -105,16 +107,10 @@ void BehaviorMirror::SwitchOn(bool collided)
 
         for (int i = 0; i < numEntities; i++) {
             Entity* entity = (*entityContainer)[i];
-            if (entity->GetRealName() == "Mirror") {
-                if (count < maxCount) {
-                    targetPos = pos[count]; // Update target position
-                    count++;
-                }
-                else {
-                    count = 0;
-                    targetPos = pos[count]; // Update target position
-                }
-            }
+            BehaviorMirror* mirror = reinterpret_cast<BehaviorMirror*>(entity->Has(Behavior));
+            BehaviorSwitch* Switch = reinterpret_cast<BehaviorSwitch*>(entity->Has(Behavior));
+            
+
         }
     }
 }
@@ -126,11 +122,11 @@ void BehaviorMirror::MirrorCollisionHandler(Entity* thisone, Entity* other)
 void BehaviorMirror::Controller(float dt)
 {
 
-    float lerpFactor = 0.5f; // Adjust this value for speed
+ //   float lerpFactor = 0.5f; // Adjust this value for speed
 
-    currentPos = currentPos + lerpFactor * (targetPos - currentPos);
+//    currentPos = currentPos + lerpFactor * (targetPos - currentPos);
 
-    if (Parent() && Parent()->Has(Transform)) {
-        Parent()->GetImage()->position = currentPos;
-    }
+ //   if (Parent() && Parent()->Has(Transform)) {
+ //       Parent()->GetImage()->position = currentPos;
+ //   }
 }

@@ -38,7 +38,6 @@ public:
 	void Destroy();
 
 	static std::string ObjectName();
-	static std::string LightName();
 
 	void SetName(const char* name);
 	void SetInputHandler(Inputs* input);
@@ -58,7 +57,6 @@ public:
 		return static_cast<type_*>(Get(typeId));
 	}
 
-	bool IsLight();
 	bool IsObject();
 	bool IsAnimated();
 

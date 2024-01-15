@@ -4,15 +4,6 @@
       "FilePath": "./Data/GameObjects/Player.json"
     },
     {
-      "FilePath": "./Data/GameObjects/PlayerDirectional.json"
-    },
-    {
-      "FilePath": "./Data/GameObjects/PlayerDome.json"
-    },
-    {
-      "FilePath": "./Data/GameObjects/Switch.json"
-    },
-    {
       "FilePath": "./Data/GameObjects/Door.json"
     },
     {

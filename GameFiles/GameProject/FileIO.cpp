@@ -294,10 +294,6 @@ Entity* FileIO::ReadEntity(json entityData)
 			newEnt->AddToRenderer(Renderer::GetInstance());
 		}
 	}
-	if (newEnt->IsLight())
-	{
-
-	}
 
 	return newEnt;
 }

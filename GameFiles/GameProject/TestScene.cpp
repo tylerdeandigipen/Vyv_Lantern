@@ -130,102 +130,6 @@ Engine::EngineCode TestScene::Init()
     window = PlatformSystem::GetInstance()->GetWindowHandle();
     pixelRenderer->window = window;
 
-	//LevelBuilder::GetInstance()->LoadLevel(&pixelRenderer, "./Data/FirstLevel.json");
-    /*
-	tempLight.Type = LightSourceType_Directional;
-	tempLight.position.x = 80;
-    tempLight.position.y = 90;
-    tempLight.color = { 216, 247, 255, 255 };
-    tempLight.maxAngle = 25;
-    tempLight.minAngle = -25;
-    tempLight.angle = 200;
-    tempLight.intensity = 25.0f;
-    tempLight.radialWeight = 1;
-    tempLight.angularWeight = 2.0f;
-    tempLight.volumetricIntensity = .25f;
-
-    tempLight2.position.x = 120;
-    tempLight2.position.y = 50;
-    tempLight2.color = { 255, 0, 0, 255 };
-
-    tempLight2.intensity = 50;
-    tempLight2.radialWeight = 1;
-    tempLight2.angularWeight = 2.0f;
-    tempLight2.volumetricIntensity = .25f;
-
-    tempLight3.position.x = 200;
-    tempLight3.position.y = 90;
-
-    tempLight3.color = { 255, 182, 76, 255 };
-
-    tempLight3.intensity = 50;
-    tempLight3.radialWeight = 1;
-    tempLight3.angularWeight = 0;
-    tempLight3.volumetricIntensity = .25f;
-
-    pixelRenderer.AddLight(tempLight);
-    pixelRenderer.AddLight(tempLight2);
-    pixelRenderer.AddLight(tempLight3);
-
-    testSprite = new ImageBuffer("./Assets/PPM/Logo.ppm");
-    testSprite->type = COLLIDABLE;
-    testSprite->position = { 30, 30 };
-    testSprite->layer = 1;
-    pixelRenderer.AddObject(testSprite);
-
-    //Add another testsprite to check for collision
-    testSprite1 = new ImageBuffer(30, 30);
-    for (int x = 0; x < testSprite1->BufferSizeX; ++x)
-    {
-        for (int y = 0; y < testSprite1->BufferSizeY; ++y)
-        {
-            if (x > 8 && x < testSprite1->BufferSizeX - 8 && y > 8 && y < testSprite1->BufferSizeY - 8)
-            {
-                testSprite1->SampleColor(x, y) = transparent;
-            }
-            else
-                testSprite1->SampleColor(x, y) = blue;
-        }
-    }
-    testSprite1->position = { 120, 30 };
-    testSprite1->layer = 1;
-    pixelRenderer.AddObject(testSprite1);
-    testSprite1->type = SWITCH;
-    //Walls here
-    topwall = new ImageBuffer(pixelRenderer.outputBuffer->BufferSizeX * pixelRenderer.outputBuffer->screenScale, 2);
-    for (int x = 0; x < topwall->BufferSizeX; ++x)
-    {
-        for (int y = 0; y < topwall->BufferSizeY; ++y)
-        {
-            topwall->SampleColor(x, y) = blue;
-        }
-    }
-    topwall->position = { 0, 0 };
-    topwall->layer = 1;
-    pixelRenderer.AddObject(topwall);
-    topwall->type = WALL;
-
-    bottomwall = new ImageBuffer(pixelRenderer.outputBuffer->BufferSizeX * pixelRenderer.outputBuffer->screenScale, 2);
-    for (int x = 0; x < bottomwall->BufferSizeX; ++x)
-    {
-        for (int y = 0; y < bottomwall->BufferSizeY; ++y)
-        {
-            bottomwall->SampleColor(x, y) = blue;
-        }
-    }
-    bottomwall->position = { 0, -pixelRenderer.outputBuffer->BufferSizeY * pixelRenderer.outputBuffer->screenScale };
-    bottomwall->layer = 1;
-    pixelRenderer.AddObject(bottomwall);
-    bottomwall->type = WALL;
-
-
-    
-
-
-    ObjCount = pixelRenderer.returnObjCnt();
-    //temp fix to set object[0] to player type
-    pixelRenderer.objects[0]->type = PLAYER;
-    */
     logger.LogLine("Debug info: Lights, camera, action! (testScene init)");
 	return Engine::NothingBad;
 }
@@ -304,7 +208,7 @@ void tempPlayerMovementLol(float dt)
     Vector2 LightP = pixelRenderer->lightSource[0].position;
     Vector2 D = LightP - CursourP;
     float Angle = atan2f(D.x, D.y) * (180.0f / 3.14f) + 180.0f;
-    pixelRenderer->lightSource[0].angle = Angle;
+   // pixelRenderer->lightSource[0].angle = Angle;
 
     ImageBuffer *playerEntity = pixelRenderer->objects[1];
     Vector2 ScreenHalfSize = 0.5f*Vector2(SCREEN_SIZE_X, SCREEN_SIZE_Y);
@@ -326,109 +230,7 @@ void TestScene::Update(float dt)
     {
         Engine::GetInstance()->SetCloseRequest(true);
     }
-    /*
-    //object[2] is the goose
-    //object[1] is the square
-    for (int i = 0; i < ObjCount; i++)
-    {
-        pixelRenderer.objects[i]->aabb.min = { pixelRenderer.objects[i]->position.x, pixelRenderer.objects[i]->position.y };
-        pixelRenderer.objects[i]->aabb.max = { pixelRenderer.objects[i]->position.x + pixelRenderer.objects[i]->BufferSizeX, pixelRenderer.objects[i]->position.y + pixelRenderer.objects[i]->BufferSizeY };
-    };
-    */
-    /*This will make ALL objects collidable*/
-    /*
-        for (int b = 1; b < ObjCount; b++)
-        {
-            if (!CollisionCheck(pixelRenderer.objects[0]->aabb, pixelRenderer.objects[b]->aabb))
-            {
-                canMove = true;
-                tempPlayerMovementLol(dt);
-            }
-            else
-            {
-                if (pixelRenderer.objects[b]->type == COLLIDABLE)
-                {
-                    // Calculate the vector from object 'a' to object 'b'
-                    float pushDirX = pixelRenderer.objects[b]->position.x - pixelRenderer.objects[0]->position.x;
-                    float pushDirY = pixelRenderer.objects[b]->position.y - pixelRenderer.objects[0]->position.y;
-                    // Calculate the length of the vector
-                    float pushDirLength = sqrt(pushDirX * pushDirX + pushDirY * pushDirY);
 
-                    // Normalize the vector to obtain a unit vector
-                    if (pushDirLength > 0)
-                    {
-                        pushDirX /= pushDirLength;
-                        pushDirY /= pushDirLength;
-                    }
-
-                    // Apply the push force to both objects
-                    pixelRenderer.objects[0]->position.x -= pushDirX * pushForce;
-                    pixelRenderer.objects[0]->position.y -= pushDirY * pushForce;
-                    pixelRenderer.objects[b]->position.x += pushDirX * pushForce;
-                    pixelRenderer.objects[b]->position.y += pushDirY * pushForce;
-                }
-                if (pixelRenderer.objects[b]->type == SWITCH)
-                {
-                    for (int x = 0; x < pixelRenderer.objects[b]->BufferSizeX; ++x)
-                    {
-                        for (int y = 0; y < pixelRenderer.objects[b]->BufferSizeY; ++y)
-                        {
-                           pixelRenderer.objects[b]->SampleColor(x, y) = black;
-                        }
-                    }
-                }
-
-                if (pixelRenderer.objects[b]->type == WALL)
-                {
-                        // Calculate the vector from object 'a' to object 'b'
-                        float pushDirX = pixelRenderer.objects[b]->position.x - pixelRenderer.objects[0]->position.x;
-                        float pushDirY = pixelRenderer.objects[b]->position.y - pixelRenderer.objects[0]->position.y;
-
-                        // Calculate the length of the vector
-                        float pushDirLength = sqrt(pushDirX * pushDirX + pushDirY * pushDirY);
-
-                        // Normalize the vector to obtain a unit vector
-                        if (pushDirLength > 0)
-                        {
-                            pushDirX /= pushDirLength;
-                            pushDirY /= pushDirLength;
-                        }
-
-                        // Calculate the overlap between the player and the wall's AABB
-                        float playerLeft = pixelRenderer.objects[0]->aabb.min.x;
-                        float playerRight = pixelRenderer.objects[0]->aabb.max.x;
-                        float playerTop = pixelRenderer.objects[0]->aabb.min.y;
-                        float playerBottom = pixelRenderer.objects[0]->aabb.max.y;
-
-                        float wallLeft = pixelRenderer.objects[b]->aabb.min.x;
-                        float wallRight = pixelRenderer.objects[b]->aabb.max.x;
-                        float wallTop = pixelRenderer.objects[b]->aabb.min.y;
-                        float wallBottom = pixelRenderer.objects[b]->aabb.max.y;
-
-                        // Check if there is an overlap in both the x and y directions
-                        if (playerRight > wallLeft && playerLeft < wallRight && playerBottom > wallTop && playerTop < wallBottom)
-                        {
-                            // There's a collision with the wall, so prevent further player movement.
-                            canMove = false;
-                        }
-                }
-
-
-
-                if (soundCooldown <= 0.0f) 
-                {
-                    AudioManager.PlaySFX("footsteps.ogg");
-                    soundCooldown = 1.0f; // Set the cooldown time
-                }
-                //AudioManager.PlaySFX("oof.ogg");
-            }
-        }
-    // Update the cooldown timer.
-    soundCooldown -= dt;
-    if (soundCooldown < 0.0f) {
-        soundCooldown = 0.0f;
-    }
-    */
     {
         int CursourX = 0;
         int CursourY = 0;

@@ -133,5 +133,6 @@ Component& ComponentFactory::CreatePhysics()
 Component& ComponentFactory::CreateLight()
 {
     Component* light = new Light();
+
     return *light;
 }
