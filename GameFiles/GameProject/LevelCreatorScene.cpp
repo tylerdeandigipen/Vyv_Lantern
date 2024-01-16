@@ -293,13 +293,13 @@ void LevelCreatorScene::Update(float dt)
 
     Inputs* inputHandler = Inputs::GetInstance();
     inputHandler->handleInput();
+    ImGuiInterg();
 
     LevelCreatorPlayerMovement(dt);
+
     LevelCreatorPixelRenderer->isFullbright = true;
 
-
     LevelCreatorPixelRenderer->Update(dt);
-    ImGuiInterg();
 }
 
 void LevelCreatorScene::Render()
@@ -353,9 +353,22 @@ void LevelCreatorScene::ImGuiWindow()
 {
     if (showCreatorToolsWindow)
     {
+
         ImGui::Begin("Design Tools");
         ImGui::Text("have fun designers,");
         ImGui::Text("welcome to the creator window!");
+
+        ImGui::Separator();
+
+        if (ImGui::TreeNode("Export:"))
+        {
+            ImGui::InputText(".json", myTextBuffer, sizeof(myTextBuffer));
+            if (ImGui::Button("Submit")) {
+                // Handle the text input here (e.g., save it to a file)
+                // For now, let's print it to the console
+                FileIO::GetInstance()->ExportTileMap(myTextBuffer);
+            }
+        }
 
         ImGui::Separator();
 

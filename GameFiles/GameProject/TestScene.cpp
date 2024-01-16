@@ -111,7 +111,7 @@ Engine::EngineCode TestScene::Init()
         reflector *Reflector2 = NewReflector();
         Reflector2->Radius = 100.0f;
         Reflector2->Position = Vector2(200.0f, 50.0f);
-        Reflector2->Direction = Vector2::Normalize(Vector2(-1.0f, 0.0f));
+        Reflector2->Direction = Vector2::Normalize(Vector2(1.0f, 0.0f));
     }
     
     /*BGM*/

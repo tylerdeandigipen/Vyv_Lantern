@@ -11,7 +11,9 @@
 #if !defined(LASER_SYSTEM_H)
 #define LASER_SYSTEM_H
 
-#include "Engine.h"
+//#include "Engine.h"
+#include "BaseSystem.h"
+#include "Vector.h"
 
 struct laser_emitter
 {

@@ -47,6 +47,10 @@
     },
     {
       "Type": "BehaviorMirror",
+      "Direction": {
+        "DirectionX": -1.0,
+        "DirectionY": 0.0
+      },
       "key": 1
     }
   ]

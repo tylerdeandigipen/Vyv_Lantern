@@ -9,6 +9,7 @@
 //
 //------------------------------------------------------------------------------
 #include "BehaviorMirror.h"
+#include "LaserSystem.h"
 #include "Collider.h"
 #include "Entity.h"
 #include "Inputs.h"
@@ -30,12 +31,12 @@ int BehaviorMirror::maxCount = 4;
 //gfxVector2 BehaviorMirror::currentPos = gfxVector2(0, 0);
 //gfxVector2 BehaviorMirror::targetPos = gfxVector2(0, 0);
 
-BehaviorMirror::BehaviorMirror() : Behavior(Behavior::Mirror)
+BehaviorMirror::BehaviorMirror() : Behavior(Behavior::Mirror), reflect(LaserSystem::GetInstance()->GetReflector(LaserSystem::GetInstance()->CreateReflector()))
 {
     _type = this;
 }
 
-BehaviorMirror::BehaviorMirror(BehaviorMirror const& other) : Behavior(other)
+BehaviorMirror::BehaviorMirror(BehaviorMirror const& other) : Behavior(other), reflect(other.reflect)
 {
     _type = this;
 }
@@ -81,11 +82,20 @@ void BehaviorMirror::Update(float dt)
 {
     if (Parent())
         Controller(dt);
+    reflect->Position = *Parent()->Has(Transform)->GetTranslation();
 }
 
 void BehaviorMirror::Read(json jsonData)
 {
     Init();
+    
+    if (jsonData["Direction"].is_object())
+    {
+        json direction = jsonData["Direction"];
+        reflect->Direction.x = direction["DirectionX"];
+        reflect->Direction.y = direction["DirectionY"];
+    }
+
     for (auto& positions : jsonData["pos"])
     {
         // Extract "x" and "y" values, convert them to integers, and store in the vector

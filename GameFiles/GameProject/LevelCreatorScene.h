@@ -37,6 +37,8 @@ private:
 	void ToolCenter();
 	void ToolSquareFill();
 
+	char myTextBuffer[256]{};
+
 };
 
 Scene* LevelCreatorSceneGetInstance(void);

@@ -229,7 +229,7 @@ void LaserSystem::HandleSceneChange(void)
 
 LaserSystem::beam_path_iterator LaserSystem::IterateEmitterPath(emitter_id EmitterID)
 {
-	beam_path_iterator Result;
+    beam_path_iterator Result{};
 
 	laser_emitter *Emitter = GetEmitter(EmitterID);
 	if(Emitter)

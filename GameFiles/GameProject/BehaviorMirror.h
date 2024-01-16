@@ -12,6 +12,7 @@
 #include "Behavior.h"
 
 class gfxVector2;
+struct reflector;
 
 class BehaviorMirror : public Behavior
 {
@@ -36,6 +37,7 @@ public:
 
 private:
 	void Controller(float dt);
+	reflector* reflect;
 	std::vector<gfxVector2> pos;
 	static int count;
 	int key;

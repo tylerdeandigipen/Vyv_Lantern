@@ -65,6 +65,9 @@ Engine::EngineCode TbdTestScene::Init()
 {
     Inputs::GetInstance()->SetWindow(TbdWindow);
 
+    //exporttests
+    FileIO::GetInstance()->ExportTileMap("export_tests");
+
     Light tempLight;
     Light tempLight2;
 
@@ -74,7 +77,7 @@ Engine::EngineCode TbdTestScene::Init()
     
     //initialize level data
     EntityContainer::GetInstance()->ReadEntities("./Data/GameObjects/ObjectList.json");
-    LevelBuilder::GetInstance()->LoadLevel("./Data/Tbd_Testing_Level_Master/Tbd_Testing_Level.json");
+    LevelBuilder::GetInstance()->LoadLevel("./Data/TiledMichaelSceneTest.json");
 
     Color tempColor{ 141,141,141,255 };
     int numTestDust = 120;
