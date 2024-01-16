@@ -54,8 +54,10 @@ public:
     ~ImageBuffer();
 
 	ImageBuffer& AddSprite(ImageBuffer* sprite, Vector2 CameraP = Vector2(0, 0));
+    ImageBuffer& AddSpriteIgnoreAlpha(ImageBuffer* sprite, Vector2 CameraP = Vector2(0, 0));
 	void Blit(ImageBuffer *Destination, int OffsetX = 0, int OffsetY = 0);
-    
+    void BlitIgnoreAlpha(ImageBuffer* Destination, int OffsetX = 0, int OffsetY = 0);
+
     void Update(float dt);
 
     Color &SampleColor(int x, int y);

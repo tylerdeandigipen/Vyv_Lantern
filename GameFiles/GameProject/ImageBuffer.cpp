@@ -196,6 +196,13 @@ ImageBuffer& ImageBuffer::AddSprite(ImageBuffer *sprite, Vector2 CameraP)
     return *this;
 }
 
+ImageBuffer& ImageBuffer::AddSpriteIgnoreAlpha(ImageBuffer* sprite, Vector2 CameraP)
+{
+    Vector2 ScreenSpaceP = sprite->position - CameraP;
+    sprite->BlitIgnoreAlpha(this, (int)ScreenSpaceP.x, (int)ScreenSpaceP.y);
+    return *this;
+}
+
 void ImageBuffer::Blit(ImageBuffer *Destination, int OffsetX, int OffsetY)
 {
 	if(this == NULL || this->BufferSizeX == NULL || !buffer)
@@ -235,6 +242,44 @@ void ImageBuffer::Blit(ImageBuffer *Destination, int OffsetX, int OffsetY)
         }
     }
 }
+
+void ImageBuffer::BlitIgnoreAlpha(ImageBuffer* Destination, int OffsetX, int OffsetY)
+{
+    if (this == NULL || this->BufferSizeX == NULL || !buffer)
+        return;
+
+    int MinX = max(OffsetX, 0);
+    int MinY = max(OffsetY, 0);
+    int MaxX = min(OffsetX + BufferSizeX, Destination->BufferSizeX);
+    int MaxY = min(OffsetY + BufferSizeY, Destination->BufferSizeY);
+
+    int SourceOffsetX = 0;
+    int SourceOffsetY = 0;
+    if (OffsetX < 0)
+    {
+        SourceOffsetX = -OffsetX;
+    }
+    if (OffsetY < 0)
+    {
+        SourceOffsetY = -OffsetY;
+    }
+
+#pragma omp parallel for collapse(2)
+    for (int y = MinY; y < MaxY; ++y)
+    {
+        Color* DestPixel = Destination->buffer + (y * Destination->BufferSizeX) + MinX;
+        Color* SourcePixel = buffer + ((y - MinY + SourceOffsetY) * BufferSizeX) + SourceOffsetX;
+
+        for (int x = MinX; x < MaxX; ++x)
+        {
+            *DestPixel = *SourcePixel;
+
+            DestPixel++;
+            SourcePixel++;
+        }
+    }
+}
+
 
 void ImageBuffer::FlipSprite()
 {

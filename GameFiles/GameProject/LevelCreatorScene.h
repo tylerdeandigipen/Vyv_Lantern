@@ -13,6 +13,8 @@
 #include "SceneSystem.h"
 #include "AudioEngine.h"
 #include "Collision.h"
+#include "Inputs.h"
+
 
 class Scene;
 
@@ -32,10 +34,12 @@ public:
 private:
 	void ImGuiInterg();
 	void ImGuiWindow();
-	void LevelCreatorPlayerMovement(float dt);
-	void ToolEyedroper();
-	void ToolCenter();
-	void ToolSquareFill();
+	void ToolHandler();
+	void ToolPan(Inputs* inputHandler, Vector2 CursourP);
+	void ToolBrush(Inputs* inputHandler, Vector2 CursourP);
+	void ToolEyedroper(Inputs* inputHandler, Vector2 CursourP);
+	void ToolCenter(Inputs* inputHandler);
+	void ToolSquareFill(Inputs* inputHandler, Vector2 CursourP);
 
 	char myTextBuffer[256]{};
 

@@ -68,6 +68,8 @@ public:
 
 	//Tilemap Functions
 	void MakeTileMap(int** tileMapArray);
+	void TileMapSetTile(Vector2 pos, int tile);
+	void TileMapEraseTile(Vector2 pos);
 	void AddTileToTileset(ImageBuffer* tile);
 	void AddNormalToNormalTileset(ImageBuffer* tile);
 	void AddShadowCasterToShadowCasterTileset(ImageBuffer* tile);

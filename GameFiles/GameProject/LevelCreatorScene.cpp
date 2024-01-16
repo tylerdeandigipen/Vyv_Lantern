@@ -60,6 +60,7 @@ Engine::EngineCode LevelCreatorScene::Load()
 	return Engine::NothingBad;
 }
 
+int currentTool = 0;
 int currentTile;
 Vector2 moveVector;
 Vector2 oldMousePos;
@@ -90,39 +91,32 @@ bool wasDown = false;
 bool reloadTileMap = false;
 int expansionRange = 3;
 
-void LevelCreatorScene::ToolEyedroper()
+void LevelCreatorScene::ToolEyedroper(Inputs* inputHandler, Vector2 CursourP)
 {
-    int x, y;
-    Uint32 buttons = SDL_GetMouseState(&x, &y);
-    Vector2 CursourP = { (float)x, (float)y };
-    CursourP *= 1.0f / LevelCreatorPixelRenderer->screenScale;
-
-    Vector2 tilePos = (CursourP + LevelCreatorPixelRenderer->GetCameraPosition());
-    tilePos /= 8;
-    if ((int)tilePos.x < (int)LevelCreatorPixelRenderer->tileMapSize.x && (int)tilePos.x > 0 && (int)tilePos.y < (int)LevelCreatorPixelRenderer->tileMapSize.y && (int)tilePos.y > 0)
+    if (inputHandler->mouseButtonDown(SDL_BUTTON_LEFT))
     {
-        currentTile = LevelCreatorPixelRenderer->tileMap[(int)tilePos.x][(int)tilePos.y];
-    }
-    else
-    {
-        currentTile = 0;
+        Vector2 tilePos = (CursourP + LevelCreatorPixelRenderer->GetCameraPosition());
+        tilePos /= 8;
+        if ((int)tilePos.x < (int)LevelCreatorPixelRenderer->tileMapSize.x && (int)tilePos.x > 0 && (int)tilePos.y < (int)LevelCreatorPixelRenderer->tileMapSize.y && (int)tilePos.y > 0)
+        {
+            currentTile = LevelCreatorPixelRenderer->tileMap[(int)tilePos.x][(int)tilePos.y];
+        }
+        else
+        {
+            currentTile = 0;
+        }
     }
 }
 
-void LevelCreatorScene::ToolCenter()
+void LevelCreatorScene::ToolCenter(Inputs* inputHandler)
 {
     moveVector = { 0,0 };
     previousTile = { -1000,-1000 };
     LevelCreatorPixelRenderer->SetCameraPosition(moveVector);
 }
 
-void LevelCreatorScene::ToolSquareFill()
+void LevelCreatorScene::ToolSquareFill(Inputs* inputHandler, Vector2 CursourP)
 {
-    Inputs* inputHandler = Inputs::GetInstance();
-    int x, y;
-    Uint32 buttons = SDL_GetMouseState(&x, &y);
-    Vector2 CursourP = { (float)x, (float)y };
-    CursourP *= 1.0f / LevelCreatorPixelRenderer->screenScale;
     Vector2 tilePos = (CursourP + LevelCreatorPixelRenderer->GetCameraPosition());
     tilePos /= 8;
 
@@ -145,6 +139,10 @@ void LevelCreatorScene::ToolSquareFill()
                 }
                 else
                 {
+                    if (currentTile == 0 || currentTile == 4)
+                    {
+                        break;
+                    }
                     if ((int)desiredTile.x < 0)
                     {
                         LevelCreatorPixelRenderer->ExpandTileMapInDirection(Vector2{ -1,0 }, expansionRange + abs(desiredTile.x));
@@ -184,106 +182,148 @@ void LevelCreatorScene::ToolSquareFill()
             {
                 for (int y = (int)pos1.y; y != (int)pos2.y + moveByOneY; y += moveByOneY)
                 {
-                    LevelCreatorPixelRenderer->tileMap[x][y] = currentTile;
+                    if (currentTile != 0 && currentTile != 4)
+                    {
+                        LevelCreatorPixelRenderer->TileMapSetTile(Vector2{ (float)x,(float)y }, currentTile);
+                    }
+                    else
+                    {
+                        LevelCreatorPixelRenderer->TileMapEraseTile(Vector2{ (float)x,(float)y });
+                    }
                 }
             }
         }
-        LevelCreatorPixelRenderer->MakeTileMap(LevelCreatorPixelRenderer->tileMap);
         wasDown = false;
     }
 }
 
-void LevelCreatorScene::LevelCreatorPlayerMovement(float dt)
+void LevelCreatorScene::ToolBrush(Inputs* inputHandler, Vector2 CursourP)
+{
+    if (inputHandler->mouseButtonPressed(SDL_BUTTON_LEFT))
+    {
+        Vector2 tilePos = (CursourP + LevelCreatorPixelRenderer->GetCameraPosition());
+        tilePos /= 8;
+        if ((int)tilePos.x < (int)LevelCreatorPixelRenderer->tileMapSize.x && (int)tilePos.x >= 0 && (int)tilePos.y < (int)LevelCreatorPixelRenderer->tileMapSize.y && (int)tilePos.y >= 0)
+        {
+            if (currentTile == 0 || currentTile == 4)
+            {
+                LevelCreatorPixelRenderer->TileMapEraseTile(tilePos);
+                return;
+            }
+            LevelCreatorPixelRenderer->TileMapSetTile(tilePos, currentTile);
+        }
+        else
+        {
+            if (currentTile == 0 || currentTile == 4)
+            {
+                return;
+            }
+            if ((int)tilePos.x - 1 < 0)
+            {
+                LevelCreatorPixelRenderer->ExpandTileMapInDirection(Vector2{ -1,0 }, expansionRange);
+                tilePos.x = expansionRange;
+                moveVector.x += expansionRange * TILE_SIZE;
+            }
+            if ((int)tilePos.x + 1 > LevelCreatorPixelRenderer->tileMapSize.x)
+            {
+                LevelCreatorPixelRenderer->ExpandTileMapInDirection(Vector2{ 1,0 }, expansionRange + (tilePos.x - LevelCreatorPixelRenderer->tileMapSize.x));
+            }
+            if ((int)tilePos.y - 1 < 0)
+            {
+                LevelCreatorPixelRenderer->ExpandTileMapInDirection(Vector2{ 0,-1 }, expansionRange);
+                tilePos.y = expansionRange;
+                moveVector.y += expansionRange * TILE_SIZE;
+            }
+            if ((int)tilePos.y + 1 > LevelCreatorPixelRenderer->tileMapSize.y)
+            {
+                LevelCreatorPixelRenderer->ExpandTileMapInDirection(Vector2{ 0,1 }, expansionRange + (tilePos.y - LevelCreatorPixelRenderer->tileMapSize.y));
+            }
+            LevelCreatorPixelRenderer->TileMapSetTile(tilePos, currentTile);
+        }
+        if ((int)tilePos.x != (int)previousTile.x || (int)tilePos.y != (int)previousTile.y)
+        {
+            previousTile = tilePos;
+
+            LevelCreatorPixelRenderer->SetCameraPosition(moveVector);
+        }
+    }
+}
+
+void LevelCreatorScene::ToolPan(Inputs* inputHandler, Vector2 CursourP)
+{
+    if (inputHandler->mouseButtonPressed(SDL_BUTTON_RIGHT))
+    {
+        if (temp == false)
+        {
+            oldMousePos = CursourP;
+        }
+        LevelCreatorPixelRenderer->SetCameraPosition(moveVector + (oldMousePos - CursourP));
+        temp = true;
+    }
+    else if (temp)
+    {
+        temp = false;
+        moveVector += oldMousePos - CursourP;
+    }
+}
+
+void LevelCreatorScene::ToolHandler()
 {
     Inputs* inputHandler = Inputs::GetInstance();
 
-    if (Engine::GetInstance()->Paused() == false)
+    int x, y;
+    Uint32 buttons = SDL_GetMouseState(&x, &y);
+    Vector2 CursourP = { (float)x, (float)y };
+    CursourP *= 1.0f / LevelCreatorPixelRenderer->screenScale;
+
+    if (inputHandler->keyPressed(SDL_SCANCODE_LSHIFT) && inputHandler->mouseButtonPressed(SDL_BUTTON_LEFT))
     {
-        int x, y;
-        Uint32 buttons = SDL_GetMouseState(&x, &y);
-        Vector2 CursourP = { (float)x, (float)y };
-        CursourP *= 1.0f / LevelCreatorPixelRenderer->screenScale;
-  
-        if (inputHandler->mouseButtonPressed(SDL_BUTTON_RIGHT))
-        {
-            if (temp == false)
-            {
-                oldMousePos = CursourP;
-            }
-            LevelCreatorPixelRenderer->SetCameraPosition(moveVector + (oldMousePos - CursourP));
-            temp = true;
-        }
-        else if (temp)
-        {
-            temp = false;
-            moveVector += oldMousePos - CursourP;
-        }
-
-        if (inputHandler->keyPressed(SDL_SCANCODE_LSHIFT))
-        {
-            ToolSquareFill();
-        }
-        else if (inputHandler->keyPressed(SDL_SCANCODE_LALT) && inputHandler->mouseButtonPressed(SDL_BUTTON_LEFT))
-        {
-            ToolEyedroper();
-        }
-        else if (inputHandler->mouseButtonPressed(SDL_BUTTON_LEFT))
-        {
-            Vector2 tilePos = (CursourP + LevelCreatorPixelRenderer->GetCameraPosition());
-            tilePos /= 8;
-            if ((int)tilePos.x + 1 < (int)LevelCreatorPixelRenderer->tileMapSize.x && (int)tilePos.x - 1 > 0 && (int)tilePos.y + 1 < (int)LevelCreatorPixelRenderer->tileMapSize.y && (int)tilePos.y - 1 > 0)
-            {
-                LevelCreatorPixelRenderer->tileMap[(int)tilePos.x][(int)tilePos.y] = currentTile;
-            }
-            else
-            {
-                if ((int)tilePos.x - 1 < 0)
-                {
-                    LevelCreatorPixelRenderer->ExpandTileMapInDirection(Vector2{ -1,0 }, expansionRange);
-                    tilePos.x = expansionRange;
-                    moveVector.x += expansionRange * TILE_SIZE;
-                }
-                if ((int)tilePos.x + 1 > LevelCreatorPixelRenderer->tileMapSize.x)
-                {
-                    LevelCreatorPixelRenderer->ExpandTileMapInDirection(Vector2{ 1,0 }, expansionRange + (tilePos.x - LevelCreatorPixelRenderer->tileMapSize.x));
-                }
-                if ((int)tilePos.y - 1 < 0)
-                {
-                    LevelCreatorPixelRenderer->ExpandTileMapInDirection(Vector2{ 0,-1 }, expansionRange);
-                    tilePos.y = expansionRange;
-                    moveVector.y += expansionRange * TILE_SIZE;
-                }
-                if ((int)tilePos.y + 1 > LevelCreatorPixelRenderer->tileMapSize.y)
-                {
-                    LevelCreatorPixelRenderer->ExpandTileMapInDirection(Vector2{ 0,1 }, expansionRange + (tilePos.y - LevelCreatorPixelRenderer->tileMapSize.y));
-                }
-                LevelCreatorPixelRenderer->tileMap[(int)tilePos.x][(int)tilePos.y] = currentTile;
-            }
-            if ((int)tilePos.x != (int)previousTile.x || (int)tilePos.y != (int)previousTile.y)
-            {
-                previousTile = tilePos;
-                LevelCreatorPixelRenderer->MakeTileMap(LevelCreatorPixelRenderer->tileMap);
-
-                LevelCreatorPixelRenderer->SetCameraPosition(moveVector);
-            }
-        }
-
-        if (inputHandler->keyPressed(SDL_SCANCODE_B))
-        {
-            currentTile = 1;
-        }
-
-        if (inputHandler->keyPressed(SDL_SCANCODE_E))
-        {
-            currentTile = 0;
-        }
-
-        if (inputHandler->keyPressed(SDL_SCANCODE_C))
-        {
-            ToolCenter();
-        }
-
+        //Draw Square
+        currentTool = 1;
     }
+    else if (inputHandler->keyPressed(SDL_SCANCODE_LALT))
+    {
+        //Eyedropper
+        currentTool = 2;
+    } 
+    else if (inputHandler->mouseButtonPressed(SDL_BUTTON_LEFT))
+    {
+        currentTool = 0;
+    }
+
+    if (inputHandler->keyPressed(SDL_SCANCODE_B))
+    {
+        currentTool = 0;
+    }
+
+    if (inputHandler->keyPressed(SDL_SCANCODE_E))
+    {
+        currentTool = 0;
+        currentTile = 0;
+    }
+
+    if (inputHandler->keyPressed(SDL_SCANCODE_C))
+    {
+        currentTool = 3;
+    }
+
+    switch (currentTool)
+    {
+    default:
+        ToolBrush(inputHandler, CursourP);
+        break;
+    case 1:
+        ToolSquareFill(inputHandler, CursourP);
+        break;
+    case 2:
+        ToolEyedroper(inputHandler, CursourP);
+        break;
+    case 3:
+        ToolCenter(inputHandler);
+        break;
+    }
+
+    ToolPan(inputHandler, CursourP);
 }
 
 void LevelCreatorScene::Update(float dt)
@@ -295,7 +335,7 @@ void LevelCreatorScene::Update(float dt)
     inputHandler->handleInput();
     ImGuiInterg();
 
-    LevelCreatorPlayerMovement(dt);
+    ToolHandler();
 
     LevelCreatorPixelRenderer->isFullbright = true;
 
@@ -374,22 +414,23 @@ void LevelCreatorScene::ImGuiWindow()
         {
             if (ImGui::Button("Center"))
             {
-                ToolCenter();
+                currentTool = 3;
             }
 
             if (ImGui::Button("EyeDropper"))
             {
-                ToolEyedroper();
+                currentTool = 2;
             }
 
             if (ImGui::Button("Erase"))
             {
+                currentTool = 0;
                 currentTile = 0;
             }
 
             if (ImGui::Button("SquareFill"))
             {
-                ToolSquareFill();
+                currentTool = 1;
             }
 
             if (ImGui::TreeNode("Tile Selector:"))
