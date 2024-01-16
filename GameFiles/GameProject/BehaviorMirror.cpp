@@ -31,12 +31,12 @@ int BehaviorMirror::maxCount = 4;
 //gfxVector2 BehaviorMirror::currentPos = gfxVector2(0, 0);
 //gfxVector2 BehaviorMirror::targetPos = gfxVector2(0, 0);
 
-BehaviorMirror::BehaviorMirror() : Behavior(Behavior::Mirror), reflect(LaserSystem::GetInstance()->GetReflector(LaserSystem::GetInstance()->CreateReflector()))
+BehaviorMirror::BehaviorMirror() : Behavior(Behavior::Mirror), reflect(LaserSystem::GetInstance()->GetReflector(LaserSystem::GetInstance()->CreateReflector())), pos()
 {
     _type = this;
 }
 
-BehaviorMirror::BehaviorMirror(BehaviorMirror const& other) : Behavior(other), reflect(other.reflect)
+BehaviorMirror::BehaviorMirror(BehaviorMirror const& other) : Behavior(other), reflect(other.reflect), pos(other.pos)
 {
     _type = this;
 }
@@ -95,13 +95,15 @@ void BehaviorMirror::Read(json jsonData)
         reflect->Direction.x = direction["DirectionX"];
         reflect->Direction.y = direction["DirectionY"];
     }
+    reflect->Radius = 5.0f;
 
     for (auto& positions : jsonData["pos"])
     {
         // Extract "x" and "y" values, convert them to integers, and store in the vector
-        float x = std::stoi(positions["x"].get<std::string>());
-        float y = std::stoi(positions["y"].get<std::string>());
-        pos.push_back({ x,y });
+        Vector2 position{};
+        position.x = std::stoi(positions["x"].get<std::string>());
+        position.y = std::stoi(positions["y"].get<std::string>());
+        pos.push_back(position);
     }
     key = jsonData["key"];
     //currentPos = pos[0];

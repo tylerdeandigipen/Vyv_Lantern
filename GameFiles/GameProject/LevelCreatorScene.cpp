@@ -364,8 +364,6 @@ void LevelCreatorScene::ImGuiWindow()
         {
             ImGui::InputText(".json", myTextBuffer, sizeof(myTextBuffer));
             if (ImGui::Button("Submit")) {
-                // Handle the text input here (e.g., save it to a file)
-                // For now, let's print it to the console
                 FileIO::GetInstance()->ExportTileMap(myTextBuffer);
             }
         }
