@@ -1220,6 +1220,8 @@ void Renderer::ExpandTileMapInDirection(Vector2 direction, int distance)
             }
         }
     }
+
+
     /*
     if (tileMap != NULL)
     {
@@ -1265,9 +1267,6 @@ void Renderer::ResizeBuffers()
 
 void Renderer::DrawLine(Vector2 P0, Vector2 P1, const Color& LineColor)
 {
-    P0 -= CameraP;
-    P1 -= CameraP;
-
     int MinX = (int)min(P0.x, P1.x);
     int MinY = (int)min(P0.y, P1.y);
     int MaxX = (int)max(P0.x, P1.x);

@@ -35,6 +35,7 @@ private:
 	void ImGuiInterg();
 	void ImGuiWindow();
 	void ToolHandler();
+	Vector2 PlaceTile(Vector2 tilePos);
 	void ToolPan(Inputs* inputHandler, Vector2 CursourP);
 	void ToolBrush(Inputs* inputHandler, Vector2 CursourP);
 	void ToolEyedroper(Inputs* inputHandler, Vector2 CursourP);

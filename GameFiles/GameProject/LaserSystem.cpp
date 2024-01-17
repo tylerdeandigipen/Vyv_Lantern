@@ -213,10 +213,11 @@ void LaserSystem::Render(void)
         Vector2 StartP = ReflectorP - Reflector->Radius*Tangent;
         Vector2 EndP = ReflectorP + Reflector->Radius*Tangent;
 
+        //draw reflector
         Renderer::GetInstance()->DrawLine(StartP, EndP, Color(0xff, 0x00, 0x00, 0xff));
 
-        Renderer::GetInstance()->DrawLine(ReflectorP, ReflectorP + 10.0f*Reflector->Direction,
-                                          Color(0x00, 0xff, 0x00, 0xff));
+        //reflector normal draw
+        Renderer::GetInstance()->DrawLine(ReflectorP, ReflectorP + 10.0f*Reflector->Direction, Color(0x00, 0xff, 0x00, 0xff));
     }
 }
 
