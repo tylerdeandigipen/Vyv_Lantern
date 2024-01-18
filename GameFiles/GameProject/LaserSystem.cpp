@@ -298,7 +298,6 @@ reflector *LaserSystem::GetReflector(reflector_id ID)
 reflector_id LaserSystem::CreateReflector(void)
 {
     reflector_id Result = {0};
-    
     if(ReflectorCount < MAX_LASER_EMITTERS)
     {
         // TODO(thomas): Recylce old indicies

@@ -95,23 +95,23 @@ Engine::EngineCode TestScene::Init()
         TestLaser->Direction = Vector2::Normalize(Vector2(0.0f, 1.0f));
 
         laser_emitter *TestLaser1 = NewEmitter();
-        TestLaser1->Position = Vector2(50.0f, 30.0f);
-        TestLaser1->Direction = Vector2::Normalize(Vector2(1.0f, -1.0f));
+        TestLaser1->Position = Vector2(200.0f, 100.0f);
+        TestLaser1->Direction = Vector2::Normalize(Vector2(-1.0f, 0.0f));
 
         reflector *Reflector = NewReflector();
         Reflector->Radius = 10.0f;
         Reflector->Position = Vector2(100.0f, 100.0f);
-        Reflector->Direction = Vector2::Normalize(Vector2(-1.0f, -1.0f));
+        Reflector->Direction = Vector2::Normalize(Vector2(1.0f, 1.0f));
 
         reflector *Reflector1 = NewReflector();
         Reflector1->Radius = 20.0f;
         Reflector1->Position = Vector2(100.0f, 30.0f);
         Reflector1->Direction = Vector2::Normalize(Vector2(0.0f, 1.0f));
 
-        reflector *Reflector2 = NewReflector();
-        Reflector2->Radius = 100.0f;
-        Reflector2->Position = Vector2(200.0f, 50.0f);
-        Reflector2->Direction = Vector2::Normalize(Vector2(1.0f, 0.0f));
+        //reflector *Reflector2 = NewReflector();
+        //Reflector2->Radius = 100.0f;
+        //Reflector2->Position = Vector2(200.0f, 50.0f);
+        //Reflector2->Direction = Vector2::Normalize(Vector2(1.0f, 1.0f));
     }
     
     /*BGM*/
