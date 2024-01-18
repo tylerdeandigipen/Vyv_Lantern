@@ -9,7 +9,6 @@
 //
 //------------------------------------------------------------------------------
 #include "BehaviorMirror.h"
-#include "LaserSystem.h"
 #include "Collider.h"
 #include "Entity.h"
 #include "Inputs.h"
@@ -41,7 +40,7 @@ static reflector* NewReflector(void)
     return(Result);
 }
 
-BehaviorMirror::BehaviorMirror() : Behavior(Behavior::Mirror), reflect(), pos()
+BehaviorMirror::BehaviorMirror() : Behavior(Behavior::Mirror), reflect(NewReflector()), pos()
 {
     _type = this;
 }
@@ -90,26 +89,25 @@ void BehaviorMirror::Update(float dt)
 {
     if (Parent() && Parent()->Has(Transform)) {
         Vector2 position = *Parent()->Has(Transform)->GetTranslation();
-        reflect->Position.x = position.x;
-        reflect->Position.y = position.y;
+        reflect->Position.x = position.x + 4.0f;  // offset to center of mirror
+        reflect->Position.y = position.y + 12.0f; // offset to center of mirror
     }
 }
 
 void BehaviorMirror::Read(json jsonData)
 {
     Init();
-    reflector* refl = NewReflector();
-    reflect = NewReflector();
 
-    //if (jsonData["Direction"].is_object())
-    //{
-    //    json direction = jsonData["Direction"];
-    //    reflect->Direction.x = direction["DirectionX"];
-    //    reflect->Direction.y = direction["DirectionY"];
-    //}
+    if (jsonData["Direction"].is_object())
+    {
+        json direction = jsonData["Direction"];
+        gfxVector2 angle;
+        angle.x = direction["DirectionX"];
+        angle.y = direction["DirectionY"];
+        reflect->Direction = Vector2::Normalize(angle);
+    }
 
-    reflect->Direction = { 1.0f , 1.0f };
-    reflect->Radius = 10.0f;
+    reflect->Radius = jsonData["Radius"];
 
     for (auto& positions : jsonData["pos"])
     {
