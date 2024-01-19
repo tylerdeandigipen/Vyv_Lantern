@@ -1221,8 +1221,6 @@ void Renderer::ExpandTileMapInDirection(Vector2 direction, int distance)
         }
     }
 
-
-    /*
     if (tileMap != NULL)
     {
         for (int x = 0; x < tileMapSize.x; ++x)
@@ -1234,8 +1232,7 @@ void Renderer::ExpandTileMapInDirection(Vector2 direction, int distance)
         }
         delete[] tileMap;
     }
-    */
-    //yes this causes a memory leak but for some reason having this causes a heap corruption when expanding the pos directions >:(
+    
     tileMapSize = newTileMapSize;
     tileMap = tempTileMap;
     ResizeBuffers();
