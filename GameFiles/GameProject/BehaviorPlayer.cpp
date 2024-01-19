@@ -153,17 +153,19 @@ void BehaviorPlayer::Controller(float dt)
 
         //This is the Scenes Player light tracking code or at least part of it
         // assuming Cursour Player and Light Player are the naming schemes.
+        //no chnges needed
         Vector2 CursourP = { (float)x, (float)y };
         CursourP *= 1.0f / Renderer::GetInstance()->screenScale;
         CursourP += Renderer::GetInstance()->GetCameraPosition();
 
+
+        //Get properlightsources incase of global changes
         Vector2 LightP = Renderer::GetInstance()->lightSource[0].position;
-        //Direction? Difference? 
         Vector2 D = LightP - CursourP;
         float Angle = atan2f(D.x, D.y) * (180.0f / 3.14f) + 180.0f;
-        
         Renderer::GetInstance()->lightSource[0].angle = Angle;
         
+        //potentially changes this unsure what animated object 0,0 refers to.
         ImageBuffer* playerEntity = Renderer::GetInstance()->animatedObjects[0][0];
         Vector2 ScreenHalfSize = 0.5f * Vector2(SCREEN_SIZE_X, SCREEN_SIZE_Y);
         Vector2 BitmapHalfDim = 0.5f * playerEntity->size;

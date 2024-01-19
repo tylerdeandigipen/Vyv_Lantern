@@ -395,9 +395,10 @@ void TbdPlayerMovement(float dt)
     {
         tabKeyPreviouslyPressed = false;
     }
-    /*
+    
     if (Engine::GetInstance()->Paused() == false)
     {
+        /*
         int x, y;
         Uint32 buttons = SDL_GetMouseState(&x, &y);
 
@@ -417,7 +418,7 @@ void TbdPlayerMovement(float dt)
         Vector2 ScreenHalfSize = 0.5f * Vector2(SCREEN_SIZE_X, SCREEN_SIZE_Y);
         Vector2 BitmapHalfDim = 0.5f * playerEntity->size;
         TbdPixelRenderer->SetCameraPosition(playerEntity->position - ScreenHalfSize + BitmapHalfDim);
-
+        */
         //move the laser
         /*
         if (TestLaser)
@@ -428,7 +429,7 @@ void TbdPlayerMovement(float dt)
         }
         */
     }
-    */
+    
 }
 
 void TbdTestScene::Update(float dt)
