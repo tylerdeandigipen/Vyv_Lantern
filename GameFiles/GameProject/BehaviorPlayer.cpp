@@ -4,7 +4,7 @@
 // Author(s):	Michael Howard (michael.howard), Thomas Stephenson, Louis Wang
 // Purpose:		The players behavior
 // 
-// Copyright © 2023 DigiPen (USA) Corporation.
+// Copyright ?2023 DigiPen (USA) Corporation.
 //
 //------------------------------------------------------------------------------
 #include "BehaviorPlayer.h"
@@ -165,7 +165,6 @@ void BehaviorPlayer::Controller(float dt)
         Vector2 D = LightP - CursourP;
         float Angle = atan2f(D.x, D.y) * (180.0f / 3.14f) + 180.0f;
         Renderer::GetInstance()->lightSource[0].angle = Angle;
-        
 
         if (centerCameraOnPlayer)
         {
