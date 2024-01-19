@@ -48,6 +48,8 @@ SDL_GLContext TbdGlContext;
 
 Scene* TbdTestSceneinstance = NULL; 
 
+laser_emitter* TestLaser;
+
 TbdTestScene::TbdTestScene() : Scene("tbdtest")
 {
 
@@ -66,7 +68,7 @@ Engine::EngineCode TbdTestScene::Init()
     Inputs::GetInstance()->SetWindow(TbdWindow);
 
     //exporttests
-    FileIO::GetInstance()->ExportTileMap("export_tests");
+    //FileIO::GetInstance()->ExportTileMap("export_tests");
 
     Light tempLight;
     Light tempLight2;
@@ -78,6 +80,11 @@ Engine::EngineCode TbdTestScene::Init()
     //initialize level data
     EntityContainer::GetInstance()->ReadEntities("./Data/GameObjects/ObjectList.json");
     LevelBuilder::GetInstance()->LoadLevel("./Data/TiledMichaelSceneTest.json");
+
+    //ControlledEmitter = LaserSystem::GetInstance()->CreateEmitter();
+    laser_emitter* TestLaser1 = NewEmitter();
+    TestLaser1->Position = Vector2(200.0f, 50.0f + 12.0f); //add offset to accomodate for the position of the mirror (opengl position mixed with sdl2 position)
+    TestLaser1->Direction = Vector2::Normalize(Vector2(-1.0f, 0.0f));
 
     Color tempColor{ 141,141,141,255 };
     int numTestDust = 120;
@@ -367,6 +374,8 @@ void TbdTestScene::handleCheatCodes()
     }
 }
 
+#endif
+
 void TbdPlayerMovement(float dt)
 {
     Inputs* inputHandler = Inputs::GetInstance();
@@ -408,15 +417,26 @@ void TbdPlayerMovement(float dt)
         Vector2 ScreenHalfSize = 0.5f * Vector2(SCREEN_SIZE_X, SCREEN_SIZE_Y);
         Vector2 BitmapHalfDim = 0.5f * playerEntity->size;
         TbdPixelRenderer->SetCameraPosition(playerEntity->position - ScreenHalfSize + BitmapHalfDim);
+
+        //move the laser
+        /*
+        if (TestLaser)
+        {
+            Vector2 Delta = CursourP - TestLaser->Position;
+            float Angle = atan2f(Delta.y, Delta.x);
+            TestLaser->Direction = Vector2(cosf(Angle), sinf(Angle));
+        }
+        */
     }
     */
 }
-#endif
 
 void TbdTestScene::Update(float dt)
 {
     if (CheckGameScenes() || CheckRestart())
         return;
+
+   
 
     //eventally have player handle these lights
     TbdPixelRenderer->lightSource[1].position = TbdPixelRenderer->animatedObjects[0][0]->position + Vector2{ 3,3 };
@@ -451,8 +471,6 @@ void TbdTestScene::Update(float dt)
 
     ImGuiInterg();
     TbdPixelRenderer->Update(dt);
-    SDL_Color white = { 255,255,255 };
-    FontSystem::renderText("HELLO", 30, 30, TbdRenderer, white);
 }
 
 void TbdTestScene::Render()

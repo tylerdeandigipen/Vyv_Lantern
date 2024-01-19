@@ -10,6 +10,7 @@
 //------------------------------------------------------------------------------
 #pragma once
 #include "Behavior.h"
+#include "LaserSystem.h"
 
 class gfxVector2;
 struct reflector;

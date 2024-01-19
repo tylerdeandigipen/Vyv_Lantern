@@ -14,7 +14,10 @@
 #include "AudioEngine.h"
 #include "Collision.h"
 
+#include "LaserSystem.h"
+
 class Scene;
+struct emitter_id;
 
 class TbdTestScene : public Scene
 {
@@ -30,6 +33,8 @@ public:
 	void Render(void) override;
 	bool winState = false;
 private:
+	emitter_id ControlledEmitter;
+
 	void ImGuiInterg();
 	void ImGuiWindow();
 	void handleCheatCodes();
@@ -42,6 +47,24 @@ private:
 	void cheatBlur();
 	void cheatOnlyFog();
 	void cheatFog();
+	laser_emitter* NewEmitter(void)
+	{
+		laser_emitter* Result = NULL;
+
+		emitter_id ResultID = LaserSystem::GetInstance()->CreateEmitter();
+		Result = LaserSystem::GetInstance()->GetEmitter(ResultID);
+
+		return(Result);
+	}
+	reflector* NewReflector(void)
+	{
+		reflector* Result = NULL;
+
+		reflector_id ResultID = LaserSystem::GetInstance()->CreateReflector();
+		Result = LaserSystem::GetInstance()->GetReflector(ResultID);
+
+		return(Result);
+	}
 };
 
 Scene* TbdTestSceneGetInstance(void);

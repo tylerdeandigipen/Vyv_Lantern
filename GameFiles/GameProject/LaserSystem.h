@@ -110,7 +110,7 @@ private:
 
 #define MAX_REFLECTORS 256
     reflector Reflectors[MAX_REFLECTORS];
-    uint32_t ReflectorCount;
+	uint32_t ReflectorCount = 1;
 
     Logging *ErrorLog;
 
