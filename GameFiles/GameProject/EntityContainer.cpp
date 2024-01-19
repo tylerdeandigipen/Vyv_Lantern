@@ -203,3 +203,19 @@ int EntityContainer::CountEntities()
 {
 	return entities.size();
 }
+
+bool EntityContainer::RemoveEntity(Entity* _entity)
+{
+	auto it = std::find(entities.begin(), entities.end(), _entity);
+	if (it != entities.end())
+	{
+		entities.erase(it);
+		--entityCount;
+		delete _entity;
+		return true;
+	}
+	else
+	{
+		return false;
+	}
+}
