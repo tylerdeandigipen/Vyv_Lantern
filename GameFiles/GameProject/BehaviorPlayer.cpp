@@ -21,6 +21,7 @@
 
 const float pushForce = 1.0f;
 float soundCooldown = 0.0f;
+bool centerCameraOnPlayer = true;
 
 BehaviorPlayer::BehaviorPlayer() : Behavior(Behavior::Player), playerMoveSpeed(0)
 {
@@ -165,11 +166,15 @@ void BehaviorPlayer::Controller(float dt)
         float Angle = atan2f(D.x, D.y) * (180.0f / 3.14f) + 180.0f;
         Renderer::GetInstance()->lightSource[0].angle = Angle;
         
-        //potentially changes this unsure what animated object 0,0 refers to.
-        ImageBuffer* playerEntity = Renderer::GetInstance()->animatedObjects[0][0];
-        Vector2 ScreenHalfSize = 0.5f * Vector2(SCREEN_SIZE_X, SCREEN_SIZE_Y);
-        Vector2 BitmapHalfDim = 0.5f * playerEntity->size;
-        Renderer::GetInstance()->SetCameraPosition(playerEntity->position - ScreenHalfSize + BitmapHalfDim);
+
+        if (centerCameraOnPlayer)
+        {
+            ImageBuffer* playerEntity = Renderer::GetInstance()->animatedObjects[0][0];
+            Vector2 ScreenHalfSize = 0.5f * Vector2(SCREEN_SIZE_X, SCREEN_SIZE_Y);
+            Vector2 BitmapHalfDim = 0.5f * playerEntity->size;
+            Renderer::GetInstance()->SetCameraPosition(playerEntity->position - ScreenHalfSize + BitmapHalfDim);
+        }
+        
     }
 
 }
