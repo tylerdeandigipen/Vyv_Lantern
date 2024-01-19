@@ -273,6 +273,28 @@ void LevelCreatorScene::ToolHandler()
                 playerSpawned = true;
             }
             LevelCreatorPixelRenderer->animatedObjects[0][0]->position = CursourP + LevelCreatorPixelRenderer->GetCameraPosition() - Vector2{ 3,3 };
+            int* walls = new int [LevelCreatorPixelRenderer->tileMapSize.x * LevelCreatorPixelRenderer->tileMapSize.y];
+
+            for (int x = 0; x < LevelCreatorPixelRenderer->tileMapSize.x; ++x)
+            {
+                for (int y = 0; y < LevelCreatorPixelRenderer->tileMapSize.y; ++y)
+                {
+                    for (int i = 0; i < 25; ++i)
+                    {
+                        walls[(int)(y * LevelCreatorPixelRenderer->tileMapSize.x) + x] = 0;
+
+                        if (LevelCreatorPixelRenderer->tileMap[x][y] == LevelCreatorPixelRenderer->nonWalkableTiles[i] || LevelCreatorPixelRenderer->tileMap[x][y] == 0)
+                        {
+                            walls[(int)(y * LevelCreatorPixelRenderer->tileMapSize.x) + x] = 1;
+                            break;
+                        }
+                    }
+                }
+            }    
+            LevelBuilder::GetInstance()->SetX(LevelCreatorPixelRenderer->tileMapSize.x);
+            LevelBuilder::GetInstance()->SetY(LevelCreatorPixelRenderer->tileMapSize.y);
+            delete[] LevelBuilder::GetInstance()->GetWalls();
+            LevelBuilder::GetInstance()->SetWalls(walls);
             playMode = true;
         }
         else
