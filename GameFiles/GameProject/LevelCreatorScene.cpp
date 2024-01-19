@@ -5,7 +5,7 @@
 //              Thomas Stephenson, Louis Wang
 // Purpose:     Main scene for the game.
 //
-// Copyright  © 2023 DigiPen (USA) Corporation.
+// Copyright  ?2023 DigiPen (USA) Corporation.
 //
 //------------------------------------------------------------------------------
 #include "imgui.h"

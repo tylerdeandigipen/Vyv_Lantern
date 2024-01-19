@@ -4,7 +4,7 @@
 // Author(s):	Michael Howard (michael.howard), Thomas Stephenson, Louis Wang
 // Purpose:		The players behavior
 // 
-// Copyright © 2023 DigiPen (USA) Corporation.
+// Copyright ?2023 DigiPen (USA) Corporation.
 //
 //------------------------------------------------------------------------------
 #include "BehaviorPlayer.h"
@@ -166,10 +166,12 @@ void BehaviorPlayer::Controller(float dt)
         Renderer::GetInstance()->lightSource[0].angle = Angle;
         
         //potentially changes this unsure what animated object 0,0 refers to.
+        /*
         ImageBuffer* playerEntity = Renderer::GetInstance()->animatedObjects[0][0];
         Vector2 ScreenHalfSize = 0.5f * Vector2(SCREEN_SIZE_X, SCREEN_SIZE_Y);
         Vector2 BitmapHalfDim = 0.5f * playerEntity->size;
         Renderer::GetInstance()->SetCameraPosition(playerEntity->position - ScreenHalfSize + BitmapHalfDim);
+        */
     }
 
 }
