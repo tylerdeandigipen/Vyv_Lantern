@@ -4,7 +4,7 @@
 // Author(s):	Michael Howard (michael.howard)
 // Purpose:		BehaviorDoor class implementation for door specific behavior
 // 
-// Copyright © 2023 DigiPen (USA) Corporation.
+// Copyright ?2023 DigiPen (USA) Corporation.
 //
 //------------------------------------------------------------------------------
 #include "AudioEngine.h"
