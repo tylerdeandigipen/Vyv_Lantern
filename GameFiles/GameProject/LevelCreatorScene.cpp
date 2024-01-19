@@ -50,6 +50,10 @@ Scene* LevelCreatorSceneinstance = NULL;
 
 static bool showCreatorToolsWindow = true;
 
+bool playMode = false;
+
+bool playerSpawned = false;
+
 LevelCreatorScene::LevelCreatorScene() : Scene("LevelCreatortest")
 {
 
@@ -77,6 +81,9 @@ Engine::EngineCode LevelCreatorScene::Init()
    // EntityContainer::GetInstance()->ReadEntities("./Data/GameObjects/ObjectListLevelBuilder.json");
     LevelBuilder::GetInstance()->LoadLevel("./Data/Tbd_Testing_Level_Master/Tbd_Testing_Level.json");
     LevelCreatorPixelRenderer->window = LevelCreatorWindow;
+    LevelCreatorPixelRenderer->isFullbright = true;
+    playMode = false;
+    playerSpawned = false;
 
     moveVector = { 0,0 };
     oldMousePos = { 0,0 };
@@ -245,6 +252,8 @@ Vector2 LevelCreatorScene::PlaceTile(Vector2 tilePos)
     return displacement;
 }
 
+bool canTogglePlayMode = true;
+
 void LevelCreatorScene::ToolHandler()
 {
     Inputs* inputHandler = Inputs::GetInstance();
@@ -254,6 +263,56 @@ void LevelCreatorScene::ToolHandler()
     Vector2 CursourP = { (float)x, (float)y };
     CursourP *= 1.0f / LevelCreatorPixelRenderer->screenScale;
 
+    if (inputHandler->keyDown(SDL_SCANCODE_SPACE) && canTogglePlayMode)
+    {
+        if (playMode == false)
+        {
+            if (playerSpawned == false)
+            {
+                EntityContainer::GetInstance()->ReadEntities("./Data/GameObjects/PlayerSpawn.json");
+                playerSpawned = true;
+            }
+            LevelCreatorPixelRenderer->animatedObjects[0][0]->position = CursourP + LevelCreatorPixelRenderer->GetCameraPosition() - Vector2{ 3,3 };
+            playMode = true;
+        }
+        else
+        {
+            playMode = false;
+        }
+        canTogglePlayMode = false;
+    }
+    if (inputHandler->keyUp(SDL_SCANCODE_SPACE))
+    {
+        canTogglePlayMode = true;
+    }
+
+    if (playMode != false)
+    {
+        LevelCreatorPixelRenderer->isFullbright = false;
+        LevelCreatorPixelRenderer->animatedObjects[0][0]->isCulled = false;
+
+        //remove this when micheal fixes the player behavior
+        LevelCreatorPixelRenderer->lightSource[1].position = LevelCreatorPixelRenderer->animatedObjects[0][0]->position + Vector2{ 3,3 };
+        LevelCreatorPixelRenderer->lightSource[0].position = LevelCreatorPixelRenderer->animatedObjects[0][0]->position + Vector2{ 3,3 };
+
+        Vector2 ScreenHalfSize = 0.5f * Vector2(SCREEN_SIZE_X, SCREEN_SIZE_Y);
+        Vector2 BitmapHalfDim = 0.5f * LevelCreatorPixelRenderer->animatedObjects[0][0]->size;
+        LevelCreatorPixelRenderer->SetCameraPosition(LevelCreatorPixelRenderer->animatedObjects[0][0]->position - ScreenHalfSize + BitmapHalfDim);
+
+        Vector2 LightP = LevelCreatorPixelRenderer->lightSource[0].position;
+        Vector2 D = LightP - CursourP - LevelCreatorPixelRenderer->GetCameraPosition();
+        float Angle = atan2f(D.x, D.y) * (180.0f / 3.14f) + 180.0f;
+        LevelCreatorPixelRenderer->lightSource[0].angle = Angle;
+        return;
+    }
+
+    if (playerSpawned == true)
+    {
+        LevelCreatorPixelRenderer->animatedObjects[0][0]->isCulled = true;
+    }
+    LevelCreatorPixelRenderer->isFullbright = true;
+
+    
     if (inputHandler->keyPressed(SDL_SCANCODE_LSHIFT) && inputHandler->mouseButtonPressed(SDL_BUTTON_LEFT))
     {
         //Draw Square
@@ -310,8 +369,6 @@ void LevelCreatorScene::Update(float dt)
     ImGuiInterg();
 
     ToolHandler();
-
-    LevelCreatorPixelRenderer->isFullbright = true;
 
     LevelCreatorPixelRenderer->Update(dt);
 }

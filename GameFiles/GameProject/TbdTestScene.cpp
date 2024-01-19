@@ -101,11 +101,6 @@ Engine::EngineCode TbdTestScene::Init()
     
     //AudioManager.PlayMusic("forest");
 
-    //create the laser emiter 
-    TestLaser = LaserSystem::GetInstance()->GetEmitter(LaserSystem::GetInstance()->CreateEmitter());
-    TestLaser->Position = Vector2(120.0f, 30.0f);
-    TestLaser->Direction = Vector2::Normalize(Vector2(-0.67f, 0.3f));
-
     FontSystem fontSystem;
 
     fontSystem.init("Font/MouldyCheeseRegular-WyMWG.ttf", 10);
