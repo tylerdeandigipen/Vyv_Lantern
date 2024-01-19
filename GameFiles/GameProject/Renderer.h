@@ -25,7 +25,7 @@
 #define MAX_TILES 80
 #define TILE_SIZE 8
 #define NUM_WALL_TILES 17
-#define NUM_NON_WALKABLE_TILES 25
+#define NUM_NON_WALKABLE_TILES 30
 
 class Renderer
 {
@@ -124,7 +124,7 @@ public:
 	Light lightSource[MAX_LIGHT_SOURCES];
 	ImageBuffer* objects[MAX_OBJECTS];
 	ImageBuffer* animatedObjects[MAX_ANIMATED_OBJECTS][MAX_ANIMATION_FRAMES];
-
+	
 	//Needed to be public (maybe make private later by adding helper funcs)
 	int faceState = 0;
 	Vector2 tileMapSize;
@@ -142,7 +142,8 @@ public:
 
 	int** tileMap = NULL;
 
-	int nonWalkableTiles[NUM_NON_WALKABLE_TILES] = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 45, 46, 48, 29, 26, 31, 41, 39, 36, 27, 28, 34, 35, 12 };
+	int nonWalkableTiles[NUM_NON_WALKABLE_TILES] = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 45, 46, 48, 29, 26, 31, 41, 39, 36, 27, 28, 34, 35, 12, 49, 50,51,52};
+	int numNonWalkTiles = NUM_NON_WALKABLE_TILES;
 private:
 	//Various Counters
 	int numTiles = 0;
@@ -161,7 +162,7 @@ private:
 	int faceIndex = -99;
 
 	//Tilemap Variables
-	const int wallTileIndexes[NUM_WALL_TILES] = { 1, 2, 4, 5, 6, 7, 8, 9, 10, 11, 26, 36, 27, 28, 34, 35, 12 };
+	const int wallTileIndexes[NUM_WALL_TILES] = { 1, 2, 4, 5, 6, 7, 8, 9, 10, 11, 26, 36, 27, 28, 34, 35, 12};
 	ImageBuffer* tileSet[MAX_TILES];
 	ImageBuffer* normalTileSet[MAX_TILES];
 	ImageBuffer* shadowCasterTileset[MAX_TILES];

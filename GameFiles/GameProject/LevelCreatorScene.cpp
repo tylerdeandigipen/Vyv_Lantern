@@ -89,6 +89,7 @@ Engine::EngineCode LevelCreatorScene::Init()
     oldMousePos = { 0,0 };
     previousTile = { -1000,-1000 };
     currentTile = 1;
+
     return Engine::NothingBad;
 }
 
@@ -219,7 +220,7 @@ Vector2 LevelCreatorScene::PlaceTile(Vector2 tilePos)
         {
             return displacement;
         }
-        while ((tilePos.x < LevelCreatorPixelRenderer->tileMapSize.x && tilePos.x >= 0 && tilePos.y < LevelCreatorPixelRenderer->tileMapSize.y && tilePos.y >= 0) != true)
+        while ((tilePos.x <= LevelCreatorPixelRenderer->tileMapSize.x && tilePos.x >= 0 && tilePos.y <= LevelCreatorPixelRenderer->tileMapSize.y && tilePos.y >= 0) != true)
         {
             if (tilePos.x < 0)
             {
@@ -279,7 +280,7 @@ void LevelCreatorScene::ToolHandler()
             {
                 for (int y = 0; y < LevelCreatorPixelRenderer->tileMapSize.y; ++y)
                 {
-                    for (int i = 0; i < 25; ++i)
+                    for (int i = 0; i < LevelCreatorPixelRenderer->numNonWalkTiles; ++i)
                     {
                         walls[(int)(y * LevelCreatorPixelRenderer->tileMapSize.x) + x] = 0;
 
