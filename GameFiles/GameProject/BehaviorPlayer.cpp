@@ -69,7 +69,10 @@ std::string BehaviorPlayer::Name()
 void BehaviorPlayer::Update(float dt)
 {
     if (Parent())
-	    Controller(dt);
+    {
+        Controller(dt);
+    }
+
 }
 
 void BehaviorPlayer::Read(json jsonData)
@@ -141,6 +144,32 @@ void BehaviorPlayer::Controller(float dt)
     if (soundCooldown < 0.0f) {
         soundCooldown = 0.0f;
     }
+
+
+    if (Engine::GetInstance()->Paused() == false)
+    {
+        int x, y;
+        Uint32 buttons = SDL_GetMouseState(&x, &y);
+
+        //This is the Scenes Player light tracking code or at least part of it
+        // assuming Cursour Player and Light Player are the naming schemes.
+        Vector2 CursourP = { (float)x, (float)y };
+        CursourP *= 1.0f / Renderer::GetInstance()->screenScale;
+        CursourP += Renderer::GetInstance()->GetCameraPosition();
+
+        Vector2 LightP = Renderer::GetInstance()->lightSource[0].position;
+        //Direction? Difference? 
+        Vector2 D = LightP - CursourP;
+        float Angle = atan2f(D.x, D.y) * (180.0f / 3.14f) + 180.0f;
+        
+        Renderer::GetInstance()->lightSource[0].angle = Angle;
+        
+        ImageBuffer* playerEntity = Renderer::GetInstance()->animatedObjects[0][0];
+        Vector2 ScreenHalfSize = 0.5f * Vector2(SCREEN_SIZE_X, SCREEN_SIZE_Y);
+        Vector2 BitmapHalfDim = 0.5f * playerEntity->size;
+        Renderer::GetInstance()->SetCameraPosition(playerEntity->position - ScreenHalfSize + BitmapHalfDim);
+    }
+
 }
 
 inline void
