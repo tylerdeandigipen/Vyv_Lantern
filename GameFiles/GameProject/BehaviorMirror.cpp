@@ -25,18 +25,27 @@
 #include "EntityContainer.h"
 #include "BehaviorSwitch.h"
 
-std::vector<gfxVector2> BehaviorMirror::pos;
 int BehaviorMirror::count = 1;
 int BehaviorMirror::maxCount = 4;
-gfxVector2 BehaviorMirror::currentPos = gfxVector2(0, 0);
-gfxVector2 BehaviorMirror::targetPos = gfxVector2(0, 0);
+//gfxVector2 BehaviorMirror::currentPos = gfxVector2(0, 0);
+//gfxVector2 BehaviorMirror::targetPos = gfxVector2(0, 0);
 
-BehaviorMirror::BehaviorMirror() : Behavior(Behavior::Mirror)
+static reflector* NewReflector(void)
+{
+    reflector* Result = NULL;
+
+    reflector_id ResultID = LaserSystem::GetInstance()->CreateReflector();
+    Result = LaserSystem::GetInstance()->GetReflector(ResultID);
+
+    return(Result);
+}
+
+BehaviorMirror::BehaviorMirror() : Behavior(Behavior::Mirror), reflect(NewReflector()), pos()
 {
     _type = this;
 }
 
-BehaviorMirror::BehaviorMirror(BehaviorMirror const& other) : Behavior(other)
+BehaviorMirror::BehaviorMirror(BehaviorMirror const& other) : Behavior(other), reflect(other.reflect), pos(other.pos)
 {
     _type = this;
 }
@@ -61,12 +70,13 @@ void BehaviorMirror::SetInputHandler(Inputs* _input)
 
 void BehaviorMirror::Init()
 {
-
-
     if (Parent())
     {
         // Set collision handler for mirrors with lasers maybe??
         Collider* collider = Parent()->Has(Collider);
+        if (Parent() && Parent()->Has(Transform)) {
+            //Parent()->GetImage()->position = currentPos;
+        }
     }
 }
 
@@ -77,23 +87,39 @@ Behavior* BehaviorMirror::Clone() const
 
 void BehaviorMirror::Update(float dt)
 {
-    if (Parent())
-        Controller(dt);
+    if (Parent() && Parent()->Has(Transform)) {
+        Vector2 position = *Parent()->Has(Transform)->GetTranslation();
+        reflect->Position.x = position.x + 4.0f;  // offset to center of mirror
+        reflect->Position.y = position.y + 12.0f; // offset to center of mirror
+    }
 }
 
 void BehaviorMirror::Read(json jsonData)
 {
     Init();
+
+    if (jsonData["Direction"].is_object())
+    {
+        json direction = jsonData["Direction"];
+        gfxVector2 angle;
+        angle.x = direction["DirectionX"];
+        angle.y = direction["DirectionY"];
+        reflect->Direction = Vector2::Normalize(angle);
+    }
+
+    reflect->Radius = jsonData["Radius"];
+
     for (auto& positions : jsonData["pos"])
     {
         // Extract "x" and "y" values, convert them to integers, and store in the vector
-        float x = std::stoi(positions["x"].get<std::string>());
-        float y = std::stoi(positions["y"].get<std::string>());
-
-        pos.push_back({ x,y });
+        Vector2 position{};
+        position.x = std::stoi(positions["x"].get<std::string>());
+        position.y = std::stoi(positions["y"].get<std::string>());
+        pos.push_back(position);
     }
-    currentPos = pos[0];
-    targetPos = pos[0];
+    key = jsonData["key"];
+    //currentPos = pos[0];
+    //targetPos = pos[0];
 }
 
 void BehaviorMirror::SwitchOn(bool collided)
@@ -105,16 +131,10 @@ void BehaviorMirror::SwitchOn(bool collided)
 
         for (int i = 0; i < numEntities; i++) {
             Entity* entity = (*entityContainer)[i];
-            if (entity->GetRealName() == "Mirror") {
-                if (count < maxCount) {
-                    targetPos = pos[count]; // Update target position
-                    count++;
-                }
-                else {
-                    count = 0;
-                    targetPos = pos[count]; // Update target position
-                }
-            }
+            BehaviorMirror* mirror = reinterpret_cast<BehaviorMirror*>(entity->Has(Behavior));
+            BehaviorSwitch* Switch = reinterpret_cast<BehaviorSwitch*>(entity->Has(Behavior));
+            
+
         }
     }
 }
@@ -126,11 +146,11 @@ void BehaviorMirror::MirrorCollisionHandler(Entity* thisone, Entity* other)
 void BehaviorMirror::Controller(float dt)
 {
 
-    float lerpFactor = 0.5f; // Adjust this value for speed
+ //   float lerpFactor = 0.5f; // Adjust this value for speed
 
-    currentPos = currentPos + lerpFactor * (targetPos - currentPos);
+//    currentPos = currentPos + lerpFactor * (targetPos - currentPos);
 
-    if (Parent() && Parent()->Has(Transform)) {
-        Parent()->GetImage()->position = currentPos;
-    }
+ //   if (Parent() && Parent()->Has(Transform)) {
+ //       Parent()->GetImage()->position = currentPos;
+ //   }
 }

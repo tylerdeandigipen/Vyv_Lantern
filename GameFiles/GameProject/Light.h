@@ -20,7 +20,7 @@
 enum light_source_type
 {
     LightSourceType_Point,
-    LightSourceType_Directional,
+    LightSourceType_Directional, //to follow the mouse it has to be made directional first
     LightSourceType_EnumCount
 };
 using string = std::string;

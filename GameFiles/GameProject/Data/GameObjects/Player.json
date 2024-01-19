@@ -23,6 +23,14 @@
       }
     },
     {
+      "Type": "Light",
+      "File": "./Data/Lights/PlayerDirectionalLight.json"
+    },
+    {
+      "Type": "Light",
+      "File": "./Data/Lights/PlayerDomeLight.json"
+    },
+    {
       "Type": "BehaviorPlayer",
       "MoveSpeed": 35
     }

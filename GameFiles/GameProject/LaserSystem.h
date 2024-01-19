@@ -11,7 +11,9 @@
 #if !defined(LASER_SYSTEM_H)
 #define LASER_SYSTEM_H
 
-#include "Engine.h"
+//#include "Engine.h"
+#include "BaseSystem.h"
+#include "Vector.h"
 
 struct laser_emitter
 {
@@ -108,7 +110,7 @@ private:
 
 #define MAX_REFLECTORS 256
     reflector Reflectors[MAX_REFLECTORS];
-    uint32_t ReflectorCount;
+	uint32_t ReflectorCount = 1;
 
     Logging *ErrorLog;
 

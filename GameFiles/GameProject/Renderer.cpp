@@ -658,6 +658,69 @@ void Renderer::MakeTileMap(int** tileMapArray)
     }
 }
 
+void Renderer::TileMapSetTile(Vector2 pos, int tile)
+{
+    tileMap[(int)pos.x][(int)pos.y] = tile;
+    ImageBuffer* clearTile = new ImageBuffer{ 8,8 };
+
+    bool isWall = false;
+    for (int i = 0; i < NUM_WALL_TILES; i++)
+    {
+        if (tileMap[(int)pos.x][(int)pos.y] == wallTileIndexes[i])
+        {
+            isWall = true;
+            break;
+        }
+    }
+    if (isWall == false)
+    {
+        tileSet[tileMap[(int)pos.x][(int)pos.y]]->position = { (float)((int)pos.x * TILE_SIZE), (float)((int)pos.y * TILE_SIZE) };
+        backgroundLayer->AddSprite(tileSet[tileMap[(int)pos.x][(int)pos.y]]);
+
+        clearTile->position = { (float)((int)pos.x * TILE_SIZE), (float)((int)pos.y * TILE_SIZE) };
+        foregroundLayer->AddSpriteIgnoreAlpha(clearTile);
+    }
+    else
+    {
+        tileSet[tileMap[(int)pos.x][(int)pos.y]]->position = { (float)((int)pos.x * TILE_SIZE), (float)((int)pos.y * TILE_SIZE) };
+        foregroundLayer->AddSprite(tileSet[tileMap[(int)pos.x][(int)pos.y]]);
+
+        clearTile->position = { (float)((int)pos.x * TILE_SIZE), (float)((int)pos.y * TILE_SIZE) };
+        backgroundLayer->AddSpriteIgnoreAlpha(clearTile);
+    }
+
+    if (normalTileSet[tileMap[(int)pos.x][(int)pos.y]])
+    {
+        normalTileSet[tileMap[(int)pos.x][(int)pos.y]]->position = { (float)((int)pos.x * TILE_SIZE), (float)((int)pos.y * TILE_SIZE) };
+        normalBuffer->AddSpriteIgnoreAlpha(normalTileSet[tileMap[(int)pos.x][(int)pos.y]]);
+    }
+
+    if (shadowCasterTileset[tileMap[(int)pos.x][(int)pos.y]])
+    {
+        shadowCasterTileset[tileMap[(int)pos.x][(int)pos.y]]->position = { (float)((int)pos.x * TILE_SIZE), (float)((int)pos.y * TILE_SIZE) };
+        shadowCasterBuffer->AddSpriteIgnoreAlpha(shadowCasterTileset[tileMap[(int)pos.x][(int)pos.y]]);
+    }
+}
+
+void Renderer::TileMapEraseTile(Vector2 pos)
+{
+    if (pos.x >= 0 && pos.x < tileMapSize.x && pos.y >= 0 && pos.y < tileMapSize.y)
+    {
+        tileMap[(int)pos.x][(int)pos.y] = 0;
+        ImageBuffer* clearTile = new ImageBuffer{ 8,8 };
+        clearTile->position = { (float)((int)pos.x * TILE_SIZE), (float)((int)pos.y * TILE_SIZE) };
+
+        foregroundLayer->AddSpriteIgnoreAlpha(clearTile);
+
+        backgroundLayer->AddSpriteIgnoreAlpha(clearTile);
+
+        normalBuffer->AddSpriteIgnoreAlpha(clearTile);
+
+        shadowCasterBuffer->AddSpriteIgnoreAlpha(clearTile);
+    }
+}
+
+
 void Renderer::AddTileToTileset(ImageBuffer* tile)
 {
     tileSet[numTiles] = tile;
@@ -1157,6 +1220,8 @@ void Renderer::ExpandTileMapInDirection(Vector2 direction, int distance)
             }
         }
     }
+
+
     /*
     if (tileMap != NULL)
     {
@@ -1202,9 +1267,6 @@ void Renderer::ResizeBuffers()
 
 void Renderer::DrawLine(Vector2 P0, Vector2 P1, const Color& LineColor)
 {
-    P0 -= CameraP;
-    P1 -= CameraP;
-
     int MinX = (int)min(P0.x, P1.x);
     int MinY = (int)min(P0.y, P1.y);
     int MaxX = (int)max(P0.x, P1.x);

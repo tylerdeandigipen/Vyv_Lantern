@@ -294,12 +294,68 @@ Entity* FileIO::ReadEntity(json entityData)
 			newEnt->AddToRenderer(Renderer::GetInstance());
 		}
 	}
-	if (newEnt->IsLight())
-	{
-
-	}
 
 	return newEnt;
+}
+
+void FileIO::ExportTileMap(std::string name)
+{
+	Renderer* pixel = Renderer::GetInstance();
+	int rows = pixel->tileMapSize.x;
+	int columns = pixel->tileMapSize.y;
+
+	std::vector<int> tilemap;
+	std::vector<int> walls;
+	bool found = false;
+	for (int i = 0; i < columns; ++i) 
+	{
+		for (int j = 0; j < rows; ++j)
+		{
+			tilemap.push_back(pixel->tileMap[j][i] + 1);
+			for (int k = 0; k < NUM_NON_WALKABLE_TILES; ++k)
+			{
+				if (pixel->tileMap[j][i] == pixel->nonWalkableTiles[k])
+				{
+					found = true;
+					walls.push_back(pixel->tileMap[j][i]);
+				}
+			}
+			if (found == false)
+			{
+				walls.push_back(0);
+			}
+			else
+				found = false;
+		}
+	}
+
+	json tilemapArray;
+	json tilemapData;
+	json name1;
+	json name2;
+	json tilemapCol; //collideables
+	
+	tilemapArray["width"] = rows;
+	tilemapArray["height"] = columns;
+	
+	tilemapData["width"] = rows;
+	tilemapData["height"] = columns;
+
+	tilemapCol["width"] = rows;
+	tilemapCol["height"] = columns;
+	
+	tilemapData["name"] = "TileMap";
+	tilemapCol["name"] = "Walls";
+
+	tilemapData["data"] = tilemap;
+	tilemapCol["data"] = walls;
+
+	tilemapArray["layers"][0] = tilemapData;
+	tilemapArray["layers"][1] = tilemapCol;
+
+	// save tilemap to a file
+	std::ofstream file("./Data/" + name + ".json");
+	file << std::setw(2) << tilemapArray << std::endl;
 }
 
 ImageBuffer* ReadPPM(const char* filename)

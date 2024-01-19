@@ -53,11 +53,6 @@ Entity::Entity(std::string type, const std::string file, json Animated) : isDest
 			isObject = true;
 		}
 	}
-	else if (type.compare("Light") == 0)
-	{
-		lightFile = file;
-		isLight = true;
-	}
 }
 
 
@@ -107,7 +102,6 @@ void Entity::Destroy()
 }
 
 bool Entity::IsDestroyed() { return isDestroyed; }
-bool Entity::IsLight() { return isLight; };
 bool Entity::IsObject() { return isObject; };
 bool Entity::IsAnimated() { return isAnimated; }
 
@@ -153,11 +147,6 @@ void Entity::Add(Component* component)
 std::string Entity::ObjectName()
 {
 	return "Object";
-}
-
-std::string Entity::LightName()
-{
-	return "Light";
 }
 
 std::string Entity::GetRealName()
@@ -287,6 +276,10 @@ void Entity::AddToRenderer(Renderer* pixel, std::string _file)
 	if (!isAnimated)
 	{
 		pixel->AddObject(image);
+		if (image)
+		{
+			Has(Transform)->SetTranslation(&image->position);
+		}
 	}
 	else
 	{

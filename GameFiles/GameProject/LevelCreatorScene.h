@@ -13,6 +13,8 @@
 #include "SceneSystem.h"
 #include "AudioEngine.h"
 #include "Collision.h"
+#include "Inputs.h"
+
 
 class Scene;
 
@@ -30,6 +32,17 @@ public:
 	void Render(void) override;
 	bool winState = false;
 private:
+	void ImGuiInterg();
+	void ImGuiWindow();
+	void ToolHandler();
+	Vector2 PlaceTile(Vector2 tilePos);
+	void ToolPan(Inputs* inputHandler, Vector2 CursourP);
+	void ToolBrush(Inputs* inputHandler, Vector2 CursourP);
+	void ToolEyedroper(Inputs* inputHandler, Vector2 CursourP);
+	void ToolCenter(Inputs* inputHandler);
+	void ToolSquareFill(Inputs* inputHandler, Vector2 CursourP);
+
+	char myTextBuffer[256]{};
 
 };
 

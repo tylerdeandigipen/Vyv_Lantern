@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
     <ClCompile Include="AudioEngine.cpp">
@@ -171,6 +171,9 @@
     </ClCompile>
     <ClCompile Include="LevelCreatorScene.cpp">
       <Filter>Source FIles\Scenes</Filter>
+    </ClCompile>
+    <ClCompile Include="ImguiFunctions.cpp">
+      <Filter>Source FIles\Debug\IMGUI</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -374,6 +377,9 @@
     </ClInclude>
     <ClInclude Include="CrashHandler.hpp">
       <Filter>Source FIles\Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="ImguiFunction.h">
+      <Filter>Header FIles\Debug\IMGUI</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

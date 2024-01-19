@@ -3,73 +3,7 @@
     {
       "TiledData": {
         "TileMapFile": "./Data/TileMaps/TiledLevelMap.json"
-      },
-      "Entities": [
-        {
-          "Type": "Object",
-          "Name": "Player",
-          "file": "./Assets/PPM/Player_Sprites.ppm",
-          "isAnimated": true,
-          "frameSize": [ 8, 8 ],
-          "Components": [
-            {
-              "Type": "ColliderAABB"
-            },
-            {
-              "Type": "Transform",
-              "translation": {
-                "x": 90,
-                "y": 30
-              }
-            },
-            {
-              "Type": "Physics",
-              "OldTranslation": {
-                "x": 90,
-                "y": 30
-              }
-            },
-            {
-              "Type": "BehaviorPlayer",
-              "MoveSpeed": 35
-            }
-          ]
-        },
-        {
-          "Type": "Light",
-          "Name": "PlayerDirectional",
-          "file": "./Data/Lights/PlayerDirectionalLight.json",
-          "Components": [
-            {
-              "Type": "Transform",
-              "translation": {
-                "x": 192,
-                "y": 48
-              }
-            },
-            {
-              "Type": "Light"
-            }
-          ]
-        },
-        {
-          "Type": "Light",
-          "Name": "PlayerDome",
-          "file": "./Data/Lights/PlayerDomeLight.json",
-          "Components": [
-            {
-              "Type": "Transform",
-              "translation": {
-                "x": 200,
-                "y": 90
-              }
-            },
-            {
-              "Type": "Light"
-            }
-          ]
-        }
-      ]
+      }
     }
   ]
 }

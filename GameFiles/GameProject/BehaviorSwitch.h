@@ -22,7 +22,7 @@ public:
 	BehaviorSwitch(BehaviorSwitch const& other);
 	~BehaviorSwitch();
 
-	std::string GetName() override;
+	std::string GetName();
 	static std::string Name();
 
 	void SetInputHandler(Inputs* _input) override;
@@ -31,15 +31,21 @@ public:
 
 	Behavior* Clone() const override;
 
+	int GetKey() { return key; }
+	bool GetLerped() { return isLerping; }
+	void SetLerped() { isLerping = !isLerping; }
+
+
 	void Update(float dt);
 	void Read(json jsonData) override;
 	static void SwitchCollisionHandler(Entity* entity1, Entity* entity2);
 
 private:
 	void Controller(float dt);
+	bool isLerping;
+	int currentPos;
+	int maxCount;
+	std::vector<gfxVector2> pos;
 	static bool OnOff;
-	static int count;
-	static int maxCount;
-	static std::vector<gfxVector2> pos;
-	static int key;
+	int key;
 };

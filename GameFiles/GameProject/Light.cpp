@@ -64,7 +64,8 @@ void Light::Update(float dt)
 
 void Light::Read(json jsonData)
 {
-	FileIO::GetInstance()->ReadLight(Parent()->lightFile, *this);
+	std::string file = jsonData["File"];
+	FileIO::GetInstance()->ReadLight(file, *this);
 	Renderer::GetInstance()->AddLight(*this);
 
 }

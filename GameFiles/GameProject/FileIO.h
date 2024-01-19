@@ -33,6 +33,8 @@ public:
 
 	ImageBuffer* ReadPPM(const char* filename);
 
+	void ExportTileMap(std::string name);
+
 	int** ReadTiledMap(std::string filename, int** tilemap);
 	int** ReadTylerTileMap(std::string filename, int** tilemap);
 

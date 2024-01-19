@@ -10,8 +10,10 @@
 //------------------------------------------------------------------------------
 #pragma once
 #include "Behavior.h"
+#include "LaserSystem.h"
 
 class gfxVector2;
+struct reflector;
 
 class BehaviorMirror : public Behavior
 {
@@ -26,7 +28,7 @@ public:
 	void SetInputHandler(Inputs* _input) override;
 
 	void Init() override;
-
+	int GetKey() { return key; }
 	Behavior* Clone() const override;
 
 	void Update(float dt);
@@ -36,8 +38,10 @@ public:
 
 private:
 	void Controller(float dt);
-	static std::vector<gfxVector2> pos;
+	reflector* reflect;
+	std::vector<gfxVector2> pos;
 	static int count;
+	int key;
 	static int maxCount;
 	static gfxVector2 currentPos; // Current position of the mirror
 	static gfxVector2 targetPos; // Target position for interpolation
