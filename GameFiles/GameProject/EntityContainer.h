@@ -32,6 +32,7 @@ public:
 	void CheckCollisions();
 	void RenderAll();
 	void FreeAll();
+	bool RemoveEntity(Entity* _entity);
 
 	Engine::EngineCode Init();
 	void Update(float dt);
