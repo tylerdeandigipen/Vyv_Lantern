@@ -59,6 +59,7 @@ public:
 	void RenderMenu();
 	void RenderParticles();
 	void RenderFog();
+	void RenderLasers();
 
 	//Animation Functions
 	void UpdateAnimations(float dt);

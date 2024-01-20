@@ -82,10 +82,11 @@ Engine::EngineCode TbdTestScene::Init()
     LevelBuilder::GetInstance()->LoadLevel("./Data/TiledMichaelSceneTest.json");
 
     //ControlledEmitter = LaserSystem::GetInstance()->CreateEmitter();
+    /*
     laser_emitter* TestLaser1 = NewEmitter();
     TestLaser1->Position = Vector2(200.0f, 50.0f + 12.0f); //add offset to accomodate for the position of the mirror (opengl position mixed with sdl2 position)
     TestLaser1->Direction = Vector2::Normalize(Vector2(-1.0f, 0.0f));
-
+    */
     Color tempColor{ 141,141,141,255 };
     int numTestDust = 120;
     Vector2 tempRandNum;

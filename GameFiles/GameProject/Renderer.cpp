@@ -52,6 +52,7 @@ void Renderer::Update(float dt)
 
     UpdateObjects(dt);
     RenderLightingPass();
+    RenderLasers();
     BlurLights(-1,2);
     inputBuffer->DitherBuffer(inputBuffer, renderOnlyLights, isFullbright,  lightR, lightG, lightB);
     RenderFog();
@@ -520,6 +521,79 @@ void Renderer::RenderFog()
         fogBufferPostCam->DitherBuffer();
     }
 }
+
+void Renderer::RenderLasers()
+{
+    const int xSize = (int)inputBuffer->size.x;
+    const int ySize = (int)inputBuffer->size.y;
+
+    Vector2 tempLaserPos1[2];
+    Vector2 tempLaserPos2[2];
+
+    tempLaserPos1[0] = Vector2{ 60,30 } - CameraP;
+    tempLaserPos2[0] = Vector2{ 160,30 } - CameraP;
+
+    tempLaserPos1[1] = Vector2{ 60,30 } - CameraP;
+    tempLaserPos2[1] = Vector2{ 60,160 } - CameraP;
+
+    float IntensityR = 0.0f;
+    float IntensityG = 0.0f;
+    float IntensityB = 0.0f;
+    //optimize later to only calculate light near / in the laser line zone
+#pragma omp parallel
+    {
+#pragma omp for collapse(3) nowait private(IntensityR, IntensityG, IntensityB)
+        for (int x = 0; x < xSize; ++x)
+        {
+            for (int y = 0; y < ySize; ++y)
+            {
+                for (int i = 0; i < 2; i++)
+                {
+                    IntensityR = 0.0f;
+                    IntensityG = 0.0f;
+                    IntensityB = 0.0f;
+                    //Check if the laser is along the x axis
+                    if (tempLaserPos1[i].y - tempLaserPos2[i].y == 0)
+                    {
+                        //check if x is inbetween the two points
+                        if (x >= tempLaserPos1[i].x && x <= tempLaserPos2[i].x)
+                        {
+                            //check distance from laser line
+                            if ((y - tempLaserPos2[i].y) > -5 && (y - tempLaserPos2[i].y) < 5)
+                            {
+                                //IntensityR = (5 - abs(y - tempLaserPos2[i].y)) / 5;
+                                //IntensityG = (5 - abs(y - tempLaserPos2[i].y)) / 5;
+                                IntensityB = (5 - abs(y - tempLaserPos2[i].y)) / 5;
+                            }
+
+                        }
+
+                    } // Check if laser is along the y axis
+                    else if (tempLaserPos1[i].x - tempLaserPos2[i].x == 0)
+                    {
+                        //check if y is inbetween the two points
+                        if (y >= tempLaserPos1[i].y && y <= tempLaserPos2[i].y)
+                        {
+                            //check distance from laser line
+                            if ((x - tempLaserPos2[i].x) > -5 && (x - tempLaserPos2[i].x) < 5)
+                            {
+                                //IntensityR = (5 - abs(x - tempLaserPos2[i].x)) / 5;
+                                //IntensityG = (5 - abs(x - tempLaserPos2[i].x)) / 5;
+                                IntensityB = (5 - abs(x - tempLaserPos2[i].x)) / 5;
+                            }
+
+                        }
+                    }
+                    lightR[x][y] += IntensityR;
+                    lightG[x][y] += IntensityG;
+                    lightB[x][y] += IntensityB;
+                }
+            }
+        }
+    }
+
+}
+
 
 #endif
 
