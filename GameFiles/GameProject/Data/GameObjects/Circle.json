@@ -1,27 +1,30 @@
 {
-  "Type": "Object",
-  "Name": "Switch",
-  "file": "./Assets/PPM/Circle_2x2.ppm",
-  "FilePath": "./Data/GameObjects/Circle.json",
-  "isAnimated": false,
-  "frameSize": [ 8, 8 ],
-  "Components": [
-    {
-      "Type": "ColliderAABB"
-    },
-    {
-      "Type": "Transform",
-      "translation": {
-        "x": 70,
-        "y": 30
-      }
-    },
-    {
-      "Type": "Physics",
-      "OldTranslation": {
-        "x": 90,
-        "y": 30
-      }
-    }
-  ]
+    "Components": [
+        {
+            "Type": "ColliderAABB"
+        },
+        {
+            "Type": "Transform",
+            "translation": {
+                "x": 98.0530014038086,
+                "y": 59.4739990234375
+            }
+        },
+        {
+            "OldTranslation": {
+                "x": 90,
+                "y": 30
+            },
+            "Type": "Physics"
+        }
+    ],
+    "FilePath": "./Data/GameObjects/Circle.json",
+    "Name": "Switch",
+    "Type": "Object",
+    "file": "./Assets/PPM/Circle_2x2.ppm",
+    "frameSize": [
+        8,
+        8
+    ],
+    "isAnimated": false
 }

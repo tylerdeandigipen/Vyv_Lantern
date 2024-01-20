@@ -21,6 +21,7 @@
 #include "PlatformSystem.h"
 #include "Engine.h"
 #include "Entity.h"
+#include "BehaviorPlayer.h"
 #include "EntityContainer.h"
 #include "FileIO.h"
 #include "SceneSystem.h"
@@ -92,32 +93,18 @@ Engine::EngineCode LevelCreatorScene::Init()
 	LevelCreatorWindow = PlatformSystem::GetInstance()->GetWindowHandle();
 	LevelCreatorPixelRenderer->window = LevelCreatorWindow;
 
-<<<<<<< Updated upstream
-=======
-    //initialize level data
-   // EntityContainer::GetInstance()->ReadEntities("./Data/GameObjects/ObjectListLevelBuilder.json");
-    LevelBuilder::GetInstance()->LoadLevel("./Data/LevelCreatorScene.json");
-    LevelCreatorPixelRenderer->window = LevelCreatorWindow;
-    LevelCreatorPixelRenderer->isFullbright = true;
-    playMode = false;
-    playerSpawned = false;
->>>>>>> Stashed changes
 	//initialize level data
 	EntityContainer::GetInstance()->ReadEntities("./Data/GameObjects/ObjectListLevelBuilder.json");
 	entityContainer = EntityContainer::GetInstance();
 	entity = (*entityContainer)[0];
 	Transform* t = entity->Has(Transform);
 	properties = EntityProperties{ {t->GetTranslation()->x, t->GetTranslation()->y}, {0.f, 0.f}, false };
-<<<<<<< Updated upstream
-=======
->>>>>>> 7cd4294ad4e559cbae8df1be016e77c66fb823aa
->>>>>>> Stashed changes
 
-	LevelBuilder::GetInstance()->LoadLevel("./Data/Tbd_Testing_Level_Master/Tbd_Testing_Level.json");
-	LevelCreatorPixelRenderer->window = LevelCreatorWindow;
-	LevelCreatorPixelRenderer->isFullbright = true;
-	playMode = false;
-	playerSpawned = false;
+    LevelBuilder::GetInstance()->LoadLevel("./Data/LevelCreatorScene.json");
+    LevelCreatorPixelRenderer->window = LevelCreatorWindow;
+    LevelCreatorPixelRenderer->isFullbright = true;
+    playMode = false;
+    playerSpawned = false;
 
 	moveVector = { 0,0 };
 	oldMousePos = { 0,0 };
@@ -134,7 +121,6 @@ int expansionRange = 1;
 
 void LevelCreatorScene::ToolEyedroper(Inputs* inputHandler, Vector2 CursourP)
 {
-<<<<<<< Updated upstream
 	if (inputHandler->mouseButtonDown(SDL_BUTTON_LEFT))
 	{
 		Vector2 tilePos = (CursourP + LevelCreatorPixelRenderer->GetCameraPosition());
@@ -148,8 +134,6 @@ void LevelCreatorScene::ToolEyedroper(Inputs* inputHandler, Vector2 CursourP)
 			currentTile = 0;
 		}
 	}
-=======
->>>>>>> Stashed changes
 }
 
 void LevelCreatorScene::ToolCenter(Inputs* inputHandler)
@@ -189,8 +173,6 @@ void LevelCreatorScene::ToolSquareFill(Inputs* inputHandler, Vector2 CursourP)
 			pos2.y = temp;
 		}
 
-<<<<<<< Updated upstream
-=======
         for (int x = (int)pos1.x; x < (int)pos2.x + 1; x++)
         {
             for (int y = (int)pos1.y; y < (int)pos2.y + 1; y++)
@@ -205,8 +187,8 @@ void LevelCreatorScene::ToolSquareFill(Inputs* inputHandler, Vector2 CursourP)
                 }
             }
         }
-=======
->>>>>>> Stashed changes
+
+
 		for (int x = (int)pos1.x; x < (int)pos2.x + 1; x++)
 		{
 			for (int y = (int)pos1.y; y < (int)pos2.y + 1; y++)
@@ -221,11 +203,6 @@ void LevelCreatorScene::ToolSquareFill(Inputs* inputHandler, Vector2 CursourP)
 				}
 			}
 		}
-<<<<<<< Updated upstream
-=======
->>>>>>> 7cd4294ad4e559cbae8df1be016e77c66fb823aa
->>>>>>> Stashed changes
-
 		LevelCreatorPixelRenderer->MakeTileMap(LevelCreatorPixelRenderer->tileMap);
 
 		wasDown = false;
@@ -350,6 +327,8 @@ void LevelCreatorScene::ToolHandler()
 					}
 				}
 			}
+			BehaviorPlayer* player = reinterpret_cast<BehaviorPlayer*>(EntityContainer::GetInstance()->FindByName("Player")->Has(Behavior));
+			player->centerCameraOnPlayer = true;
 			LevelBuilder::GetInstance()->SetX(LevelCreatorPixelRenderer->tileMapSize.x);
 			LevelBuilder::GetInstance()->SetY(LevelCreatorPixelRenderer->tileMapSize.y);
 			delete[] LevelBuilder::GetInstance()->GetWalls();
@@ -371,7 +350,7 @@ void LevelCreatorScene::ToolHandler()
 	{
 		LevelCreatorPixelRenderer->isFullbright = false;
 		LevelCreatorPixelRenderer->animatedObjects[0][0]->isCulled = false;
-
+		reinterpret_cast<BehaviorPlayer*>(EntityContainer::GetInstance()->FindByName("Player")->Has(Behavior))->centerCameraOnPlayer = true;
 		//remove this when micheal fixes the player behavior
 		LevelCreatorPixelRenderer->lightSource[1].position = LevelCreatorPixelRenderer->animatedObjects[0][0]->position + Vector2{ 3,3 };
 		LevelCreatorPixelRenderer->lightSource[0].position = LevelCreatorPixelRenderer->animatedObjects[0][0]->position + Vector2{ 3,3 };
@@ -390,6 +369,8 @@ void LevelCreatorScene::ToolHandler()
 	if (playerSpawned == true)
 	{
 		LevelCreatorPixelRenderer->animatedObjects[0][0]->isCulled = true;
+		BehaviorPlayer* player = reinterpret_cast<BehaviorPlayer*>(EntityContainer::GetInstance()->FindByName("Player")->Has(Behavior));
+		player->centerCameraOnPlayer = false;
 	}
 	LevelCreatorPixelRenderer->isFullbright = true;
 

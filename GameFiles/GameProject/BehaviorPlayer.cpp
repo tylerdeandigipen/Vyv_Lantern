@@ -21,7 +21,6 @@
 
 const float pushForce = 1.0f;
 float soundCooldown = 0.0f;
-bool centerCameraOnPlayer = true;
 
 BehaviorPlayer::BehaviorPlayer() : Behavior(Behavior::Player), playerMoveSpeed(0)
 {
