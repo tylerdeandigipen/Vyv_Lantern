@@ -1,46 +1,46 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <ClCompile Include="Source\AudioEngine.cpp">
+    <ClCompile Include="AudioEngine.cpp">
       <Filter>Source FIles\Other</Filter>
     </ClCompile>
-    <ClCompile Include="Source\BaseSystem.cpp">
+    <ClCompile Include="BaseSystem.cpp">
       <Filter>Source FIles\Engine</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Behavior.cpp">
+    <ClCompile Include="Behavior.cpp">
       <Filter>Source FIles\Objects\Components</Filter>
     </ClCompile>
-    <ClCompile Include="Source\BehaviorPlayer.cpp">
+    <ClCompile Include="BehaviorPlayer.cpp">
       <Filter>Source FIles\Objects\Components\Sub Components</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Collider.cpp">
+    <ClCompile Include="Collider.cpp">
       <Filter>Source FIles\Objects\Components\Sub Components</Filter>
     </ClCompile>
-    <ClCompile Include="Source\ColliderAABB.cpp">
+    <ClCompile Include="ColliderAABB.cpp">
       <Filter>Source FIles\Objects\Components\Sub Components</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Collision.cpp">
+    <ClCompile Include="Collision.cpp">
       <Filter>Source FIles\Objects\Components</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Color.cpp">
+    <ClCompile Include="Color.cpp">
       <Filter>Source FIles\Graphics</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Component.cpp">
+    <ClCompile Include="Component.cpp">
       <Filter>Source FIles\Objects\Components</Filter>
     </ClCompile>
-    <ClCompile Include="Source\ComponentFactory.cpp">
+    <ClCompile Include="ComponentFactory.cpp">
       <Filter>Source FIles\Engine\Systems</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Engine.cpp">
+    <ClCompile Include="Engine.cpp">
       <Filter>Source FIles\Engine</Filter>
     </ClCompile>
-    <ClCompile Include="Source\EntityFactory.cpp">
+    <ClCompile Include="EntityFactory.cpp">
       <Filter>Source FIles\Engine\Systems</Filter>
     </ClCompile>
-    <ClCompile Include="Source\FileIO.cpp">
+    <ClCompile Include="FileIO.cpp">
       <Filter>Source FIles\Other</Filter>
     </ClCompile>
-    <ClCompile Include="Source\ImageBuffer.cpp">
+    <ClCompile Include="ImageBuffer.cpp">
       <Filter>Source FIles\Graphics</Filter>
     </ClCompile>
     <ClCompile Include="IMGUI\imgui.cpp">
@@ -64,165 +64,165 @@
     <ClCompile Include="IMGUI\imgui_widgets.cpp">
       <Filter>Source FIles\Debug\IMGUI</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Inputs.cpp">
+    <ClCompile Include="Inputs.cpp">
       <Filter>Source FIles\Objects\Components\Sub Components</Filter>
     </ClCompile>
-    <ClCompile Include="Source\LaserSystem.cpp">
+    <ClCompile Include="LaserSystem.cpp">
       <Filter>Source FIles\Engine\Systems</Filter>
     </ClCompile>
-    <ClCompile Include="Source\LevelBuilder.cpp">
+    <ClCompile Include="LevelBuilder.cpp">
       <Filter>Source FIles\Engine\Systems</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Light.cpp">
+    <ClCompile Include="Light.cpp">
       <Filter>Source FIles\Graphics</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Logging.cpp">
+    <ClCompile Include="Logging.cpp">
       <Filter>Source FIles\Debug</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Main.cpp">
+    <ClCompile Include="Main.cpp">
       <Filter>Source FIles\Engine</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Math.cpp">
+    <ClCompile Include="Math.cpp">
       <Filter>Source FIles\Other</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Matrix.cpp">
+    <ClCompile Include="Matrix.cpp">
       <Filter>Source FIles\Other</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Observer.cpp">
+    <ClCompile Include="Observer.cpp">
       <Filter>Source FIles\Engine</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Particle.cpp">
+    <ClCompile Include="Particle.cpp">
       <Filter>Source FIles\Graphics</Filter>
     </ClCompile>
-    <ClCompile Include="Source\ParticleManager.cpp">
+    <ClCompile Include="ParticleManager.cpp">
       <Filter>Source FIles\Engine\Systems</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Physics.cpp">
+    <ClCompile Include="Physics.cpp">
       <Filter>Source FIles\Objects\Components</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Renderer.cpp">
+    <ClCompile Include="Renderer.cpp">
       <Filter>Source FIles\Graphics</Filter>
     </ClCompile>
-    <ClCompile Include="Source\PlatformSystem.cpp">
+    <ClCompile Include="PlatformSystem.cpp">
       <Filter>Source FIles\Engine\Systems</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Scene.cpp">
+    <ClCompile Include="Scene.cpp">
       <Filter>Source FIles\Scenes</Filter>
     </ClCompile>
-    <ClCompile Include="Source\SceneSystem.cpp">
+    <ClCompile Include="SceneSystem.cpp">
       <Filter>Source FIles\Engine\Systems</Filter>
     </ClCompile>
-    <ClCompile Include="Source\StubScene.cpp">
+    <ClCompile Include="StubScene.cpp">
       <Filter>Source FIles\Scenes</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Subject.cpp">
+    <ClCompile Include="Subject.cpp">
       <Filter>Source FIles\Engine</Filter>
     </ClCompile>
-    <ClCompile Include="Source\TbdTestScene.cpp">
+    <ClCompile Include="TbdTestScene.cpp">
       <Filter>Source FIles\Scenes</Filter>
     </ClCompile>
-    <ClCompile Include="Source\TestScene.cpp">
+    <ClCompile Include="TestScene.cpp">
       <Filter>Source FIles\Scenes</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Time.cpp">
+    <ClCompile Include="Time.cpp">
       <Filter>Source FIles\Other</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Vector.cpp">
+    <ClCompile Include="Vector.cpp">
       <Filter>Source FIles\Other</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Transform.cpp">
+    <ClCompile Include="Transform.cpp">
       <Filter>Source FIles\Objects\Components</Filter>
     </ClCompile>
-    <ClCompile Include="Source\glad.c">
+    <ClCompile Include="glad.c">
       <Filter>Misc</Filter>
     </ClCompile>
-    <ClCompile Include="Source\BehaviorSwitch.cpp">
+    <ClCompile Include="BehaviorSwitch.cpp">
       <Filter>Source FIles\Objects\Components\Sub Components</Filter>
     </ClCompile>
-    <ClCompile Include="Source\BehaviorDoor.cpp">
+    <ClCompile Include="BehaviorDoor.cpp">
       <Filter>Source FIles\Objects\Components\Sub Components</Filter>
     </ClCompile>
-    <ClCompile Include="Source\WinScene.cpp">
+    <ClCompile Include="WinScene.cpp">
       <Filter>Source FIles\Scenes</Filter>
     </ClCompile>
-    <ClCompile Include="Source\BehaviorMirror.cpp">
+    <ClCompile Include="BehaviorMirror.cpp">
       <Filter>Source FIles\Objects\Components\Sub Components</Filter>
     </ClCompile>
-    <ClCompile Include="Source\PauseMenu.cpp">
+    <ClCompile Include="PauseMenu.cpp">
       <Filter>Source FIles\Scenes</Filter>
     </ClCompile>
-    <ClCompile Include="Source\FontSystem.cpp">
+    <ClCompile Include="FontSystem.cpp">
       <Filter>Source FIles\Other</Filter>
     </ClCompile>
-    <ClCompile Include="Source\FrameRate.cpp">
+    <ClCompile Include="FrameRate.cpp">
       <Filter>Source FIles\Other</Filter>
     </ClCompile>
-    <ClCompile Include="Source\PauseMenu.cpp">
+    <ClCompile Include="PauseMenu.cpp">
       <Filter>Source FIles\Graphics</Filter>
     </ClCompile>
-    <ClCompile Include="Source\EntityContainer.cpp">
+    <ClCompile Include="EntityContainer.cpp">
       <Filter>Source FIles\Engine\Systems</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Sprite.cpp">
+    <ClCompile Include="Sprite.cpp">
       <Filter>Source FIles\Objects\Components</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Entity.cpp">
+    <ClCompile Include="Entity.cpp">
       <Filter>Source FIles\Objects\Components</Filter>
     </ClCompile>
-    <ClCompile Include="Source\LevelCreatorScene.cpp">
+    <ClCompile Include="LevelCreatorScene.cpp">
       <Filter>Source FIles\Scenes</Filter>
     </ClCompile>
-    <ClCompile Include="Source\ImguiFunctions.cpp">
+    <ClCompile Include="ImguiFunctions.cpp">
       <Filter>Source FIles\Debug\IMGUI</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Source\AudioEngine.h">
+    <ClInclude Include="AudioEngine.h">
       <Filter>Header FIles\Other</Filter>
     </ClInclude>
-    <ClInclude Include="Source\BaseSystem.h">
+    <ClInclude Include="BaseSystem.h">
       <Filter>Header FIles\Engine</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Behavior.h">
+    <ClInclude Include="Behavior.h">
       <Filter>Header FIles\Objects\Components</Filter>
     </ClInclude>
-    <ClInclude Include="Source\BehaviorPlayer.h">
+    <ClInclude Include="BehaviorPlayer.h">
       <Filter>Header FIles\Objects\Components\SubComponents</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Collider.h">
+    <ClInclude Include="Collider.h">
       <Filter>Header FIles\Objects\Components\SubComponents</Filter>
     </ClInclude>
-    <ClInclude Include="Source\ColliderAABB.h">
+    <ClInclude Include="ColliderAABB.h">
       <Filter>Header FIles\Objects\Components\SubComponents</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Collision.h">
+    <ClInclude Include="Collision.h">
       <Filter>Header FIles\Objects\Components</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Color.h">
+    <ClInclude Include="Color.h">
       <Filter>Header FIles\Graphics</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Component.h">
+    <ClInclude Include="Component.h">
       <Filter>Header FIles\Objects\Components</Filter>
     </ClInclude>
-    <ClInclude Include="Source\ComponentFactory.h">
+    <ClInclude Include="ComponentFactory.h">
       <Filter>Header FIles\Engine\Systems</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Engine.h">
+    <ClInclude Include="Engine.h">
       <Filter>Header FIles\Engine</Filter>
     </ClInclude>
-    <ClInclude Include="Source\EntityFactory.h">
+    <ClInclude Include="EntityFactory.h">
       <Filter>Header FIles\Engine\Systems</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Event.h">
+    <ClInclude Include="Event.h">
       <Filter>Header FIles\Engine</Filter>
     </ClInclude>
-    <ClInclude Include="Source\FileIO.h">
+    <ClInclude Include="FileIO.h">
       <Filter>Header FIles\Other</Filter>
     </ClInclude>
-    <ClInclude Include="Source\framework.h">
+    <ClInclude Include="framework.h">
       <Filter>Header FIles\Engine</Filter>
     </ClInclude>
-    <ClInclude Include="Source\ImageBuffer.h">
+    <ClInclude Include="ImageBuffer.h">
       <Filter>Header FIles\Graphics</Filter>
     </ClInclude>
     <ClInclude Include="IMGUI\imgui.h">
@@ -249,133 +249,133 @@
     <ClInclude Include="IMGUI\imstb_truetype.h">
       <Filter>Header FIles\Debug\IMGUI</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Inputs.h">
+    <ClInclude Include="Inputs.h">
       <Filter>Header FIles\Objects\Components\SubComponents</Filter>
     </ClInclude>
-    <ClInclude Include="Source\LaserSystem.h">
+    <ClInclude Include="LaserSystem.h">
       <Filter>Header FIles\Engine\Systems</Filter>
     </ClInclude>
-    <ClInclude Include="Source\LevelBuilder.h">
+    <ClInclude Include="LevelBuilder.h">
       <Filter>Header FIles\Engine\Systems</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Light.h">
+    <ClInclude Include="Light.h">
       <Filter>Header FIles\Graphics</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Logging.h">
+    <ClInclude Include="Logging.h">
       <Filter>Header FIles\Debug</Filter>
     </ClInclude>
-    <ClInclude Include="Source\IMGUI\imconfig.h">
+    <ClInclude Include="IMGUI\imconfig.h">
       <Filter>Header FIles\Debug\IMGUI</Filter>
     </ClInclude>
-    <ClInclude Include="Maths\Math.h">
+    <ClInclude Include="Math.h">
       <Filter>Header FIles\Other</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Main.h">
+    <ClInclude Include="Main.h">
       <Filter>Header FIles\Engine</Filter>
     </ClInclude>
-    <ClInclude Include="Maths\Math_Header.h">
+    <ClInclude Include="Math_Header.h">
       <Filter>Header FIles\Other</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Matrix.h">
+    <ClInclude Include="Matrix.h">
       <Filter>Header FIles\Other</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Observer.h">
+    <ClInclude Include="Observer.h">
       <Filter>Header FIles\Engine</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Particle.h">
+    <ClInclude Include="Particle.h">
       <Filter>Header FIles\Graphics</Filter>
     </ClInclude>
-    <ClInclude Include="Source\ParticleManager.h">
+    <ClInclude Include="ParticleManager.h">
       <Filter>Header FIles\Engine\Systems</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Physics.h">
+    <ClInclude Include="Physics.h">
       <Filter>Header FIles\Objects\Components</Filter>
     </ClInclude>
-    <ClInclude Include="Source\PlatformSystem.h">
+    <ClInclude Include="PlatformSystem.h">
       <Filter>Header FIles\Engine\Systems</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Renderer.h">
+    <ClInclude Include="Renderer.h">
       <Filter>Header FIles\Graphics</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Scene.h">
+    <ClInclude Include="Scene.h">
       <Filter>Header FIles\Scenes</Filter>
     </ClInclude>
-    <ClInclude Include="Source\SceneSystem.h">
+    <ClInclude Include="SceneSystem.h">
       <Filter>Header FIles\Engine\Systems</Filter>
     </ClInclude>
-    <ClInclude Include="Source\ScopeTimer.h">
+    <ClInclude Include="ScopeTimer.h">
       <Filter>Header FIles\Other</Filter>
     </ClInclude>
-    <ClInclude Include="Source\StubScene.h">
+    <ClInclude Include="StubScene.h">
       <Filter>Header FIles\Scenes</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Subject.h">
+    <ClInclude Include="Subject.h">
       <Filter>Header FIles\Engine</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Transform.h">
+    <ClInclude Include="Transform.h">
       <Filter>Header FIles\Objects\Components</Filter>
     </ClInclude>
-    <ClInclude Include="Maths\Vector.h">
+    <ClInclude Include="Vector.h">
       <Filter>Header FIles\Other</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Time.h">
+    <ClInclude Include="Time.h">
       <Filter>Header FIles\Other</Filter>
     </ClInclude>
-    <ClInclude Include="Source\TestScene.h">
+    <ClInclude Include="TestScene.h">
       <Filter>Header FIles\Scenes</Filter>
     </ClInclude>
-    <ClInclude Include="Source\TbdTestScene.h">
+    <ClInclude Include="TbdTestScene.h">
       <Filter>Header FIles\Scenes</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Resource.h">
+    <ClInclude Include="Resource.h">
       <Filter>Header FIles\Engine</Filter>
     </ClInclude>
     <ClInclude Include="includes\glfw\glfw3.h">
       <Filter>Misc</Filter>
     </ClInclude>
-    <ClInclude Include="Source\targetver.h">
+    <ClInclude Include="targetver.h">
       <Filter>Misc</Filter>
     </ClInclude>
-    <ClInclude Include="Source\BehaviorSwitch.h">
+    <ClInclude Include="BehaviorSwitch.h">
       <Filter>Header FIles\Objects\Components\SubComponents</Filter>
     </ClInclude>
-    <ClInclude Include="Source\BehaviorDoor.h">
+    <ClInclude Include="BehaviorDoor.h">
       <Filter>Header FIles\Objects\Components\SubComponents</Filter>
     </ClInclude>
-    <ClInclude Include="Source\WinScene.h">
+    <ClInclude Include="WinScene.h">
       <Filter>Header FIles\Scenes</Filter>
     </ClInclude>
-    <ClInclude Include="Source\BehaviorMirror.h">
+    <ClInclude Include="BehaviorMirror.h">
       <Filter>Header FIles\Objects\Components\SubComponents</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Sprite.h">
+    <ClInclude Include="Sprite.h">
       <Filter>Header FIles\Graphics</Filter>
     </ClInclude>
-    <ClInclude Include="Source\PauseMenu.h">
+    <ClInclude Include="PauseMenu.h">
       <Filter>Header FIles\Graphics</Filter>
     </ClInclude>
-    <ClInclude Include="Source\DebugNew.h">
+    <ClInclude Include="DebugNew.h">
       <Filter>Header FIles\Debug</Filter>
     </ClInclude>
-    <ClInclude Include="Source\FontSystem.h">
+    <ClInclude Include="FontSystem.h">
       <Filter>Header FIles\Other</Filter>
     </ClInclude>
-    <ClInclude Include="Source\FrameRate.h">
+    <ClInclude Include="FrameRate.h">
       <Filter>Header FIles\Other</Filter>
     </ClInclude>
-    <ClInclude Include="Source\PauseMenu.h">
+    <ClInclude Include="PauseMenu.h">
       <Filter>Header FIles\Graphics</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Entity.h">
+    <ClInclude Include="Entity.h">
       <Filter>Header FIles</Filter>
     </ClInclude>
-    <ClInclude Include="Source\EntityContainer.h">
+    <ClInclude Include="EntityContainer.h">
       <Filter>Header FIles\Engine\Systems</Filter>
     </ClInclude>
-    <ClInclude Include="Source\LevelCreatorScene.h">
+    <ClInclude Include="LevelCreatorScene.h">
       <Filter>Header FIles\Scenes</Filter>
     </ClInclude>
-    <ClInclude Include="Source\ImguiFunction.h">
+    <ClInclude Include="ImguiFunction.h">
       <Filter>Header FIles\Debug\IMGUI</Filter>
     </ClInclude>
   </ItemGroup>
