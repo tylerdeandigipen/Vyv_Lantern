@@ -52,6 +52,7 @@ void Renderer::Update(float dt)
 
     UpdateObjects(dt);
     RenderLightingPass();
+    //for now lasers are temp hardcoded to get the look down
     RenderLasers();
     BlurLights(-1,2);
     inputBuffer->DitherBuffer(inputBuffer, renderOnlyLights, isFullbright,  lightR, lightG, lightB);
@@ -527,18 +528,20 @@ void Renderer::RenderLasers()
     const int xSize = (int)inputBuffer->size.x;
     const int ySize = (int)inputBuffer->size.y;
 
+    //temp hard coded lasers
     Vector2 tempLaserPos1[2];
     Vector2 tempLaserPos2[2];
     Color tempLaserColor[2];
 
-    tempLaserColor[0] = Color{ 255,165,0,255 };
-    tempLaserColor[1] = Color{ 255,165,0,255 };
+    tempLaserColor[0] = Color{ 84,0,255,255 };
+    tempLaserColor[1] = Color{ 84,0,255,255 };
 
     tempLaserPos1[0] = Vector2{ 60,30 } - CameraP;
     tempLaserPos2[0] = Vector2{ 160,30 } - CameraP;
 
     tempLaserPos1[1] = Vector2{ 60,30 } - CameraP;
     tempLaserPos2[1] = Vector2{ 60,160 } - CameraP;
+    //end of temp hard coded lasers
 
     float IntensityR = 0.0f;
     float IntensityG = 0.0f;
