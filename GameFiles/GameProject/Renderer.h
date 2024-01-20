@@ -25,7 +25,7 @@
 #define MAX_TILES 80
 #define TILE_SIZE 8
 #define NUM_WALL_TILES 17
-#define NUM_NON_WALKABLE_TILES 30
+#define NUM_NON_WALKABLE_TILES 33
 
 class Renderer
 {
@@ -142,7 +142,7 @@ public:
 
 	int** tileMap = NULL;
 
-	int nonWalkableTiles[NUM_NON_WALKABLE_TILES] = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 45, 46, 48, 29, 26, 31, 41, 39, 36, 27, 28, 34, 35, 12, 49, 50,51,52};
+	int nonWalkableTiles[NUM_NON_WALKABLE_TILES] = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 45, 46, 48, 29, 26, 31, 41, 39, 36, 27, 28, 34, 35, 12, 49, 50,51,52,53,54,55,56};
 	int numNonWalkTiles = NUM_NON_WALKABLE_TILES;
 private:
 	//Various Counters

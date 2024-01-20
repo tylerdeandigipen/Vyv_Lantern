@@ -1,0 +1,9 @@
+{
+  "Levels": [
+    {
+      "TiledData": {
+        "TileMapFile": "./Data/TileMaps/TestScene.json"
+      }
+    }
+  ]
+}
