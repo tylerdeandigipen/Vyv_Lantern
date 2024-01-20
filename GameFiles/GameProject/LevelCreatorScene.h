@@ -17,6 +17,9 @@
 
 
 class Scene;
+struct EntityProperties;
+
+int ApplyProperties(EntityProperties properties);
 
 class LevelCreatorScene : public Scene
 {

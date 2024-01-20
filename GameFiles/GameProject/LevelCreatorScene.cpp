@@ -571,7 +571,7 @@ void LevelCreatorScene::ImGuiWindow()
 							ImGui::SliderFloat2("Test Transform", properties.Translation, -10.f, 100.f);
 							LevelCreatorPixelRenderer->objects[0]->position.x = properties.Translation[0];
 							LevelCreatorPixelRenderer->objects[0]->position.y = properties.Translation[1];
-							applyProperties(properties.Translation);
+							ApplyProperties(properties);
 							ImGui::TreePop();
 						}
 					}
