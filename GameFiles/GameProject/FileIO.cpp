@@ -225,10 +225,6 @@ void FileIO::ReadTileSet(std::string filename, Renderer* pixel, int tileSetType)
 	{
 		for (int j = 0; j < (spriteSheet->BufferSizeX / frameSize.x); ++j)
 		{
-			if (i == 3 && j == 4)
-			{
-				int h = 0;
-			}
 			temp = new ImageBuffer{ frameSize.x, frameSize.y };
 			spriteSheet->position.x = -(frameSize.x * j);
 			spriteSheet->position.y = -(frameSize.y * i);
