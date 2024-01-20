@@ -8,6 +8,9 @@
     },
     {
       "FilePath": "./Data/GameObjects/Mirror.json"
+    },
+    {
+      "FilePath": "./Data/GameObjects/Circle.json"
     }
   ]
 }

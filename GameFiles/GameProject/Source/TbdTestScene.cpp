@@ -395,17 +395,21 @@ void TbdPlayerMovement(float dt)
     {
         tabKeyPreviouslyPressed = false;
     }
-
+    
     if (Engine::GetInstance()->Paused() == false)
     {
+        /*
         int x, y;
         Uint32 buttons = SDL_GetMouseState(&x, &y);
 
+        //This is the Scenes Player light tracking code or at least part of it
+        // assuming Cursour Player and Light Player are the naming schemes.
         Vector2 CursourP = { (float)x, (float)y };
         CursourP *= 1.0f / TbdPixelRenderer->screenScale;
         CursourP += TbdPixelRenderer->GetCameraPosition();
 
         Vector2 LightP = TbdPixelRenderer->lightSource[0].position;
+        //Direction? Difference? 
         Vector2 D = LightP - CursourP;
         float Angle = atan2f(D.x, D.y) * (180.0f / 3.14f) + 180.0f;
         TbdPixelRenderer->lightSource[0].angle = Angle;
@@ -414,7 +418,7 @@ void TbdPlayerMovement(float dt)
         Vector2 ScreenHalfSize = 0.5f * Vector2(SCREEN_SIZE_X, SCREEN_SIZE_Y);
         Vector2 BitmapHalfDim = 0.5f * playerEntity->size;
         TbdPixelRenderer->SetCameraPosition(playerEntity->position - ScreenHalfSize + BitmapHalfDim);
-
+        */
         //move the laser
         /*
         if (TestLaser)
@@ -425,6 +429,7 @@ void TbdPlayerMovement(float dt)
         }
         */
     }
+    
 }
 
 void TbdTestScene::Update(float dt)
