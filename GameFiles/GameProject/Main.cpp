@@ -20,6 +20,7 @@
 #include "Renderer.h"
 #include "ImageBuffer.h"
 #include "LaserSystem.h"
+#include "CrashHandler.hpp"
 #include <SDL/SDL.h>
 
 #include <crtdbg.h>
@@ -46,6 +47,10 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 {
     UNREFERENCED_PARAMETER(hPrevInstance);
     UNREFERENCED_PARAMETER(lpCmdLine);
+
+    ULONG stackSize = 32000;
+    SetThreadStackGuarantee(&stackSize);
+    SetUnhandledExceptionFilter(WriteDump);
 
     Engine* engine = Engine::GetInstance();
 	engine->EngineAddSystem(LaserSystem::GetInstance());

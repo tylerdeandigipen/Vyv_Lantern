@@ -1,4 +1,5 @@
 {
+<<<<<<< HEAD
 <<<<<<< refs/remotes/origin/main
   "Type": "Object",
   "Name": "Switch",
@@ -26,6 +27,8 @@
     }
   ]
 =======
+=======
+>>>>>>> dev_Won
     "Components": [
         {
             "Type": "ColliderAABB"
@@ -53,5 +56,8 @@
         8
     ],
     "isAnimated": false
+<<<<<<< HEAD
 >>>>>>> Adjustable Entities ver.1.0.0
+=======
+>>>>>>> dev_Won
 }
