@@ -1,7 +1,7 @@
 //------------------------------------------------------------------------------
 //
 // File Name:	BehaviorMirror.cpp
-// Author(s):	Louis Wang
+// Author(s):	Louis Wang, Michael Howard
 // Purpose:		Implementation of BehaviorMirror class for controlling mirror 
 //              entities.
 // 

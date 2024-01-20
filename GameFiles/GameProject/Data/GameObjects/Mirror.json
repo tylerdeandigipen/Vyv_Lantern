@@ -2,6 +2,7 @@
   "Type": "Object",
   "Name": "Switch",
   "file": "./Assets/PPM/Mirror.ppm",
+  "FilePath":  "./Data/GameObjects/Mirror.json",
   "isAnimated": false,
   "frameSize": [ 8, 8 ],
   "Components": [
@@ -51,7 +52,7 @@
         "DirectionX": 1.0,
         "DirectionY": 1.0
       },
-      "Radius":  10.0,
+      "Radius": 10.0,
       "key": 1
     }
   ]

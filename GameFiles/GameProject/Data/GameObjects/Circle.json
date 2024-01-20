@@ -1,7 +1,10 @@
 {
+<<<<<<< HEAD
+<<<<<<< refs/remotes/origin/main
   "Type": "Object",
   "Name": "Switch",
   "file": "./Assets/PPM/Circle_2x2.ppm",
+  "FilePath": "./Data/GameObjects/Circle.json",
   "isAnimated": false,
   "frameSize": [ 8, 8 ],
   "Components": [
@@ -23,4 +26,38 @@
       }
     }
   ]
+=======
+=======
+>>>>>>> dev_Won
+    "Components": [
+        {
+            "Type": "ColliderAABB"
+        },
+        {
+            "Type": "Transform",
+            "translation": {
+                "x": 69.77999877929688,
+                "y": 100.0
+            }
+        },
+        {
+            "OldTranslation": {
+                "x": 90,
+                "y": 30
+            },
+            "Type": "Physics"
+        }
+    ],
+    "Name": "Circle",
+    "Type": "Object",
+    "file": "./Assets/PPM/Circle_2x2.ppm",
+    "frameSize": [
+        8,
+        8
+    ],
+    "isAnimated": false
+<<<<<<< HEAD
+>>>>>>> Adjustable Entities ver.1.0.0
+=======
+>>>>>>> dev_Won
 }

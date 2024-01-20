@@ -11,7 +11,7 @@
 #include "BaseSystem.h"
 #include <Windows.h>
 
-#define Name "Lantern"
+//#define Name "Lantern"
 
 struct SDL_Window;
 typedef void *SDL_GLContext;
@@ -26,7 +26,7 @@ public:
 
 	//static PlatformSystem* GetInstance(HINSTANCE, bool);
 	static PlatformSystem* GetInstance();
-	void ChangeTitle(const char* = Name);
+	void ChangeTitle(const char* = "Lantern");
 	int GetHeight();
 	int GetWidth();
 	SDL_Window* GetWindowHandle();

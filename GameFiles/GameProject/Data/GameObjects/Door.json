@@ -2,6 +2,7 @@
   "Type": "Object",
   "Name": "Door",
   "file": "./Assets/PPM/Door_Closed.ppm",
+  "FilePath": "./Data/GameObjects/Door.json",
   "isAnimated": false,
   "Components": [
     {

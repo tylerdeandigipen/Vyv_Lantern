@@ -217,8 +217,10 @@ void FileIO::ReadTileSet(std::string filename, Renderer* pixel, int tileSetType)
 		frameSize.y = frame["Y"];
 	}
 	ImageBuffer* spriteSheet = new ImageBuffer(jsonData["TilePPM"]);
+	spriteSheet->name = jsonData["TilePPM"];
 	spriteSheet->position.y = 0;
 	ImageBuffer* temp;
+
 	for (int i = 0; i < spriteSheet->BufferSizeY / frameSize.y; ++i)
 	{
 		for (int j = 0; j < (spriteSheet->BufferSizeX / frameSize.x); ++j)
@@ -241,7 +243,8 @@ void FileIO::ReadTileSet(std::string filename, Renderer* pixel, int tileSetType)
 			}
 		}
 	}
-	delete spriteSheet;
+	
+    delete spriteSheet;
 }
 
 int FileIO::ReadInt(FILE* stream)

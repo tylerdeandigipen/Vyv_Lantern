@@ -2,6 +2,7 @@
   "Type": "Light",
   "Name": "PlayerDirectional",
   "file": "./Data/Lights/PlayerDirectionalLight.json",
+  "FilePath": "./Data/GameObjects/PlayerDirectional.json",
   "Components": [
     {
       "Type": "Transform",

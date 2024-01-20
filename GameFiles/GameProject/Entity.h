@@ -57,6 +57,11 @@ public:
 		return static_cast<type_*>(Get(typeId));
 	}
 
+	std::string GetFilePath()
+	{
+		return filePath;
+	}
+
 	bool IsObject();
 	bool IsAnimated();
 
@@ -71,6 +76,8 @@ private:
 	ImageBuffer* image;
 	ImageBuffer* AnimationArray;
 
+	std::string filePath;
+
 	char name[256];
 
 	std::string mName;
@@ -84,7 +91,6 @@ private:
 	bool isObject;
 
 	Vector2 FrameSize;
-
 
 	std::vector<Component*> components;
 	
