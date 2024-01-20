@@ -89,6 +89,7 @@ Engine::EngineCode LevelCreatorScene::Init()
     oldMousePos = { 0,0 };
     previousTile = { -1000,-1000 };
     currentTile = 1;
+
     return Engine::NothingBad;
 }
 
@@ -104,13 +105,13 @@ void LevelCreatorScene::ToolEyedroper(Inputs* inputHandler, Vector2 CursourP)
     {
         Vector2 tilePos = (CursourP + LevelCreatorPixelRenderer->GetCameraPosition());
         tilePos /= 8;
-        if ((int)tilePos.x < (int)LevelCreatorPixelRenderer->tileMapSize.x && (int)tilePos.x > 0 && (int)tilePos.y < (int)LevelCreatorPixelRenderer->tileMapSize.y && (int)tilePos.y > 0)
+        if ((int)tilePos.x <= (int)LevelCreatorPixelRenderer->tileMapSize.x && (int)tilePos.x >= 0 && (int)tilePos.y <= (int)LevelCreatorPixelRenderer->tileMapSize.y && (int)tilePos.y >= 0)
         {
             currentTile = LevelCreatorPixelRenderer->tileMap[(int)tilePos.x][(int)tilePos.y];
         }
         else
         {
-            currentTile = 0;
+            currentTile = 4;
         }
     }
 }
@@ -206,7 +207,7 @@ Vector2 LevelCreatorScene::PlaceTile(Vector2 tilePos)
     Vector2 displacement = {0,0};
     if (tilePos.x < LevelCreatorPixelRenderer->tileMapSize.x && tilePos.x >= 0 && tilePos.y < LevelCreatorPixelRenderer->tileMapSize.y && tilePos.y >= 0)
     {
-        if (currentTile == 0 || currentTile == 4)
+        if (currentTile == 0)
         {
             LevelCreatorPixelRenderer->TileMapEraseTile(tilePos);
             return displacement;
@@ -215,7 +216,7 @@ Vector2 LevelCreatorScene::PlaceTile(Vector2 tilePos)
     }
     else
     {
-        if (currentTile == 0 || currentTile == 4)
+        if (currentTile == 0)
         {
             return displacement;
         }
@@ -228,7 +229,7 @@ Vector2 LevelCreatorScene::PlaceTile(Vector2 tilePos)
                 displacement.x += expansionRange;
                 moveVector.x += expansionRange * TILE_SIZE;
             }
-            if (tilePos.x > LevelCreatorPixelRenderer->tileMapSize.x)
+            if (tilePos.x >= LevelCreatorPixelRenderer->tileMapSize.x)
             {
                 LevelCreatorPixelRenderer->ExpandTileMapInDirection(Vector2{ 1,0 }, expansionRange + (tilePos.x - LevelCreatorPixelRenderer->tileMapSize.x));
             }
@@ -239,7 +240,7 @@ Vector2 LevelCreatorScene::PlaceTile(Vector2 tilePos)
                 displacement.y += expansionRange;
                 moveVector.y += expansionRange * TILE_SIZE;
             }
-            if (tilePos.y > LevelCreatorPixelRenderer->tileMapSize.y)
+            if (tilePos.y >= LevelCreatorPixelRenderer->tileMapSize.y)
             {
                 LevelCreatorPixelRenderer->ExpandTileMapInDirection(Vector2{ 0,1 }, expansionRange + (tilePos.y - LevelCreatorPixelRenderer->tileMapSize.y));
             }
@@ -279,7 +280,7 @@ void LevelCreatorScene::ToolHandler()
             {
                 for (int y = 0; y < LevelCreatorPixelRenderer->tileMapSize.y; ++y)
                 {
-                    for (int i = 0; i < 25; ++i)
+                    for (int i = 0; i < LevelCreatorPixelRenderer->numNonWalkTiles; ++i)
                     {
                         walls[(int)(y * LevelCreatorPixelRenderer->tileMapSize.x) + x] = 0;
 
