@@ -36,6 +36,7 @@ private:
 	void ImGuiWindow();
 	void ToolHandler();
 	Vector2 PlaceTile(Vector2 tilePos);
+	Vector2 PlaceObject(Vector2 objectPos);
 	void ToolPan(Inputs* inputHandler, Vector2 CursourP);
 	void ToolBrush(Inputs* inputHandler, Vector2 CursourP);
 	void ToolEyedroper(Inputs* inputHandler, Vector2 CursourP);
@@ -44,6 +45,11 @@ private:
 
 	char myTextBuffer[256]{};
 
+	enum ObjType
+	{
+		LIGHT_EMITTER,
+		COUNT
+	};
 };
 
 Scene* LevelCreatorSceneGetInstance(void);

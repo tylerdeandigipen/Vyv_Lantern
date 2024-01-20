@@ -1,26 +1,29 @@
 {
-  "Type": "Object",
-  "Name": "Switch",
-  "file": "./Assets/PPM/Circle_2x2.ppm",
-  "isAnimated": false,
-  "frameSize": [ 8, 8 ],
-  "Components": [
-    {
-      "Type": "ColliderAABB"
-    },
-    {
-      "Type": "Transform",
-      "translation": {
-        "x": 70,
-        "y": 30
-      }
-    },
-    {
-      "Type": "Physics",
-      "OldTranslation": {
-        "x": 90,
-        "y": 30
-      }
-    }
-  ]
+    "Components": [
+        {
+            "Type": "ColliderAABB"
+        },
+        {
+            "Type": "Transform",
+            "translation": {
+                "x": 69.77999877929688,
+                "y": 100.0
+            }
+        },
+        {
+            "OldTranslation": {
+                "x": 90,
+                "y": 30
+            },
+            "Type": "Physics"
+        }
+    ],
+    "Name": "Circle",
+    "Type": "Object",
+    "file": "./Assets/PPM/Circle_2x2.ppm",
+    "frameSize": [
+        8,
+        8
+    ],
+    "isAnimated": false
 }
