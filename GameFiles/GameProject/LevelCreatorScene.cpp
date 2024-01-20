@@ -219,7 +219,7 @@ Vector2 LevelCreatorScene::PlaceTile(Vector2 tilePos)
         {
             return displacement;
         }
-        while ((tilePos.x < LevelCreatorPixelRenderer->tileMapSize.x && tilePos.x >= 0 && tilePos.y < LevelCreatorPixelRenderer->tileMapSize.y && tilePos.y >= 0) != true)
+        while ((tilePos.x <= LevelCreatorPixelRenderer->tileMapSize.x && tilePos.x >= 0 && tilePos.y <= LevelCreatorPixelRenderer->tileMapSize.y && tilePos.y >= 0) != true)
         {
             if (tilePos.x < 0)
             {
