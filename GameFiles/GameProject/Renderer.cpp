@@ -529,6 +529,10 @@ void Renderer::RenderLasers()
 
     Vector2 tempLaserPos1[2];
     Vector2 tempLaserPos2[2];
+    Color tempLaserColor[2];
+
+    tempLaserColor[0] = Color{ 255,165,0,255 };
+    tempLaserColor[1] = Color{ 255,165,0,255 };
 
     tempLaserPos1[0] = Vector2{ 60,30 } - CameraP;
     tempLaserPos2[0] = Vector2{ 160,30 } - CameraP;
@@ -561,9 +565,10 @@ void Renderer::RenderLasers()
                             //check distance from laser line
                             if ((y - tempLaserPos2[i].y) > -5 && (y - tempLaserPos2[i].y) < 5)
                             {
-                                //IntensityR = (5 - abs(y - tempLaserPos2[i].y)) / 5;
-                                //IntensityG = (5 - abs(y - tempLaserPos2[i].y)) / 5;
-                                IntensityB = (5 - abs(y - tempLaserPos2[i].y)) / 5;
+                                //     some func that makes distance into intensity  |  scale by intensity of color channel
+                                IntensityR = ((5 - abs(y - tempLaserPos2[i].y)) / 5) * ((float)tempLaserColor[i].r / 255.0f);
+                                IntensityG = ((5 - abs(y - tempLaserPos2[i].y)) / 5) * ((float)tempLaserColor[i].g / 255.0f);
+                                IntensityB = ((5 - abs(y - tempLaserPos2[i].y)) / 5) * ((float)tempLaserColor[i].b / 255.0f);
                             }
 
                         }
@@ -577,9 +582,10 @@ void Renderer::RenderLasers()
                             //check distance from laser line
                             if ((x - tempLaserPos2[i].x) > -5 && (x - tempLaserPos2[i].x) < 5)
                             {
-                                //IntensityR = (5 - abs(x - tempLaserPos2[i].x)) / 5;
-                                //IntensityG = (5 - abs(x - tempLaserPos2[i].x)) / 5;
-                                IntensityB = (5 - abs(x - tempLaserPos2[i].x)) / 5;
+                                //     some func that makes distance into intensity  |  scale by intensity of color channel
+                                IntensityR = ((5 - abs(x - tempLaserPos2[i].x)) / 5) * ((float)tempLaserColor[i].r / 255.0f);
+                                IntensityG = ((5 - abs(x - tempLaserPos2[i].x)) / 5) * ((float)tempLaserColor[i].g / 255.0f);
+                                IntensityB = ((5 - abs(x - tempLaserPos2[i].x)) / 5) * ((float)tempLaserColor[i].b / 255.0f);
                             }
 
                         }

@@ -480,6 +480,10 @@ void ImageBuffer::DitherBuffer(ImageBuffer* output, bool renderOnlyLights, bool 
                     Color tempColor = SourcePixel;
                     if (lightR != NULL && lightG != NULL && lightB != NULL)
                     {
+                        if (lightR[x][y] == 0 && lightG[x][y] == 0 && lightB[x][y] != 0)
+                        {
+                            int m = 0;
+                        }
                         Color white{ 255,255,255,255 };
                         tempColor = white.ScaleIndividual(lightR[x][y], lightG[x][y], lightB[x][y]);
                     }
@@ -490,9 +494,9 @@ void ImageBuffer::DitherBuffer(ImageBuffer* output, bool renderOnlyLights, bool 
                     bayerNum = BAYER_PATTERN_8X8[x % bayerSize][y % bayerSize];
                     corr = (int)((bayerNum / 7) - 2);	//	 -2 because: 256/7=36  36*7=252  256-252=4   4/2=2 - correction -2
 
-                    i1 = (int)((blue + corr) / 36);
+                    i1 = (int)((red + corr) / 36);
                     i2 = (int)((green + corr) / 36);
-                    i3 = (int)((red + corr) / 36);
+                    i3 = (int)((blue + corr) / 36);
 
                     clamp((float)i1, 0, 7);
                     clamp((float)i2, 0, 7);
@@ -509,13 +513,13 @@ void ImageBuffer::DitherBuffer(ImageBuffer* output, bool renderOnlyLights, bool 
                         }
                         else
                         {
-                            DestPixel = SourcePixel.ScaleIndividual(((float)i1 / 7), ((float)i1 / 7), ((float)i1 / 7));
+                            DestPixel = SourcePixel.ScaleIndividual(((float)i1 / 7), ((float)i2 / 7), ((float)i3 / 7));
                         }
                     }
                     else
                     {
                         Color white{ 255,255,255,255 };
-                        DestPixel = white.ScaleIndividual(((float)i1 / 7), ((float)i1 / 7), ((float)i1 / 7));
+                        DestPixel = white.ScaleIndividual(((float)i1 / 7), ((float)i2 / 7), ((float)i3 / 7));
                     }
                 }
             }
