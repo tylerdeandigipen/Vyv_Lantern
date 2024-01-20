@@ -164,10 +164,9 @@ void BehaviorPlayer::Controller(float dt)
         Vector2 D = LightP - CursourP;
         float Angle = atan2f(D.x, D.y) * (180.0f / 3.14f) + 180.0f;
         Renderer::GetInstance()->lightSource[0].angle = Angle;
-
-        if (centerCameraOnPlayer)
+        ImageBuffer* playerEntity = Renderer::GetInstance()->animatedObjects[0][0];
+        if (centerCameraOnPlayer && playerEntity->isCulled != true)
         {
-            ImageBuffer* playerEntity = Renderer::GetInstance()->animatedObjects[0][0];
             Vector2 ScreenHalfSize = 0.5f * Vector2(SCREEN_SIZE_X, SCREEN_SIZE_Y);
             Vector2 BitmapHalfDim = 0.5f * playerEntity->size;
             Renderer::GetInstance()->SetCameraPosition(playerEntity->position - ScreenHalfSize + BitmapHalfDim);

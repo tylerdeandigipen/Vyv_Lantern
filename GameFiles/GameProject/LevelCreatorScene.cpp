@@ -315,7 +315,7 @@ void LevelCreatorScene::ToolHandler()
 			{
 				for (int y = 0; y < LevelCreatorPixelRenderer->tileMapSize.y; ++y)
 				{
-					for (int i = 0; i < 25; ++i)
+					for (int i = 0; i < LevelCreatorPixelRenderer->numNonWalkTiles; ++i)
 					{
 						walls[(int)(y * LevelCreatorPixelRenderer->tileMapSize.x) + x] = 0;
 
@@ -327,8 +327,6 @@ void LevelCreatorScene::ToolHandler()
 					}
 				}
 			}
-			BehaviorPlayer* player = reinterpret_cast<BehaviorPlayer*>(EntityContainer::GetInstance()->FindByName("Player")->Has(Behavior));
-			player->centerCameraOnPlayer = true;
 			LevelBuilder::GetInstance()->SetX(LevelCreatorPixelRenderer->tileMapSize.x);
 			LevelBuilder::GetInstance()->SetY(LevelCreatorPixelRenderer->tileMapSize.y);
 			delete[] LevelBuilder::GetInstance()->GetWalls();
@@ -350,7 +348,6 @@ void LevelCreatorScene::ToolHandler()
 	{
 		LevelCreatorPixelRenderer->isFullbright = false;
 		LevelCreatorPixelRenderer->animatedObjects[0][0]->isCulled = false;
-		reinterpret_cast<BehaviorPlayer*>(EntityContainer::GetInstance()->FindByName("Player")->Has(Behavior))->centerCameraOnPlayer = true;
 		//remove this when micheal fixes the player behavior
 		LevelCreatorPixelRenderer->lightSource[1].position = LevelCreatorPixelRenderer->animatedObjects[0][0]->position + Vector2{ 3,3 };
 		LevelCreatorPixelRenderer->lightSource[0].position = LevelCreatorPixelRenderer->animatedObjects[0][0]->position + Vector2{ 3,3 };
@@ -369,8 +366,6 @@ void LevelCreatorScene::ToolHandler()
 	if (playerSpawned == true)
 	{
 		LevelCreatorPixelRenderer->animatedObjects[0][0]->isCulled = true;
-		BehaviorPlayer* player = reinterpret_cast<BehaviorPlayer*>(EntityContainer::GetInstance()->FindByName("Player")->Has(Behavior));
-		player->centerCameraOnPlayer = false;
 	}
 	LevelCreatorPixelRenderer->isFullbright = true;
 
