@@ -18,6 +18,8 @@
 #include "Entity.h"
 #include "Transform.h"
 #include "ImageBuffer.h"
+#include "Logging.h"
+
 #include <nlohmann/json.hpp>
 
 using json = nlohmann::json;
@@ -33,7 +35,6 @@ struct ComponentSorter
 
 Entity::Entity() : isDestroyed(false), components(), name{}, image(NULL), mName(), isLight(false), isObject(false), isAnimated(false), AnimationArray()
 {
-
 }
 
 Entity::Entity(std::string type, const std::string file, json Animated) : isDestroyed(0), components(), name{}, image(NULL), mName(), isLight(false), isObject(false), isAnimated(false), AnimationArray()
@@ -110,7 +111,7 @@ void Entity::Read(json &jsonData)
 	ComponentFactory* factory = ComponentFactory::GetInstance();
 
 	mName = jsonData["Name"];
-
+	filePath = jsonData["FilePath"];
 	for (auto& componentData : jsonData["Components"])
 	{
 		std::string type = componentData["Type"];

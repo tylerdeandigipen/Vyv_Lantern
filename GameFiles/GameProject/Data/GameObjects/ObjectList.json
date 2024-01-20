@@ -1,4 +1,5 @@
 {
+  "FilePath": "./Data/GameObjects/ObjectList.json",
   "Objects": [
     {
       "FilePath": "./Data/GameObjects/Player.json"
