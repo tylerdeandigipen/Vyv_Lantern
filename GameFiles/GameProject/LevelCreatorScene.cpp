@@ -229,7 +229,7 @@ Vector2 LevelCreatorScene::PlaceTile(Vector2 tilePos)
                 displacement.x += expansionRange;
                 moveVector.x += expansionRange * TILE_SIZE;
             }
-            if (tilePos.x > LevelCreatorPixelRenderer->tileMapSize.x)
+            if (tilePos.x >= LevelCreatorPixelRenderer->tileMapSize.x)
             {
                 LevelCreatorPixelRenderer->ExpandTileMapInDirection(Vector2{ 1,0 }, expansionRange + (tilePos.x - LevelCreatorPixelRenderer->tileMapSize.x));
             }
@@ -240,7 +240,7 @@ Vector2 LevelCreatorScene::PlaceTile(Vector2 tilePos)
                 displacement.y += expansionRange;
                 moveVector.y += expansionRange * TILE_SIZE;
             }
-            if (tilePos.y > LevelCreatorPixelRenderer->tileMapSize.y)
+            if (tilePos.y >= LevelCreatorPixelRenderer->tileMapSize.y)
             {
                 LevelCreatorPixelRenderer->ExpandTileMapInDirection(Vector2{ 0,1 }, expansionRange + (tilePos.y - LevelCreatorPixelRenderer->tileMapSize.y));
             }
