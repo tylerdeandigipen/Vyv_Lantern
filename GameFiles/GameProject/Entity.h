@@ -92,7 +92,6 @@ private:
 
 	Vector2 FrameSize;
 
-
 	std::vector<Component*> components;
 	
 };
