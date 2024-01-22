@@ -547,6 +547,7 @@ void Renderer::RenderLasers()
     float IntensityG = 0.0f;
     float IntensityB = 0.0f;
     //optimize later to only calculate light near / in the laser line zone
+    //maybe make so depending on distance it uses two different light functions
 #pragma omp parallel
     {
 #pragma omp for collapse(3) nowait private(IntensityR, IntensityG, IntensityB)

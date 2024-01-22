@@ -348,14 +348,11 @@ void LevelCreatorScene::ToolHandler()
 	{
 		LevelCreatorPixelRenderer->isFullbright = false;
 		LevelCreatorPixelRenderer->animatedObjects[0][0]->isCulled = false;
-		//remove this when micheal fixes the player behavior
+
+		//remove this when the player behavior is fixed
 		LevelCreatorPixelRenderer->lightSource[1].position = LevelCreatorPixelRenderer->animatedObjects[0][0]->position + Vector2{ 3,3 };
 		LevelCreatorPixelRenderer->lightSource[0].position = LevelCreatorPixelRenderer->animatedObjects[0][0]->position + Vector2{ 3,3 };
-
-		Vector2 ScreenHalfSize = 0.5f * Vector2(SCREEN_SIZE_X, SCREEN_SIZE_Y);
-		Vector2 BitmapHalfDim = 0.5f * LevelCreatorPixelRenderer->animatedObjects[0][0]->size;
-		LevelCreatorPixelRenderer->SetCameraPosition(LevelCreatorPixelRenderer->animatedObjects[0][0]->position - ScreenHalfSize + BitmapHalfDim);
-
+		
 		Vector2 LightP = LevelCreatorPixelRenderer->lightSource[0].position;
 		Vector2 D = LightP - CursourP - LevelCreatorPixelRenderer->GetCameraPosition();
 		float Angle = atan2f(D.x, D.y) * (180.0f / 3.14f) + 180.0f;
