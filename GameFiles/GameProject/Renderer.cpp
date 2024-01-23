@@ -567,14 +567,13 @@ void Renderer::RenderLasers()
                         if (x >= tempLaserPos1[i].x && x <= tempLaserPos2[i].x)
                         {
                             //check distance from laser line
-                            if ((y - tempLaserPos2[i].y) > -5 && (y - tempLaserPos2[i].y) < 5)
+                            if ((y - tempLaserPos2[i].y) >= -5 && (y - tempLaserPos2[i].y) <= 5)
                             {
                                 //     some func that makes distance into intensity  |  scale by intensity of color channel
                                 IntensityR = ((5 - abs(y - tempLaserPos2[i].y)) / 5) * ((float)tempLaserColor[i].r / 255.0f);
                                 IntensityG = ((5 - abs(y - tempLaserPos2[i].y)) / 5) * ((float)tempLaserColor[i].g / 255.0f);
                                 IntensityB = ((5 - abs(y - tempLaserPos2[i].y)) / 5) * ((float)tempLaserColor[i].b / 255.0f);
                             }
-
                         }
 
                     } // Check if laser is along the y axis
