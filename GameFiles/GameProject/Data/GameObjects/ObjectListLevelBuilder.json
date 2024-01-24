@@ -1,4 +1,5 @@
 {
+  "FilePath": "./Data/GameObjects/ObjectListLevelBuilder.json",
   "Objects": [
     {
       "FilePath": "./Data/GameObjects/Circle.json"

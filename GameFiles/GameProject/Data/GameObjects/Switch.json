@@ -2,6 +2,7 @@
   "Type": "Object",
   "Name": "Switch",
   "file": "./Assets/PPM/Circle_2x2.ppm",
+  "FilePath": "./Data/GameObjects/Switch.json",
   "isAnimated": false,
   "frameSize": [ 8, 8 ],
   "Components": [

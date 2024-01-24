@@ -2,6 +2,7 @@
   "Type": "Light",
   "Name": "PlayerDome",
   "file": "./Data/Lights/PlayerDomeLight.json",
+  "FilePath": "./Data/GameObjects/PlayerDomeLight.json",
   "Components": [
     {
       "Type": "Transform",

@@ -31,6 +31,7 @@ public:
 	void Update(float dt);
 	void Read(json jsonData) override;
 	static void PlayerCollisionHandler(Entity* thisone, Entity* other);
+	bool centerCameraOnPlayer = true;
 
 private:
 	float timeBetweenBlink = 8;

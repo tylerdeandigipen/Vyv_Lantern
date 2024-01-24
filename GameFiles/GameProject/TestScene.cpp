@@ -134,6 +134,7 @@ Engine::EngineCode TestScene::Init()
     logger.LogLine("Debug info: Lights, camera, action! (testScene init)");
 	return Engine::NothingBad;
 }
+
 int canPlaceMoreLight = 0;
 float moveSpeed = 20;
 void tempPlayerMovementLol(float dt)
