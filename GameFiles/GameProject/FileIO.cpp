@@ -301,6 +301,33 @@ Entity* FileIO::ReadEntity(json entityData)
 	return newEnt;
 }
 
+Entity* FileIO::ReadEntity(std::string filename)
+{
+	// THIS WILL BE SHORTENED WHEN ANIMATIONS BECOME THEIR OWN COMPONENT AS WLL AS SPRITES
+	//
+	//
+	//
+	//
+	json entityData = OpenJSON(filename);
+	Entity* newEnt = EntityFactory::GetInstance()->CreateEntity(entityData["Type"], entityData["file"], entityData);
+	newEnt->Read(entityData);
+	if (newEnt->IsObject())
+	{
+		if (newEnt->IsAnimated())
+		{
+			newEnt->AddToRenderer(Renderer::GetInstance(), entityData["file"]);
+			//newEnt->Has(Transform)->SetTranslation(&pixel->animatedObjects[0][0]->position);
+			//newEnt->SetImage(pixel->animatedObjects[0][0]);
+		}
+		else
+		{
+			newEnt->AddToRenderer(Renderer::GetInstance());
+		}
+	}
+
+	return newEnt;
+}
+
 void FileIO::ExportTileMap(std::string name)
 {
 	Renderer* pixel = Renderer::GetInstance();
