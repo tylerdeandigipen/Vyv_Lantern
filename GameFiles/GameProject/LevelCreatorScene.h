@@ -45,7 +45,7 @@ private:
 	void ToolEyedroper(Inputs* inputHandler, Vector2 CursourP);
 	void ToolCenter(Inputs* inputHandler);
 	void ToolSquareFill(Inputs* inputHandler, Vector2 CursourP);
-	void CreateCircleEntity();
+	int CreateCircleEntity();
 
 	char myTextBuffer[256]{};
 

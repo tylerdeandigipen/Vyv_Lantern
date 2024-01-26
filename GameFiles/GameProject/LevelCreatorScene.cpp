@@ -638,19 +638,44 @@ void LevelCreatorScene::ImGuiWindow()
 ///////////////////////////////////////////////////////////////////////////////////
 /* testing stuff ! */
 
-void LevelCreatorScene::CreateCircleEntity()
+int LevelCreatorScene::CreateCircleEntity()
 {
 	std::string filename = "./Data/GameObjects/Circle.json";
-	std::ifstream input_file(filename);
 
+	std::ifstream input_file(filename);
 	if (!input_file.is_open())
 	{
 		std::cerr << "Error opening file" << std::endl;
-		return;
+		return 1;
 	}
+
+	json circleData;
+	input_file >> circleData;
 	input_file.close();
 
-	// create the entity
+	for (auto& component : circleData["Components"])
+	{
+		if (component["Type"] == "Transform")
+		{
+			float centerX = (SCREEN_SIZE_X / 2);
+			float centerY = (SCREEN_SIZE_Y / 2);
+			component["translation"]["x"] = centerX;
+			component["translation"]["y"] = centerY;
+			break;
+		}
+	}
+
+	std::ofstream output_file(filename);
+	if (!output_file.is_open())
+	{
+		std::cerr << "Error opening file for writing" << std::endl;
+		return 1;
+	}
+
+	output_file << circleData.dump(4);
+	output_file.close();
+
+	// Create entity based on modified properties
 	Entity* newEntity = new Entity("CircleEntity");
 	EntityContainer::GetInstance()->AddEntity(newEntity);
 }
