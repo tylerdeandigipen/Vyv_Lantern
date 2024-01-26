@@ -542,23 +542,23 @@ void LevelCreatorScene::ImGuiWindow()
 
 		if (ImGui::TreeNode("Tools:"))
 		{
-			if (ImGui::Button("Center"))
+			if (ImGui::Button("Center 'C' "))
 			{
 				currentTool = 3;
 			}
 
-			if (ImGui::Button("EyeDropper"))
+			if (ImGui::Button("EyeDropper 'alt' "))
 			{
 				currentTool = 2;
 			}
 
-			if (ImGui::Button("Erase"))
+			if (ImGui::Button("Erase 'E' "))
 			{
 				currentTool = 0;
 				currentTile = 0;
 			}
 
-			if (ImGui::Button("SquareFill"))
+			if (ImGui::Button("SquareFill 'shift' "))
 			{
 				currentTool = 1;
 			}
@@ -584,6 +584,13 @@ void LevelCreatorScene::ImGuiWindow()
 							LevelCreatorPixelRenderer->objects[0]->position.x = properties.Translation[0];
 							LevelCreatorPixelRenderer->objects[0]->position.y = properties.Translation[1];
 							ApplyProperties(properties);
+
+							if (ImGui::Button("Create Circle Entity"))
+							{
+								CreateCircleEntity();
+							}
+
+
 							ImGui::TreePop();
 						}
 					}
@@ -626,4 +633,24 @@ void LevelCreatorScene::ImGuiWindow()
 
 		ImGui::End();
 	}
+}
+
+///////////////////////////////////////////////////////////////////////////////////
+/* testing stuff ! */
+
+void LevelCreatorScene::CreateCircleEntity()
+{
+	std::string filename = "./Data/GameObjects/Circle.json";
+	std::ifstream input_file(filename);
+
+	if (!input_file.is_open())
+	{
+		std::cerr << "Error opening file" << std::endl;
+		return;
+	}
+	input_file.close();
+
+	// create the entity
+	Entity* newEntity = new Entity("CircleEntity");
+	EntityContainer::GetInstance()->AddEntity(newEntity);
 }
