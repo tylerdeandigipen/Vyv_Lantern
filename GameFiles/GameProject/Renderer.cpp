@@ -50,12 +50,15 @@ void Renderer::Update(float dt)
     Uint32 currentTime = SDL_GetTicks();
     ScopeTimer TestScopeTimer("Renderer::Update");
 
+    //make higher if preformance is low, make lower if too much cpu usage
+    omp_set_num_threads(maxThreadsAllowed);
+
     UpdateObjects(dt);
     RenderLightingPass();
     //for now lasers are temp hardcoded to get the look down
     RenderLasers();
     BlurLights(-1,2);
-    inputBuffer->DitherBuffer(inputBuffer, renderOnlyLights, isFullbright,  lightR, lightG, lightB);
+    outputBuffer->DitherBuffer(outputBuffer, renderOnlyLights, isFullbright,  lightR, lightG, lightB);
     //RenderFog();
     RenderToOutbuffer();
 
@@ -125,8 +128,8 @@ void Renderer::Update(float dt)
 void Renderer::RenderToOutbuffer()
 {
     Color black{ 0,0,0,255 };
-    const int xSize = (int)inputBuffer->size.x;
-    const int ySize = (int)inputBuffer->size.y;
+    const int xSize = (int)outputBuffer->size.x;
+    const int ySize = (int)outputBuffer->size.y;
     if (renderWallHitboxes != true)
     {
     #pragma omp parallel for collapse(2) shared(black)
@@ -139,11 +142,11 @@ void Renderer::RenderToOutbuffer()
                 {
                     if (y % 2 == 0 && doScanLines == true)
                     {
-                        DestPixel = (inputBuffer->SampleColor(x, y) * scanLineOpacity);
+                        DestPixel = (outputBuffer->SampleColor(x, y) * scanLineOpacity);
                     }
                     else
                     {
-                        DestPixel = inputBuffer->SampleColor(x, y);
+                        DestPixel = outputBuffer->SampleColor(x, y);
                     }
                 }
                 else if (renderNormalMap == true)
@@ -170,30 +173,22 @@ void Renderer::RenderLightingPass()
     int CameraOffsetX = (int)CameraP.x;
     int CameraOffsetY = (int)CameraP.y;
 
-    inputBuffer->ClearImageBuffer();
     outputBuffer->ClearImageBuffer();
-
     lightBuffer->ClearImageBuffer();
 
-    backgroundLayer->Blit(inputBuffer, -CameraOffsetX, -CameraOffsetY);
-    objectLayer->Blit(inputBuffer, -CameraOffsetX, -CameraOffsetY);
-    foregroundLayer->Blit(inputBuffer, -CameraOffsetX, -CameraOffsetY);
+    backgroundLayer->Blit(outputBuffer, -CameraOffsetX, -CameraOffsetY);
+    objectLayer->Blit(outputBuffer, -CameraOffsetX, -CameraOffsetY);
+    foregroundLayer->Blit(outputBuffer, -CameraOffsetX, -CameraOffsetY);
     particleManager->UpdateParticles();
 
     //for shadow casting
     shadowCasterBuffer->Blit(lightBuffer, -CameraOffsetX, -CameraOffsetY);
 
-    //normalBuffer->Blit(normalBuffer, -CameraOffsetX, -CameraOffsetY);
-
-    //becasue thomas's camera isnt acurate
-    //normalBufferPostCam->ClearImageBuffer();
-    //normalBuffer->Blit(normalBufferPostCam, -CameraOffsetX, -CameraOffsetY);
-
     RenderParticles();
 
 #if 1
-    const int xSize = (int)inputBuffer->size.x;
-    const int ySize = (int)inputBuffer->size.y;
+    const int xSize = (int)outputBuffer->size.x;
+    const int ySize = (int)outputBuffer->size.y;
 
     float lightMultiplier = 0;
 
@@ -312,26 +307,29 @@ float Renderer::FindPixelLuminosity(float x, float y, Light* LightSource)
     }
 
     //Normal map calculations
-    if ((int)x + CameraP.x <= normalBuffer->BufferSizeX && (int)x + CameraP.x >= 0 && (int)y + CameraP.y <= normalBuffer->BufferSizeY && (int)y + CameraP.y >= 0)
+    if (Result > 0)
     {
-        float normalR = (float)normalBuffer->SampleColor((int)x + CameraP.x, (int)y + CameraP.y).r;
-        float normalG = (float)normalBuffer->SampleColor((int)x + CameraP.x, (int)y + CameraP.y).g;
-
-        if (normalR == 0 && normalG == 0)
+        if ((int)x + CameraP.x <= normalBuffer->BufferSizeX && (int)x + CameraP.x >= 0 && (int)y + CameraP.y <= normalBuffer->BufferSizeY && (int)y + CameraP.y >= 0)
         {
-            return Result;
+            float normalR = (float)normalBuffer->SampleColor((int)x + CameraP.x, (int)y + CameraP.y).r;
+            float normalG = (float)normalBuffer->SampleColor((int)x + CameraP.x, (int)y + CameraP.y).g;
+
+            if (normalR == 0 && normalG == 0)
+            {
+                return Result;
+            }
+            Vector2 pos = (Vector2(x, y));
+            Vector2 distFromLight = LightP - pos;
+            Vector2 distNormalized;
+            Vector2 normalDir = Vector2{ normalR / 255.0f, normalG / 255.0f };
+            normalDir *= 2;
+            normalDir -= Vector2{ 1,1 };
+            distNormalized.Normalize(distNormalized, distFromLight);
+            float normalFalloff = -Vector2::DotProduct(distNormalized, normalDir);
+            normalFalloff += normalMin;
+            normalFalloff = clamp(normalFalloff, 0.0f, 1.0f);
+            Result = normalFalloff * Result;
         }
-        Vector2 pos = (Vector2(x, y));
-        Vector2 distFromLight = LightP - pos;
-        Vector2 distNormalized;
-        Vector2 normalDir = Vector2{ normalR / 255.0f, normalG / 255.0f };
-        normalDir *= 2;
-        normalDir -= Vector2{ 1,1 };
-        distNormalized.Normalize(distNormalized, distFromLight);
-        float normalFalloff = -Vector2::DotProduct(distNormalized, normalDir);
-        normalFalloff += normalMin;
-        normalFalloff = clamp(normalFalloff, 0.0f, 1.0f);
-        Result = normalFalloff * Result;
     }
 
     return Result;
@@ -339,8 +337,8 @@ float Renderer::FindPixelLuminosity(float x, float y, Light* LightSource)
 
 void Renderer::CalculateShadows()
 {
-    const int xSize = (int)inputBuffer->size.x;
-    const int ySize = (int)inputBuffer->size.y;
+    const int xSize = (int)outputBuffer->size.x;
+    const int ySize = (int)outputBuffer->size.y;
     Color black{ 0,0,0,255 };
     const Vector2 cameraPos = CameraP;
     Vector2 lightPos;
@@ -433,8 +431,8 @@ void Renderer::RenderMenu()
         LoadMenuToBuffer("./Assets/PPM/Pause_Temp.ppm");
     }
 
-    const int xSize = (int)inputBuffer->size.x;
-    const int ySize = (int)inputBuffer->size.y;
+    const int xSize = (int)outputBuffer->size.x;
+    const int ySize = (int)outputBuffer->size.y;
 
 #pragma omp parallel for collapse(2)
     for (int x = 0; x < xSize; ++x)
@@ -468,9 +466,9 @@ void Renderer::RenderParticles()
         {
             tempPos = particleManager->particleArray[i]->position;
             tempPos -= CameraP;
-            if (tempPos.x >= 0 && tempPos.x < inputBuffer->size.x && tempPos.y >= 0 && tempPos.y < inputBuffer->size.y)
+            if (tempPos.x >= 0 && tempPos.x < outputBuffer->size.x && tempPos.y >= 0 && tempPos.y < outputBuffer->size.y)
             {
-                Color& DestPixel = inputBuffer->SampleColor((int)tempPos.x, (int)tempPos.y);
+                Color& DestPixel = outputBuffer->SampleColor((int)tempPos.x, (int)tempPos.y);
                 DestPixel = particleManager->particleArray[i]->color;
             }
         }
@@ -520,8 +518,8 @@ void Renderer::RenderFog()
 
 void Renderer::RenderLasers()
 {
-    const int xSize = (int)inputBuffer->size.x;
-    const int ySize = (int)inputBuffer->size.y;
+    const int xSize = (int)outputBuffer->size.x;
+    const int ySize = (int)outputBuffer->size.y;
 
     //temp hard coded lasers
     Vector2 tempLaserPos1[2];
@@ -824,7 +822,6 @@ void Renderer::AddShadowCasterToShadowCasterTileset(ImageBuffer* tile)
 Renderer::Renderer() : objects{ NULL }
 {
     outputBuffer = new ImageBuffer{ SCREEN_SIZE_X ,SCREEN_SIZE_Y };
-    inputBuffer = new ImageBuffer{ SCREEN_SIZE_X ,SCREEN_SIZE_Y };
     lightBuffer = new ImageBuffer{ SCREEN_SIZE_X ,SCREEN_SIZE_Y };
     shadowCasterBuffer = new ImageBuffer{ SCREEN_SIZE_X ,SCREEN_SIZE_Y };
     particleManager = new ParticleManager;
@@ -1074,8 +1071,8 @@ void Renderer::BlurLights(int blurRangeLow, int blurRangeHigh)
 {
     if (doBlur == true)
     {
-        const int xSize = (int)inputBuffer->size.x;
-        const int ySize = (int)inputBuffer->size.y;
+        const int xSize = (int)outputBuffer->size.x;
+        const int ySize = (int)outputBuffer->size.y;
 
 #pragma omp parallel for collapse(2)    
         for (int x = 0; x < xSize; ++x)
@@ -1128,7 +1125,6 @@ Renderer::~Renderer(void)
 {
     CleanRenderer();
     delete outputBuffer;
-    delete inputBuffer;
     delete objectLayer;
     delete backgroundLayer;
     delete foregroundLayer;
@@ -1170,7 +1166,6 @@ Renderer::~Renderer(void)
 void Renderer::CleanRenderer()
 {
     outputBuffer->ClearImageBuffer();
-    inputBuffer->ClearImageBuffer();
     objectLayer->ClearImageBuffer();
     backgroundLayer->ClearImageBuffer();
     foregroundLayer->ClearImageBuffer();

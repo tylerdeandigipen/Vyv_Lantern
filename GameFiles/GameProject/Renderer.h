@@ -103,9 +103,8 @@ public:
 	void DrawLine(Vector2 P0, Vector2 P1, const Color &LineColor);
 	void RenderWallCollidersToDebugBuffer();
 
-	//Input and Output Buffers
+	//Output Buffer
 	ImageBuffer* outputBuffer = NULL;
-	ImageBuffer* inputBuffer = NULL;
 
 	//Core Layers
 	ImageBuffer* menuBuffer = NULL; // layer 3 (menu / ui)
@@ -119,7 +118,6 @@ public:
 	ImageBuffer* normalBuffer = NULL;
 	
 	//ImageBuffer* fogBuffer = NULL;
-	//ImageBuffer* fogBufferPostCam = NULL;
 
 	//Object References
 	Light lightSource[MAX_LIGHT_SOURCES];
@@ -177,6 +175,7 @@ private:
     float PreviousFrameLengths[15];
 
 	//Misc.
+	int maxThreadsAllowed = 8;
 	Vector2 CameraP;
 	static Renderer* instance;
 	ImageBuffer* DebugBuffer = NULL;
