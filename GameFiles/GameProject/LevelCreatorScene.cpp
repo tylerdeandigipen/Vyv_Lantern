@@ -239,6 +239,13 @@ void LevelCreatorScene::ToolBrush(Inputs* inputHandler, Vector2 CursourP)
 
 Vector2 LevelCreatorScene::PlaceTile(Vector2 tilePos)
 {
+	ImGuiIO& io = ImGui::GetIO();
+
+	if (io.WantCaptureMouse)
+	{
+		return Vector2{ 0, 0 }; 
+	}
+
 	Vector2 displacement = { 0,0 };
 	if (tilePos.x < LevelCreatorPixelRenderer->tileMapSize.x && tilePos.x >= 0 && tilePos.y < LevelCreatorPixelRenderer->tileMapSize.y && tilePos.y >= 0)
 	{
@@ -525,7 +532,6 @@ void LevelCreatorScene::ImGuiWindow()
 {
 	if (showCreatorToolsWindow)
 	{
-
 		ImGui::Begin("Design Tools");
 		ImGui::Text("have fun designers,");
 		ImGui::Text("welcome to the creator window!");
@@ -539,6 +545,22 @@ void LevelCreatorScene::ImGuiWindow()
 			{
 				FileIO::GetInstance()->ExportTileMap(myTextBuffer);
 			}
+
+			ImGui::TreePop();
+		}
+
+		if (ImGui::TreeNode("Import:"))
+		{
+			ImGui::Text("NOTE: this will reset the current level.");
+
+			ImGui::InputText(".json", myTextBuffer, sizeof(myTextBuffer));
+			{
+				//SceneSystem::GetInstance()->RestartScene();
+
+				//LevelBuilder::GetInstance()->LoadLevel(myTextBuffer);
+			}
+
+			ImGui::TreePop();
 		}
 
 
@@ -578,7 +600,7 @@ void LevelCreatorScene::ImGuiWindow()
 					CreateCircleEntity();
 				}
 
-				/* if (ImGui::Button("Create Door"))
+				if (ImGui::Button("Create Door"))
 				{
 					CreateDoorEntity();
 				}
@@ -586,7 +608,7 @@ void LevelCreatorScene::ImGuiWindow()
 				if (ImGui::Button("Create Mirror"))
 				{
 					CreateMirrorEntity();
-				} */
+				}
 
 				for (int i = 0; i < entityContainer->CountEntities(); ++i)
 				{
@@ -612,7 +634,6 @@ void LevelCreatorScene::ImGuiWindow()
 								entityContainer->RemoveEntity(ent);
 								break;
 							}
-
 
 							ImGui::TreePop();
 						}
@@ -665,7 +686,7 @@ int LevelCreatorScene::CreateCircleEntity()
 	return 0;
 }
 
-/* int LevelCreatorScene::CreateDoorEntity()
+int LevelCreatorScene::CreateDoorEntity()
 {
 	std::string filename = "./Data/GameObjects/Door.json";
 	EntityContainer::GetInstance()->AddEntity(FileIO::GetInstance()->ReadEntity(filename));
@@ -677,4 +698,4 @@ int LevelCreatorScene::CreateMirrorEntity()
 	std::string filename = "./Data/GameObjects/Mirror.json";
 	EntityContainer::GetInstance()->AddEntity(FileIO::GetInstance()->ReadEntity(filename));
 	return 0;
-} */
+} 
