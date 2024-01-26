@@ -56,7 +56,7 @@ void Renderer::Update(float dt)
     RenderLasers();
     BlurLights(-1,2);
     inputBuffer->DitherBuffer(inputBuffer, renderOnlyLights, isFullbright,  lightR, lightG, lightB);
-    RenderFog();
+    //RenderFog();
     RenderToOutbuffer();
 
     if (DebugBuffer != NULL)
@@ -127,38 +127,29 @@ void Renderer::RenderToOutbuffer()
     Color black{ 0,0,0,255 };
     const int xSize = (int)inputBuffer->size.x;
     const int ySize = (int)inputBuffer->size.y;
-    #pragma omp parallel for collapse(2) shared(black)
-    for (int x = 0; x < xSize; ++x)
+    if (renderWallHitboxes != true)
     {
-        for (int y = 0; y < ySize; ++y)
+    #pragma omp parallel for collapse(2) shared(black)
+        for (int x = 0; x < xSize; ++x)
         {
-            Color& DestPixel = outputBuffer->SampleColor(x, y);
-            if (renderWallHitboxes != true && drawRawFog != true)
+            for (int y = 0; y < ySize; ++y)
             {
-                if (y % 2 == 0 && doScanLines == true)
+                Color& DestPixel = outputBuffer->SampleColor(x, y);
+                if (renderNormalMap != true)
                 {
-                    DestPixel = (inputBuffer->SampleColor(x, y) * scanLineOpacity);
+                    if (y % 2 == 0 && doScanLines == true)
+                    {
+                        DestPixel = (inputBuffer->SampleColor(x, y) * scanLineOpacity);
+                    }
+                    else
+                    {
+                        DestPixel = inputBuffer->SampleColor(x, y);
+                    }
                 }
-                else
+                else if (renderNormalMap == true)
                 {
-                    DestPixel = inputBuffer->SampleColor(x, y);
+                    DestPixel = normalBuffer->SampleColor(x + CameraP.x, y + CameraP.y);
                 }
-            }
-            if (doFog == true)
-            {
-                Color fog = fogBufferPostCam->SampleColor(x, y);
-                if (fog != black && DestPixel != black)
-                {
-                    DestPixel = fog.BlendColors(DestPixel, fog, fogOpacity);
-                }
-            }
-            if (drawRawFog == true)
-            {
-                DestPixel = fogBufferPostCam->SampleColor(x, y);
-            }
-            if (renderNormalMap == true)
-            {
-                DestPixel = normalBufferPostCam->SampleColor(x, y);
             }
         }
     }
@@ -192,9 +183,11 @@ void Renderer::RenderLightingPass()
     //for shadow casting
     shadowCasterBuffer->Blit(lightBuffer, -CameraOffsetX, -CameraOffsetY);
 
+    //normalBuffer->Blit(normalBuffer, -CameraOffsetX, -CameraOffsetY);
+
     //becasue thomas's camera isnt acurate
-    normalBufferPostCam->ClearImageBuffer();
-    normalBuffer->Blit(normalBufferPostCam, -CameraOffsetX, -CameraOffsetY);
+    //normalBufferPostCam->ClearImageBuffer();
+    //normalBuffer->Blit(normalBufferPostCam, -CameraOffsetX, -CameraOffsetY);
 
     RenderParticles();
 
@@ -319,27 +312,27 @@ float Renderer::FindPixelLuminosity(float x, float y, Light* LightSource)
     }
 
     //Normal map calculations
-    float normalR = (float)normalBufferPostCam->SampleColor((int)x, (int)y).r;
-    float normalG = (float)normalBufferPostCam->SampleColor((int)x, (int)y).g;
-    if (normalR == 0 && normalG == 0)
+    if ((int)x + CameraP.x <= normalBuffer->BufferSizeX && (int)x + CameraP.x >= 0 && (int)y + CameraP.y <= normalBuffer->BufferSizeY && (int)y + CameraP.y >= 0)
     {
-        return Result;
+        float normalR = (float)normalBuffer->SampleColor((int)x + CameraP.x, (int)y + CameraP.y).r;
+        float normalG = (float)normalBuffer->SampleColor((int)x + CameraP.x, (int)y + CameraP.y).g;
+
+        if (normalR == 0 && normalG == 0)
+        {
+            return Result;
+        }
+        Vector2 pos = (Vector2(x, y));
+        Vector2 distFromLight = LightP - pos;
+        Vector2 distNormalized;
+        Vector2 normalDir = Vector2{ normalR / 255.0f, normalG / 255.0f };
+        normalDir *= 2;
+        normalDir -= Vector2{ 1,1 };
+        distNormalized.Normalize(distNormalized, distFromLight);
+        float normalFalloff = -Vector2::DotProduct(distNormalized, normalDir);
+        normalFalloff += normalMin;
+        normalFalloff = clamp(normalFalloff, 0.0f, 1.0f);
+        Result = normalFalloff * Result;
     }
-    Vector2 pos = (Vector2(x, y));
-    Vector2 distFromLight = LightP - pos;
-    Vector2 distNormalized;
-    Vector2 normalDir = Vector2{ normalR / 255.0f, normalG / 255.0f };
-    normalDir *= 2;
-    normalDir -= Vector2{ 1,1 };
-    distNormalized.Normalize(distNormalized, distFromLight);
-    float normalFalloff = -Vector2::DotProduct(distNormalized, normalDir);
-    normalFalloff += normalMin;
-    normalFalloff = clamp(normalFalloff, 0.0f, 1.0f);
-    Result = normalFalloff * Result;
-
-
-    //float const LIGHTING_STEP_SIZE = 0.25f;
-    //Result = LIGHTING_STEP_SIZE * floorf(Result / LIGHTING_STEP_SIZE);
 
     return Result;
 }
@@ -486,6 +479,7 @@ void Renderer::RenderParticles()
 
 void Renderer::RenderFog()
 {
+    /*
     if (doFog == true)
     {
         if (fogIsDirty == true)
@@ -521,6 +515,7 @@ void Renderer::RenderFog()
         fogPos -= GetCameraPosition();
         fogBufferPostCam->DitherBuffer();
     }
+    */
 }
 
 void Renderer::RenderLasers()
@@ -830,15 +825,16 @@ Renderer::Renderer() : objects{ NULL }
 {
     outputBuffer = new ImageBuffer{ SCREEN_SIZE_X ,SCREEN_SIZE_Y };
     inputBuffer = new ImageBuffer{ SCREEN_SIZE_X ,SCREEN_SIZE_Y };
-    normalBufferPostCam = new ImageBuffer{ SCREEN_SIZE_X ,SCREEN_SIZE_Y };
     lightBuffer = new ImageBuffer{ SCREEN_SIZE_X ,SCREEN_SIZE_Y };
     shadowCasterBuffer = new ImageBuffer{ SCREEN_SIZE_X ,SCREEN_SIZE_Y };
-    fogBuffer = new ImageBuffer{ SCREEN_SIZE_X ,SCREEN_SIZE_Y };
-    fogBufferPostCam = new ImageBuffer{ SCREEN_SIZE_X ,SCREEN_SIZE_Y };
     particleManager = new ParticleManager;
     faceIndex = -1;
     faceState = 0;
     outputBuffer->screenScale = screenScale;
+
+    // normalBufferPostCam = new ImageBuffer{ SCREEN_SIZE_X ,SCREEN_SIZE_Y };
+    //fogBuffer = new ImageBuffer{ SCREEN_SIZE_X ,SCREEN_SIZE_Y };
+    //fogBufferPostCam = new ImageBuffer{ SCREEN_SIZE_X ,SCREEN_SIZE_Y };
 
     for (int i = 0; i < 15; ++i)
     {
@@ -1137,12 +1133,13 @@ Renderer::~Renderer(void)
     delete backgroundLayer;
     delete foregroundLayer;
     delete normalBuffer;
-    delete normalBufferPostCam;
     delete DebugBuffer;
     delete lightBuffer;
-    delete fogBuffer;
-    delete fogBufferPostCam;
     delete particleManager;
+
+    //delete normalBufferPostCam;
+    //delete fogBuffer;
+    //delete fogBufferPostCam;
 
     if (menuBuffer != NULL)
     {
@@ -1178,10 +1175,11 @@ void Renderer::CleanRenderer()
     backgroundLayer->ClearImageBuffer();
     foregroundLayer->ClearImageBuffer();
     normalBuffer->ClearImageBuffer();
-    normalBufferPostCam->ClearImageBuffer();
     lightBuffer->ClearImageBuffer();
-    fogBuffer->ClearImageBuffer();
-    fogBufferPostCam->ClearImageBuffer();
+
+    //normalBufferPostCam->ClearImageBuffer();
+    //fogBuffer->ClearImageBuffer();
+    //fogBufferPostCam->ClearImageBuffer();
 
     if (menuBuffer != NULL)
     {

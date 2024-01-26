@@ -117,9 +117,9 @@ public:
 	ImageBuffer* lightBuffer = NULL;
 	ImageBuffer* shadowCasterBuffer = NULL;
 	ImageBuffer* normalBuffer = NULL;
-	ImageBuffer* normalBufferPostCam = NULL;
-	ImageBuffer* fogBuffer = NULL;
-	ImageBuffer* fogBufferPostCam = NULL;
+	
+	//ImageBuffer* fogBuffer = NULL;
+	//ImageBuffer* fogBufferPostCam = NULL;
 
 	//Object References
 	Light lightSource[MAX_LIGHT_SOURCES];
