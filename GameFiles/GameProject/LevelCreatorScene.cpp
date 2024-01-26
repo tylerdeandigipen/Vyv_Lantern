@@ -567,44 +567,57 @@ void LevelCreatorScene::ImGuiWindow()
 				currentTool = 1;
 			}
 
-			if (ImGui::TreeNode("Object Selector:"))
+			ImGui::Separator();
+
+			if (ImGui::TreeNode("Entities"))
 			{
-				if (ImGui::TreeNode("All Entities"))
+				auto i = 0;
+
+				if (ImGui::Button("Create Switch"))
 				{
-					auto i = 0;
-					
-					for (int i = 0; i < entityContainer->CountEntities(); ++i)
-					{
-						Entity* ent = (*EntityContainer::GetInstance())[i];
-						if (ent)
-						{
-							if (ImGui::TreeNode(("Entity %s", ent->GetRealName().c_str())))
-							{
-								ImGui::Text("Name: %s", ent->GetRealName().c_str());
-								ImGui::Text("Entity Number: %d", i);
-
-								ImGui::Text("Transform: (%f, %f)", properties.Translation[0], properties.Translation[1]);
-								ImGui::Text("Rotation: (%f, %f)", properties.Rotation);
-								ImGui::Checkbox("Apply Collision", &properties.isCollidable);
-								ImGui::SliderFloat2("Test Transform", properties.Translation, -10.f, 100.f);
-								LevelCreatorPixelRenderer->objects[0]->position.x = properties.Translation[0];
-								LevelCreatorPixelRenderer->objects[0]->position.y = properties.Translation[1];
-								ApplyProperties(properties);
-
-								if (ImGui::Button("Create Circle Entity"))
-								{
-									CreateCircleEntity();
-								}
-
-
-								ImGui::TreePop();
-							}
-						}
-					}
-					ImGui::TreePop();
+					CreateCircleEntity();
 				}
 
+				/* if (ImGui::Button("Create Door"))
+				{
+					CreateDoorEntity();
+				}
 
+				if (ImGui::Button("Create Mirror"))
+				{
+					CreateMirrorEntity();
+				} */
+
+				for (int i = 0; i < entityContainer->CountEntities(); ++i)
+				{
+					Entity* ent = (*EntityContainer::GetInstance())[i];
+					if (ent)
+					{
+						if (ImGui::TreeNode(("Entity %s", ent->GetRealName().c_str())))
+						{
+
+							ImGui::Text("Name: %s", ent->GetRealName().c_str());
+							ImGui::Text("Entity Number: %d", i);
+
+							ImGui::Text("Transform: (%f, %f)", properties.Translation[0], properties.Translation[1]);
+							ImGui::Text("Rotation: (%f, %f)", properties.Rotation);
+							ImGui::Checkbox("Apply Collision", &properties.isCollidable);
+							ImGui::SliderFloat2("Test Transform", properties.Translation, -10.f, 100.f);
+							LevelCreatorPixelRenderer->objects[0]->position.x = properties.Translation[0];
+							LevelCreatorPixelRenderer->objects[0]->position.y = properties.Translation[1];
+							ApplyProperties(properties);
+
+							if (ImGui::Button("Delete"))
+							{
+								entityContainer->RemoveEntity(ent);
+								break;
+							}
+
+
+							ImGui::TreePop();
+						}
+					}
+				}
 				ImGui::TreePop();
 			}
 
@@ -651,3 +664,17 @@ int LevelCreatorScene::CreateCircleEntity()
 	EntityContainer::GetInstance()->AddEntity(FileIO::GetInstance()->ReadEntity(filename));
 	return 0;
 }
+
+/* int LevelCreatorScene::CreateDoorEntity()
+{
+	std::string filename = "./Data/GameObjects/Door.json";
+	EntityContainer::GetInstance()->AddEntity(FileIO::GetInstance()->ReadEntity(filename));
+	return 0;
+}
+
+int LevelCreatorScene::CreateMirrorEntity()
+{
+	std::string filename = "./Data/GameObjects/Mirror.json";
+	EntityContainer::GetInstance()->AddEntity(FileIO::GetInstance()->ReadEntity(filename));
+	return 0;
+} */
