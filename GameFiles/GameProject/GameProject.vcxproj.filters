@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
     <ClCompile Include="AudioEngine.cpp" />
@@ -60,73 +60,210 @@
     <ClCompile Include="WinScene.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="AudioEngine.h" />
-    <ClInclude Include="BaseSystem.h" />
-    <ClInclude Include="Behavior.h" />
-    <ClInclude Include="BehaviorMirror.h" />
-    <ClInclude Include="BehaviorPlayer.h" />
-    <ClInclude Include="BehaviorSwitch.h" />
-    <ClInclude Include="Collider.h" />
-    <ClInclude Include="ColliderAABB.h" />
-    <ClInclude Include="Collision.h" />
-    <ClInclude Include="Color.h" />
-    <ClInclude Include="Component.h" />
-    <ClInclude Include="ComponentFactory.h" />
-    <ClInclude Include="BehaviorDoor.h" />
-    <ClInclude Include="CrashHandler.hpp" />
-    <ClInclude Include="DebugNew.h" />
-    <ClInclude Include="Engine.h" />
-    <ClInclude Include="Entity.h" />
-    <ClInclude Include="EntityContainer.h" />
-    <ClInclude Include="EntityFactory.h" />
-    <ClInclude Include="Event.h" />
-    <ClInclude Include="FileIO.h" />
-    <ClInclude Include="FontSystem.h" />
-    <ClInclude Include="FrameRate.h" />
-    <ClInclude Include="framework.h" />
-    <ClInclude Include="ImageBuffer.h" />
-    <ClInclude Include="ImguiFunction.h" />
-    <ClInclude Include="IMGUI\imconfig.h" />
-    <ClInclude Include="IMGUI\imgui.h" />
-    <ClInclude Include="IMGUI\imgui_impl_opengl3.h" />
-    <ClInclude Include="IMGUI\imgui_impl_opengl3_loader.h" />
-    <ClInclude Include="IMGUI\imgui_impl_sdl2.h" />
-    <ClInclude Include="IMGUI\imgui_internal.h" />
-    <ClInclude Include="IMGUI\imstb_rectpack.h" />
-    <ClInclude Include="IMGUI\imstb_textedit.h" />
-    <ClInclude Include="IMGUI\imstb_truetype.h" />
-    <ClInclude Include="includes\glfw\glfw3.h" />
-    <ClInclude Include="Inputs.h" />
-    <ClInclude Include="LaserSystem.h" />
-    <ClInclude Include="LevelBuilder.h" />
-    <ClInclude Include="LevelCreatorScene.h" />
-    <ClInclude Include="Light.h" />
-    <ClInclude Include="Logging.h" />
-    <ClInclude Include="Main.h" />
-    <ClInclude Include="Observer.h" />
-    <ClInclude Include="Math.h" />
-    <ClInclude Include="Math_Header.h" />
-    <ClInclude Include="Matrix.h" />
-    <ClInclude Include="Particle.h" />
-    <ClInclude Include="ParticleManager.h" />
-    <ClInclude Include="PauseMenu.h" />
-    <ClInclude Include="Physics.h" />
-    <ClInclude Include="PlatformSystem.h" />
-    <ClInclude Include="Renderer.h" />
-    <ClInclude Include="Resource.h" />
-    <ClInclude Include="Scene.h" />
-    <ClInclude Include="SceneSystem.h" />
-    <ClInclude Include="ScopeTimer.h" />
-    <ClInclude Include="Sprite.h" />
-    <ClInclude Include="StubScene.h" />
-    <ClInclude Include="Subject.h" />
-    <ClInclude Include="targetver.h" />
-    <ClInclude Include="TbdTestScene.h" />
-    <ClInclude Include="TestScene.h" />
-    <ClInclude Include="Time.h" />
-    <ClInclude Include="Transform.h" />
-    <ClInclude Include="Vector.h" />
-    <ClInclude Include="WinScene.h" />
+    <ClInclude Include="AudioEngine.h">
+      <Filter>Header FIles\Other</Filter>
+    </ClInclude>
+    <ClInclude Include="BaseSystem.h">
+      <Filter>Header FIles\Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="Behavior.h">
+      <Filter>Header FIles\Objects\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="BehaviorPlayer.h">
+      <Filter>Header FIles\Objects\Components\SubComponents</Filter>
+    </ClInclude>
+    <ClInclude Include="Collider.h">
+      <Filter>Header FIles\Objects\Components\SubComponents</Filter>
+    </ClInclude>
+    <ClInclude Include="ColliderAABB.h">
+      <Filter>Header FIles\Objects\Components\SubComponents</Filter>
+    </ClInclude>
+    <ClInclude Include="Collision.h">
+      <Filter>Header FIles\Objects\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="Color.h">
+      <Filter>Header FIles\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="Component.h">
+      <Filter>Header FIles\Objects\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="ComponentFactory.h">
+      <Filter>Header FIles\Engine\Systems</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine.h">
+      <Filter>Header FIles\Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="EntityFactory.h">
+      <Filter>Header FIles\Engine\Systems</Filter>
+    </ClInclude>
+    <ClInclude Include="Event.h">
+      <Filter>Header FIles\Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="FileIO.h">
+      <Filter>Header FIles\Other</Filter>
+    </ClInclude>
+    <ClInclude Include="framework.h">
+      <Filter>Header FIles\Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="ImageBuffer.h">
+      <Filter>Header FIles\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="IMGUI\imgui.h">
+      <Filter>Header FIles\Debug\IMGUI</Filter>
+    </ClInclude>
+    <ClInclude Include="IMGUI\imgui_impl_opengl3.h">
+      <Filter>Header FIles\Debug\IMGUI</Filter>
+    </ClInclude>
+    <ClInclude Include="IMGUI\imgui_impl_opengl3_loader.h">
+      <Filter>Header FIles\Debug\IMGUI</Filter>
+    </ClInclude>
+    <ClInclude Include="IMGUI\imgui_impl_sdl2.h">
+      <Filter>Header FIles\Debug\IMGUI</Filter>
+    </ClInclude>
+    <ClInclude Include="IMGUI\imgui_internal.h">
+      <Filter>Header FIles\Debug\IMGUI</Filter>
+    </ClInclude>
+    <ClInclude Include="IMGUI\imstb_rectpack.h">
+      <Filter>Header FIles\Debug\IMGUI</Filter>
+    </ClInclude>
+    <ClInclude Include="IMGUI\imstb_textedit.h">
+      <Filter>Header FIles\Debug\IMGUI</Filter>
+    </ClInclude>
+    <ClInclude Include="IMGUI\imstb_truetype.h">
+      <Filter>Header FIles\Debug\IMGUI</Filter>
+    </ClInclude>
+    <ClInclude Include="Inputs.h">
+      <Filter>Header FIles\Objects\Components\SubComponents</Filter>
+    </ClInclude>
+    <ClInclude Include="LaserSystem.h">
+      <Filter>Header FIles\Engine\Systems</Filter>
+    </ClInclude>
+    <ClInclude Include="LevelBuilder.h">
+      <Filter>Header FIles\Engine\Systems</Filter>
+    </ClInclude>
+    <ClInclude Include="Light.h">
+      <Filter>Header FIles\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="Logging.h">
+      <Filter>Header FIles\Debug</Filter>
+    </ClInclude>
+    <ClInclude Include="IMGUI\imconfig.h">
+      <Filter>Header FIles\Debug\IMGUI</Filter>
+    </ClInclude>
+    <ClInclude Include="Math.h">
+      <Filter>Header FIles\Other</Filter>
+    </ClInclude>
+    <ClInclude Include="Main.h">
+      <Filter>Header FIles\Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="Math_Header.h">
+      <Filter>Header FIles\Other</Filter>
+    </ClInclude>
+    <ClInclude Include="Matrix.h">
+      <Filter>Header FIles\Other</Filter>
+    </ClInclude>
+    <ClInclude Include="Observer.h">
+      <Filter>Header FIles\Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="Particle.h">
+      <Filter>Header FIles\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="ParticleManager.h">
+      <Filter>Header FIles\Engine\Systems</Filter>
+    </ClInclude>
+    <ClInclude Include="Physics.h">
+      <Filter>Header FIles\Objects\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="PlatformSystem.h">
+      <Filter>Header FIles\Engine\Systems</Filter>
+    </ClInclude>
+    <ClInclude Include="Renderer.h">
+      <Filter>Header FIles\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="Scene.h">
+      <Filter>Header FIles\Scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="SceneSystem.h">
+      <Filter>Header FIles\Engine\Systems</Filter>
+    </ClInclude>
+    <ClInclude Include="ScopeTimer.h">
+      <Filter>Header FIles\Other</Filter>
+    </ClInclude>
+    <ClInclude Include="StubScene.h">
+      <Filter>Header FIles\Scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="Subject.h">
+      <Filter>Header FIles\Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="Transform.h">
+      <Filter>Header FIles\Objects\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="Vector.h">
+      <Filter>Header FIles\Other</Filter>
+    </ClInclude>
+    <ClInclude Include="Time.h">
+      <Filter>Header FIles\Other</Filter>
+    </ClInclude>
+    <ClInclude Include="TestScene.h">
+      <Filter>Header FIles\Scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="TbdTestScene.h">
+      <Filter>Header FIles\Scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="Resource.h">
+      <Filter>Header FIles\Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="includes\glfw\glfw3.h">
+      <Filter>Misc</Filter>
+    </ClInclude>
+    <ClInclude Include="targetver.h">
+      <Filter>Misc</Filter>
+    </ClInclude>
+    <ClInclude Include="BehaviorSwitch.h">
+      <Filter>Header FIles\Objects\Components\SubComponents</Filter>
+    </ClInclude>
+    <ClInclude Include="BehaviorDoor.h">
+      <Filter>Header FIles\Objects\Components\SubComponents</Filter>
+    </ClInclude>
+    <ClInclude Include="WinScene.h">
+      <Filter>Header FIles\Scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="BehaviorMirror.h">
+      <Filter>Header FIles\Objects\Components\SubComponents</Filter>
+    </ClInclude>
+    <ClInclude Include="Sprite.h">
+      <Filter>Header FIles\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="PauseMenu.h">
+      <Filter>Header FIles\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="DebugNew.h">
+      <Filter>Header FIles\Debug</Filter>
+    </ClInclude>
+    <ClInclude Include="FontSystem.h">
+      <Filter>Header FIles\Other</Filter>
+    </ClInclude>
+    <ClInclude Include="FrameRate.h">
+      <Filter>Header FIles\Other</Filter>
+    </ClInclude>
+    <ClInclude Include="PauseMenu.h">
+      <Filter>Header FIles\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="Entity.h">
+      <Filter>Header FIles</Filter>
+    </ClInclude>
+    <ClInclude Include="EntityContainer.h">
+      <Filter>Header FIles\Engine\Systems</Filter>
+    </ClInclude>
+    <ClInclude Include="LevelCreatorScene.h">
+      <Filter>Header FIles\Scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="CrashHandler.hpp">
+      <Filter>Source FIles\Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="ImguiFunction.h">
+      <Filter>Header FIles\Debug\IMGUI</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Library Include="glfw3.lib" />

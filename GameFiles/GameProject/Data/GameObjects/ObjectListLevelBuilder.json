@@ -3,6 +3,12 @@
   "Objects": [
     {
       "FilePath": "./Data/GameObjects/Circle.json"
+    },
+    {
+      "FilePath": "./Data/GameObjects/Mirror.json"
+    },
+    {
+      "FilePath": "./Data/GameObjects/Mirror2.json"
     }
   ]
 }

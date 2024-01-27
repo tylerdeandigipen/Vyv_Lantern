@@ -1,6 +1,6 @@
 {
   "Type": "Object",
-  "Name": "Mirror",
+  "Name": "Mirror2",
   "file": "./Assets/PPM/Mirror.ppm",
   "FilePath":  "./Data/GameObjects/Mirror.json",
   "isAnimated": false,
@@ -12,7 +12,7 @@
     {
       "Type": "Transform",
       "translation": {
-        "x": 30,
+        "x": 50,
         "y": 50
       }
     },
