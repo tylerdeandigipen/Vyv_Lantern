@@ -30,6 +30,7 @@ public:
 	float ReadFloat(FILE* stream);
 
 	Entity* ReadEntity(json jsonData);
+	Entity* ReadEntity(std::string filename);
 
 	ImageBuffer* ReadPPM(const char* filename);
 
