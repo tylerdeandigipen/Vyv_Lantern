@@ -239,6 +239,13 @@ void LevelCreatorScene::ToolBrush(Inputs* inputHandler, Vector2 CursourP)
 
 Vector2 LevelCreatorScene::PlaceTile(Vector2 tilePos)
 {
+	ImGuiIO& io = ImGui::GetIO();
+
+	if (io.WantCaptureMouse)
+	{
+		return Vector2{ 0, 0 }; 
+	}
+
 	Vector2 displacement = { 0,0 };
 	if (tilePos.x < LevelCreatorPixelRenderer->tileMapSize.x && tilePos.x >= 0 && tilePos.y < LevelCreatorPixelRenderer->tileMapSize.y && tilePos.y >= 0)
 	{
@@ -477,42 +484,46 @@ void LevelCreatorScene::ImGuiInterg()
 
 int ApplyProperties(EntityProperties properties)
 {
-	std::string filename = "./Data/GameObjects/Circle.json"; // Replace with your actual JSON file path
-
-	// Read the JSON file
-	std::ifstream input_file(filename);
-	if (!input_file.is_open())
+	int numEntities = entityContainer->CountEntities();
+	for (int i = 0; i < numEntities; ++i)
 	{
-		std::cerr << "Error opening file" << std::endl;
-		return 1;
-	}
+		std::string filename = (*EntityContainer::GetInstance())[i]->GetFilePath(); // Replace with your actual JSON file path
 
-	json j;
-	input_file >> j;
-	input_file.close();
-
-	// Modify the translation values
-	for (auto& component : j["Components"])
-	{
-		if (component["Type"] == "Transform")
+		// Read the JSON file
+		std::ifstream input_file(filename);
+		if (!input_file.is_open())
 		{
-			// Set new values for x and y
-			component["translation"]["x"] = properties.Translation[0]; // Replace with the new X value
-			component["translation"]["y"] = properties.Translation[1]; // Replace with the new Y value
-			break;
+			std::cerr << "Error opening file" << std::endl;
+			return 1;
 		}
-	}
 
-	// Write the modified JSON back to the file
-	std::ofstream output_file(filename);
-	if (!output_file.is_open())
-	{
-		std::cerr << "Error opening file for writing" << std::endl;
-		return 1;
-	}
+		json j;
+		input_file >> j;
+		input_file.close();
 
-	output_file << j.dump(4); // Writing with an indentation of 4 spaces
-	output_file.close();
+		// Modify the translation values
+		for (auto& component : j["Components"])
+		{
+			if (component["Type"] == "Transform")
+			{
+				// Set new values for x and y
+				component["translation"]["x"] = properties.Translation[0]; // Replace with the new X value
+				component["translation"]["y"] = properties.Translation[1]; // Replace with the new Y value
+				break;
+			}
+		}
+
+		// Write the modified JSON back to the file
+		std::ofstream output_file(filename);
+		if (!output_file.is_open())
+		{
+			std::cerr << "Error opening file for writing" << std::endl;
+			return 1;
+		}
+
+		output_file << j.dump(4); // Writing with an indentation of 4 spaces
+		output_file.close();
+	}
 
 	return 0;
 }
@@ -521,7 +532,6 @@ void LevelCreatorScene::ImGuiWindow()
 {
 	if (showCreatorToolsWindow)
 	{
-
 		ImGui::Begin("Design Tools");
 		ImGui::Text("have fun designers,");
 		ImGui::Text("welcome to the creator window!");
@@ -535,6 +545,22 @@ void LevelCreatorScene::ImGuiWindow()
 			{
 				FileIO::GetInstance()->ExportTileMap(myTextBuffer);
 			}
+
+			ImGui::TreePop();
+		}
+
+		if (ImGui::TreeNode("Import:"))
+		{
+			ImGui::Text("NOTE: this will reset the current level.");
+
+			ImGui::InputText(".json", myTextBuffer, sizeof(myTextBuffer));
+			{
+				//SceneSystem::GetInstance()->RestartScene();
+
+				//LevelBuilder::GetInstance()->LoadLevel(myTextBuffer);
+			}
+
+			ImGui::TreePop();
 		}
 
 
@@ -542,39 +568,57 @@ void LevelCreatorScene::ImGuiWindow()
 
 		if (ImGui::TreeNode("Tools:"))
 		{
-			if (ImGui::Button("Center"))
+			if (ImGui::Button("Center 'C' "))
 			{
 				currentTool = 3;
 			}
 
-			if (ImGui::Button("EyeDropper"))
+			if (ImGui::Button("EyeDropper 'alt' "))
 			{
 				currentTool = 2;
 			}
 
-			if (ImGui::Button("Erase"))
+			if (ImGui::Button("Erase 'E' "))
 			{
 				currentTool = 0;
 				currentTile = 0;
 			}
 
-			if (ImGui::Button("SquareFill"))
+			if (ImGui::Button("SquareFill 'shift' "))
 			{
 				currentTool = 1;
 			}
 
-			if (ImGui::TreeNode("Object Selector:"))
+			ImGui::Separator();
+
+			if (ImGui::TreeNode("Entities"))
 			{
-				if (ImGui::TreeNode("All Entities"))
+				auto i = 0;
+
+				if (ImGui::Button("Create Switch"))
 				{
-					auto i = 0;
-					
-				
-					if (entity)
+					CreateCircleEntity();
+				}
+
+				if (ImGui::Button("Create Door"))
+				{
+					CreateDoorEntity();
+				}
+
+				if (ImGui::Button("Create Mirror"))
+				{
+					CreateMirrorEntity();
+				}
+
+				for (int i = 0; i < entityContainer->CountEntities(); ++i)
+				{
+					Entity* ent = (*EntityContainer::GetInstance())[i];
+					if (ent)
 					{
-						if (ImGui::TreeNode(("Entity %s", entity->GetRealName().c_str())))
+						if (ImGui::TreeNode(("Entity %s", ent->GetRealName().c_str())))
 						{
-							ImGui::Text("Name: %s", entity->GetRealName().c_str());
+
+							ImGui::Text("Name: %s", ent->GetRealName().c_str());
 							ImGui::Text("Entity Number: %d", i);
 
 							ImGui::Text("Transform: (%f, %f)", properties.Translation[0], properties.Translation[1]);
@@ -584,13 +628,17 @@ void LevelCreatorScene::ImGuiWindow()
 							LevelCreatorPixelRenderer->objects[0]->position.x = properties.Translation[0];
 							LevelCreatorPixelRenderer->objects[0]->position.y = properties.Translation[1];
 							ApplyProperties(properties);
+
+							if (ImGui::Button("Delete"))
+							{
+								entityContainer->RemoveEntity(ent);
+								break;
+							}
+
 							ImGui::TreePop();
 						}
 					}
-					ImGui::TreePop();
 				}
-
-
 				ImGui::TreePop();
 			}
 
@@ -627,3 +675,27 @@ void LevelCreatorScene::ImGuiWindow()
 		ImGui::End();
 	}
 }
+
+///////////////////////////////////////////////////////////////////////////////////
+/* testing stuff ! */
+
+int LevelCreatorScene::CreateCircleEntity()
+{
+	std::string filename = "./Data/GameObjects/Circle.json";
+	EntityContainer::GetInstance()->AddEntity(FileIO::GetInstance()->ReadEntity(filename));
+	return 0;
+}
+
+int LevelCreatorScene::CreateDoorEntity()
+{
+	std::string filename = "./Data/GameObjects/Door.json";
+	EntityContainer::GetInstance()->AddEntity(FileIO::GetInstance()->ReadEntity(filename));
+	return 0;
+}
+
+int LevelCreatorScene::CreateMirrorEntity()
+{
+	std::string filename = "./Data/GameObjects/Mirror.json";
+	EntityContainer::GetInstance()->AddEntity(FileIO::GetInstance()->ReadEntity(filename));
+	return 0;
+} 
