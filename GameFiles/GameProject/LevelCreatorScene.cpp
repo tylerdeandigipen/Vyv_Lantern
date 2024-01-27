@@ -557,52 +557,6 @@ void LevelCreatorScene::ImGuiInterg()
 #endif
 }
 
-int ApplyProperties(EntityProperties properties)
-{
-	int numEntities = entityContainer->CountEntities();
-	for (int i = 0; i < numEntities; ++i)
-	{
-		std::string filename = (*EntityContainer::GetInstance())[i]->GetFilePath(); // Replace with your actual JSON file path
-
-		// Read the JSON file
-		std::ifstream input_file(filename);
-		if (!input_file.is_open())
-		{
-			std::cerr << "Error opening file" << std::endl;
-			return 1;
-		}
-
-		json j;
-		input_file >> j;
-		input_file.close();
-
-		// Modify the translation values
-		for (auto& component : j["Components"])
-		{
-			if (component["Type"] == "Transform")
-			{
-				// Set new values for x and y
-				component["translation"]["x"] = properties.Translation[0]; // Replace with the new X value
-				component["translation"]["y"] = properties.Translation[1]; // Replace with the new Y value
-				break;
-			}
-		}
-
-		// Write the modified JSON back to the file
-		std::ofstream output_file(filename);
-		if (!output_file.is_open())
-		{
-			std::cerr << "Error opening file for writing" << std::endl;
-			return 1;
-		}
-
-		output_file << j.dump(4); // Writing with an indentation of 4 spaces
-		output_file.close();
-	}
-
-	return 0;
-}
-
 void LevelCreatorScene::ImGuiWindow()
 {
 	if (showCreatorToolsWindow)
@@ -685,35 +639,6 @@ void LevelCreatorScene::ImGuiWindow()
 					CreateMirrorEntity();
 				}
 
-				for (int i = 0; i < entityContainer->CountEntities(); ++i)
-				{
-					Entity* ent = (*EntityContainer::GetInstance())[i];
-					if (ent)
-					{
-						if (ImGui::TreeNode(("Entity %s", ent->GetRealName().c_str())))
-						{
-
-							ImGui::Text("Name: %s", ent->GetRealName().c_str());
-							ImGui::Text("Entity Number: %d", i);
-
-							ImGui::Text("Transform: (%f, %f)", properties.Translation[0], properties.Translation[1]);
-							ImGui::Text("Rotation: (%f, %f)", properties.Rotation);
-							ImGui::Checkbox("Apply Collision", &properties.isCollidable);
-							ImGui::SliderFloat2("Test Transform", properties.Translation, -10.f, 100.f);
-							LevelCreatorPixelRenderer->objects[0]->position.x = properties.Translation[0];
-							LevelCreatorPixelRenderer->objects[0]->position.y = properties.Translation[1];
-							ApplyProperties(properties);
-
-							if (ImGui::Button("Delete"))
-							{
-								entityContainer->RemoveEntity(ent);
-								break;
-							}
-
-							ImGui::TreePop();
-						}
-					}
-				}
 				ImGui::TreePop();
 			}
 
