@@ -141,7 +141,7 @@ public:
 
 	int** tileMap = NULL;
 
-	int nonWalkableTiles[NUM_NON_WALKABLE_TILES] = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 45, 46, 48, 29, 26, 31, 41, 39, 36, 27, 28, 34, 35, 12, 49, 50,51,52,53,54,55,56};
+	int nonWalkableTiles[NUM_NON_WALKABLE_TILES] = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 26, 27, 28, 29, 30, 31, 41, 42, 43, 45, 46, 47, 48, 49, 50, 51, 52};
 	int numNonWalkTiles = NUM_NON_WALKABLE_TILES;
 private:
 	//Various Counters
@@ -161,7 +161,7 @@ private:
 	int faceIndex = -99;
 
 	//Tilemap Variables
-	const int wallTileIndexes[NUM_WALL_TILES] = { 1, 2, 4, 5, 6, 7, 8, 9, 10, 11, 26, 36, 27, 28, 34, 35, 12};
+	const int wallTileIndexes[NUM_WALL_TILES] = {6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 26, 27, 28, 29, 30, 31};
 	ImageBuffer* tileSet[MAX_TILES];
 	ImageBuffer* normalTileSet[MAX_TILES];
 	ImageBuffer* shadowCasterTileset[MAX_TILES];

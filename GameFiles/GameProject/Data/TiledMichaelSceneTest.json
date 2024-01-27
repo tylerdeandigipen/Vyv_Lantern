@@ -2,7 +2,7 @@
   "Levels": [
     {
       "TiledData": {
-        "TileMapFile": "./Data/This.json"
+        "TileMapFile": "./Data/TileMaps/NewTestLevel.json"
       }
     }
   ]

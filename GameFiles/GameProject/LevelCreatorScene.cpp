@@ -125,7 +125,7 @@ void LevelCreatorScene::ToolEyedroper(Inputs* inputHandler, Vector2 CursourP)
 	{
 		Vector2 tilePos = (CursourP + LevelCreatorPixelRenderer->GetCameraPosition());
 		tilePos /= 8;
-		if ((int)tilePos.x < (int)LevelCreatorPixelRenderer->tileMapSize.x && (int)tilePos.x > 0 && (int)tilePos.y < (int)LevelCreatorPixelRenderer->tileMapSize.y && (int)tilePos.y > 0)
+		if ((int)tilePos.x <= (int)LevelCreatorPixelRenderer->tileMapSize.x && (int)tilePos.x >= 0 && (int)tilePos.y <= (int)LevelCreatorPixelRenderer->tileMapSize.y && (int)tilePos.y >= 0)
 		{
 			currentTile = LevelCreatorPixelRenderer->tileMap[(int)tilePos.x][(int)tilePos.y];
 		}
@@ -242,7 +242,7 @@ Vector2 LevelCreatorScene::PlaceTile(Vector2 tilePos)
 	Vector2 displacement = { 0,0 };
 	if (tilePos.x < LevelCreatorPixelRenderer->tileMapSize.x && tilePos.x >= 0 && tilePos.y < LevelCreatorPixelRenderer->tileMapSize.y && tilePos.y >= 0)
 	{
-		if (currentTile == 0 || currentTile == 4)
+		if (currentTile == 0)
 		{
 			LevelCreatorPixelRenderer->TileMapEraseTile(tilePos);
 			return displacement;
@@ -251,7 +251,7 @@ Vector2 LevelCreatorScene::PlaceTile(Vector2 tilePos)
 	}
 	else
 	{
-		if (currentTile == 0 || currentTile == 4)
+		if (currentTile == 0)
 		{
 			return displacement;
 		}
