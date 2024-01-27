@@ -100,7 +100,7 @@ Engine::EngineCode LevelCreatorScene::Init()
 	Transform* t = entity->Has(Transform);
 	properties = EntityProperties{ {t->GetTranslation()->x, t->GetTranslation()->y}, {0.f, 0.f}, false };
 
-    LevelBuilder::GetInstance()->LoadLevel("./Data/LevelCreatorScene.json");
+    //LevelBuilder::GetInstance()->LoadLevel("./Data/LevelCreatorScene.json");
     LevelCreatorPixelRenderer->window = LevelCreatorWindow;
     LevelCreatorPixelRenderer->isFullbright = true;
     playMode = false;
@@ -551,18 +551,40 @@ void LevelCreatorScene::ImGuiWindow()
 
 		if (ImGui::TreeNode("Import:"))
 		{
+			static char filenameBuffer[256];
+			ImGui::InputText(".json", filenameBuffer, sizeof(filenameBuffer));
+
 			ImGui::Text("NOTE: this will reset the current level.");
-
-			ImGui::InputText(".json", myTextBuffer, sizeof(myTextBuffer));
 			{
-				//SceneSystem::GetInstance()->RestartScene();
+				if (ImGui::Button("Submit"))
+				{
+					std::string filename = "./Data/" + std::string(filenameBuffer); 
+					std::ifstream file(filename);
+					if (file.is_open())
+					{
+						file.close();
+						//SceneSystem::GetInstance()->RestartScene();
+						LevelBuilder::GetInstance()->LoadLevel(filename);
+					}
+					else
+					{
+						ImGui::OpenPopup("FileNotFoundPopup");
+					}
+				}
 
-				//LevelBuilder::GetInstance()->LoadLevel(myTextBuffer);
+				if (ImGui::BeginPopupModal("FileNotFoundPopup", NULL, ImGuiWindowFlags_AlwaysAutoResize))
+				{
+					ImGui::Text("File not found!");
+					if (ImGui::Button("OK"))
+					{
+						ImGui::CloseCurrentPopup();
+					}
+					ImGui::EndPopup();
+				}
 			}
 
 			ImGui::TreePop();
 		}
-
 
 		ImGui::Separator();
 
@@ -600,7 +622,7 @@ void LevelCreatorScene::ImGuiWindow()
 					CreateCircleEntity();
 				}
 
-				if (ImGui::Button("Create Door"))
+				/*if (ImGui::Button("Create Door"))
 				{
 					CreateDoorEntity();
 				}
@@ -608,7 +630,7 @@ void LevelCreatorScene::ImGuiWindow()
 				if (ImGui::Button("Create Mirror"))
 				{
 					CreateMirrorEntity();
-				}
+				} */
 
 				for (int i = 0; i < entityContainer->CountEntities(); ++i)
 				{
@@ -686,7 +708,7 @@ int LevelCreatorScene::CreateCircleEntity()
 	return 0;
 }
 
-int LevelCreatorScene::CreateDoorEntity()
+/*int LevelCreatorScene::CreateDoorEntity()
 {
 	std::string filename = "./Data/GameObjects/Door.json";
 	EntityContainer::GetInstance()->AddEntity(FileIO::GetInstance()->ReadEntity(filename));
@@ -698,4 +720,4 @@ int LevelCreatorScene::CreateMirrorEntity()
 	std::string filename = "./Data/GameObjects/Mirror.json";
 	EntityContainer::GetInstance()->AddEntity(FileIO::GetInstance()->ReadEntity(filename));
 	return 0;
-} 
+} */
