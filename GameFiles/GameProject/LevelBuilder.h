@@ -30,7 +30,7 @@ public:
 	Engine::EngineCode Close();
 	
 	static LevelBuilder* GetInstance();
-	void LoadLevel(std::string filename);
+	void LoadTileMap(std::string filename);
 	void ReLoadLevel();
 	void FreeLevel();
 	static void SetWinState(bool state);

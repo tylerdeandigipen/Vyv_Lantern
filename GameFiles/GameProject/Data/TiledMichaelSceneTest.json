@@ -1,9 +1,5 @@
 {
-  "Levels": [
-    {
-      "TiledData": {
-        "TileMapFile": "./Data/This.json"
-      }
-    }
-  ]
+  "TiledData": {
+    "TileMapFile": "./Data/This.json"
+  }
 }

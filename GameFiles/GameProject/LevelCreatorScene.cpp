@@ -5,7 +5,7 @@
 //              Thomas Stephenson, Louis Wang
 // Purpose:     Main scene for the game.
 //
-// Copyright  © 2023 DigiPen (USA) Corporation.
+// Copyright  ï¿½ 2023 DigiPen (USA) Corporation.
 //
 //------------------------------------------------------------------------------
 #include "imgui.h"
@@ -94,13 +94,13 @@ Engine::EngineCode LevelCreatorScene::Init()
 	LevelCreatorPixelRenderer->window = LevelCreatorWindow;
 
 	//initialize level data
-	EntityContainer::GetInstance()->ReadEntities("./Data/GameObjects/ObjectListLevelBuilder.json");
+	EntityContainer::GetInstance()->ReadEntities(currentGameObjectsList);
 	entityContainer = EntityContainer::GetInstance();
 	entity = (*entityContainer)[0];
 	Transform* t = entity->Has(Transform);
 	properties = EntityProperties{ {t->GetTranslation()->x, t->GetTranslation()->y}, {0.f, 0.f}, false };
 
-    //LevelBuilder::GetInstance()->LoadLevel("./Data/LevelCreatorScene.json");
+    //LevelBuilder::GetInstance()->LoadTileMap("./Data/LevelCreatorScene.json");
     LevelCreatorPixelRenderer->window = LevelCreatorWindow;
     LevelCreatorPixelRenderer->isFullbright = true;
     playMode = false;
@@ -537,11 +537,17 @@ void LevelCreatorScene::ImGuiWindow()
 		ImGui::Text("welcome to the creator window!");
 
 		ImGui::Separator();
+		ImGui::Text("Scene Settings");
+
+
+		ImGui::Text("./Data/Scenes/''LevelNameHere''");
+
+		ImGui::Separator();
 
 		if (ImGui::TreeNode("Export:"))
 		{
 			ImGui::InputText(".json", myTextBuffer, sizeof(myTextBuffer));
-			if (ImGui::Button("Submit"))
+			if (ImGui::Button("Export"))
 			{
 				FileIO::GetInstance()->ExportTileMap(myTextBuffer);
 			}
@@ -563,8 +569,8 @@ void LevelCreatorScene::ImGuiWindow()
 					if (file.is_open())
 					{
 						file.close();
+						LevelBuilder::GetInstance()->LoadTileMap(filename);
 						//SceneSystem::GetInstance()->RestartScene();
-						LevelBuilder::GetInstance()->LoadLevel(filename);
 					}
 					else
 					{
@@ -647,8 +653,8 @@ void LevelCreatorScene::ImGuiWindow()
 							ImGui::Text("Rotation: (%f, %f)", properties.Rotation);
 							ImGui::Checkbox("Apply Collision", &properties.isCollidable);
 							ImGui::SliderFloat2("Test Transform", properties.Translation, -10.f, 100.f);
-							LevelCreatorPixelRenderer->objects[0]->position.x = properties.Translation[0];
-							LevelCreatorPixelRenderer->objects[0]->position.y = properties.Translation[1];
+							ent->Has(Transform)->SetTranslation( { properties.Translation[0], properties.Translation[1] } );
+							//LevelCreatorPixelRenderer->objects[0]->position.y = properties.Translation[1];
 							ApplyProperties(properties);
 
 							if (ImGui::Button("Delete"))
@@ -701,10 +707,52 @@ void LevelCreatorScene::ImGuiWindow()
 ///////////////////////////////////////////////////////////////////////////////////
 /* testing stuff ! */
 
+static int circles_existing = 0;
 int LevelCreatorScene::CreateCircleEntity()
 {
+	std::string number = "./Data/GameObjects/Circle";
 	std::string filename = "./Data/GameObjects/Circle.json";
-	EntityContainer::GetInstance()->AddEntity(FileIO::GetInstance()->ReadEntity(filename));
+	std::string line;
+
+	std::ifstream tocopy{ filename };
+	if (tocopy.is_open())
+	{
+		for (int i = 0; i < EntityContainer::GetInstance()->CountEntities(); ++i)
+		{
+			std::string name = (*EntityContainer::GetInstance())[i]->GetFilePath();
+			if (name.compare("./Data/GameObjects/Circle.json") >= 0)
+			{
+				++circles_existing;
+			}
+		}
+
+		EntityContainer::GetInstance()->AddEntity(FileIO::GetInstance()->ReadEntity(filename));
+		Logging::GetInstance("LevelCreator.log").LogToAll("Timestamped message: %s", "Creating");
+		number += std::to_string(circles_existing);
+		number += ".json";
+		std::ofstream file(number);
+
+		json circleOld = FileIO::GetInstance()->OpenJSON(filename);
+		file << std::setw(2) << circleOld << std::endl;
+
+		Logging::GetInstance("LevelCreator.log").LogToAll("Timestamped message: %s", "Copy Finished");
+
+		json circle = FileIO::GetInstance()->OpenJSON(number);
+		circle["FilePath"] = number;
+
+	}
+
+	json newobject = { {"FilePath", number} };
+	json gameobjects = FileIO::GetInstance()->OpenJSON(currentGameObjectsList);
+	if (gameobjects["Objects"].is_array())
+	{
+		gameobjects["Objects"].push_back(newobject);
+		//myarray.push_back(newobject);
+	}
+
+	std::ofstream file(currentGameObjectsList);
+	file << std::setw(2) << gameobjects << std::endl;
+
 	return 0;
 }
 

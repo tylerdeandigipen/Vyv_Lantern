@@ -49,7 +49,12 @@ private:
 	int CreateDoorEntity();
 	int CreateMirrorEntity();
 
+
+	std::string currentGameObjectsList = "./Data/GameObjects/ObjectListLevelBuilder.json";
+	std::string currentTileMapList;
 	char myTextBuffer[256]{};
+	char LoadBuffer[256]{};
+
 
 	enum ObjType
 	{

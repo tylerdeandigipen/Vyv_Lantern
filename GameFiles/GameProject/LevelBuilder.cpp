@@ -48,7 +48,7 @@ Engine::EngineCode LevelBuilder::Init()
 	return Engine::NothingBad;
 }
 
-void LevelBuilder::LoadLevel(std::string filename)
+void LevelBuilder::LoadTileMap(std::string filename)
 {
     Renderer* pixel = Renderer::GetInstance();
     std::ifstream file(filename);
@@ -63,29 +63,23 @@ void LevelBuilder::LoadLevel(std::string filename)
         Logging::GetInstance("debugLog.log").LogLine("Could not open %s", filename.c_str());
         //perror("JSON file does not exist");
     }
-    if (jsonData["Levels"].is_array())
+
+    AddTileSets();
+    if (jsonData["TylerTileData"].is_object())
     {
-        AddTileSets();
-        for (auto& levelData : jsonData["Levels"])
-        {
-            if (levelData["TylerTileData"].is_object())
-            {
-                TileMap = FileIO::GetInstance()->ReadTylerTileMap(levelData);
-                pixel->tileMapSize.x = static_cast<float>(SizeX);
-                pixel->tileMapSize.y = static_cast<float>(SizeY);
-                pixel->MakeTileMap(TileMap);
+        TileMap = FileIO::GetInstance()->ReadTylerTileMap(jsonData);
+        pixel->tileMapSize.x = static_cast<float>(SizeX);
+        pixel->tileMapSize.y = static_cast<float>(SizeY);
+        pixel->MakeTileMap(TileMap);
 
-            }
-            else if (levelData["TiledData"].is_object())
-            {
-                TileMap = FileIO::GetInstance()->ReadTiledMap(levelData);
-                pixel->tileMapSize.x = static_cast<float>(SizeX);
-                pixel->tileMapSize.y = static_cast<float>(SizeY);
-                pixel->MakeTileMap(TileMap);
-            }
-        }
     }
-
+    else if (jsonData["TiledData"].is_object())
+    {
+        TileMap = FileIO::GetInstance()->ReadTiledMap(jsonData);
+        pixel->tileMapSize.x = static_cast<float>(SizeX);
+        pixel->tileMapSize.y = static_cast<float>(SizeY);
+        pixel->MakeTileMap(TileMap);
+    }
     //pixel->ResizeBuffers();
 }
 

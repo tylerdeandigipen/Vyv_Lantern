@@ -11,6 +11,7 @@
 #include "ImageBuffer.h"
 #include "Entity.h"
 #include "EntityFactory.h"
+#include "EntityContainer.h"
 #include "Light.h"
 #include "LevelBuilder.h"
 #include "Renderer.h"
@@ -328,6 +329,17 @@ Entity* FileIO::ReadEntity(std::string filename)
 	return newEnt;
 }
 
+
+//
+// 
+//
+void FileIO::ReadScene(std::string fileName)
+{
+	json jsonData = OpenJSON(fileName);
+	EntityContainer::GetInstance()->ReadEntities(jsonData["GameObjects"]);
+
+}
+
 void FileIO::ExportTileMap(std::string name)
 {
 	Renderer* pixel = Renderer::GetInstance();
@@ -384,8 +396,17 @@ void FileIO::ExportTileMap(std::string name)
 	tilemapArray["layers"][1] = tilemapCol;
 
 	// save tilemap to a file
-	std::ofstream file("./Data/" + name + ".json");
+	std::ofstream file("./Data/" + name + "MAP" + ".json");
 	file << std::setw(2) << tilemapArray << std::endl;
+
+	json readable;
+	json data;
+	data["TileMapFile"] = "./Data/" + name + "MAP" + ".json";
+	readable["TiledData"] = data;
+
+	//the filemap to read
+	std::ofstream actualfile("./Data/" + name + ".json");
+	actualfile << std::setw(2) << readable << std::endl;
 }
 
 ImageBuffer* ReadPPM(const char* filename)
