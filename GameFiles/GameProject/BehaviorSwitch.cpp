@@ -135,11 +135,11 @@ void BehaviorSwitch::SwitchCollisionHandler(Entity* entity1, Entity* entity2)
     BehaviorSwitch* switch1 = reinterpret_cast<BehaviorSwitch*>(entity1->Has(Behavior));
     BehaviorSwitch* switch2 = reinterpret_cast<BehaviorSwitch*>(entity2->Has(Behavior));
     BehaviorSwitch* theSwitch = NULL;
-    if (switch2->GetName().compare("BehaviorSwitch") == 0)
+    if (switch2 && switch2->GetName().compare("BehaviorSwitch") == 0)
     {
         theSwitch = switch2;
     }
-    else if (switch1->GetName().compare("BehaviorSwitch") == 0)
+    else if (switch1 && switch1->GetName().compare("BehaviorSwitch") == 0)
     {
         theSwitch = switch1;
     }

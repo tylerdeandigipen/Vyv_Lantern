@@ -79,7 +79,7 @@ Engine::EngineCode TbdTestScene::Init()
     
     //initialize level data
     EntityContainer::GetInstance()->ReadEntities("./Data/GameObjects/ObjectList.json");
-    LevelBuilder::GetInstance()->LoadLevel("./Data/TiledMichaelSceneTest.json");
+    LevelBuilder::GetInstance()->LoadTileMap("./Data/TiledMichaelSceneTest.json");
 
     //ControlledEmitter = LaserSystem::GetInstance()->CreateEmitter();
     /*

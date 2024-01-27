@@ -75,7 +75,7 @@ Engine::EngineCode WinScene::Init()
 	WinWindow = PlatformSystem::GetInstance()->GetWindowHandle();
 	WinPixelRenderer->window = WinWindow;
     FileIO::GetInstance()->ReadTileSet("./Data/TileMapSprites.json", WinPixelRenderer);
-	LevelBuilder::GetInstance()->LoadLevel("./MichaelTempWinScene.json");
+	LevelBuilder::GetInstance()->LoadTileMap("./MichaelTempWinScene.json");
 
 
     //WinPixelRenderer->GenerateVornoiPoints();

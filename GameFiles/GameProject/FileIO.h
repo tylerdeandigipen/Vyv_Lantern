@@ -31,6 +31,7 @@ public:
 
 	Entity* ReadEntity(json jsonData);
 	Entity* ReadEntity(std::string filename);
+	void ReadScene(std::string);
 
 	ImageBuffer* ReadPPM(const char* filename);
 

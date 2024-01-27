@@ -175,12 +175,6 @@ Engine::EngineCode LevelCreatorScene::Init()
 	if (InitializeProperties("./Data/GameObjects/ObjectListLevelBuilder.json"))
 		std::cout << "Property load success!\n";
 
-    //LevelBuilder::GetInstance()->LoadLevel("./Data/LevelCreatorScene.json");
-    LevelCreatorPixelRenderer->window = LevelCreatorWindow;
-    LevelCreatorPixelRenderer->isFullbright = true;
-    playMode = false;
-    playerSpawned = false;
-
 	moveVector = { 0,0 };
 	oldMousePos = { 0,0 };
 	previousTile = { -1000,-1000 };
@@ -566,11 +560,17 @@ void LevelCreatorScene::ImGuiWindow()
 		ImGui::Text("welcome to the creator window!");
 
 		ImGui::Separator();
+		ImGui::Text("Scene Settings");
+
+
+		ImGui::Text("./Data/Scenes/''LevelNameHere''");
+
+		ImGui::Separator();
 
 		if (ImGui::TreeNode("Export:"))
 		{
 			ImGui::InputText(".json", myTextBuffer, sizeof(myTextBuffer));
-			if (ImGui::Button("Submit"))
+			if (ImGui::Button("Export"))
 			{
 				FileIO::GetInstance()->ExportTileMap(myTextBuffer);
 			}
@@ -592,8 +592,8 @@ void LevelCreatorScene::ImGuiWindow()
 					if (file.is_open())
 					{
 						file.close();
+						LevelBuilder::GetInstance()->LoadTileMap(filename);
 						//SceneSystem::GetInstance()->RestartScene();
-						LevelBuilder::GetInstance()->LoadLevel(filename);
 					}
 					else
 					{
@@ -661,6 +661,35 @@ void LevelCreatorScene::ImGuiWindow()
 					CreateMirrorEntity();
 				} */
 
+				for (int i = 0; i < entityContainer->CountEntities(); ++i)
+				{
+					Entity* ent = (*EntityContainer::GetInstance())[i];
+					if (ent)
+					{
+						if (ImGui::TreeNode(("Entity %s", ent->GetRealName().c_str())))
+						{
+
+							ImGui::Text("Name: %s", ent->GetRealName().c_str());
+							ImGui::Text("Entity Number: %d", i);
+
+							ImGui::Text("Transform: (%f, %f)", properties.Translation[0], properties.Translation[1]);
+							ImGui::Text("Rotation: (%f, %f)", properties.Rotation);
+							ImGui::Checkbox("Apply Collision", &properties.isCollidable);
+							ImGui::SliderFloat2("Test Transform", properties.Translation, -10.f, 100.f);
+							LevelCreatorPixelRenderer->objects[0]->position.x = properties.Translation[0];
+							LevelCreatorPixelRenderer->objects[0]->position.y = properties.Translation[1];
+							ApplyProperties(properties);
+
+							if (ImGui::Button("Delete"))
+							{
+								entityContainer->RemoveEntity(ent);
+								break;
+							}
+
+							ImGui::TreePop();
+						}
+					}
+				}
 				ImGui::TreePop();
 			}
 
@@ -715,10 +744,52 @@ void LevelCreatorScene::ImGuiWindow()
 ///////////////////////////////////////////////////////////////////////////////////
 /* testing stuff ! */
 
+static int circles_existing = 0;
 int LevelCreatorScene::CreateCircleEntity()
 {
+	std::string number = "./Data/GameObjects/Circle";
 	std::string filename = "./Data/GameObjects/Circle.json";
-	EntityContainer::GetInstance()->AddEntity(FileIO::GetInstance()->ReadEntity(filename));
+	std::string line;
+
+	std::ifstream tocopy{ filename };
+	if (tocopy.is_open())
+	{
+		for (int i = 0; i < EntityContainer::GetInstance()->CountEntities(); ++i)
+		{
+			std::string name = (*EntityContainer::GetInstance())[i]->GetFilePath();
+			if (name.compare("./Data/GameObjects/Circle.json") >= 0)
+			{
+				++circles_existing;
+			}
+		}
+
+		EntityContainer::GetInstance()->AddEntity(FileIO::GetInstance()->ReadEntity(filename));
+		Logging::GetInstance("LevelCreator.log").LogToAll("Timestamped message: %s", "Creating");
+		number += std::to_string(circles_existing);
+		number += ".json";
+		std::ofstream file(number);
+
+		json circleOld = FileIO::GetInstance()->OpenJSON(filename);
+		file << std::setw(2) << circleOld << std::endl;
+
+		Logging::GetInstance("LevelCreator.log").LogToAll("Timestamped message: %s", "Copy Finished");
+
+		json circle = FileIO::GetInstance()->OpenJSON(number);
+		circle["FilePath"] = number;
+
+	}
+
+	json newobject = { {"FilePath", number} };
+	json gameobjects = FileIO::GetInstance()->OpenJSON(currentGameObjectsList);
+	if (gameobjects["Objects"].is_array())
+	{
+		gameobjects["Objects"].push_back(newobject);
+		//myarray.push_back(newobject);
+	}
+
+	std::ofstream file(currentGameObjectsList);
+	file << std::setw(2) << gameobjects << std::endl;
+
 	return 0;
 }
 
