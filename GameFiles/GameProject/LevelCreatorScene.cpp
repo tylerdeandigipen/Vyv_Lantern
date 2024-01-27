@@ -97,6 +97,12 @@ void ShowEntityInfo()
 			LevelCreatorPixelRenderer->objects[i]->position.x = properties[(*EntityContainer::GetInstance())[i]->GetRealName()].translation[0];
 			LevelCreatorPixelRenderer->objects[i]->position.y = properties[(*EntityContainer::GetInstance())[i]->GetRealName()].translation[1];
 
+			if (ImGui::Button("Delete"))
+			{
+				EntityContainer::GetInstance()->RemoveEntity();
+				break;
+			}
+
 			ImGui::TreePop();
 		}
 	}
@@ -661,34 +667,6 @@ void LevelCreatorScene::ImGuiWindow()
 					CreateMirrorEntity();
 				} */
 
-				for (int i = 0; i < entityContainer->CountEntities(); ++i)
-				{
-					Entity* ent = (*EntityContainer::GetInstance())[i];
-					if (ent)
-					{
-						if (ImGui::TreeNode(("Entity %s", ent->GetRealName().c_str())))
-						{
-
-							ImGui::Text("Name: %s", ent->GetRealName().c_str());
-							ImGui::Text("Entity Number: %d", i);
-
-							ImGui::Text("Transform: (%f, %f)", properties.Translation[0], properties.Translation[1]);
-							ImGui::Text("Rotation: (%f, %f)", properties.Rotation);
-							ImGui::Checkbox("Apply Collision", &properties.isCollidable);
-							ImGui::SliderFloat2("Test Transform", properties.Translation, -10.f, 100.f);
-							LevelCreatorPixelRenderer->objects[0]->position.x = properties.Translation[0];
-							LevelCreatorPixelRenderer->objects[0]->position.y = properties.Translation[1];
-							ApplyProperties(properties);
-
-							if (ImGui::Button("Delete"))
-							{
-								entityContainer->RemoveEntity(ent);
-								break;
-							}
-
-							ImGui::TreePop();
-						}
-					}
 				}
 				ImGui::TreePop();
 			}
