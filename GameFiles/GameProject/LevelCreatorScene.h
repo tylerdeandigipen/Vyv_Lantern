@@ -70,7 +70,8 @@ struct EntityProperties
 {
 	int translation[2] = { 0 };
 	Vector2 rotation;
-	bool isCollidable;
+	// bool isCollidable;
+	bool isPicked = false;
 };
 
 class EntityManager
@@ -96,11 +97,11 @@ public:
 
 				ImGui::Text("Transform: (%f, %f)", properties[(*EntityContainer::GetInstance())[i]->GetRealName()].translation[0], properties[(*EntityContainer::GetInstance())[i]->GetRealName()].translation[1]);
 				ImGui::Text("Rotation: (%f, %f)", properties[(*EntityContainer::GetInstance())[i]->GetRealName()].rotation);
-				ImGui::Checkbox("Apply Collision", &properties[(*EntityContainer::GetInstance())[i]->GetRealName()].isCollidable);
 				ImGui::SliderInt2("Test Transform", properties[(*EntityContainer::GetInstance())[i]->GetRealName()].translation, -10.f, 100.f);
 
 				ImGui::Checkbox("isEditable", &isEditable);
 				ImGui::Text(isEditable ? "true" : "false");
+				ImGui::Text((properties[(*EntityContainer::GetInstance())[i]->GetRealName()].isPicked ? "true" : "false"));
 
 				if (ImGui::Button("Delete"))
 				{
@@ -108,8 +109,8 @@ public:
 					break;
 				}
 
-				pRenderer->objects[0]->position.x = properties[(*EntityContainer::GetInstance())[0]->GetRealName()].translation[0];
-				pRenderer->objects[0]->position.y = properties[(*EntityContainer::GetInstance())[0]->GetRealName()].translation[1];
+				pRenderer->objects[i]->position.x = properties[(*EntityContainer::GetInstance())[i]->GetRealName()].translation[0];
+				pRenderer->objects[i]->position.y = properties[(*EntityContainer::GetInstance())[i]->GetRealName()].translation[1];
 
 				ImGui::TreePop();
 			}
@@ -266,22 +267,27 @@ public:
 	{
 		if (isEditable)
 		{
-			if ((properties[(*EntityContainer::GetInstance())[0]->GetRealName()].translation[0] + 20) >= mousePos_.x && (properties[(*EntityContainer::GetInstance())[0]->GetRealName()].translation[0] - 10) <= mousePos_.x &&
-				(properties[(*EntityContainer::GetInstance())[0]->GetRealName()].translation[1] + 20) >= mousePos_.y && (properties[(*EntityContainer::GetInstance())[0]->GetRealName()].translation[1] - 10) <= mousePos_.y)
+			for (int i = 0; i < EntityContainer::GetInstance()->CountEntities(); i++)
 			{
-				if (pInput->mouseButtonDown(SDL_BUTTON_LEFT))
+				if ((properties[(*EntityContainer::GetInstance())[i]->GetRealName()].translation[0] + 15) >= mousePos_.x && (properties[(*EntityContainer::GetInstance())[i]->GetRealName()].translation[0]) <= mousePos_.x &&
+					(properties[(*EntityContainer::GetInstance())[i]->GetRealName()].translation[1] + 15) >= mousePos_.y && (properties[(*EntityContainer::GetInstance())[i]->GetRealName()].translation[1]) <= mousePos_.y)
 				{
-					isPicked = true;
-					if (isPicked)
+					if (pInput->mouseButtonDown(SDL_BUTTON_LEFT))
 					{
-						properties[(*EntityContainer::GetInstance())[0]->GetRealName()].translation[0] = mousePos_.x;
-						properties[(*EntityContainer::GetInstance())[0]->GetRealName()].translation[1] = mousePos_.y;
+						properties[(*EntityContainer::GetInstance())[i]->GetRealName()].isPicked = true;
+					}
+					else
+					{
+						properties[(*EntityContainer::GetInstance())[i]->GetRealName()].isPicked = false;
 					}
 				}
-				else
-					isPicked = false;
+
+				if (properties[(*EntityContainer::GetInstance())[i]->GetRealName()].isPicked == true)
+				{
+					properties[(*EntityContainer::GetInstance())[i]->GetRealName()].translation[0] = mousePos_.x - 8;
+					properties[(*EntityContainer::GetInstance())[i]->GetRealName()].translation[1] = mousePos_.y - 8;
+				}
 			}
-			isPicked = false;
 		}
 	}
 
@@ -297,7 +303,6 @@ public:
 	std::ifstream file;
 	TextEditor::LanguageDefinition lang = TextEditor::LanguageDefinition::CPlusPlus();
 	Renderer* pRenderer;
-	bool isPicked = false;
 	bool isEditable = false;
 	Vector2 mousePos_;
 	Inputs* pInput;
