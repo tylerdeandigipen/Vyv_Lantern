@@ -176,6 +176,11 @@ bool Entity::IsNamed(const char* _name)
 	return false;
 }
 
+bool Entity::IsPicked(Renderer* pRenderder, Vector2 mousePos)
+{
+	return false;
+}
+
 // could possilbe redo this for a different version and what works best
 Component* Entity::BinarySearch(Component::TypeEnum type) const
 {
