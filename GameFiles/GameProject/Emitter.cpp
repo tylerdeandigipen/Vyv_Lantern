@@ -2,33 +2,36 @@
 #include "Vector.h"
 #include "Transform.h"
 #include "Entity.h"
+#include "LineCollider.h"
 
-Emitter::Emitter() : Component(Component::cEmmitter)
+Emitter::Emitter() : Component(Component::cEmitter)
 {
 	emitMaxDistance = 0.0f;
 	isDirty = false;
 	isEmitting = false;
 	DrawDistance = 0.0f;
-	emitDirection = new  gfxVector2();
-	emitDirection2 = new gfxVector2();
+	emitLTrigDir = new  gfxVector2();
+	emitRTrigDir = new gfxVector2();
 	emitPosition  = new gfxVector2();
-	isDualMirror = false;
+	leftTrigger = false;
+	rightTrigger = false;
 	emitterTwoIsActive = false;
 }
 
 Emitter::Emitter(Emitter const& emitter2cpy) : Component(emitter2cpy)
 , isDirty(emitter2cpy.isDirty), isEmitting(emitter2cpy.isEmitting), emitMaxDistance(emitter2cpy.emitMaxDistance),
-DrawDistance(emitter2cpy.DrawDistance), isDualMirror(emitter2cpy.isDualMirror), emitterTwoIsActive(emitter2cpy.emitterTwoIsActive)
+DrawDistance(emitter2cpy.DrawDistance), emitterTwoIsActive(emitter2cpy.emitterTwoIsActive),
+leftTrigger(emitter2cpy.leftTrigger), rightTrigger(emitter2cpy.rightTrigger)
 {
-	emitDirection2 = new gfxVector2(*emitter2cpy.emitDirection2);
-	emitDirection = new gfxVector2(*emitter2cpy.emitDirection);
+	emitLTrigDir = new gfxVector2(*emitter2cpy.emitLTrigDir);
+	emitRTrigDir = new gfxVector2(*emitter2cpy.emitRTrigDir);
 	emitPosition = new gfxVector2(*emitter2cpy.emitPosition);
 }
 
 Emitter::~Emitter()
 {
-	delete emitDirection;
-	delete emitDirection2;
+	delete emitRTrigDir;
+	delete emitLTrigDir;
 	delete emitPosition;
 }
 
@@ -54,34 +57,33 @@ void Emitter::Read(json jsonData)
 		emitPosition->y = pos["y"];
 	}
 
-	if (jsonData["direction"].is_object())
+	if (jsonData["LeftDirectionTrigger"].is_object())
 	{
-		json dir = jsonData["direction"];
-		emitDirection->x = dir["x"];
-		emitDirection->y = dir["y"];
+		json dir = jsonData["directionLeft"];
+		emitLTrigDir->x = dir["x"];
+		emitLTrigDir->y = dir["y"];
 	}
 
-	if (jsonData["direction2"].is_object())
+	if (jsonData["RightDirectionTrigger"].is_object())
 	{
-		json dir2 = jsonData["direction"];
-		emitDirection2->x = dir2["x"];
-		emitDirection2->y = dir2["y"];
+		json dir2 = jsonData["directionRight"];
+		emitRTrigDir->x = dir2["x"];
+		emitRTrigDir->y = dir2["y"];
 	}
 
 	emitMaxDistance = jsonData["maxDistance"];
 	isEmitting = jsonData["isEmitting"];
-	isDualMirror = jsonData["dualMirror"];
 	emitterTwoIsActive = jsonData["emittingSecond"];
 }
 
 void Emitter::Update(float dt) 
 {
-	if (isDirty)
+	//cleans up the hasCollided flag for the emitter
+	//should turn off when you stop emitting.
+	if (hasCollided)
 	{
-		//update position and colisions
+		hasCollided = isEmitting;
 	}
-
-
 }
 
 //second opinion maybe consider making a lazer a different component and emmit that component rather than this immiter 
@@ -90,28 +92,90 @@ void Emitter::Render() const
 	if (isEmitting)
 	{
 		//draw the laser and do draw laser calculations
+		if (leftTrigger)
+		{
+
+		}
+		if (rightTrigger)
+		{
+
+		}
 	}
 
-	if (emitterTwoIsActive)
-	{
-		//draw second laser
-	}
 
 }
 
 
-void EmitterCollisionHandler(Entity& object1, Entity& object2)
+void Emitter::EmitterCollisionHandler(Entity& object1, Entity& object2)
 {
-	//if emitter to reflector
-	if (/*entity1->GetRealName().compare("") == 0 && entity2->GetRealName().compare("Object") == 0*/ false)
+
+
+	//this may be terrible currently ignores terrain
+	//additionally does not have a way to turn off... will need to group source to fix issue can't think of how off the top of head.
+	if (object1.Has(Emitter) && object2.Has(LineCollider))
 	{
-			
+		//for making this mor effecient should store the emitter and collider locally for the calculations
+
+
+		//if the object is emitting and hasn't collided yet. proceed
+		if (object1.Has(Emitter)->IsEmitterEmitting() && !object1.Has(Emitter)->GetCollided())
+		{
+			//need to check the double triggers from left or right.
+
+			if (object1.Has(Emitter)->rightTrigger)
+			{
+			}
+			if (object1.Has(Emitter)->leftTrigger)
+			{
+			}
+
+			//also need to check vs terrain if it hits needs to truncate the draw distance of the emitter line.
+
+			if (false /* hits terrain*/)
+			{
+				object1.Has(Emitter)->SetDrawDistance(0.0f /* truncate to collision point of terrain */);
+				object1.Has(Emitter)->SetCollided(true);
+			}
+			//we do not care if it has a line collider if it doesn't have an emitter, proceed to leave early.
+			if (object2.Has(Emitter) != nullptr)
+			{
+				//do collision calculations
+				if (true /*did collide*/)
+				{
+					//calculate which direction using dot product
+					//lineColliders consist of 2 points that make a line. point one should be the left most point.
+					gfxVector2 tempVector = *object2.Has(LineCollider)->GetPosition1() - *object2.Has(LineCollider)->GetPosition2();
+					float leftRight = gfxVector2::DotProduct(*object1.Has(Emitter)->GetDirection(), tempVector);
+
+					if (leftRight > 0.0f) // greater than less than 0 for right side collision
+					{
+						//collides
+						object1.Has(Emitter)->SetCollided(true);
+						object2.Has(Emitter)->SetEmitting(true);
+						object2.Has(Emitter)->SetRightTrigger(true);
+					}
+					else /* must be side left */
+					{
+						object1.Has(Emitter)->SetCollided(true);
+						object2.Has(Emitter)->SetEmitting(true);
+						object2.Has(Emitter)->SetLeftTrigger(true);//placeholding unsure of left right
+					}
+
+				}
+
+			}
+		}
+
+		return; // cut out quickly if the 1st is true but anything else does not then leave early.
 	}
 
-	//reflector ot emitter
-	if (/*entity1->GetRealName().compare("Player") == 0 && entity2->GetRealName().compare("Object") == 0 */ false)
+	//the 2nd object is the one emitting
+	if (object2.Has(Emitter)->IsEmitterEmitting() && !object2.Has(Emitter)->GetCollided() && object1.Has(LineCollider))
 	{
-		object1->Has(Emitter)
+		//copy the stuff from uptop
 	}
+
+
+	//potentially more stuff for line colliders maybe break this up into different behaviors.
 	
 }

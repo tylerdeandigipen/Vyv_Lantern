@@ -46,12 +46,24 @@ public:
 	void Update(float dt);
 	void Render() const;
 
-	void setEmitting() { isEmitting = !isEmitting; }; //probably a control flag and collision flag
+	bool IsEmitterEmitting() { return isEmitting; };
+
+	void SetEmitting(bool state) { isEmitting = state; }; //probably a control flag and collision flag
 
 	std::string GetName() override
 	{
 		return std::string();
 	};
+
+	//standard get/set funcitons
+	gfxVector2* GetPosition() { return emitPosition; };
+	gfxVector2* GetDirection() { return emitLTrigDir; };
+	float GetDistance() { return emitMaxDistance; };
+	void SetDrawDistance(float distance) { DrawDistance = distance; }
+	void SetCollided(bool state) { hasCollided = state; }
+	bool GetCollided() { return hasCollided; };
+	void SetRightTrigger(bool state) { rightTrigger = state; };
+	void SetLeftTrigger(bool state) { leftTrigger = state; };
 
 	std::string Name()
 	{
@@ -62,17 +74,18 @@ public:
 
 private:
 
-	gfxVector2* emitDirection;
-	gfxVector2* emitDirection2;
+	gfxVector2* emitLTrigDir;
+	gfxVector2* emitRTrigDir;
 	gfxVector2* emitPosition;
 
 	float emitMaxDistance;
 	float DrawDistance;
 	bool isDirty;
+	bool hasCollided;
 
 	bool isEmitting;
-	bool isDualMirror;
-
+	bool rightTrigger;
+	bool leftTrigger;
 	bool emitterTwoIsActive;
 };
 

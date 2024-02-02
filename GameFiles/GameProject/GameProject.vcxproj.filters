@@ -59,6 +59,7 @@
     <ClCompile Include="Vector.cpp" />
     <ClCompile Include="WinScene.cpp" />
     <ClCompile Include="Emitter.cpp" />
+    <ClCompile Include="LineCollider.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AudioEngine.h" />
@@ -129,6 +130,7 @@
     <ClInclude Include="Vector.h" />
     <ClInclude Include="WinScene.h" />
     <ClInclude Include="Emitter.h" />
+    <ClInclude Include="LineCollider.h" />
   </ItemGroup>
   <ItemGroup>
     <Library Include="glfw3.lib" />
