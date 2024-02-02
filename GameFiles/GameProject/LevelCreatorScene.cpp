@@ -450,6 +450,19 @@ Scene* LevelCreatorSceneGetInstance(void)
 
 /* --------------------------------------------------------------------------------------------------------------------------------- */
 
+bool IsFileNameValid(const std::string& fileName)
+{
+	static const std::string illegalChars = "#%&{}\\<>*?/ $!'\":@+`|= ";
+	for (char c : fileName)
+	{
+		if (illegalChars.find(c) != std::string::npos)
+		{
+			return false;
+		}
+	}
+	return true;
+}
+
 void LevelCreatorScene::ImGuiInterg()
 {
 #ifdef _DEBUG
@@ -489,8 +502,27 @@ void LevelCreatorScene::ImGuiWindow()
 			ImGui::InputText(".json", myTextBuffer, sizeof(myTextBuffer));
 			if (ImGui::Button("Export"))
 			{
-				FileIO::GetInstance()->ExportTileMap(myTextBuffer);
+				std::string exportFileName = std::string(myTextBuffer);
+				if (!IsFileNameValid(exportFileName))
+				{
+					ImGui::OpenPopup("InvalidExportFileNamePopup");
+				}
+				else
+				{
+					FileIO::GetInstance()->ExportTileMap(myTextBuffer);
+				}
 			}
+
+			if (ImGui::BeginPopupModal("InvalidExportFileNamePopup", NULL, ImGuiWindowFlags_AlwaysAutoResize))
+			{
+				ImGui::Text("Illegal characters in the tilemap name GOOBER!");
+				if (ImGui::Button("OK"))
+				{
+					ImGui::CloseCurrentPopup();
+				}
+				ImGui::EndPopup();
+			}
+
 
 			ImGui::TreePop();
 		}
@@ -505,17 +537,33 @@ void LevelCreatorScene::ImGuiWindow()
 				if (ImGui::Button("Submit"))
 				{
 					std::string filename = "./Data/Scenes/" + std::string(filenameBuffer) + ".json";
-					std::ifstream file(filename);
-					if (file.is_open())
+					if (!IsFileNameValid(filenameBuffer))
 					{
-						file.close();
-						LevelBuilder::GetInstance()->LoadTileMap(filename);
-						//SceneSystem::GetInstance()->RestartScene();
+						ImGui::OpenPopup("InvalidImportFileNamePopup");
 					}
 					else
 					{
-						ImGui::OpenPopup("FileNotFoundPopup");
+						std::ifstream file(filename);
+						if (file.is_open())
+						{
+							file.close();
+							LevelBuilder::GetInstance()->LoadTileMap(filename);
+						}
+						else 
+						{
+							ImGui::OpenPopup("FileNotFoundPopup");
+						}
 					}
+				}
+
+				if (ImGui::BeginPopupModal("InvalidImportFileNamePopup", NULL, ImGuiWindowFlags_AlwaysAutoResize))
+				{
+					ImGui::Text("Please provide a valid file name without illegal characters for import!");
+					if (ImGui::Button("OK"))
+					{
+						ImGui::CloseCurrentPopup();
+					}
+					ImGui::EndPopup();
 				}
 
 				if (ImGui::BeginPopupModal("FileNotFoundPopup", NULL, ImGuiWindowFlags_AlwaysAutoResize))

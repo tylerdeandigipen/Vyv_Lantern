@@ -175,7 +175,7 @@ private:
     float PreviousFrameLengths[15];
 
 	//Misc.
-	int maxThreadsAllowed = 8;
+	unsigned int maxThreadsAllowed = 8;
 	Vector2 CameraP;
 	static Renderer* instance;
 	ImageBuffer* DebugBuffer = NULL;

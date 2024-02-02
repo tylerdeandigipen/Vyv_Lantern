@@ -13,6 +13,7 @@
 #include "Engine.h"
 #include "BaseSystem.h"
 #include "Time.h"
+#include "Renderer.h"
 #include <cassert>
 
 // singleton instance
@@ -168,6 +169,7 @@ Engine::EngineCode Engine::ShutDown()
 	}
 
 	delete time;
+	delete Renderer::GetInstance();
 	return EngineExit;
 }
 

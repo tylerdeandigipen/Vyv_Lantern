@@ -640,6 +640,7 @@ ImageBuffer* Renderer::CreateAnimatedObject(const std::string filename, Vector2 
             temp = new ImageBuffer{ frameSize.x, frameSize.y };
             spriteSheet->position.x = -(frameSize.x * i);
             animatedObjects[numAnimatedObjects][i] = &temp->AddSprite(spriteSheet);
+            //delete temp;
         }
 
         animatedObjects[numAnimatedObjects][0]->totalFrames = (int)((spriteSheet->size.x / frameSize.x) - 1);
@@ -732,6 +733,7 @@ void Renderer::MakeTileMap(int** tileMapArray)
             
         }
     }
+    delete clearTile;
 }
 
 void Renderer::TileMapSetTile(Vector2 pos, int tile)
@@ -956,6 +958,12 @@ void Renderer::ReallocateLightArrays()
             delete[] blurLightR[x];
             delete[] blurLightG[x];
             delete[] blurLightB[x];
+            lightR[x] = NULL;
+            lightG[x] = NULL;
+            lightB[x] = NULL;
+            blurLightR[x] = NULL;
+            blurLightG[x] = NULL;
+            blurLightB[x] = NULL;
         }
 
         //Free main array
@@ -965,6 +973,12 @@ void Renderer::ReallocateLightArrays()
         delete[] blurLightR;
         delete[] blurLightG;
         delete[] blurLightB;
+        lightR = NULL;
+        lightG = NULL;
+        lightB = NULL;
+        blurLightR = NULL;
+        blurLightG = NULL;
+        blurLightB = NULL;
     }
 
     lightR = new float* [SCREEN_SIZE_X];
@@ -1132,6 +1146,7 @@ Renderer::~Renderer(void)
     delete DebugBuffer;
     delete lightBuffer;
     delete particleManager;
+    delete shadowCasterBuffer;
 
     //delete normalBufferPostCam;
     //delete fogBuffer;
@@ -1142,7 +1157,7 @@ Renderer::~Renderer(void)
         delete menuBuffer;
     }
 
-    //Free indexes
+     //Free indexes
     for (int x = 0; x < SCREEN_SIZE_X; ++x) {
         delete[] lightR[x];
         delete[] lightG[x];
@@ -1150,6 +1165,12 @@ Renderer::~Renderer(void)
         delete[] blurLightR[x];
         delete[] blurLightG[x];
         delete[] blurLightB[x];
+        lightR[x] = NULL;
+        lightG[x] = NULL;
+        lightB[x] = NULL;
+        blurLightR[x] = NULL;
+        blurLightG[x] = NULL;
+        blurLightB[x] = NULL;
     }
 
     //Free main array
@@ -1159,6 +1180,12 @@ Renderer::~Renderer(void)
     delete[] blurLightR;
     delete[] blurLightG;
     delete[] blurLightB;
+    lightR = NULL;
+    lightG = NULL;
+    lightB = NULL;
+    blurLightR = NULL;
+    blurLightG = NULL;
+    blurLightB = NULL;
 
     glDeleteTextures(1, &OutputBufferTexture);
 }

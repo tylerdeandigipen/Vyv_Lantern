@@ -1,12 +1,4 @@
 { "compressionlevel":-1,
- "editorsettings":
-    {
-     "export":
-        {
-         "format":"json",
-         "target":"..\/GameFiles\/GameProject\/Data\/Scenes\/2F_Layout2.json"
-        }
-    },
  "height":30,
  "infinite":false,
  "layers":[
