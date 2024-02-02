@@ -4,7 +4,7 @@
 // Author(s):	Tyler Dean
 // Purpose:		ImageBuffer class declaration for handling image data.
 //
-// Copyright © 2023 DigiPen (USA) Corporation.
+// Copyright ?2023 DigiPen (USA) Corporation.
 //
 //------------------------------------------------------------------------------
 #pragma once

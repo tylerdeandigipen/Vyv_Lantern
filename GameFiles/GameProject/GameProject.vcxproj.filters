@@ -1,63 +1,181 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <ClCompile Include="AudioEngine.cpp" />
-    <ClCompile Include="BaseSystem.cpp" />
-    <ClCompile Include="Behavior.cpp" />
-    <ClCompile Include="BehaviorMirror.cpp" />
-    <ClCompile Include="BehaviorPlayer.cpp" />
-    <ClCompile Include="BehaviorSwitch.cpp" />
-    <ClCompile Include="Collider.cpp" />
-    <ClCompile Include="ColliderAABB.cpp" />
-    <ClCompile Include="Collision.cpp" />
-    <ClCompile Include="Color.cpp" />
-    <ClCompile Include="Component.cpp" />
-    <ClCompile Include="ComponentFactory.cpp" />
-    <ClCompile Include="BehaviorDoor.cpp" />
-    <ClCompile Include="Engine.cpp" />
-    <ClCompile Include="Entity.cpp" />
-    <ClCompile Include="EntityContainer.cpp" />
-    <ClCompile Include="EntityFactory.cpp" />
-    <ClCompile Include="FileIO.cpp" />
-    <ClCompile Include="FontSystem.cpp" />
-    <ClCompile Include="FrameRate.cpp" />
-    <ClCompile Include="glad.c" />
-    <ClCompile Include="ImageBuffer.cpp" />
-    <ClCompile Include="ImguiFunctions.cpp" />
-    <ClCompile Include="IMGUI\imgui.cpp" />
-    <ClCompile Include="IMGUI\imgui_demo.cpp" />
-    <ClCompile Include="IMGUI\imgui_draw.cpp" />
-    <ClCompile Include="IMGUI\imgui_impl_opengl3.cpp" />
-    <ClCompile Include="IMGUI\imgui_impl_sdl2.cpp" />
-    <ClCompile Include="IMGUI\imgui_tables.cpp" />
-    <ClCompile Include="IMGUI\imgui_widgets.cpp" />
-    <ClCompile Include="Inputs.cpp" />
-    <ClCompile Include="LaserSystem.cpp" />
-    <ClCompile Include="LevelBuilder.cpp" />
-    <ClCompile Include="LevelCreatorScene.cpp" />
-    <ClCompile Include="Light.cpp" />
-    <ClCompile Include="Logging.cpp" />
-    <ClCompile Include="Main.cpp" />
-    <ClCompile Include="Math.cpp" />
-    <ClCompile Include="Matrix.cpp" />
-    <ClCompile Include="Observer.cpp" />
-    <ClCompile Include="Particle.cpp" />
-    <ClCompile Include="ParticleManager.cpp" />
-    <ClCompile Include="PauseMenu.cpp" />
-    <ClCompile Include="Physics.cpp" />
-    <ClCompile Include="PlatformSystem.cpp" />
-    <ClCompile Include="Renderer.cpp" />
-    <ClCompile Include="Scene.cpp" />
-    <ClCompile Include="SceneSystem.cpp" />
-    <ClCompile Include="Sprite.cpp" />
-    <ClCompile Include="StubScene.cpp" />
-    <ClCompile Include="Subject.cpp" />
-    <ClCompile Include="TbdTestScene.cpp" />
-    <ClCompile Include="TestScene.cpp" />
-    <ClCompile Include="Time.cpp" />
-    <ClCompile Include="Transform.cpp" />
-    <ClCompile Include="Vector.cpp" />
-    <ClCompile Include="WinScene.cpp" />
+    <ClCompile Include="AudioEngine.cpp">
+      <Filter>Source FIles\Other</Filter>
+    </ClCompile>
+    <ClCompile Include="BaseSystem.cpp">
+      <Filter>Source FIles\Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="Behavior.cpp">
+      <Filter>Source FIles\Objects\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="BehaviorPlayer.cpp">
+      <Filter>Source FIles\Objects\Components\Sub Components</Filter>
+    </ClCompile>
+    <ClCompile Include="Collider.cpp">
+      <Filter>Source FIles\Objects\Components\Sub Components</Filter>
+    </ClCompile>
+    <ClCompile Include="ColliderAABB.cpp">
+      <Filter>Source FIles\Objects\Components\Sub Components</Filter>
+    </ClCompile>
+    <ClCompile Include="Collision.cpp">
+      <Filter>Source FIles\Objects\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="Color.cpp">
+      <Filter>Source FIles\Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="Component.cpp">
+      <Filter>Source FIles\Objects\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="ComponentFactory.cpp">
+      <Filter>Source FIles\Engine\Systems</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine.cpp">
+      <Filter>Source FIles\Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="EntityFactory.cpp">
+      <Filter>Source FIles\Engine\Systems</Filter>
+    </ClCompile>
+    <ClCompile Include="FileIO.cpp">
+      <Filter>Source FIles\Other</Filter>
+    </ClCompile>
+    <ClCompile Include="ImageBuffer.cpp">
+      <Filter>Source FIles\Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="IMGUI\imgui.cpp">
+      <Filter>Source FIles\Debug\IMGUI</Filter>
+    </ClCompile>
+    <ClCompile Include="IMGUI\imgui_demo.cpp">
+      <Filter>Source FIles\Debug\IMGUI</Filter>
+    </ClCompile>
+    <ClCompile Include="IMGUI\imgui_draw.cpp">
+      <Filter>Source FIles\Debug\IMGUI</Filter>
+    </ClCompile>
+    <ClCompile Include="IMGUI\imgui_impl_opengl3.cpp">
+      <Filter>Source FIles\Debug\IMGUI</Filter>
+    </ClCompile>
+    <ClCompile Include="IMGUI\imgui_impl_sdl2.cpp">
+      <Filter>Source FIles\Debug\IMGUI</Filter>
+    </ClCompile>
+    <ClCompile Include="IMGUI\imgui_tables.cpp">
+      <Filter>Source FIles\Debug\IMGUI</Filter>
+    </ClCompile>
+    <ClCompile Include="IMGUI\imgui_widgets.cpp">
+      <Filter>Source FIles\Debug\IMGUI</Filter>
+    </ClCompile>
+    <ClCompile Include="Inputs.cpp">
+      <Filter>Source FIles\Objects\Components\Sub Components</Filter>
+    </ClCompile>
+    <ClCompile Include="LaserSystem.cpp">
+      <Filter>Source FIles\Engine\Systems</Filter>
+    </ClCompile>
+    <ClCompile Include="LevelBuilder.cpp">
+      <Filter>Source FIles\Engine\Systems</Filter>
+    </ClCompile>
+    <ClCompile Include="Light.cpp">
+      <Filter>Source FIles\Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="Logging.cpp">
+      <Filter>Source FIles\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="Main.cpp">
+      <Filter>Source FIles\Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="Math.cpp">
+      <Filter>Source FIles\Other</Filter>
+    </ClCompile>
+    <ClCompile Include="Matrix.cpp">
+      <Filter>Source FIles\Other</Filter>
+    </ClCompile>
+    <ClCompile Include="Observer.cpp">
+      <Filter>Source FIles\Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="Particle.cpp">
+      <Filter>Source FIles\Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="ParticleManager.cpp">
+      <Filter>Source FIles\Engine\Systems</Filter>
+    </ClCompile>
+    <ClCompile Include="Physics.cpp">
+      <Filter>Source FIles\Objects\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="Renderer.cpp">
+      <Filter>Source FIles\Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="PlatformSystem.cpp">
+      <Filter>Source FIles\Engine\Systems</Filter>
+    </ClCompile>
+    <ClCompile Include="Scene.cpp">
+      <Filter>Source FIles\Scenes</Filter>
+    </ClCompile>
+    <ClCompile Include="SceneSystem.cpp">
+      <Filter>Source FIles\Engine\Systems</Filter>
+    </ClCompile>
+    <ClCompile Include="StubScene.cpp">
+      <Filter>Source FIles\Scenes</Filter>
+    </ClCompile>
+    <ClCompile Include="Subject.cpp">
+      <Filter>Source FIles\Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="TbdTestScene.cpp">
+      <Filter>Source FIles\Scenes</Filter>
+    </ClCompile>
+    <ClCompile Include="TestScene.cpp">
+      <Filter>Source FIles\Scenes</Filter>
+    </ClCompile>
+    <ClCompile Include="Time.cpp">
+      <Filter>Source FIles\Other</Filter>
+    </ClCompile>
+    <ClCompile Include="Vector.cpp">
+      <Filter>Source FIles\Other</Filter>
+    </ClCompile>
+    <ClCompile Include="Transform.cpp">
+      <Filter>Source FIles\Objects\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="glad.c">
+      <Filter>Misc</Filter>
+    </ClCompile>
+    <ClCompile Include="BehaviorSwitch.cpp">
+      <Filter>Source FIles\Objects\Components\Sub Components</Filter>
+    </ClCompile>
+    <ClCompile Include="BehaviorDoor.cpp">
+      <Filter>Source FIles\Objects\Components\Sub Components</Filter>
+    </ClCompile>
+    <ClCompile Include="WinScene.cpp">
+      <Filter>Source FIles\Scenes</Filter>
+    </ClCompile>
+    <ClCompile Include="BehaviorMirror.cpp">
+      <Filter>Source FIles\Objects\Components\Sub Components</Filter>
+    </ClCompile>
+    <ClCompile Include="PauseMenu.cpp">
+      <Filter>Source FIles\Scenes</Filter>
+    </ClCompile>
+    <ClCompile Include="FontSystem.cpp">
+      <Filter>Source FIles\Other</Filter>
+    </ClCompile>
+    <ClCompile Include="FrameRate.cpp">
+      <Filter>Source FIles\Other</Filter>
+    </ClCompile>
+    <ClCompile Include="PauseMenu.cpp">
+      <Filter>Source FIles\Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="EntityContainer.cpp">
+      <Filter>Source FIles\Engine\Systems</Filter>
+    </ClCompile>
+    <ClCompile Include="Sprite.cpp">
+      <Filter>Source FIles\Objects\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="Entity.cpp">
+      <Filter>Source FIles\Objects\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="LevelCreatorScene.cpp">
+      <Filter>Source FIles\Scenes</Filter>
+    </ClCompile>
+    <ClCompile Include="ImguiFunctions.cpp">
+      <Filter>Source FIles\Debug\IMGUI</Filter>
+    </ClCompile>
+    <ClCompile Include="TextEditor.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AudioEngine.h">
@@ -258,22 +376,132 @@
     <ClInclude Include="LevelCreatorScene.h">
       <Filter>Header FIles\Scenes</Filter>
     </ClInclude>
-    <ClInclude Include="CrashHandler.hpp">
-      <Filter>Source FIles\Engine</Filter>
-    </ClInclude>
     <ClInclude Include="ImguiFunction.h">
       <Filter>Header FIles\Debug\IMGUI</Filter>
     </ClInclude>
+    <ClInclude Include="CrashHandler.hpp">
+      <Filter>Source FIles\Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="TextEditor.h" />
   </ItemGroup>
   <ItemGroup>
-    <Library Include="glfw3.lib" />
+    <Image Include="GameProject.ico">
+      <Filter>Misc</Filter>
+    </Image>
+    <Image Include="small.ico">
+      <Filter>Misc</Filter>
+    </Image>
   </ItemGroup>
   <ItemGroup>
-    <ResourceCompile Include="GameProject.rc" />
+    <None Include="Data\Tbd_TestLevel.json">
+      <Filter>JSON</Filter>
+    </None>
+    <None Include="Data\TileMapSprites.json">
+      <Filter>JSON</Filter>
+    </None>
+    <None Include="Data\FirstLevel.json">
+      <Filter>JSON</Filter>
+    </None>
+    <None Include="Data\ScutSample(ALT).json" />
+    <None Include="Data\Lights\PlayerDirectionalLight.json">
+      <Filter>JSON\PlayerInfo</Filter>
+    </None>
+    <None Include="Data\Lights\PlayerDomeLight.json">
+      <Filter>JSON\PlayerInfo</Filter>
+    </None>
+    <None Include="Data\TiledMichaelSceneTest.json">
+      <Filter>JSON</Filter>
+    </None>
+    <None Include="Data\TileMaps\TiledLevelMap.json">
+      <Filter>JSON</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
-    <Image Include="GameProject.ico" />
-    <Image Include="small.ico" />
+    <Filter Include="Header FIles">
+      <UniqueIdentifier>{e658c1cd-b76d-4b3c-bd32-6f6e474f6712}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source FIles">
+      <UniqueIdentifier>{1e81ce69-1e70-4c2c-bbda-b092a81c4a19}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source FIles\Engine">
+      <UniqueIdentifier>{92360ee6-3909-49ee-899f-1a120dd4d468}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source FIles\Graphics">
+      <UniqueIdentifier>{86a8d41a-e312-4adb-96a2-cf27148e7447}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source FIles\Other">
+      <UniqueIdentifier>{67adfd13-8595-412a-9279-29aebf8b80c7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source FIles\Engine\Systems">
+      <UniqueIdentifier>{3a4681fe-7830-4fac-b66a-b6c7f717fd60}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source FIles\Debug">
+      <UniqueIdentifier>{91e61526-4c23-4444-985a-1df41efc6fb2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source FIles\Debug\IMGUI">
+      <UniqueIdentifier>{97fd30fb-d35a-41e3-8ffb-b1f5a922b860}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source FIles\Scenes">
+      <UniqueIdentifier>{73029d9d-2b71-4328-b8b4-b4858bb8d8c3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header FIles\Engine">
+      <UniqueIdentifier>{a381c9b6-925c-46b2-84b2-99b71f037935}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header FIles\Engine\Systems">
+      <UniqueIdentifier>{ad1c4456-e175-4b32-a83d-61fc641202aa}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header FIles\Graphics">
+      <UniqueIdentifier>{9ba2d1d8-df33-483f-b64b-d8907a8917dd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header FIles\Other">
+      <UniqueIdentifier>{a01094ca-3b8b-4689-8f2c-c71609610310}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header FIles\Debug">
+      <UniqueIdentifier>{ecc7b1ee-3995-4863-833d-d808f6f0579c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header FIles\Debug\IMGUI">
+      <UniqueIdentifier>{9e0547e2-503e-4db9-b99b-b9ecf19657e2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header FIles\Scenes">
+      <UniqueIdentifier>{4c268037-aea2-4ac0-8398-1e5b41868baa}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="JSON">
+      <UniqueIdentifier>{cf2db7ae-2cf2-4fab-9aaf-779fb0e07f6c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Misc">
+      <UniqueIdentifier>{2ffef8f6-b2f1-4463-89d0-1b2a001c38ef}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="JSON\PlayerInfo">
+      <UniqueIdentifier>{08dc41b4-6903-4de6-8280-c2b717b0869f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source FIles\Objects">
+      <UniqueIdentifier>{9d2303e3-307c-4c47-976b-43bdd3062079}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header FIles\Objects">
+      <UniqueIdentifier>{f151f551-13ab-4f39-b1d5-950231f39b99}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source FIles\Objects\Components">
+      <UniqueIdentifier>{a1fb3ca0-ba95-4aaf-92db-61cb5df28aa1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source FIles\Objects\Components\Sub Components">
+      <UniqueIdentifier>{509c5c30-911b-4606-802e-10c718b049e8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header FIles\Objects\Components">
+      <UniqueIdentifier>{f8a86454-b5ec-4ade-96c8-3e27ac807661}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header FIles\Objects\Components\SubComponents">
+      <UniqueIdentifier>{1645cc6e-b343-4df9-a18b-30710904e527}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="GameProject.rc">
+      <Filter>Misc</Filter>
+    </ResourceCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Library Include="glfw3.lib">
+      <Filter>Misc</Filter>
+    </Library>
   </ItemGroup>
   <ItemGroup>
     <None Include="Data\FirstLevel.json" />

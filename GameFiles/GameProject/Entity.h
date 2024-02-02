@@ -4,7 +4,7 @@
 // Author(s):	Michael Howard
 // Purpose:		Base class for game objects
 //
-// Copyright © 2023 DigiPen (USA) Corporation.
+// Copyright ?2023 DigiPen (USA) Corporation.
 //
 //------------------------------------------------------------------------------
 #pragma once
@@ -30,6 +30,7 @@ public:
 	void CreateAnimatedImage(const std::string);
 
 	bool IsNamed(const char* name);
+	bool IsPicked(Renderer* pRenderder, Vector2 mousePos);
 	void Read(json &stream);
 	void FreeComponents();
 	void Add(Component*);
