@@ -158,9 +158,9 @@ xcopy "$(ProjectDir)Fmod\*.dll" "$(OutDir)" /s /r /y /q /i</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="ImguiFunction.h" />
     <ClInclude Include="IMGUI\imconfig.h" />
     <ClInclude Include="IMGUI\imgui.h" />
+    <ClInclude Include="IMGUI\ImguiFunction.h" />
     <ClInclude Include="IMGUI\imgui_impl_opengl3.h" />
     <ClInclude Include="IMGUI\imgui_impl_opengl3_loader.h" />
     <ClInclude Include="IMGUI\imgui_impl_sdl2.h" />
@@ -229,8 +229,8 @@ xcopy "$(ProjectDir)Fmod\*.dll" "$(OutDir)" /s /r /y /q /i</Command>
     <ClCompile Include="Engine.cpp" />
     <ClCompile Include="glad.c" />
     <ClCompile Include="ImageBuffer.cpp" />
-    <ClCompile Include="ImguiFunctions.cpp" />
     <ClCompile Include="IMGUI\imgui.cpp" />
+    <ClCompile Include="IMGUI\ImguiFunctions.cpp" />
     <ClCompile Include="IMGUI\imgui_demo.cpp" />
     <ClCompile Include="IMGUI\imgui_draw.cpp" />
     <ClCompile Include="IMGUI\imgui_impl_opengl3.cpp" />
@@ -241,7 +241,6 @@ xcopy "$(ProjectDir)Fmod\*.dll" "$(OutDir)" /s /r /y /q /i</Command>
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="Math.cpp" />
     <ClCompile Include="Matrix.cpp" />
-    <ClCompile Include="Observer.cpp" />
     <ClCompile Include="ParticleManager.cpp" />
     <ClCompile Include="Renderer.cpp" />
     <ClCompile Include="Source\AudioEngine.cpp" />
@@ -268,6 +267,7 @@ xcopy "$(ProjectDir)Fmod\*.dll" "$(OutDir)" /s /r /y /q /i</Command>
     <ClCompile Include="Source\LevelCreatorScene.cpp" />
     <ClCompile Include="Source\Light.cpp" />
     <ClCompile Include="Source\Logging.cpp" />
+    <ClCompile Include="Source\Observer.cpp" />
     <ClCompile Include="Source\Particle.cpp" />
     <ClCompile Include="Source\PauseMenu.cpp" />
     <ClCompile Include="Source\Physics.cpp" />
@@ -276,12 +276,12 @@ xcopy "$(ProjectDir)Fmod\*.dll" "$(OutDir)" /s /r /y /q /i</Command>
     <ClCompile Include="Source\SceneSystem.cpp" />
     <ClCompile Include="Source\Sprite.cpp" />
     <ClCompile Include="Source\StubScene.cpp" />
+    <ClCompile Include="Source\Subject.cpp" />
     <ClCompile Include="Source\TbdTestScene.cpp" />
     <ClCompile Include="Source\TestScene.cpp" />
     <ClCompile Include="Source\TextEditor.cpp" />
     <ClCompile Include="Source\Transform.cpp" />
     <ClCompile Include="Source\WinScene.cpp" />
-    <ClCompile Include="Subject.cpp" />
     <ClCompile Include="Time.cpp" />
     <ClCompile Include="Vector.cpp" />
   </ItemGroup>

@@ -34,12 +34,6 @@
     <ClCompile Include="glad.c">
       <Filter>Misc</Filter>
     </ClCompile>
-    <ClCompile Include="PauseMenu.cpp">
-      <Filter>Source FIles\Graphics</Filter>
-    </ClCompile>
-    <ClCompile Include="ImguiFunctions.cpp">
-      <Filter>Source FIles\Debug\IMGUI</Filter>
-    </ClCompile>
     <ClCompile Include="Source\Logging.cpp">
       <Filter>Source FIles\Debug</Filter>
     </ClCompile>
@@ -47,12 +41,6 @@
       <Filter>Source FIles\Engine</Filter>
     </ClCompile>
     <ClCompile Include="Source\BaseSystem.cpp">
-      <Filter>Source FIles\Engine</Filter>
-    </ClCompile>
-    <ClCompile Include="Subject.cpp">
-      <Filter>Source FIles\Engine</Filter>
-    </ClCompile>
-    <ClCompile Include="Observer.cpp">
       <Filter>Source FIles\Engine</Filter>
     </ClCompile>
     <ClCompile Include="Engine.cpp">
@@ -92,9 +80,6 @@
       <Filter>Source FIles\Graphics</Filter>
     </ClCompile>
     <ClCompile Include="Source\Particle.cpp">
-      <Filter>Source FIles\Graphics</Filter>
-    </ClCompile>
-    <ClCompile Include="Renderer.cpp">
       <Filter>Source FIles\Graphics</Filter>
     </ClCompile>
     <ClCompile Include="Source\Component.cpp">
@@ -176,6 +161,18 @@
       <Filter>Source FIles\Scenes</Filter>
     </ClCompile>
     <ClCompile Include="Source\TextEditor.cpp" />
+    <ClCompile Include="Source\Subject.cpp">
+      <Filter>Source FIles\Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Observer.cpp">
+      <Filter>Source FIles\Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="Renderer.cpp">
+      <Filter>Source FIles\Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="IMGUI\ImguiFunctions.cpp">
+      <Filter>Source FIles\Debug\IMGUI</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="IMGUI\imgui.h">
@@ -210,9 +207,6 @@
     </ClInclude>
     <ClInclude Include="targetver.h">
       <Filter>Misc</Filter>
-    </ClInclude>
-    <ClInclude Include="ImguiFunction.h">
-      <Filter>Header FIles\Debug\IMGUI</Filter>
     </ClInclude>
     <ClInclude Include="Source\DebugNew.h">
       <Filter>Header FIles\Debug</Filter>
@@ -374,6 +368,9 @@
       <Filter>Source FIles\Engine</Filter>
     </ClInclude>
     <ClInclude Include="Source\TextEditor.h" />
+    <ClInclude Include="IMGUI\ImguiFunction.h">
+      <Filter>Header FIles\Debug\IMGUI</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="GameProject.ico">
