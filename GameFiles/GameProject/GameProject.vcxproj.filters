@@ -1,48 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <ClCompile Include="AudioEngine.cpp">
-      <Filter>Source FIles\Other</Filter>
-    </ClCompile>
-    <ClCompile Include="BaseSystem.cpp">
-      <Filter>Source FIles\Engine</Filter>
-    </ClCompile>
-    <ClCompile Include="Behavior.cpp">
-      <Filter>Source FIles\Objects\Components</Filter>
-    </ClCompile>
-    <ClCompile Include="BehaviorPlayer.cpp">
-      <Filter>Source FIles\Objects\Components\Sub Components</Filter>
-    </ClCompile>
-    <ClCompile Include="Collider.cpp">
-      <Filter>Source FIles\Objects\Components\Sub Components</Filter>
-    </ClCompile>
-    <ClCompile Include="ColliderAABB.cpp">
-      <Filter>Source FIles\Objects\Components\Sub Components</Filter>
-    </ClCompile>
-    <ClCompile Include="Collision.cpp">
-      <Filter>Source FIles\Objects\Components</Filter>
-    </ClCompile>
-    <ClCompile Include="Color.cpp">
-      <Filter>Source FIles\Graphics</Filter>
-    </ClCompile>
-    <ClCompile Include="Component.cpp">
-      <Filter>Source FIles\Objects\Components</Filter>
-    </ClCompile>
-    <ClCompile Include="ComponentFactory.cpp">
-      <Filter>Source FIles\Engine\Systems</Filter>
-    </ClCompile>
-    <ClCompile Include="Engine.cpp">
-      <Filter>Source FIles\Engine</Filter>
-    </ClCompile>
-    <ClCompile Include="EntityFactory.cpp">
-      <Filter>Source FIles\Engine\Systems</Filter>
-    </ClCompile>
-    <ClCompile Include="FileIO.cpp">
-      <Filter>Source FIles\Other</Filter>
-    </ClCompile>
-    <ClCompile Include="ImageBuffer.cpp">
-      <Filter>Source FIles\Graphics</Filter>
-    </ClCompile>
     <ClCompile Include="IMGUI\imgui.cpp">
       <Filter>Source FIles\Debug\IMGUI</Filter>
     </ClCompile>
@@ -64,65 +22,8 @@
     <ClCompile Include="IMGUI\imgui_widgets.cpp">
       <Filter>Source FIles\Debug\IMGUI</Filter>
     </ClCompile>
-    <ClCompile Include="Inputs.cpp">
-      <Filter>Source FIles\Objects\Components\Sub Components</Filter>
-    </ClCompile>
-    <ClCompile Include="LaserSystem.cpp">
-      <Filter>Source FIles\Engine\Systems</Filter>
-    </ClCompile>
-    <ClCompile Include="LevelBuilder.cpp">
-      <Filter>Source FIles\Engine\Systems</Filter>
-    </ClCompile>
-    <ClCompile Include="Light.cpp">
-      <Filter>Source FIles\Graphics</Filter>
-    </ClCompile>
-    <ClCompile Include="Logging.cpp">
-      <Filter>Source FIles\Debug</Filter>
-    </ClCompile>
-    <ClCompile Include="Main.cpp">
-      <Filter>Source FIles\Engine</Filter>
-    </ClCompile>
-    <ClCompile Include="Math.cpp">
-      <Filter>Source FIles\Other</Filter>
-    </ClCompile>
     <ClCompile Include="Matrix.cpp">
       <Filter>Source FIles\Other</Filter>
-    </ClCompile>
-    <ClCompile Include="Observer.cpp">
-      <Filter>Source FIles\Engine</Filter>
-    </ClCompile>
-    <ClCompile Include="Particle.cpp">
-      <Filter>Source FIles\Graphics</Filter>
-    </ClCompile>
-    <ClCompile Include="ParticleManager.cpp">
-      <Filter>Source FIles\Engine\Systems</Filter>
-    </ClCompile>
-    <ClCompile Include="Physics.cpp">
-      <Filter>Source FIles\Objects\Components</Filter>
-    </ClCompile>
-    <ClCompile Include="Renderer.cpp">
-      <Filter>Source FIles\Graphics</Filter>
-    </ClCompile>
-    <ClCompile Include="PlatformSystem.cpp">
-      <Filter>Source FIles\Engine\Systems</Filter>
-    </ClCompile>
-    <ClCompile Include="Scene.cpp">
-      <Filter>Source FIles\Scenes</Filter>
-    </ClCompile>
-    <ClCompile Include="SceneSystem.cpp">
-      <Filter>Source FIles\Engine\Systems</Filter>
-    </ClCompile>
-    <ClCompile Include="StubScene.cpp">
-      <Filter>Source FIles\Scenes</Filter>
-    </ClCompile>
-    <ClCompile Include="Subject.cpp">
-      <Filter>Source FIles\Engine</Filter>
-    </ClCompile>
-    <ClCompile Include="TbdTestScene.cpp">
-      <Filter>Source FIles\Scenes</Filter>
-    </ClCompile>
-    <ClCompile Include="TestScene.cpp">
-      <Filter>Source FIles\Scenes</Filter>
     </ClCompile>
     <ClCompile Include="Time.cpp">
       <Filter>Source FIles\Other</Filter>
@@ -130,52 +31,148 @@
     <ClCompile Include="Vector.cpp">
       <Filter>Source FIles\Other</Filter>
     </ClCompile>
-    <ClCompile Include="Transform.cpp">
-      <Filter>Source FIles\Objects\Components</Filter>
+    <ClCompile Include="Source\Logging.cpp">
+      <Filter>Source FIles\Debug</Filter>
     </ClCompile>
-    <ClCompile Include="glad.c">
-      <Filter>Misc</Filter>
+    <ClCompile Include="Main.cpp">
+      <Filter>Source FIles\Engine</Filter>
     </ClCompile>
-    <ClCompile Include="BehaviorSwitch.cpp">
-      <Filter>Source FIles\Objects\Components\Sub Components</Filter>
+    <ClCompile Include="Source\BaseSystem.cpp">
+      <Filter>Source FIles\Engine</Filter>
     </ClCompile>
-    <ClCompile Include="BehaviorDoor.cpp">
-      <Filter>Source FIles\Objects\Components\Sub Components</Filter>
+    <ClCompile Include="Engine.cpp">
+      <Filter>Source FIles\Engine</Filter>
     </ClCompile>
-    <ClCompile Include="WinScene.cpp">
-      <Filter>Source FIles\Scenes</Filter>
-    </ClCompile>
-    <ClCompile Include="BehaviorMirror.cpp">
-      <Filter>Source FIles\Objects\Components\Sub Components</Filter>
-    </ClCompile>
-    <ClCompile Include="PauseMenu.cpp">
-      <Filter>Source FIles\Scenes</Filter>
-    </ClCompile>
-    <ClCompile Include="FontSystem.cpp">
-      <Filter>Source FIles\Other</Filter>
-    </ClCompile>
-    <ClCompile Include="FrameRate.cpp">
-      <Filter>Source FIles\Other</Filter>
-    </ClCompile>
-    <ClCompile Include="PauseMenu.cpp">
-      <Filter>Source FIles\Graphics</Filter>
-    </ClCompile>
-    <ClCompile Include="EntityContainer.cpp">
+    <ClCompile Include="Source\ComponentFactory.cpp">
       <Filter>Source FIles\Engine\Systems</Filter>
     </ClCompile>
-    <ClCompile Include="Sprite.cpp">
+    <ClCompile Include="Source\EntityContainer.cpp">
+      <Filter>Source FIles\Engine\Systems</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\EntityFactory.cpp">
+      <Filter>Source FIles\Engine\Systems</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\LaserSystem.cpp">
+      <Filter>Source FIles\Engine\Systems</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\PlatformSystem.cpp">
+      <Filter>Source FIles\Engine\Systems</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\SceneSystem.cpp">
+      <Filter>Source FIles\Engine\Systems</Filter>
+    </ClCompile>
+    <ClCompile Include="LevelBuilder.cpp">
+      <Filter>Source FIles\Engine\Systems</Filter>
+    </ClCompile>
+    <ClCompile Include="ParticleManager.cpp">
+      <Filter>Source FIles\Engine\Systems</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Color.cpp">
+      <Filter>Source FIles\Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="ImageBuffer.cpp">
+      <Filter>Source FIles\Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Light.cpp">
+      <Filter>Source FIles\Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Particle.cpp">
+      <Filter>Source FIles\Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Component.cpp">
       <Filter>Source FIles\Objects\Components</Filter>
     </ClCompile>
-    <ClCompile Include="Entity.cpp">
+    <ClCompile Include="Source\Behavior.cpp">
       <Filter>Source FIles\Objects\Components</Filter>
     </ClCompile>
-    <ClCompile Include="LevelCreatorScene.cpp">
+    <ClCompile Include="Source\Collision.cpp">
+      <Filter>Source FIles\Objects\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Entity.cpp">
+      <Filter>Source FIles\Objects\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Physics.cpp">
+      <Filter>Source FIles\Objects\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Sprite.cpp">
+      <Filter>Source FIles\Objects\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Transform.cpp">
+      <Filter>Source FIles\Objects\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\BehaviorDoor.cpp">
+      <Filter>Source FIles\Objects\Components\Sub Components</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\BehaviorMirror.cpp">
+      <Filter>Source FIles\Objects\Components\Sub Components</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\BehaviorPlayer.cpp">
+      <Filter>Source FIles\Objects\Components\Sub Components</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\BehaviorSwitch.cpp">
+      <Filter>Source FIles\Objects\Components\Sub Components</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Collider.cpp">
+      <Filter>Source FIles\Objects\Components\Sub Components</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\ColliderAABB.cpp">
+      <Filter>Source FIles\Objects\Components\Sub Components</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Inputs.cpp">
+      <Filter>Source FIles\Objects\Components\Sub Components</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\AudioEngine.cpp">
+      <Filter>Source FIles\Other</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\FileIO.cpp">
+      <Filter>Source FIles\Other</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\FontSystem.cpp">
+      <Filter>Source FIles\Other</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\FrameRate.cpp">
+      <Filter>Source FIles\Other</Filter>
+    </ClCompile>
+    <ClCompile Include="Math.cpp">
+      <Filter>Source FIles\Other</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\LevelCreatorScene.cpp">
       <Filter>Source FIles\Scenes</Filter>
     </ClCompile>
-    <ClCompile Include="ImguiFunctions.cpp">
+    <ClCompile Include="Source\PauseMenu.cpp">
+      <Filter>Source FIles\Scenes</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Scene.cpp">
+      <Filter>Source FIles\Scenes</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\StubScene.cpp">
+      <Filter>Source FIles\Scenes</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\TbdTestScene.cpp">
+      <Filter>Source FIles\Scenes</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\TestScene.cpp">
+      <Filter>Source FIles\Scenes</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\WinScene.cpp">
+      <Filter>Source FIles\Scenes</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\TextEditor.cpp" />
+    <ClCompile Include="Source\Subject.cpp">
+      <Filter>Source FIles\Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Observer.cpp">
+      <Filter>Source FIles\Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="Renderer.cpp">
+      <Filter>Source FIles\Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="IMGUI\ImguiFunctions.cpp">
       <Filter>Source FIles\Debug\IMGUI</Filter>
     </ClCompile>
-    <ClCompile Include="TextEditor.cpp" />
+    <ClCompile Include="Misc\glad.c">
+      <Filter>Misc</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="IMGUI\imgui.h">
@@ -205,22 +202,6 @@
     <ClInclude Include="IMGUI\imconfig.h">
       <Filter>Header FIles\Debug\IMGUI</Filter>
     </ClInclude>
-    <ClInclude Include="includes\glfw\glfw3.h">
-      <Filter>Misc</Filter>
-    </ClInclude>
-    <ClInclude Include="targetver.h">
-      <Filter>Misc</Filter>
-    </ClInclude>
-    <ClInclude Include="PauseMenu.h">
-      <Filter>Header FIles\Graphics</Filter>
-    </ClInclude>
-    <ClInclude Include="ImguiFunction.h">
-      <Filter>Header FIles\Debug\IMGUI</Filter>
-    </ClInclude>
-    <ClInclude Include="CrashHandler.hpp">
-      <Filter>Source FIles\Engine</Filter>
-    </ClInclude>
-    <ClInclude Include="TextEditor.h" />
     <ClInclude Include="Source\DebugNew.h">
       <Filter>Header FIles\Debug</Filter>
     </ClInclude>
@@ -377,12 +358,25 @@
     <ClInclude Include="Vector.h">
       <Filter>Header FIles\Other</Filter>
     </ClInclude>
+    <ClInclude Include="Source\CrashHandler.hpp">
+      <Filter>Source FIles\Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\TextEditor.h" />
+    <ClInclude Include="IMGUI\ImguiFunction.h">
+      <Filter>Header FIles\Debug\IMGUI</Filter>
+    </ClInclude>
+    <ClInclude Include="glfw-3.3.8.bin.WIN64\glfw-3.3.8.bin.WIN64\include\GLFW\glfw3.h">
+      <Filter>Misc</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\targetver.h">
+      <Filter>Misc</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <Image Include="GameProject.ico">
+    <Image Include="Misc\GameProject.ico">
       <Filter>Misc</Filter>
     </Image>
-    <Image Include="small.ico">
+    <Image Include="Misc\small.ico">
       <Filter>Misc</Filter>
     </Image>
   </ItemGroup>
@@ -488,16 +482,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ResourceCompile Include="GameProject.rc">
-      <Filter>Misc</Filter>
-    </ResourceCompile>
-  </ItemGroup>
-  <ItemGroup>
-    <Library Include="glfw3.lib">
-      <Filter>Misc</Filter>
-    </Library>
-  </ItemGroup>
-  <ItemGroup>
     <None Include="Data\FirstLevel.json" />
     <None Include="Data\Lights\PlayerDirectionalLight.json" />
     <None Include="Data\Lights\PlayerDomeLight.json" />
@@ -506,5 +490,15 @@
     <None Include="Data\TiledMichaelSceneTest.json" />
     <None Include="Data\TileMapSprites.json" />
     <None Include="Data\TileMaps\TiledLevelMap.json" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="Misc\GameProject.rc">
+      <Filter>Misc</Filter>
+    </ResourceCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Library Include="Misc\glfw3.lib">
+      <Filter>Misc</Filter>
+    </Library>
   </ItemGroup>
 </Project>

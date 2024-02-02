@@ -71,11 +71,11 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <IncludePath>$(IncludePath);$(ProjectDir)JSON;$(ProjectDir)IMGUI;$(ProjectDir)Source;$(ProjectDir)SDL2_ttf\include</IncludePath>
+    <IncludePath>$(IncludePath);$(ProjectDir);$(ProjectDir)JSON;$(ProjectDir)IMGUI;$(ProjectDir)Source;$(ProjectDir)SDL2_ttf\include</IncludePath>
     <LibraryPath>$(LibraryPath);IMGUI</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <IncludePath>$(IncludePath);$(ProjectDir)JSON;$(ProjectDir)IMGUI;$(ProjectDir)Source;$(ProjectDir)SDL2_ttf\include</IncludePath>
+    <IncludePath>$(IncludePath);$(ProjectDir);$(ProjectDir)JSON;$(ProjectDir)IMGUI;$(ProjectDir)Source;$(ProjectDir)SDL2_ttf\include</IncludePath>
     <LibraryPath>$(LibraryPath);IMGUI</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
@@ -158,10 +158,10 @@ xcopy "$(ProjectDir)Fmod\*.dll" "$(OutDir)" /s /r /y /q /i</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="CrashHandler.hpp" />
-    <ClInclude Include="ImguiFunction.h" />
+    <ClInclude Include="glfw-3.3.8.bin.WIN64\glfw-3.3.8.bin.WIN64\include\GLFW\glfw3.h" />
     <ClInclude Include="IMGUI\imconfig.h" />
     <ClInclude Include="IMGUI\imgui.h" />
+    <ClInclude Include="IMGUI\ImguiFunction.h" />
     <ClInclude Include="IMGUI\imgui_impl_opengl3.h" />
     <ClInclude Include="IMGUI\imgui_impl_opengl3_loader.h" />
     <ClInclude Include="IMGUI\imgui_impl_sdl2.h" />
@@ -169,7 +169,6 @@ xcopy "$(ProjectDir)Fmod\*.dll" "$(OutDir)" /s /r /y /q /i</Command>
     <ClInclude Include="IMGUI\imstb_rectpack.h" />
     <ClInclude Include="IMGUI\imstb_textedit.h" />
     <ClInclude Include="IMGUI\imstb_truetype.h" />
-    <ClInclude Include="includes\glfw\glfw3.h" />
     <ClInclude Include="Math.h" />
     <ClInclude Include="Math_Header.h" />
     <ClInclude Include="Source\AudioEngine.h" />
@@ -185,6 +184,7 @@ xcopy "$(ProjectDir)Fmod\*.dll" "$(OutDir)" /s /r /y /q /i</Command>
     <ClInclude Include="Source\Color.h" />
     <ClInclude Include="Source\Component.h" />
     <ClInclude Include="Source\ComponentFactory.h" />
+    <ClInclude Include="Source\CrashHandler.hpp" />
     <ClInclude Include="Source\DebugNew.h" />
     <ClInclude Include="Source\Engine.h" />
     <ClInclude Include="Source\Entity.h" />
@@ -216,86 +216,78 @@ xcopy "$(ProjectDir)Fmod\*.dll" "$(OutDir)" /s /r /y /q /i</Command>
     <ClInclude Include="Source\Sprite.h" />
     <ClInclude Include="Source\StubScene.h" />
     <ClInclude Include="Source\Subject.h" />
+    <ClInclude Include="Source\targetver.h" />
     <ClInclude Include="Source\TbdTestScene.h" />
     <ClInclude Include="Source\TestScene.h" />
+    <ClInclude Include="Source\TextEditor.h" />
     <ClInclude Include="Source\Transform.h" />
     <ClInclude Include="Source\WinScene.h" />
-    <ClInclude Include="targetver.h" />
-    <ClInclude Include="TextEditor.h" />
     <ClInclude Include="Time.h" />
     <ClInclude Include="Vector.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="AudioEngine.cpp" />
-    <ClCompile Include="BaseSystem.cpp" />
-    <ClCompile Include="Behavior.cpp" />
-    <ClCompile Include="BehaviorMirror.cpp" />
-    <ClCompile Include="BehaviorPlayer.cpp" />
-    <ClCompile Include="BehaviorSwitch.cpp" />
-    <ClCompile Include="Collider.cpp" />
-    <ClCompile Include="ColliderAABB.cpp" />
-    <ClCompile Include="Collision.cpp" />
-    <ClCompile Include="Color.cpp" />
-    <ClCompile Include="Component.cpp" />
-    <ClCompile Include="ComponentFactory.cpp" />
-    <ClCompile Include="BehaviorDoor.cpp" />
     <ClCompile Include="Engine.cpp" />
-    <ClCompile Include="Entity.cpp" />
-    <ClCompile Include="EntityContainer.cpp" />
-    <ClCompile Include="EntityFactory.cpp" />
-    <ClCompile Include="FileIO.cpp" />
-    <ClCompile Include="FontSystem.cpp" />
-    <ClCompile Include="FrameRate.cpp" />
-    <ClCompile Include="glad.c" />
     <ClCompile Include="ImageBuffer.cpp" />
-    <ClCompile Include="ImguiFunctions.cpp" />
     <ClCompile Include="IMGUI\imgui.cpp" />
+    <ClCompile Include="IMGUI\ImguiFunctions.cpp" />
     <ClCompile Include="IMGUI\imgui_demo.cpp" />
     <ClCompile Include="IMGUI\imgui_draw.cpp" />
     <ClCompile Include="IMGUI\imgui_impl_opengl3.cpp" />
     <ClCompile Include="IMGUI\imgui_impl_sdl2.cpp" />
     <ClCompile Include="IMGUI\imgui_tables.cpp" />
     <ClCompile Include="IMGUI\imgui_widgets.cpp" />
-    <ClCompile Include="Inputs.cpp" />
-    <ClCompile Include="LaserSystem.cpp" />
     <ClCompile Include="LevelBuilder.cpp" />
-    <ClCompile Include="LevelCreatorScene.cpp" />
-    <ClCompile Include="Light.cpp" />
-    <ClCompile Include="Logging.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="Math.cpp" />
     <ClCompile Include="Matrix.cpp" />
-    <ClCompile Include="Observer.cpp" />
-    <ClCompile Include="Particle.cpp" />
+    <ClCompile Include="Misc\glad.c" />
     <ClCompile Include="ParticleManager.cpp" />
-    <ClCompile Include="PauseMenu.cpp" />
-    <ClCompile Include="Physics.cpp" />
-    <ClCompile Include="PlatformSystem.cpp" />
     <ClCompile Include="Renderer.cpp" />
-    <ClCompile Include="Scene.cpp" />
-    <ClCompile Include="SceneSystem.cpp" />
-    <ClCompile Include="Sprite.cpp" />
-    <ClCompile Include="StubScene.cpp" />
-    <ClCompile Include="Subject.cpp" />
-    <ClCompile Include="TbdTestScene.cpp" />
-    <ClCompile Include="TestScene.cpp">
-      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">C:\Users\tyler\OneDrive\Desktop\Documents\Vyv_Lantern\GameFiles\GameProject\glfw-3.3.8.bin.WIN64\glfw-3.3.8.bin.WIN64\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-    </ClCompile>
-    <ClCompile Include="TextEditor.cpp" />
+    <ClCompile Include="Source\AudioEngine.cpp" />
+    <ClCompile Include="Source\BaseSystem.cpp" />
+    <ClCompile Include="Source\Behavior.cpp" />
+    <ClCompile Include="Source\BehaviorDoor.cpp" />
+    <ClCompile Include="Source\BehaviorMirror.cpp" />
+    <ClCompile Include="Source\BehaviorPlayer.cpp" />
+    <ClCompile Include="Source\BehaviorSwitch.cpp" />
+    <ClCompile Include="Source\Collider.cpp" />
+    <ClCompile Include="Source\ColliderAABB.cpp" />
+    <ClCompile Include="Source\Collision.cpp" />
+    <ClCompile Include="Source\Color.cpp" />
+    <ClCompile Include="Source\Component.cpp" />
+    <ClCompile Include="Source\ComponentFactory.cpp" />
+    <ClCompile Include="Source\Entity.cpp" />
+    <ClCompile Include="Source\EntityContainer.cpp" />
+    <ClCompile Include="Source\EntityFactory.cpp" />
+    <ClCompile Include="Source\FileIO.cpp" />
+    <ClCompile Include="Source\FontSystem.cpp" />
+    <ClCompile Include="Source\FrameRate.cpp" />
+    <ClCompile Include="Source\Inputs.cpp" />
+    <ClCompile Include="Source\LaserSystem.cpp" />
+    <ClCompile Include="Source\LevelCreatorScene.cpp" />
+    <ClCompile Include="Source\Light.cpp" />
+    <ClCompile Include="Source\Logging.cpp" />
+    <ClCompile Include="Source\Observer.cpp" />
+    <ClCompile Include="Source\Particle.cpp" />
+    <ClCompile Include="Source\PauseMenu.cpp" />
+    <ClCompile Include="Source\Physics.cpp" />
+    <ClCompile Include="Source\PlatformSystem.cpp" />
+    <ClCompile Include="Source\Scene.cpp" />
+    <ClCompile Include="Source\SceneSystem.cpp" />
+    <ClCompile Include="Source\Sprite.cpp" />
+    <ClCompile Include="Source\StubScene.cpp" />
+    <ClCompile Include="Source\Subject.cpp" />
+    <ClCompile Include="Source\TbdTestScene.cpp" />
+    <ClCompile Include="Source\TestScene.cpp" />
+    <ClCompile Include="Source\TextEditor.cpp" />
+    <ClCompile Include="Source\Transform.cpp" />
+    <ClCompile Include="Source\WinScene.cpp" />
     <ClCompile Include="Time.cpp" />
-    <ClCompile Include="Transform.cpp" />
     <ClCompile Include="Vector.cpp" />
-    <ClCompile Include="WinScene.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ResourceCompile Include="GameProject.rc" />
-  </ItemGroup>
-  <ItemGroup>
-    <Image Include="GameProject.ico" />
-    <Image Include="small.ico" />
-  </ItemGroup>
-  <ItemGroup>
-    <Library Include="glfw3.lib" />
+    <Image Include="Misc\GameProject.ico" />
+    <Image Include="Misc\small.ico" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Data\FirstLevel.json" />
@@ -306,6 +298,12 @@ xcopy "$(ProjectDir)Fmod\*.dll" "$(OutDir)" /s /r /y /q /i</Command>
     <None Include="Data\TiledMichaelSceneTest.json" />
     <None Include="Data\TileMapSprites.json" />
     <None Include="Data\TileMaps\TiledLevelMap.json" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="Misc\GameProject.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <Library Include="Misc\glfw3.lib" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
