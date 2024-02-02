@@ -504,7 +504,7 @@ void LevelCreatorScene::ImGuiWindow()
 			{
 				if (ImGui::Button("Submit"))
 				{
-					std::string filename = "./Data/Scenes/HugeMap" + std::string(filenameBuffer) + ".json";
+					std::string filename = "./Data/Scenes/" + std::string(filenameBuffer) + ".json";
 					std::ifstream file(filename);
 					if (file.is_open())
 					{
