@@ -31,9 +31,6 @@
     <ClCompile Include="Vector.cpp">
       <Filter>Source FIles\Other</Filter>
     </ClCompile>
-    <ClCompile Include="glad.c">
-      <Filter>Misc</Filter>
-    </ClCompile>
     <ClCompile Include="Source\Logging.cpp">
       <Filter>Source FIles\Debug</Filter>
     </ClCompile>
@@ -173,6 +170,9 @@
     <ClCompile Include="IMGUI\ImguiFunctions.cpp">
       <Filter>Source FIles\Debug\IMGUI</Filter>
     </ClCompile>
+    <ClCompile Include="Misc\glad.c">
+      <Filter>Misc</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="IMGUI\imgui.h">
@@ -201,12 +201,6 @@
     </ClInclude>
     <ClInclude Include="IMGUI\imconfig.h">
       <Filter>Header FIles\Debug\IMGUI</Filter>
-    </ClInclude>
-    <ClInclude Include="includes\glfw\glfw3.h">
-      <Filter>Misc</Filter>
-    </ClInclude>
-    <ClInclude Include="targetver.h">
-      <Filter>Misc</Filter>
     </ClInclude>
     <ClInclude Include="Source\DebugNew.h">
       <Filter>Header FIles\Debug</Filter>
@@ -371,12 +365,18 @@
     <ClInclude Include="IMGUI\ImguiFunction.h">
       <Filter>Header FIles\Debug\IMGUI</Filter>
     </ClInclude>
+    <ClInclude Include="glfw-3.3.8.bin.WIN64\glfw-3.3.8.bin.WIN64\include\GLFW\glfw3.h">
+      <Filter>Misc</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\targetver.h">
+      <Filter>Misc</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <Image Include="GameProject.ico">
+    <Image Include="Misc\GameProject.ico">
       <Filter>Misc</Filter>
     </Image>
-    <Image Include="small.ico">
+    <Image Include="Misc\small.ico">
       <Filter>Misc</Filter>
     </Image>
   </ItemGroup>
@@ -482,16 +482,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ResourceCompile Include="GameProject.rc">
-      <Filter>Misc</Filter>
-    </ResourceCompile>
-  </ItemGroup>
-  <ItemGroup>
-    <Library Include="glfw3.lib">
-      <Filter>Misc</Filter>
-    </Library>
-  </ItemGroup>
-  <ItemGroup>
     <None Include="Data\FirstLevel.json" />
     <None Include="Data\Lights\PlayerDirectionalLight.json" />
     <None Include="Data\Lights\PlayerDomeLight.json" />
@@ -500,5 +490,15 @@
     <None Include="Data\TiledMichaelSceneTest.json" />
     <None Include="Data\TileMapSprites.json" />
     <None Include="Data\TileMaps\TiledLevelMap.json" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="Misc\GameProject.rc">
+      <Filter>Misc</Filter>
+    </ResourceCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Library Include="Misc\glfw3.lib">
+      <Filter>Misc</Filter>
+    </Library>
   </ItemGroup>
 </Project>

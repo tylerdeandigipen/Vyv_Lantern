@@ -158,6 +158,7 @@ xcopy "$(ProjectDir)Fmod\*.dll" "$(OutDir)" /s /r /y /q /i</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="glfw-3.3.8.bin.WIN64\glfw-3.3.8.bin.WIN64\include\GLFW\glfw3.h" />
     <ClInclude Include="IMGUI\imconfig.h" />
     <ClInclude Include="IMGUI\imgui.h" />
     <ClInclude Include="IMGUI\ImguiFunction.h" />
@@ -168,7 +169,6 @@ xcopy "$(ProjectDir)Fmod\*.dll" "$(OutDir)" /s /r /y /q /i</Command>
     <ClInclude Include="IMGUI\imstb_rectpack.h" />
     <ClInclude Include="IMGUI\imstb_textedit.h" />
     <ClInclude Include="IMGUI\imstb_truetype.h" />
-    <ClInclude Include="includes\glfw\glfw3.h" />
     <ClInclude Include="Math.h" />
     <ClInclude Include="Math_Header.h" />
     <ClInclude Include="Source\AudioEngine.h" />
@@ -216,18 +216,17 @@ xcopy "$(ProjectDir)Fmod\*.dll" "$(OutDir)" /s /r /y /q /i</Command>
     <ClInclude Include="Source\Sprite.h" />
     <ClInclude Include="Source\StubScene.h" />
     <ClInclude Include="Source\Subject.h" />
+    <ClInclude Include="Source\targetver.h" />
     <ClInclude Include="Source\TbdTestScene.h" />
     <ClInclude Include="Source\TestScene.h" />
     <ClInclude Include="Source\TextEditor.h" />
     <ClInclude Include="Source\Transform.h" />
     <ClInclude Include="Source\WinScene.h" />
-    <ClInclude Include="targetver.h" />
     <ClInclude Include="Time.h" />
     <ClInclude Include="Vector.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Engine.cpp" />
-    <ClCompile Include="glad.c" />
     <ClCompile Include="ImageBuffer.cpp" />
     <ClCompile Include="IMGUI\imgui.cpp" />
     <ClCompile Include="IMGUI\ImguiFunctions.cpp" />
@@ -241,6 +240,7 @@ xcopy "$(ProjectDir)Fmod\*.dll" "$(OutDir)" /s /r /y /q /i</Command>
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="Math.cpp" />
     <ClCompile Include="Matrix.cpp" />
+    <ClCompile Include="Misc\glad.c" />
     <ClCompile Include="ParticleManager.cpp" />
     <ClCompile Include="Renderer.cpp" />
     <ClCompile Include="Source\AudioEngine.cpp" />
@@ -286,14 +286,8 @@ xcopy "$(ProjectDir)Fmod\*.dll" "$(OutDir)" /s /r /y /q /i</Command>
     <ClCompile Include="Vector.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ResourceCompile Include="GameProject.rc" />
-  </ItemGroup>
-  <ItemGroup>
-    <Image Include="GameProject.ico" />
-    <Image Include="small.ico" />
-  </ItemGroup>
-  <ItemGroup>
-    <Library Include="glfw3.lib" />
+    <Image Include="Misc\GameProject.ico" />
+    <Image Include="Misc\small.ico" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Data\FirstLevel.json" />
@@ -304,6 +298,12 @@ xcopy "$(ProjectDir)Fmod\*.dll" "$(OutDir)" /s /r /y /q /i</Command>
     <None Include="Data\TiledMichaelSceneTest.json" />
     <None Include="Data\TileMapSprites.json" />
     <None Include="Data\TileMaps\TiledLevelMap.json" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="Misc\GameProject.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <Library Include="Misc\glfw3.lib" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
