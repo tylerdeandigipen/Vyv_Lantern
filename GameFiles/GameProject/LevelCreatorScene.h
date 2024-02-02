@@ -100,8 +100,7 @@ public:
 				ImGui::SliderInt2("Test Transform", properties[(*EntityContainer::GetInstance())[i]->GetRealName()].translation, -10.f, 100.f);
 
 				ImGui::Checkbox("isEditable", &isEditable);
-				ImGui::Text(isEditable ? "true" : "false");
-				ImGui::Text((properties[(*EntityContainer::GetInstance())[i]->GetRealName()].isPicked ? "true" : "false"));
+				ImGui::Text((properties[(*EntityContainer::GetInstance())[i]->GetRealName()].isPicked ? "Entity is picked" : "Entity is not picked"));
 
 				if (ImGui::Button("Delete"))
 				{
