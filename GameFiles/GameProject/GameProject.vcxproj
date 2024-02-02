@@ -209,6 +209,7 @@ xcopy "$(ProjectDir)Fmod\*.dll" "$(OutDir)" /s /r /y /q /i</Command>
     <ClInclude Include="PauseMenu.h" />
     <ClInclude Include="Physics.h" />
     <ClInclude Include="PlatformSystem.h" />
+    <ClInclude Include="Reflector.h" />
     <ClInclude Include="Renderer.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="Scene.h" />
@@ -272,6 +273,7 @@ xcopy "$(ProjectDir)Fmod\*.dll" "$(OutDir)" /s /r /y /q /i</Command>
     <ClCompile Include="PauseMenu.cpp" />
     <ClCompile Include="Physics.cpp" />
     <ClCompile Include="PlatformSystem.cpp" />
+    <ClCompile Include="Reflector.cpp" />
     <ClCompile Include="Renderer.cpp" />
     <ClCompile Include="Scene.cpp" />
     <ClCompile Include="SceneSystem.cpp" />

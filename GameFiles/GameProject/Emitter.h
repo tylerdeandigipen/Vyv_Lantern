@@ -41,15 +41,38 @@ public:
 	Emitter(Emitter const& emmitter2cpy);
 	~Emitter();
 	Component* Clone() const override;
-	std::string GetName() override;
-	static std::string Name();
+
 	void Read(json jsonData) override;
 	void Update(float dt);
+	void Render() const;
+
+	void setEmitting() { isEmitting = !isEmitting; }; //probably a control flag and collision flag
+
+	std::string GetName() override
+	{
+		return std::string();
+	};
+
+	std::string Name()
+	{
+		return "Emitter";
+	};
+
+	static void EmitterCollisionHandler(Entity& object1, Entity& object2);
+
 private:
-	gfxVector2* emmitDirection;
-	gfxVector2* emmitPosition;
-	float emmitMaxDistance;
+
+	gfxVector2* emitDirection;
+	gfxVector2* emitDirection2;
+	gfxVector2* emitPosition;
+
+	float emitMaxDistance;
+	float DrawDistance;
 	bool isDirty;
 
+	bool isEmitting;
+	bool isDualMirror;
+
+	bool emitterTwoIsActive;
 };
 
