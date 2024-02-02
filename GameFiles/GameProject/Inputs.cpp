@@ -64,18 +64,21 @@ void Inputs::handleInput()
 #ifdef _DEBUG
         ImGui_ImplSDL2_ProcessEvent(&event);
 #endif
-        switch (event.type)
+        ImGuiIO& io = ImGui::GetIO();
+        if (!io.WantCaptureKeyboard)
         {
-			case SDL_QUIT:
+            switch (event.type)
+            {
+            case SDL_QUIT:
                 // sets close request, which shuts down engine
-				Engine::GetInstance()->SetCloseRequest(true);
-				break;
-            
+                Engine::GetInstance()->SetCloseRequest(true);
+                break;
+
             case SDL_MOUSEMOTION:
                 // detects mouse movement and updates mouse cords
                 SDL_GetMouseState(&mouseX, &mouseY);
                 break;
-            
+
             case SDL_MOUSEBUTTONDOWN:
                 if (event.button.button == SDL_BUTTON_RIGHT)
                 {
@@ -86,7 +89,7 @@ void Inputs::handleInput()
                     leftMouseB = true;
                 }
                 break;
-            
+
             case SDL_MOUSEBUTTONUP:
                 if (event.button.button == SDL_BUTTON_RIGHT)
                 {
@@ -97,7 +100,7 @@ void Inputs::handleInput()
                     leftMouseB = false;
                 }
                 break;
-            
+
             case SDL_KEYDOWN:
                 // checks if key is within a valid range
                 if (event.key.keysym.scancode >= 0 && event.key.keysym.scancode < SDL_NUM_SCANCODES)
@@ -106,14 +109,14 @@ void Inputs::handleInput()
                     keyStates[event.key.keysym.scancode] = true;
 
                     // if escape is pressed, shut down engine
-                    if (event.key.keysym.sym == SDLK_ESCAPE) 
+                    if (event.key.keysym.sym == SDLK_ESCAPE)
                     {
                         Engine::GetInstance()->SetCloseRequest(true);
                         quitting = true;
                     }
                 }
                 break;
-            
+
             case SDL_KEYUP:
                 if (event.key.keysym.scancode >= 0 && event.key.keysym.scancode < SDL_NUM_SCANCODES)
                 {
@@ -121,6 +124,7 @@ void Inputs::handleInput()
                     keyStates[event.key.keysym.scancode] = false;
                 }
                 break;
+            }
         }
     }
 }
