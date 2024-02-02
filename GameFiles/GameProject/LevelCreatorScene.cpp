@@ -99,7 +99,7 @@ void ShowEntityInfo()
 
 			if (ImGui::Button("Delete"))
 			{
-				EntityContainer::GetInstance()->RemoveEntity();
+				EntityContainer::GetInstance()->RemoveEntity((*EntityContainer::GetInstance())[i]);
 				break;
 			}
 
@@ -318,7 +318,7 @@ Vector2 LevelCreatorScene::PlaceTile(Vector2 tilePos)
 
 	if (io.WantCaptureMouse)
 	{
-		return Vector2{ 0, 0 }; 
+		return Vector2{ 0, 0 };
 	}
 
 	Vector2 displacement = { 0,0 };
@@ -593,7 +593,7 @@ void LevelCreatorScene::ImGuiWindow()
 			{
 				if (ImGui::Button("Submit"))
 				{
-					std::string filename = "./Data/" + std::string(filenameBuffer); 
+					std::string filename = "./Data/" + std::string(filenameBuffer);
 					std::ifstream file(filename);
 					if (file.is_open())
 					{
@@ -667,56 +667,56 @@ void LevelCreatorScene::ImGuiWindow()
 					CreateMirrorEntity();
 				} */
 
-				}
-				ImGui::TreePop();
 			}
+			ImGui::TreePop();
+		}
 
-			if (ImGui::TreeNode("Tile Selector:"))
+		if (ImGui::TreeNode("Tile Selector:"))
+		{
+			if (ImGui::Button("Wall Tile"))
 			{
-				if (ImGui::Button("Wall Tile"))
-				{
-					currentTile = 1;
-				}
-
-				ImGui::TreePop();
+				currentTile = 1;
 			}
 
 			ImGui::TreePop();
 		}
 
-		ImGui::Separator();
-
-		if (ImGui::TreeNode("Object Selector:"))
-		{
-			ShowEntityInfo();
-
-			if (ImGui::Button("Apply Properties"))
-			{
-				ApplyProperties();
-			}
-
-			ImGui::TreePop();
-		}
-
-		ImGui::Separator();
-
-		if (ImGui::Button("Reset Scene"))
-		{
-			SceneSystem::GetInstance()->RestartScene();
-		}
-
-		if (ImGui::Button("Test Scene"))
-		{
-			SceneSystem::GetInstance()->SetScene(TestSceneGetInstance());
-		}
-
-		if (ImGui::Button("TbdTest Scene"))
-		{
-			SceneSystem::GetInstance()->SetScene(TbdTestSceneGetInstance());
-		}
-
-		ImGui::End();
+		ImGui::TreePop();
 	}
+
+	ImGui::Separator();
+
+	if (ImGui::TreeNode("Object Selector:"))
+	{
+		ShowEntityInfo();
+
+		if (ImGui::Button("Apply Properties"))
+		{
+			ApplyProperties();
+		}
+
+		ImGui::TreePop();
+	}
+
+	ImGui::Separator();
+
+	if (ImGui::Button("Reset Scene"))
+	{
+		SceneSystem::GetInstance()->RestartScene();
+	}
+
+	if (ImGui::Button("Test Scene"))
+	{
+		SceneSystem::GetInstance()->SetScene(TestSceneGetInstance());
+	}
+
+	if (ImGui::Button("TbdTest Scene"))
+	{
+		SceneSystem::GetInstance()->SetScene(TbdTestSceneGetInstance());
+	}
+
+	ImGui::End();
+
 }
 
 ///////////////////////////////////////////////////////////////////////////////////
