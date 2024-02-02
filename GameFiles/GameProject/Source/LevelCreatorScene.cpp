@@ -84,6 +84,8 @@ Engine::EngineCode LevelCreatorScene::Init()
 	if (g_Manager.InitializeProperties("./Data/GameObjects/ObjectListLevelBuilder.json"))
 		std::cout << "Property load success!\n";
 
+	LevelBuilder::GetInstance()->LoadTileMap("./Data/TiledMichaelSceneTest.json");
+
 	g_Manager.pRenderer = LevelCreatorPixelRenderer;
 
 	moveVector = { 0,0 };
@@ -683,9 +685,9 @@ void LevelCreatorScene::ImGuiWindow()
 ///////////////////////////////////////////////////////////////////////////////////
 /* testing stuff ! */
 
-static int circles_existing = 0;
 int LevelCreatorScene::CreateCircleEntity()
 {
+	int circles_existing = 0;
 	std::string number = "./Data/GameObjects/Circle";
 	std::string filename = "./Data/GameObjects/Circle.json";
 	std::string line;
@@ -704,6 +706,7 @@ int LevelCreatorScene::CreateCircleEntity()
 
 		EntityContainer::GetInstance()->AddEntity(FileIO::GetInstance()->ReadEntity(filename));
 		Logging::GetInstance("LevelCreator.log").LogToAll("Timestamped message: %s", "Creating");
+		++circles_existing;
 		number += std::to_string(circles_existing);
 		number += ".json";
 		std::ofstream file(number);
