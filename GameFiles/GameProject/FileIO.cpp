@@ -396,16 +396,16 @@ void FileIO::ExportTileMap(std::string name)
 	tilemapArray["layers"][1] = tilemapCol;
 
 	// save tilemap to a file
-	std::ofstream file("./Data/" + name + "MAP" + ".json");
+	std::ofstream file("./Data/Scenes/" + name + "MAP" + ".json");
 	file << std::setw(2) << tilemapArray << std::endl;
 
 	json readable;
 	json data;
-	data["TileMapFile"] = "./Data/" + name + "MAP" + ".json";
+	data["TileMapFile"] = "./Data/Scenes/" + name + "MAP" + ".json";
 	readable["TiledData"] = data;
 
 	//the filemap to read
-	std::ofstream actualfile("./Data/" + name + ".json");
+	std::ofstream actualfile("./Data/Scenes/" + name + ".json");
 	actualfile << std::setw(2) << readable << std::endl;
 }
 
