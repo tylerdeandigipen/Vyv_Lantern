@@ -4,7 +4,7 @@
 // Author(s):	Michael Howard
 // Purpose:		Sets up the tilemap and game objects for each level
 //
-// Copyright  © 2023 DigiPen (USA) Corporation.
+// Copyright  ?2023 DigiPen (USA) Corporation.
 //
 //------------------------------------------------------------------------------
 #include "LevelBuilder.h"

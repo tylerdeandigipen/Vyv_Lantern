@@ -4,7 +4,7 @@
 // Author(s):	Michael Howard
 // Purpose:		Reading JSON data
 //
-// Copyright  © 2023 DigiPen (USA) Corporation.
+// Copyright  ?2023 DigiPen (USA) Corporation.
 //
 //------------------------------------------------------------------------------
 #include "FileIO.h"
@@ -135,7 +135,11 @@ int** FileIO::ReadTiledMap(json jsonData)
 							{
 								newindex = j * SizeX + i;
 								int newVal = Array[newindex];
-								TileMap[i][j] = newVal - 1;
+								if (newVal != 0)
+								{
+									--newVal;
+								}
+								TileMap[i][j] = newVal;
 								//++hatelife; used to debug json
 							}
 						}
