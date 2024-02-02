@@ -452,7 +452,7 @@ Scene* LevelCreatorSceneGetInstance(void)
 
 bool IsFileNameValid(const std::string& fileName)
 {
-	static const std::string illegalChars = "#%&{}\\<>*?/ $!'\":@+`|= ";
+	static const std::string illegalChars = "#%&{}\\<>*?$!'\":@+`|= ";
 	for (char c : fileName)
 	{
 		if (illegalChars.find(c) != std::string::npos)
@@ -549,7 +549,7 @@ void LevelCreatorScene::ImGuiWindow()
 							file.close();
 							LevelBuilder::GetInstance()->LoadTileMap(filename);
 						}
-						else 
+						else
 						{
 							ImGui::OpenPopup("FileNotFoundPopup");
 						}
@@ -576,7 +576,6 @@ void LevelCreatorScene::ImGuiWindow()
 					ImGui::EndPopup();
 				}
 			}
-
 			ImGui::TreePop();
 		}
 
