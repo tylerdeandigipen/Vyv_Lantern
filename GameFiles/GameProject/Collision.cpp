@@ -4,7 +4,7 @@
 // Author(s):	Louis Wang
 // Purpose:		Collision detection math. 
 //
-// Copyright © 2023 DigiPen (USA) Corporation.
+// Copyright ?2023 DigiPen (USA) Corporation.
 //
 //------------------------------------------------------------------------------
 #include "Collision.h"

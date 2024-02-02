@@ -15,23 +15,19 @@
 #include <glad/glad.h>
 #include <iostream>
 #include <algorithm>
-#include <map>
 
 #include "LevelCreatorScene.h"
 #include "Scene.h"
 #include "PlatformSystem.h"
 #include "Engine.h"
-#include "Entity.h"
 #include "BehaviorPlayer.h"
-#include "EntityContainer.h"
+
 #include "FileIO.h"
 #include "SceneSystem.h"
 #include "Renderer.h"
 #include "Inputs.h"
 #include "Logging.h"
 #include "Time.h"
-#include "Transform.h"
-
 #include "ImageBuffer.h"
 #include "Light.h"
 #include "LevelBuilder.h"
@@ -57,100 +53,7 @@ bool playMode = false;
 
 bool playerSpawned = false;
 
-struct EntityProperties
-{
-	int translation[2] = { 0 };
-	Vector2 rotation;
-	bool isCollidable;
-};
-
-std::unordered_map<std::string, EntityProperties> properties;
-
-bool InitializeProperties(std::string file_path)
-{
-	//initialize level data
-	EntityContainer::GetInstance()->ReadEntities(file_path);
-
-	for (int i = 0; i < EntityContainer::GetInstance()->CountEntities(); i++)
-	{
-		Transform* t = (*EntityContainer::GetInstance())[i]->Has(Transform);
-		properties[(*EntityContainer::GetInstance())[i]->GetRealName()] = EntityProperties{ {static_cast<int>(std::floorf(t->GetTranslation()->x)), static_cast<int>(std::floorf(t->GetTranslation()->y))}, {0.f, 0.f}, false };
-	}
-
-	return true; //Initialization success!
-}
-
-void ShowEntityInfo()
-{
-	for (int i = 0; i < EntityContainer::GetInstance()->CountEntities(); i++)
-	{
-		if (ImGui::TreeNode(("Entity %s", (*EntityContainer::GetInstance())[i]->GetRealName().c_str())))
-		{
-			//ImGui::Text("Name: %s", (*EntityContainer::GetInstance())[i]->GetName());
-			ImGui::Text("Entity Number: %d", i);
-
-			ImGui::Text("Transform: (%f, %f)", properties[(*EntityContainer::GetInstance())[i]->GetRealName()].translation[0], properties[(*EntityContainer::GetInstance())[i]->GetRealName()].translation[1]);
-			ImGui::Text("Rotation: (%f, %f)", properties[(*EntityContainer::GetInstance())[i]->GetRealName()].rotation);
-			ImGui::Checkbox("Apply Collision", &properties[(*EntityContainer::GetInstance())[i]->GetRealName()].isCollidable);
-			ImGui::SliderInt2("Test Transform", properties[(*EntityContainer::GetInstance())[i]->GetRealName()].translation, -10.f, 100.f);
-
-			LevelCreatorPixelRenderer->objects[i]->position.x = properties[(*EntityContainer::GetInstance())[i]->GetRealName()].translation[0];
-			LevelCreatorPixelRenderer->objects[i]->position.y = properties[(*EntityContainer::GetInstance())[i]->GetRealName()].translation[1];
-
-			if (ImGui::Button("Delete"))
-			{
-				EntityContainer::GetInstance()->RemoveEntity((*EntityContainer::GetInstance())[i]);
-				break;
-			}
-
-			ImGui::TreePop();
-		}
-	}
-}
-
-int ApplyProperties()
-{
-	for (int i = 0; i < EntityContainer::GetInstance()->CountEntities(); i++)
-	{
-		std::string filename = (*EntityContainer::GetInstance())[i]->GetFilePath(); // Replace with your actual JSON file path
-
-		// Read the JSON file
-		std::ifstream input_file(filename);
-		if (!input_file.is_open())
-		{
-			std::cerr << "Error opening file" << std::endl;
-			return 1;
-		}
-
-		json j;
-		input_file >> j;
-		input_file.close();
-
-		// Modify the translation values
-		for (auto& component : j["Components"])
-		{
-			if (component["Type"] == "Transform")
-			{
-				// Set new values for x and y
-				component["translation"]["x"] = properties[(*EntityContainer::GetInstance())[i]->GetRealName()].translation[0]; // Replace with the new X value
-				component["translation"]["y"] = properties[(*EntityContainer::GetInstance())[i]->GetRealName()].translation[1]; // Replace with the new Y value
-				break;
-			}
-		}
-
-		// Write the modified JSON back to the file
-		std::ofstream output_file(filename);
-		if (!output_file.is_open())
-		{
-			std::cerr << "Error opening file for writing" << std::endl;
-			return 1;
-		}
-
-		output_file << j.dump(4); // Writing with an indentation of 4 spaces
-		output_file.close();
-	}
-	return 0;
-}
+EntityManager g_Manager;
 
 LevelCreatorScene::LevelCreatorScene() : Scene("LevelCreatortest")
 {
@@ -178,14 +81,18 @@ Engine::EngineCode LevelCreatorScene::Init()
 	LevelCreatorWindow = PlatformSystem::GetInstance()->GetWindowHandle();
 	LevelCreatorPixelRenderer->window = LevelCreatorWindow;
 
-	if (InitializeProperties("./Data/GameObjects/ObjectListLevelBuilder.json"))
+	if (g_Manager.InitializeProperties("./Data/GameObjects/ObjectListLevelBuilder.json"))
 		std::cout << "Property load success!\n";
+
+	g_Manager.pRenderer = LevelCreatorPixelRenderer;
 
 	moveVector = { 0,0 };
 	oldMousePos = { 0,0 };
 	previousTile = { -1000,-1000 };
 	currentTile = 1;
 	return Engine::NothingBad;
+
+	
 }
 
 Vector2 pos1, pos2;
@@ -375,6 +282,7 @@ bool canTogglePlayMode = true;
 void LevelCreatorScene::ToolHandler()
 {
 	Inputs* inputHandler = Inputs::GetInstance();
+	g_Manager.pInput = inputHandler;
 
 	int x, y;
 	Uint32 buttons = SDL_GetMouseState(&x, &y);
@@ -511,6 +419,7 @@ void LevelCreatorScene::Update(float dt)
 
 void LevelCreatorScene::Render()
 {
+
 	return;
 }
 
@@ -547,6 +456,8 @@ void LevelCreatorScene::ImGuiInterg()
 	ImGui_ImplOpenGL3_NewFrame();
 	ImGui_ImplSDL2_NewFrame();
 	ImGui::NewFrame();
+
+	g_Manager.EditText();
 
 	if (showCreatorToolsWindow)
 	{
@@ -593,7 +504,7 @@ void LevelCreatorScene::ImGuiWindow()
 			{
 				if (ImGui::Button("Submit"))
 				{
-					std::string filename = "./Data/" + std::string(filenameBuffer);
+					std::string filename = "./Data/Scenes/HugeMap" + std::string(filenameBuffer) + ".json";
 					std::ifstream file(filename);
 					if (file.is_open())
 					{
@@ -688,11 +599,11 @@ void LevelCreatorScene::ImGuiWindow()
 
 	if (ImGui::TreeNode("Object Selector:"))
 	{
-		ShowEntityInfo();
+		g_Manager.ShowEntityInfo();
 
 		if (ImGui::Button("Apply Properties"))
 		{
-			ApplyProperties();
+			//ApplyProperties(g.);
 		}
 
 		ImGui::TreePop();
@@ -715,7 +626,10 @@ void LevelCreatorScene::ImGuiWindow()
 		SceneSystem::GetInstance()->SetScene(TbdTestSceneGetInstance());
 	}
 
+	g_Manager.EditEntity(Vector2{ static_cast<float>(Inputs::GetInstance()->getMouseX()), static_cast<float>(Inputs::GetInstance()->getMouseY()) });
+
 	ImGui::End();
+
 
 }
 

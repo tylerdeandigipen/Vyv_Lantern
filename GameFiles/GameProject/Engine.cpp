@@ -5,7 +5,7 @@
 // Purpose:		Core of entire engine, updates, renders, initalizes, and closes
 //              all systems.
 //
-// Copyright © 2023 DigiPen (USA) Corporation.
+// Copyright ?2023 DigiPen (USA) Corporation.
 //
 //------------------------------------------------------------------------------
 

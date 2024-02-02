@@ -221,6 +221,7 @@ xcopy "$(ProjectDir)Fmod\*.dll" "$(OutDir)" /s /r /y /q /i</Command>
     <ClInclude Include="targetver.h" />
     <ClInclude Include="TbdTestScene.h" />
     <ClInclude Include="TestScene.h" />
+    <ClInclude Include="TextEditor.h" />
     <ClInclude Include="Time.h" />
     <ClInclude Include="Transform.h" />
     <ClInclude Include="Vector.h" />
@@ -282,6 +283,7 @@ xcopy "$(ProjectDir)Fmod\*.dll" "$(OutDir)" /s /r /y /q /i</Command>
     <ClCompile Include="TestScene.cpp">
       <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">C:\Users\tyler\OneDrive\Desktop\Documents\Vyv_Lantern\GameFiles\GameProject\glfw-3.3.8.bin.WIN64\glfw-3.3.8.bin.WIN64\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
+    <ClCompile Include="TextEditor.cpp" />
     <ClCompile Include="Time.cpp" />
     <ClCompile Include="Transform.cpp" />
     <ClCompile Include="Vector.cpp" />
