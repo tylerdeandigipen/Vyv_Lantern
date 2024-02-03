@@ -26,6 +26,8 @@ public:
 	~Entity();
 	Entity* Clone();
 
+	std::string key;
+
 	void CreateImage(const std::string file);
 	void CreateAnimatedImage(const std::string);
 

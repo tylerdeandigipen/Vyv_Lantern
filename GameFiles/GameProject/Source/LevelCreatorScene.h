@@ -8,6 +8,7 @@
 //
 //------------------------------------------------------------------------------
 #pragma once
+#include "stdafx.h"
 #include "Engine.h"
 #include "Scene.h"
 #include "SceneSystem.h"
@@ -23,12 +24,14 @@
 #include <map>
 
 class Scene;
+Scene* LevelCreatorSceneGetInstance(void);
 
 class LevelCreatorScene : public Scene
 {
 public:
 	
 	LevelCreatorScene();
+	~LevelCreatorScene();
 
 	Engine::EngineCode Load(void) override;
 	Engine::EngineCode Init(void) override;
@@ -37,6 +40,8 @@ public:
 	void Update(float dt) override;
 	void Render(void) override;
 	bool winState = false;
+	std::string currentGameObjectsList = "./Data/GameObjects/ObjectListLevelBuilder.json";
+	std::vector<Entity*> tempEntities;
 private:
 	void ImGuiInterg();
 	void ImGuiWindow();
@@ -51,9 +56,9 @@ private:
 	int CreateCircleEntity();
 	int CreateDoorEntity();
 	int CreateMirrorEntity();
+	void AddToFile(std::string nametoadd);
 
-
-	std::string currentGameObjectsList = "./Data/GameObjects/ObjectListLevelBuilder.json";
+	std::unordered_map<std::string, std::function<void(void)>> AddFunc;
 	std::string currentTileMapList;
 	char myTextBuffer[256]{};
 	char LoadBuffer[256]{};
@@ -65,12 +70,17 @@ private:
 	};
 };
 
+/* fucntion for adding funcitons to map */
+void AddCircleEntity();
+
+
 struct EntityProperties
 {
 	int translation[2] = { 0 };
 	float rotation;
 	// bool isCollidable;
 	bool isPicked = false;
+	bool isEditable = false;
 };
 
 class EntityManager
@@ -87,25 +97,29 @@ public:
 
 	[[noreturn]] void ShowEntityInfo()
 	{
-		for (int i = 0; i < EntityContainer::GetInstance()->CountEntities(); i++)
+		LevelCreatorScene* creator = reinterpret_cast<LevelCreatorScene*>(LevelCreatorSceneGetInstance());
+		for (int i = 0; i < creator->tempEntities.size(); i++)
 		{
-			if (ImGui::TreeNode(("Entity %s", (*EntityContainer::GetInstance())[i]->GetRealName().c_str())))
+			if (ImGui::TreeNode(("Entity %s", creator->tempEntities[i]->key.c_str())))
 			{
+				//ImGui::Text("Name: %s", creator->tempEntities[i]->GetName());
 				ImGui::Text("Entity Number: %d", i);
 
-				ImGui::Text("Transform: (%d, %d)", properties[(*EntityContainer::GetInstance())[i]->GetRealName()].translation[0], properties[(*EntityContainer::GetInstance())[i]->GetRealName()].translation[1]);
-				ImGui::Text("Rotation: (%f)", properties[(*EntityContainer::GetInstance())[i]->GetRealName()].rotation);
+				ImGui::Text("Transform: (%f, %f)", properties[creator->tempEntities[i]->key].translation[0], properties[creator->tempEntities[i]->key].translation[1]);
+				ImGui::Text("Rotation: (%f, %f)", properties[creator->tempEntities[i]->key].rotation);
+				ImGui::SliderInt2("Test Transform", properties[creator->tempEntities[i]->key].translation, -10.f, 100.f);
+
 				ImGui::Checkbox("isEditable", &isEditable);
-				ImGui::Text((properties[(*EntityContainer::GetInstance())[i]->GetRealName()].isPicked ? "Entity is picked" : "Entity is not picked"));
+				ImGui::Text((properties[creator->tempEntities[i]->key].isPicked ? "Entity is picked" : "Entity is not picked"));
 
 				if (ImGui::Button("Delete"))
 				{
-					EntityContainer::GetInstance()->RemoveEntity((*EntityContainer::GetInstance())[i]);
+					EntityContainer::GetInstance()->RemoveEntity(creator->tempEntities[i]);
 					break;
 				}
 
-				pRenderer->objects[i]->position.x = properties[(*EntityContainer::GetInstance())[i]->GetRealName()].translation[0];
-				pRenderer->objects[i]->position.y = properties[(*EntityContainer::GetInstance())[i]->GetRealName()].translation[1];
+				pRenderer->objects[i]->position.x = properties[creator->tempEntities[i]->key].translation[0];
+				pRenderer->objects[i]->position.y = properties[creator->tempEntities[i]->key].translation[1];
 
 				ImGui::TreePop();
 			}
@@ -114,9 +128,10 @@ public:
 
 	[[nodiscard]] int ApplyProperties()
 	{
-		for (int i = 0; i < EntityContainer::GetInstance()->CountEntities(); i++)
+		LevelCreatorScene* creator = reinterpret_cast<LevelCreatorScene*>(LevelCreatorSceneGetInstance());
+		for (int i = 0; i < creator->tempEntities.size(); i++)
 		{
-			std::string filename = (*EntityContainer::GetInstance())[i]->GetFilePath(); // Replace with your actual JSON file path
+			std::string filename = creator->tempEntities[i]->GetFilePath(); // Replace with your actual JSON file path
 
 			// Read the JSON file
 			std::ifstream input_file(filename);
@@ -136,8 +151,8 @@ public:
 				if (component["Type"] == "Transform")
 				{
 					// Set new values for x and y
-					component["translation"]["x"] = properties[(*EntityContainer::GetInstance())[i]->GetRealName()].translation[0]; // Replace with the new X value
-					component["translation"]["y"] = properties[(*EntityContainer::GetInstance())[i]->GetRealName()].translation[1]; // Replace with the new Y value
+					component["translation"]["x"] = properties[creator->tempEntities[i]->key].translation[0]; // Replace with the new X value
+					component["translation"]["y"] = properties[creator->tempEntities[i]->key].translation[1]; // Replace with the new Y value
 					break;
 				}
 			}
@@ -159,14 +174,16 @@ public:
 	[[nodiscard]] bool InitializeProperties(std::string file_path)
 	{
 		//initialize level data
+		LevelCreatorScene* creator = reinterpret_cast<LevelCreatorScene*>(LevelCreatorSceneGetInstance());
 		EntityContainer::GetInstance()->ReadEntities(file_path);
 
-		for (int i = 0; i < EntityContainer::GetInstance()->CountEntities(); i++)
+		for (int i = 0; i < creator->tempEntities.size(); i++)
 		{
-			Transform* t = (*EntityContainer::GetInstance())[i]->Has(Transform);
-			properties[(*EntityContainer::GetInstance())[i]->GetRealName()] = EntityProperties{ {static_cast<int>(std::floorf(t->GetTranslation()->x)), static_cast<int>(std::floorf(t->GetTranslation()->y))}, 
-																								{t->GetRotation()}, 
-																								{false} };
+			if (creator->tempEntities[i])
+			{
+				Transform* t = creator->tempEntities[i]->Has(Transform);
+				properties[creator->tempEntities[i]->key] = EntityProperties{ {static_cast<int>(std::floorf(t->GetTranslation()->x)), static_cast<int>(std::floorf(t->GetTranslation()->y))}, {0.f}, false };
+			}
 		}
 
 		file = std::ifstream(fileToEdit);
@@ -260,27 +277,28 @@ public:
 
 	void EntityPicker()
 	{
+		LevelCreatorScene* creator = reinterpret_cast<LevelCreatorScene*>(LevelCreatorSceneGetInstance());
 		if (isEditable)
 		{
-			for (int i = 0; i < EntityContainer::GetInstance()->CountEntities(); i++)
+			for (int i = 0; i < creator->tempEntities.size(); i++)
 			{
-				if ((properties[(*EntityContainer::GetInstance())[i]->GetRealName()].translation[0] + 15) >= mousePos_.x && (properties[(*EntityContainer::GetInstance())[i]->GetRealName()].translation[0]) <= mousePos_.x &&
-					(properties[(*EntityContainer::GetInstance())[i]->GetRealName()].translation[1] + 15) >= mousePos_.y && (properties[(*EntityContainer::GetInstance())[i]->GetRealName()].translation[1]) <= mousePos_.y)
+				if ((properties[creator->tempEntities[i]->key].translation[0] + 15) >= mousePos_.x && (properties[creator->tempEntities[i]->key].translation[0]) <= mousePos_.x &&
+					(properties[creator->tempEntities[i]->key].translation[1] + 15) >= mousePos_.y && (properties[creator->tempEntities[i]->key].translation[1]) <= mousePos_.y)
 				{
 					if (pInput->mouseButtonDown(SDL_BUTTON_LEFT))
 					{
-						properties[(*EntityContainer::GetInstance())[i]->GetRealName()].isPicked = true;
+						properties[creator->tempEntities[i]->key].isPicked = true;
 					}
 					else
 					{
-						properties[(*EntityContainer::GetInstance())[i]->GetRealName()].isPicked = false;
+						properties[creator->tempEntities[i]->key].isPicked = false;
 					}
 				}
 
-				if (properties[(*EntityContainer::GetInstance())[i]->GetRealName()].isPicked == true)
+				if (properties[creator->tempEntities[i]->key].isPicked == true)
 				{
-					properties[(*EntityContainer::GetInstance())[i]->GetRealName()].translation[0] = mousePos_.x - 8;
-					properties[(*EntityContainer::GetInstance())[i]->GetRealName()].translation[1] = mousePos_.y - 8;
+					properties[creator->tempEntities[i]->key].translation[0] = mousePos_.x - 8;
+					properties[creator->tempEntities[i]->key].translation[1] = mousePos_.y - 8;
 				}
 			}
 		}
@@ -305,4 +323,3 @@ public:
 	Inputs* pInput;
 };
 
-Scene* LevelCreatorSceneGetInstance(void);

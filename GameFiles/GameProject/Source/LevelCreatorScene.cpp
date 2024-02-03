@@ -55,9 +55,13 @@ bool playerSpawned = false;
 
 EntityManager g_Manager;
 
-LevelCreatorScene::LevelCreatorScene() : Scene("LevelCreatortest")
+LevelCreatorScene::LevelCreatorScene() : Scene("LevelCreatortest"), tempEntities()
 {
 
+}
+
+LevelCreatorScene::~LevelCreatorScene()
+{
 }
 
 Engine::EngineCode LevelCreatorScene::Load()
@@ -85,6 +89,12 @@ Engine::EngineCode LevelCreatorScene::Init()
 		std::cout << "Property load success!\n";
 
 	LevelBuilder::GetInstance()->LoadTileMap("./Data/TiledMichaelSceneTest.json");
+
+
+	// init function maps to add files at end
+	AddFunc.emplace("Circle", &AddCircleEntity);
+	//AddFunc.emplace("Door", 
+	//AddFunc.emplace("Mirror", 
 
 	g_Manager.pRenderer = LevelCreatorPixelRenderer;
 
@@ -428,6 +438,20 @@ void LevelCreatorScene::Render()
 Engine::EngineCode LevelCreatorScene::Exit()
 {
 	EntityContainer::GetInstance()->FreeAll();
+	
+	if (!tempEntities.empty())
+	{
+		for (auto it : tempEntities)
+		{
+			if (it)
+			{
+				it->FreeComponents();
+				delete it;
+				it = NULL;
+			}
+		}
+		tempEntities.clear();
+	}
 	Inputs::GetInstance()->InputKeyClear();
 	LevelCreatorPixelRenderer->CleanRenderer();
 	return Engine::NothingBad;
@@ -698,8 +722,24 @@ void LevelCreatorScene::ImGuiWindow()
 ///////////////////////////////////////////////////////////////////////////////////
 /* testing stuff ! */
 
+static int entityCount = 0;
 int LevelCreatorScene::CreateCircleEntity()
 {
+	int circles_existing = 0;
+	std::string number = "./Data/GameObjects/Circle";
+	std::string filename = "./Data/GameObjects/Circle.json";
+
+	Entity* temp = FileIO::GetInstance()->ReadEntity(filename);
+	temp->key = "Circle" + std::to_string(entityCount);
+	tempEntities.push_back(temp);
+	++entityCount;
+	return 0;
+}
+
+void AddCircleEntity()
+{
+	Scene* pare = LevelCreatorSceneGetInstance();
+	LevelCreatorScene* current = reinterpret_cast<LevelCreatorScene*>(pare);
 	int circles_existing = 0;
 	std::string number = "./Data/GameObjects/Circle";
 	std::string filename = "./Data/GameObjects/Circle.json";
@@ -735,17 +775,23 @@ int LevelCreatorScene::CreateCircleEntity()
 	}
 
 	json newobject = { {"FilePath", number} };
-	json gameobjects = FileIO::GetInstance()->OpenJSON(currentGameObjectsList);
+	json gameobjects = FileIO::GetInstance()->OpenJSON(current->currentGameObjectsList);
 	if (gameobjects["Objects"].is_array())
 	{
 		gameobjects["Objects"].push_back(newobject);
 		//myarray.push_back(newobject);
 	}
 
-	std::ofstream file(currentGameObjectsList);
+	std::ofstream file(current->currentGameObjectsList);
 	file << std::setw(2) << gameobjects << std::endl;
+}
 
-	return 0;
+void LevelCreatorScene::AddToFile(std::string nametoadd)
+{
+	if (AddFunc.count(nametoadd))
+	{
+		return AddFunc[nametoadd]();
+	}
 }
 
 /*int LevelCreatorScene::CreateDoorEntity()
