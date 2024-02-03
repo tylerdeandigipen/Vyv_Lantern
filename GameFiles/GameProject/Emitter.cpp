@@ -458,59 +458,6 @@ void Emitter::EmitterCollisionHandler(Entity& object1, Entity& object2)
 }
 
 
-inline gfxVector2* CheckLineForObject(int x1, int y1, int x2, int y2)
-{
-	int dx = abs(x2 - x1);
-	int dy = abs(y2 - y1);
-	int sx = (x1 < x2) ? 1 : -1;
-	int sy = (y1 < y2) ? 1 : -1;
-
-	int error = dx - dy;
-	int x = x1;
-	int y = y1;
-
-	bool inOut = false;
-	int inOutCount = 0;
-
-	while (x != x2 || y != y2)
-	{
-		if (inOut == false)
-		{
-			if (lightBuffer->SampleColor(x, y).GetAlpha() != 0)
-			{
-				inOutCount += 1;
-				inOut = true;
-			}
-		}
-		else
-		{
-			if (lightBuffer->SampleColor(x, y).GetAlpha() == 0)
-			{
-				inOutCount += 1;
-				inOut = false;
-			}
-		}
-
-		if (inOutCount > 1)
-		{
-			return 2;
-		}
-
-		int error2 = 2 * error;
-
-		if (error2 > -dy) {
-			error -= dy;
-			x += sx;
-		}
-
-		if (error2 < dx) {
-			error += dx;
-			y += sy;
-		}
-	}
-	return inOutCount;
-}
-
 
 void Emitter::SetPositionRight(float x, float y) { emitPositionRight->x = x; emitPositionRight->y = y; };
 void Emitter::SetPositionLeft(float x, float y) { emitPositionLeft->y = y; emitPositionLeft->x = x; };
