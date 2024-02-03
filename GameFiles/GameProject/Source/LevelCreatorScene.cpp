@@ -88,7 +88,7 @@ Engine::EngineCode LevelCreatorScene::Init()
 	if (g_Manager.InitializeProperties("./Data/GameObjects/ObjectListLevelBuilder.json"))
 		std::cout << "Property load success!\n";
 
-	LevelBuilder::GetInstance()->LoadTileMap("./Scenes/LevelCreatorScene.json");
+	LevelBuilder::GetInstance()->LoadTileMap("./Data/Scenes/LevelCreatorScene.json");
 
 
 	// init function maps to add files at end
