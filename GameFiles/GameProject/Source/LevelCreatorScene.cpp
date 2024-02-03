@@ -483,11 +483,22 @@ void LevelCreatorScene::ImGuiInterg()
 #endif
 }
 
+
+
 void LevelCreatorScene::ImGuiWindow()
 {
 	if (showCreatorToolsWindow)
 	{
 		ImGui::Begin("Design Tools");
+		ImGui::BeginMainMenuBar();
+		if(ImGui::MenuItem("Reset Scene", NULL, false, true))
+			SceneSystem::GetInstance()->RestartScene();
+		if(ImGui::MenuItem("Test Scene", NULL, false, true))
+			SceneSystem::GetInstance()->SetScene(TestSceneGetInstance());
+		if(ImGui::MenuItem("TbdTest Scene", NULL, false, true))
+			SceneSystem::GetInstance()->SetScene(TbdTestSceneGetInstance());
+		ImGui::EndMainMenuBar();
+
 		ImGui::Text("have fun designers,");
 		ImGui::Text("welcome to the creator window!");
 
@@ -585,69 +596,75 @@ void LevelCreatorScene::ImGuiWindow()
 
 		if (ImGui::TreeNode("Tools:"))
 		{
+			static bool tool_selected[3] = { false, false, false };
+
 			if (ImGui::Button("Center 'C' "))
 			{
 				currentTool = 3;
 			}
 
-			if (ImGui::Button("EyeDropper 'alt' "))
+			ImGui::Selectable("EyeDropper 'alt'", &tool_selected[0], ImGuiSelectableFlags_None, ImVec2(100, 25));
+			ImGui::Selectable("Erase 'E' ", &tool_selected[1], ImGuiSelectableFlags_None, ImVec2(100, 25));
+			ImGui::Selectable("SquareFill 'shift' ", &tool_selected[2], ImGuiSelectableFlags_None, ImVec2(100, 25));
+
+			if (tool_selected[0] == true)
 			{
+				tool_selected[1] = false;
+				tool_selected[2] = false;
 				currentTool = 2;
 			}
 
-			if (ImGui::Button("Erase 'E' "))
+			if (tool_selected[1] == true)
 			{
+				tool_selected[0] = false;
+				tool_selected[2] = false;
 				currentTool = 0;
 				currentTile = 0;
 			}
 
-			if (ImGui::Button("SquareFill 'shift' "))
+			if (tool_selected[2] == true)
 			{
+				tool_selected[0] = false;
+				tool_selected[1] = false;
 				currentTool = 1;
 			}
 
 			ImGui::Separator();
-
-			if (ImGui::TreeNode("Entities"))
-			{
-				auto i = 0;
-
-				if (ImGui::Button("Create Switch"))
-				{
-					CreateCircleEntity();
-				}
-
-				/*if (ImGui::Button("Create Door"))
-				{
-					CreateDoorEntity();
-				}
-
-				if (ImGui::Button("Create Mirror"))
-				{
-					CreateMirrorEntity();
-				} */
-
-			}
 			ImGui::TreePop();
 		}
 
 		if (ImGui::TreeNode("Tile Selector:"))
 		{
-			if (ImGui::Button("Wall Tile"))
+			static bool selected[3] = { false, false, false };
+
+			for (int x = 0; x < 3; x++)
 			{
-				currentTile = 1;
+				ImVec2 alignment = ImVec2(0.0f, 0.f);
+				if (x > 0) ImGui::SameLine();
+				ImGui::PushStyleVar(ImGuiStyleVar_SelectableTextAlign, alignment);
+				ImGui::Selectable("Wall Tile", &selected[x], ImGuiSelectableFlags_None, ImVec2(75, 25));
+				ImGui::PopStyleVar();
 			}
 
+			selected[0] ? currentTile = 1 : currentTile = 0;
+			selected[1] ? currentTile = 2 : currentTile = 0;
+			selected[2] ? currentTile = 3 : currentTile = 0;
+
+			ImGui::Text("Current Tile: %d", currentTile);
 			ImGui::TreePop();
 		}
-
 		ImGui::TreePop();
 	}
-
+	
 	ImGui::Separator();
 
 	if (ImGui::TreeNode("Object Selector:"))
 	{
+		if (ImGui::Button("Create Switch"))
+		{
+			CreateCircleEntity();
+		}
+
 		g_Manager.ShowEntityInfo();
 
 		if (ImGui::Button("Apply Properties"))
@@ -660,20 +677,7 @@ void LevelCreatorScene::ImGuiWindow()
 
 	ImGui::Separator();
 
-	if (ImGui::Button("Reset Scene"))
-	{
-		SceneSystem::GetInstance()->RestartScene();
-	}
-
-	if (ImGui::Button("Test Scene"))
-	{
-		SceneSystem::GetInstance()->SetScene(TestSceneGetInstance());
-	}
-
-	if (ImGui::Button("TbdTest Scene"))
-	{
-		SceneSystem::GetInstance()->SetScene(TbdTestSceneGetInstance());
-	}
+	
 
 	g_Manager.EditEntity(Vector2{ static_cast<float>(Inputs::GetInstance()->getMouseX()), static_cast<float>(Inputs::GetInstance()->getMouseY()) });
 
