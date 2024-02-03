@@ -2,12 +2,15 @@
 #include "Component.h"
 #include "Entity.h"
 #include "Emitter.h"
+#include "Collider.h"
 
 class LineCollider : public Component
 {
+
 public:
 	LineCollider();
-	LineCollider(LineCollider& reflector);
+
+	LineCollider(LineCollider& cpy);
 	~LineCollider();
 
 	// used to invoke the copy constructor
@@ -18,15 +21,28 @@ public:
 	void Update(float dt);
 	
 	void Render() const;
-	void Read(json jsonData);
+	void CollidedLeft(Emitter* get) { collidingWithLeft = get; };
+	void CollidedRight(Emitter* get) { collidingWithLeft = get; };
 
-	static void LineColliderCollisionHandler(Entity & obj1, Entity & obj2);
+
+	static std::string Name()
+	{
+		return "LineCollider";
+	};
+
+	std::string GetName() override
+	{
+		return std::string();
+	};
+
+
 	gfxVector2* GetPosition1() { return position1; };
 	gfxVector2* GetPosition2() { return position2; };
 
 private:
 	
-	Emitter* collidingWith;
+	Emitter* collidingWithLeft;
+	Emitter* collidingWithRight;
 	//load position leftpoint rightpoint
 	gfxVector2* position1;
 	gfxVector2* position2;

@@ -1,6 +1,5 @@
 #pragma once
 #include "Component.h"
-
 class gfxVector2;
 
 /*
@@ -46,28 +45,39 @@ public:
 	void Update(float dt);
 	void Render() const;
 
-	bool IsEmitterEmitting() { return isEmitting; };
+	bool IsEmittingRight() { return isEmittingRight; };
+	bool IsEmittingLeft() { return isEmittingLeft; };
 
-	void SetEmitting(bool state) { isEmitting = state; }; //probably a control flag and collision flag
+	void SetEmittingRight(bool state) { isEmittingRight = state; }; //probably a control flag and collision flag
+	void SetEmittingLeft(bool state) { isEmittingLeft = state; }; //probably a control flag and collision flag
+
+
+
+	//standard get/set funcitons
+	float GetMaxEmitDistance() { return emitMaxDistance; };
+	gfxVector2* GetPositionRight() { return emitPositionRight; };
+	gfxVector2* GetPositionLeft() { return emitPositionLeft; };
+	gfxVector2* GetDirectionLeft() { return emitLTrigDir; };
+	gfxVector2* GetDirectionRight() { return emitRTrigDir; };
+	float GetDistance() { return emitMaxDistance; };
+	void SetDrawDistance(float distance) { DrawDistance = distance; }
+	void SetCollidedRight(bool state) { hasCollidedRight = state; }
+	void SetCollidedLeft(bool state) { hasCollidedLeft = state; }
+	bool GetCollidedRight() { return hasCollidedRight; };
+	bool GetCollidedLeft() { return hasCollidedLeft; };
+	void SetRightTrigger(bool state) { rightTrigger = state; };
+	void SetLeftTrigger(bool state) { leftTrigger = state; };
+	void SetPositionRight(float x, float y);
+	void SetPositionLeft(float x, float y);
+
+	static std::string Name()
+	{
+		return "Emitter";
+	};
 
 	std::string GetName() override
 	{
 		return std::string();
-	};
-
-	//standard get/set funcitons
-	gfxVector2* GetPosition() { return emitPosition; };
-	gfxVector2* GetDirection() { return emitLTrigDir; };
-	float GetDistance() { return emitMaxDistance; };
-	void SetDrawDistance(float distance) { DrawDistance = distance; }
-	void SetCollided(bool state) { hasCollided = state; }
-	bool GetCollided() { return hasCollided; };
-	void SetRightTrigger(bool state) { rightTrigger = state; };
-	void SetLeftTrigger(bool state) { leftTrigger = state; };
-
-	std::string Name()
-	{
-		return "Emitter";
 	};
 
 	static void EmitterCollisionHandler(Entity& object1, Entity& object2);
@@ -76,16 +86,19 @@ private:
 
 	gfxVector2* emitLTrigDir;
 	gfxVector2* emitRTrigDir;
-	gfxVector2* emitPosition;
+	gfxVector2* emitPositionRight;
+	gfxVector2* emitPositionLeft;
 
 	float emitMaxDistance;
 	float DrawDistance;
 	bool isDirty;
-	bool hasCollided;
+	bool hasCollidedRight;
+	bool hasCollidedLeft;
 
-	bool isEmitting;
+	bool isEmittingRight;
+	bool isEmittingLeft;
 	bool rightTrigger;
 	bool leftTrigger;
-	bool emitterTwoIsActive;
+
 };
 

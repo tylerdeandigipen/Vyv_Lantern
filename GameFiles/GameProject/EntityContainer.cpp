@@ -16,6 +16,10 @@
 #include "Collider.h"
 #include "Entity.h"
 
+//laser "System" stuff
+#include "Emitter.h"
+#include "LineCollider.h"
+
 int EntityContainer::entityCount = 0;
 EntityContainer* EntityContainer::instance = new EntityContainer();
 
@@ -135,6 +139,10 @@ void EntityContainer::CheckCollisions()
 					if (secCollider)
 					{
 						collider->Check(secCollider);
+					}
+					if (entities[current]->Has(Emitter) && entities[i]->Has(LineCollider))
+					{
+						Emitter::EmitterCollisionHandler(*entities[current], *entities[i]);
 					}
  				}
  		   }
