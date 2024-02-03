@@ -9,7 +9,7 @@ LineCollider::LineCollider(): Component(Component::cLineCollider)
 	position2 = new gfxVector2();
 }
 
-LineCollider::LineCollider(LineCollider& cpy) : Component(Component::cLineCollider)
+LineCollider::LineCollider(LineCollider const & cpy) : Component(Component::cLineCollider)
 {
 	position1 = new gfxVector2(*cpy.position1);
 	position2 = new gfxVector2(*cpy.position2);

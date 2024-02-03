@@ -9,12 +9,11 @@ class LineCollider : public Component
 
 public:
 	LineCollider();
-
-	LineCollider(LineCollider& cpy);
+	LineCollider(LineCollider const & cpy);
 	~LineCollider();
 
 	// used to invoke the copy constructor
-	Component* Clone(void) const = 0;
+	Component* Clone(void) const;
 
 	void Read(json jsonData);
 	//component-specific render code.
