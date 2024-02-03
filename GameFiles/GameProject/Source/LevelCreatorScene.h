@@ -114,9 +114,24 @@ public:
 
 				if (ImGui::Button("Delete"))
 				{
-					EntityContainer::GetInstance()->RemoveEntity(creator->tempEntities[i]);
-					break;
+					if (!creator->tempEntities.empty())
+					{
+						for (auto it = creator->tempEntities.begin(); it != creator->tempEntities.end(); ++it)
+						{
+							if (*it == creator->tempEntities[i])
+							{
+								if ((*it)->key.compare(creator->tempEntities[i]->key) == 0)
+								{
+									(*it)->FreeComponents();
+									delete* it;
+									creator->tempEntities.erase(it);
+									break;
+								}
+							}
+						}
+					}
 				}
+
 
 				pRenderer->objects[i]->position.x = properties[creator->tempEntities[i]->key].translation[0];
 				pRenderer->objects[i]->position.y = properties[creator->tempEntities[i]->key].translation[1];
