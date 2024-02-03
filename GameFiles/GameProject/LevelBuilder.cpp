@@ -80,6 +80,12 @@ void LevelBuilder::LoadTileMap(std::string filename)
         pixel->tileMapSize.y = static_cast<float>(SizeY);
         pixel->MakeTileMap(TileMap);
     }
+
+    if (jsonData["GameObjectList"].is_object())
+    {
+        json objectList = jsonData["GameObjectList"];
+        EntityContainer::GetInstance()->ReadEntities(objectList["GameObjectFile"]);
+    }
     //pixel->ResizeBuffers();
 }
 
