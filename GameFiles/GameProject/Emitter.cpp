@@ -91,6 +91,11 @@ void Emitter::Read(json jsonData)
 	{
 		isEmittingRight = jsonData["emitRight"];
 	}
+	if (jsonData["trigRight"].is_boolean())
+	{
+		rightTrigger = jsonData["trigRight"];
+	}
+
 
 }
 
@@ -163,11 +168,11 @@ inline bool LineToLineCollision(Emitter * laser, Entity& line, int flag)
 	bool withiny = false;
 	bool didcollide = false;
 
-	if (y1 < y3 && y2 > y3)
+	if (y1 > y3 && y2 > y3)
 	{
 		withiny = true;
 	}
-	if (x1 < x3 && x2 < x3)
+	if (x1 > x3 && x2 > x3)
 	{
 		withinx = true;
 	}
@@ -371,19 +376,23 @@ void Emitter::EmitterCollisionHandler(Entity& object1, Entity& object2)
 			if (Obj1->rightTrigger)
 			{
 				flag = 1;
+				/*
+				
 				if (DoCalculations(Obj1, flag))
 				{
-					return;
+					
 				}
-
+				*/
 			}
 			if (Obj1->leftTrigger)
 			{
 				flag = 2;
+				/*
 				if (DoCalculations(Obj1, flag))
 				{
-					return;
+
 				}
+				*/
 			}
 
 			LineCollider* Line = object2.Has(LineCollider);
@@ -448,6 +457,59 @@ void Emitter::EmitterCollisionHandler(Entity& object1, Entity& object2)
 	
 }
 
+
+inline gfxVector2* CheckLineForObject(int x1, int y1, int x2, int y2)
+{
+	int dx = abs(x2 - x1);
+	int dy = abs(y2 - y1);
+	int sx = (x1 < x2) ? 1 : -1;
+	int sy = (y1 < y2) ? 1 : -1;
+
+	int error = dx - dy;
+	int x = x1;
+	int y = y1;
+
+	bool inOut = false;
+	int inOutCount = 0;
+
+	while (x != x2 || y != y2)
+	{
+		if (inOut == false)
+		{
+			if (lightBuffer->SampleColor(x, y).GetAlpha() != 0)
+			{
+				inOutCount += 1;
+				inOut = true;
+			}
+		}
+		else
+		{
+			if (lightBuffer->SampleColor(x, y).GetAlpha() == 0)
+			{
+				inOutCount += 1;
+				inOut = false;
+			}
+		}
+
+		if (inOutCount > 1)
+		{
+			return 2;
+		}
+
+		int error2 = 2 * error;
+
+		if (error2 > -dy) {
+			error -= dy;
+			x += sx;
+		}
+
+		if (error2 < dx) {
+			error += dx;
+			y += sy;
+		}
+	}
+	return inOutCount;
+}
 
 
 void Emitter::SetPositionRight(float x, float y) { emitPositionRight->x = x; emitPositionRight->y = y; };

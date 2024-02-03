@@ -13,14 +13,14 @@
         "Type": "Transform",
         "translation": {
           "x": 50,
-          "y": 100
+          "y": 90
         }
       },
       {
         "Type": "Physics",
         "OldTranslation": {
           "x": 50,
-          "y": 100
+          "y": 90
         }
       },
       {
@@ -53,7 +53,8 @@
             "y": 0
         },
         "maxDistance" : 80,
-        "emitRight" : false
+        "emitRight" : false,
+        "trigRight" : false
       }
     ]
   }

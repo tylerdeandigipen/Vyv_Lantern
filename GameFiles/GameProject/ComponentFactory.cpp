@@ -18,7 +18,7 @@
 #include "Physics.h"
 #include "Light.h"
 #include "Emitter.h"
-
+#include "LineCollider.h"
 ComponentFactory* ComponentFactory::instance = new ComponentFactory();
 
 ComponentFactory::ComponentFactory() : name("ComptFact")
@@ -41,6 +41,7 @@ Engine::EngineCode ComponentFactory::Init()
     Add(Physics::Name(), &ComponentFactory::CreatePhysics);
     Add(Light::TheName(), &ComponentFactory::CreateLight);
     Add(Emitter::Name(), &ComponentFactory::CreateEmitter);
+    Add(LineCollider::Name(), &ComponentFactory::CreateLineCollider);
     assert(winHandle != NULL);
     return Engine::NothingBad;
 }
@@ -143,4 +144,10 @@ Component& ComponentFactory::CreateEmitter()
 {
     Component* emitter = new Emitter();
     return *emitter;
+}
+
+Component& ComponentFactory::CreateLineCollider()
+{
+    Component* lineCollider = new LineCollider();
+    return *lineCollider;
 }

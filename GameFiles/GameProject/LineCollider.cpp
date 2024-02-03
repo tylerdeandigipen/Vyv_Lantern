@@ -11,6 +11,8 @@ LineCollider::LineCollider(): Component(Component::cLineCollider)
 
 LineCollider::LineCollider(LineCollider const & cpy) : Component(Component::cLineCollider)
 {
+	collidingWithLeft = nullptr;
+	collidingWithRight = nullptr;
 	position1 = new gfxVector2(*cpy.position1);
 	position2 = new gfxVector2(*cpy.position2);
 }
@@ -36,14 +38,14 @@ void LineCollider::Update(float dt) {
 
 void LineCollider::Read(json jsonData)
 {
-	if (jsonData["LeftMostpPoint"].is_object())
+	if (jsonData["LeftMostPoint"].is_object())
 	{
 		json pos = jsonData["LeftMostPoint"];
 		position1->x = pos["x"];
 		position1->y = pos["y"];
 	}
 
-	if (jsonData["RightMostpPoint"].is_object())
+	if (jsonData["RightMostPoint"].is_object())
 	{
 		json pos = jsonData["RightMostPoint"];
 		position1->x = pos["x"];

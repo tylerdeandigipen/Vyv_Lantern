@@ -140,10 +140,14 @@ void EntityContainer::CheckCollisions()
 					{
 						collider->Check(secCollider);
 					}
+
+
 					if (entities[current]->Has(Emitter) && entities[i]->Has(LineCollider))
 					{
 						Emitter::EmitterCollisionHandler(*entities[current], *entities[i]);
 					}
+
+					
  				}
  		   }
 		}
