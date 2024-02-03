@@ -16,6 +16,8 @@ Emitter::Emitter() : Component(Component::cEmitter)
 	emitRTrigDir = new gfxVector2();
 	emitPositionRight  = new gfxVector2();
 	emitPositionLeft = new gfxVector2();
+	emitpositionEndL = new gfxVector2();
+	emitpositionEndR = new gfxVector2();
 	leftTrigger = false;
 	rightTrigger = false;
 	hasCollidedRight = false;
@@ -227,17 +229,27 @@ inline bool LineToLineCollision(Emitter * laser, Entity& line, int flag)
 				//get endpoint check against 
 				if (laser->GetEmitPositionEndR()->x < intersectionX)
 				{
-					laser->SetEmitPositionEndR()
+					laser->SetEmitPositionEndR(intersectionX, intersectionY);
+					line.Has(Emitter)->SetPositionRight(intersectionX, intersectionY);
 					return true;
 				}
 				else
 				{
 					return false;
 				}
-				line.Has(Emitter)->SetPositionRight(intersectionX, intersectionY);
+
 				break;
 			case 2:
-				line.Has(Emitter)->SetPositionLeft(intersectionX, intersectionY);
+				if (laser->GetEmitPositionEndL()->x < intersectionX)
+				{
+					laser->SetEmitPositionEndL(intersectionX, intersectionY);
+					line.Has(Emitter)->SetPositionLeft(intersectionX, intersectionY);
+				}
+				else
+				{
+					return false;
+				}
+
 				break;
 			default:
 
