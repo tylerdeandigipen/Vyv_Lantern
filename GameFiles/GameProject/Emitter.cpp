@@ -170,11 +170,15 @@ inline bool LineToLineCollision(Emitter * laser, Entity& line, int flag)
 	bool withiny = false;
 	bool didcollide = false;
 
-	if (y1 > y3 && y2 > y3)
+
+	//y3 x3 are the starting point before the emitting point
+	//y1,y2, x1,x2 are the line collider points
+	//may have issues if you try to stack mirrors on top of each other.
+	if (y1 >= y3 && y2 <= y3)
 	{
 		withiny = true;
 	}
-	if (x1 > x3 && x2 > x3)
+	else if (x1 >= x3 && x2 <= x3)
 	{
 		withinx = true;
 	}
@@ -222,33 +226,65 @@ inline bool LineToLineCollision(Emitter * laser, Entity& line, int flag)
 			{
 
 			case 1:
-				// 1,0 east
-				// 0,1 north
-				// -1,0 west
-				// 0,-1 south
-				//get endpoint check against 
-				if (laser->GetEmitPositionEndR()->x < intersectionX)
+				//may need to use direction to determin wether or not to check greater than lessthan 
+				if (withinx)
 				{
-					laser->SetEmitPositionEndR(intersectionX, intersectionY);
-					line.Has(Emitter)->SetPositionRight(intersectionX, intersectionY);
-					return true;
+					if (laser->GetEmitPositionEndR()->y < intersectionY)
+					{
+						laser->SetEmitPositionEndR(intersectionX, intersectionY);
+						line.Has(Emitter)->SetPositionRight(intersectionX, intersectionY);
+						return true;
+					}
+					else
+					{
+						return false;
+					}
 				}
-				else
+				
+				if (withiny)
 				{
-					return false;
+					if (laser->GetEmitPositionEndR()->x < intersectionX)
+					{
+						laser->SetEmitPositionEndR(intersectionX, intersectionY);
+						line.Has(Emitter)->SetPositionRight(intersectionX, intersectionY);
+						return true;
+					}
+					else
+					{
+						return false;
+					}
 				}
 
 				break;
 			case 2:
-				if (laser->GetEmitPositionEndL()->x < intersectionX)
+				if (withinx)
 				{
-					laser->SetEmitPositionEndL(intersectionX, intersectionY);
-					line.Has(Emitter)->SetPositionLeft(intersectionX, intersectionY);
+					if (laser->GetEmitPositionEndR()->y < intersectionY)
+					{
+						laser->SetEmitPositionEndL(intersectionX, intersectionY);
+						line.Has(Emitter)->SetPositionLeft(intersectionX, intersectionY);
+						return true;
+					}
+					else
+					{
+						return false;
+					}
 				}
-				else
+
+				if (withiny)
 				{
-					return false;
+					if (laser->GetEmitPositionEndR()->x < intersectionX)
+					{
+						laser->SetEmitPositionEndR(intersectionX, intersectionY);
+						line.Has(Emitter)->SetPositionRight(intersectionX, intersectionY);
+						return true;
+					}
+					else
+					{
+						return false;
+					}
 				}
+
 
 				break;
 			default:

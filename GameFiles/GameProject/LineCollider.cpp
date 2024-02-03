@@ -32,7 +32,17 @@ Component* LineCollider::Clone(void) const
 //component-specific render code.
 void LineCollider::Update(float dt) { 
 	dt = dt; 
-	//debug line draw potential
+
+
+	if (collidingWithLeft)
+	{
+		//maybe needs a code to tell emitter to stop emitting.
+	}
+
+	if (collidingWithRight)
+	{
+
+	}
 
 }
 
