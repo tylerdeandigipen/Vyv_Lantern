@@ -22,7 +22,6 @@
 
 #include <map>
 
-
 class Scene;
 
 class LevelCreatorScene : public Scene
@@ -69,7 +68,7 @@ private:
 struct EntityProperties
 {
 	int translation[2] = { 0 };
-	Vector2 rotation;
+	float rotation;
 	// bool isCollidable;
 	bool isPicked = false;
 };
@@ -92,13 +91,10 @@ public:
 		{
 			if (ImGui::TreeNode(("Entity %s", (*EntityContainer::GetInstance())[i]->GetRealName().c_str())))
 			{
-				//ImGui::Text("Name: %s", (*EntityContainer::GetInstance())[i]->GetName());
 				ImGui::Text("Entity Number: %d", i);
 
-				ImGui::Text("Transform: (%f, %f)", properties[(*EntityContainer::GetInstance())[i]->GetRealName()].translation[0], properties[(*EntityContainer::GetInstance())[i]->GetRealName()].translation[1]);
-				ImGui::Text("Rotation: (%f, %f)", properties[(*EntityContainer::GetInstance())[i]->GetRealName()].rotation);
-				ImGui::SliderInt2("Test Transform", properties[(*EntityContainer::GetInstance())[i]->GetRealName()].translation, -10.f, 100.f);
-
+				ImGui::Text("Transform: (%d, %d)", properties[(*EntityContainer::GetInstance())[i]->GetRealName()].translation[0], properties[(*EntityContainer::GetInstance())[i]->GetRealName()].translation[1]);
+				ImGui::Text("Rotation: (%f)", properties[(*EntityContainer::GetInstance())[i]->GetRealName()].rotation);
 				ImGui::Checkbox("isEditable", &isEditable);
 				ImGui::Text((properties[(*EntityContainer::GetInstance())[i]->GetRealName()].isPicked ? "Entity is picked" : "Entity is not picked"));
 
@@ -168,10 +164,10 @@ public:
 		for (int i = 0; i < EntityContainer::GetInstance()->CountEntities(); i++)
 		{
 			Transform* t = (*EntityContainer::GetInstance())[i]->Has(Transform);
-			properties[(*EntityContainer::GetInstance())[i]->GetRealName()] = EntityProperties{ {static_cast<int>(std::floorf(t->GetTranslation()->x)), static_cast<int>(std::floorf(t->GetTranslation()->y))}, {0.f, 0.f}, false };
+			properties[(*EntityContainer::GetInstance())[i]->GetRealName()] = EntityProperties{ {static_cast<int>(std::floorf(t->GetTranslation()->x)), static_cast<int>(std::floorf(t->GetTranslation()->y))}, 
+																								{t->GetRotation()}, 
+																								{false} };
 		}
-
-		bool isEditing = true;
 
 		file = std::ifstream(fileToEdit);
 
@@ -295,6 +291,8 @@ public:
 		mousePos_.x = mousePos.x / pRenderer->screenScale;
 		mousePos_.y = mousePos.y / pRenderer->screenScale;
 	}
+
+
 
 	TextEditor editor;
 	std::unordered_map<std::string, EntityProperties> properties;
