@@ -213,12 +213,27 @@ inline bool LineToLineCollision(Emitter * laser, Entity& line, int flag)
 		didcollide = true;
 		float intersectionX = x1 + (uA * (x2 - x1));
 		float intersectionY = y1 + (uA * (y2 - y1));
+		
 		if (line.Has(Emitter))
 		{
 			switch (flag)
 			{
 
 			case 1:
+				// 1,0 east
+				// 0,1 north
+				// -1,0 west
+				// 0,-1 south
+				//get endpoint check against 
+				if (laser->GetEmitPositionEndR()->x < intersectionX)
+				{
+					laser->SetEmitPositionEndR()
+					return true;
+				}
+				else
+				{
+					return false;
+				}
 				line.Has(Emitter)->SetPositionRight(intersectionX, intersectionY);
 				break;
 			case 2:
@@ -268,16 +283,18 @@ inline bool DoCalculations(Emitter* obj,int flag)
 	//banks on the fact that we are using North South East West.
 	if (x > 0)
 	{
-		if (renderer->CheckLineForObject(x, y, x + obj->GetMaxEmitDistance(), y))
+		gfxVector2 comparison = renderer->CheckLineForObjects(x, y, x + obj->GetMaxEmitDistance(), y);
+		if (!(comparison.x == x+obj->GetMaxEmitDistance()) && !(comparison.y == y))
 		{
 			//comback and revise this later
-			obj->SetDrawDistance(0.0f /* truncate to collision point of terrain */);
 			switch (flag)
 			{
 			case 1:
+				obj->SetEmitPositionEndR(comparison.x, comparison.y);
 				obj->SetCollidedRight(true);
 				break;
 			case 2:
+				obj->SetEmitPositionEndL(comparison.x, comparison.y);
 				obj->SetCollidedLeft(true);
 				break;
 			default:
@@ -289,62 +306,72 @@ inline bool DoCalculations(Emitter* obj,int flag)
 	}
 	else if (x < 0)
 	{
-		if (renderer->CheckLineForObject(x, y, x - obj->GetMaxEmitDistance(), y))
+
+		gfxVector2 comparison = renderer->CheckLineForObjects(x, y, x - obj->GetMaxEmitDistance(), y);
+		if ((comparison.x == x + obj->GetMaxEmitDistance()) && (comparison.y == y))
 		{
 			//comback and revise this later
-			obj->SetDrawDistance(0.0f /* truncate to collision point of terrain */);
 			switch (flag)
 			{
 			case 1:
+				obj->SetEmitPositionEndR(comparison.x, comparison.y);
 				obj->SetCollidedRight(true);
 				break;
 			case 2:
+				obj->SetEmitPositionEndL(comparison.x, comparison.y);
 				obj->SetCollidedLeft(true);
 				break;
 			default:
 				break;
 			}
+
 			return true;
 		}
 	}
 
 	if (y > 0)
 	{
-		if (renderer->CheckLineForObject(x, y, x, y + obj->GetMaxEmitDistance()))
+		gfxVector2 comparison = renderer->CheckLineForObjects(x, y, x, y + obj->GetMaxEmitDistance());
+		if (!(comparison.x == x + obj->GetMaxEmitDistance()) && !(comparison.y == y))
 		{
 			//comback and revise this later
-			obj->SetDrawDistance(0.0f /* truncate to collision point of terrain */);
 			switch (flag)
 			{
 			case 1:
+				obj->SetEmitPositionEndR(comparison.x, comparison.y);
 				obj->SetCollidedRight(true);
 				break;
 			case 2:
+				obj->SetEmitPositionEndL(comparison.x, comparison.y);
 				obj->SetCollidedLeft(true);
 				break;
 			default:
 				break;
 			}
+
 			return true;
 		}
 	}
 	else if (y < 0)
 	{
-		if (renderer->CheckLineForObject(x, y, x, y - obj->GetMaxEmitDistance()))
+		gfxVector2 comparison = renderer->CheckLineForObjects(x, y, x, y - obj->GetMaxEmitDistance());
+		if (!(comparison.x == x + obj->GetMaxEmitDistance()) && !(comparison.y == y))
 		{
 			//comback and revise this later
-			obj->SetDrawDistance(0.0f /* truncate to collision point of terrain */);
 			switch (flag)
 			{
 			case 1:
+				obj->SetEmitPositionEndR(comparison.x, comparison.y);
 				obj->SetCollidedRight(true);
 				break;
 			case 2:
+				obj->SetEmitPositionEndL(comparison.x, comparison.y);
 				obj->SetCollidedLeft(true);
 				break;
 			default:
 				break;
 			}
+
 			return true;
 		}
 	}
@@ -370,29 +397,20 @@ void Emitter::EmitterCollisionHandler(Entity& object1, Entity& object2)
 		//if the object is emitting and hasn't collided yet. proceed for either
 		if (Obj1->IsEmittingRight() && !Obj1->GetCollidedRight() || Obj1->IsEmittingLeft() && !Obj1->GetCollidedLeft())
 		{
-			
+			bool potentialInterupt;
 			//also need to check vs terrain if it hits needs to truncate the draw distance of the emitter line.
 			//need flag for both.
 			if (Obj1->rightTrigger)
 			{
 				flag = 1;
-				/*
-				
-				if (DoCalculations(Obj1, flag))
-				{
-					
-				}
-				*/
+				potentialInterupt = DoCalculations(Obj1, flag);
+
 			}
 			if (Obj1->leftTrigger)
 			{
 				flag = 2;
-				/*
-				if (DoCalculations(Obj1, flag))
-				{
+				potentialInterupt = DoCalculations(Obj1, flag);
 
-				}
-				*/
 			}
 
 			LineCollider* Line = object2.Has(LineCollider);
@@ -457,7 +475,16 @@ void Emitter::EmitterCollisionHandler(Entity& object1, Entity& object2)
 	
 }
 
-
+void Emitter::SetEmitPositionEndR(float x, float y)
+{
+	emitpositionEndR->x = x;
+	emitpositionEndR->y = y;
+}
+void Emitter::SetEmitPositionEndL(float x, float y)
+{
+	emitpositionEndL->x = x;
+	emitpositionEndL->y = y;
+}
 
 void Emitter::SetPositionRight(float x, float y) { emitPositionRight->x = x; emitPositionRight->y = y; };
 void Emitter::SetPositionLeft(float x, float y) { emitPositionLeft->y = y; emitPositionLeft->x = x; };

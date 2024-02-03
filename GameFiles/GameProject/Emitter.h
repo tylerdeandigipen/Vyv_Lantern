@@ -69,6 +69,10 @@ public:
 	void SetLeftTrigger(bool state) { leftTrigger = state; };
 	void SetPositionRight(float x, float y);
 	void SetPositionLeft(float x, float y);
+	void SetEmitPositionEndR(float x, float y);
+	void SetEmitPositionEndL(float x, float y);
+	gfxVector2* GetEmitPositionEndR() { return emitpositionEndR; };
+	gfxVector2* GetEmitPositionEndL() { return emitpositionEndL; };
 
 	static std::string Name()
 	{
@@ -86,8 +90,12 @@ private:
 
 	gfxVector2* emitLTrigDir;
 	gfxVector2* emitRTrigDir;
+
 	gfxVector2* emitPositionRight;
 	gfxVector2* emitPositionLeft;
+
+	gfxVector2* emitpositionEndR;
+	gfxVector2* emitpositionEndL;
 
 	float emitMaxDistance;
 	float DrawDistance;
