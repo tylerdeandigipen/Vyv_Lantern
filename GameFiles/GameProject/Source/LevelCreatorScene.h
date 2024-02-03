@@ -88,18 +88,27 @@ class EntityManager
 public:
 	[[nodiscard]] void EditEntity(Vector2 mousePos)
 	{
-		if (isEditable)
-		{
-			SetMousePos(mousePos);
-			EntityPicker();
-		}
+		if (!isEditable || !pRenderer || !pInput)
+			return;
+
+		SetMousePos(mousePos);
+		EntityPicker();
 	}
 
 	[[noreturn]] void ShowEntityInfo()
 	{
+		if (!pRenderer || !pInput)
+			return;
+
 		LevelCreatorScene* creator = reinterpret_cast<LevelCreatorScene*>(LevelCreatorSceneGetInstance());
+		if (!creator)
+			return;
+
 		for (int i = 0; i < creator->tempEntities.size(); i++)
 		{
+			if (!creator->tempEntities[i])
+				continue;
+
 			if (ImGui::TreeNode(("Entity %s", creator->tempEntities[i]->key.c_str())))
 			{
 				//ImGui::Text("Name: %s", creator->tempEntities[i]->GetName());
@@ -124,7 +133,7 @@ public:
 								{
 									(*it)->FreeComponents();
 									delete* it;
-									creator->tempEntities.erase(it);
+									*it = nullptr;
 									break;
 								}
 							}
@@ -132,7 +141,10 @@ public:
 					}
 				}
 
-
+				if (!creator->tempEntities[i])
+				{
+					continue;
+				}
 				pRenderer->objects[i]->position.x = properties[creator->tempEntities[i]->key].translation[0];
 				pRenderer->objects[i]->position.y = properties[creator->tempEntities[i]->key].translation[1];
 
@@ -143,6 +155,9 @@ public:
 
 	[[nodiscard]] int ApplyProperties()
 	{
+		if (!pRenderer)
+			return EXIT_FAILURE;
+
 		LevelCreatorScene* creator = reinterpret_cast<LevelCreatorScene*>(LevelCreatorSceneGetInstance());
 		for (int i = 0; i < creator->tempEntities.size(); i++)
 		{
@@ -188,6 +203,9 @@ public:
 
 	[[nodiscard]] bool InitializeProperties(std::string file_path)
 	{
+		if (!pRenderer)
+			return false;
+
 		//initialize level data
 		LevelCreatorScene* creator = reinterpret_cast<LevelCreatorScene*>(LevelCreatorSceneGetInstance());
 		EntityContainer::GetInstance()->ReadEntities(file_path);
@@ -214,6 +232,9 @@ public:
 
 	[[noreturn]] void EditText()
 	{
+		if (!pRenderer || !pInput)
+			return;
+
 		auto cpos = editor.GetCursorPosition();
 
 		editor.SetLanguageDefinition(lang);
