@@ -88,8 +88,10 @@ public:
 	void SetCameraPosition(Vector2 NewCameraP);
 	static Renderer* GetInstance();
 	int CheckLineForObject(int x1, int y1, int x2, int y2);
+	gfxVector2 CheckLineForObjects(int x1, int y1, int x2, int y2);
 	void BlurLights(int blurRangeLow, int blurRangeHigh);
 	void ExpandTileMapInDirection(Vector2 direction, int distance);
+	
 	auto GetTileCount() -> unsigned int;
 
 	//Cleanup Functions

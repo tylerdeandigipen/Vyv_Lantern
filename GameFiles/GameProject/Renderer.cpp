@@ -1081,6 +1081,59 @@ int Renderer::CheckLineForObject(int x1, int y1, int x2, int y2)
     return inOutCount;
 }
 
+
+gfxVector2 Renderer::CheckLineForObjects(int x1, int y1, int x2, int y2)
+{
+    int dx = abs(x2 - x1);
+    int dy = abs(y2 - y1);
+    int sx = (x1 < x2) ? 1 : -1;
+    int sy = (y1 < y2) ? 1 : -1;
+    gfxVector2 yes;
+    int error = dx - dy;
+    int x = x1;
+    int y = y1;
+
+    bool inOut = false;
+    int inOutCount = 0;
+
+    while (x != x2 || y != y2)
+    {
+        if (inOut == false)
+        {
+            if (lightBuffer->SampleColor(x, y).GetAlpha() != 0)
+            {
+                yes.x = x;
+                yes.y = y;
+                return yes;
+            }
+        }
+
+
+        if (inOutCount > 1)
+        {
+            yes.x;
+            yes.y;
+            return yes;
+        }
+
+        int error2 = 2 * error;
+
+        if (error2 > -dy) {
+            error -= dy;
+            x += sx;
+        }
+
+        if (error2 < dx) {
+            error += dx;
+            y += sy;
+        }
+    }
+    yes.x = x2;
+    yes.y = y2;
+    return yes;
+}
+
+
 void Renderer::BlurLights(int blurRangeLow, int blurRangeHigh)
 {
     if (doBlur == true)

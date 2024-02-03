@@ -17,7 +17,8 @@
 #include "BehaviorMirror.h"
 #include "Physics.h"
 #include "Light.h"
-
+#include "Emitter.h"
+#include "LineCollider.h"
 ComponentFactory* ComponentFactory::instance = new ComponentFactory();
 
 ComponentFactory::ComponentFactory() : name("ComptFact")
@@ -39,6 +40,8 @@ Engine::EngineCode ComponentFactory::Init()
     Add(Transform::Name(), &ComponentFactory::CreateTransform);
     Add(Physics::Name(), &ComponentFactory::CreatePhysics);
     Add(Light::TheName(), &ComponentFactory::CreateLight);
+    Add(Emitter::Name(), &ComponentFactory::CreateEmitter);
+    Add(LineCollider::Name(), &ComponentFactory::CreateLineCollider);
     assert(winHandle != NULL);
     return Engine::NothingBad;
 }
@@ -135,4 +138,16 @@ Component& ComponentFactory::CreateLight()
     Component* light = new Light();
 
     return *light;
+}
+
+Component& ComponentFactory::CreateEmitter()
+{
+    Component* emitter = new Emitter();
+    return *emitter;
+}
+
+Component& ComponentFactory::CreateLineCollider()
+{
+    Component* lineCollider = new LineCollider();
+    return *lineCollider;
 }
