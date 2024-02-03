@@ -26,7 +26,7 @@ Emitter::Emitter(Emitter const& emitter2cpy) : Component(emitter2cpy)
 , isDirty(emitter2cpy.isDirty), isEmittingRight(emitter2cpy.isEmittingRight), emitMaxDistance(emitter2cpy.emitMaxDistance),
 DrawDistance(emitter2cpy.DrawDistance),
 leftTrigger(emitter2cpy.leftTrigger), rightTrigger(emitter2cpy.rightTrigger), hasCollidedRight(emitter2cpy.hasCollidedRight),
-hasCollidedLeft(emitter2cpy.hasCollidedLeft)
+hasCollidedLeft(emitter2cpy.hasCollidedLeft), isEmittingLeft(emitter2cpy.isEmittingLeft)
 {
 	emitLTrigDir = new gfxVector2(*emitter2cpy.emitLTrigDir);
 	emitRTrigDir = new gfxVector2(*emitter2cpy.emitRTrigDir);
@@ -73,19 +73,24 @@ void Emitter::Read(json jsonData)
 
 	if (jsonData["LeftDirectionTrigger"].is_object())
 	{
-		json dir = jsonData["directionLeft"];
+		json dir = jsonData["LeftDirectionTrigger"];
 		emitLTrigDir->x = dir["x"];
 		emitLTrigDir->y = dir["y"];
 	}
 
 	if (jsonData["RightDirectionTrigger"].is_object())
 	{
-		json dir2 = jsonData["directionRight"];
+		json dir2 = jsonData["RightDirectionTrigger"];
 		emitRTrigDir->x = dir2["x"];
 		emitRTrigDir->y = dir2["y"];
 	}
 
 	emitMaxDistance = jsonData["maxDistance"];
+
+	if (jsonData["emitRight"].is_boolean())
+	{
+		isEmittingRight = jsonData["emitRight"];
+	}
 
 }
 
