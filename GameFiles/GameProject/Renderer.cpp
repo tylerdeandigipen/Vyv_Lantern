@@ -1341,6 +1341,11 @@ void Renderer::ExpandTileMapInDirection(Vector2 direction, int distance)
     ResizeBuffers();
 }
 
+auto Renderer::GetTileCount() -> unsigned int
+{
+    return numTiles;
+}
+
 void Renderer::ResizeBuffers()
 {
     if (backgroundLayer != NULL)

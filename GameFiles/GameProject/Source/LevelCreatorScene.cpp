@@ -598,35 +598,49 @@ void LevelCreatorScene::ImGuiWindow()
 		{
 			static bool tool_selected[3] = { false, false, false };
 
-			if (ImGui::Button("Center 'C' "))
-			{
-				currentTool = 3;
-			}
-
-			ImGui::Selectable("EyeDropper 'alt'", &tool_selected[0], ImGuiSelectableFlags_None, ImVec2(100, 25));
-			ImGui::Selectable("Erase 'E' ", &tool_selected[1], ImGuiSelectableFlags_None, ImVec2(100, 25));
-			ImGui::Selectable("SquareFill 'shift' ", &tool_selected[2], ImGuiSelectableFlags_None, ImVec2(100, 25));
+			ImGui::Selectable("Erase 'E' ", &tool_selected[0], ImGuiSelectableFlags_None, ImVec2(100, 25));
+			ImGui::Selectable("SquareFill 'shift' ", &tool_selected[1], ImGuiSelectableFlags_None, ImVec2(100, 25));
+			ImGui::Selectable("EyeDropper 'alt'", &tool_selected[2], ImGuiSelectableFlags_None, ImVec2(100, 25));
 
 			if (tool_selected[0] == true)
 			{
 				tool_selected[1] = false;
 				tool_selected[2] = false;
-				currentTool = 2;
+				currentTool = 0;
+				currentTile = 0;
 			}
 
 			if (tool_selected[1] == true)
 			{
 				tool_selected[0] = false;
 				tool_selected[2] = false;
-				currentTool = 0;
-				currentTile = 0;
+				currentTool = 1;
 			}
 
 			if (tool_selected[2] == true)
 			{
 				tool_selected[0] = false;
 				tool_selected[1] = false;
-				currentTool = 1;
+				currentTool = 2;
+			}
+
+			if (ImGui::Button("Center 'C' "))
+				currentTool = 3;
+
+			switch (currentTool)
+			{
+			default:
+				ImGui::Text("Current Tool: Brush");
+				break;
+			case 1:
+				ImGui::Text("Current Tool: Draw Square");
+				break;
+			case 2:
+				ImGui::Text("Current Tool: Eyedropper");
+				break;
+			case 3:
+				ImGui::Text("Current Tool: Center");
+				break;
 			}
 
 			ImGui::Separator();
@@ -635,20 +649,15 @@ void LevelCreatorScene::ImGuiWindow()
 
 		if (ImGui::TreeNode("Tile Selector:"))
 		{
-			static bool selected[3] = { false, false, false };
+			static int selected = -1;
 
-			for (int x = 0; x < 3; x++)
+			for (int n = 0; n < g_Manager.pRenderer->GetTileCount(); n++)
 			{
-				ImVec2 alignment = ImVec2(0.0f, 0.f);
-				if (x > 0) ImGui::SameLine();
-				ImGui::PushStyleVar(ImGuiStyleVar_SelectableTextAlign, alignment);
-				ImGui::Selectable("Wall Tile", &selected[x], ImGuiSelectableFlags_None, ImVec2(75, 25));
-				ImGui::PopStyleVar();
+				char buf[32];
+				sprintf_s(buf, "Tile %d", n);
+				if (ImGui::Selectable(buf, selected == n))
+					currentTile = n;
 			}
-
-			selected[0] ? currentTile = 1 : currentTile = 0;
-			selected[1] ? currentTile = 2 : currentTile = 0;
-			selected[2] ? currentTile = 3 : currentTile = 0;
 
 			ImGui::Text("Current Tile: %d", currentTile);
 			ImGui::TreePop();

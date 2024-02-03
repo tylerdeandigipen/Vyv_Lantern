@@ -4,7 +4,7 @@
 // Author(s):	Tyler Dean, Thomas Stephenson, Louis Wang
 // Purpose:		Handles all rendering tasks.
 //
-// Copyright © 2023 DigiPen (USA) Corporation.
+// Copyright ?2023 DigiPen (USA) Corporation.
 //
 //------------------------------------------------------------------------------
 #pragma once
@@ -90,6 +90,7 @@ public:
 	int CheckLineForObject(int x1, int y1, int x2, int y2);
 	void BlurLights(int blurRangeLow, int blurRangeHigh);
 	void ExpandTileMapInDirection(Vector2 direction, int distance);
+	auto GetTileCount() -> unsigned int;
 
 	//Cleanup Functions
 	~Renderer(void);
