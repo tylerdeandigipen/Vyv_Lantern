@@ -521,19 +521,16 @@ void Renderer::RenderLasers()
     const int xSize = (int)outputBuffer->size.x;
     const int ySize = (int)outputBuffer->size.y;
 
-    //temp hard coded lasers
-    Vector2 tempLaserPos1[2];
-    Vector2 tempLaserPos2[2];
-    Color tempLaserColor[2];
-
+    //temp hard coded color
+    Color tempLaserColor[1];
     tempLaserColor[0] = Color{ 84,0,255,255 };
-    tempLaserColor[1] = Color{ 84,0,255,255 };
 
-    tempLaserPos1[0] = Vector2{ 60,30 } - CameraP;
-    tempLaserPos2[0] = Vector2{ 160,30 } - CameraP;
+    laserPoints1[0] = Vector2{ 60,30 } - CameraP;
+    laserPoints2[0] = Vector2{ 160,30 } - CameraP;
 
-    tempLaserPos1[1] = Vector2{ 60,30 } - CameraP;
-    tempLaserPos2[1] = Vector2{ 60,160 } - CameraP;
+    laserPoints1[1] = Vector2{ 60,30 } - CameraP;
+    laserPoints2[1] = Vector2{ 60,160 } - CameraP;
+    numLasers = 2;
     //end of temp hard coded lasers
 
     float IntensityR = 0.0f;
@@ -548,40 +545,40 @@ void Renderer::RenderLasers()
         {
             for (int y = 0; y < ySize; ++y)
             {
-                for (int i = 0; i < 2; i++)
+                for (int i = 0; i < numLasers; i++)
                 {
                     IntensityR = 0.0f;
                     IntensityG = 0.0f;
                     IntensityB = 0.0f;
                     //Check if the laser is along the x axis
-                    if (tempLaserPos1[i].y - tempLaserPos2[i].y == 0)
+                    if (laserPoints1[i].y - laserPoints2[i].y == 0)
                     {
                         //check if x is inbetween the two points
-                        if (x >= tempLaserPos1[i].x && x <= tempLaserPos2[i].x)
+                        if (x >= laserPoints1[i].x && x <= laserPoints2[i].x)
                         {
                             //check distance from laser line
-                            if ((y - tempLaserPos2[i].y) >= -5 && (y - tempLaserPos2[i].y) <= 5)
+                            if ((y - laserPoints2[i].y) >= -5 && (y - laserPoints2[i].y) <= 5)
                             {
                                 //     some func that makes distance into intensity  |  scale by intensity of color channel
-                                IntensityR = ((5 - abs(y - tempLaserPos2[i].y)) / 5) * ((float)tempLaserColor[i].r / 255.0f);
-                                IntensityG = ((5 - abs(y - tempLaserPos2[i].y)) / 5) * ((float)tempLaserColor[i].g / 255.0f);
-                                IntensityB = ((5 - abs(y - tempLaserPos2[i].y)) / 5) * ((float)tempLaserColor[i].b / 255.0f);
+                                IntensityR = ((5 - abs(y - laserPoints2[i].y)) / 5) * ((float)tempLaserColor[0].r / 255.0f);
+                                IntensityG = ((5 - abs(y - laserPoints2[i].y)) / 5) * ((float)tempLaserColor[0].g / 255.0f);
+                                IntensityB = ((5 - abs(y - laserPoints2[i].y)) / 5) * ((float)tempLaserColor[0].b / 255.0f);
                             }
                         }
 
                     } // Check if laser is along the y axis
-                    else if (tempLaserPos1[i].x - tempLaserPos2[i].x == 0)
+                    else if (laserPoints1[i].x - laserPoints2[i].x == 0)
                     {
                         //check if y is inbetween the two points
-                        if (y >= tempLaserPos1[i].y && y <= tempLaserPos2[i].y)
+                        if (y >= laserPoints1[i].y && y <= laserPoints2[i].y)
                         {
                             //check distance from laser line
-                            if ((x - tempLaserPos2[i].x) > -5 && (x - tempLaserPos2[i].x) < 5)
+                            if ((x - laserPoints2[i].x) > -5 && (x - laserPoints2[i].x) < 5)
                             {
                                 //     some func that makes distance into intensity  |  scale by intensity of color channel
-                                IntensityR = ((5 - abs(x - tempLaserPos2[i].x)) / 5) * ((float)tempLaserColor[i].r / 255.0f);
-                                IntensityG = ((5 - abs(x - tempLaserPos2[i].x)) / 5) * ((float)tempLaserColor[i].g / 255.0f);
-                                IntensityB = ((5 - abs(x - tempLaserPos2[i].x)) / 5) * ((float)tempLaserColor[i].b / 255.0f);
+                                IntensityR = ((5 - abs(x - laserPoints2[i].x)) / 5) * ((float)tempLaserColor[0].r / 255.0f);
+                                IntensityG = ((5 - abs(x - laserPoints2[i].x)) / 5) * ((float)tempLaserColor[0].g / 255.0f);
+                                IntensityB = ((5 - abs(x - laserPoints2[i].x)) / 5) * ((float)tempLaserColor[0].b / 255.0f);
                             }
 
                         }

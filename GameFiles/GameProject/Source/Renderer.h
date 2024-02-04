@@ -26,6 +26,7 @@
 #define TILE_SIZE 8
 #define NUM_WALL_TILES 17
 #define NUM_NON_WALKABLE_TILES 33
+#define MAX_LASER_POINTS 30
 
 class Renderer
 {
@@ -146,6 +147,10 @@ public:
 
 	int nonWalkableTiles[NUM_NON_WALKABLE_TILES] = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 26, 27, 28, 29, 30, 31, 41, 42, 43, 45, 46, 47, 48, 49, 50, 51, 52};
 	int numNonWalkTiles = NUM_NON_WALKABLE_TILES;
+
+	Vector2 laserPoints1[MAX_LASER_POINTS];
+	Vector2 laserPoints2[MAX_LASER_POINTS];
+	int numLasers = 0;
 private:
 	//Various Counters
 	int numTiles = 0;
