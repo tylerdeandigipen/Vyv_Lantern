@@ -40,7 +40,9 @@ public:
 	void Update(float dt) override;
 	void Render(void) override;
 	bool winState = false;
+	// have a current list as a default so it can just be overwritten 
 	std::string currentGameObjectsList = "./Data/GameObjects/ObjectListLevelBuilder.json";
+	std::string listToExport;
 	std::vector<Entity*> tempEntities;
 private:
 	void ImGuiInterg();
@@ -53,12 +55,17 @@ private:
 	void ToolEyedroper(Inputs* inputHandler, Vector2 CursourP);
 	void ToolCenter(Inputs* inputHandler);
 	void ToolSquareFill(Inputs* inputHandler, Vector2 CursourP);
+	
+	void ExportScene(std::string);
+
 	int CreateCircleEntity();
 	int CreateDoorEntity();
 	int CreateMirrorEntity();
-	void AddToFile(std::string nametoadd);
+	void AddToFile(std::string nametoadd, Entity* entity);
+	
+	static void AddCircleEntity(Entity* entity);
 
-	std::unordered_map<std::string, std::function<void(void)>> AddFunc;
+	std::unordered_map<std::string, std::function<void (Entity*)>> AddFunc;
 	std::string currentTileMapList;
 	char myTextBuffer[256]{};
 	char LoadBuffer[256]{};
@@ -71,7 +78,6 @@ private:
 };
 
 /* fucntion for adding funcitons to map */
-void AddCircleEntity();
 
 
 struct EntityProperties

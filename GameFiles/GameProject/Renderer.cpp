@@ -33,6 +33,11 @@
 #include <assert.h>
 #include <omp.h>
 
+// Emitter laser checks
+#include "Entity.h"
+#include "EntityContainer.h"
+#include "Emitter.h"
+
 #include "PauseMenu.h"
 #include <thread>
 
@@ -522,15 +527,30 @@ void Renderer::RenderLasers()
     const int ySize = (int)outputBuffer->size.y;
 
     //temp hard coded color
+    int laserPair = 0;
+    for (int i = 0; i < EntityContainer::GetInstance()->CountEntities(); ++i)
+    {
+        Emitter* emit = (*EntityContainer::GetInstance())[i]->Has(Emitter);
+        if (emit)
+        {
+            laserPoints1[laserPair] = *emit->GetPositionRight();
+            laserPoints2[laserPair] = *emit->GetEmitPositionEndR();
+            laserPoints1[++laserPair] = *emit->GetPositionLeft();
+            laserPoints2[laserPair] = *emit->GetEmitPositionEndL();
+            ++laserPair;
+        }
+    }
+    numLasers = laserPair;
+
     Color tempLaserColor[1];
     tempLaserColor[0] = Color{ 84,0,255,255 };
 
-    laserPoints1[0] = Vector2{ 60,30 } - CameraP;
+    /*laserPoints1[0] = Vector2{60,30} - CameraP;
     laserPoints2[0] = Vector2{ 160,30 } - CameraP;
 
     laserPoints1[1] = Vector2{ 60,30 } - CameraP;
     laserPoints2[1] = Vector2{ 60,160 } - CameraP;
-    numLasers = 2;
+    numLasers = 2;*/
     //end of temp hard coded lasers
 
     float IntensityR = 0.0f;

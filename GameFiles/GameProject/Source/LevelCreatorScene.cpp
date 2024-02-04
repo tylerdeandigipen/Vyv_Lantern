@@ -92,7 +92,9 @@ Engine::EngineCode LevelCreatorScene::Init()
 
 
 	// init function maps to add files at end
-	AddFunc.emplace("Circle", &AddCircleEntity);
+	AddFunc.emplace("Circle", &LevelCreatorScene::AddCircleEntity);
+	//AddFunc.emplace("Circle", &AddCircleEntity);
+
 	//AddFunc.emplace("Door", 
 	//AddFunc.emplace("Mirror", 
 
@@ -201,6 +203,89 @@ void LevelCreatorScene::ToolSquareFill(Inputs* inputHandler, Vector2 CursourP)
 
 		wasDown = false;
 	}
+}
+
+void LevelCreatorScene::ExportScene(std::string name)
+{
+	Renderer* pixel = Renderer::GetInstance();
+	int rows = pixel->tileMapSize.x;
+	int columns = pixel->tileMapSize.y;
+
+	std::vector<int> tilemap;
+	std::vector<int> walls;
+	bool found = false;
+	for (int i = 0; i < columns; ++i)
+	{
+		for (int j = 0; j < rows; ++j)
+		{
+			tilemap.push_back(pixel->tileMap[j][i] + 1);
+			for (int k = 0; k < NUM_NON_WALKABLE_TILES; ++k)
+			{
+				if (pixel->tileMap[j][i] == pixel->nonWalkableTiles[k])
+				{
+					found = true;
+					walls.push_back(pixel->tileMap[j][i]);
+				}
+			}
+			if (found == false)
+			{
+				walls.push_back(0);
+			}
+			else
+				found = false;
+		}
+	}
+
+	json tilemapArray;
+	json tilemapData;
+	json name1;
+	json name2;
+	json tilemapCol; //collideables
+
+	tilemapArray["width"] = rows;
+	tilemapArray["height"] = columns;
+
+	tilemapData["width"] = rows;
+	tilemapData["height"] = columns;
+
+	tilemapCol["width"] = rows;
+	tilemapCol["height"] = columns;
+
+	tilemapData["name"] = "TileMap";
+	tilemapCol["name"] = "Walls";
+
+	tilemapData["data"] = tilemap;
+	tilemapCol["data"] = walls;
+
+	tilemapArray["layers"][0] = tilemapData;
+	tilemapArray["layers"][1] = tilemapCol;
+
+	// save tilemap to a file
+	std::ofstream file("./Data/Scenes/" + name + "MAP" + ".json");
+	file << std::setw(2) << tilemapArray << std::endl;
+
+	json readable;
+	json data;
+	data["TileMapFile"] = "./Data/Scenes/" + name + "MAP" + ".json";
+	readable["TiledData"] = data;
+
+	// this will be the object list part
+	//
+	listToExport = "./Data/Scenes/" + name + "OBJECTS" + ".json";
+
+
+	for (auto it : tempEntities)
+	{
+		if (it)
+		{
+			AddFunc[it->key](it);
+		}
+	}
+
+
+	//the filemap to read for the scene 
+	std::ofstream actualfile("./Data/Scenes/" + name + ".json");
+	actualfile << std::setw(2) << readable << std::endl;
 }
 
 void LevelCreatorScene::ToolPan(Inputs* inputHandler, Vector2 CursourP)
@@ -536,8 +621,9 @@ void LevelCreatorScene::ImGuiWindow()
 
 		if (ImGui::TreeNode("Export:"))
 		{
+			ImGui::Text("TileMapOnly");
 			ImGui::InputText(".json", myTextBuffer, sizeof(myTextBuffer));
-			if (ImGui::Button("Export"))
+			if (ImGui::Button("ExportTileMap"))
 			{
 				std::string exportFileName = std::string(myTextBuffer);
 				if (!IsFileNameValid(exportFileName))
@@ -547,6 +633,19 @@ void LevelCreatorScene::ImGuiWindow()
 				else
 				{
 					FileIO::GetInstance()->ExportTileMap(myTextBuffer);
+				}
+			}
+
+			if (ImGui::Button("ExportFullScene"))
+			{
+				std::string exportFileName = std::string(myTextBuffer);
+				if (!IsFileNameValid(exportFileName))
+				{
+					ImGui::OpenPopup("InvalidExportFileNamePopup");
+				}
+				else
+				{
+					ExportScene(myTextBuffer);
 				}
 			}
 
@@ -722,7 +821,7 @@ void LevelCreatorScene::ImGuiWindow()
 ///////////////////////////////////////////////////////////////////////////////////
 /* testing stuff ! */
 
-static int entityCount = 0;
+static int circleCount = 0;
 int LevelCreatorScene::CreateCircleEntity()
 {
 	int circles_existing = 0;
@@ -730,37 +829,25 @@ int LevelCreatorScene::CreateCircleEntity()
 	std::string filename = "./Data/GameObjects/Circle.json";
 
 	Entity* temp = FileIO::GetInstance()->ReadEntity(filename);
-	temp->key = "Circle" + std::to_string(entityCount);
+	temp->key = "Circle" + std::to_string(circleCount);
 	tempEntities.push_back(temp);
-	++entityCount;
+	++circleCount;
 	return 0;
 }
 
-void AddCircleEntity()
+void LevelCreatorScene::AddCircleEntity(Entity* entity)
 {
 	Scene* pare = LevelCreatorSceneGetInstance();
 	LevelCreatorScene* current = reinterpret_cast<LevelCreatorScene*>(pare);
-	int circles_existing = 0;
-	std::string number = "./Data/GameObjects/Circle";
+
+	std::string number = "./Data/GameObjects/";
 	std::string filename = "./Data/GameObjects/Circle.json";
-	std::string line;
 
 	std::ifstream tocopy{ filename };
 	if (tocopy.is_open())
 	{
-		for (int i = 0; i < EntityContainer::GetInstance()->CountEntities(); ++i)
-		{
-			std::string name = (*EntityContainer::GetInstance())[i]->GetFilePath();
-			if (name.compare("./Data/GameObjects/Circle.json") >= 0)
-			{
-				++circles_existing;
-			}
-		}
-
-		EntityContainer::GetInstance()->AddEntity(FileIO::GetInstance()->ReadEntity(filename));
 		Logging::GetInstance("LevelCreator.log").LogToAll("Timestamped message: %s", "Creating");
-		++circles_existing;
-		number += std::to_string(circles_existing);
+		number += entity->key;
 		number += ".json";
 		std::ofstream file(number);
 
@@ -771,7 +858,6 @@ void AddCircleEntity()
 
 		json circle = FileIO::GetInstance()->OpenJSON(number);
 		circle["FilePath"] = number;
-
 	}
 
 	json newobject = { {"FilePath", number} };
@@ -786,11 +872,11 @@ void AddCircleEntity()
 	file << std::setw(2) << gameobjects << std::endl;
 }
 
-void LevelCreatorScene::AddToFile(std::string nametoadd)
+void LevelCreatorScene::AddToFile(std::string nametoadd, Entity* entity)
 {
 	if (AddFunc.count(nametoadd))
 	{
-		return AddFunc[nametoadd]();
+		AddFunc[nametoadd](entity);
 	}
 }
 
