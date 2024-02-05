@@ -393,6 +393,12 @@ void LevelCreatorScene::ToolHandler()
 		return;
 	} */
 
+	if (ImGui::GetIO().WantCaptureMouse || ImGui::GetIO().WantCaptureKeyboard) 
+	{
+		inputHandler->InputKeyClear();
+		return;
+	}
+
 	bool isAnyEntityPicked = false;
 
 	for (auto& entity : tempEntities)
