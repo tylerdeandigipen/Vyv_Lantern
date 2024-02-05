@@ -261,8 +261,8 @@ void LevelCreatorScene::ExportScene(std::string name)
 	tilemapArray["layers"][1] = tilemapCol;
 
 	// save tilemap to a file
-	std::ofstream file("./Data/Scenes/" + name + "MAP" + ".json");
-	file << std::setw(2) << tilemapArray << std::endl;
+	std::ofstream tileFile("./Data/Scenes/" + name + "MAP" + ".json");
+	tileFile << std::setw(2) << tilemapArray << std::endl;
 
 	json readable;
 	json data;
@@ -270,18 +270,26 @@ void LevelCreatorScene::ExportScene(std::string name)
 	readable["TiledData"] = data;
 
 	// this will be the object list part
-	//
 	listToExport = "./Data/Scenes/" + name + "OBJECTS" + ".json";
 
+	Scene* pare = LevelCreatorSceneGetInstance();
+	LevelCreatorScene* current = reinterpret_cast<LevelCreatorScene*>(pare);
 
 	for (auto it : tempEntities)
 	{
 		if (it)
 		{
-			AddFunc[it->key](it);
+			current->AddFunc[it->addKey](it);
 		}
 	}
+	json ObjectFile;
+	ObjectFile["FilePath"] = current->listToExport;
+	ObjectFile["Objects"] = gameObjects;
 
+	std::ofstream objectList(listToExport);
+	objectList << std::setw(2) << ObjectFile << std::endl;
+
+	readable["GameObjectList"] = { {"GameObjectFile", listToExport } };
 
 	//the filemap to read for the scene 
 	std::ofstream actualfile("./Data/Scenes/" + name + ".json");
@@ -829,7 +837,11 @@ int LevelCreatorScene::CreateCircleEntity()
 	std::string filename = "./Data/GameObjects/Circle.json";
 
 	Entity* temp = FileIO::GetInstance()->ReadEntity(filename);
+
+	temp->addKey = "Circle"; // this is for the map holding functions and gives access to function for circle
+
 	temp->key = "Circle" + std::to_string(circleCount);
+	temp->SetFilePath("./Data/GameObjects/Circle" + std::to_string(circleCount) + ".json");
 	tempEntities.push_back(temp);
 	++circleCount;
 	return 0;
@@ -840,36 +852,32 @@ void LevelCreatorScene::AddCircleEntity(Entity* entity)
 	Scene* pare = LevelCreatorSceneGetInstance();
 	LevelCreatorScene* current = reinterpret_cast<LevelCreatorScene*>(pare);
 
-	std::string number = "./Data/GameObjects/";
-	std::string filename = "./Data/GameObjects/Circle.json";
+	
+	Logging::GetInstance("LevelCreator.log").LogToAll("Creating->", entity->key.c_str());
+	json circleData; // the main thing for all pieces to be put inside
+	json components; // the components array
+	json collider = { {"Type", "ColliderAABB"} };
+	json transform = { {"Type", "Transform"}, {"translation", { { "x", entity->Has(Transform)->GetTranslation()->x }, {"y", entity->Has(Transform)->GetTranslation()->y} } } };
+	json physics = { {"Type", "Physics"}, {"OldTranslation", { { "x", entity->Has(Transform)->GetTranslation()->x }, {"y", entity->Has(Transform)->GetTranslation()->y} } } };
+	
+	components.push_back(collider);
+	components.push_back(transform);
+	components.push_back(physics);
+	
+	circleData["Components"] = components;
+	circleData["FilePath"] = entity->GetFilePath();
+	circleData["Name"] = "Switch";
+	circleData["Type"] = "Object";
+	circleData["file"] = "./Assets/PPM/Circle_2x2.ppm";
+	circleData["frameSize"] = { 8,8 };
+	circleData["isAnimated"] = false;
 
-	std::ifstream tocopy{ filename };
-	if (tocopy.is_open())
-	{
-		Logging::GetInstance("LevelCreator.log").LogToAll("Timestamped message: %s", "Creating");
-		number += entity->key;
-		number += ".json";
-		std::ofstream file(number);
+	std::ofstream circleCreated(entity->GetFilePath());
+	circleCreated << std::setw(2) << circleData << std::endl;
 
-		json circleOld = FileIO::GetInstance()->OpenJSON(filename);
-		file << std::setw(2) << circleOld << std::endl;
+	json newobject = { {"FilePath", entity->GetFilePath()} };
+	current->gameObjects.push_back(newobject);
 
-		Logging::GetInstance("LevelCreator.log").LogToAll("Timestamped message: %s", "Copy Finished");
-
-		json circle = FileIO::GetInstance()->OpenJSON(number);
-		circle["FilePath"] = number;
-	}
-
-	json newobject = { {"FilePath", number} };
-	json gameobjects = FileIO::GetInstance()->OpenJSON(current->currentGameObjectsList);
-	if (gameobjects["Objects"].is_array())
-	{
-		gameobjects["Objects"].push_back(newobject);
-		//myarray.push_back(newobject);
-	}
-
-	std::ofstream file(current->currentGameObjectsList);
-	file << std::setw(2) << gameobjects << std::endl;
 }
 
 void LevelCreatorScene::AddToFile(std::string nametoadd, Entity* entity)

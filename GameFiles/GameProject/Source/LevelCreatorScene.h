@@ -43,6 +43,7 @@ public:
 	// have a current list as a default so it can just be overwritten 
 	std::string currentGameObjectsList = "./Data/GameObjects/ObjectListLevelBuilder.json";
 	std::string listToExport;
+	json gameObjects;
 	std::vector<Entity*> tempEntities;
 private:
 	void ImGuiInterg();

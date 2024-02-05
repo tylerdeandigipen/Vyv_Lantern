@@ -1,0 +1,30 @@
+{
+  "Components": [
+    {
+      "Type": "ColliderAABB"
+    },
+    {
+      "Type": "Transform",
+      "translation": {
+        "x": 67.0,
+        "y": 34.0
+      }
+    },
+    {
+      "OldTranslation": {
+        "x": 67.0,
+        "y": 34.0
+      },
+      "Type": "Physics"
+    }
+  ],
+  "FilePath": "./Data/GameObjects/Circle0.json",
+  "Name": "Switch",
+  "Type": "Object",
+  "file": "./Assets/PPM/Circle_2x2.ppm",
+  "frameSize": [
+    8,
+    8
+  ],
+  "isAnimated": false
+}

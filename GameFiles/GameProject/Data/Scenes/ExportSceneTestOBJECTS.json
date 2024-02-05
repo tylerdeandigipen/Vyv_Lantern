@@ -1,0 +1,11 @@
+{
+  "FilePath": "./Data/Scenes/ExportSceneTestOBJECTS.json",
+  "Objects": [
+    {
+      "FilePath": "./Data/GameObjects/Player.json"
+    },
+    {
+      "FilePath": "./Data/GameObjects/Circle0.json"
+    }
+  ]
+}
