@@ -388,11 +388,6 @@ void LevelCreatorScene::ToolHandler()
 {
 	Inputs* inputHandler = Inputs::GetInstance();
 
-	/*if (!ImGui::GetIO().WantCaptureMouse)
-	{
-		return;
-	} */
-
 	if (ImGui::GetIO().WantCaptureMouse || ImGui::GetIO().WantCaptureKeyboard) 
 	{
 		inputHandler->InputKeyClear();
@@ -632,25 +627,20 @@ void LevelCreatorScene::ImGuiWindow()
 	{
 		ImGui::Begin("Design Tools");
 		ImGui::BeginMainMenuBar();
-		if(ImGui::MenuItem("Reset Scene", NULL, false, true))
+		if (ImGui::MenuItem("Reset Scene", NULL, false, true))
 			SceneSystem::GetInstance()->RestartScene();
-		if(ImGui::MenuItem("Test Scene", NULL, false, true))
+		if (ImGui::MenuItem("Test Scene", NULL, false, true))
 			SceneSystem::GetInstance()->SetScene(TestSceneGetInstance());
-		if(ImGui::MenuItem("TbdTest Scene", NULL, false, true))
+		if (ImGui::MenuItem("TbdTest Scene", NULL, false, true))
 			SceneSystem::GetInstance()->SetScene(TbdTestSceneGetInstance());
 		ImGui::EndMainMenuBar();
 
 		ImGui::Text("have fun designers,");
 		ImGui::Text("welcome to the creator window!");
-
 		ImGui::Separator();
+
 		ImGui::Text("Scene Settings");
-
-
 		ImGui::Text("./Data/Scenes/''LevelNameHere''");
-
-		ImGui::Separator();
-
 		if (ImGui::TreeNode("Export:"))
 		{
 			ImGui::Text("TileMapOnly");
@@ -851,35 +841,23 @@ void LevelCreatorScene::ImGuiWindow()
 		}
 		ImGui::TreePop();
 	}
-	
-	ImGui::Separator();
 
-	if (ImGui::TreeNode("Object Selector:"))
+	// removing the treenode messed with the spacing, so im adjusting the 
+	// spacing so the stuff isnt cuttoff
+	ImGui::SetCursorPosX(ImGui::GetCursorPosX() + 20);
+	ImGui::Text("Object Selector:");
+
+	ImGui::SetCursorPosX(ImGui::GetCursorPosX() + 20); // Adjust the value as needed
+	if (ImGui::Button("Create Switch"))
 	{
-		if (ImGui::Button("Create Switch"))
-		{
-			CreateCircleEntity();
-		}
-
-		g_Manager.ShowEntityInfo();
-
-		if (ImGui::Button("Apply Properties"))
-		{
-			//ApplyProperties(g.);
-		}
-
-		ImGui::TreePop();
+		CreateCircleEntity();
 	}
+	g_Manager.ShowEntityInfo();
 
 	ImGui::Separator();
-
-	
-
 	g_Manager.EditEntity(Vector2{ static_cast<float>(Inputs::GetInstance()->getMouseX()), static_cast<float>(Inputs::GetInstance()->getMouseY()) });
 
 	ImGui::End();
-
-
 }
 
 ///////////////////////////////////////////////////////////////////////////////////
@@ -964,51 +942,57 @@ void EntityManager::ShowEntityInfo()
 	if (!creator)
 		return;
 
-	for (int i = 0; i < creator->tempEntities.size(); i++)
+	if (!creator->tempEntities.empty())
 	{
-		if (!creator->tempEntities[i])
-			continue;
-
-		if (ImGui::TreeNode(("Entity %s", creator->tempEntities[i]->key.c_str())))
+		if (ImGui::TreeNode("*Entities:"))
 		{
-			//ImGui::Text("Name: %s", creator->tempEntities[i]->GetName());
-			ImGui::Text("Entity Number: %d", i);
-
-			ImGui::Text("Transform: (%f, %f)", properties[creator->tempEntities[i]->key].translation[0], properties[creator->tempEntities[i]->key].translation[1]);
-			ImGui::Text("Rotation: (%f, %f)", properties[creator->tempEntities[i]->key].rotation);
-			ImGui::SliderInt2("Test Transform", properties[creator->tempEntities[i]->key].translation, -10.f, 100.f);
-
-			ImGui::Checkbox("isEditable", &isEditable);
-			ImGui::Text((properties[creator->tempEntities[i]->key].isPicked ? "Entity is picked" : "Entity is not picked"));
-
-			if (ImGui::Button("Delete"))
+			for (int i = 0; i < creator->tempEntities.size(); i++)
 			{
-				if (!creator->tempEntities.empty())
+				if (!creator->tempEntities[i])
+					continue;
+
+				if (ImGui::TreeNode(("Entity %s", creator->tempEntities[i]->key.c_str())))
 				{
-					for (auto it = creator->tempEntities.begin(); it != creator->tempEntities.end(); ++it)
+					//ImGui::Text("Name: %s", creator->tempEntities[i]->GetName());
+					ImGui::Text("Entity Number: %d", i);
+
+					ImGui::Text("Transform: (%f, %f)", properties[creator->tempEntities[i]->key].translation[0], properties[creator->tempEntities[i]->key].translation[1]);
+					ImGui::Text("Rotation: (%f, %f)", properties[creator->tempEntities[i]->key].rotation);
+					ImGui::SliderInt2("Test Transform", properties[creator->tempEntities[i]->key].translation, -10.f, 100.f);
+
+					ImGui::Checkbox("isEditable", &isEditable);
+					ImGui::Text((properties[creator->tempEntities[i]->key].isPicked ? "Entity is picked" : "Entity is not picked"));
+
+					if (ImGui::Button("Delete"))
 					{
-						if (*it == creator->tempEntities[i])
+						if (!creator->tempEntities.empty())
 						{
-							if ((*it)->key.compare(creator->tempEntities[i]->key) == 0)
+							for (auto it = creator->tempEntities.begin(); it != creator->tempEntities.end(); ++it)
 							{
-								(*it)->FreeComponents();
-								delete* it;
-								*it = nullptr;
-								break;
+								if (*it == creator->tempEntities[i])
+								{
+									if ((*it)->key.compare(creator->tempEntities[i]->key) == 0)
+									{
+										(*it)->FreeComponents();
+										delete* it;
+										*it = nullptr;
+										break;
+									}
+								}
 							}
 						}
 					}
+
+					if (!creator->tempEntities[i])
+					{
+						continue;
+					}
+					pRenderer->objects[i]->position.x = properties[creator->tempEntities[i]->key].translation[0];
+					pRenderer->objects[i]->position.y = properties[creator->tempEntities[i]->key].translation[1];
+
+					ImGui::TreePop();
 				}
 			}
-
-			if (!creator->tempEntities[i])
-			{
-				continue;
-			}
-			pRenderer->objects[i]->position.x = properties[creator->tempEntities[i]->key].translation[0];
-			pRenderer->objects[i]->position.y = properties[creator->tempEntities[i]->key].translation[1];
-
-			ImGui::TreePop();
 		}
 	}
 }
