@@ -387,125 +387,145 @@ bool canTogglePlayMode = true;
 void LevelCreatorScene::ToolHandler()
 {
 	Inputs* inputHandler = Inputs::GetInstance();
-	g_Manager.pInput = inputHandler;
 
-	int x, y;
-	Uint32 buttons = SDL_GetMouseState(&x, &y);
-	Vector2 CursourP = { (float)x, (float)y };
-	CursourP *= 1.0f / LevelCreatorPixelRenderer->screenScale;
-
-	if (inputHandler->keyDown(SDL_SCANCODE_SPACE) && canTogglePlayMode)
+	/*if (!ImGui::GetIO().WantCaptureMouse)
 	{
-		if (playMode == false)
+		return;
+	} */
+
+	bool isAnyEntityPicked = false;
+
+	for (auto& entity : tempEntities)
+	{
+		if (entity && g_Manager.IsEntityPicked(entity->key))
 		{
-			if (playerSpawned == false)
-			{
-				EntityContainer::GetInstance()->ReadEntities("./Data/GameObjects/PlayerSpawn.json");
-				playerSpawned = true;
-			}
-			LevelCreatorPixelRenderer->animatedObjects[0][0]->position = CursourP + LevelCreatorPixelRenderer->GetCameraPosition() - Vector2{ 3,3 };
-			int* walls = new int[LevelCreatorPixelRenderer->tileMapSize.x * LevelCreatorPixelRenderer->tileMapSize.y];
+			isAnyEntityPicked = true;
+			break;
+		}
+	}
 
-			for (int x = 0; x < LevelCreatorPixelRenderer->tileMapSize.x; ++x)
+	if (!isAnyEntityPicked)
+	{
+		g_Manager.pInput = inputHandler;
+
+		int x, y;
+		Uint32 buttons = SDL_GetMouseState(&x, &y);
+		Vector2 CursourP = { (float)x, (float)y };
+		CursourP *= 1.0f / LevelCreatorPixelRenderer->screenScale;
+
+		if (inputHandler->keyDown(SDL_SCANCODE_SPACE) && canTogglePlayMode)
+		{
+			if (playMode == false)
 			{
-				for (int y = 0; y < LevelCreatorPixelRenderer->tileMapSize.y; ++y)
+				if (playerSpawned == false)
 				{
-					for (int i = 0; i < LevelCreatorPixelRenderer->numNonWalkTiles; ++i)
-					{
-						walls[(int)(y * LevelCreatorPixelRenderer->tileMapSize.x) + x] = 0;
+					EntityContainer::GetInstance()->ReadEntities("./Data/GameObjects/PlayerSpawn.json");
+					playerSpawned = true;
+				}
+				LevelCreatorPixelRenderer->animatedObjects[0][0]->position = CursourP + LevelCreatorPixelRenderer->GetCameraPosition() - Vector2{ 3,3 };
+				int* walls = new int[LevelCreatorPixelRenderer->tileMapSize.x * LevelCreatorPixelRenderer->tileMapSize.y];
 
-						if (LevelCreatorPixelRenderer->tileMap[x][y] == LevelCreatorPixelRenderer->nonWalkableTiles[i] || LevelCreatorPixelRenderer->tileMap[x][y] == 0)
+				for (int x = 0; x < LevelCreatorPixelRenderer->tileMapSize.x; ++x)
+				{
+					for (int y = 0; y < LevelCreatorPixelRenderer->tileMapSize.y; ++y)
+					{
+						for (int i = 0; i < LevelCreatorPixelRenderer->numNonWalkTiles; ++i)
 						{
-							walls[(int)(y * LevelCreatorPixelRenderer->tileMapSize.x) + x] = 1;
-							break;
+							walls[(int)(y * LevelCreatorPixelRenderer->tileMapSize.x) + x] = 0;
+
+							if (LevelCreatorPixelRenderer->tileMap[x][y] == LevelCreatorPixelRenderer->nonWalkableTiles[i] || LevelCreatorPixelRenderer->tileMap[x][y] == 0)
+							{
+								walls[(int)(y * LevelCreatorPixelRenderer->tileMapSize.x) + x] = 1;
+								break;
+							}
 						}
 					}
 				}
+				LevelBuilder::GetInstance()->SetX(LevelCreatorPixelRenderer->tileMapSize.x);
+				LevelBuilder::GetInstance()->SetY(LevelCreatorPixelRenderer->tileMapSize.y);
+				delete[] LevelBuilder::GetInstance()->GetWalls();
+				LevelBuilder::GetInstance()->SetWalls(walls);
+				playMode = true;
 			}
-			LevelBuilder::GetInstance()->SetX(LevelCreatorPixelRenderer->tileMapSize.x);
-			LevelBuilder::GetInstance()->SetY(LevelCreatorPixelRenderer->tileMapSize.y);
-			delete[] LevelBuilder::GetInstance()->GetWalls();
-			LevelBuilder::GetInstance()->SetWalls(walls);
-			playMode = true;
+			else
+			{
+				playMode = false;
+			}
+			canTogglePlayMode = false;
 		}
-		else
+		if (inputHandler->keyUp(SDL_SCANCODE_SPACE))
 		{
-			playMode = false;
+			canTogglePlayMode = true;
 		}
-		canTogglePlayMode = false;
-	}
-	if (inputHandler->keyUp(SDL_SCANCODE_SPACE))
-	{
-		canTogglePlayMode = true;
-	}
 
-	if (playMode != false)
-	{
-		LevelCreatorPixelRenderer->isFullbright = false;
-		LevelCreatorPixelRenderer->animatedObjects[0][0]->isCulled = false;
+		if (playMode != false)
+		{
+			LevelCreatorPixelRenderer->isFullbright = false;
+			LevelCreatorPixelRenderer->animatedObjects[0][0]->isCulled = false;
 
-		//remove this when the player behavior is fixed
-		LevelCreatorPixelRenderer->lightSource[1].position = LevelCreatorPixelRenderer->animatedObjects[0][0]->position + Vector2{ 3,3 };
-		LevelCreatorPixelRenderer->lightSource[0].position = LevelCreatorPixelRenderer->animatedObjects[0][0]->position + Vector2{ 3,3 };
+			//remove this when the player behavior is fixed
+			LevelCreatorPixelRenderer->lightSource[1].position = LevelCreatorPixelRenderer->animatedObjects[0][0]->position + Vector2{ 3,3 };
+			LevelCreatorPixelRenderer->lightSource[0].position = LevelCreatorPixelRenderer->animatedObjects[0][0]->position + Vector2{ 3,3 };
 
-		Vector2 LightP = LevelCreatorPixelRenderer->lightSource[0].position;
-		Vector2 D = LightP - CursourP - LevelCreatorPixelRenderer->GetCameraPosition();
-		float Angle = atan2f(D.x, D.y) * (180.0f / 3.14f) + 180.0f;
-		LevelCreatorPixelRenderer->lightSource[0].angle = Angle;
-		return;
-	}
+			Vector2 LightP = LevelCreatorPixelRenderer->lightSource[0].position;
+			Vector2 D = LightP - CursourP - LevelCreatorPixelRenderer->GetCameraPosition();
+			float Angle = atan2f(D.x, D.y) * (180.0f / 3.14f) + 180.0f;
+			LevelCreatorPixelRenderer->lightSource[0].angle = Angle;
+			return;
+		}
 
-	if (playerSpawned == true)
-	{
-		LevelCreatorPixelRenderer->animatedObjects[0][0]->isCulled = true;
-	}
-	LevelCreatorPixelRenderer->isFullbright = true;
+		if (playerSpawned == true)
+		{
+			LevelCreatorPixelRenderer->animatedObjects[0][0]->isCulled = true;
+		}
+		LevelCreatorPixelRenderer->isFullbright = true;
 
 
-	if (inputHandler->keyPressed(SDL_SCANCODE_LSHIFT) && inputHandler->mouseButtonPressed(SDL_BUTTON_LEFT))
-	{
-		//Draw Square
-		currentTool = 1;
-	}
-	else if (inputHandler->keyPressed(SDL_SCANCODE_LALT))
-	{
-		//Eyedropper
-		currentTool = 2;
-	}
-	else if (inputHandler->mouseButtonPressed(SDL_BUTTON_LEFT) || inputHandler->keyPressed(SDL_SCANCODE_B))
-	{
-		//Brush
-		currentTool = 0;
-	}
+		if (inputHandler->keyPressed(SDL_SCANCODE_LSHIFT) && inputHandler->mouseButtonPressed(SDL_BUTTON_LEFT))
+		{
+			//Draw Square
+			currentTool = 1;
+		}
+		else if (inputHandler->keyPressed(SDL_SCANCODE_LALT))
+		{
+			//Eyedropper
+			currentTool = 2;
+		}
+		else if (inputHandler->mouseButtonPressed(SDL_BUTTON_LEFT) || inputHandler->keyPressed(SDL_SCANCODE_B))
+		{
+			//Brush
+			currentTool = 0;
+		}
 
-	if (inputHandler->keyPressed(SDL_SCANCODE_E))
-	{
-		currentTool = 0;
-		currentTile = 0;
-	}
+		if (inputHandler->keyPressed(SDL_SCANCODE_E))
+		{
+			currentTool = 0;
+			currentTile = 0;
+		}
 
-	if (inputHandler->keyPressed(SDL_SCANCODE_C))
-	{
-		currentTool = 3;
-	}
+		if (inputHandler->keyPressed(SDL_SCANCODE_C))
+		{
+			currentTool = 3;
+		}
 
-	switch (currentTool)
-	{
-	default:
-		ToolBrush(inputHandler, CursourP);
-		break;
-	case 1:
-		ToolSquareFill(inputHandler, CursourP);
-		break;
-	case 2:
-		ToolEyedroper(inputHandler, CursourP);
-		break;
-	case 3:
-		ToolCenter(inputHandler);
-		break;
-	}
+		switch (currentTool)
+		{
+		default:
+			ToolBrush(inputHandler, CursourP);
+			break;
+		case 1:
+			ToolSquareFill(inputHandler, CursourP);
+			break;
+		case 2:
+			ToolEyedroper(inputHandler, CursourP);
+			break;
+		case 3:
+			ToolCenter(inputHandler);
+			break;
+		}
 
-	ToolPan(inputHandler, CursourP);
+		ToolPan(inputHandler, CursourP);
+	}
 }
 
 void LevelCreatorScene::Update(float dt)
@@ -600,8 +620,6 @@ void LevelCreatorScene::ImGuiInterg()
 #endif
 }
 
-
-
 void LevelCreatorScene::ImGuiWindow()
 {
 	if (showCreatorToolsWindow)
@@ -634,7 +652,11 @@ void LevelCreatorScene::ImGuiWindow()
 			if (ImGui::Button("ExportTileMap"))
 			{
 				std::string exportFileName = std::string(myTextBuffer);
-				if (!IsFileNameValid(exportFileName))
+				if (exportFileName.empty()) 
+				{
+					ImGui::OpenPopup("EmptyExportFileNamePopup");
+				}
+				else if (!IsFileNameValid(exportFileName))
 				{
 					ImGui::OpenPopup("InvalidExportFileNamePopup");
 				}
@@ -647,7 +669,11 @@ void LevelCreatorScene::ImGuiWindow()
 			if (ImGui::Button("ExportFullScene"))
 			{
 				std::string exportFileName = std::string(myTextBuffer);
-				if (!IsFileNameValid(exportFileName))
+				if (exportFileName.empty()) 
+				{
+					ImGui::OpenPopup("EmptyExportFileNamePopup");
+				}
+				else if (!IsFileNameValid(exportFileName))
 				{
 					ImGui::OpenPopup("InvalidExportFileNamePopup");
 				}
@@ -655,6 +681,16 @@ void LevelCreatorScene::ImGuiWindow()
 				{
 					ExportScene(myTextBuffer);
 				}
+			}
+
+			if (ImGui::BeginPopupModal("EmptyExportFileNamePopup", NULL, ImGuiWindowFlags_AlwaysAutoResize))
+			{
+				ImGui::Text("Please provide a file name for export!");
+				if (ImGui::Button("OK"))
+				{
+					ImGui::CloseCurrentPopup();
+				}
+				ImGui::EndPopup();
 			}
 
 			if (ImGui::BeginPopupModal("InvalidExportFileNamePopup", NULL, ImGuiWindowFlags_AlwaysAutoResize))
@@ -681,7 +717,11 @@ void LevelCreatorScene::ImGuiWindow()
 				if (ImGui::Button("Submit"))
 				{
 					std::string filename = "./Data/Scenes/" + std::string(filenameBuffer) + ".json";
-					if (!IsFileNameValid(filenameBuffer))
+					if (std::string(filenameBuffer).empty()) 
+					{
+						ImGui::OpenPopup("EmptyImportFileNamePopup");
+					}
+					else if (!IsFileNameValid(filenameBuffer))
 					{
 						ImGui::OpenPopup("InvalidImportFileNamePopup");
 					}
@@ -698,6 +738,16 @@ void LevelCreatorScene::ImGuiWindow()
 							ImGui::OpenPopup("FileNotFoundPopup");
 						}
 					}
+				}
+
+				if (ImGui::BeginPopupModal("EmptyImportFileNamePopup", NULL, ImGuiWindowFlags_AlwaysAutoResize))
+				{
+					ImGui::Text("Please provide a file name for import!");
+					if (ImGui::Button("OK"))
+					{
+						ImGui::CloseCurrentPopup();
+					}
+					ImGui::EndPopup();
 				}
 
 				if (ImGui::BeginPopupModal("InvalidImportFileNamePopup", NULL, ImGuiWindowFlags_AlwaysAutoResize))
@@ -888,16 +938,270 @@ void LevelCreatorScene::AddToFile(std::string nametoadd, Entity* entity)
 	}
 }
 
-/*int LevelCreatorScene::CreateDoorEntity()
+// testing something!
+
+void EntityManager::EditEntity(Vector2 mousePos)
 {
-	std::string filename = "./Data/GameObjects/Door.json";
-	EntityContainer::GetInstance()->AddEntity(FileIO::GetInstance()->ReadEntity(filename));
-	return 0;
+	if (!isEditable || !pRenderer || !pInput)
+		return;
+
+	SetMousePos(mousePos);
+	EntityPicker();
 }
 
-int LevelCreatorScene::CreateMirrorEntity()
+void EntityManager::ShowEntityInfo()
 {
-	std::string filename = "./Data/GameObjects/Mirror.json";
-	EntityContainer::GetInstance()->AddEntity(FileIO::GetInstance()->ReadEntity(filename));
-	return 0;
-} */
+	if (!pRenderer || !pInput)
+		return;
+
+	LevelCreatorScene* creator = reinterpret_cast<LevelCreatorScene*>(LevelCreatorSceneGetInstance());
+	if (!creator)
+		return;
+
+	for (int i = 0; i < creator->tempEntities.size(); i++)
+	{
+		if (!creator->tempEntities[i])
+			continue;
+
+		if (ImGui::TreeNode(("Entity %s", creator->tempEntities[i]->key.c_str())))
+		{
+			//ImGui::Text("Name: %s", creator->tempEntities[i]->GetName());
+			ImGui::Text("Entity Number: %d", i);
+
+			ImGui::Text("Transform: (%f, %f)", properties[creator->tempEntities[i]->key].translation[0], properties[creator->tempEntities[i]->key].translation[1]);
+			ImGui::Text("Rotation: (%f, %f)", properties[creator->tempEntities[i]->key].rotation);
+			ImGui::SliderInt2("Test Transform", properties[creator->tempEntities[i]->key].translation, -10.f, 100.f);
+
+			ImGui::Checkbox("isEditable", &isEditable);
+			ImGui::Text((properties[creator->tempEntities[i]->key].isPicked ? "Entity is picked" : "Entity is not picked"));
+
+			if (ImGui::Button("Delete"))
+			{
+				if (!creator->tempEntities.empty())
+				{
+					for (auto it = creator->tempEntities.begin(); it != creator->tempEntities.end(); ++it)
+					{
+						if (*it == creator->tempEntities[i])
+						{
+							if ((*it)->key.compare(creator->tempEntities[i]->key) == 0)
+							{
+								(*it)->FreeComponents();
+								delete* it;
+								*it = nullptr;
+								break;
+							}
+						}
+					}
+				}
+			}
+
+			if (!creator->tempEntities[i])
+			{
+				continue;
+			}
+			pRenderer->objects[i]->position.x = properties[creator->tempEntities[i]->key].translation[0];
+			pRenderer->objects[i]->position.y = properties[creator->tempEntities[i]->key].translation[1];
+
+			ImGui::TreePop();
+		}
+	}
+}
+
+int EntityManager::ApplyProperties()
+{
+	if (!pRenderer)
+		return EXIT_FAILURE;
+
+	LevelCreatorScene* creator = reinterpret_cast<LevelCreatorScene*>(LevelCreatorSceneGetInstance());
+	for (int i = 0; i < creator->tempEntities.size(); i++)
+	{
+		std::string filename = creator->tempEntities[i]->GetFilePath(); // Replace with your actual JSON file path
+
+		// Read the JSON file
+		std::ifstream input_file(filename);
+		if (!input_file.is_open())
+		{
+			std::cerr << "Error opening file" << std::endl;
+			return 1;
+		}
+
+		json j;
+		input_file >> j;
+		input_file.close();
+
+		// Modify the translation values
+		for (auto& component : j["Components"])
+		{
+			if (component["Type"] == "Transform")
+			{
+				// Set new values for x and y
+				component["translation"]["x"] = properties[creator->tempEntities[i]->key].translation[0]; // Replace with the new X value
+				component["translation"]["y"] = properties[creator->tempEntities[i]->key].translation[1]; // Replace with the new Y value
+				break;
+			}
+		}
+
+		// Write the modified JSON back to the file
+		std::ofstream output_file(filename);
+		if (!output_file.is_open())
+		{
+			std::cerr << "Error opening file for writing" << std::endl;
+			return 1;
+		}
+
+		output_file << j.dump(4); // Writing with an indentation of 4 spaces
+		output_file.close();
+	}
+	return EXIT_SUCCESS;
+}
+
+bool EntityManager::InitializeProperties(std::string file_path) 
+{
+	if (!pRenderer)
+		return false;
+
+	//initialize level data
+	LevelCreatorScene* creator = reinterpret_cast<LevelCreatorScene*>(LevelCreatorSceneGetInstance());
+	EntityContainer::GetInstance()->ReadEntities(file_path);
+
+	for (int i = 0; i < creator->tempEntities.size(); i++)
+	{
+		if (creator->tempEntities[i])
+		{
+			Transform* t = creator->tempEntities[i]->Has(Transform);
+			properties[creator->tempEntities[i]->key] = EntityProperties{ {static_cast<int>(std::floorf(t->GetTranslation()->x)), static_cast<int>(std::floorf(t->GetTranslation()->y))}, {0.f}, false };
+		}
+	}
+
+	file = std::ifstream(fileToEdit);
+
+	if (file.good())
+	{
+		std::string str((std::istreambuf_iterator<char>(file)), std::istreambuf_iterator<char>());
+		editor.SetText(str);
+	}
+
+	return true; //Initialization success!
+}
+
+void EntityManager::EditText()
+{
+	if (!pRenderer || !pInput)
+		return;
+
+	auto cpos = editor.GetCursorPosition();
+
+	editor.SetLanguageDefinition(lang);
+
+	ImGui::Begin("Text Editor", nullptr, ImGuiWindowFlags_HorizontalScrollbar | ImGuiWindowFlags_MenuBar);
+	ImGui::SetWindowSize(ImVec2(800, 600), ImGuiCond_FirstUseEver);
+
+	if (ImGui::BeginMenuBar())
+	{
+		if (ImGui::BeginMenu("File"))
+		{
+			if (ImGui::MenuItem("Save"))
+			{
+				auto textToSave = editor.GetText();
+				/// save text....
+			}
+			if (ImGui::MenuItem("Load"))
+			{
+				ImGui::Begin("Select File", nullptr, ImGuiWindowFlags_AlwaysVerticalScrollbar);
+				ImGui::End();
+			}
+			ImGui::EndMenu();
+		}
+		if (ImGui::BeginMenu("Edit"))
+		{
+			bool ro = editor.IsReadOnly();
+			if (ImGui::MenuItem("Read-only mode", nullptr, &ro))
+				editor.SetReadOnly(ro);
+			ImGui::Separator();
+
+			if (ImGui::MenuItem("Undo", "ALT-Backspace", nullptr, !ro && editor.CanUndo()))
+				editor.Undo();
+			if (ImGui::MenuItem("Redo", "Ctrl-Y", nullptr, !ro && editor.CanRedo()))
+				editor.Redo();
+
+			ImGui::Separator();
+
+			if (ImGui::MenuItem("Copy", "Ctrl-C", nullptr, editor.HasSelection()))
+				editor.Copy();
+			if (ImGui::MenuItem("Cut", "Ctrl-X", nullptr, !ro && editor.HasSelection()))
+				editor.Cut();
+			if (ImGui::MenuItem("Delete", "Del", nullptr, !ro && editor.HasSelection()))
+				editor.Delete();
+			if (ImGui::MenuItem("Paste", "Ctrl-V", nullptr, !ro && ImGui::GetClipboardText() != nullptr))
+				editor.Paste();
+
+			ImGui::Separator();
+
+			if (ImGui::MenuItem("Select all", nullptr, nullptr))
+				editor.SetSelection(TextEditor::Coordinates(), TextEditor::Coordinates(editor.GetTotalLines(), 0));
+
+			ImGui::EndMenu();
+		}
+
+		if (ImGui::BeginMenu("View"))
+		{
+			if (ImGui::MenuItem("Dark palette"))
+				editor.SetPalette(TextEditor::GetDarkPalette());
+			if (ImGui::MenuItem("Light palette"))
+				editor.SetPalette(TextEditor::GetLightPalette());
+			if (ImGui::MenuItem("Retro blue palette"))
+				editor.SetPalette(TextEditor::GetRetroBluePalette());
+			ImGui::EndMenu();
+		}
+		ImGui::EndMenuBar();
+	}
+	ImGui::Text("%6d/%-6d %6d lines  | %s | %s | %s | %s", cpos.mLine + 1, cpos.mColumn + 1, editor.GetTotalLines(),
+		editor.IsOverwrite() ? "Ovr" : "Ins",
+		editor.CanUndo() ? "*" : " ",
+		editor.GetLanguageDefinition().mName.c_str(), fileToEdit);
+
+	editor.Render("TextEditor");
+
+	ImGui::End();
+}
+
+void EntityManager::EntityPicker()
+{
+	LevelCreatorScene* creator = reinterpret_cast<LevelCreatorScene*>(LevelCreatorSceneGetInstance());
+	if (isEditable)
+	{
+		for (int i = 0; i < creator->tempEntities.size(); i++)
+		{
+			if ((properties[creator->tempEntities[i]->key].translation[0] + 15) >= mousePos_.x && (properties[creator->tempEntities[i]->key].translation[0]) <= mousePos_.x &&
+				(properties[creator->tempEntities[i]->key].translation[1] + 15) >= mousePos_.y && (properties[creator->tempEntities[i]->key].translation[1]) <= mousePos_.y)
+			{
+				if (pInput->mouseButtonDown(SDL_BUTTON_LEFT))
+				{
+					properties[creator->tempEntities[i]->key].isPicked = true;
+				}
+				else
+				{
+					properties[creator->tempEntities[i]->key].isPicked = false;
+				}
+			}
+
+			if (properties[creator->tempEntities[i]->key].isPicked == true)
+			{
+				properties[creator->tempEntities[i]->key].translation[0] = mousePos_.x - 8;
+				properties[creator->tempEntities[i]->key].translation[1] = mousePos_.y - 8;
+			}
+		}
+	}
+}
+
+void EntityManager::SetMousePos(Vector2 mousePos)
+{
+	mousePos_.x = mousePos.x / pRenderer->screenScale;
+	mousePos_.y = mousePos.y / pRenderer->screenScale;
+}
+
+bool EntityManager::IsEntityPicked(const std::string& key) const
+{
+	auto it = properties.find(key);
+	return it != properties.end() ? it->second.isPicked : false;
+}
