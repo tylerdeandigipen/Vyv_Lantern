@@ -35,6 +35,7 @@ struct EntityProperties
 	// bool isCollidable;
 	bool isPicked = false;
 	bool isEditable = false;
+	bool isTileAttatch = false;
 };
 
 class LevelCreatorScene : public Scene

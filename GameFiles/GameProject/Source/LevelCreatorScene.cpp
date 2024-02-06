@@ -981,12 +981,14 @@ void EntityManager::ShowEntityInfo()
 					//ImGui::Text("Name: %s", creator->tempEntities[i]->GetName());
 					ImGui::Text("Entity Number: %d", i);
 
-					ImGui::Text("Transform: (%f, %f)", properties[creator->tempEntities[i]->key].translation[0], properties[creator->tempEntities[i]->key].translation[1]);
+					ImGui::Text("Translation: (%d, %d)", properties[creator->tempEntities[i]->key].translation[0], properties[creator->tempEntities[i]->key].translation[1]);
 					ImGui::Text("Rotation: (%f, %f)", properties[creator->tempEntities[i]->key].rotation);
-					ImGui::SliderInt2("Test Transform", properties[creator->tempEntities[i]->key].translation, -10.f, 100.f);
+					ImGui::Text("Size: (%d, %d)", static_cast<int>(g_Manager.pRenderer->objects[i]->size.x), static_cast<int>(g_Manager.pRenderer->objects[i]->size.y));
 
-					ImGui::Checkbox("isEditable", &properties[creator->tempEntities[i]->key].isEditable);
-					ImGui::Text((properties[creator->tempEntities[i]->key].isPicked ? "Entity is picked" : "Entity is not picked"));
+					ImGui::SliderInt2("Modify Translation", properties[creator->tempEntities[i]->key].translation, -100, 100);
+
+					ImGui::Checkbox((properties[creator->tempEntities[i]->key].isEditable ? "Entity edit enabled" : "Entity edit disabled"), &properties[creator->tempEntities[i]->key].isEditable);
+					ImGui::Checkbox((properties[creator->tempEntities[i]->key].isTileAttatch ? "Tile attatch enabled" : "Tile attatch disabled"), &properties[creator->tempEntities[i]->key].isTileAttatch);
 
 					if (ImGui::Button("Delete"))
 					{
@@ -1192,8 +1194,8 @@ void EntityManager::EntityPicker()
 	{
 		if (properties[creator->tempEntities[i]->key].isEditable == true)
 		{
-			if ((properties[creator->tempEntities[i]->key].translation[0] + 15) >= mousePos_.x && (properties[creator->tempEntities[i]->key].translation[0]) <= mousePos_.x &&
-				(properties[creator->tempEntities[i]->key].translation[1] + 15) >= mousePos_.y && (properties[creator->tempEntities[i]->key].translation[1]) <= mousePos_.y)
+			if ((properties[creator->tempEntities[i]->key].translation[0] + g_Manager.pRenderer->objects[i]->size.x) >= mousePos_.x && (properties[creator->tempEntities[i]->key].translation[0]) <= mousePos_.x &&
+				(properties[creator->tempEntities[i]->key].translation[1] + g_Manager.pRenderer->objects[i]->size.y) >= mousePos_.y && (properties[creator->tempEntities[i]->key].translation[1]) <= mousePos_.y)
 			{
 				if (pInput->mouseButtonDown(SDL_BUTTON_LEFT))
 				{
@@ -1207,8 +1209,16 @@ void EntityManager::EntityPicker()
 
 			if (properties[creator->tempEntities[i]->key].isPicked == true)
 			{
-				properties[creator->tempEntities[i]->key].translation[0] = mousePos_.x - 8;
-				properties[creator->tempEntities[i]->key].translation[1] = mousePos_.y - 8;
+				if (properties[creator->tempEntities[i]->key].isTileAttatch == true)
+				{
+					properties[creator->tempEntities[i]->key].translation[0] = (static_cast<int>(mousePos_.x - g_Manager.pRenderer->objects[i]->size.x / 2) % 8 == 0) ? static_cast<int>(mousePos_.x - g_Manager.pRenderer->objects[i]->size.x / 2) + 4 : properties[creator->tempEntities[i]->key].translation[0];
+					properties[creator->tempEntities[i]->key].translation[1] = (static_cast<int>(mousePos_.y - g_Manager.pRenderer->objects[i]->size.y / 2) % 8 == 0) ? static_cast<int>(mousePos_.y - g_Manager.pRenderer->objects[i]->size.y / 2) + 4 : properties[creator->tempEntities[i]->key].translation[1];
+				}
+				else
+				{
+					properties[creator->tempEntities[i]->key].translation[0] = static_cast<int>(mousePos_.x - g_Manager.pRenderer->objects[i]->size.x / 2);
+					properties[creator->tempEntities[i]->key].translation[1] = static_cast<int>(mousePos_.y - g_Manager.pRenderer->objects[i]->size.y / 2);
+				}
 			}
 		}
 	}
