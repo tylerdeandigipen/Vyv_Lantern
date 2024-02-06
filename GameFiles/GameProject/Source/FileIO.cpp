@@ -347,7 +347,7 @@ void FileIO::ReadScene(std::string fileName)
 void FileIO::ExportTileMap(std::string name)
 {
 	Renderer* pixel = Renderer::GetInstance();
-	int rows = pixel->tileMapSize.x;
+	int rows = static_cast<int>(pixel->tileMapSize.x);
 	int columns = pixel->tileMapSize.y;
 
 	std::vector<int> tilemap;

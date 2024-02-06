@@ -38,7 +38,7 @@ public:
 	bool doScanLines = true;
 	float scanLineOpacity = 0.935f;
 	bool doFog = false;
-	Vector2 fogMoveDir{ 0.08, 0.01 };
+	Vector2 fogMoveDir{ 0.08f, 0.01f };
 	float fogOpacity = 5;
 
 	//Debug Draw Toggles

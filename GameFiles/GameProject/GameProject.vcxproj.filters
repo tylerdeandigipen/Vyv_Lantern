@@ -173,6 +173,8 @@
     <ClCompile Include="Source\ParticleManager.cpp">
       <Filter>Source FIles\Engine\Systems</Filter>
     </ClCompile>
+    <ClCompile Include="Emitter.cpp" />
+    <ClCompile Include="LineCollider.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="IMGUI\imgui.h">
@@ -371,6 +373,8 @@
     <ClInclude Include="Source\Time_TM.h">
       <Filter>Header FIles\Other</Filter>
     </ClInclude>
+    <ClInclude Include="Emitter.h" />
+    <ClInclude Include="LineCollider.h" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Misc\GameProject.ico">
@@ -379,13 +383,6 @@
     <Image Include="Misc\small.ico">
       <Filter>Misc</Filter>
     </Image>
-  </ItemGroup>
-  <ItemGroup>
-    <ResourceCompile Include="GameProject.rc" />
-  </ItemGroup>
-  <ItemGroup>
-    <Image Include="GameProject.ico" />
-    <Image Include="small.ico" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Data\FirstLevel.json" />

@@ -112,7 +112,6 @@ public:
 	std::ifstream file;
 	TextEditor::LanguageDefinition lang = TextEditor::LanguageDefinition::CPlusPlus();
 	Renderer* pRenderer;
-	bool isEditable = false;
 	Vector2 mousePos_;
 	Inputs* pInput;
 };

@@ -4,7 +4,7 @@
 // Author(s):	Tyler Dean
 // Purpose:		ImageBuffer class implementation for handling image data.
 //
-// Copyright © 2023 DigiPen (USA) Corporation.
+// Copyright ?2023 DigiPen (USA) Corporation.
 //
 //------------------------------------------------------------------------------
 #include "ImageBuffer.h"

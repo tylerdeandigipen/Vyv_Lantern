@@ -106,7 +106,7 @@ Engine::EngineCode LevelCreatorScene::Init()
 	currentTile = 1;
 	return Engine::NothingBad;
 
-	
+
 }
 
 Vector2 pos1, pos2;
@@ -388,7 +388,7 @@ void LevelCreatorScene::ToolHandler()
 {
 	Inputs* inputHandler = Inputs::GetInstance();
 
-	if (ImGui::GetIO().WantCaptureMouse || ImGui::GetIO().WantCaptureKeyboard) 
+	if (ImGui::GetIO().WantCaptureMouse || ImGui::GetIO().WantCaptureKeyboard)
 	{
 		inputHandler->InputKeyClear();
 		return;
@@ -552,7 +552,7 @@ void LevelCreatorScene::Render()
 Engine::EngineCode LevelCreatorScene::Exit()
 {
 	EntityContainer::GetInstance()->FreeAll();
-	
+
 	if (!tempEntities.empty())
 	{
 		for (auto it : tempEntities)
@@ -610,8 +610,6 @@ void LevelCreatorScene::ImGuiInterg()
 	ImGui_ImplSDL2_NewFrame();
 	ImGui::NewFrame();
 
-	g_Manager.EditText();
-
 	if (showCreatorToolsWindow)
 	{
 		ImGuiWindow();
@@ -621,18 +619,47 @@ void LevelCreatorScene::ImGuiInterg()
 #endif
 }
 
+#pragma region Tile Name Converter
+auto TileNumToString(unsigned int tileNum) -> std::string
+{
+	static const std::map<unsigned int, std::string> tileNames =
+	{
+		{ 0, "Empty" },
+		{ 1, "Black" }
+	};
+
+	if (tileNum > 1 || tileNum > g_Manager.pRenderer->GetTileCount())
+		return "Unknown";
+
+	return tileNames.at(tileNum);
+}
+#pragma endregion
+
 void LevelCreatorScene::ImGuiWindow()
 {
 	if (showCreatorToolsWindow)
 	{
 		ImGui::Begin("Design Tools");
 		ImGui::BeginMainMenuBar();
+
 		if (ImGui::MenuItem("Reset Scene", NULL, false, true))
 			SceneSystem::GetInstance()->RestartScene();
 		if (ImGui::MenuItem("Test Scene", NULL, false, true))
 			SceneSystem::GetInstance()->SetScene(TestSceneGetInstance());
 		if (ImGui::MenuItem("TbdTest Scene", NULL, false, true))
 			SceneSystem::GetInstance()->SetScene(TbdTestSceneGetInstance());
+
+		static bool showTextEditor = false;
+		if (ImGui::MenuItem("Text Editor", NULL, false, true))
+		{
+			if (showTextEditor == true)
+				showTextEditor = false;
+			else
+				showTextEditor = true;
+		}
+		if (showTextEditor)
+			g_Manager.EditText();
+
 		ImGui::EndMainMenuBar();
 
 		ImGui::Text("have fun designers,");
@@ -648,7 +675,7 @@ void LevelCreatorScene::ImGuiWindow()
 			if (ImGui::Button("ExportTileMap"))
 			{
 				std::string exportFileName = std::string(myTextBuffer);
-				if (exportFileName.empty()) 
+				if (exportFileName.empty())
 				{
 					ImGui::OpenPopup("EmptyExportFileNamePopup");
 				}
@@ -665,7 +692,7 @@ void LevelCreatorScene::ImGuiWindow()
 			if (ImGui::Button("ExportFullScene"))
 			{
 				std::string exportFileName = std::string(myTextBuffer);
-				if (exportFileName.empty()) 
+				if (exportFileName.empty())
 				{
 					ImGui::OpenPopup("EmptyExportFileNamePopup");
 				}
@@ -713,7 +740,7 @@ void LevelCreatorScene::ImGuiWindow()
 				if (ImGui::Button("Submit"))
 				{
 					std::string filename = "./Data/Scenes/" + std::string(filenameBuffer) + ".json";
-					if (std::string(filenameBuffer).empty()) 
+					if (std::string(filenameBuffer).empty())
 					{
 						ImGui::OpenPopup("EmptyImportFileNamePopup");
 					}
@@ -828,11 +855,9 @@ void LevelCreatorScene::ImGuiWindow()
 		{
 			static int selected = -1;
 
-			for (int n = 0; n < g_Manager.pRenderer->GetTileCount(); n++)
+			for (auto n = 0; n < g_Manager.pRenderer->GetTileCount(); n++)
 			{
-				char buf[32];
-				sprintf_s(buf, "Tile %d", n);
-				if (ImGui::Selectable(buf, selected == n))
+				if (ImGui::Selectable(("Tile " + TileNumToString(n)).c_str(), selected == n))
 					currentTile = n;
 			}
 
@@ -886,18 +911,18 @@ void LevelCreatorScene::AddCircleEntity(Entity* entity)
 	Scene* pare = LevelCreatorSceneGetInstance();
 	LevelCreatorScene* current = reinterpret_cast<LevelCreatorScene*>(pare);
 
-	
+
 	Logging::GetInstance("LevelCreator.log").LogToAll("Creating->", entity->key.c_str());
 	json circleData; // the main thing for all pieces to be put inside
 	json components; // the components array
 	json collider = { {"Type", "ColliderAABB"} };
 	json transform = { {"Type", "Transform"}, {"translation", { { "x", entity->Has(Transform)->GetTranslation()->x }, {"y", entity->Has(Transform)->GetTranslation()->y} } } };
 	json physics = { {"Type", "Physics"}, {"OldTranslation", { { "x", entity->Has(Transform)->GetTranslation()->x }, {"y", entity->Has(Transform)->GetTranslation()->y} } } };
-	
+
 	components.push_back(collider);
 	components.push_back(transform);
 	components.push_back(physics);
-	
+
 	circleData["Components"] = components;
 	circleData["FilePath"] = entity->GetFilePath();
 	circleData["Name"] = "Switch";
@@ -926,7 +951,7 @@ void LevelCreatorScene::AddToFile(std::string nametoadd, Entity* entity)
 
 void EntityManager::EditEntity(Vector2 mousePos)
 {
-	if (!isEditable || !pRenderer || !pInput)
+	if (!pRenderer || !pInput)
 		return;
 
 	SetMousePos(mousePos);
@@ -960,7 +985,7 @@ void EntityManager::ShowEntityInfo()
 					ImGui::Text("Rotation: (%f, %f)", properties[creator->tempEntities[i]->key].rotation);
 					ImGui::SliderInt2("Test Transform", properties[creator->tempEntities[i]->key].translation, -10.f, 100.f);
 
-					ImGui::Checkbox("isEditable", &isEditable);
+					ImGui::Checkbox("isEditable", &properties[creator->tempEntities[i]->key].isEditable);
 					ImGui::Text((properties[creator->tempEntities[i]->key].isPicked ? "Entity is picked" : "Entity is not picked"));
 
 					if (ImGui::Button("Delete"))
@@ -1045,7 +1070,7 @@ int EntityManager::ApplyProperties()
 	return EXIT_SUCCESS;
 }
 
-bool EntityManager::InitializeProperties(std::string file_path) 
+bool EntityManager::InitializeProperties(std::string file_path)
 {
 	if (!pRenderer)
 		return false;
@@ -1059,7 +1084,7 @@ bool EntityManager::InitializeProperties(std::string file_path)
 		if (creator->tempEntities[i])
 		{
 			Transform* t = creator->tempEntities[i]->Has(Transform);
-			properties[creator->tempEntities[i]->key] = EntityProperties{ {static_cast<int>(std::floorf(t->GetTranslation()->x)), static_cast<int>(std::floorf(t->GetTranslation()->y))}, {0.f}, false };
+			properties[creator->tempEntities[i]->key] = EntityProperties{ {static_cast<int>(std::floorf(t->GetTranslation()->x)), static_cast<int>(std::floorf(t->GetTranslation()->y))}, {0.f}, false, false };
 		}
 	}
 
@@ -1069,6 +1094,11 @@ bool EntityManager::InitializeProperties(std::string file_path)
 	{
 		std::string str((std::istreambuf_iterator<char>(file)), std::istreambuf_iterator<char>());
 		editor.SetText(str);
+	}
+	else
+	{
+		std::cerr << "Error opening file" << std::endl;
+		return false;
 	}
 
 	return true; //Initialization success!
@@ -1084,7 +1114,7 @@ void EntityManager::EditText()
 	editor.SetLanguageDefinition(lang);
 
 	ImGui::Begin("Text Editor", nullptr, ImGuiWindowFlags_HorizontalScrollbar | ImGuiWindowFlags_MenuBar);
-	ImGui::SetWindowSize(ImVec2(800, 600), ImGuiCond_FirstUseEver);
+	ImGui::SetWindowSize(ImVec2(600, 800), ImGuiCond_FirstUseEver);
 
 	if (ImGui::BeginMenuBar())
 	{
@@ -1158,9 +1188,9 @@ void EntityManager::EditText()
 void EntityManager::EntityPicker()
 {
 	LevelCreatorScene* creator = reinterpret_cast<LevelCreatorScene*>(LevelCreatorSceneGetInstance());
-	if (isEditable)
+	for (int i = 0; i < creator->tempEntities.size(); i++)
 	{
-		for (int i = 0; i < creator->tempEntities.size(); i++)
+		if (properties[creator->tempEntities[i]->key].isEditable == true)
 		{
 			if ((properties[creator->tempEntities[i]->key].translation[0] + 15) >= mousePos_.x && (properties[creator->tempEntities[i]->key].translation[0]) <= mousePos_.x &&
 				(properties[creator->tempEntities[i]->key].translation[1] + 15) >= mousePos_.y && (properties[creator->tempEntities[i]->key].translation[1]) <= mousePos_.y)
