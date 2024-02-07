@@ -67,6 +67,8 @@ private:
 	void ToolSquareFill(Inputs* inputHandler, Vector2 CursourP);
 
 	static void AddCircleEntity(Entity* entity);
+	static void AddDoorEntity(Entity* entity);
+	static void AddMirrorEntity(Entity* entity);
 	int CreateCircleEntity();
 	int CreateDoorEntity();
 	int CreateMirrorEntity();

@@ -93,6 +93,7 @@ Engine::EngineCode LevelCreatorScene::Init()
 
 	// init function maps to add files at end
 	AddFunc.emplace("Circle", &LevelCreatorScene::AddCircleEntity);
+	AddFunc.emplace("Door", &LevelCreatorScene::AddDoorEntity);
 	//AddFunc.emplace("Circle", &AddCircleEntity);
 
 	//AddFunc.emplace("Door", 
@@ -926,6 +927,14 @@ void LevelCreatorScene::ImGuiWindow()
 	{
 		CreateCircleEntity();
 	}
+	if (ImGui::Button(" Create Door"))
+	{
+		CreateDoorEntity();
+	}
+	if (ImGui::Button(" Create Mirror"))
+	{
+		CreateMirrorEntity();
+	}
 	g_Manager.ShowEntityInfo();
 
 	ImGui::Separator();
@@ -952,6 +961,43 @@ int LevelCreatorScene::CreateCircleEntity()
 	temp->SetFilePath("./Data/GameObjects/Circle" + std::to_string(circleCount) + ".json");
 	tempEntities.push_back(temp);
 	++circleCount;
+	return 0;
+}
+
+
+int LevelCreatorScene::CreateDoorEntity()
+{
+	static int doorCount = 0;
+	int door_existing = 0;
+	std::string number = "./Data/GameObjects/Door";
+	std::string filename = "./Data/GameObjects/Door.json";
+
+	Entity* temp = FileIO::GetInstance()->ReadEntity(filename);
+
+	temp->addKey = "Door"; // this is for the map holding functions and gives access to function for circle
+
+	temp->key = "Door" + std::to_string(doorCount);
+	temp->SetFilePath("./Data/GameObjects/Door" + std::to_string(doorCount) + ".json");
+	tempEntities.push_back(temp);
+	++doorCount;
+	return 0;
+}
+
+int LevelCreatorScene::CreateMirrorEntity()
+{
+	static int mirrorCount = 0;
+	int door_existing = 0;
+	std::string number = "./Data/GameObjects/Mirror";
+	std::string filename = "./Data/GameObjects/Mirror.json";
+
+	Entity* temp = FileIO::GetInstance()->ReadEntity(filename);
+
+	temp->addKey = "Mirror"; // this is for the map holding functions and gives access to function for circle
+
+	temp->key = "Mirror" + std::to_string(mirrorCount);
+	temp->SetFilePath("./Data/GameObjects/Mirror" + std::to_string(mirrorCount) + ".json");
+	tempEntities.push_back(temp);
+	++mirrorCount;
 	return 0;
 }
 
@@ -985,7 +1031,70 @@ void LevelCreatorScene::AddCircleEntity(Entity* entity)
 
 	json newobject = { {"FilePath", entity->GetFilePath()} };
 	current->gameObjects.push_back(newobject);
+}
 
+void LevelCreatorScene::AddDoorEntity(Entity* entity)
+{
+	Scene* pare = LevelCreatorSceneGetInstance();
+	LevelCreatorScene* current = reinterpret_cast<LevelCreatorScene*>(pare);
+
+
+	Logging::GetInstance("LevelCreator.log").LogToAll("Creating->", entity->key.c_str());
+	json doorData; // the main thing for all pieces to be put inside
+	json components; // the components array
+	json collider = { {"Type", "ColliderAABB"} };
+	json transform = { {"Type", "Transform"}, {"translation", { { "x", entity->Has(Transform)->GetTranslation()->x }, {"y", entity->Has(Transform)->GetTranslation()->y} } } };
+	json physics = { {"Type", "Physics"}, {"OldTranslation", { { "x", entity->Has(Transform)->GetTranslation()->x }, {"y", entity->Has(Transform)->GetTranslation()->y} } } };
+
+	components.push_back(collider);
+	components.push_back(transform);
+	components.push_back(physics);
+
+	doorData["Components"] = components;
+	doorData["FilePath"] = entity->GetFilePath();
+	doorData["Name"] = "Switch";
+	doorData["Type"] = "Object";
+	doorData["file"] = "./Assets/PPM/Door_Closed.ppm";
+	doorData["frameSize"] = { 8,8 };
+	doorData["isAnimated"] = false;
+
+	std::ofstream doorCreated(entity->GetFilePath());
+	doorCreated << std::setw(2) << doorData << std::endl;
+
+	json newobject = { {"FilePath", entity->GetFilePath()} };
+	current->gameObjects.push_back(newobject);
+}
+
+void LevelCreatorScene::AddMirrorEntity(Entity* entity)
+{
+	Scene* pare = LevelCreatorSceneGetInstance();
+	LevelCreatorScene* current = reinterpret_cast<LevelCreatorScene*>(pare);
+
+
+	Logging::GetInstance("LevelCreator.log").LogToAll("Creating->", entity->key.c_str());
+	json mirrorData; // the main thing for all pieces to be put inside
+	json components; // the components array
+	json collider = { {"Type", "ColliderAABB"} };
+	json transform = { {"Type", "Transform"}, {"translation", { { "x", entity->Has(Transform)->GetTranslation()->x }, {"y", entity->Has(Transform)->GetTranslation()->y} } } };
+	json physics = { {"Type", "Physics"}, {"OldTranslation", { { "x", entity->Has(Transform)->GetTranslation()->x }, {"y", entity->Has(Transform)->GetTranslation()->y} } } };
+
+	components.push_back(collider);
+	components.push_back(transform);
+	components.push_back(physics);
+
+	mirrorData["Components"] = components;
+	mirrorData["FilePath"] = entity->GetFilePath();
+	mirrorData["Name"] = "Switch";
+	mirrorData["Type"] = "Object";
+	mirrorData["file"] = "./Assets/PPM/Mirror.ppm";
+	mirrorData["frameSize"] = { 8,8 };
+	mirrorData["isAnimated"] = false;
+
+	std::ofstream doorCreated(entity->GetFilePath());
+	doorCreated << std::setw(2) << mirrorData << std::endl;
+
+	json newobject = { {"FilePath", entity->GetFilePath()} };
+	current->gameObjects.push_back(newobject);
 }
 
 void LevelCreatorScene::AddToFile(std::string nametoadd, Entity* entity)
