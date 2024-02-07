@@ -677,7 +677,7 @@ auto TileNumToString(unsigned int tileNum) -> std::string
 		{ 50, "GlassBotLeft" }
 	};
 
-	if (tileNum > 1 || tileNum > g_Manager.pRenderer->GetTileCount())
+	if (tileNum > g_Manager.pRenderer->GetTileCount() || tileNum < 0)
 		return "Unknown";
 
 	return tileNames.at(tileNum);
