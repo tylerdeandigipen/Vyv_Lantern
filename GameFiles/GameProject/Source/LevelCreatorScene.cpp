@@ -90,10 +90,11 @@ Engine::EngineCode LevelCreatorScene::Init()
 
 	LevelBuilder::GetInstance()->LoadTileMap("./Data/Scenes/LevelCreatorScene.json");
 
+	// not sure how to do this w/ the new generic vers.
 
 	// init function maps to add files at end
-	AddFunc.emplace("Circle", &LevelCreatorScene::AddCircleEntity);
-	AddFunc.emplace("Door", &LevelCreatorScene::AddDoorEntity);
+	//AddFunc.emplace("Circle", &LevelCreatorScene::AddCircleEntity);
+	//AddFunc.emplace("Door", &LevelCreatorScene::AddDoorEntity);
 	//AddFunc.emplace("Circle", &AddCircleEntity);
 
 	//AddFunc.emplace("Door", 
@@ -925,15 +926,17 @@ void LevelCreatorScene::ImGuiWindow()
 	ImGui::SetCursorPosX(ImGui::GetCursorPosX() + 20); // Adjust the value as needed
 	if (ImGui::Button("Create Switch"))
 	{
-		CreateCircleEntity();
+		CreateEntity("Circle");
 	}
 	if (ImGui::Button(" Create Door"))
 	{
-		CreateDoorEntity();
+		CreateEntity("Door");
+		//CreateDoorEntity();
 	}
 	if (ImGui::Button(" Create Mirror"))
 	{
-		CreateMirrorEntity();
+		CreateEntity("Mirror");
+		//CreateMirrorEntity();
 	}
 	g_Manager.ShowEntityInfo();
 
@@ -946,7 +949,30 @@ void LevelCreatorScene::ImGuiWindow()
 ///////////////////////////////////////////////////////////////////////////////////
 /* testing stuff ! */
 
-static int circleCount = 0;
+int LevelCreatorScene::CreateEntity(const std::string& entityType)
+{
+	static int entityCount = 0;
+	//int entityExistingCount = 0;
+
+	std::string number = "./Data/GameObjects/" + entityType;
+	std::string filename = "./Data/GameObjects/" + entityType + ".json";
+
+	Entity* temp = FileIO::GetInstance()->ReadEntity(filename);
+
+	temp->addKey = entityType;
+
+	temp->key = entityType + std::to_string(entityCount);
+	temp->SetFilePath("./Data/GameObjects/" + entityType + std::to_string(entityCount) + ".json");
+	tempEntities.push_back(temp);
+	++entityCount;
+	return 0;
+}
+
+// not deleting in case the generic ver. doesnt work -- we have backup!
+
+// also -- thanks won for getting them in, i just made it generic lol
+
+/*static int circleCount = 0;
 int LevelCreatorScene::CreateCircleEntity()
 {
 	int circles_existing = 0;
@@ -999,17 +1025,48 @@ int LevelCreatorScene::CreateMirrorEntity()
 	tempEntities.push_back(temp);
 	++mirrorCount;
 	return 0;
+} */
+
+void LevelCreatorScene::AddEntity(Entity* entity, const std::string& entityType, const std::string& assetFilePath)
+{
+	Scene* scene = LevelCreatorSceneGetInstance();
+	LevelCreatorScene* currentScene = reinterpret_cast<LevelCreatorScene*>(scene);
+
+	json entityData;
+	json components;
+	json collider = { {"Type", "ColliderAABB"} };
+	json transform = { {"Type", "Transform"}, {"translation", { { "x", entity->Has(Transform)->GetTranslation()->x }, {"y", entity->Has(Transform)->GetTranslation()->y} } } };
+	json physics = { {"Type", "Physics"}, {"OldTranslation", { { "x", entity->Has(Transform)->GetTranslation()->x }, {"y", entity->Has(Transform)->GetTranslation()->y} } } };
+
+	components.push_back(collider);
+	components.push_back(transform);
+	components.push_back(physics);
+
+	entityData["Components"] = components;
+	entityData["FilePath"] = entity->GetFilePath();
+	entityData["Name"] = "Switch"; /* this should probably be changed but the example has just switch */
+	entityData["Type"] = "Object";
+	entityData["file"] = "./Assets/PPM/" + assetFilePath + ".ppm"; 
+
+	entityData["frameSize"] = { 8,8 }; // make these generic as needed
+	entityData["isAnimated"] = false;
+
+	std::ofstream circleCreated(entity->GetFilePath());
+	circleCreated << std::setw(2) << entityData << std::endl;
+
+	json newobject = { {"FilePath", entity->GetFilePath()} };
+	currentScene->gameObjects.push_back(newobject);
 }
 
-void LevelCreatorScene::AddCircleEntity(Entity* entity)
+/*void LevelCreatorScene::AddCircleEntity(Entity* entity)
 {
 	Scene* pare = LevelCreatorSceneGetInstance();
 	LevelCreatorScene* current = reinterpret_cast<LevelCreatorScene*>(pare);
 
 
 	Logging::GetInstance("LevelCreator.log").LogToAll("Creating->", entity->key.c_str());
-	json circleData; // the main thing for all pieces to be put inside
-	json components; // the components array
+	json circleData; 
+	json components;
 	json collider = { {"Type", "ColliderAABB"} };
 	json transform = { {"Type", "Transform"}, {"translation", { { "x", entity->Has(Transform)->GetTranslation()->x }, {"y", entity->Has(Transform)->GetTranslation()->y} } } };
 	json physics = { {"Type", "Physics"}, {"OldTranslation", { { "x", entity->Has(Transform)->GetTranslation()->x }, {"y", entity->Has(Transform)->GetTranslation()->y} } } };
@@ -1031,7 +1088,7 @@ void LevelCreatorScene::AddCircleEntity(Entity* entity)
 
 	json newobject = { {"FilePath", entity->GetFilePath()} };
 	current->gameObjects.push_back(newobject);
-}
+} 
 
 void LevelCreatorScene::AddDoorEntity(Entity* entity)
 {
@@ -1095,7 +1152,9 @@ void LevelCreatorScene::AddMirrorEntity(Entity* entity)
 
 	json newobject = { {"FilePath", entity->GetFilePath()} };
 	current->gameObjects.push_back(newobject);
-}
+} */
+
+
 
 void LevelCreatorScene::AddToFile(std::string nametoadd, Entity* entity)
 {

@@ -66,14 +66,22 @@ private:
 	void ToolCenter(Inputs* inputHandler);
 	void ToolSquareFill(Inputs* inputHandler, Vector2 CursourP);
 
-	static void AddCircleEntity(Entity* entity);
+	/*static void AddCircleEntity(Entity* entity);
 	static void AddDoorEntity(Entity* entity);
 	static void AddMirrorEntity(Entity* entity);
 	int CreateCircleEntity();
 	int CreateDoorEntity();
-	int CreateMirrorEntity();
+	int CreateMirrorEntity(); */
 	void AddToFile(std::string nametoadd, Entity* entity);
 	void ExportScene(std::string);
+
+	int CreateEntity(const std::string& entityType);
+	// assetFilePath is which asset do you want the thing to use. 
+	// ex:
+	// circle = "Circle_2x2";
+	// door = "Door_Closed"
+	// mirror = "Mirror"
+	void AddEntity(Entity* entity, const std::string& entityType, const std::string& assetFilePath);
 	
 	// member variables
 	bool winState = false;
