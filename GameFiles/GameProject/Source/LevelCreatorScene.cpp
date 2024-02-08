@@ -93,8 +93,9 @@ Engine::EngineCode LevelCreatorScene::Init()
 	// not sure how to do this w/ the new generic vers.
 
 	// init function maps to add files at end
-	//AddFunc.emplace("Circle", &LevelCreatorScene::AddCircleEntity);
-	//AddFunc.emplace("Door", &LevelCreatorScene::AddDoorEntity);
+	AddFunc.emplace("Circle", &LevelCreatorScene::AddCircleEntity);
+	AddFunc.emplace("Door", &LevelCreatorScene::AddDoorEntity);
+	AddFunc.emplace("Mirror", &LevelCreatorScene::AddMirrorEntity);
 	//AddFunc.emplace("Circle", &AddCircleEntity);
 
 	//AddFunc.emplace("Door", 
@@ -926,17 +927,15 @@ void LevelCreatorScene::ImGuiWindow()
 	ImGui::SetCursorPosX(ImGui::GetCursorPosX() + 20); // Adjust the value as needed
 	if (ImGui::Button("Create Switch"))
 	{
-		CreateEntity("Circle");
+		CreateCircleEntity();
 	}
 	if (ImGui::Button(" Create Door"))
 	{
-		CreateEntity("Door");
-		//CreateDoorEntity();
+		CreateDoorEntity();
 	}
 	if (ImGui::Button(" Create Mirror"))
 	{
-		CreateEntity("Mirror");
-		//CreateMirrorEntity();
+		CreateMirrorEntity();
 	}
 	g_Manager.ShowEntityInfo();
 
@@ -949,7 +948,7 @@ void LevelCreatorScene::ImGuiWindow()
 ///////////////////////////////////////////////////////////////////////////////////
 /* testing stuff ! */
 
-int LevelCreatorScene::CreateEntity(const std::string& entityType)
+/* int LevelCreatorScene::CreateEntity(const std::string& entityType)
 {
 	static int entityCount = 0;
 	//int entityExistingCount = 0;
@@ -966,13 +965,13 @@ int LevelCreatorScene::CreateEntity(const std::string& entityType)
 	tempEntities.push_back(temp);
 	++entityCount;
 	return 0;
-}
+} */
 
 // not deleting in case the generic ver. doesnt work -- we have backup!
 
 // also -- thanks won for getting them in, i just made it generic lol
 
-/*static int circleCount = 0;
+static int circleCount = 0;
 int LevelCreatorScene::CreateCircleEntity()
 {
 	int circles_existing = 0;
@@ -1025,9 +1024,9 @@ int LevelCreatorScene::CreateMirrorEntity()
 	tempEntities.push_back(temp);
 	++mirrorCount;
 	return 0;
-} */
+}
 
-void LevelCreatorScene::AddEntity(Entity* entity, const std::string& entityType, const std::string& assetFilePath)
+/*void LevelCreatorScene::AddEntity(Entity* entity, const std::string& entityType, const std::string& assetFilePath)
 {
 	Scene* scene = LevelCreatorSceneGetInstance();
 	LevelCreatorScene* currentScene = reinterpret_cast<LevelCreatorScene*>(scene);
@@ -1044,7 +1043,7 @@ void LevelCreatorScene::AddEntity(Entity* entity, const std::string& entityType,
 
 	entityData["Components"] = components;
 	entityData["FilePath"] = entity->GetFilePath();
-	entityData["Name"] = "Switch"; /* this should probably be changed but the example has just switch */
+	entityData["Name"] = "Switch"; 
 	entityData["Type"] = "Object";
 	entityData["file"] = "./Assets/PPM/" + assetFilePath + ".ppm"; 
 
@@ -1056,9 +1055,9 @@ void LevelCreatorScene::AddEntity(Entity* entity, const std::string& entityType,
 
 	json newobject = { {"FilePath", entity->GetFilePath()} };
 	currentScene->gameObjects.push_back(newobject);
-}
+} */
 
-/*void LevelCreatorScene::AddCircleEntity(Entity* entity)
+void LevelCreatorScene::AddCircleEntity(Entity* entity)
 {
 	Scene* pare = LevelCreatorSceneGetInstance();
 	LevelCreatorScene* current = reinterpret_cast<LevelCreatorScene*>(pare);
@@ -1152,7 +1151,7 @@ void LevelCreatorScene::AddMirrorEntity(Entity* entity)
 
 	json newobject = { {"FilePath", entity->GetFilePath()} };
 	current->gameObjects.push_back(newobject);
-} */
+}
 
 
 
