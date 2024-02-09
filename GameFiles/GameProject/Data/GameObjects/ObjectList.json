@@ -12,6 +12,13 @@
     },
     {
       "FilePath": "./Data/GameObjects/Circle.json"
+    },
+    {
+      "FilePath": "./Data/GameObjects/Emitter.json"
+    },
+    {
+      "FilePath": "./Data/GameObjects/EmitterReceiver.json"
     }
+
   ]
 }

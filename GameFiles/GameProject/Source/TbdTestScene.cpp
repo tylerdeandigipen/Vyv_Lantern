@@ -78,7 +78,7 @@ Engine::EngineCode TbdTestScene::Init()
     TbdPixelRenderer->window = TbdWindow;
     
     //initialize level data
-    EntityContainer::GetInstance()->ReadEntities("./Data/GameObjects/ObjectList.json");
+    //EntityContainer::GetInstance()->ReadEntities();
     LevelBuilder::GetInstance()->LoadTileMap("./Data/TiledMichaelSceneTest.json");
 
     //ControlledEmitter = LaserSystem::GetInstance()->CreateEmitter();

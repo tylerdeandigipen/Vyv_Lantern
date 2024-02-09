@@ -85,11 +85,16 @@
       <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <OpenMPSupport>true</OpenMPSupport>
+      <DisableSpecificWarnings>4819</DisableSpecificWarnings>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
+    <PreBuildEvent>
+      <Command>
+      </Command>
+    </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
@@ -117,6 +122,7 @@
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>$(ProjectDir)glfw-3.3.8.bin.WIN64\glfw-3.3.8.bin.WIN64\include;$(ProjectDir)lib\Fmod\inc;$(ProjectDir)SDL2_ttf\include</AdditionalIncludeDirectories>
       <OpenMPSupport>true</OpenMPSupport>
+      <DisableSpecificWarnings>4819</DisableSpecificWarnings>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -130,6 +136,10 @@ xcopy "$(ProjectDir)SDL2_ttf\*.dll" "$(OutDir)" /s /r /y /q /i
 xcopy "$(ProjectDir)Fmod\*.dll" "$(OutDir)" /s /r /y /q /i
 </Command>
     </PostBuildEvent>
+    <PreBuildEvent>
+      <Command>
+      </Command>
+    </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
@@ -158,6 +168,7 @@ xcopy "$(ProjectDir)Fmod\*.dll" "$(OutDir)" /s /r /y /q /i</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="Emitter.h" />
     <ClInclude Include="glfw-3.3.8.bin.WIN64\glfw-3.3.8.bin.WIN64\include\GLFW\glfw3.h" />
     <ClInclude Include="IMGUI\imconfig.h" />
     <ClInclude Include="IMGUI\imgui.h" />
@@ -169,6 +180,7 @@ xcopy "$(ProjectDir)Fmod\*.dll" "$(OutDir)" /s /r /y /q /i</Command>
     <ClInclude Include="IMGUI\imstb_rectpack.h" />
     <ClInclude Include="IMGUI\imstb_textedit.h" />
     <ClInclude Include="IMGUI\imstb_truetype.h" />
+    <ClInclude Include="LineCollider.h" />
     <ClInclude Include="Math.h" />
     <ClInclude Include="Math_Header.h" />
     <ClInclude Include="Source\AudioEngine.h" />
@@ -220,12 +232,13 @@ xcopy "$(ProjectDir)Fmod\*.dll" "$(OutDir)" /s /r /y /q /i</Command>
     <ClInclude Include="Source\TbdTestScene.h" />
     <ClInclude Include="Source\TestScene.h" />
     <ClInclude Include="Source\TextEditor.h" />
+    <ClInclude Include="Source\Time_TM.h" />
     <ClInclude Include="Source\Transform.h" />
     <ClInclude Include="Source\WinScene.h" />
-    <ClInclude Include="Time.h" />
     <ClInclude Include="Vector.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Emitter.cpp" />
     <ClCompile Include="Engine.cpp" />
     <ClCompile Include="ImageBuffer.cpp" />
     <ClCompile Include="IMGUI\imgui.cpp" />
@@ -237,11 +250,11 @@ xcopy "$(ProjectDir)Fmod\*.dll" "$(OutDir)" /s /r /y /q /i</Command>
     <ClCompile Include="IMGUI\imgui_tables.cpp" />
     <ClCompile Include="IMGUI\imgui_widgets.cpp" />
     <ClCompile Include="LevelBuilder.cpp" />
+    <ClCompile Include="LineCollider.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="Math.cpp" />
     <ClCompile Include="Matrix.cpp" />
     <ClCompile Include="Misc\glad.c" />
-    <ClCompile Include="ParticleManager.cpp" />
     <ClCompile Include="Renderer.cpp" />
     <ClCompile Include="Source\AudioEngine.cpp" />
     <ClCompile Include="Source\BaseSystem.cpp" />
@@ -269,6 +282,7 @@ xcopy "$(ProjectDir)Fmod\*.dll" "$(OutDir)" /s /r /y /q /i</Command>
     <ClCompile Include="Source\Logging.cpp" />
     <ClCompile Include="Source\Observer.cpp" />
     <ClCompile Include="Source\Particle.cpp" />
+    <ClCompile Include="Source\ParticleManager.cpp" />
     <ClCompile Include="Source\PauseMenu.cpp" />
     <ClCompile Include="Source\Physics.cpp" />
     <ClCompile Include="Source\PlatformSystem.cpp" />
@@ -280,9 +294,9 @@ xcopy "$(ProjectDir)Fmod\*.dll" "$(OutDir)" /s /r /y /q /i</Command>
     <ClCompile Include="Source\TbdTestScene.cpp" />
     <ClCompile Include="Source\TestScene.cpp" />
     <ClCompile Include="Source\TextEditor.cpp" />
+    <ClCompile Include="Source\Time_TM.cpp" />
     <ClCompile Include="Source\Transform.cpp" />
     <ClCompile Include="Source\WinScene.cpp" />
-    <ClCompile Include="Time.cpp" />
     <ClCompile Include="Vector.cpp" />
   </ItemGroup>
   <ItemGroup>

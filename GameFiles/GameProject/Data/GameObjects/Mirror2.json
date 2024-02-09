@@ -1,10 +1,4 @@
 {
-  "Type": "Object",
-  "Name": "Mirror2",
-  "file": "./Assets/PPM/Mirror.ppm",
-  "FilePath":  "./Data/GameObjects/Mirror.json",
-  "isAnimated": false,
-  "frameSize": [ 8, 8 ],
   "Components": [
     {
       "Type": "ColliderAABB"
@@ -12,48 +6,28 @@
     {
       "Type": "Transform",
       "translation": {
-        "x": 50,
-        "y": 50
+        "x": 112.0,
+        "y": 128.0
       }
     },
     {
-      "Type": "Physics",
       "OldTranslation": {
-        "x": 90,
-        "y": 30
-      }
-    },
-    {
-      "Type": "BehaviorSwitch",
-      "key": 1,
-      "NumPositions": 4,
-      "pos": [
-        {
-          "x": "30",
-          "y": "50"
-        },
-        {
-          "x": "30",
-          "y": "70"
-        },
-        {
-          "x": "30",
-          "y": "80"
-        },
-        {
-          "x": "30",
-          "y": "100"
-        }
-      ]
-    },
-    {
-      "Type": "BehaviorMirror",
-      "Direction": {
-        "DirectionX": 1.0,
-        "DirectionY": 1.0
+        "x": 112.0,
+        "y": 128.0
       },
-      "Radius": 10.0,
-      "key": 1
+      "Type": "Physics"
     }
-  ]
+  ],
+  "FilePath": "./Data/GameObjects/Mirror2.json",
+  "KeyObject": {
+    "key": "Mirror2"
+  },
+  "Name": "Switch",
+  "Type": "Object",
+  "file": "./Assets/PPM/Mirror.ppm",
+  "frameSize": [
+    8,
+    8
+  ],
+  "isAnimated": false
 }

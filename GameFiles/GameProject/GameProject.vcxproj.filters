@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
     <ClCompile Include="IMGUI\imgui.cpp">
@@ -23,9 +23,6 @@
       <Filter>Source FIles\Debug\IMGUI</Filter>
     </ClCompile>
     <ClCompile Include="Matrix.cpp">
-      <Filter>Source FIles\Other</Filter>
-    </ClCompile>
-    <ClCompile Include="Time.cpp">
       <Filter>Source FIles\Other</Filter>
     </ClCompile>
     <ClCompile Include="Vector.cpp">
@@ -62,9 +59,6 @@
       <Filter>Source FIles\Engine\Systems</Filter>
     </ClCompile>
     <ClCompile Include="LevelBuilder.cpp">
-      <Filter>Source FIles\Engine\Systems</Filter>
-    </ClCompile>
-    <ClCompile Include="ParticleManager.cpp">
       <Filter>Source FIles\Engine\Systems</Filter>
     </ClCompile>
     <ClCompile Include="Source\Color.cpp">
@@ -164,15 +158,23 @@
     <ClCompile Include="Source\Observer.cpp">
       <Filter>Source FIles\Engine</Filter>
     </ClCompile>
-    <ClCompile Include="Renderer.cpp">
-      <Filter>Source FIles\Graphics</Filter>
-    </ClCompile>
     <ClCompile Include="IMGUI\ImguiFunctions.cpp">
       <Filter>Source FIles\Debug\IMGUI</Filter>
     </ClCompile>
     <ClCompile Include="Misc\glad.c">
       <Filter>Misc</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Time_TM.cpp">
+      <Filter>Source FIles\Other</Filter>
+    </ClCompile>
+    <ClCompile Include="Renderer.cpp">
+      <Filter>Source FIles\Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\ParticleManager.cpp">
+      <Filter>Source FIles\Engine\Systems</Filter>
+    </ClCompile>
+    <ClCompile Include="Emitter.cpp" />
+    <ClCompile Include="LineCollider.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="IMGUI\imgui.h">
@@ -352,9 +354,6 @@
     <ClInclude Include="Math_Header.h">
       <Filter>Header FIles\Other</Filter>
     </ClInclude>
-    <ClInclude Include="Time.h">
-      <Filter>Header FIles\Other</Filter>
-    </ClInclude>
     <ClInclude Include="Vector.h">
       <Filter>Header FIles\Other</Filter>
     </ClInclude>
@@ -371,6 +370,11 @@
     <ClInclude Include="Source\targetver.h">
       <Filter>Misc</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Time_TM.h">
+      <Filter>Header FIles\Other</Filter>
+    </ClInclude>
+    <ClInclude Include="Emitter.h" />
+    <ClInclude Include="LineCollider.h" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Misc\GameProject.ico">
@@ -381,15 +385,9 @@
     </Image>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Data\Tbd_TestLevel.json">
-      <Filter>JSON</Filter>
-    </None>
-    <None Include="Data\TileMapSprites.json">
-      <Filter>JSON</Filter>
-    </None>
-    <None Include="Data\FirstLevel.json">
-      <Filter>JSON</Filter>
-    </None>
+    <None Include="Data\FirstLevel.json" />
+    <None Include="Data\Lights\PlayerDirectionalLight.json" />
+    <None Include="Data\Lights\PlayerDomeLight.json" />
     <None Include="Data\ScutSample(ALT).json" />
     <None Include="Data\Lights\PlayerDirectionalLight.json">
       <Filter>JSON\PlayerInfo</Filter>

@@ -1,0 +1,33 @@
+{
+  "Components": [
+    {
+      "Type": "ColliderAABB"
+    },
+    {
+      "Type": "Transform",
+      "translation": {
+        "x": 112.0,
+        "y": 72.0
+      }
+    },
+    {
+      "OldTranslation": {
+        "x": 112.0,
+        "y": 72.0
+      },
+      "Type": "Physics"
+    }
+  ],
+  "FilePath": "./Data/GameObjects/Mirror1.json",
+  "KeyObject": {
+    "key": "Mirror1"
+  },
+  "Name": "Switch",
+  "Type": "Object",
+  "file": "./Assets/PPM/Mirror.ppm",
+  "frameSize": [
+    8,
+    8
+  ],
+  "isAnimated": false
+}

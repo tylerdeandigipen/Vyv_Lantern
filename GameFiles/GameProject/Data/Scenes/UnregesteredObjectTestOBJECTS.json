@@ -1,0 +1,8 @@
+{
+  "FilePath": "./Data/Scenes/UnregesteredObjectTestOBJECTS.json",
+  "Objects": [
+    {
+      "FilePath": "./Data/GameObjects/Door0.json"
+    }
+  ]
+}

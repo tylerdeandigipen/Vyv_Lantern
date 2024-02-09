@@ -6,7 +6,7 @@
 //				(adapted from Schillings usage in cs230)
 //				(added std::vector usage)
 //
-// Copyright  © 2023 DigiPen (USA) Corporation.
+// Copyright  ?2023 DigiPen (USA) Corporation.
 //
 //------------------------------------------------------------------------------
 #include "stdafx.h"
@@ -15,6 +15,10 @@
 #include "FileIO.h"
 #include "Collider.h"
 #include "Entity.h"
+
+//laser "System" stuff
+#include "Emitter.h"
+#include "LineCollider.h"
 
 int EntityContainer::entityCount = 0;
 EntityContainer* EntityContainer::instance = new EntityContainer();
@@ -136,6 +140,14 @@ void EntityContainer::CheckCollisions()
 					{
 						collider->Check(secCollider);
 					}
+
+
+					if (entities[current]->Has(Emitter) && entities[i]->Has(LineCollider))
+					{
+						Emitter::EmitterCollisionHandler(*entities[current], *entities[i]);
+					}
+
+					
  				}
  		   }
 		}

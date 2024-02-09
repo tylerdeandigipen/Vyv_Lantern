@@ -4,10 +4,10 @@
 // Author(s):	TayLee Young, Michael Howard
 // Purpose:		Calculation of delta time. 
 //
-// Copyright  © 2023 DigiPen (USA) Corporation.
+// Copyright  ï¿½ 2023 DigiPen (USA) Corporation.
 //
 //------------------------------------------------------------------------------
-#include "Time.h"
+#include "Time_TM.h"
 #include <SDL/SDL.h>
 
 Time::Time()

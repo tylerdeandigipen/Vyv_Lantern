@@ -26,6 +26,9 @@ public:
 	~Entity();
 	Entity* Clone();
 
+	std::string key; //used to seperate entities in levelcreator
+	std::string addKey; // used in levelcreator addfunctions
+
 	void CreateImage(const std::string file);
 	void CreateAnimatedImage(const std::string);
 
@@ -56,6 +59,11 @@ public:
 	type_* GetComponent(Component::TypeEnum typeId) const
 	{
 		return static_cast<type_*>(Get(typeId));
+	}
+
+	void SetFilePath(std::string _name)
+	{
+		filePath = _name;
 	}
 
 	std::string GetFilePath()

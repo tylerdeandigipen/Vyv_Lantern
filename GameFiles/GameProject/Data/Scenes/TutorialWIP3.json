@@ -1,0 +1,8 @@
+{
+  "GameObjectList": {
+    "GameObjectFile": "./Data/Scenes/TutorialWIP3OBJECTS.json"
+  },
+  "TiledData": {
+    "TileMapFile": "./Data/Scenes/TutorialWIP3MAP.json"
+  }
+}

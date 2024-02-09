@@ -1,0 +1,33 @@
+{
+  "Components": [
+    {
+      "Type": "ColliderAABB"
+    },
+    {
+      "Type": "Transform",
+      "translation": {
+        "x": 112.0,
+        "y": 209.0
+      }
+    },
+    {
+      "OldTranslation": {
+        "x": 112.0,
+        "y": 209.0
+      },
+      "Type": "Physics"
+    }
+  ],
+  "FilePath": "./Data/GameObjects/Emitter0.json",
+  "KeyObject": {
+    "key": "Emitter0"
+  },
+  "Name": "Emitter",
+  "Type": "Object",
+  "file": "./Assets/PPM/squareEmitter.ppm",
+  "frameSize": [
+    8,
+    8
+  ],
+  "isAnimated": false
+}

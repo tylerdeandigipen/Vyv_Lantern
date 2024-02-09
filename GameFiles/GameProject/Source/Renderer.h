@@ -4,7 +4,7 @@
 // Author(s):	Tyler Dean, Thomas Stephenson, Louis Wang
 // Purpose:		Handles all rendering tasks.
 //
-// Copyright © 2023 DigiPen (USA) Corporation.
+// Copyright ?2023 DigiPen (USA) Corporation.
 //
 //------------------------------------------------------------------------------
 #pragma once
@@ -26,6 +26,7 @@
 #define TILE_SIZE 8
 #define NUM_WALL_TILES 17
 #define NUM_NON_WALKABLE_TILES 33
+#define MAX_LASER_POINTS 30
 
 class Renderer
 {
@@ -37,7 +38,7 @@ public:
 	bool doScanLines = true;
 	float scanLineOpacity = 0.935f;
 	bool doFog = false;
-	Vector2 fogMoveDir{ 0.08, 0.01 };
+	Vector2 fogMoveDir{ 0.08f, 0.01f };
 	float fogOpacity = 5;
 
 	//Debug Draw Toggles
@@ -88,8 +89,11 @@ public:
 	void SetCameraPosition(Vector2 NewCameraP);
 	static Renderer* GetInstance();
 	int CheckLineForObject(int x1, int y1, int x2, int y2);
+	gfxVector2 CheckLineForObjects(int x1, int y1, int x2, int y2);
 	void BlurLights(int blurRangeLow, int blurRangeHigh);
 	void ExpandTileMapInDirection(Vector2 direction, int distance);
+	
+	auto GetTileCount() -> unsigned int;
 
 	//Cleanup Functions
 	~Renderer(void);
@@ -143,6 +147,10 @@ public:
 
 	int nonWalkableTiles[NUM_NON_WALKABLE_TILES] = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 26, 27, 28, 29, 30, 31, 41, 42, 43, 45, 46, 47, 48, 49, 50, 51, 52};
 	int numNonWalkTiles = NUM_NON_WALKABLE_TILES;
+
+	Vector2 laserPoints1[MAX_LASER_POINTS];
+	Vector2 laserPoints2[MAX_LASER_POINTS];
+	int numLasers = 0;
 private:
 	//Various Counters
 	int numTiles = 0;

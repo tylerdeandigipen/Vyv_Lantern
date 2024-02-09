@@ -83,6 +83,9 @@ void BehaviorPlayer::Read(json jsonData)
 
 void BehaviorPlayer::Controller(float dt)
 {
+
+    if (Engine::GetInstance()->Paused() == false)
+    {
     //Renderer::GetInstance()->UpdateFace();
     Renderer::GetInstance()->faceState = 0;
     Transform* transform = Parent()->Has(Transform);
@@ -146,8 +149,6 @@ void BehaviorPlayer::Controller(float dt)
     }
 
 
-    if (Engine::GetInstance()->Paused() == false)
-    {
         int x, y;
         Uint32 buttons = SDL_GetMouseState(&x, &y);
 

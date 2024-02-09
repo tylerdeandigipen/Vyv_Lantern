@@ -1,0 +1,32 @@
+{
+  "FilePath": "./Data/Scenes/tutorialWIP2OBJECTS.json",
+  "Objects": [
+    {
+      "FilePath": "./Data/GameObjects/Mirror0.json"
+    },
+    {
+      "FilePath": "./Data/GameObjects/Door0.json"
+    },
+    {
+      "FilePath": "./Data/GameObjects/Reciever0.json"
+    },
+    {
+      "FilePath": "./Data/GameObjects/Emitter0.json"
+    },
+    {
+      "FilePath": "./Data/GameObjects/Reciever1.json"
+    }
+  ],
+  "Mirror": {
+    "count": 1
+  },
+  "Door": {
+    "count": 1
+  },
+  "Emitter": {
+    "count": 1
+  },
+  "Reciever": {
+    "count": 2
+  }
+}

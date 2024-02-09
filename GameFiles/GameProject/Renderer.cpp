@@ -16,7 +16,7 @@
 #include "ImageBuffer.h"
 #include "ScopeTimer.h"
 #include "Engine.h"
-#include "Time.h"
+#include "Time_TM.h"
 #include "SceneSystem.h"
 #include "Inputs.h"
 #include "DebugNew.h"
@@ -32,6 +32,11 @@
 #include <string>
 #include <assert.h>
 #include <omp.h>
+
+// Emitter laser checks
+#include "Entity.h"
+#include "EntityContainer.h"
+#include "Emitter.h"
 
 #include "PauseMenu.h"
 #include <thread>
@@ -521,74 +526,85 @@ void Renderer::RenderLasers()
     const int xSize = (int)outputBuffer->size.x;
     const int ySize = (int)outputBuffer->size.y;
 
-    //temp hard coded lasers
-    Vector2 tempLaserPos1[2];
-    Vector2 tempLaserPos2[2];
-    Color tempLaserColor[2];
-
+    Color tempLaserColor[1];
     tempLaserColor[0] = Color{ 84,0,255,255 };
-    tempLaserColor[1] = Color{ 84,0,255,255 };
-
-    tempLaserPos1[0] = Vector2{ 60,30 } - CameraP;
-    tempLaserPos2[0] = Vector2{ 160,30 } - CameraP;
-
-    tempLaserPos1[1] = Vector2{ 60,30 } - CameraP;
-    tempLaserPos2[1] = Vector2{ 60,160 } - CameraP;
-    //end of temp hard coded lasers
 
     float IntensityR = 0.0f;
     float IntensityG = 0.0f;
     float IntensityB = 0.0f;
     //optimize later to only calculate light near / in the laser line zone
-    //maybe make so depending on distance it uses two different light functions
-#pragma omp parallel
+    //maybe make so depending on distance it uses two different light func  tions
+//#pragma omp parallel
     {
-#pragma omp for collapse(3) nowait private(IntensityR, IntensityG, IntensityB)
+//#pragma omp for collapse(3) nowait private(IntensityR, IntensityG, IntensityB)
         for (int x = 0; x < xSize; ++x)
         {
             for (int y = 0; y < ySize; ++y)
             {
-                for (int i = 0; i < 2; i++)
+                for (int i = 0; i < numLasers; i++)
                 {
                     IntensityR = 0.0f;
                     IntensityG = 0.0f;
                     IntensityB = 0.0f;
+                    Vector2 temp1 = laserPoints1[i];
+                    Vector2 temp2 = laserPoints2[i];
+                    laserPoints1[i] = temp1 - CameraP;
+                    laserPoints2[i] = temp2 - CameraP;
                     //Check if the laser is along the x axis
-                    if (tempLaserPos1[i].y - tempLaserPos2[i].y == 0)
+                    if (laserPoints1[i].y - laserPoints2[i].y == 0)
                     {
+                        bool doRender = false;
                         //check if x is inbetween the two points
-                        if (x >= tempLaserPos1[i].x && x <= tempLaserPos2[i].x)
+                        if (x >= laserPoints1[i].x && x <= laserPoints2[i].x)
+                        {
+                            doRender = true;
+                        }
+                        else if (x <= laserPoints1[i].x && x >= laserPoints2[i].x)
+                        {
+                            doRender = true;
+                        }
+                        if (doRender == true)
                         {
                             //check distance from laser line
-                            if ((y - tempLaserPos2[i].y) >= -5 && (y - tempLaserPos2[i].y) <= 5)
+                            if ((y - laserPoints2[i].y) >= -5 && (y - laserPoints2[i].y) <= 5)
                             {
                                 //     some func that makes distance into intensity  |  scale by intensity of color channel
-                                IntensityR = ((5 - abs(y - tempLaserPos2[i].y)) / 5) * ((float)tempLaserColor[i].r / 255.0f);
-                                IntensityG = ((5 - abs(y - tempLaserPos2[i].y)) / 5) * ((float)tempLaserColor[i].g / 255.0f);
-                                IntensityB = ((5 - abs(y - tempLaserPos2[i].y)) / 5) * ((float)tempLaserColor[i].b / 255.0f);
+                                IntensityR = ((5 - abs(y - laserPoints2[i].y)) / 5) * ((float)tempLaserColor[0].r / 255.0f);
+                                IntensityG = ((5 - abs(y - laserPoints2[i].y)) / 5) * ((float)tempLaserColor[0].g / 255.0f);
+                                IntensityB = ((5 - abs(y - laserPoints2[i].y)) / 5) * ((float)tempLaserColor[0].b / 255.0f);
                             }
                         }
 
                     } // Check if laser is along the y axis
-                    else if (tempLaserPos1[i].x - tempLaserPos2[i].x == 0)
+                    else if (laserPoints1[i].x - laserPoints2[i].x == 0)
                     {
+                        bool doRender = false;
                         //check if y is inbetween the two points
-                        if (y >= tempLaserPos1[i].y && y <= tempLaserPos2[i].y)
+                        if (y >= laserPoints1[i].y && y <= laserPoints2[i].y)
+                        {
+                            doRender = true;
+                        }
+                        else if (y <= laserPoints1[i].y && y >= laserPoints2[i].y)
+                        {
+                            doRender = true;
+                        }
+                        if (doRender == true)
                         {
                             //check distance from laser line
-                            if ((x - tempLaserPos2[i].x) > -5 && (x - tempLaserPos2[i].x) < 5)
+                            if ((x - laserPoints2[i].x) > -5 && (x - laserPoints2[i].x) < 5)
                             {
                                 //     some func that makes distance into intensity  |  scale by intensity of color channel
-                                IntensityR = ((5 - abs(x - tempLaserPos2[i].x)) / 5) * ((float)tempLaserColor[i].r / 255.0f);
-                                IntensityG = ((5 - abs(x - tempLaserPos2[i].x)) / 5) * ((float)tempLaserColor[i].g / 255.0f);
-                                IntensityB = ((5 - abs(x - tempLaserPos2[i].x)) / 5) * ((float)tempLaserColor[i].b / 255.0f);
+                                IntensityR = ((5 - abs(x - laserPoints2[i].x)) / 5) * ((float)tempLaserColor[0].r / 255.0f);
+                                IntensityG = ((5 - abs(x - laserPoints2[i].x)) / 5) * ((float)tempLaserColor[0].g / 255.0f);
+                                IntensityB = ((5 - abs(x - laserPoints2[i].x)) / 5) * ((float)tempLaserColor[0].b / 255.0f);
                             }
-
                         }
                     }
                     lightR[x][y] += IntensityR;
                     lightG[x][y] += IntensityG;
                     lightB[x][y] += IntensityB;
+                    laserPoints1[i] = temp1;
+                    laserPoints2[i] = temp2;
                 }
             }
         }
@@ -1081,6 +1097,59 @@ int Renderer::CheckLineForObject(int x1, int y1, int x2, int y2)
     return inOutCount;
 }
 
+
+gfxVector2 Renderer::CheckLineForObjects(int x1, int y1, int x2, int y2)
+{
+    int dx = abs(x2 - x1);
+    int dy = abs(y2 - y1);
+    int sx = (x1 < x2) ? 1 : -1;
+    int sy = (y1 < y2) ? 1 : -1;
+    gfxVector2 yes;
+    int error = dx - dy;
+    int x = x1;
+    int y = y1;
+
+    bool inOut = false;
+    int inOutCount = 0;
+
+    while (x != x2 || y != y2)
+    {
+        if (inOut == false)
+        {
+            if (lightBuffer->SampleColor(x, y).GetAlpha() != 0)
+            {
+                yes.x = x;
+                yes.y = y;
+                return yes;
+            }
+        }
+
+
+        if (inOutCount > 1)
+        {
+            yes.x;
+            yes.y;
+            return yes;
+        }
+
+        int error2 = 2 * error;
+
+        if (error2 > -dy) {
+            error -= dy;
+            x += sx;
+        }
+
+        if (error2 < dx) {
+            error += dx;
+            y += sy;
+        }
+    }
+    yes.x = x2;
+    yes.y = y2;
+    return yes;
+}
+
+
 void Renderer::BlurLights(int blurRangeLow, int blurRangeHigh)
 {
     if (doBlur == true)
@@ -1339,6 +1408,11 @@ void Renderer::ExpandTileMapInDirection(Vector2 direction, int distance)
     tileMapSize = newTileMapSize;
     tileMap = tempTileMap;
     ResizeBuffers();
+}
+
+auto Renderer::GetTileCount() -> unsigned int
+{
+    return numTiles;
 }
 
 void Renderer::ResizeBuffers()
