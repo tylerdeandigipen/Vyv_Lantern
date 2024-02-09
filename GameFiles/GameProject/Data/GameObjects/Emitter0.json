@@ -24,7 +24,7 @@
   "FilePath": "./Data/GameObjects/Emitter0.json",
   "Name": "Emitter",
   "Type": "Object",
-  "file": "./Assets/PPM/TempLaser.ppm",
+  "file": "./Assets/PPM/squareEmitter.ppm",
   "frameSize": [
     8,
     8

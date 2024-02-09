@@ -1422,7 +1422,7 @@ void LevelCreatorScene::AddEmitterEntity(Entity* entity)
 	mirrorData["FilePath"] = entity->GetFilePath();
 	mirrorData["Name"] = "Emitter";
 	mirrorData["Type"] = "Object";
-	mirrorData["file"] = "./Assets/PPM/TempLaser.ppm";
+	mirrorData["file"] = "./Assets/PPM/squareEmitter.ppm";
 	mirrorData["frameSize"] = { 8,8 };
 	mirrorData["isAnimated"] = false;
 
