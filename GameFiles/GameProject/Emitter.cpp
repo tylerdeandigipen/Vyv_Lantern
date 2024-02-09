@@ -5,6 +5,8 @@
 #include "LineCollider.h"
 #include "Renderer.h"
 
+static Renderer* pointyBoi = nullptr;
+
 Emitter::Emitter() : Component(Component::cEmitter)
 {
 	emitMaxDistance = 0.0f;
@@ -22,6 +24,13 @@ Emitter::Emitter() : Component(Component::cEmitter)
 	rightTrigger = false;
 	hasCollidedRight = false;
 	hasCollidedLeft = false;
+	if (pointyBoi == nullptr)
+	{
+		pointyBoi = Renderer::GetInstance();
+	}
+
+
+
 }
 
 Emitter::Emitter(Emitter const& emitter2cpy) : Component(emitter2cpy)
@@ -98,6 +107,15 @@ void Emitter::Read(json jsonData)
 		rightTrigger = jsonData["trigRight"];
 	}
 
+	iLeftLaser = pointyBoi->numLasers;
+	pointyBoi->numLasers++;
+	iRightLaser = pointyBoi->numLasers;
+	pointyBoi->numLasers++;
+
+	pointyBoi->laserPoints1[iLeftLaser] = *emitPositionLeft;
+	pointyBoi->laserPoints2[iLeftLaser] = *emitpositionEndL;
+	pointyBoi->laserPoints1[iRightLaser] = *emitPositionRight;
+	pointyBoi->laserPoints2[iRightLaser] = *emitpositionEndR;
 
 }
 
@@ -107,7 +125,16 @@ void Emitter::Update(float dt)
 	//should turn off when you stop emitting.
 	if (hasCollidedRight)
 	{
+		pointyBoi->laserPoints1[iRightLaser] = *emitPositionRight;
+		pointyBoi->laserPoints2[iRightLaser] = *emitpositionEndR;
 		hasCollidedRight = isEmittingRight;
+		//update positions potentially. may need to flag... maybe.
+	}
+	if (hasCollidedLeft)
+	{
+		pointyBoi->laserPoints1[iLeftLaser] = *emitPositionLeft;
+		pointyBoi->laserPoints2[iLeftLaser] = *emitpositionEndL;
+		hasCollidedLeft = isEmittingLeft;
 	}
 }
 
@@ -121,6 +148,7 @@ void Emitter::Render() const
 
 	if (isEmittingLeft)
 	{
+
 	}
 
 	/*if debug
@@ -135,7 +163,7 @@ void Emitter::Render() const
 /*
 * learned code from 
 */
-inline bool LineToLineCollision(Emitter * laser, Entity& line, int flag)
+inline bool LineToLineCollision(Emitter * laser, Entity& line, int flag, bool interuptflag)
 {
 	LineCollider*  literalLine = line.Has(LineCollider);
 	//first line
@@ -174,6 +202,7 @@ inline bool LineToLineCollision(Emitter * laser, Entity& line, int flag)
 	//y3 x3 are the starting point before the emitting point
 	//y1,y2, x1,x2 are the line collider points
 	//may have issues if you try to stack mirrors on top of each other.
+	//but also... is this correct?
 	if (y1 >= y3 && y2 <= y3)
 	{
 		withiny = true;
@@ -198,6 +227,7 @@ inline bool LineToLineCollision(Emitter * laser, Entity& line, int flag)
 	}
 
 	//write truncating distance code.
+	///maybe no longer necessary due to the formula *
 	if (withinx)
 	{
 		x4 = x3;
@@ -211,12 +241,13 @@ inline bool LineToLineCollision(Emitter * laser, Entity& line, int flag)
 		x4 = x3 + (laser->GetMaxEmitDistance() * y);
 	}
 
-	//distance
+	//*formula determ
 	float uA = ((x4 - x3) * (y1 - y3) - (y4 - y3) * (x1 - x3)) / ((y4 - y3) * (x2 - x1) - (x4 - x3) * (y2 - y1));
 	float uB = ((x2 - x1) * (y1 - y3) - (y2 - y1) * (x1 - x3)) / ((y4 - y3) * (x2 - x1) - (x4 - x3) * (y2 - y1));
 
 	if (uA >= 0 && uA <= 1 && uB >= 0 && uB <= 1) {
 		didcollide = true;
+		//exact collision point calculations
 		float intersectionX = x1 + (uA * (x2 - x1));
 		float intersectionY = y1 + (uA * (y2 - y1));
 		
@@ -227,6 +258,8 @@ inline bool LineToLineCollision(Emitter * laser, Entity& line, int flag)
 
 			case 1:
 				//may need to use direction to determin wether or not to check greater than lessthan 
+				//need to use interupt flag to properly set the setup.
+				interuptflag;
 				if (withinx)
 				{
 					if (laser->GetEmitPositionEndR()->y < intersectionY)
@@ -311,19 +344,26 @@ inline bool LineToLineCollision(Emitter * laser, Entity& line, int flag)
 */
 inline bool DoCalculations(Emitter* obj,int flag)
 {
-
+	//vectors gods this was a dumb name should done vecX vecY
 	float x = 0;
 	float y = 0;
+
+	float xPos = 0;
+	float yPos = 0;
+
 	if (flag == 1)
 	{
 		x = obj->GetDirectionRight()->x;
 		y = obj->GetDirectionRight()->y;
-
+		xPos = obj->GetPositionRight()->x;
+		yPos = obj->GetPositionRight()->y;
 	}
 	else if (flag == 2)
 	{
 		x = obj->GetDirectionLeft()->x;
 		y = obj->GetDirectionRight()->y;
+		xPos = obj->GetPositionLeft()->x;
+		yPos = obj->GetPositionLeft()->y;
 	}
 	
 	Renderer* renderer = Renderer::GetInstance();
@@ -331,13 +371,13 @@ inline bool DoCalculations(Emitter* obj,int flag)
 	//banks on the fact that we are using North South East West.
 	if (x > 0)
 	{
-		gfxVector2 comparison = renderer->CheckLineForObjects(x, y, x + obj->GetMaxEmitDistance(), y);
-		if (!(comparison.x == x+obj->GetMaxEmitDistance()) && !(comparison.y == y))
+		gfxVector2 comparison = renderer->CheckLineForObjects(xPos, yPos, xPos + obj->GetMaxEmitDistance(), yPos);
+		if (!(comparison.x == xPos+obj->GetMaxEmitDistance()) && (comparison.y == yPos))
 		{
 			//comback and revise this later
 			switch (flag)
 			{
-			case 1:
+			case 1: 
 				obj->SetEmitPositionEndR(comparison.x, comparison.y);
 				obj->SetCollidedRight(true);
 				break;
@@ -355,8 +395,8 @@ inline bool DoCalculations(Emitter* obj,int flag)
 	else if (x < 0)
 	{
 
-		gfxVector2 comparison = renderer->CheckLineForObjects(x, y, x - obj->GetMaxEmitDistance(), y);
-		if ((comparison.x == x + obj->GetMaxEmitDistance()) && (comparison.y == y))
+		gfxVector2 comparison = renderer->CheckLineForObjects(xPos, yPos, xPos - obj->GetMaxEmitDistance(), yPos);
+		if (!(comparison.x == xPos - obj->GetMaxEmitDistance()) && (comparison.y == yPos))
 		{
 			//comback and revise this later
 			switch (flag)
@@ -379,8 +419,8 @@ inline bool DoCalculations(Emitter* obj,int flag)
 
 	if (y > 0)
 	{
-		gfxVector2 comparison = renderer->CheckLineForObjects(x, y, x, y + obj->GetMaxEmitDistance());
-		if (!(comparison.x == x + obj->GetMaxEmitDistance()) && !(comparison.y == y))
+		gfxVector2 comparison = renderer->CheckLineForObjects(xPos, yPos, xPos, yPos + obj->GetMaxEmitDistance());
+		if ((comparison.x == xPos) && !(comparison.y == yPos + obj->GetMaxEmitDistance()))
 		{
 			//comback and revise this later
 			switch (flag)
@@ -402,8 +442,8 @@ inline bool DoCalculations(Emitter* obj,int flag)
 	}
 	else if (y < 0)
 	{
-		gfxVector2 comparison = renderer->CheckLineForObjects(x, y, x, y - obj->GetMaxEmitDistance());
-		if (!(comparison.x == x + obj->GetMaxEmitDistance()) && !(comparison.y == y))
+		gfxVector2 comparison = renderer->CheckLineForObjects(xPos, yPos, xPos, yPos - obj->GetMaxEmitDistance());
+		if ((comparison.x == xPos) && !(comparison.y == yPos - obj->GetMaxEmitDistance()))
 		{
 			//comback and revise this later
 			switch (flag)
@@ -447,14 +487,14 @@ void Emitter::EmitterCollisionHandler(Entity& object1, Entity& object2)
 		{
 			bool potentialInterupt;
 			//also need to check vs terrain if it hits needs to truncate the draw distance of the emitter line.
-			//need flag for both.
-			if (Obj1->rightTrigger)
+			//need flag for both. instead reworked the flag system will need to remove the left trigger/right trigger flags.
+			if (Obj1->IsEmittingRight() && !Obj1->GetCollidedRight())
 			{
 				flag = 1;
 				potentialInterupt = DoCalculations(Obj1, flag);
 
 			}
-			if (Obj1->leftTrigger)
+			if (Obj1->IsEmittingRight() && !Obj1->GetCollidedLeft())
 			{
 				flag = 2;
 				potentialInterupt = DoCalculations(Obj1, flag);
@@ -472,7 +512,7 @@ void Emitter::EmitterCollisionHandler(Entity& object1, Entity& object2)
 				Emitter* ToEffect = object2.Has(Emitter);
 				
 
-				if (LineToLineCollision(Obj1,object2, flag))
+				if (LineToLineCollision(Obj1,object2, flag, potentialInterupt))
 				{
 					//calculate which direction using dot product
 					//lineColliders consist of 2 points that make a line. point one should be the left most point.

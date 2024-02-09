@@ -55,8 +55,8 @@ public:
 
 	//standard get/set funcitons
 	float GetMaxEmitDistance() { return emitMaxDistance; };
-	gfxVector2* GetPositionRight() { return emitPositionRight; };
-	gfxVector2* GetPositionLeft() { return emitPositionLeft; };
+	gfxVector2* GetPositionRight() { return emitPositionRight; };// start of right side collision
+	gfxVector2* GetPositionLeft() { return emitPositionLeft; }; //start of left side collision
 	gfxVector2* GetDirectionLeft() { return emitLTrigDir; };
 	gfxVector2* GetDirectionRight() { return emitRTrigDir; };
 	float GetDistance() { return emitMaxDistance; };
@@ -71,8 +71,8 @@ public:
 	void SetPositionLeft(float x, float y);
 	void SetEmitPositionEndR(float x, float y);
 	void SetEmitPositionEndL(float x, float y);
-	gfxVector2* GetEmitPositionEndR() { return emitpositionEndR; };
-	gfxVector2* GetEmitPositionEndL() { return emitpositionEndL; };
+	gfxVector2* GetEmitPositionEndR() { return emitpositionEndR; }; // end right side collision laser
+	gfxVector2* GetEmitPositionEndL() { return emitpositionEndL; }; // end left side collision laser
 
 	static std::string Name()
 	{
@@ -107,6 +107,8 @@ private:
 	bool isEmittingLeft;
 	bool rightTrigger;
 	bool leftTrigger;
+	int iLeftLaser;
+	int iRightLaser;
 
 };
 

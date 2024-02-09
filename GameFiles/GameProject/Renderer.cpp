@@ -526,41 +526,17 @@ void Renderer::RenderLasers()
     const int xSize = (int)outputBuffer->size.x;
     const int ySize = (int)outputBuffer->size.y;
 
-    //temp hard coded color
-    int laserPair = 0;
-    for (int i = 0; i < EntityContainer::GetInstance()->CountEntities(); ++i)
-    {
-        Emitter* emit = (*EntityContainer::GetInstance())[i]->Has(Emitter);
-        if (emit)
-        {
-            laserPoints1[laserPair] = *emit->GetPositionRight();
-            laserPoints2[laserPair] = *emit->GetEmitPositionEndR();
-            laserPoints1[++laserPair] = *emit->GetPositionLeft();
-            laserPoints2[laserPair] = *emit->GetEmitPositionEndL();
-            ++laserPair;
-        }
-    }
-    numLasers = laserPair;
-
     Color tempLaserColor[1];
     tempLaserColor[0] = Color{ 84,0,255,255 };
-
-    /*laserPoints1[0] = Vector2{60,30} - CameraP;
-    laserPoints2[0] = Vector2{ 160,30 } - CameraP;
-
-    laserPoints1[1] = Vector2{ 60,30 } - CameraP;
-    laserPoints2[1] = Vector2{ 60,160 } - CameraP;
-    numLasers = 2;*/
-    //end of temp hard coded lasers
 
     float IntensityR = 0.0f;
     float IntensityG = 0.0f;
     float IntensityB = 0.0f;
     //optimize later to only calculate light near / in the laser line zone
-    //maybe make so depending on distance it uses two different light functions
-#pragma omp parallel
+    //maybe make so depending on distance it uses two different light func  tions
+//#pragma omp parallel
     {
-#pragma omp for collapse(3) nowait private(IntensityR, IntensityG, IntensityB)
+//#pragma omp for collapse(3) nowait private(IntensityR, IntensityG, IntensityB)
         for (int x = 0; x < xSize; ++x)
         {
             for (int y = 0; y < ySize; ++y)
@@ -570,11 +546,24 @@ void Renderer::RenderLasers()
                     IntensityR = 0.0f;
                     IntensityG = 0.0f;
                     IntensityB = 0.0f;
+                    Vector2 temp1 = laserPoints1[i];
+                    Vector2 temp2 = laserPoints2[i];
+                    laserPoints1[i] = temp1 - CameraP;
+                    laserPoints2[i] = temp2 - CameraP;
                     //Check if the laser is along the x axis
                     if (laserPoints1[i].y - laserPoints2[i].y == 0)
                     {
+                        bool doRender = false;
                         //check if x is inbetween the two points
                         if (x >= laserPoints1[i].x && x <= laserPoints2[i].x)
+                        {
+                            doRender = true;
+                        }
+                        else if (x <= laserPoints1[i].x && x >= laserPoints2[i].x)
+                        {
+                            doRender = true;
+                        }
+                        if (doRender == true)
                         {
                             //check distance from laser line
                             if ((y - laserPoints2[i].y) >= -5 && (y - laserPoints2[i].y) <= 5)
@@ -589,8 +578,17 @@ void Renderer::RenderLasers()
                     } // Check if laser is along the y axis
                     else if (laserPoints1[i].x - laserPoints2[i].x == 0)
                     {
+                        bool doRender = false;
                         //check if y is inbetween the two points
                         if (y >= laserPoints1[i].y && y <= laserPoints2[i].y)
+                        {
+                            doRender = true;
+                        }
+                        else if (y <= laserPoints1[i].y && y >= laserPoints2[i].y)
+                        {
+                            doRender = true;
+                        }
+                        if (doRender == true)
                         {
                             //check distance from laser line
                             if ((x - laserPoints2[i].x) > -5 && (x - laserPoints2[i].x) < 5)
@@ -600,12 +598,13 @@ void Renderer::RenderLasers()
                                 IntensityG = ((5 - abs(x - laserPoints2[i].x)) / 5) * ((float)tempLaserColor[0].g / 255.0f);
                                 IntensityB = ((5 - abs(x - laserPoints2[i].x)) / 5) * ((float)tempLaserColor[0].b / 255.0f);
                             }
-
                         }
                     }
                     lightR[x][y] += IntensityR;
                     lightG[x][y] += IntensityG;
                     lightB[x][y] += IntensityB;
+                    laserPoints1[i] = temp1;
+                    laserPoints2[i] = temp2;
                 }
             }
         }
