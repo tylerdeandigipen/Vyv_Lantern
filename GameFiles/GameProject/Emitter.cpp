@@ -4,6 +4,7 @@
 #include "Entity.h"
 #include "LineCollider.h"
 #include "Renderer.h"
+#include "Logging.h"
 
 static Renderer* pointyBoi = nullptr;
 
@@ -24,6 +25,8 @@ Emitter::Emitter() : Component(Component::cEmitter)
 	rightTrigger = false;
 	hasCollidedRight = false;
 	hasCollidedLeft = false;
+	iLeftLaser = 0;
+	iRightLaser = 0;
 	if (pointyBoi == nullptr)
 	{
 		pointyBoi = Renderer::GetInstance();
@@ -51,6 +54,8 @@ Emitter::~Emitter()
 	delete emitLTrigDir;
 	delete emitPositionRight;
 	delete emitPositionLeft;
+	//maybe need to remove lasers and such
+	
 }
 
 Component* Emitter::Clone() const
@@ -97,7 +102,7 @@ void Emitter::Read(json jsonData)
 	}
 
 	emitMaxDistance = jsonData["maxDistance"];
-
+	
 	if (jsonData["emitRight"].is_boolean())
 	{
 		isEmittingRight = jsonData["emitRight"];
@@ -105,6 +110,42 @@ void Emitter::Read(json jsonData)
 	if (jsonData["trigRight"].is_boolean())
 	{
 		rightTrigger = jsonData["trigRight"];
+	}
+
+
+	if (emitLTrigDir->x > 0)
+	{
+		emitpositionEndL->x = emitPositionLeft->x + emitMaxDistance;
+	}
+	else if (emitLTrigDir->x < 0)
+	{
+		emitpositionEndL->x = emitPositionLeft->x - emitMaxDistance;
+	}
+	if (emitLTrigDir->y > 0)
+	{
+		emitpositionEndL->y = emitPositionLeft->y + emitMaxDistance;
+	}
+	else if (emitLTrigDir->y < 0)
+	{
+		emitpositionEndL->y = emitPositionLeft->y - emitMaxDistance;
+	}
+
+
+	if (emitRTrigDir->x > 0)
+	{
+		emitpositionEndL->x = emitPositionLeft->x + emitMaxDistance;
+	}
+	else if (emitRTrigDir->x < 0)
+	{
+		emitpositionEndR->x = emitPositionLeft->x - emitMaxDistance;
+	}
+	if (emitRTrigDir->y > 0)
+	{
+		emitpositionEndR->y = emitPositionRight->y + emitMaxDistance;
+	}
+	else if (emitRTrigDir->y < 0)
+	{
+		emitpositionEndR->y = emitPositionRight->y - emitMaxDistance;
 	}
 
 	iLeftLaser = pointyBoi->numLasers;
@@ -246,7 +287,7 @@ inline bool LineToLineCollision(Emitter * laser, Entity& line, int flag, bool in
 	if (withiny)
 	{
 		y4 = y3;
-		x4 = x3 + (laser->GetMaxEmitDistance() * y);
+		x4 = x3 + (laser->GetMaxEmitDistance() * x);
 	}
 
 	//*formula determ
@@ -301,13 +342,40 @@ inline bool LineToLineCollision(Emitter * laser, Entity& line, int flag, bool in
 							return false;
 						}
 					}
+
+					if (y > 0)
+					{
+						if (laser->GetEmitPositionEndR()->y < intersectionY)
+						{
+							laser->SetEmitPositionEndR(intersectionX, intersectionY);
+							line.Has(Emitter)->SetPositionRight(intersectionX, intersectionY);
+							return true;
+						}
+						else
+						{
+							return false;
+						}
+
+					}
+					else if (y < 0)
+					{
+						if (laser->GetEmitPositionEndR()->y > intersectionY)
+						{
+							laser->SetEmitPositionEndR(intersectionX, intersectionY);
+							line.Has(Emitter)->SetPositionRight(intersectionX, intersectionY);
+							return true;
+						}
+						else
+						{
+							return false;
+						}
+					}
 				}
-				else
-				{
-					laser->SetEmitPositionEndR(intersectionX, intersectionY);
-					line.Has(Emitter)->SetPositionRight(intersectionX, intersectionY);
-					return true;
-				}
+
+				laser->SetEmitPositionEndR(intersectionX, intersectionY);
+				line.Has(Emitter)->SetPositionRight(intersectionX, intersectionY);
+				return true;
+				
 
 				break;
 
@@ -347,12 +415,41 @@ inline bool LineToLineCollision(Emitter * laser, Entity& line, int flag, bool in
 						}
 					}
 				}
-				else
+
+				if (y > 0)
 				{
-					laser->SetEmitPositionEndL(intersectionX, intersectionY);
-					line.Has(Emitter)->SetPositionLeft(intersectionX, intersectionY);
-					return true;
+					if (laser->GetEmitPositionEndR()->y < intersectionY)
+					{
+						laser->SetEmitPositionEndR(intersectionX, intersectionY);
+						line.Has(Emitter)->SetPositionRight(intersectionX, intersectionY);
+						return true;
+					}
+					else
+					{
+						return false;
+					}
+
 				}
+				else if (y < 0)
+				{
+					if (laser->GetEmitPositionEndR()->y > intersectionY)
+					{
+						laser->SetEmitPositionEndR(intersectionX, intersectionY);
+						line.Has(Emitter)->SetPositionRight(intersectionX, intersectionY);
+						return true;
+					}
+					else
+					{
+						return false;
+					}
+				}
+				
+
+
+				laser->SetEmitPositionEndL(intersectionX, intersectionY);
+				line.Has(Emitter)->SetPositionLeft(intersectionX, intersectionY);
+				return true;
+				
 				break;
 			default:
 
@@ -603,6 +700,7 @@ void Emitter::SetEmitPositionEndR(float x, float y)
 	emitpositionEndR->y = y;
 	isDirty = true;
 }
+
 void Emitter::SetEmitPositionEndL(float x, float y)
 {
 	emitpositionEndL->x = x;

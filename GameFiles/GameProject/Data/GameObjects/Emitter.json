@@ -38,7 +38,7 @@
       "Type": "Emitter",
       "positionRight": {
           "x": 100,
-          "y": 150
+          "y": 95
       },       
       "positionLeft": {
           "x": 50,
@@ -52,7 +52,7 @@
           "x": 0,
           "y": -1
       },
-      "maxDistance" : 1000,
+      "maxDistance" : 500,
       "emitRight" : true,
       "trigRight" : true
     },

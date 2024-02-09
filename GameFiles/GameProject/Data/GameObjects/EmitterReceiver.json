@@ -52,7 +52,7 @@
         "x": 1,
         "y": 0
       },
-      "maxDistance": 80,
+      "maxDistance": 10,
       "emitRight": false,
       "trigRight": false
     }
