@@ -885,6 +885,21 @@ void LevelCreatorScene::ImGuiWindow()
 						{
 							file.close();
 							LevelBuilder::GetInstance()->LoadTileMap(filename);
+							if (EntityContainer::GetInstance()->CountEntities() > 0)
+							{
+								int size = EntityContainer::GetInstance()->CountEntities();
+								for (int i = 0; i < size; ++i)
+								{
+									if ((*EntityContainer::GetInstance())[i])
+									{
+										tempEntities.push_back((*EntityContainer::GetInstance())[i]);
+										if (tempEntities[i]->GetRealName().compare("Player") == 0)
+										{
+											playerExists = true;
+										}
+									}
+								}
+							}
 						}
 						else
 						{
