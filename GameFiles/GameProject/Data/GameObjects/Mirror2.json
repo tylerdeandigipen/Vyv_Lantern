@@ -1,4 +1,7 @@
 {
+  "KeyObject":{
+    "key": "Mirror2"
+  },
   "Type": "Object",
   "Name": "Mirror2",
   "file": "./Assets/PPM/Mirror.ppm",

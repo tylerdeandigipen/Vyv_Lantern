@@ -1,4 +1,7 @@
 {
+  "KeyObject":{
+    "key": "Emitter0"
+  },
   "Components": [
     {
       "Type": "ColliderAABB"

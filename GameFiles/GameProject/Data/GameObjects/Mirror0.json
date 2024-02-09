@@ -1,4 +1,7 @@
 {
+  "KeyObject":{
+    "key": "Mirror0"
+  },
   "Components": [
     {
       "Type": "ColliderAABB"

@@ -1,4 +1,7 @@
 {
+  "KeyObject":{
+    "key": "Reciever0"
+  },
   "Components": [
     {
       "Type": "ColliderAABB"

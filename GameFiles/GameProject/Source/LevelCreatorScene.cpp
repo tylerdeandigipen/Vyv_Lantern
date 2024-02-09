@@ -59,6 +59,12 @@ bool playerSpawned = false;
 
 EntityManager g_Manager;
 
+static int circleCount = 0;
+static int mirrorCount = 0;
+static int doorCount = 0;
+static int emitterCount = 0;
+static int recieverCount = 0;
+
 LevelCreatorScene::LevelCreatorScene() : Scene("LevelCreatortest"), playerExists(false), tempEntities()
 {
 
@@ -313,6 +319,12 @@ void LevelCreatorScene::ExportScene(std::string name)
 	json ObjectFile;
 	ObjectFile["FilePath"] = current->listToExport;
 	ObjectFile["Objects"] = gameObjects;
+
+	ObjectFile["Circle"] = { {"count", circleCount + 1} };
+	ObjectFile["Mirror"] = { {"count", mirrorCount + 1} };
+	ObjectFile["Door"] = { {"count", doorCount + 1} };
+	ObjectFile["Emitter"] = { {"count", emitterCount + 1} };
+	ObjectFile["Reviever"] = { {"count", recieverCount + 1} };
 
 	std::ofstream objectList(listToExport);
 	objectList << std::setw(2) << ObjectFile << std::endl;
@@ -634,6 +646,14 @@ Engine::EngineCode LevelCreatorScene::Exit()
 {
 	EntityContainer::GetInstance()->FreeAll();
 
+	circleCount = 0;
+	mirrorCount = 0;
+	doorCount = 0;
+	emitterCount = 0;
+	recieverCount = 0;
+
+
+
 	if (!tempEntities.empty())
 	{
 		for (auto it : tempEntities)
@@ -654,6 +674,11 @@ Engine::EngineCode LevelCreatorScene::Exit()
 
 Engine::EngineCode LevelCreatorScene::Unload()
 {
+	circleCount = 0;
+	mirrorCount = 0;
+	doorCount = 0;
+	emitterCount = 0;
+	recieverCount = 0;
 	delete LevelCreatorSceneinstance;
 	LevelCreatorSceneinstance = nullptr;
 	return Engine::NothingBad;
@@ -900,12 +925,47 @@ void LevelCreatorScene::ImGuiWindow()
 									}
 								}
 							}
+							json counts = FileIO::GetInstance()->OpenJSON("./Data/Scenes/" + std::string(filenameBuffer) + "OBJECTS.json");
+							
+							if (counts["Circle"].is_object())
+							{
+								circleCount = counts["Circle"]["count"];
+							}
+							if (counts["Door"].is_object())
+							{
+								doorCount = counts["Door"]["count"];
+							}
+							if (counts["Mirror"].is_object())
+							{
+								mirrorCount = counts["Mirror"]["count"];
+							}if (counts["Emitter"].is_object())
+							{
+								emitterCount = counts["Emitter"]["count"];
+							}if (counts["Reciever"].is_object())
+							{
+								recieverCount = counts["Reciever"]["count"];
+							}
+
+							if (!g_Manager.InitializeProperties(filename + "OBJECTS.json"))
+							{
+								ImGui::OpenPopup("NoObjectsInScene");
+							}
 						}
 						else
 						{
 							ImGui::OpenPopup("FileNotFoundPopup");
 						}
 					}
+				}
+
+				if (ImGui::BeginPopupModal("NoObjectsInScene", NULL, ImGuiWindowFlags_AlwaysAutoResize))
+				{
+					ImGui::Text("Objects do not exist in the scene");
+					if (ImGui::Button("OK"))
+					{
+						ImGui::CloseCurrentPopup();
+					}
+					ImGui::EndPopup();
 				}
 
 				if (ImGui::BeginPopupModal("EmptyImportFileNamePopup", NULL, ImGuiWindowFlags_AlwaysAutoResize))
@@ -1118,7 +1178,7 @@ int LevelCreatorScene::CreatePlayerEntity()
 	return 0;
 }
 
-static int circleCount = 0;
+//static int circleCount = 0;
 int LevelCreatorScene::CreateCircleEntity()
 {
 	int circles_existing = 0;
@@ -1137,9 +1197,9 @@ int LevelCreatorScene::CreateCircleEntity()
 }
 
 
+//static int doorCount = 0;
 int LevelCreatorScene::CreateDoorEntity()
 {
-	static int doorCount = 0;
 	int door_existing = 0;
 	std::string number = "./Data/GameObjects/Door";
 	std::string filename = "./Data/GameObjects/Door.json";
@@ -1155,9 +1215,9 @@ int LevelCreatorScene::CreateDoorEntity()
 	return 0;
 }
 
+//static int mirrorCount = 0;
 int LevelCreatorScene::CreateMirrorEntity()
 {
-	static int mirrorCount = 0;
 	int door_existing = 0;
 	std::string number = "./Data/GameObjects/Mirror";
 	std::string filename = "./Data/GameObjects/Mirror.json";
@@ -1173,9 +1233,9 @@ int LevelCreatorScene::CreateMirrorEntity()
 	return 0;
 }
 
+//static int emitterCount = 0;
 int LevelCreatorScene::CreateEmitterEntity()
 {
-	static int emitterCount = 0;
 	std::string number = "./Data/GameObjects/Emitter";
 	std::string filename = "./Data/GameObjects/tempEmitter.json";
 
@@ -1190,9 +1250,9 @@ int LevelCreatorScene::CreateEmitterEntity()
 	return 0;
 }
 
+//static int recieverCount = 0;
 int LevelCreatorScene::CreateRecieverEntity()
 {
-	static int emitterCount = 0;
 	std::string number = "./Data/GameObjects/Reciever";
 	std::string filename = "./Data/GameObjects/tempReciever.json";
 
@@ -1203,7 +1263,7 @@ int LevelCreatorScene::CreateRecieverEntity()
 	temp->key = "Reciever" + std::to_string(emitterCount);
 	temp->SetFilePath("./Data/GameObjects/Reciever" + std::to_string(emitterCount) + ".json");
 	tempEntities.push_back(temp);
-	++emitterCount;
+	++recieverCount;
 	return 0;
 }
 
@@ -1290,6 +1350,7 @@ void LevelCreatorScene::AddDoorEntity(Entity* entity)
 	components.push_back(transform);
 	components.push_back(physics);
 
+
 	doorData["Components"] = components;
 	doorData["FilePath"] = entity->GetFilePath();
 	doorData["Name"] = "Door";
@@ -1297,6 +1358,7 @@ void LevelCreatorScene::AddDoorEntity(Entity* entity)
 	doorData["file"] = "./Assets/PPM/Door_Closed.ppm";
 	doorData["frameSize"] = { 8,8 };
 	doorData["isAnimated"] = false;
+	doorData["KeyObject"] = { {"key", entity->key} };
 
 	std::ofstream doorCreated(entity->GetFilePath());
 	doorCreated << std::setw(2) << doorData << std::endl;
@@ -1329,6 +1391,8 @@ void LevelCreatorScene::AddMirrorEntity(Entity* entity)
 	mirrorData["file"] = "./Assets/PPM/Mirror.ppm";
 	mirrorData["frameSize"] = { 8,8 };
 	mirrorData["isAnimated"] = false;
+	mirrorData["KeyObject"] = { {"key", entity->key} };
+
 
 	std::ofstream doorCreated(entity->GetFilePath());
 	doorCreated << std::setw(2) << mirrorData << std::endl;
@@ -1362,6 +1426,9 @@ void LevelCreatorScene::AddEmitterEntity(Entity* entity)
 	mirrorData["frameSize"] = { 8,8 };
 	mirrorData["isAnimated"] = false;
 
+	mirrorData["KeyObject"] = { {"key", entity->key} };
+
+
 	std::ofstream doorCreated(entity->GetFilePath());
 	doorCreated << std::setw(2) << mirrorData << std::endl;
 
@@ -1393,6 +1460,8 @@ void LevelCreatorScene::AddRecieverEntity(Entity* entity)
 	mirrorData["file"] = "./Assets/PPM/tempReciever.ppm";
 	mirrorData["frameSize"] = { 8,8 };
 	mirrorData["isAnimated"] = false;
+	mirrorData["KeyObject"] = { {"key", entity->key} };
+
 
 	std::ofstream doorCreated(entity->GetFilePath());
 	doorCreated << std::setw(2) << mirrorData << std::endl;
@@ -1451,7 +1520,7 @@ void EntityManager::ShowEntityInfo()
 
 
 					ImGui::SliderInt2("Modify Translation", properties[creator->tempEntities[i]->key].translation, -500, 500);
-					//creator->tempEntities[i]->Has(Transform)->SetTranslation({ static_cast<float>(properties[creator->tempEntities[i]->key].translation[0]), static_cast<float>(properties[creator->tempEntities[i]->key].translation[1]) });
+					creator->tempEntities[i]->Has(Transform)->SetTranslation({ static_cast<float>(properties[creator->tempEntities[i]->key].translation[0]), static_cast<float>(properties[creator->tempEntities[i]->key].translation[1]) });
 					//creator->tempEntities[i]->GetImage()->position = { static_cast<float>(properties[creator->tempEntities[i]->key].translation[0]), static_cast<float>(properties[creator->tempEntities[i]->key].translation[1]) };
 
 					ImGui::Checkbox((properties[creator->tempEntities[i]->key].isEditable ? "Entity edit enabled" : "Entity edit disabled"), &properties[creator->tempEntities[i]->key].isEditable);
