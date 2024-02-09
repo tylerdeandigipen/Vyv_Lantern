@@ -6,22 +6,22 @@
     {
       "Type": "Transform",
       "translation": {
-        "x": 30.0,
-        "y": 70.0
+        "x": 100.0,
+        "y": 100.0
       }
     },
     {
       "OldTranslation": {
-        "x": 30.0,
-        "y": 70.0
+        "x": 100.0,
+        "y": 100.0
       },
       "Type": "Physics"
     }
   ],
-  "FilePath": "./Data/GameObjects/Circle0.json",
-  "Name": "Switch",
+  "FilePath": "./Data/GameObjects/Emitter0.json",
+  "Name": "Emitter",
   "Type": "Object",
-  "file": "./Assets/PPM/Circle_2x2.ppm",
+  "file": "./Assets/PPM/TempLaser.ppm",
   "frameSize": [
     8,
     8

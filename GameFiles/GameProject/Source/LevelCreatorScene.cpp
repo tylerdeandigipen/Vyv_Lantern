@@ -119,6 +119,9 @@ Engine::EngineCode LevelCreatorScene::Init()
 	AddFunc.emplace("Circle", &LevelCreatorScene::AddCircleEntity);
 	AddFunc.emplace("Door", &LevelCreatorScene::AddDoorEntity);
 	AddFunc.emplace("Mirror", &LevelCreatorScene::AddMirrorEntity);
+	AddFunc.emplace("Emitter", &LevelCreatorScene::AddEmitterEntity);
+	AddFunc.emplace("Reciever", &LevelCreatorScene::AddRecieverEntity);
+
 
 	//AddFunc.emplace("Door", 
 	//AddFunc.emplace("Mirror", 
@@ -1038,6 +1041,10 @@ void LevelCreatorScene::ImGuiWindow()
 	{
 		CreateEmitterEntity();
 	}
+	if (ImGui::Button("  Create Reciever"))
+	{
+		CreateRecieverEntity();
+	}
 
 	g_Manager.ShowEntityInfo();
 
@@ -1155,7 +1162,7 @@ int LevelCreatorScene::CreateEmitterEntity()
 {
 	static int emitterCount = 0;
 	std::string number = "./Data/GameObjects/Emitter";
-	std::string filename = "./Data/GameObjects/Emitter.json";
+	std::string filename = "./Data/GameObjects/tempEmitter.json";
 
 	Entity* temp = FileIO::GetInstance()->ReadEntity(filename);
 
@@ -1163,6 +1170,23 @@ int LevelCreatorScene::CreateEmitterEntity()
 
 	temp->key = "Emitter" + std::to_string(emitterCount);
 	temp->SetFilePath("./Data/GameObjects/Emitter" + std::to_string(emitterCount) + ".json");
+	tempEntities.push_back(temp);
+	++emitterCount;
+	return 0;
+}
+
+int LevelCreatorScene::CreateRecieverEntity()
+{
+	static int emitterCount = 0;
+	std::string number = "./Data/GameObjects/Reciever";
+	std::string filename = "./Data/GameObjects/tempReciever.json";
+
+	Entity* temp = FileIO::GetInstance()->ReadEntity(filename);
+
+	temp->addKey = "Reciever"; // this is for the map holding functions and gives access to function for circle
+
+	temp->key = "Reciever" + std::to_string(emitterCount);
+	temp->SetFilePath("./Data/GameObjects/Reciever" + std::to_string(emitterCount) + ".json");
 	tempEntities.push_back(temp);
 	++emitterCount;
 	return 0;
@@ -1199,6 +1223,9 @@ int LevelCreatorScene::CreateEmitterEntity()
 	currentScene->gameObjects.push_back(newobject);
 } */
 
+
+/* these look like a lot of copy and paste code but for now its so that json can be exported easier 
+   in order to get it generalized we'd have to just check for the right components */
 void LevelCreatorScene::AddCircleEntity(Entity* entity)
 {
 	Scene* pare = LevelCreatorSceneGetInstance();
@@ -1250,7 +1277,7 @@ void LevelCreatorScene::AddDoorEntity(Entity* entity)
 
 	doorData["Components"] = components;
 	doorData["FilePath"] = entity->GetFilePath();
-	doorData["Name"] = "Switch";
+	doorData["Name"] = "Door";
 	doorData["Type"] = "Object";
 	doorData["file"] = "./Assets/PPM/Door_Closed.ppm";
 	doorData["frameSize"] = { 8,8 };
@@ -1295,6 +1322,69 @@ void LevelCreatorScene::AddMirrorEntity(Entity* entity)
 	current->gameObjects.push_back(newobject);
 }
 
+void LevelCreatorScene::AddEmitterEntity(Entity* entity)
+{
+	Scene* pare = LevelCreatorSceneGetInstance();
+	LevelCreatorScene* current = reinterpret_cast<LevelCreatorScene*>(pare);
+
+
+	Logging::GetInstance("LevelCreator.log").LogToAll("Creating->", entity->key.c_str());
+	json mirrorData; // the main thing for all pieces to be put inside
+	json components; // the components array
+	json collider = { {"Type", "ColliderAABB"} };
+	json transform = { {"Type", "Transform"}, {"translation", { { "x", entity->Has(Transform)->GetTranslation()->x }, {"y", entity->Has(Transform)->GetTranslation()->y} } } };
+	json physics = { {"Type", "Physics"}, {"OldTranslation", { { "x", entity->Has(Transform)->GetTranslation()->x }, {"y", entity->Has(Transform)->GetTranslation()->y} } } };
+
+	components.push_back(collider);
+	components.push_back(transform);
+	components.push_back(physics);
+
+	mirrorData["Components"] = components;
+	mirrorData["FilePath"] = entity->GetFilePath();
+	mirrorData["Name"] = "Emitter";
+	mirrorData["Type"] = "Object";
+	mirrorData["file"] = "./Assets/PPM/TempLaser.ppm";
+	mirrorData["frameSize"] = { 8,8 };
+	mirrorData["isAnimated"] = false;
+
+	std::ofstream doorCreated(entity->GetFilePath());
+	doorCreated << std::setw(2) << mirrorData << std::endl;
+
+	json newobject = { {"FilePath", entity->GetFilePath()} };
+	current->gameObjects.push_back(newobject);
+}
+
+void LevelCreatorScene::AddRecieverEntity(Entity* entity)
+{
+	Scene* pare = LevelCreatorSceneGetInstance();
+	LevelCreatorScene* current = reinterpret_cast<LevelCreatorScene*>(pare);
+
+
+	Logging::GetInstance("LevelCreator.log").LogToAll("Creating->", entity->key.c_str());
+	json mirrorData; // the main thing for all pieces to be put inside
+	json components; // the components array
+	json collider = { {"Type", "ColliderAABB"} };
+	json transform = { {"Type", "Transform"}, {"translation", { { "x", entity->Has(Transform)->GetTranslation()->x }, {"y", entity->Has(Transform)->GetTranslation()->y} } } };
+	json physics = { {"Type", "Physics"}, {"OldTranslation", { { "x", entity->Has(Transform)->GetTranslation()->x }, {"y", entity->Has(Transform)->GetTranslation()->y} } } };
+
+	components.push_back(collider);
+	components.push_back(transform);
+	components.push_back(physics);
+
+	mirrorData["Components"] = components;
+	mirrorData["FilePath"] = entity->GetFilePath();
+	mirrorData["Name"] = "Reciever";
+	mirrorData["Type"] = "Object";
+	mirrorData["file"] = "./Assets/PPM/tempReciever.ppm";
+	mirrorData["frameSize"] = { 8,8 };
+	mirrorData["isAnimated"] = false;
+
+	std::ofstream doorCreated(entity->GetFilePath());
+	doorCreated << std::setw(2) << mirrorData << std::endl;
+
+	json newobject = { {"FilePath", entity->GetFilePath()} };
+	current->gameObjects.push_back(newobject);
+}
 
 
 void LevelCreatorScene::AddToFile(std::string nametoadd, Entity* entity)

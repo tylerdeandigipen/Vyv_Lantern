@@ -71,12 +71,17 @@ private:
 	static void AddCircleEntity(Entity* entity);
 	static void AddDoorEntity(Entity* entity);
 	static void AddMirrorEntity(Entity* entity);
-	
+	static void AddEmitterEntity(Entity* entity);
+	static void AddRecieverEntity(Entity* entity);
+
+
 	int CreatePlayerEntity();
 	int CreateCircleEntity();
 	int CreateDoorEntity();
 	int CreateMirrorEntity();
 	int CreateEmitterEntity();
+	int CreateRecieverEntity();
+
 	void AddToFile(std::string nametoadd, Entity* entity);
 	void ExportScene(std::string);
 

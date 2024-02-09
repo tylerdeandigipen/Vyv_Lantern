@@ -6,22 +6,22 @@
     {
       "Type": "Transform",
       "translation": {
-        "x": 30.0,
-        "y": 70.0
+        "x": 50.0,
+        "y": 120.0
       }
     },
     {
       "OldTranslation": {
-        "x": 30.0,
-        "y": 70.0
+        "x": 50.0,
+        "y": 120.0
       },
       "Type": "Physics"
     }
   ],
-  "FilePath": "./Data/GameObjects/Circle0.json",
-  "Name": "Switch",
+  "FilePath": "./Data/GameObjects/Reciever0.json",
+  "Name": "Reciever",
   "Type": "Object",
-  "file": "./Assets/PPM/Circle_2x2.ppm",
+  "file": "./Assets/PPM/tempReciever.ppm",
   "frameSize": [
     8,
     8

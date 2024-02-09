@@ -6,20 +6,20 @@
     {
       "Type": "Transform",
       "translation": {
-        "x": 0.0,
-        "y": 0.0
+        "x": 192.0,
+        "y": 48.0
       }
     },
     {
       "OldTranslation": {
-        "x": 0.0,
-        "y": 0.0
+        "x": 192.0,
+        "y": 48.0
       },
       "Type": "Physics"
     }
   ],
   "FilePath": "./Data/GameObjects/Door0.json",
-  "Name": "Switch",
+  "Name": "Door",
   "Type": "Object",
   "file": "./Assets/PPM/Door_Closed.ppm",
   "frameSize": [
