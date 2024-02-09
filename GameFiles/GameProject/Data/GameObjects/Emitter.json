@@ -1,60 +1,67 @@
 {
-    "Type": "Object",
-    "Name": "Emitter",
-    "file": "./Assets/PPM/Unit_Square.ppm",
-    "FilePath":  "./Data/GameObjects/Emitter.json",
-    "isAnimated": false,
-    "frameSize": [ 8, 8 ],
-    "Components": [
-      {
-        "Type": "ColliderAABB"
-      },
-      {
-        "Type": "Transform",
-        "translation": {
-          "x": 100,
-          "y": 100
-        }
-      },
-      {
-        "Type": "Physics",
-        "OldTranslation": {
-          "x": 50,
-          "y": 50
-        }
-      },
-      {
-        "Type": "LineCollider",
-        "LeftMostPoint": {
-            "x": 0,
-            "y": 90
-        },
-        "RightMostPoint": {
-            "x": 90,
-            "y": 90
-        }
-      },
-      {
-        "Type": "Emitter",
-        "positionRight": {
-            "x": 100,
-            "y": 150
-        },       
-        "positionLeft": {
-            "x": 50,
-            "y": 0
-        },
-        "LeftDirectionTrigger": {
-            "x": 1,
-            "y": 0
-        },
-        "RightDirectionTrigger": {
-            "x": 0,
-            "y": -1
-        },
-        "maxDistance" : 1000,
-        "emitRight" : true,
-        "trigRight" : true
+  "Type": "Object",
+  "Name": "Emitter",
+  "file": "./Assets/PPM/unit_square.ppm",
+  "FilePath":  "./Data/GameObjects/Emitter.json",
+  "isAnimated": false,
+  "frameSize": [ 8, 8 ],
+  "Components": [
+    {
+      "Type": "ColliderAABB"
+    },
+    {
+      "Type": "Transform",
+      "translation": {
+        "x": 100,
+        "y": 100
       }
-    ]
-  }
+    },
+    {
+      "Type": "Physics",
+      "OldTranslation": {
+        "x": 50,
+        "y": 50
+      }
+    },
+    {
+      "Type": "LineCollider",
+      "LeftMostPoint": {
+          "x": 0,
+          "y": 90
+      },
+      "RightMostPoint": {
+          "x": 90,
+          "y": 90
+      }
+    },
+    {
+      "Type": "Emitter",
+      "positionRight": {
+          "x": 100,
+          "y": 150
+      },       
+      "positionLeft": {
+          "x": 50,
+          "y": 0
+      },
+      "LeftDirectionTrigger": {
+          "x": 1,
+          "y": 0
+      },
+      "RightDirectionTrigger": {
+          "x": 0,
+          "y": -1
+      },
+      "maxDistance" : 1000,
+      "emitRight" : true,
+      "trigRight" : true
+    },
+    {
+      "Type": "Physics",
+      "OldTranslation": {
+        "x": 50,
+        "y": 90
+      }
+    }
+  ]
+}

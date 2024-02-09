@@ -22,6 +22,10 @@
 #include "Engine.h"
 #include "BehaviorPlayer.h"
 
+#include "Collider.h"
+#include "Emitter.h"
+#include "LineCollider.h"
+
 #include "FileIO.h"
 #include "SceneSystem.h"
 #include "Renderer.h"
@@ -55,7 +59,7 @@ bool playerSpawned = false;
 
 EntityManager g_Manager;
 
-LevelCreatorScene::LevelCreatorScene() : Scene("LevelCreatortest"), tempEntities()
+LevelCreatorScene::LevelCreatorScene() : Scene("LevelCreatortest"), playerExists(false), tempEntities()
 {
 
 }
@@ -89,14 +93,32 @@ Engine::EngineCode LevelCreatorScene::Init()
 		std::cout << "Property load success!\n";
 
 	LevelBuilder::GetInstance()->LoadTileMap("./Data/Scenes/LevelCreatorScene.json");
+	
+	// this is gonna add any objects that exist in the imported scene and transfer them to 
+	// the tempEntities vector so they can be modified (this will have to be added in the import section as well)
+	if (EntityContainer::GetInstance()->CountEntities() > 0)
+	{
+		int size = EntityContainer::GetInstance()->CountEntities();
+		for (int i = 0; i < size; ++i)
+		{
+			if ((*EntityContainer::GetInstance())[i])
+			{
+				tempEntities.push_back((*EntityContainer::GetInstance())[i]);
+				if (tempEntities[i]->GetRealName().compare("Player") == 0)
+				{
+					playerExists = true;
+				}
+			}
+		}
+	}
 
 	// not sure how to do this w/ the new generic vers.
 
 	// init function maps to add files at end
+	//AddFunc.emplace("Player", &LevelCreatorScene::AddPlayerEntity);
 	AddFunc.emplace("Circle", &LevelCreatorScene::AddCircleEntity);
 	AddFunc.emplace("Door", &LevelCreatorScene::AddDoorEntity);
 	AddFunc.emplace("Mirror", &LevelCreatorScene::AddMirrorEntity);
-	//AddFunc.emplace("Circle", &AddCircleEntity);
 
 	//AddFunc.emplace("Door", 
 	//AddFunc.emplace("Mirror", 
@@ -280,7 +302,7 @@ void LevelCreatorScene::ExportScene(std::string name)
 
 	for (auto it : tempEntities)
 	{
-		if (it)
+		if (it && AddFunc.count(it->addKey))
 		{
 			current->AddFunc[it->addKey](it);
 		}
@@ -532,10 +554,63 @@ void LevelCreatorScene::ToolHandler()
 	}
 }
 
+static void CheckCollisions()
+{
+	Scene* pare = LevelCreatorSceneGetInstance();
+	LevelCreatorScene* level = reinterpret_cast<LevelCreatorScene*>(pare);
+	unsigned current = 0;
+	while (current != level->tempEntities.size())
+	{
+		if (level->tempEntities[current])
+		{
+			Collider* collider = level->tempEntities[current]->Has(Collider);
+			if (collider)
+			{
+				for (unsigned i = current + 1; i < level->tempEntities.size(); ++i)
+				{
+					if (level->tempEntities[i])
+					{
+						Collider* secCollider = level->tempEntities[i]->Has(Collider);
+						if (secCollider)
+						{
+							collider->Check(secCollider);
+						}
+
+
+						if (level->tempEntities[current]->Has(Emitter) && level->tempEntities[i]->Has(LineCollider))
+						{
+							Emitter::EmitterCollisionHandler(*level->tempEntities[current], *level->tempEntities[i]);
+						}
+
+
+					}
+				}
+			}
+		}
+		++current;
+	}
+}
 void LevelCreatorScene::Update(float dt)
 {
 	if (CheckGameScenes() || CheckRestart())
 		return;
+
+	int i = 0;
+	for (auto it : tempEntities)
+	{
+		if (it)
+		{
+			(it)->Update(dt);
+			if (it->IsDestroyed())
+			{
+				it->FreeComponents();
+				delete it;
+				it = NULL;
+			}
+		}
+		++i;
+		CheckCollisions();
+	}
 
 	Inputs* inputHandler = Inputs::GetInstance();
 	inputHandler->handleInput();
@@ -925,18 +1000,45 @@ void LevelCreatorScene::ImGuiWindow()
 	ImGui::Text("Object Selector:");
 
 	ImGui::SetCursorPosX(ImGui::GetCursorPosX() + 20); // Adjust the value as needed
-	if (ImGui::Button("Create Switch"))
+	if (ImGui::Button(" Create Player"))
+	{
+		if (playerExists == true)
+		{
+			ImGui::OpenPopup("PlayerAlreadyExists");
+		}
+		else
+		{
+			CreatePlayerEntity();
+		}
+	}
+
+	if (ImGui::BeginPopupModal("PlayerAlreadyExists", NULL, ImGuiWindowFlags_AlwaysAutoResize))
+	{
+		ImGui::Text("Player Object Already in Scene!");
+		if (ImGui::Button("OK"))
+		{
+			ImGui::CloseCurrentPopup();
+		}
+		ImGui::EndPopup();
+	}
+
+	if (ImGui::Button("  Create Switch"))
 	{
 		CreateCircleEntity();
 	}
-	if (ImGui::Button(" Create Door"))
+	if (ImGui::Button("  Create Door"))
 	{
 		CreateDoorEntity();
 	}
-	if (ImGui::Button(" Create Mirror"))
+	if (ImGui::Button("  Create Mirror"))
 	{
 		CreateMirrorEntity();
 	}
+	if (ImGui::Button("  Create Emitter"))
+	{
+		CreateEmitterEntity();
+	}
+
 	g_Manager.ShowEntityInfo();
 
 	ImGui::Separator();
@@ -970,6 +1072,29 @@ void LevelCreatorScene::ImGuiWindow()
 // not deleting in case the generic ver. doesnt work -- we have backup!
 
 // also -- thanks won for getting them in, i just made it generic lol
+
+/* this will need to be modified because its just gonna keep overwriting the player object that already exists 
+   unless the scene does become open world then its gonna be fine */
+
+static int playerCount = 0;
+int LevelCreatorScene::CreatePlayerEntity()
+{
+	int circles_existing = 0;
+	playerExists = true;
+	std::string number = "./Data/GameObjects/Player";
+	std::string filename = "./Data/GameObjects/Player.json";
+
+	Entity* temp = FileIO::GetInstance()->ReadEntity(filename);
+
+	temp->addKey = "Player"; // this is for the map holding functions and gives access to function for circle
+
+	temp->key = "Player" + std::to_string(playerCount);
+	temp->SetFilePath("./Data/GameObjects/Player" + std::to_string(playerCount) + ".json");
+	tempEntities.push_back(temp);
+	++playerCount;
+
+	return 0;
+}
 
 static int circleCount = 0;
 int LevelCreatorScene::CreateCircleEntity()
@@ -1023,6 +1148,23 @@ int LevelCreatorScene::CreateMirrorEntity()
 	temp->SetFilePath("./Data/GameObjects/Mirror" + std::to_string(mirrorCount) + ".json");
 	tempEntities.push_back(temp);
 	++mirrorCount;
+	return 0;
+}
+
+int LevelCreatorScene::CreateEmitterEntity()
+{
+	static int emitterCount = 0;
+	std::string number = "./Data/GameObjects/Emitter";
+	std::string filename = "./Data/GameObjects/Emitter.json";
+
+	Entity* temp = FileIO::GetInstance()->ReadEntity(filename);
+
+	temp->addKey = "Emitter"; // this is for the map holding functions and gives access to function for circle
+
+	temp->key = "Emitter" + std::to_string(emitterCount);
+	temp->SetFilePath("./Data/GameObjects/Emitter" + std::to_string(emitterCount) + ".json");
+	tempEntities.push_back(temp);
+	++emitterCount;
 	return 0;
 }
 
@@ -1201,7 +1343,10 @@ void EntityManager::ShowEntityInfo()
 					ImGui::Text("Rotation: (%f, %f)", properties[creator->tempEntities[i]->key].rotation);
 					ImGui::Text("Size: (%d, %d)", static_cast<int>(g_Manager.pRenderer->objects[i]->size.x), static_cast<int>(g_Manager.pRenderer->objects[i]->size.y));
 
-					ImGui::SliderInt2("Modify Translation", properties[creator->tempEntities[i]->key].translation, -100, 100);
+
+					ImGui::SliderInt2("Modify Translation", properties[creator->tempEntities[i]->key].translation, -500, 500);
+					//creator->tempEntities[i]->Has(Transform)->SetTranslation({ static_cast<float>(properties[creator->tempEntities[i]->key].translation[0]), static_cast<float>(properties[creator->tempEntities[i]->key].translation[1]) });
+					//creator->tempEntities[i]->GetImage()->position = { static_cast<float>(properties[creator->tempEntities[i]->key].translation[0]), static_cast<float>(properties[creator->tempEntities[i]->key].translation[1]) };
 
 					ImGui::Checkbox((properties[creator->tempEntities[i]->key].isEditable ? "Entity edit enabled" : "Entity edit disabled"), &properties[creator->tempEntities[i]->key].isEditable);
 					ImGui::Checkbox((properties[creator->tempEntities[i]->key].isTileAttatch ? "Tile attatch enabled" : "Tile attatch disabled"), &properties[creator->tempEntities[i]->key].isTileAttatch);
@@ -1210,6 +1355,19 @@ void EntityManager::ShowEntityInfo()
 					{
 						if (!creator->tempEntities.empty())
 						{
+							/*for (unsigned j = 0; i < creator->tempEntities.size(); ++j)
+							{
+								if (creator->tempEntities[j] == creator->tempEntities[i])
+								{
+									if (creator->tempEntities[j]->key.compare(creator->tempEntities[i]->key) == 0)
+									{
+										creator->tempEntities[j]->FreeComponents();
+										delete creator->tempEntities[j];
+										creator->tempEntities[j] = nullptr;
+										break;
+									}
+								}
+							}*/
 							for (auto it = creator->tempEntities.begin(); it != creator->tempEntities.end(); ++it)
 							{
 								if (*it == creator->tempEntities[i])
@@ -1408,32 +1566,35 @@ void EntityManager::EntityPicker()
 	LevelCreatorScene* creator = reinterpret_cast<LevelCreatorScene*>(LevelCreatorSceneGetInstance());
 	for (int i = 0; i < creator->tempEntities.size(); i++)
 	{
-		if (properties[creator->tempEntities[i]->key].isEditable == true)
+		if (creator->tempEntities[i] != nullptr)
 		{
-			if ((properties[creator->tempEntities[i]->key].translation[0] + g_Manager.pRenderer->objects[i]->size.x) >= mousePos_.x && (properties[creator->tempEntities[i]->key].translation[0]) <= mousePos_.x &&
-				(properties[creator->tempEntities[i]->key].translation[1] + g_Manager.pRenderer->objects[i]->size.y) >= mousePos_.y && (properties[creator->tempEntities[i]->key].translation[1]) <= mousePos_.y)
+			if (properties[creator->tempEntities[i]->key].isEditable == true)
 			{
-				if (pInput->mouseButtonDown(SDL_BUTTON_LEFT))
+				if ((properties[creator->tempEntities[i]->key].translation[0] + g_Manager.pRenderer->objects[i]->size.x) >= mousePos_.x && (properties[creator->tempEntities[i]->key].translation[0]) <= mousePos_.x &&
+					(properties[creator->tempEntities[i]->key].translation[1] + g_Manager.pRenderer->objects[i]->size.y) >= mousePos_.y && (properties[creator->tempEntities[i]->key].translation[1]) <= mousePos_.y)
 				{
-					properties[creator->tempEntities[i]->key].isPicked = true;
+					if (pInput->mouseButtonDown(SDL_BUTTON_LEFT))
+					{
+						properties[creator->tempEntities[i]->key].isPicked = true;
+					}
+					else
+					{
+						properties[creator->tempEntities[i]->key].isPicked = false;
+					}
 				}
-				else
-				{
-					properties[creator->tempEntities[i]->key].isPicked = false;
-				}
-			}
 
-			if (properties[creator->tempEntities[i]->key].isPicked == true)
-			{
-				if (properties[creator->tempEntities[i]->key].isTileAttatch == true)
+				if (properties[creator->tempEntities[i]->key].isPicked == true)
 				{
-					properties[creator->tempEntities[i]->key].translation[0] = (static_cast<int>(mousePos_.x - g_Manager.pRenderer->objects[i]->size.x / 2) % 8 == 0) ? static_cast<int>(mousePos_.x - g_Manager.pRenderer->objects[i]->size.x / 2) + 4 : properties[creator->tempEntities[i]->key].translation[0];
-					properties[creator->tempEntities[i]->key].translation[1] = (static_cast<int>(mousePos_.y - g_Manager.pRenderer->objects[i]->size.y / 2) % 8 == 0) ? static_cast<int>(mousePos_.y - g_Manager.pRenderer->objects[i]->size.y / 2) + 4 : properties[creator->tempEntities[i]->key].translation[1];
-				}
-				else
-				{
-					properties[creator->tempEntities[i]->key].translation[0] = static_cast<int>(mousePos_.x - g_Manager.pRenderer->objects[i]->size.x / 2);
-					properties[creator->tempEntities[i]->key].translation[1] = static_cast<int>(mousePos_.y - g_Manager.pRenderer->objects[i]->size.y / 2);
+					if (properties[creator->tempEntities[i]->key].isTileAttatch == true)
+					{
+						properties[creator->tempEntities[i]->key].translation[0] = (static_cast<int>(mousePos_.x - g_Manager.pRenderer->objects[i]->size.x / 2) % 8 == 0) ? static_cast<int>(mousePos_.x - g_Manager.pRenderer->objects[i]->size.x / 2) + 4 : properties[creator->tempEntities[i]->key].translation[0];
+						properties[creator->tempEntities[i]->key].translation[1] = (static_cast<int>(mousePos_.y - g_Manager.pRenderer->objects[i]->size.y / 2) % 8 == 0) ? static_cast<int>(mousePos_.y - g_Manager.pRenderer->objects[i]->size.y / 2) + 4 : properties[creator->tempEntities[i]->key].translation[1];
+					}
+					else
+					{
+						properties[creator->tempEntities[i]->key].translation[0] = static_cast<int>(mousePos_.x - g_Manager.pRenderer->objects[i]->size.x / 2);
+						properties[creator->tempEntities[i]->key].translation[1] = static_cast<int>(mousePos_.y - g_Manager.pRenderer->objects[i]->size.y / 2);
+					}
 				}
 			}
 		}

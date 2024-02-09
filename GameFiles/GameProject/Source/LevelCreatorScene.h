@@ -52,7 +52,9 @@ public:
 	Engine::EngineCode Unload(void) override;
 	void Update(float dt) override;
 	void Render(void) override;
+	std::vector<Entity*> tempEntities;
 private:
+	bool playerExists;
 	void ImGuiInterg();
 	void ImGuiWindow();
 
@@ -69,9 +71,12 @@ private:
 	static void AddCircleEntity(Entity* entity);
 	static void AddDoorEntity(Entity* entity);
 	static void AddMirrorEntity(Entity* entity);
+	
+	int CreatePlayerEntity();
 	int CreateCircleEntity();
 	int CreateDoorEntity();
 	int CreateMirrorEntity();
+	int CreateEmitterEntity();
 	void AddToFile(std::string nametoadd, Entity* entity);
 	void ExportScene(std::string);
 
@@ -89,7 +94,6 @@ private:
 	std::string currentGameObjectsList = "./Data/GameObjects/ObjectListLevelBuilder.json";
 	std::string listToExport;
 	json gameObjects;
-	std::vector<Entity*> tempEntities;
 	std::unordered_map<std::string, std::function<void (Entity*)>> AddFunc;
 	std::string currentTileMapList;
 	char myTextBuffer[256]{};
