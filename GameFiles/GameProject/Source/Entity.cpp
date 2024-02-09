@@ -108,6 +108,11 @@ bool Entity::IsAnimated() { return isAnimated; }
 
 void Entity::Read(json &jsonData)
 {
+	if (jsonData["KeyObject"].is_object())
+	{
+		json keyOb = jsonData["KeyObject"];
+		key = keyOb["key"];
+	}
 	ComponentFactory* factory = ComponentFactory::GetInstance();
 	if (jsonData["ActualActualName"].is_object())
 	{

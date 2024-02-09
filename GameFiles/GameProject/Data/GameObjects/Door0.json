@@ -1,4 +1,7 @@
 {
+  "KeyObject":{
+    "key": "Door0"
+  },
   "Components": [
     {
       "Type": "ColliderAABB"
