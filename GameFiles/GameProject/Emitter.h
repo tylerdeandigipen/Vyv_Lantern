@@ -48,8 +48,8 @@ public:
 	bool IsEmittingRight() { return isEmittingRight; };
 	bool IsEmittingLeft() { return isEmittingLeft; };
 
-	void SetEmittingRight(bool state) { isEmittingRight = state; }; //probably a control flag and collision flag
-	void SetEmittingLeft(bool state) { isEmittingLeft = state; }; //probably a control flag and collision flag
+	void SetEmittingRight(bool state) { isEmittingRight = state; isDirty = true; }; //probably a control flag and collision flag
+	void SetEmittingLeft(bool state) { isEmittingLeft = state; isDirty = true; }; //probably a control flag and collision flag
 
 
 

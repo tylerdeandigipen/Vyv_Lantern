@@ -136,6 +136,14 @@ void Emitter::Update(float dt)
 		pointyBoi->laserPoints2[iLeftLaser] = *emitpositionEndL;
 		hasCollidedLeft = isEmittingLeft;
 	}
+	if (isDirty)
+	{
+		pointyBoi->laserPoints1[iLeftLaser] = *emitPositionLeft;
+		pointyBoi->laserPoints2[iLeftLaser] = *emitpositionEndL;
+		pointyBoi->laserPoints1[iRightLaser] = *emitPositionRight;
+		pointyBoi->laserPoints2[iRightLaser] = *emitpositionEndR;
+		isDirty = false;
+	}
 }
 
 //second opinion maybe consider making a lazer a different component and emmit that component rather than this immiter 
@@ -314,6 +322,7 @@ inline bool LineToLineCollision(Emitter * laser, Entity& line, int flag, bool in
 						if (laser->GetEmitPositionEndL()->x < intersectionX)
 						{
 							laser->SetEmitPositionEndL(intersectionX, intersectionY);
+							laser->SetCollidedLeft(true);
 							line.Has(Emitter)->SetPositionLeft(intersectionX, intersectionY);
 							return true;
 						}
@@ -328,6 +337,7 @@ inline bool LineToLineCollision(Emitter * laser, Entity& line, int flag, bool in
 						if (laser->GetEmitPositionEndL()->x > intersectionX)
 						{
 							laser->SetEmitPositionEndL(intersectionX, intersectionY);
+							laser->SetCollidedLeft(true);
 							line.Has(Emitter)->SetPositionLeft(intersectionX, intersectionY);
 							return true;
 						}
@@ -509,7 +519,7 @@ void Emitter::EmitterCollisionHandler(Entity& object1, Entity& object2)
 		//if the object is emitting and hasn't collided yet. proceed for either
 		if (Obj1->IsEmittingRight() && !Obj1->GetCollidedRight() || Obj1->IsEmittingLeft() && !Obj1->GetCollidedLeft())
 		{
-			bool potentialInterupt;
+			bool potentialInterupt = false;
 			//also need to check vs terrain if it hits needs to truncate the draw distance of the emitter line.
 			//need flag for both. instead reworked the flag system will need to remove the left trigger/right trigger flags.
 			if (Obj1->IsEmittingRight() && !Obj1->GetCollidedRight())
@@ -591,12 +601,14 @@ void Emitter::SetEmitPositionEndR(float x, float y)
 {
 	emitpositionEndR->x = x;
 	emitpositionEndR->y = y;
+	isDirty = true;
 }
 void Emitter::SetEmitPositionEndL(float x, float y)
 {
 	emitpositionEndL->x = x;
 	emitpositionEndL->y = y;
+	isDirty = true;
 }
 
-void Emitter::SetPositionRight(float x, float y) { emitPositionRight->x = x; emitPositionRight->y = y; };
-void Emitter::SetPositionLeft(float x, float y) { emitPositionLeft->y = y; emitPositionLeft->x = x; };
+void Emitter::SetPositionRight(float x, float y) { emitPositionRight->x = x; emitPositionRight->y = y; isDirty = true; };
+void Emitter::SetPositionLeft(float x, float y) { emitPositionLeft->y = y; emitPositionLeft->x = x; isDirty = true; };
