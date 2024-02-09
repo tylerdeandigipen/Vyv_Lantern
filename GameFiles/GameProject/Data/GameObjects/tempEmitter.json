@@ -2,7 +2,7 @@
   "Type": "Object",
   "Name": "Emitter",
   "file": "./Assets/PPM/TempLaser.ppm",
-  "FilePath":  "./Data/GameObjects/Emitter.json",
+  "FilePath":  "./Data/GameObjects/squareEmitter.json",
   "isAnimated": false,
   "frameSize": [ 8, 8 ],
   "Components": [
