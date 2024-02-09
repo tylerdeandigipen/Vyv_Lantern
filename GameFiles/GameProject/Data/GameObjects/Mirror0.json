@@ -16,6 +16,30 @@
         "y": 160.0
       },
       "Type": "Physics"
+    },
+    {
+      "Type": "BehaviorSwitch",
+      "key": 1,
+      "NumPositions": 2,
+      "pos": [
+        {
+          "x": "96",
+          "y": "160"
+        },
+        {
+          "x": "112",
+          "y": "160"
+        }
+      ]
+    },
+    {
+      "Type": "BehaviorMirror",
+      "Direction": {
+        "DirectionX": 1.0,
+        "DirectionY": 1.0
+      },
+      "Radius": 10.0,
+      "key": 1
     }
   ],
   "FilePath": "./Data/GameObjects/Mirror0.json",

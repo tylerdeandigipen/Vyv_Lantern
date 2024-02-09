@@ -16,6 +16,39 @@
         "y": 144.0
       },
       "Type": "Physics"
+    },
+        {
+      "Type": "LineCollider",
+      "LeftMostPoint": {
+          "x": 0,
+          "y": 90
+      },
+      "RightMostPoint": {
+          "x": 90,
+          "y": 90
+      }
+    },
+    {
+      "Type": "Emitter",
+      "positionRight": {
+          "x": 100,
+          "y": 95
+      },       
+      "positionLeft": {
+          "x": 50,
+          "y": 0
+      },
+      "LeftDirectionTrigger": {
+          "x": 1,
+          "y": 0
+      },
+      "RightDirectionTrigger": {
+          "x": 0,
+          "y": -1
+      },
+      "maxDistance" : 500,
+      "emitRight" : true,
+      "trigRight" : true
     }
   ],
   "FilePath": "./Data/GameObjects/Emitter2.json",
