@@ -93,7 +93,7 @@ Engine::EngineCode LevelCreatorScene::Init()
 		std::cout << "Property load success!\n";
 
 	LevelBuilder::GetInstance()->LoadTileMap("./Data/Scenes/LevelCreatorScene.json");
-	
+
 	// this is gonna add any objects that exist in the imported scene and transfer them to 
 	// the tempEntities vector so they can be modified (this will have to be added in the import section as well)
 	if (EntityContainer::GetInstance()->CountEntities() > 0)
@@ -138,7 +138,7 @@ Engine::EngineCode LevelCreatorScene::Init()
 }
 
 Vector2 pos1, pos2;
-bool temp;
+bool temp = false;
 bool wasDown = false;
 bool reloadTileMap = false;
 int expansionRange = 1;
@@ -1046,10 +1046,10 @@ void LevelCreatorScene::ImGuiWindow()
 		CreateRecieverEntity();
 	}
 
-	g_Manager.ShowEntityInfo();
-
 	ImGui::Separator();
 	g_Manager.EditEntity(Vector2{ static_cast<float>(Inputs::GetInstance()->getMouseX()), static_cast<float>(Inputs::GetInstance()->getMouseY()) });
+
+	g_Manager.ShowEntityInfo();
 
 	ImGui::End();
 }
@@ -1080,7 +1080,7 @@ void LevelCreatorScene::ImGuiWindow()
 
 // also -- thanks won for getting them in, i just made it generic lol
 
-/* this will need to be modified because its just gonna keep overwriting the player object that already exists 
+/* this will need to be modified because its just gonna keep overwriting the player object that already exists
    unless the scene does become open world then its gonna be fine */
 
 static int playerCount = 0;
@@ -1209,9 +1209,9 @@ int LevelCreatorScene::CreateRecieverEntity()
 
 	entityData["Components"] = components;
 	entityData["FilePath"] = entity->GetFilePath();
-	entityData["Name"] = "Switch"; 
+	entityData["Name"] = "Switch";
 	entityData["Type"] = "Object";
-	entityData["file"] = "./Assets/PPM/" + assetFilePath + ".ppm"; 
+	entityData["file"] = "./Assets/PPM/" + assetFilePath + ".ppm";
 
 	entityData["frameSize"] = { 8,8 }; // make these generic as needed
 	entityData["isAnimated"] = false;
@@ -1224,7 +1224,7 @@ int LevelCreatorScene::CreateRecieverEntity()
 } */
 
 
-/* these look like a lot of copy and paste code but for now its so that json can be exported easier 
+/* these look like a lot of copy and paste code but for now its so that json can be exported easier
    in order to get it generalized we'd have to just check for the right components */
 void LevelCreatorScene::AddCircleEntity(Entity* entity)
 {
@@ -1233,7 +1233,7 @@ void LevelCreatorScene::AddCircleEntity(Entity* entity)
 
 
 	Logging::GetInstance("LevelCreator.log").LogToAll("Creating->", entity->key.c_str());
-	json circleData; 
+	json circleData;
 	json components;
 	json collider = { {"Type", "ColliderAABB"} };
 	json transform = { {"Type", "Transform"}, {"translation", { { "x", entity->Has(Transform)->GetTranslation()->x }, {"y", entity->Has(Transform)->GetTranslation()->y} } } };
@@ -1256,7 +1256,7 @@ void LevelCreatorScene::AddCircleEntity(Entity* entity)
 
 	json newobject = { {"FilePath", entity->GetFilePath()} };
 	current->gameObjects.push_back(newobject);
-} 
+}
 
 void LevelCreatorScene::AddDoorEntity(Entity* entity)
 {
@@ -1428,6 +1428,7 @@ void EntityManager::ShowEntityInfo()
 				{
 					//ImGui::Text("Name: %s", creator->tempEntities[i]->GetName());
 					ImGui::Text("Entity Number: %d", i);
+					ImGui::Text("Mouse Pos: %f %f", mousePos_.x, mousePos_.y);
 
 					ImGui::Text("Translation: (%d, %d)", properties[creator->tempEntities[i]->key].translation[0], properties[creator->tempEntities[i]->key].translation[1]);
 					ImGui::Text("Rotation: (%f, %f)", properties[creator->tempEntities[i]->key].rotation);
@@ -1693,8 +1694,8 @@ void EntityManager::EntityPicker()
 
 void EntityManager::SetMousePos(Vector2 mousePos)
 {
-	mousePos_.x = mousePos.x / pRenderer->screenScale;
-	mousePos_.y = mousePos.y / pRenderer->screenScale;
+	mousePos_.x = (mousePos.x) / pRenderer->screenScale + pRenderer->GetCameraPosition().x;
+	mousePos_.y = (mousePos.y) / pRenderer->screenScale + pRenderer->GetCameraPosition().y;
 }
 
 bool EntityManager::IsEntityPicked(const std::string& key) const
