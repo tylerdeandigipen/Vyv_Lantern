@@ -6,25 +6,25 @@
     {
       "Type": "Transform",
       "translation": {
-        "x": 112.0,
-        "y": 128.0
+        "x": 344.0,
+        "y": 72.0
       }
     },
     {
       "OldTranslation": {
-        "x": 112.0,
-        "y": 128.0
+        "x": 344.0,
+        "y": 72.0
       },
       "Type": "Physics"
     }
   ],
-  "FilePath": "./Data/GameObjects/Mirror2.json",
+  "FilePath": "./Data/GameObjects/Reciever3.json",
   "KeyObject": {
-    "key": "Mirror2"
+    "key": "Reciever3"
   },
-  "Name": "Switch",
+  "Name": "Reciever",
   "Type": "Object",
-  "file": "./Assets/PPM/Mirror.ppm",
+  "file": "./Assets/PPM/tempReciever.ppm",
   "frameSize": [
     8,
     8

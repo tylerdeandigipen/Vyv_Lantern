@@ -6,25 +6,25 @@
     {
       "Type": "Transform",
       "translation": {
-        "x": 112.0,
-        "y": 128.0
+        "x": 296.0,
+        "y": 144.0
       }
     },
     {
       "OldTranslation": {
-        "x": 112.0,
-        "y": 128.0
+        "x": 296.0,
+        "y": 144.0
       },
       "Type": "Physics"
     }
   ],
-  "FilePath": "./Data/GameObjects/Mirror2.json",
+  "FilePath": "./Data/GameObjects/Emitter2.json",
   "KeyObject": {
-    "key": "Mirror2"
+    "key": "Emitter2"
   },
-  "Name": "Switch",
+  "Name": "Emitter",
   "Type": "Object",
-  "file": "./Assets/PPM/Mirror.ppm",
+  "file": "./Assets/PPM/TempLaser.ppm",
   "frameSize": [
     8,
     8

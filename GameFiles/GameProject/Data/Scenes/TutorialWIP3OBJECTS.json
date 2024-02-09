@@ -1,0 +1,29 @@
+{
+  "Circle": {
+    "count": 1
+  },
+  "Door": {
+    "count": 2
+  },
+  "Emitter": {
+    "count": 3
+  },
+  "FilePath": "./Data/Scenes/TutorialWIP3OBJECTS.json",
+  "Mirror": {
+    "count": 4
+  },
+  "Objects": [
+    {
+      "FilePath": "./Data/GameObjects/Emitter1.json"
+    },
+    {
+      "FilePath": "./Data/GameObjects/Mirror1.json"
+    },
+    {
+      "FilePath": "./Data/GameObjects/Mirror2.json"
+    }
+  ],
+  "Reviever": {
+    "count": 3
+  }
+}

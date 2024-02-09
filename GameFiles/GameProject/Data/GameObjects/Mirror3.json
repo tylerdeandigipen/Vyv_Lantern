@@ -6,21 +6,21 @@
     {
       "Type": "Transform",
       "translation": {
-        "x": 112.0,
-        "y": 128.0
+        "x": 264.0,
+        "y": 96.0
       }
     },
     {
       "OldTranslation": {
-        "x": 112.0,
-        "y": 128.0
+        "x": 264.0,
+        "y": 96.0
       },
       "Type": "Physics"
     }
   ],
-  "FilePath": "./Data/GameObjects/Mirror2.json",
+  "FilePath": "./Data/GameObjects/Mirror3.json",
   "KeyObject": {
-    "key": "Mirror2"
+    "key": "Mirror3"
   },
   "Name": "Switch",
   "Type": "Object",
