@@ -1,16 +1,16 @@
 {
   "Circle": {
-    "count": 1
-  },
-  "Door": {
     "count": 2
   },
-  "Emitter": {
+  "Door": {
     "count": 3
   },
-  "FilePath": "./Data/Scenes/TutorialWIP3OBJECTS.json",
+  "Emitter": {
+    "count": 5
+  },
+  "FilePath": "./Data/Scenes/TutorialFinalOBJECTS.json",
   "Mirror": {
-    "count": 4
+    "count": 8
   },
   "Objects": [
     {
@@ -36,9 +36,24 @@
     },
     {
       "FilePath": "./Data/GameObjects/Mirror2.json"
+    },
+    {
+      "FilePath": "./Data/GameObjects/Emitter2.json"
+    },
+    {
+      "FilePath": "./Data/GameObjects/Mirror3.json"
+    },
+    {
+      "FilePath": "./Data/GameObjects/Reciever3.json"
+    },
+    {
+      "FilePath": "./Data/GameObjects/Mirror5.json"
+    },
+    {
+      "FilePath": "./Data/GameObjects/Mirror6.json"
     }
   ],
   "Reviever": {
-    "count": 3
+    "count": 1
   }
 }

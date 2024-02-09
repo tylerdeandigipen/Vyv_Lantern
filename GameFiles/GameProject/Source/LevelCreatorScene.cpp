@@ -125,6 +125,7 @@ Engine::EngineCode LevelCreatorScene::Init()
 	AddFunc.emplace("Circle", &LevelCreatorScene::AddCircleEntity);
 	AddFunc.emplace("Door", &LevelCreatorScene::AddDoorEntity);
 	AddFunc.emplace("Mirror", &LevelCreatorScene::AddMirrorEntity);
+	AddFunc.emplace("Switch", &LevelCreatorScene::AddMirrorEntity);
 	AddFunc.emplace("Emitter", &LevelCreatorScene::AddEmitterEntity);
 	AddFunc.emplace("Reciever", &LevelCreatorScene::AddRecieverEntity);
 
@@ -918,6 +919,7 @@ void LevelCreatorScene::ImGuiWindow()
 									if ((*EntityContainer::GetInstance())[i])
 									{
 										tempEntities.push_back((*EntityContainer::GetInstance())[i]);
+										tempEntities[i]->addKey = tempEntities[i]->GetRealName();
 										if (tempEntities[i]->GetRealName().compare("Player") == 0)
 										{
 											playerExists = true;

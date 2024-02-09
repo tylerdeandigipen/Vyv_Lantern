@@ -1,7 +1,4 @@
 {
-  "KeyObject":{
-    "key": "Emitter0"
-  },
   "Components": [
     {
       "Type": "ColliderAABB"
@@ -22,6 +19,9 @@
     }
   ],
   "FilePath": "./Data/GameObjects/Emitter0.json",
+  "KeyObject": {
+    "key": "Emitter0"
+  },
   "Name": "Emitter",
   "Type": "Object",
   "file": "./Assets/PPM/squareEmitter.ppm",

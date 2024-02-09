@@ -1,7 +1,4 @@
 {
-  "KeyObject":{
-    "key": "Mirror0"
-  },
   "Components": [
     {
       "Type": "ColliderAABB"
@@ -22,6 +19,9 @@
     }
   ],
   "FilePath": "./Data/GameObjects/Mirror0.json",
+  "KeyObject": {
+    "key": "Mirror0"
+  },
   "Name": "Switch",
   "Type": "Object",
   "file": "./Assets/PPM/Mirror.ppm",

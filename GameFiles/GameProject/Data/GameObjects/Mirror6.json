@@ -6,25 +6,25 @@
     {
       "Type": "Transform",
       "translation": {
-        "x": 596.0,
-        "y": 84.0
+        "x": 344.0,
+        "y": 112.0
       }
     },
     {
       "OldTranslation": {
-        "x": 596.0,
-        "y": 84.0
+        "x": 344.0,
+        "y": 112.0
       },
       "Type": "Physics"
     }
   ],
-  "FilePath": "./Data/GameObjects/Door0.json",
+  "FilePath": "./Data/GameObjects/Mirror6.json",
   "KeyObject": {
-    "key": "Door0"
+    "key": "Mirror6"
   },
-  "Name": "Door",
+  "Name": "Switch",
   "Type": "Object",
-  "file": "./Assets/PPM/Door_Closed.ppm",
+  "file": "./Assets/PPM/Mirror.ppm",
   "frameSize": [
     8,
     8
