@@ -40,7 +40,10 @@ void Emitter::Read(json jsonData)
 
 void Emitter::Update(float dt) 
 {
+	if (isDirty)
+	{
 
+	}
 }
 
 //second opinion maybe consider making a lazer a different component and emmit that component rather than this immiter 
@@ -117,11 +120,46 @@ void Emitter::EmitterCollisionHandler(Entity& object1, Entity& object2)
 	//additionally does not have a way to turn off... will need to group source to fix issue can't think of how off the top of head.
 	if (object1.Has(Emitter) && object2.Has(LineCollider))
 	{
-		
+		LineCollider* line = object2.Has(LineCollider);
+		Emitter* laser = object1.Has(Emitter);
+		gfxVector2 tempDir = laser->GetDirection();
+		if (laser->GetPosition().x >= line->GetPosition1()->x && laser->GetPosition().x <= line->GetPosition2()->x)
+		{
+			if (tempDir.y > 0)
+			{
+				if (laser->position->y > line->GetPosition1()->y)
+				{
+					//does collide do thing
+				}
+			}
+			else if (tempDir.y < 0)
+			{
+				if (laser->position->y < line->GetPosition1()->y)
+				{
+					//does collide do thing
+				}
+			}
+			
 
+		}
 
-
-
+		if (laser->GetPosition().y >= line->GetPosition1()->y && laser->GetPosition().y <= line->GetPosition2()->x)
+		{
+			if (tempDir.x > 0)
+			{
+				if (laser->position->x > line->GetPosition1()->x)
+				{
+					//does collide	do thing
+				}
+			}
+			else if (tempDir.x < 0)
+			{
+				if (laser->position->x < line->GetPosition1()->x)
+				{
+					//does collide do thing
+				}
+			}
+		}
 
 	}
 

@@ -70,6 +70,7 @@ private:
 	bool isDirty;
 	bool isEmitting;
 	gfxVector2* position;
+	gfxVector2* endpoint;
 	gfxVector2* direction;
 	float distance;
 
