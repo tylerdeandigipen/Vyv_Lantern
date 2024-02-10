@@ -45,7 +45,9 @@ void Emitter::Update(float dt)
 {
 	if (isDirty)
 	{
+		//update the correct system
 
+		isDirty = false;
 	}
 }
 
@@ -132,52 +134,77 @@ void Emitter::EmitterCollisionHandler(Entity& object1, Entity& object2)
 	//additionally does not have a way to turn off... will need to group source to fix issue can't think of how off the top of head.
 	if (object1.Has(Emitter) && object2.Has(LineCollider))
 	{
-		LineCollider* line = object2.Has(LineCollider);
 		Emitter* laser = object1.Has(Emitter);
-		gfxVector2 tempDir = laser->GetDirection();
-		if (laser->GetPosition().x >= line->GetPosition1()->x && laser->GetPosition().x <= line->GetPosition2()->x)
+		if (laser->isDirty)
 		{
-
-			//doesn't matter matter if it doesn't strike will set to 1st wall struck
-			bool struckShadow = DoCalculations(laser);
-
-			if (tempDir.y > 0)
+			//this is a  single emitter case may need to adjust for future ifor mulit emitter cases
+			if (object2.Has(Emitter))
 			{
-				if (laser->position->y > line->GetPosition1()->y)
-				{
-					//does collide do thing
+				LineCollider* line = object2.Has(LineCollider);
 
-					
+				Emitter* lineEmitter = object2.Has(Emitter);
+				gfxVector2 tempDir = laser->GetDirection();
+
+				if (laser->GetPosition().x >= line->GetPosition1()->x && laser->GetPosition().x <= line->GetPosition2()->x)
+				{
+
+					//doesn't matter matter if it doesn't strike will set to 1st wall struck
+					bool struckShadow = DoCalculations(laser);
+
+					if (tempDir.y > 0)
+					{
+						if (laser->GetPosition().y > line->GetPosition1()->y)
+						{
+							//simple recalculations
+							if (struckShadow && lineEmitter->GetPosition().y < laser->GetPosition().y)
+							{
+								//compare the emitter position against the  current end position
+								// if it is '>' or '<' depending in direction then do not truncate
+								laser->SetEndpoint(new gfxVector2(lineEmitter->GetPosition()));
+							}
+
+
+						}
+					}
+					else if (tempDir.y < 0)
+					{
+						if (laser->position->y < line->GetPosition1()->y)
+						{
+							//does collide do thing
+						}
+					}
+
+
+				}
+
+				if (laser->GetPosition().y >= line->GetPosition1()->y && laser->GetPosition().y <= line->GetPosition2()->x)
+				{
+					if (tempDir.x > 0)
+					{
+						if (laser->position->x > line->GetPosition1()->x)
+						{
+							//does collide	do thing
+						}
+					}
+					else if (tempDir.x < 0)
+					{
+						if (laser->position->x < line->GetPosition1()->x)
+						{
+							//does collide do thing
+						}
+					}
 				}
 			}
-			else if (tempDir.y < 0)
+			else
 			{
-				if (laser->position->y < line->GetPosition1()->y)
-				{
-					//does collide do thing
-				}
+				return;
 			}
-			
-
+		}
+		else
+		{
+			return;
 		}
 
-		if (laser->GetPosition().y >= line->GetPosition1()->y && laser->GetPosition().y <= line->GetPosition2()->x)
-		{
-			if (tempDir.x > 0)
-			{
-				if (laser->position->x > line->GetPosition1()->x)
-				{
-					//does collide	do thing
-				}
-			}
-			else if (tempDir.x < 0)
-			{
-				if (laser->position->x < line->GetPosition1()->x)
-				{
-					//does collide do thing
-				}
-			}
-		}
 
 	}
 
@@ -197,13 +224,16 @@ void Emitter::EmitterCollisionHandler(Entity& object1, Entity& object2)
 void Emitter::SetPosition(gfxVector2* SetP)
 {
 	position = SetP;
+	isDirty = true;
 }
 
 void Emitter::SetDirection(gfxVector2* SetP)
 {
 	direction = SetP;
+	isDirty = true;
 }
 void Emitter::SetEndpoint(gfxVector2* SetP)
 {
 	endpoint = SetP;
+	isDirty = true;
 }
