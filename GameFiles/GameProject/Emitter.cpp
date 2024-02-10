@@ -10,7 +10,9 @@ Renderer* pointyBoi = nullptr;
 
 Emitter::Emitter() : Component(Component::cEmitter)
 {
+	distance = 0;
 	position = new gfxVector2();
+	endpoint = new gfxVector2();
 	direction = new gfxVector2();
 }
 
@@ -19,6 +21,7 @@ Emitter::Emitter(Emitter const& emitter2cpy) : Component(emitter2cpy)
 {
 	position = new gfxVector2(*emitter2cpy.position);
 	direction = new gfxVector2(*emitter2cpy.direction);
+	endpoint = new gfxVector2(*emitter2cpy.endpoint);
 }
 
 Emitter::~Emitter()
@@ -134,11 +137,17 @@ void Emitter::EmitterCollisionHandler(Entity& object1, Entity& object2)
 		gfxVector2 tempDir = laser->GetDirection();
 		if (laser->GetPosition().x >= line->GetPosition1()->x && laser->GetPosition().x <= line->GetPosition2()->x)
 		{
+
+			//doesn't matter matter if it doesn't strike will set to 1st wall struck
+			bool struckShadow = DoCalculations(laser);
+
 			if (tempDir.y > 0)
 			{
 				if (laser->position->y > line->GetPosition1()->y)
 				{
 					//does collide do thing
+
+					
 				}
 			}
 			else if (tempDir.y < 0)
