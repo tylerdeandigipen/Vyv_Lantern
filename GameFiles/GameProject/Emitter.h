@@ -45,9 +45,13 @@ public:
 	void Update(float dt);
 	void Render() const;
 	gfxVector2 GetPosition() const { return *position; };
-	gfxVector2 GetDirection() const { return *direction; }
-
+	gfxVector2 GetDirection() const { return *direction; };
+	float GetDistance() const { return distance; };
 	//standard get/set funcitons
+
+	void SetPosition(gfxVector2* SetP);
+	void SetDirection(gfxVector2* SetP);
+
 
 	static std::string Name()
 	{

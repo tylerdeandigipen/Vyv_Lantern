@@ -6,6 +6,8 @@
 #include "Renderer.h"
 #include "Logging.h"
 
+Renderer* pointyBoi = nullptr;
+
 Emitter::Emitter() : Component(Component::cEmitter)
 {
 	position = new gfxVector2();
@@ -71,9 +73,40 @@ inline bool LineToLineCollision(Emitter * laser, Entity& line, int flag, bool in
 */
 inline bool DoCalculations(Emitter* obj)
 {
+	if (!pointyBoi)
+	{
+		pointyBoi = Renderer::GetInstance();
+	}
+
+
+	//if direction then compare
+
+	if (obj->GetDirection().x > 0)
+	{
+		gfxVector2 compare = pointyBoi->CheckLineForObjects(obj->GetPosition().x, obj->GetPosition().y,
+			obj->GetPosition().x + obj->GetDistance(), obj->GetPosition().y);
+	}
+	else if (obj->GetDirection().y > 0)
+	{
+		gfxVector2 compare = pointyBoi->CheckLineForObjects(obj->GetPosition().x, obj->GetPosition().y,
+			obj->GetPosition().x, obj->GetPosition().y + obj->GetDistance());
+	}
+	else if (obj->GetDirection().x < 0)
+	{
+		gfxVector2 compare = pointyBoi->CheckLineForObjects(obj->GetPosition().x, obj->GetPosition().y,
+			obj->GetPosition().x - obj->GetDistance(), obj->GetPosition().y);
+	}
+	else if (obj->GetDirection().y < 0)
+	{
+		gfxVector2 compare = pointyBoi->CheckLineForObjects(obj->GetPosition().x, obj->GetPosition().y,
+			obj->GetPosition().x, obj->GetPosition().y - obj->GetDistance());
+	}
 	
-	
-	
+
+
+
+
+
 }
 
 void Emitter::EmitterCollisionHandler(Entity& object1, Entity& object2)
@@ -103,3 +136,14 @@ void Emitter::EmitterCollisionHandler(Entity& object1, Entity& object2)
 	
 }
 
+
+
+void Emitter::SetPosition(gfxVector2* SetP)
+{
+	position = SetP;
+}
+
+void Emitter::SetDirection(gfxVector2* SetP)
+{
+	direction = SetP;
+}
