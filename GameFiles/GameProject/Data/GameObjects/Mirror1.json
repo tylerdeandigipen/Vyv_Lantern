@@ -16,6 +16,15 @@
         "y": 72.0
       },
       "Type": "Physics"
+    },
+    {
+      "Type": "BehaviorMirror",
+      "Direction": {
+        "DirectionX": 1.0,
+        "DirectionY": 1.0
+      },
+      "Radius": 10.0,
+      "key": 1
     }
   ],
   "FilePath": "./Data/GameObjects/Mirror1.json",
