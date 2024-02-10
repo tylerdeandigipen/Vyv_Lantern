@@ -17,7 +17,7 @@
 #include "TestScene.h"
 #include "TBDTestScene.h"
 #include "LevelCreatorScene.h"
-
+#include "TLSScene.h"
 #include "Inputs.h"
 
 // enums for different scene types
@@ -26,6 +26,7 @@ enum class SceneType
 	SCENE_TBD_TEST = 0,
 	SCENE_TEST = 1,
 	SCENE_LEVELCREATOR = 2,
+	SCENE_TLS_SCENE = 5,
 	NULL_SCENE,
 	// Add more scenes as needed
 };
@@ -264,6 +265,17 @@ bool CheckGameScenes()
 		else
 		{
 			sceneSystem->SetScene(LevelCreatorSceneGetInstance());
+		}
+	}
+	else if (inputHandlerScene->keyPressed(SDL_SCANCODE_5))
+	{
+		if (activeSceneType == SceneType::SCENE_TLS_SCENE)
+		{
+			sceneSystem->RestartScene();
+		}
+		else
+		{
+			sceneSystem->SetScene(TLSSceneGetInstance());
 		}
 	}
 	else
