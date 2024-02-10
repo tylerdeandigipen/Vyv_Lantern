@@ -46,12 +46,14 @@ public:
 	void Render() const;
 	gfxVector2 GetPosition() const { return *position; };
 	gfxVector2 GetDirection() const { return *direction; };
+	gfxVector2 GetEndpoint() const { return *endpoint; };
+
 	float GetDistance() const { return distance; };
 	//standard get/set funcitons
 
 	void SetPosition(gfxVector2* SetP);
 	void SetDirection(gfxVector2* SetP);
-
+	void SetEndpoint(gfxVector2* SetP);
 
 	static std::string Name()
 	{

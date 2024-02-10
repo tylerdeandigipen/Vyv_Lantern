@@ -81,7 +81,7 @@ inline bool DoCalculations(Emitter* obj)
 		pointyBoi = Renderer::GetInstance();
 	}
 
-
+	gfxVector2 compare = { 0,0 };
 	//if direction then compare
 
 	if (obj->GetDirection().x > 0)
@@ -105,7 +105,16 @@ inline bool DoCalculations(Emitter* obj)
 			obj->GetPosition().x, obj->GetPosition().y - obj->GetDistance());
 	}
 	
-
+	if (compare.operator== (obj->GetEndpoint()))
+	{
+		return false;
+	}
+	else
+	{
+		// then we set endpoint too compare
+		obj->SetEndpoint(&compare);
+		return true;
+	}
 
 
 
@@ -184,4 +193,8 @@ void Emitter::SetPosition(gfxVector2* SetP)
 void Emitter::SetDirection(gfxVector2* SetP)
 {
 	direction = SetP;
+}
+void Emitter::SetEndpoint(gfxVector2* SetP)
+{
+	endpoint = SetP;
 }
