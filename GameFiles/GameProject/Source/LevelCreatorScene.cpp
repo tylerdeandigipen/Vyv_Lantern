@@ -57,27 +57,11 @@ bool playMode = false;
 
 bool playerSpawned = false;
 
-EntityManager g_Manager;
-
 static int circleCount = 0;
 static int mirrorCount = 0;
 static int doorCount = 0;
 static int emitterCount = 0;
 static int recieverCount = 0;
-
-LevelCreatorScene::LevelCreatorScene() : Scene("LevelCreatortest"), playerExists(false), tempEntities()
-{
-
-}
-
-LevelCreatorScene::~LevelCreatorScene()
-{
-}
-
-Engine::EngineCode LevelCreatorScene::Load()
-{
-	return Engine::NothingBad;
-}
 
 int currentTool = 0;
 int currentTile;
@@ -87,6 +71,30 @@ Vector2 moveVector;
 Vector2 oldMousePos;
 Vector2 previousTile;
 
+Vector2 pos1, pos2;
+bool temp = false;
+bool wasDown = false;
+bool reloadTileMap = false;
+int expansionRange = 1;
+
+LevelCreatorScene::LevelCreatorScene() : Scene("LevelCreatortest"), playerExists(false), tempEntities()
+{
+	entityManager  = std::make_unique<EntityManager>();
+}
+
+LevelCreatorScene::~LevelCreatorScene()
+{
+
+}
+
+Engine::EngineCode LevelCreatorScene::Load()
+{
+	if (entityManager->InitializeProperties("./Data/GameObjects/ObjectListLevelBuilder.json"))
+		std::cout << "Property load success!\n";
+
+	return Engine::NothingBad;
+}
+
 Engine::EngineCode LevelCreatorScene::Init()
 {
 	LevelCreatorPixelRenderer = Renderer::GetInstance();
@@ -95,9 +103,6 @@ Engine::EngineCode LevelCreatorScene::Init()
 	LevelCreatorWindow = PlatformSystem::GetInstance()->GetWindowHandle();
 	LevelCreatorPixelRenderer->window = LevelCreatorWindow;
 
-	if (g_Manager.InitializeProperties("./Data/GameObjects/ObjectListLevelBuilder.json"))
-		std::cout << "Property load success!\n";
-
 	LevelBuilder::GetInstance()->LoadTileMap("./Data/Scenes/LevelCreatorScene.json");
 
 	// this is gonna add any objects that exist in the imported scene and transfer them to 
@@ -105,6 +110,7 @@ Engine::EngineCode LevelCreatorScene::Init()
 	if (EntityContainer::GetInstance()->CountEntities() > 0)
 	{
 		int size = EntityContainer::GetInstance()->CountEntities();
+
 		for (int i = 0; i < size; ++i)
 		{
 			if ((*EntityContainer::GetInstance())[i])
@@ -119,20 +125,14 @@ Engine::EngineCode LevelCreatorScene::Init()
 	}
 
 	// not sure how to do this w/ the new generic vers.
-
 	// init function maps to add files at end
-	//AddFunc.emplace("Player", &LevelCreatorScene::AddPlayerEntity);
 	AddFunc.emplace("Circle", &LevelCreatorScene::AddCircleEntity);
 	AddFunc.emplace("Door", &LevelCreatorScene::AddDoorEntity);
 	AddFunc.emplace("Mirror", &LevelCreatorScene::AddMirrorEntity);
 	AddFunc.emplace("Emitter", &LevelCreatorScene::AddEmitterEntity);
 	AddFunc.emplace("Reciever", &LevelCreatorScene::AddRecieverEntity);
 
-
-	//AddFunc.emplace("Door", 
-	//AddFunc.emplace("Mirror", 
-
-	g_Manager.pRenderer = LevelCreatorPixelRenderer;
+	entityManager->pRenderer = LevelCreatorPixelRenderer;
 
 	moveVector = { 0,0 };
 	oldMousePos = { 0,0 };
@@ -142,12 +142,6 @@ Engine::EngineCode LevelCreatorScene::Init()
 
 
 }
-
-Vector2 pos1, pos2;
-bool temp = false;
-bool wasDown = false;
-bool reloadTileMap = false;
-int expansionRange = 1;
 
 void LevelCreatorScene::ToolEyedroper(Inputs* inputHandler, Vector2 CursourP)
 {
@@ -177,11 +171,13 @@ void LevelCreatorScene::ToolSquareFill(Inputs* inputHandler, Vector2 CursourP)
 {
 	Vector2 tilePos = (CursourP + LevelCreatorPixelRenderer->GetCameraPosition());
 	tilePos /= 8;
+
 	if (inputHandler->mouseButtonDown(SDL_BUTTON_LEFT) && wasDown == false)
 	{
 		pos1 = tilePos + PlaceTile(tilePos);
 		wasDown = true;
 	}
+
 	if (inputHandler->mouseButtonUp(SDL_BUTTON_LEFT) && wasDown == true)
 	{
 		Vector2 displacement = PlaceTile(tilePos);
@@ -195,6 +191,7 @@ void LevelCreatorScene::ToolSquareFill(Inputs* inputHandler, Vector2 CursourP)
 			pos1.x = pos2.x;
 			pos2.x = temp;
 		}
+
 		if ((int)pos1.y > (int)pos2.y)
 		{
 			float temp;
@@ -233,6 +230,7 @@ void LevelCreatorScene::ToolSquareFill(Inputs* inputHandler, Vector2 CursourP)
 				}
 			}
 		}
+
 		LevelCreatorPixelRenderer->MakeTileMap(LevelCreatorPixelRenderer->tileMap);
 
 		wasDown = false;
@@ -405,7 +403,7 @@ Vector2 LevelCreatorScene::PlaceTile(Vector2 tilePos)
 			if (tilePos.y < 0)
 			{
 				LevelCreatorPixelRenderer->ExpandTileMapInDirection(Vector2{ 0,-1 }, expansionRange);
-				tilePos.y += expansionRange;
+				tilePos.y += expansionRange; 
 				displacement.y += expansionRange;
 				moveVector.y += expansionRange * TILE_SIZE;
 			}
@@ -438,7 +436,7 @@ void LevelCreatorScene::ToolHandler()
 
 	for (auto& entity : tempEntities)
 	{
-		if (entity && g_Manager.IsEntityPicked(entity->key))
+		if (entity && entityManager->IsEntityPicked(entity->key))
 		{
 			isAnyEntityPicked = true;
 			break;
@@ -447,7 +445,7 @@ void LevelCreatorScene::ToolHandler()
 
 	if (!isAnyEntityPicked)
 	{
-		g_Manager.pInput = inputHandler;
+		entityManager->pInput = inputHandler;
 
 		int x, y;
 		Uint32 buttons = SDL_GetMouseState(&x, &y);
@@ -652,8 +650,6 @@ Engine::EngineCode LevelCreatorScene::Exit()
 	emitterCount = 0;
 	recieverCount = 0;
 
-
-
 	if (!tempEntities.empty())
 	{
 		for (auto it : tempEntities)
@@ -725,71 +721,6 @@ void LevelCreatorScene::ImGuiInterg()
 #endif
 }
 
-#pragma region Tile Name Converter
-auto TileNumToString(unsigned int tileNum) -> std::string
-{
-	static const std::map<unsigned int, std::string> tileNames =
-	{
-		{ 0, "Empty" },
-		{ 1, "Black" },
-		{ 2, "BottomLedge1" },
-		{ 3, "BottomLedge2" },
-		{ 4, "LeftLedge" },
-		{ 5, "RightLedge" },
-		{ 6, "WallTop" },
-		{ 7, "WallTopLedge" },
-		{ 8, "WallCracked1" },
-		{ 9, "WallCracked2" },
-		{ 10, "WallWhole" },
-		{ 11, "WallTrim1" },
-		{ 12, "WallLight" },
-		{ 13, "WallTrim2" },
-		{ 14, "WallTrim3" },
-		{ 15, "SmallRock" },
-		{ 16, "PurpleFloor" },
-		{ 17, "PurpleFloorDeco1" },
-		{ 18, "PurpleFloorDeco2" },
-		{ 19, "PurpleFloorDeco3" },
-		{ 20, "PurpleFloorDeco4" },
-		{ 21, "PurpleFloorDeco5" },
-		{ 22, "BlueFloorPurpleStripes" },
-		{ 23, "BluePurpleFloorWithLeaf" },
-		{ 24, "BlueFloorPurpleCorner" },
-		{ 25, "BlueFloorGreenEdges" },
-		{ 26, "BotLeftBigRock" },
-		{ 27, "BotRightBigRock" },
-		{ 28, "TopLeftBigRock" },
-		{ 29, "TopRightBigRock" },
-		{ 30, "WallCrumbleDown" },
-		{ 31, "WallCrumbleRight" },
-		{ 32, "LightBlueFloorBrick" },
-		{ 33, "CornPlant" },
-		{ 34, "BlueFloor" },
-		{ 35, "LightBlueFloorBlueEdge" },
-		{ 36, "BlueFloorLightBlueEdge" },
-		{ 37, "LightBlueFloor" },
-		{ 38, "GreenFloor" },
-		{ 39, "BlueFloorBigGreenStripe" },
-		{ 40, "BlueFloorSmallGreenStripe" },
-		{ 41, "WaterUpperWall" },
-		{ 42, "WaterStill" },
-		{ 43, "WaterShiny" },
-		{ 44, "BLANK" },
-		{ 45, "GlassBottom" },
-		{ 46, "GlassUp" },
-		{ 47, "GlassUpRight" },
-		{ 48, "GlassUpLeft" },
-		{ 49, "GlassBotRight" },
-		{ 50, "GlassBotLeft" }
-	};
-
-	if (tileNum > 50)
-		return "Unknown";
-
-	return tileNames.at(tileNum);
-}
-#pragma endregion
-
 void LevelCreatorScene::ImGuiWindow()
 {
 	if (showCreatorToolsWindow)
@@ -813,7 +744,7 @@ void LevelCreatorScene::ImGuiWindow()
 				showTextEditor = true;
 		}
 		if (showTextEditor)
-			g_Manager.EditText();
+			entityManager->EditText();
 
 		ImGui::EndMainMenuBar();
 
@@ -946,7 +877,7 @@ void LevelCreatorScene::ImGuiWindow()
 								recieverCount = counts["Reciever"]["count"];
 							}
 
-							if (!g_Manager.InitializeProperties(filename + "OBJECTS.json"))
+							if (!entityManager->InitializeProperties(filename + "OBJECTS.json"))
 							{
 								ImGui::OpenPopup("NoObjectsInScene");
 							}
@@ -1060,7 +991,7 @@ void LevelCreatorScene::ImGuiWindow()
 		{
 			static int selected = -1;
 
-			for (auto n = 0; n < g_Manager.pRenderer->GetTileCount(); n++)
+			for (auto n = 0; n < entityManager->pRenderer->GetTileCount(); n++)
 			{
 				if (ImGui::Selectable(("Tile " + TileNumToString(n)).c_str(), selected == n))
 					currentTile = n;
@@ -1122,34 +1053,15 @@ void LevelCreatorScene::ImGuiWindow()
 	}
 
 	ImGui::Separator();
-	g_Manager.EditEntity(Vector2{ static_cast<float>(Inputs::GetInstance()->getMouseX()), static_cast<float>(Inputs::GetInstance()->getMouseY()) });
+	entityManager->EditEntity(Vector2{ static_cast<float>(Inputs::GetInstance()->getMouseX()), static_cast<float>(Inputs::GetInstance()->getMouseY()) });
 
-	g_Manager.ShowEntityInfo();
+	entityManager->ShowEntityInfo();
 
 	ImGui::End();
 }
 
 ///////////////////////////////////////////////////////////////////////////////////
 /* testing stuff ! */
-
-/* int LevelCreatorScene::CreateEntity(const std::string& entityType)
-{
-	static int entityCount = 0;
-	//int entityExistingCount = 0;
-
-	std::string number = "./Data/GameObjects/" + entityType;
-	std::string filename = "./Data/GameObjects/" + entityType + ".json";
-
-	Entity* temp = FileIO::GetInstance()->ReadEntity(filename);
-
-	temp->addKey = entityType;
-
-	temp->key = entityType + std::to_string(entityCount);
-	temp->SetFilePath("./Data/GameObjects/" + entityType + std::to_string(entityCount) + ".json");
-	tempEntities.push_back(temp);
-	++entityCount;
-	return 0;
-} */
 
 // not deleting in case the generic ver. doesnt work -- we have backup!
 
@@ -1267,45 +1179,12 @@ int LevelCreatorScene::CreateRecieverEntity()
 	return 0;
 }
 
-/*void LevelCreatorScene::AddEntity(Entity* entity, const std::string& entityType, const std::string& assetFilePath)
-{
-	Scene* scene = LevelCreatorSceneGetInstance();
-	LevelCreatorScene* currentScene = reinterpret_cast<LevelCreatorScene*>(scene);
-
-	json entityData;
-	json components;
-	json collider = { {"Type", "ColliderAABB"} };
-	json transform = { {"Type", "Transform"}, {"translation", { { "x", entity->Has(Transform)->GetTranslation()->x }, {"y", entity->Has(Transform)->GetTranslation()->y} } } };
-	json physics = { {"Type", "Physics"}, {"OldTranslation", { { "x", entity->Has(Transform)->GetTranslation()->x }, {"y", entity->Has(Transform)->GetTranslation()->y} } } };
-
-	components.push_back(collider);
-	components.push_back(transform);
-	components.push_back(physics);
-
-	entityData["Components"] = components;
-	entityData["FilePath"] = entity->GetFilePath();
-	entityData["Name"] = "Switch";
-	entityData["Type"] = "Object";
-	entityData["file"] = "./Assets/PPM/" + assetFilePath + ".ppm";
-
-	entityData["frameSize"] = { 8,8 }; // make these generic as needed
-	entityData["isAnimated"] = false;
-
-	std::ofstream circleCreated(entity->GetFilePath());
-	circleCreated << std::setw(2) << entityData << std::endl;
-
-	json newobject = { {"FilePath", entity->GetFilePath()} };
-	currentScene->gameObjects.push_back(newobject);
-} */
-
-
 /* these look like a lot of copy and paste code but for now its so that json can be exported easier
    in order to get it generalized we'd have to just check for the right components */
 void LevelCreatorScene::AddCircleEntity(Entity* entity)
 {
 	Scene* pare = LevelCreatorSceneGetInstance();
 	LevelCreatorScene* current = reinterpret_cast<LevelCreatorScene*>(pare);
-
 
 	Logging::GetInstance("LevelCreator.log").LogToAll("Creating->", entity->key.c_str());
 	json circleData;
@@ -1338,7 +1217,6 @@ void LevelCreatorScene::AddDoorEntity(Entity* entity)
 	Scene* pare = LevelCreatorSceneGetInstance();
 	LevelCreatorScene* current = reinterpret_cast<LevelCreatorScene*>(pare);
 
-
 	Logging::GetInstance("LevelCreator.log").LogToAll("Creating->", entity->key.c_str());
 	json doorData; // the main thing for all pieces to be put inside
 	json components; // the components array
@@ -1349,7 +1227,6 @@ void LevelCreatorScene::AddDoorEntity(Entity* entity)
 	components.push_back(collider);
 	components.push_back(transform);
 	components.push_back(physics);
-
 
 	doorData["Components"] = components;
 	doorData["FilePath"] = entity->GetFilePath();
@@ -1372,7 +1249,6 @@ void LevelCreatorScene::AddMirrorEntity(Entity* entity)
 	Scene* pare = LevelCreatorSceneGetInstance();
 	LevelCreatorScene* current = reinterpret_cast<LevelCreatorScene*>(pare);
 
-
 	Logging::GetInstance("LevelCreator.log").LogToAll("Creating->", entity->key.c_str());
 	json mirrorData; // the main thing for all pieces to be put inside
 	json components; // the components array
@@ -1392,7 +1268,6 @@ void LevelCreatorScene::AddMirrorEntity(Entity* entity)
 	mirrorData["frameSize"] = { 8,8 };
 	mirrorData["isAnimated"] = false;
 	mirrorData["KeyObject"] = { {"key", entity->key} };
-
 
 	std::ofstream doorCreated(entity->GetFilePath());
 	doorCreated << std::setw(2) << mirrorData << std::endl;
@@ -1477,313 +1352,4 @@ void LevelCreatorScene::AddToFile(std::string nametoadd, Entity* entity)
 	{
 		AddFunc[nametoadd](entity);
 	}
-}
-
-// testing something!
-
-void EntityManager::EditEntity(Vector2 mousePos)
-{
-	if (!pRenderer || !pInput)
-		return;
-
-	SetMousePos(mousePos);
-	EntityPicker();
-}
-
-void EntityManager::ShowEntityInfo()
-{
-	if (!pRenderer || !pInput)
-		return;
-
-	LevelCreatorScene* creator = reinterpret_cast<LevelCreatorScene*>(LevelCreatorSceneGetInstance());
-	if (!creator)
-		return;
-
-	if (!creator->tempEntities.empty())
-	{
-		if (ImGui::TreeNode("*Entities:"))
-		{
-			for (int i = 0; i < creator->tempEntities.size(); i++)
-			{
-				if (!creator->tempEntities[i])
-					continue;
-
-				if (ImGui::TreeNode(("Entity %s", creator->tempEntities[i]->key.c_str())))
-				{
-					//ImGui::Text("Name: %s", creator->tempEntities[i]->GetName());
-					ImGui::Text("Entity Number: %d", i);
-					ImGui::Text("Mouse Pos: %f %f", mousePos_.x, mousePos_.y);
-
-					ImGui::Text("Translation: (%d, %d)", properties[creator->tempEntities[i]->key].translation[0], properties[creator->tempEntities[i]->key].translation[1]);
-					ImGui::Text("Rotation: (%f, %f)", properties[creator->tempEntities[i]->key].rotation);
-					ImGui::Text("Size: (%d, %d)", static_cast<int>(g_Manager.pRenderer->objects[i]->size.x), static_cast<int>(g_Manager.pRenderer->objects[i]->size.y));
-
-
-					ImGui::SliderInt2("Modify Translation", properties[creator->tempEntities[i]->key].translation, -500, 500);
-					creator->tempEntities[i]->Has(Transform)->SetTranslation({ static_cast<float>(properties[creator->tempEntities[i]->key].translation[0]), static_cast<float>(properties[creator->tempEntities[i]->key].translation[1]) });
-					//creator->tempEntities[i]->GetImage()->position = { static_cast<float>(properties[creator->tempEntities[i]->key].translation[0]), static_cast<float>(properties[creator->tempEntities[i]->key].translation[1]) };
-
-					ImGui::Checkbox((properties[creator->tempEntities[i]->key].isEditable ? "Entity edit enabled" : "Entity edit disabled"), &properties[creator->tempEntities[i]->key].isEditable);
-					ImGui::Checkbox((properties[creator->tempEntities[i]->key].isTileAttatch ? "Tile attatch enabled" : "Tile attatch disabled"), &properties[creator->tempEntities[i]->key].isTileAttatch);
-
-					if (ImGui::Button("Delete"))
-					{
-						if (!creator->tempEntities.empty())
-						{
-							/*for (unsigned j = 0; i < creator->tempEntities.size(); ++j)
-							{
-								if (creator->tempEntities[j] == creator->tempEntities[i])
-								{
-									if (creator->tempEntities[j]->key.compare(creator->tempEntities[i]->key) == 0)
-									{
-										creator->tempEntities[j]->FreeComponents();
-										delete creator->tempEntities[j];
-										creator->tempEntities[j] = nullptr;
-										break;
-									}
-								}
-							}*/
-							for (auto it = creator->tempEntities.begin(); it != creator->tempEntities.end(); ++it)
-							{
-								if (*it == creator->tempEntities[i])
-								{
-									if ((*it)->key.compare(creator->tempEntities[i]->key) == 0)
-									{
-										(*it)->FreeComponents();
-										delete* it;
-										*it = nullptr;
-										break;
-									}
-								}
-							}
-						}
-					}
-
-					if (!creator->tempEntities[i])
-					{
-						continue;
-					}
-					pRenderer->objects[i]->position.x = properties[creator->tempEntities[i]->key].translation[0];
-					pRenderer->objects[i]->position.y = properties[creator->tempEntities[i]->key].translation[1];
-
-					ImGui::TreePop();
-				}
-			}
-		}
-	}
-}
-
-int EntityManager::ApplyProperties()
-{
-	if (!pRenderer)
-		return EXIT_FAILURE;
-
-	LevelCreatorScene* creator = reinterpret_cast<LevelCreatorScene*>(LevelCreatorSceneGetInstance());
-	for (int i = 0; i < creator->tempEntities.size(); i++)
-	{
-		std::string filename = creator->tempEntities[i]->GetFilePath(); // Replace with your actual JSON file path
-
-		// Read the JSON file
-		std::ifstream input_file(filename);
-		if (!input_file.is_open())
-		{
-			std::cerr << "Error opening file" << std::endl;
-			return 1;
-		}
-
-		json j;
-		input_file >> j;
-		input_file.close();
-
-		// Modify the translation values
-		for (auto& component : j["Components"])
-		{
-			if (component["Type"] == "Transform")
-			{
-				// Set new values for x and y
-				component["translation"]["x"] = properties[creator->tempEntities[i]->key].translation[0]; // Replace with the new X value
-				component["translation"]["y"] = properties[creator->tempEntities[i]->key].translation[1]; // Replace with the new Y value
-				break;
-			}
-		}
-
-		// Write the modified JSON back to the file
-		std::ofstream output_file(filename);
-		if (!output_file.is_open())
-		{
-			std::cerr << "Error opening file for writing" << std::endl;
-			return 1;
-		}
-
-		output_file << j.dump(4); // Writing with an indentation of 4 spaces
-		output_file.close();
-	}
-	return EXIT_SUCCESS;
-}
-
-bool EntityManager::InitializeProperties(std::string file_path)
-{
-	if (!pRenderer)
-		return false;
-
-	//initialize level data
-	LevelCreatorScene* creator = reinterpret_cast<LevelCreatorScene*>(LevelCreatorSceneGetInstance());
-	EntityContainer::GetInstance()->ReadEntities(file_path);
-
-	for (int i = 0; i < creator->tempEntities.size(); i++)
-	{
-		if (creator->tempEntities[i])
-		{
-			Transform* t = creator->tempEntities[i]->Has(Transform);
-			properties[creator->tempEntities[i]->key] = EntityProperties{ {static_cast<int>(std::floorf(t->GetTranslation()->x)), static_cast<int>(std::floorf(t->GetTranslation()->y))}, {0.f}, false, false };
-		}
-	}
-
-	file = std::ifstream(fileToEdit);
-
-	if (file.good())
-	{
-		std::string str((std::istreambuf_iterator<char>(file)), std::istreambuf_iterator<char>());
-		editor.SetText(str);
-	}
-	else
-	{
-		std::cerr << "Error opening file" << std::endl;
-		return false;
-	}
-
-	return true; //Initialization success!
-}
-
-void EntityManager::EditText()
-{
-	if (!pRenderer || !pInput)
-		return;
-
-	auto cpos = editor.GetCursorPosition();
-
-	editor.SetLanguageDefinition(lang);
-
-	ImGui::Begin("Text Editor", nullptr, ImGuiWindowFlags_HorizontalScrollbar | ImGuiWindowFlags_MenuBar);
-	ImGui::SetWindowSize(ImVec2(600, 800), ImGuiCond_FirstUseEver);
-
-	if (ImGui::BeginMenuBar())
-	{
-		if (ImGui::BeginMenu("File"))
-		{
-			if (ImGui::MenuItem("Save"))
-			{
-				auto textToSave = editor.GetText();
-				/// save text....
-			}
-			if (ImGui::MenuItem("Load"))
-			{
-				ImGui::Begin("Select File", nullptr, ImGuiWindowFlags_AlwaysVerticalScrollbar);
-				ImGui::End();
-			}
-			ImGui::EndMenu();
-		}
-		if (ImGui::BeginMenu("Edit"))
-		{
-			bool ro = editor.IsReadOnly();
-			if (ImGui::MenuItem("Read-only mode", nullptr, &ro))
-				editor.SetReadOnly(ro);
-			ImGui::Separator();
-
-			if (ImGui::MenuItem("Undo", "ALT-Backspace", nullptr, !ro && editor.CanUndo()))
-				editor.Undo();
-			if (ImGui::MenuItem("Redo", "Ctrl-Y", nullptr, !ro && editor.CanRedo()))
-				editor.Redo();
-
-			ImGui::Separator();
-
-			if (ImGui::MenuItem("Copy", "Ctrl-C", nullptr, editor.HasSelection()))
-				editor.Copy();
-			if (ImGui::MenuItem("Cut", "Ctrl-X", nullptr, !ro && editor.HasSelection()))
-				editor.Cut();
-			if (ImGui::MenuItem("Delete", "Del", nullptr, !ro && editor.HasSelection()))
-				editor.Delete();
-			if (ImGui::MenuItem("Paste", "Ctrl-V", nullptr, !ro && ImGui::GetClipboardText() != nullptr))
-				editor.Paste();
-
-			ImGui::Separator();
-
-			if (ImGui::MenuItem("Select all", nullptr, nullptr))
-				editor.SetSelection(TextEditor::Coordinates(), TextEditor::Coordinates(editor.GetTotalLines(), 0));
-
-			ImGui::EndMenu();
-		}
-
-		if (ImGui::BeginMenu("View"))
-		{
-			if (ImGui::MenuItem("Dark palette"))
-				editor.SetPalette(TextEditor::GetDarkPalette());
-			if (ImGui::MenuItem("Light palette"))
-				editor.SetPalette(TextEditor::GetLightPalette());
-			if (ImGui::MenuItem("Retro blue palette"))
-				editor.SetPalette(TextEditor::GetRetroBluePalette());
-			ImGui::EndMenu();
-		}
-		ImGui::EndMenuBar();
-	}
-	ImGui::Text("%6d/%-6d %6d lines  | %s | %s | %s | %s", cpos.mLine + 1, cpos.mColumn + 1, editor.GetTotalLines(),
-		editor.IsOverwrite() ? "Ovr" : "Ins",
-		editor.CanUndo() ? "*" : " ",
-		editor.GetLanguageDefinition().mName.c_str(), fileToEdit);
-
-	editor.Render("TextEditor");
-
-	ImGui::End();
-}
-
-void EntityManager::EntityPicker()
-{
-	LevelCreatorScene* creator = reinterpret_cast<LevelCreatorScene*>(LevelCreatorSceneGetInstance());
-	for (int i = 0; i < creator->tempEntities.size(); i++)
-	{
-		if (creator->tempEntities[i] != nullptr)
-		{
-			if (properties[creator->tempEntities[i]->key].isEditable == true)
-			{
-				if ((properties[creator->tempEntities[i]->key].translation[0] + g_Manager.pRenderer->objects[i]->size.x) >= mousePos_.x && (properties[creator->tempEntities[i]->key].translation[0]) <= mousePos_.x &&
-					(properties[creator->tempEntities[i]->key].translation[1] + g_Manager.pRenderer->objects[i]->size.y) >= mousePos_.y && (properties[creator->tempEntities[i]->key].translation[1]) <= mousePos_.y)
-				{
-					if (pInput->mouseButtonDown(SDL_BUTTON_LEFT))
-					{
-						properties[creator->tempEntities[i]->key].isPicked = true;
-					}
-					else
-					{
-						properties[creator->tempEntities[i]->key].isPicked = false;
-					}
-				}
-
-				if (properties[creator->tempEntities[i]->key].isPicked == true)
-				{
-					if (properties[creator->tempEntities[i]->key].isTileAttatch == true)
-					{
-						properties[creator->tempEntities[i]->key].translation[0] = (static_cast<int>(mousePos_.x - g_Manager.pRenderer->objects[i]->size.x / 2) % 8 == 0) ? static_cast<int>(mousePos_.x - g_Manager.pRenderer->objects[i]->size.x / 2) + 4 : properties[creator->tempEntities[i]->key].translation[0];
-						properties[creator->tempEntities[i]->key].translation[1] = (static_cast<int>(mousePos_.y - g_Manager.pRenderer->objects[i]->size.y / 2) % 8 == 0) ? static_cast<int>(mousePos_.y - g_Manager.pRenderer->objects[i]->size.y / 2) + 4 : properties[creator->tempEntities[i]->key].translation[1];
-					}
-					else
-					{
-						properties[creator->tempEntities[i]->key].translation[0] = static_cast<int>(mousePos_.x - g_Manager.pRenderer->objects[i]->size.x / 2);
-						properties[creator->tempEntities[i]->key].translation[1] = static_cast<int>(mousePos_.y - g_Manager.pRenderer->objects[i]->size.y / 2);
-					}
-				}
-			}
-		}
-	}
-}
-
-void EntityManager::SetMousePos(Vector2 mousePos)
-{
-	mousePos_.x = (mousePos.x) / pRenderer->screenScale + pRenderer->GetCameraPosition().x;
-	mousePos_.y = (mousePos.y) / pRenderer->screenScale + pRenderer->GetCameraPosition().y;
-}
-
-bool EntityManager::IsEntityPicked(const std::string& key) const
-{
-	auto it = properties.find(key);
-	return it != properties.end() ? it->second.isPicked : false;
 }

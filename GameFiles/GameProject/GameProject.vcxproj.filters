@@ -175,6 +175,9 @@
     </ClCompile>
     <ClCompile Include="Emitter.cpp" />
     <ClCompile Include="LineCollider.cpp" />
+    <ClCompile Include="Source\EntityManager.cpp">
+      <Filter>Source FIles\Engine\Systems</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="IMGUI\imgui.h">
@@ -375,6 +378,9 @@
     </ClInclude>
     <ClInclude Include="Emitter.h" />
     <ClInclude Include="LineCollider.h" />
+    <ClInclude Include="Source\EntityManager.h">
+      <Filter>Header FIles\Engine\Systems</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Misc\GameProject.ico">
