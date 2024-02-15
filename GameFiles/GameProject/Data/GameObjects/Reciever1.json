@@ -1,7 +1,4 @@
 {
-  "KeyObject":{
-    "key": "Reciever1"
-  },
   "Components": [
     {
       "Type": "ColliderAABB"
@@ -10,18 +7,21 @@
       "Type": "Transform",
       "translation": {
         "x": 200.0,
-        "y": 112.0
+        "y": 80.0
       }
     },
     {
       "OldTranslation": {
         "x": 200.0,
-        "y": 112.0
+        "y": 80.0
       },
       "Type": "Physics"
     }
   ],
   "FilePath": "./Data/GameObjects/Reciever1.json",
+  "KeyObject": {
+    "key": "Reciever1"
+  },
   "Name": "Reciever",
   "Type": "Object",
   "file": "./Assets/PPM/tempReciever.ppm",

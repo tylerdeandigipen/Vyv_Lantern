@@ -1,7 +1,4 @@
 {
-  "KeyObject":{
-    "key": "Reciever0"
-  },
   "Components": [
     {
       "Type": "ColliderAABB"
@@ -22,6 +19,9 @@
     }
   ],
   "FilePath": "./Data/GameObjects/Reciever0.json",
+  "KeyObject": {
+    "key": "Reciever0"
+  },
   "Name": "Reciever",
   "Type": "Object",
   "file": "./Assets/PPM/tempReciever.ppm",
