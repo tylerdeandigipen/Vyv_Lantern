@@ -35,6 +35,10 @@ public:
 	gfxVector2* GetPosition1() { return position1; };
 	gfxVector2* GetPosition2() { return position2; };
 
+
+	void SetPosition1(gfxVector2* position);
+	void SetPosition2(gfxVector2* position);
+
 private:
 	
 	Emitter* pre;
@@ -44,6 +48,9 @@ private:
 	Emitter* hitMe;
 	gfxVector2* position1;
 	gfxVector2* position2;
+
+	bool IsDirty;
+
 
 };
 

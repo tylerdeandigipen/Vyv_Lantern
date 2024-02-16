@@ -6,6 +6,7 @@ LineCollider::LineCollider(): Component(Component::cLineCollider)
 
 	position1 = new gfxVector2();
 	position2 = new gfxVector2();
+	IsDirty = false;
 }
 
 LineCollider::LineCollider(LineCollider const & cpy) : Component(Component::cLineCollider)
@@ -30,7 +31,8 @@ Component* LineCollider::Clone(void) const
 //component-specific render code.
 void LineCollider::Update(float dt) { 
 	dt = dt; 
-
+	//if IsDirty
+	// Do Stuff
 }
 
 void LineCollider::Read(json jsonData)
@@ -71,4 +73,16 @@ void LineCollider::Render() const
 };
 
 
+void LineCollider::SetPosition1(gfxVector2* position)
+{
+	position1->x = position->x;
+	position1->y = position->y;
+	IsDirty = true;
+}
 
+void LineCollider::SetPosition2(gfxVector2* position)
+{
+	position2->x = position->x;
+	position2->y = position->y;
+	IsDirty = true;
+}
