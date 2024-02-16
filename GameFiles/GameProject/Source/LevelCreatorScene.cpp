@@ -896,6 +896,7 @@ void LevelCreatorScene::ImGuiWindow()
 				if (ImGui::Button("Submit"))
 				{
 					std::string filename = "./Data/Scenes/" + std::string(filenameBuffer) + ".json";
+
 					if (std::string(filenameBuffer).empty())
 					{
 						ImGui::OpenPopup("EmptyImportFileNamePopup");
@@ -907,6 +908,7 @@ void LevelCreatorScene::ImGuiWindow()
 					else
 					{
 						std::ifstream file(filename);
+						sceneName = std::string(filenameBuffer);
 						if (file.is_open())
 						{
 							file.close();
@@ -1172,8 +1174,8 @@ int LevelCreatorScene::CreatePlayerEntity()
 
 	temp->addKey = "Player"; // this is for the map holding functions and gives access to function for circle
 
-	temp->key = "Player" + std::to_string(playerCount);
-	temp->SetFilePath("./Data/GameObjects/Player" + std::to_string(playerCount) + ".json");
+	temp->key = sceneName + "Player" + std::to_string(playerCount);
+	temp->SetFilePath("./Data/GameObjects/Player" + sceneName + std::to_string(playerCount) + ".json");
 	tempEntities.push_back(temp);
 	++playerCount;
 
@@ -1191,8 +1193,8 @@ int LevelCreatorScene::CreateCircleEntity()
 
 	temp->addKey = "Circle"; // this is for the map holding functions and gives access to function for circle
 
-	temp->key = "Circle" + std::to_string(circleCount);
-	temp->SetFilePath("./Data/GameObjects/Circle" + std::to_string(circleCount) + ".json");
+	temp->key = sceneName + "Circle" + std::to_string(circleCount);
+	temp->SetFilePath("./Data/GameObjects/Circle" + sceneName + std::to_string(circleCount) + ".json");
 	tempEntities.push_back(temp);
 	++circleCount;
 	return 0;
@@ -1210,8 +1212,8 @@ int LevelCreatorScene::CreateDoorEntity()
 
 	temp->addKey = "Door"; // this is for the map holding functions and gives access to function for circle
 
-	temp->key = "Door" + std::to_string(doorCount);
-	temp->SetFilePath("./Data/GameObjects/Door" + std::to_string(doorCount) + ".json");
+	temp->key = sceneName + "Door" + std::to_string(doorCount);
+	temp->SetFilePath("./Data/GameObjects/Door" + sceneName + std::to_string(doorCount) + ".json");
 	tempEntities.push_back(temp);
 	++doorCount;
 	return 0;
@@ -1228,8 +1230,8 @@ int LevelCreatorScene::CreateMirrorEntity()
 
 	temp->addKey = "Mirror"; // this is for the map holding functions and gives access to function for circle
 
-	temp->key = "Mirror" + std::to_string(mirrorCount);
-	temp->SetFilePath("./Data/GameObjects/Mirror" + std::to_string(mirrorCount) + ".json");
+	temp->key = sceneName + "Mirror" + std::to_string(mirrorCount);
+	temp->SetFilePath("./Data/GameObjects/Mirror" + sceneName + std::to_string(mirrorCount) + ".json");
 	tempEntities.push_back(temp);
 	++mirrorCount;
 	return 0;
@@ -1245,8 +1247,8 @@ int LevelCreatorScene::CreateEmitterEntity()
 
 	temp->addKey = "Emitter"; // this is for the map holding functions and gives access to function for circle
 
-	temp->key = "Emitter" + std::to_string(emitterCount);
-	temp->SetFilePath("./Data/GameObjects/Emitter" + std::to_string(emitterCount) + ".json");
+	temp->key = sceneName + "Emitter" + std::to_string(emitterCount);
+	temp->SetFilePath("./Data/GameObjects/Emitter"+ sceneName + std::to_string(emitterCount) + ".json");
 	tempEntities.push_back(temp);
 	++emitterCount;
 	return 0;
@@ -1258,12 +1260,10 @@ int LevelCreatorScene::CreateRecieverEntity()
 	std::string number = "./Data/GameObjects/Reciever";
 	std::string filename = "./Data/GameObjects/tempReciever.json";
 
-	Entity* temp = FileIO::GetInstance()->ReadEntity(filename);
-
+	Entity* temp = FileIO::GetInstance()->ReadEntity(filename); 
 	temp->addKey = "Reciever"; // this is for the map holding functions and gives access to function for circle
-
-	temp->key = "Reciever" + std::to_string(emitterCount);
-	temp->SetFilePath("./Data/GameObjects/Reciever" + std::to_string(emitterCount) + ".json");
+	temp->key = sceneName + "Reciever" + std::to_string(emitterCount);
+	temp->SetFilePath("./Data/GameObjects/Reciever" + sceneName + std::to_string(emitterCount) + ".json");
 	tempEntities.push_back(temp);
 	++recieverCount;
 	return 0;
@@ -1513,18 +1513,20 @@ void EntityManager::ShowEntityInfo()
 				if (ImGui::TreeNode(("Entity %s", creator->tempEntities[i]->key.c_str())))
 				{
 					//ImGui::Text("Name: %s", creator->tempEntities[i]->GetName());
-					ImGui::Text("Entity Number: %d", i);
-					ImGui::Text("Mouse Pos: %f %f", mousePos_.x, mousePos_.y);
+					if (creator->tempEntities[i]->Has(Transform))
+					{
+						ImGui::Text("Entity Number: %d", i);
+						ImGui::Text("Mouse Pos: %f %f", mousePos_.x, mousePos_.y);
 
-					ImGui::Text("Translation: (%d, %d)", properties[creator->tempEntities[i]->key].translation[0], properties[creator->tempEntities[i]->key].translation[1]);
-					ImGui::Text("Rotation: (%f, %f)", properties[creator->tempEntities[i]->key].rotation);
-					ImGui::Text("Size: (%d, %d)", static_cast<int>(g_Manager.pRenderer->objects[i]->size.x), static_cast<int>(g_Manager.pRenderer->objects[i]->size.y));
+						ImGui::Text("Translation: (%d, %d)", properties[creator->tempEntities[i]->key].translation[0], properties[creator->tempEntities[i]->key].translation[1]);
+						ImGui::Text("Rotation: (%f, %f)", properties[creator->tempEntities[i]->key].rotation);
+						ImGui::Text("Size: (%d, %d)", static_cast<int>(g_Manager.pRenderer->objects[i]->size.x), static_cast<int>(g_Manager.pRenderer->objects[i]->size.y));
 
 
-					ImGui::SliderInt2("Modify Translation", properties[creator->tempEntities[i]->key].translation, -500, 500);
-					creator->tempEntities[i]->Has(Transform)->SetTranslation({ static_cast<float>(properties[creator->tempEntities[i]->key].translation[0]), static_cast<float>(properties[creator->tempEntities[i]->key].translation[1]) });
-					//creator->tempEntities[i]->GetImage()->position = { static_cast<float>(properties[creator->tempEntities[i]->key].translation[0]), static_cast<float>(properties[creator->tempEntities[i]->key].translation[1]) };
-
+						ImGui::SliderInt2("Modify Translation", properties[creator->tempEntities[i]->key].translation, -500, 500);
+						creator->tempEntities[i]->Has(Transform)->SetTranslation({ static_cast<float>(properties[creator->tempEntities[i]->key].translation[0]), static_cast<float>(properties[creator->tempEntities[i]->key].translation[1]) });
+						//creator->tempEntities[i]->GetImage()->position = { static_cast<float>(properties[creator->tempEntities[i]->key].translation[0]), static_cast<float>(properties[creator->tempEntities[i]->key].translation[1]) };
+					}
 					ImGui::Checkbox((properties[creator->tempEntities[i]->key].isEditable ? "Entity edit enabled" : "Entity edit disabled"), &properties[creator->tempEntities[i]->key].isEditable);
 					ImGui::Checkbox((properties[creator->tempEntities[i]->key].isTileAttatch ? "Tile attatch enabled" : "Tile attatch disabled"), &properties[creator->tempEntities[i]->key].isTileAttatch);
 
