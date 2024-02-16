@@ -74,6 +74,7 @@ private:
 	gfxVector2* position;
 	gfxVector2* endpoint;
 	gfxVector2* direction;
+	int laserReference;
 	float distance;
 
 
