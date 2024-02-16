@@ -54,8 +54,8 @@ ImageBuffer::ImageBuffer() : buffer(new Color[BufferSizeX * BufferSizeY])
     //buffer = new Color[BufferSizeX * BufferSizeY];
     ClearImageBuffer();
 
-	size.x = (float)BufferSizeX;
-	size.y = (float)BufferSizeY;
+    size.x = static_cast<float>(BufferSizeX);
+    size.y = static_cast<float>(BufferSizeY);
     bool isCulled = false;
 }
 
@@ -125,16 +125,16 @@ ImageBuffer::ImageBuffer(const std::string file)
 
 ImageBuffer::~ImageBuffer()
 {
-    if (buffer != NULL)
+    if (buffer != nullptr)
     {
         delete[] buffer;
-        buffer = NULL;
+        buffer = nullptr;
     }
 }
 
 ImageBuffer& ImageBuffer::ClearImageBuffer()
 {
-    if (this != NULL)
+    if (this != nullptr && buffer != nullptr)
     {
         Color trans = { 0,0,0,0 };
 
@@ -142,7 +142,7 @@ ImageBuffer& ImageBuffer::ClearImageBuffer()
 
         for (int PixelIndex = 0; PixelIndex < (BufferSizeX * BufferSizeY); ++PixelIndex)
         {
-            *DestBuffer++ = trans;
+            buffer[PixelIndex] = trans;
         }
     }
     return *this;
@@ -150,6 +150,11 @@ ImageBuffer& ImageBuffer::ClearImageBuffer()
 
 void ImageBuffer::MergeLayers(ImageBuffer* bottom, ImageBuffer* top)
 {
+    if (bottom == nullptr || top == nullptr)
+    {
+        return;
+    }
+
     for (int y = 0; y < size.y; ++y)
     {
         Color *DestPixel = buffer + (y * BufferSizeX);
@@ -165,6 +170,11 @@ void ImageBuffer::MergeLayers(ImageBuffer* bottom, ImageBuffer* top)
 
 void ImageBuffer::MergeLayersIndvPixel(ImageBuffer* bottom, ImageBuffer* middle, ImageBuffer* top, int x, int y)
 {
+    if (bottom == nullptr || middle == nullptr || top == nullptr)
+    {
+        return;
+    }
+
     Color &DestSample = SampleColor(x, y);
     Color &BottomSample = bottom->SampleColor(x, y);
     Color &MiddleSample = middle->SampleColor(x, y);
