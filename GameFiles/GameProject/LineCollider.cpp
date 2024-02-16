@@ -41,7 +41,7 @@ void LineCollider::Read(json jsonData)
           "x": 0,
           "y": 0
       },       
-      "RightMostPint": {
+      "RightMostPoint": {
           "x": 50,
           "y": 0
       }
@@ -59,8 +59,8 @@ void LineCollider::Read(json jsonData)
 	if (jsonData["RightMostPoint"].is_object())
 	{
 		json pos = jsonData["RightMostPoint"];
-		position1->x = pos["x"];
-		position1->y = pos["y"];
+		position2->x = pos["x"];
+		position2->y = pos["y"];
 	}
 
 }
