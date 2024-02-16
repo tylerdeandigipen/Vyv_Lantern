@@ -35,6 +35,20 @@ void LineCollider::Update(float dt) {
 
 void LineCollider::Read(json jsonData)
 {
+	/*
+	  "Type": "LineCollider",
+      "LeftMostPoint": {
+          "x": 0,
+          "y": 0
+      },       
+      "RightMostPint": {
+          "x": 50,
+          "y": 0
+      }
+
+	*/
+
+	
 	if (jsonData["LeftMostPoint"].is_object())
 	{
 		json pos = jsonData["LeftMostPoint"];

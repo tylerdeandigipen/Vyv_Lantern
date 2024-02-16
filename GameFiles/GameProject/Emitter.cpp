@@ -85,7 +85,37 @@ void Emitter::Read(json jsonData)
 		endpoint->y = pos["y"];
 	}
 
-	distance = jsonData["distance"];
+	if (jsonData["distance"] > 0)
+	{
+		distance = jsonData["distance"];
+	}
+
+
+	if (GetDirection().x > 0)
+	{
+
+		endpoint->x = GetPosition().x + GetDistance();
+		endpoint->y = GetPosition().y;
+	}
+	else if (GetDirection().y > 0)
+	{
+
+		endpoint->x = GetPosition().x;
+		endpoint->y = GetPosition().y + GetDistance();
+	}
+	else if (GetDirection().x < 0)
+	{
+
+		endpoint->x = GetPosition().x - GetDistance();
+		endpoint->y = GetPosition().y;
+	}
+	else if (GetDirection().y < 0)
+	{
+
+		endpoint -> x = GetPosition().x;
+		endpoint->y = GetPosition().y - GetDistance();
+	};
+
 
 	Renderer* renderer = Renderer::GetInstance();
 	if (renderer)
@@ -106,6 +136,9 @@ void Emitter::Update(float dt)
 	if (isDirty)
 	{
 		//update the correct system
+		Renderer* pointyBoi = Renderer::GetInstance();
+		pointyBoi->laserPoints1[laserReference] = *position;
+		pointyBoi->laserPoints2[laserReference] = *endpoint;
 
 		isDirty = false;
 	}
@@ -150,33 +183,33 @@ inline bool DoCalculations(Emitter* obj)
 
 	if (obj->GetDirection().x > 0)
 	{
-		gfxVector2 compare = pointyBoi->CheckLineForObjects(obj->GetPosition().x, obj->GetPosition().y,
+		compare = pointyBoi->CheckLineForObjects(obj->GetPosition().x, obj->GetPosition().y,
 			obj->GetPosition().x + obj->GetDistance(), obj->GetPosition().y);
 	}
 	else if (obj->GetDirection().y > 0)
 	{
-		gfxVector2 compare = pointyBoi->CheckLineForObjects(obj->GetPosition().x, obj->GetPosition().y,
+		compare = pointyBoi->CheckLineForObjects(obj->GetPosition().x, obj->GetPosition().y,
 			obj->GetPosition().x, obj->GetPosition().y + obj->GetDistance());
 	}
 	else if (obj->GetDirection().x < 0)
 	{
-		gfxVector2 compare = pointyBoi->CheckLineForObjects(obj->GetPosition().x, obj->GetPosition().y,
+		compare = pointyBoi->CheckLineForObjects(obj->GetPosition().x, obj->GetPosition().y,
 			obj->GetPosition().x - obj->GetDistance(), obj->GetPosition().y);
 	}
 	else if (obj->GetDirection().y < 0)
 	{
-		gfxVector2 compare = pointyBoi->CheckLineForObjects(obj->GetPosition().x, obj->GetPosition().y,
+		compare = pointyBoi->CheckLineForObjects(obj->GetPosition().x, obj->GetPosition().y,
 			obj->GetPosition().x, obj->GetPosition().y - obj->GetDistance());
 	}
 	
-	if (compare.operator== (obj->GetEndpoint()))
+	if (compare.operator == (obj->GetEndpoint()))
 	{
 		return false;
 	}
 	else
 	{
 		// then we set endpoint too compare
-		obj->SetEndpoint(&compare);
+		obj->SetEndpoint(compare);
 		return true;
 	}
 
@@ -198,14 +231,15 @@ void Emitter::EmitterCollisionHandler(Entity& object1, Entity& object2)
 
 		Emitter* laser = object1.Has(Emitter);
 		
-		if (laser->isDirty)
-		{
+		bool struckShadow = DoCalculations(laser);
+
+		/*
 			if (!laser->isSource && !laser->hit)
 			{
 				//break laser
 				return;
 			}
-
+		*/
 			//this is a  single emitter case may need to adjust for future ifor mulit emitter cases
 			if (object2.Has(Emitter))
 			{
@@ -307,14 +341,6 @@ void Emitter::EmitterCollisionHandler(Entity& object1, Entity& object2)
 				//come here for other behaviors i guess.
 				return;
 			}
-			laser->isDirty = false;
-		}
-		else
-		{
-			return;
-		}
-
-
 
 
 		//the 2nd object is the one emitting
@@ -337,6 +363,9 @@ void Emitter::SetPosition(Vector2 SetP)
 	isDirty = true;
 }
 
+/*
+* for behavior switch mirror you will want to call this.
+*/
 void Emitter::SetDirection(Vector2 SetP)
 {
 	direction->x = SetP.x;

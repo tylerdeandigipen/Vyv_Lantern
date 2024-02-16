@@ -40,6 +40,17 @@
       },
       "Radius": 10.0,
       "key": 1
+    },
+    {
+      "Type": "LineCollider",
+      "LeftMostPoint": {
+          "x": 0,
+          "y": 0
+      },       
+      "RightMostPint": {
+          "x": 50,
+          "y": 0
+      }
     }
   ],
   "FilePath": "./Data/GameObjects/Mirror0.json",
