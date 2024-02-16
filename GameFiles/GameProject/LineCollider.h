@@ -20,9 +20,6 @@ public:
 	void Update(float dt);
 	
 	void Render() const;
-	void CollidedLeft(Emitter* get) { collidingWithLeft = get; };
-	void CollidedRight(Emitter* get) { collidingWithLeft = get; };
-
 
 	static std::string Name()
 	{
@@ -40,9 +37,11 @@ public:
 
 private:
 	
-	Emitter* collidingWithLeft;
-	Emitter* collidingWithRight;
+	Emitter* pre;
+
+
 	//load position leftpoint rightpoint
+	Emitter* hitMe;
 	gfxVector2* position1;
 	gfxVector2* position2;
 

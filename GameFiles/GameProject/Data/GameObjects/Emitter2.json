@@ -20,35 +20,30 @@
         {
       "Type": "LineCollider",
       "LeftMostPoint": {
-          "x": 0,
-          "y": 90
-      },
+        "x": 112.0,
+        "y": 209.0
+      },       
       "RightMostPoint": {
-          "x": 90,
-          "y": 90
+          "x": 212.0,
+          "y": 100.0
       }
     },
     {
       "Type": "Emitter",
-      "positionRight": {
-          "x": 100,
-          "y": 95
-      },       
-      "positionLeft": {
-          "x": 50,
-          "y": 0
-      },
-      "LeftDirectionTrigger": {
+      "LaserDirection": {
           "x": 1,
           "y": 0
+      },       
+      "EmitterStart": {
+        "x": 112.0,
+        "y": 109.0
       },
-      "RightDirectionTrigger": {
-          "x": 0,
-          "y": -1
+      "EmitterEndPoint": {
+          "x": 9999,
+          "y": 0
       },
-      "maxDistance" : 500,
-      "emitRight" : true,
-      "trigRight" : true
+	  "distance": 3000,
+    "isSource": false
     }
   ],
   "FilePath": "./Data/GameObjects/Emitter2.json",
