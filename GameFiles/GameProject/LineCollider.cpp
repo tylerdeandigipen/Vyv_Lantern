@@ -3,16 +3,14 @@
 
 LineCollider::LineCollider(): Component(Component::cLineCollider)
 {
-	collidingWithRight = nullptr;
-	collidingWithLeft = nullptr;
+
 	position1 = new gfxVector2();
 	position2 = new gfxVector2();
 }
 
 LineCollider::LineCollider(LineCollider const & cpy) : Component(Component::cLineCollider)
 {
-	collidingWithLeft = nullptr;
-	collidingWithRight = nullptr;
+
 	position1 = new gfxVector2(*cpy.position1);
 	position2 = new gfxVector2(*cpy.position2);
 }
@@ -32,17 +30,6 @@ Component* LineCollider::Clone(void) const
 //component-specific render code.
 void LineCollider::Update(float dt) { 
 	dt = dt; 
-
-
-	if (collidingWithLeft)
-	{
-		//maybe needs a code to tell emitter to stop emitting.
-	}
-
-	if (collidingWithRight)
-	{
-
-	}
 
 }
 

@@ -44,35 +44,17 @@ public:
 	void Read(json jsonData) override;
 	void Update(float dt);
 	void Render() const;
+	Vector2 GetPosition() const { return *position; };
+	Vector2 GetDirection() const { return *direction; };
+	Vector2 GetEndpoint() const { return *endpoint; };
+	void SetEmitting(bool state) { isEmitting = state; isDirty = true; }
 
-	bool IsEmittingRight() { return isEmittingRight; };
-	bool IsEmittingLeft() { return isEmittingLeft; };
-
-	void SetEmittingRight(bool state) { isEmittingRight = state; isDirty = true; }; //probably a control flag and collision flag
-	void SetEmittingLeft(bool state) { isEmittingLeft = state; isDirty = true; }; //probably a control flag and collision flag
-
-
-
+	float GetDistance() const { return distance; };
 	//standard get/set funcitons
-	float GetMaxEmitDistance() { return emitMaxDistance; };
-	gfxVector2* GetPositionRight() { return emitPositionRight; };// start of right side collision
-	gfxVector2* GetPositionLeft() { return emitPositionLeft; }; //start of left side collision
-	gfxVector2* GetDirectionLeft() { return emitLTrigDir; };
-	gfxVector2* GetDirectionRight() { return emitRTrigDir; };
-	float GetDistance() { return emitMaxDistance; };
-	void SetDrawDistance(float distance) { DrawDistance = distance; }
-	void SetCollidedRight(bool state) { hasCollidedRight = state; }
-	void SetCollidedLeft(bool state) { hasCollidedLeft = state; }
-	bool GetCollidedRight() { return hasCollidedRight; };
-	bool GetCollidedLeft() { return hasCollidedLeft; };
-	void SetRightTrigger(bool state) { rightTrigger = state; };
-	void SetLeftTrigger(bool state) { leftTrigger = state; };
-	void SetPositionRight(float x, float y);
-	void SetPositionLeft(float x, float y);
-	void SetEmitPositionEndR(float x, float y);
-	void SetEmitPositionEndL(float x, float y);
-	gfxVector2* GetEmitPositionEndR() { return emitpositionEndR; }; // end right side collision laser
-	gfxVector2* GetEmitPositionEndL() { return emitpositionEndL; }; // end left side collision laser
+
+	void SetPosition(Vector2 SetP);
+	void SetDirection(Vector2 SetP);
+	void SetEndpoint(Vector2 SetP);
 
 	static std::string Name()
 	{
@@ -88,27 +70,17 @@ public:
 
 private:
 
-	gfxVector2* emitLTrigDir;
-	gfxVector2* emitRTrigDir;
-
-	gfxVector2* emitPositionRight;
-	gfxVector2* emitPositionLeft;
-
-	gfxVector2* emitpositionEndR;
-	gfxVector2* emitpositionEndL;
-
-	float emitMaxDistance;
-	float DrawDistance;
 	bool isDirty;
-	bool hasCollidedRight;
-	bool hasCollidedLeft;
+	bool isEmitting;
+	Vector2* position;
+	Vector2* endpoint;
+	Vector2* direction;
+	int laserReference;
 
-	bool isEmittingRight;
-	bool isEmittingLeft;
-	bool rightTrigger;
-	bool leftTrigger;
-	int iLeftLaser;
-	int iRightLaser;
+	float distance;
+
+	bool hit;
+	bool isSource;
 
 };
 
