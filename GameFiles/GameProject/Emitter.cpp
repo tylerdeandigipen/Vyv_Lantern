@@ -140,79 +140,88 @@ void Emitter::EmitterCollisionHandler(Entity& object1, Entity& object2)
 			//this is a  single emitter case may need to adjust for future ifor mulit emitter cases
 			if (object2.Has(Emitter))
 			{
-				LineCollider* line = object2.Has(LineCollider);
+				LineCollider* line = object2.Has(LineCollider); //note that position one should be the left most and position 2 should be the right most
 
 				Emitter* lineEmitter = object2.Has(Emitter);
 				gfxVector2 tempDir = laser->GetDirection();
+				bool struckShadow = DoCalculations(laser);
+
 
 				if (laser->GetPosition().x >= line->GetPosition1()->x && laser->GetPosition().x <= line->GetPosition2()->x)
 				{
 
 					//doesn't matter matter if it doesn't strike will set to 1st wall struck
-					bool struckShadow = DoCalculations(laser);
 
 					if (tempDir.y > 0)
 					{
 						if (laser->GetPosition().y > line->GetPosition1()->y)
 						{
 							//simple recalculations
-							if (struckShadow && lineEmitter->GetPosition().y < laser->GetPosition().y)
+							if (struckShadow && lineEmitter->GetPosition().y < laser->GetEndpoint().y)
 							{
 								//compare the emitter position against the  current end position
 								// if it is '>' or '<' depending in direction then do not truncate
-								laser->SetEndpoint(new gfxVector2(lineEmitter->GetPosition()));
+								laser->SetEndpoint(&lineEmitter->GetPosition());
 							}
+
+
 						}
 					}
 					else if (tempDir.y < 0)
 					{
-						if (laser->GetPosition().y < line->GetPosition1()->y)
+						if (laser->position->y < line->GetPosition1()->y)
 						{
 							//does collide do thing
-							if (struckShadow && lineEmitter->GetPosition().y > laser->GetPosition().y)
+														//simple recalculations
+							if (struckShadow && lineEmitter->GetPosition().y > laser->GetEndpoint().y)
 							{
 								//compare the emitter position against the  current end position
 								// if it is '>' or '<' depending in direction then do not truncate
-								laser->SetEndpoint(new gfxVector2(lineEmitter->GetPosition()));
+								laser->SetEndpoint(&lineEmitter->GetPosition());
 							}
 						}
 					}
+
+
 				}
 
 				if (laser->GetPosition().y >= line->GetPosition1()->y && laser->GetPosition().y <= line->GetPosition2()->x)
 				{
-					bool struckShadow = DoCalculations(laser);
-
 					if (tempDir.x > 0)
 					{
-						if (laser->GetPosition().x > line->GetPosition1()->x)
+						if (laser->position->x > line->GetPosition1()->x)
 						{
-							//simple recalculations
-							if (struckShadow && lineEmitter->GetPosition().x < laser->GetPosition().x)
+							//does collide	do thing
+														//simple recalculations
+							if (struckShadow && lineEmitter->GetPosition().x < laser->GetEndpoint().x)
 							{
 								//compare the emitter position against the  current end position
 								// if it is '>' or '<' depending in direction then do not truncate
-								laser->SetEndpoint(new gfxVector2(lineEmitter->GetPosition()));
+								laser->SetEndpoint(&lineEmitter->GetPosition());
 							}
 						}
 					}
 					else if (tempDir.x < 0)
 					{
-						if (laser->GetPosition().x < line->GetPosition1()->x)
+						if (laser->position->x < line->GetPosition1()->x)
 						{
-							//does collide do thing
-							if (struckShadow && lineEmitter->GetPosition().x > laser->GetPosition().x)
+							if (struckShadow && lineEmitter->GetPosition().x > laser->GetEndpoint().x)
 							{
 								//compare the emitter position against the  current end position
 								// if it is '>' or '<' depending in direction then do not truncate
-								laser->SetEndpoint(new gfxVector2(lineEmitter->GetPosition()));
+								laser->SetEndpoint(&lineEmitter->GetPosition());
 							}
+							//does collide do thing
+
+
 						}
 					}
 				}
 			}
 			else
 			{
+
+				//come here for other behaviors i guess.
 				return;
 			}
 		}
