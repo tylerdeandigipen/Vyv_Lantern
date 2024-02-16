@@ -1112,26 +1112,13 @@ gfxVector2 Renderer::CheckLineForObjects(int x1, int y1, int x2, int y2)
     int x = x1;
     int y = y1;
 
-    bool inOut = false;
-    int inOutCount = 0;
 
     while (x != x2 || y != y2)
     {
-        if (inOut == false)
+        if (lightBuffer->SampleColor(x, y).GetAlpha() != 0)
         {
-            if (lightBuffer->SampleColor(x, y).GetAlpha() != 0)
-            {
-                yes.x = x;
-                yes.y = y;
-                return yes;
-            }
-        }
-
-
-        if (inOutCount > 1)
-        {
-            yes.x;
-            yes.y;
+            yes.x = x;
+            yes.y = y;
             return yes;
         }
 
