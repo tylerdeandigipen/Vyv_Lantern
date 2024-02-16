@@ -74,7 +74,10 @@ Entity::Entity(Entity const& ent) : isDestroyed(ent.isDestroyed), name{}, compon
 Entity::~Entity()
 {
 	if (image != NULL)
+	{
 		delete image;
+		image = NULL;
+	}
 }
 
 Entity* Entity::Clone()

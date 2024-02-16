@@ -92,7 +92,7 @@ void BehaviorSwitch::Update(float dt)
         Controller(dt);
     if (GetLerped() == true)
     {
-        gfxVector2 lerped = lerpValue(*Parent()->Has(Transform)->GetTranslation(), pos[currentPos], 0.04f);
+        gfxVector2 lerped = lerpValue(*Parent()->Has(Transform)->GetTranslation(), pos[currentPos], 1.0f * dt);
         Parent()->Has(Transform)->SetTranslation(lerped);
         if (lerped.x >= (pos[currentPos].x - 1) &&
             lerped.x <= (pos[currentPos].x + 1) &&

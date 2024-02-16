@@ -41,6 +41,7 @@ struct EntityProperties
 class LevelCreatorScene : public Scene
 {
 	friend class EntityManager;
+	friend class Entity; // do not judge me won
 public:
 	
 	LevelCreatorScene();
@@ -98,6 +99,7 @@ private:
 	// have a current list as a default so it can just be overwritten 
 	std::string currentGameObjectsList = "./Data/GameObjects/ObjectListLevelBuilder.json";
 	std::string listToExport;
+	std::string sceneName;
 	json gameObjects;
 	std::unordered_map<std::string, std::function<void (Entity*)>> AddFunc;
 	std::string currentTileMapList;

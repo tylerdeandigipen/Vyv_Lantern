@@ -19,13 +19,13 @@
 
 class Entity
 {
+	friend class LevelCreatorScene; // do not judge me won
 public:
 	Entity();
 	Entity(std::string type, const std::string file = NULL, json Animation = NULL );
 	Entity(Entity const& entity);
 	~Entity();
 	Entity* Clone();
-
 	std::string key; //used to seperate entities in levelcreator
 	std::string addKey; // used in levelcreator addfunctions
 
