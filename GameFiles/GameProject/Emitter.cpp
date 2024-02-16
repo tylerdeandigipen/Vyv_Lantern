@@ -11,17 +11,17 @@ Renderer* pointyBoi = nullptr;
 Emitter::Emitter() : Component(Component::cEmitter)
 {
 	distance = 0;
-	position = new gfxVector2();
-	endpoint = new gfxVector2();
-	direction = new gfxVector2();
+	position = new Vector2();
+	endpoint = new Vector2();
+	direction = new Vector2();
 }
 
 Emitter::Emitter(Emitter const& emitter2cpy) : Component(emitter2cpy)
 , isDirty(emitter2cpy.isDirty), distance(emitter2cpy.distance), isEmitting(emitter2cpy.isEmitting)
 {
-	position = new gfxVector2(*emitter2cpy.position);
-	direction = new gfxVector2(*emitter2cpy.direction);
-	endpoint = new gfxVector2(*emitter2cpy.endpoint);
+	position = new Vector2(*emitter2cpy.position);
+	direction = new Vector2(*emitter2cpy.direction);
+	endpoint = new Vector2(*emitter2cpy.endpoint);
 }
 
 Emitter::~Emitter()
@@ -86,27 +86,27 @@ inline bool DoCalculations(Emitter* obj)
 		pointyBoi = Renderer::GetInstance();
 	}
 
-	gfxVector2 compare = { 0,0 };
+	Vector2 compare = { 0,0 };
 	//if direction then compare
 
 	if (obj->GetDirection().x > 0)
 	{
-		gfxVector2 compare = pointyBoi->CheckLineForObjects(obj->GetPosition().x, obj->GetPosition().y,
+		Vector2 compare = pointyBoi->CheckLineForObjects(obj->GetPosition().x, obj->GetPosition().y,
 			obj->GetPosition().x + obj->GetDistance(), obj->GetPosition().y);
 	}
 	else if (obj->GetDirection().y > 0)
 	{
-		gfxVector2 compare = pointyBoi->CheckLineForObjects(obj->GetPosition().x, obj->GetPosition().y,
+		Vector2 compare = pointyBoi->CheckLineForObjects(obj->GetPosition().x, obj->GetPosition().y,
 			obj->GetPosition().x, obj->GetPosition().y + obj->GetDistance());
 	}
 	else if (obj->GetDirection().x < 0)
 	{
-		gfxVector2 compare = pointyBoi->CheckLineForObjects(obj->GetPosition().x, obj->GetPosition().y,
+		Vector2 compare = pointyBoi->CheckLineForObjects(obj->GetPosition().x, obj->GetPosition().y,
 			obj->GetPosition().x - obj->GetDistance(), obj->GetPosition().y);
 	}
 	else if (obj->GetDirection().y < 0)
 	{
-		gfxVector2 compare = pointyBoi->CheckLineForObjects(obj->GetPosition().x, obj->GetPosition().y,
+		Vector2 compare = pointyBoi->CheckLineForObjects(obj->GetPosition().x, obj->GetPosition().y,
 			obj->GetPosition().x, obj->GetPosition().y - obj->GetDistance());
 	}
 	
@@ -117,7 +117,7 @@ inline bool DoCalculations(Emitter* obj)
 	else
 	{
 		// then we set endpoint too compare
-		obj->SetEndpoint(&compare);
+		obj->SetEndpoint(compare);
 		return true;
 	}
 
@@ -128,7 +128,6 @@ inline bool DoCalculations(Emitter* obj)
 
 void Emitter::EmitterCollisionHandler(Entity& object1, Entity& object2)
 {
-
 
 	//this may be terrible currently ignores terrain
 	//additionally does not have a way to turn off... will need to group source to fix issue can't think of how off the top of head.
@@ -143,7 +142,7 @@ void Emitter::EmitterCollisionHandler(Entity& object1, Entity& object2)
 				LineCollider* line = object2.Has(LineCollider); //note that position one should be the left most and position 2 should be the right most
 
 				Emitter* lineEmitter = object2.Has(Emitter);
-				gfxVector2 tempDir = laser->GetDirection();
+				Vector2 tempDir = laser->GetDirection();
 				bool struckShadow = DoCalculations(laser);
 
 
@@ -161,7 +160,7 @@ void Emitter::EmitterCollisionHandler(Entity& object1, Entity& object2)
 							{
 								//compare the emitter position against the  current end position
 								// if it is '>' or '<' depending in direction then do not truncate
-								laser->SetEndpoint(&lineEmitter->GetPosition());
+								laser->SetEndpoint(lineEmitter->GetPosition());
 							}
 
 
@@ -177,7 +176,7 @@ void Emitter::EmitterCollisionHandler(Entity& object1, Entity& object2)
 							{
 								//compare the emitter position against the  current end position
 								// if it is '>' or '<' depending in direction then do not truncate
-								laser->SetEndpoint(&lineEmitter->GetPosition());
+								laser->SetEndpoint(lineEmitter->GetPosition());
 							}
 						}
 					}
@@ -197,7 +196,7 @@ void Emitter::EmitterCollisionHandler(Entity& object1, Entity& object2)
 							{
 								//compare the emitter position against the  current end position
 								// if it is '>' or '<' depending in direction then do not truncate
-								laser->SetEndpoint(&lineEmitter->GetPosition());
+								laser->SetEndpoint(lineEmitter->GetPosition());
 							}
 						}
 					}
@@ -209,7 +208,7 @@ void Emitter::EmitterCollisionHandler(Entity& object1, Entity& object2)
 							{
 								//compare the emitter position against the  current end position
 								// if it is '>' or '<' depending in direction then do not truncate
-								laser->SetEndpoint(&lineEmitter->GetPosition());
+								laser->SetEndpoint(lineEmitter->GetPosition());
 							}
 							//does collide do thing
 
@@ -220,8 +219,8 @@ void Emitter::EmitterCollisionHandler(Entity& object1, Entity& object2)
 			}
 			else
 			{
-
 				//come here for other behaviors i guess.
+				//which means the second object will be the end point position which what it is now so do nothing
 				return;
 			}
 		}
@@ -246,19 +245,19 @@ void Emitter::EmitterCollisionHandler(Entity& object1, Entity& object2)
 
 
 
-void Emitter::SetPosition(gfxVector2* SetP)
+void Emitter::SetPosition(Vector2 SetP)
 {
-	position = SetP;
+	*position = SetP;
 	isDirty = true;
 }
 
-void Emitter::SetDirection(gfxVector2* SetP)
+void Emitter::SetDirection(Vector2 SetP)
 {
-	direction = SetP;
+	*direction = SetP;
 	isDirty = true;
 }
-void Emitter::SetEndpoint(gfxVector2* SetP)
+void Emitter::SetEndpoint(Vector2 SetP)
 {
-	endpoint = SetP;
+	*endpoint = SetP;
 	isDirty = true;
 }

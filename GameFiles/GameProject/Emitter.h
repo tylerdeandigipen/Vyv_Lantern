@@ -1,6 +1,7 @@
 #pragma once
 #include "Component.h"
 class gfxVector2;
+#include "Vector.h"
 
 /*
 *
@@ -44,16 +45,16 @@ public:
 	void Read(json jsonData) override;
 	void Update(float dt);
 	void Render() const;
-	gfxVector2 GetPosition() const { return *position; };
-	gfxVector2 GetDirection() const { return *direction; };
-	gfxVector2 GetEndpoint() const { return *endpoint; };
+	Vector2 GetPosition() const { return *position; };
+	Vector2 GetDirection() const { return *direction; };
+	Vector2 GetEndpoint() const { return *endpoint; };
 
 	float GetDistance() const { return distance; };
 	//standard get/set funcitons
 
-	void SetPosition(gfxVector2* SetP);
-	void SetDirection(gfxVector2* SetP);
-	void SetEndpoint(gfxVector2* SetP);
+	void SetPosition(Vector2 SetP);
+	void SetDirection(Vector2 SetP);
+	void SetEndpoint(Vector2 SetP);
 
 	static std::string Name()
 	{
@@ -71,9 +72,9 @@ private:
 
 	bool isDirty;
 	bool isEmitting;
-	gfxVector2* position;
-	gfxVector2* endpoint;
-	gfxVector2* direction;
+	Vector2* position;
+	Vector2* endpoint;
+	Vector2* direction;
 	int laserReference;
 	float distance;
 

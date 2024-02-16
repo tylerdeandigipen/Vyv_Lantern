@@ -37,6 +37,8 @@ public:
 
 private:
 	
+	Emitter* pre;
+
 
 	//load position leftpoint rightpoint
 	gfxVector2* position1;
