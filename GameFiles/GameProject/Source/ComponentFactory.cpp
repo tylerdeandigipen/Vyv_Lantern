@@ -28,6 +28,7 @@ ComponentFactory::ComponentFactory() : name("ComptFact")
 
 ComponentFactory::~ComponentFactory()
 {
+    
 }
 
 Engine::EngineCode ComponentFactory::Init()

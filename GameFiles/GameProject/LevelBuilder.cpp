@@ -22,8 +22,9 @@ bool LevelBuilder::door = false;
 
 LevelBuilder* LevelBuilder::instance = new LevelBuilder();
 
-LevelBuilder::LevelBuilder() : entity_container(new EntityContainer()), jsonData(), TileMap(NULL), Walls(NULL), SizeX(0), SizeY(0)
+LevelBuilder::LevelBuilder() : entity_container(EntityContainer::GetInstance()), jsonData(), TileMap(NULL), Walls(NULL), SizeX(0), SizeY(0)
 {
+
 }
 
 LevelBuilder::~LevelBuilder()
@@ -40,7 +41,7 @@ LevelBuilder::~LevelBuilder()
     {
         delete[] Walls;
     }
-    delete entity_container;
+    //delete entity_container;
 }
 
 Engine::EngineCode LevelBuilder::Init()
@@ -109,6 +110,11 @@ Engine::EngineCode LevelBuilder::Close()
 
 LevelBuilder* LevelBuilder::GetInstance()
 {
+    if (instance == nullptr)
+    {
+        instance = new LevelBuilder();
+    }
+
     return instance;
 }
 

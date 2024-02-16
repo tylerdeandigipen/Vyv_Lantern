@@ -16,10 +16,6 @@ class Component;
 class ComponentFactory : public BaseSystem
 {
 public:
-	ComponentFactory();
-	//ComponentFactory(const char* _name = "");
-	~ComponentFactory();
-	
 	BaseSystem& operator=(BaseSystem const&) = delete;
 
 	Engine::EngineCode Init();
@@ -29,6 +25,9 @@ public:
 	Component* CreateComponent(std::string const& type);
 	Engine::EngineCode Close();
 private:
+	ComponentFactory();
+	~ComponentFactory();
+
 	static Component& CreateBehaviorPlayer(void);
 	static Component& CreateBehaviorSwitch(void);
 	static Component& CreateBehaviorMirror(void);

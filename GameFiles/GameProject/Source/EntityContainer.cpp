@@ -30,7 +30,7 @@ EntityContainer::EntityContainer() : entities()
 
 EntityContainer::~EntityContainer()
 {
-
+	
 }
 
 Engine::EngineCode EntityContainer::Init()
@@ -91,7 +91,6 @@ Entity* EntityContainer::FindByName(const char* name)
 				return entities[i];
 	}
 	return NULL;
-
 }
 
 // allows the ability to loop through and get the information of each entity/game-object
@@ -208,6 +207,11 @@ void EntityContainer::FreeAll()
 
 EntityContainer* EntityContainer::GetInstance()
 {
+	if (instance == nullptr)
+	{
+		instance = new EntityContainer();
+	}
+
 	return instance;
 }
 

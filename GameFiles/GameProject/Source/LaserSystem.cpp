@@ -17,11 +17,15 @@
 #include "Renderer.h"
 #include "Logging.h"
 
-static LaserSystem GlobalInstance;
+LaserSystem* LaserSystem::instance = new LaserSystem();
 
 LaserSystem *LaserSystem::GetInstance(void)
 {
-    return(&GlobalInstance);
+    if (instance == nullptr)
+    {
+        instance = new LaserSystem();
+    }
+    return instance;
 }
 
 LaserSystem::LaserSystem(void)
@@ -40,8 +44,11 @@ LaserSystem::~LaserSystem(void)
 
 Engine::EngineCode LaserSystem::Close(void)
 {
-    Engine::EngineCode Result = Engine::NothingBad;
-    return(Result);
+    if (instance != NULL)
+    {
+        delete instance;
+    }
+    return Engine::NothingBad;
 }
 
 Engine::EngineCode LaserSystem::Init(void)

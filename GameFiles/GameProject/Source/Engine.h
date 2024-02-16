@@ -15,7 +15,7 @@
 class BaseSystem;
 typedef class Time Time;
 // to be safe, may change later on - taylee
-#define MAX_SYSTEMS 10 
+#define MAX_SYSTEMS 15 
 
 class Engine
 {

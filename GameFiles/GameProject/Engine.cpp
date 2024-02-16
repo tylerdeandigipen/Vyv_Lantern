@@ -14,6 +14,7 @@
 #include "BaseSystem.h"
 #include "Time_TM.h"
 #include "Renderer.h"
+#include "EntityContainer.h"
 #include <cassert>
 
 // singleton instance
@@ -109,6 +110,7 @@ Engine* Engine::GetInstance()
 	{
 		instance = new Engine();
 	}
+
 	return instance;
 }
 

@@ -121,6 +121,7 @@ private:
     uint32_t PathNodeCount;
 
 	beam_path_node *GetPathNode(uint32_t NodeIndex);
+	static LaserSystem* instance;
 };
 
 #endif
