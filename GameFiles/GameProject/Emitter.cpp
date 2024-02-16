@@ -162,35 +162,51 @@ void Emitter::EmitterCollisionHandler(Entity& object1, Entity& object2)
 								// if it is '>' or '<' depending in direction then do not truncate
 								laser->SetEndpoint(new gfxVector2(lineEmitter->GetPosition()));
 							}
-
-
 						}
 					}
 					else if (tempDir.y < 0)
 					{
-						if (laser->position->y < line->GetPosition1()->y)
+						if (laser->GetPosition().y < line->GetPosition1()->y)
 						{
 							//does collide do thing
+							if (struckShadow && lineEmitter->GetPosition().y > laser->GetPosition().y)
+							{
+								//compare the emitter position against the  current end position
+								// if it is '>' or '<' depending in direction then do not truncate
+								laser->SetEndpoint(new gfxVector2(lineEmitter->GetPosition()));
+							}
 						}
 					}
-
-
 				}
 
 				if (laser->GetPosition().y >= line->GetPosition1()->y && laser->GetPosition().y <= line->GetPosition2()->x)
 				{
+					bool struckShadow = DoCalculations(laser);
+
 					if (tempDir.x > 0)
 					{
-						if (laser->position->x > line->GetPosition1()->x)
+						if (laser->GetPosition().x > line->GetPosition1()->x)
 						{
-							//does collide	do thing
+							//simple recalculations
+							if (struckShadow && lineEmitter->GetPosition().x < laser->GetPosition().x)
+							{
+								//compare the emitter position against the  current end position
+								// if it is '>' or '<' depending in direction then do not truncate
+								laser->SetEndpoint(new gfxVector2(lineEmitter->GetPosition()));
+							}
 						}
 					}
 					else if (tempDir.x < 0)
 					{
-						if (laser->position->x < line->GetPosition1()->x)
+						if (laser->GetPosition().x < line->GetPosition1()->x)
 						{
 							//does collide do thing
+							if (struckShadow && lineEmitter->GetPosition().x > laser->GetPosition().x)
+							{
+								//compare the emitter position against the  current end position
+								// if it is '>' or '<' depending in direction then do not truncate
+								laser->SetEndpoint(new gfxVector2(lineEmitter->GetPosition()));
+							}
 						}
 					}
 				}
