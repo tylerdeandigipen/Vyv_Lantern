@@ -6,18 +6,18 @@
 #include "Renderer.h"
 #include "Logging.h"
 
-Renderer* pointyBoi = nullptr;
+
 
 Emitter::Emitter() : Component(Component::cEmitter)
 {
-	distance = 0;
 	position = new gfxVector2();
 	endpoint = new gfxVector2();
 	direction = new gfxVector2();
+	distance = 0.0f;
 }
 
 Emitter::Emitter(Emitter const& emitter2cpy) : Component(emitter2cpy)
-, isDirty(emitter2cpy.isDirty), distance(emitter2cpy.distance), isEmitting(emitter2cpy.isEmitting)
+, isDirty(emitter2cpy.isDirty), isEmitting(emitter2cpy.isEmitting), distance(emitter2cpy.distance)
 {
 	position = new gfxVector2(*emitter2cpy.position);
 	direction = new gfxVector2(*emitter2cpy.direction);
@@ -37,6 +37,66 @@ Component* Emitter::Clone() const
 
 void Emitter::Read(json jsonData)
 {
+	/*
+		
+		note:
+		1,0 right
+		0,1 down
+		-1,0 left
+		0,-1 up
+	  "Type": "Emitter",
+      "LaserDirection": {
+          "x": 0,
+          "y": 0
+      },       
+      "EmitterStart": {
+          "x": 50,
+          "y": 0
+      },
+      "EmitterEndPoint": {
+          "x": 0,
+          "y": 0
+      },
+	  "distance": 100
+
+	*/
+
+
+	if (jsonData["LaserDirection"].is_object())
+	{
+		json dir = jsonData["LaserDirection"];
+		direction->x = dir["x"];
+		direction->y = dir["y"];
+
+	}
+
+	if (jsonData["EmitterStart"].is_object())
+	{
+		json pos = jsonData["EmitterStart"];
+		position->x = pos["x"];
+		position->y = pos["y"];
+	}
+
+	if (jsonData["EmitterEndPoint"].is_object())
+	{
+		//will often pass an illegitemate point so that nothing will draw.
+		json pos = jsonData["EmitterEndPoint"];
+		endpoint->x = pos["x"];
+		endpoint->y = pos["y"];
+	}
+
+	distance = jsonData["distance"];
+
+	Renderer* renderer = Renderer::GetInstance();
+	if (renderer)
+	{
+		laserReference = renderer->numLasers;
+		//will need to see if 
+		renderer->laserPoints1[laserReference] = *position;
+		renderer->laserPoints2[laserReference] = *endpoint;
+		renderer->numLasers++;
+	}
+
 
 
 }
@@ -81,10 +141,9 @@ inline bool LineToLineCollision(Emitter * laser, Entity& line, int flag, bool in
 */
 inline bool DoCalculations(Emitter* obj)
 {
-	if (!pointyBoi)
-	{
-		pointyBoi = Renderer::GetInstance();
-	}
+
+	Renderer*	pointyBoi = Renderer::GetInstance();
+
 
 	gfxVector2 compare = { 0,0 };
 	//if direction then compare
@@ -134,19 +193,30 @@ void Emitter::EmitterCollisionHandler(Entity& object1, Entity& object2)
 	//additionally does not have a way to turn off... will need to group source to fix issue can't think of how off the top of head.
 	if (object1.Has(Emitter) && object2.Has(LineCollider))
 	{
+		//potential turn off code
+		//if laser collider ishit and 
+
 		Emitter* laser = object1.Has(Emitter);
+		
 		if (laser->isDirty)
 		{
+			if (!laser->isSource && !laser->hit)
+			{
+				//break laser
+				return;
+			}
+
 			//this is a  single emitter case may need to adjust for future ifor mulit emitter cases
 			if (object2.Has(Emitter))
 			{
+
 				LineCollider* line = object2.Has(LineCollider); //note that position one should be the left most and position 2 should be the right most
 
 				Emitter* lineEmitter = object2.Has(Emitter);
 				gfxVector2 tempDir = laser->GetDirection();
 				bool struckShadow = DoCalculations(laser);
 
-
+				//between x values
 				if (laser->GetPosition().x >= line->GetPosition1()->x && laser->GetPosition().x <= line->GetPosition2()->x)
 				{
 
@@ -161,7 +231,13 @@ void Emitter::EmitterCollisionHandler(Entity& object1, Entity& object2)
 							{
 								//compare the emitter position against the  current end position
 								// if it is '>' or '<' depending in direction then do not truncate
-								laser->SetEndpoint(&lineEmitter->GetPosition());
+								laser->SetEndpoint(lineEmitter->GetPosition());
+								lineEmitter->SetEmitting(true);
+							}
+							else
+							{
+								laser->SetEndpoint(lineEmitter->GetPosition());
+								lineEmitter->SetEmitting(true);
 							}
 
 
@@ -177,14 +253,17 @@ void Emitter::EmitterCollisionHandler(Entity& object1, Entity& object2)
 							{
 								//compare the emitter position against the  current end position
 								// if it is '>' or '<' depending in direction then do not truncate
-								laser->SetEndpoint(&lineEmitter->GetPosition());
+								laser->SetEndpoint(lineEmitter->GetPosition());
+								lineEmitter->SetEmitting(true);
 							}
 						}
 					}
 
 
+				
 				}
 
+				//between y values
 				if (laser->GetPosition().y >= line->GetPosition1()->y && laser->GetPosition().y <= line->GetPosition2()->x)
 				{
 					if (tempDir.x > 0)
@@ -197,7 +276,8 @@ void Emitter::EmitterCollisionHandler(Entity& object1, Entity& object2)
 							{
 								//compare the emitter position against the  current end position
 								// if it is '>' or '<' depending in direction then do not truncate
-								laser->SetEndpoint(&lineEmitter->GetPosition());
+								laser->SetEndpoint(lineEmitter->GetPosition());
+								lineEmitter->SetEmitting(true);
 							}
 						}
 					}
@@ -209,7 +289,8 @@ void Emitter::EmitterCollisionHandler(Entity& object1, Entity& object2)
 							{
 								//compare the emitter position against the  current end position
 								// if it is '>' or '<' depending in direction then do not truncate
-								laser->SetEndpoint(&lineEmitter->GetPosition());
+								laser->SetEndpoint(lineEmitter->GetPosition());
+
 							}
 							//does collide do thing
 
@@ -217,6 +298,8 @@ void Emitter::EmitterCollisionHandler(Entity& object1, Entity& object2)
 						}
 					}
 				}
+				//turn of code for laser look somethingl like this make endpoint->x position->x+1f and should stop rendering the laser.
+
 			}
 			else
 			{
@@ -224,6 +307,7 @@ void Emitter::EmitterCollisionHandler(Entity& object1, Entity& object2)
 				//come here for other behaviors i guess.
 				return;
 			}
+			laser->isDirty = false;
 		}
 		else
 		{
@@ -231,34 +315,37 @@ void Emitter::EmitterCollisionHandler(Entity& object1, Entity& object2)
 		}
 
 
+
+
+		//the 2nd object is the one emitting
+		if (object2.Has(Emitter) && object1.Has(LineCollider))
+		{
+			//copy the stuff from uptop
+		}
+
 	}
-
-	//the 2nd object is the one emitting
-	if (object2.Has(Emitter) && object1.Has(LineCollider))
-	{
-		//copy the stuff from uptop
-	}
-
-
 	//potentially more stuff for line colliders maybe break this up into different behaviors.
 	
 }
 
 
 
-void Emitter::SetPosition(gfxVector2* SetP)
+void Emitter::SetPosition(Vector2 SetP)
 {
-	position = SetP;
+	position->x = SetP.x;
+	position->y = SetP.y;
 	isDirty = true;
 }
 
-void Emitter::SetDirection(gfxVector2* SetP)
+void Emitter::SetDirection(Vector2 SetP)
 {
-	direction = SetP;
+	direction->x = SetP.x;
+	direction->y = SetP.y;
 	isDirty = true;
 }
-void Emitter::SetEndpoint(gfxVector2* SetP)
+void Emitter::SetEndpoint(Vector2 SetP)
 {
-	endpoint = SetP;
+	endpoint->x = SetP.x;
+	endpoint->y = SetP.y;
 	isDirty = true;
 }
