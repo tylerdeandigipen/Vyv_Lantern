@@ -41,6 +41,7 @@ private:
 
 
 	//load position leftpoint rightpoint
+	Emitter* hitMe;
 	gfxVector2* position1;
 	gfxVector2* position2;
 

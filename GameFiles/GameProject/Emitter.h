@@ -1,7 +1,6 @@
 #pragma once
 #include "Component.h"
 class gfxVector2;
-#include "Vector.h"
 
 /*
 *
@@ -48,6 +47,7 @@ public:
 	Vector2 GetPosition() const { return *position; };
 	Vector2 GetDirection() const { return *direction; };
 	Vector2 GetEndpoint() const { return *endpoint; };
+	void SetEmitting(bool state) { isEmitting = state; isDirty = true; }
 
 	float GetDistance() const { return distance; };
 	//standard get/set funcitons
@@ -76,8 +76,11 @@ private:
 	Vector2* endpoint;
 	Vector2* direction;
 	int laserReference;
+
 	float distance;
 
+	bool hit;
+	bool isSource;
 
 };
 
