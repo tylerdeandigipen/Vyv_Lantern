@@ -41,6 +41,7 @@
 
 #include "TestScene.h"
 #include "TbdTestScene.h"
+#include <direct.h>
 
 Logging& LevelCreatorLogger = Logging::GetInstance("debugLog.log");
 
@@ -101,7 +102,6 @@ Engine::EngineCode LevelCreatorScene::Init()
 		std::cout << "Property load success!\n";
 
 	LevelBuilder::GetInstance()->LoadTileMap("./Data/Scenes/LevelCreatorScene.json");
-
 	// this is gonna add any objects that exist in the imported scene and transfer them to 
 	// the tempEntities vector so they can be modified (this will have to be added in the import section as well)
 	if (EntityContainer::GetInstance()->CountEntities() > 0)
@@ -247,7 +247,13 @@ void LevelCreatorScene::ExportScene(std::string name)
 	Renderer* pixel = Renderer::GetInstance();
 	int rows = pixel->tileMapSize.x;
 	int columns = pixel->tileMapSize.y;
-
+	std::string folder = "./Data/Scenes/" + name;
+	exportFolder = folder;
+	exportFolder += "/";
+	if (_mkdir(folder.c_str()) == 0)
+	{
+		Logging::GetInstance("FailedToMakeFolder.log").LogLine("failed to make file");
+	}
 	std::vector<int> tilemap;
 	std::vector<int> walls;
 	bool found = false;
@@ -298,16 +304,16 @@ void LevelCreatorScene::ExportScene(std::string name)
 	tilemapArray["layers"][1] = tilemapCol;
 
 	// save tilemap to a file
-	std::ofstream tileFile("./Data/Scenes/" + name + "MAP" + ".json");
+	std::ofstream tileFile(exportFolder + name + "MAP" + ".json");
 	tileFile << std::setw(2) << tilemapArray << std::endl;
 
 	json readable;
 	json data;
-	data["TileMapFile"] = "./Data/Scenes/" + name + "MAP" + ".json";
+	data["TileMapFile"] = exportFolder + name + "MAP" + ".json";
 	readable["TiledData"] = data;
 
 	// this will be the object list part
-	listToExport = "./Data/Scenes/" + name + "OBJECTS" + ".json";
+	listToExport = exportFolder + name + "OBJECTS" + ".json";
 
 	Scene* pare = LevelCreatorSceneGetInstance();
 	LevelCreatorScene* current = reinterpret_cast<LevelCreatorScene*>(pare);
@@ -335,7 +341,7 @@ void LevelCreatorScene::ExportScene(std::string name)
 	readable["GameObjectList"] = { {"GameObjectFile", listToExport } };
 
 	//the filemap to read for the scene 
-	std::ofstream actualfile("./Data/Scenes/" + name + ".json");
+	std::ofstream actualfile(exportFolder + name + ".json");
 	actualfile << std::setw(2) << readable << std::endl;
 }
 
@@ -1274,7 +1280,6 @@ int LevelCreatorScene::CreateCircleEntity()
 	temp->addKey = "Circle"; // this is for the map holding functions and gives access to function for circle
 
 	temp->key = sceneName + "Circle" + std::to_string(circleCount);
-	temp->SetFilePath("./Data/GameObjects/Circle" + sceneName + std::to_string(circleCount) + ".json");
 	tempEntities.push_back(temp);
 	++circleCount;
 	return 0;
@@ -1293,7 +1298,7 @@ int LevelCreatorScene::CreateDoorEntity()
 	temp->addKey = "Door"; // this is for the map holding functions and gives access to function for circle
 
 	temp->key = sceneName + "Door" + std::to_string(doorCount);
-	temp->SetFilePath("./Data/GameObjects/Door" + sceneName + std::to_string(doorCount) + ".json");
+	//temp->SetFilePath("./Data/GameObjects/Door" + sceneName + std::to_string(doorCount) + ".json");
 	tempEntities.push_back(temp);
 	++doorCount;
 	return 0;
@@ -1311,7 +1316,7 @@ int LevelCreatorScene::CreateMirrorEntity()
 	temp->addKey = "Mirror"; // this is for the map holding functions and gives access to function for circle
 
 	temp->key = sceneName + "Mirror" + std::to_string(mirrorCount);
-	temp->SetFilePath("./Data/GameObjects/Mirror" + sceneName + std::to_string(mirrorCount) + ".json");
+	//temp->SetFilePath("./Data/GameObjects/Mirror" + sceneName + std::to_string(mirrorCount) + ".json");
 	tempEntities.push_back(temp);
 	++mirrorCount;
 	return 0;
@@ -1328,7 +1333,7 @@ int LevelCreatorScene::CreateEmitterEntity()
 	temp->addKey = "Emitter"; // this is for the map holding functions and gives access to function for circle
 
 	temp->key = sceneName + "Emitter" + std::to_string(emitterCount);
-	temp->SetFilePath("./Data/GameObjects/Emitter"+ sceneName + std::to_string(emitterCount) + ".json");
+	//temp->SetFilePath("./Data/GameObjects/Emitter"+ sceneName + std::to_string(emitterCount) + ".json");
 	tempEntities.push_back(temp);
 	++emitterCount;
 	return 0;
@@ -1343,7 +1348,7 @@ int LevelCreatorScene::CreateRecieverEntity()
 	Entity* temp = FileIO::GetInstance()->ReadEntity(filename); 
 	temp->addKey = "Reciever"; // this is for the map holding functions and gives access to function for circle
 	temp->key = sceneName + "Reciever" + std::to_string(emitterCount);
-	temp->SetFilePath("./Data/GameObjects/Reciever" + sceneName + std::to_string(emitterCount) + ".json");
+	//temp->SetFilePath("./Data/GameObjects/Reciever" + sceneName + std::to_string(emitterCount) + ".json");
 	tempEntities.push_back(temp);
 	++recieverCount;
 	return 0;
@@ -1387,6 +1392,7 @@ void LevelCreatorScene::AddCircleEntity(Entity* entity)
 {
 	Scene* pare = LevelCreatorSceneGetInstance();
 	LevelCreatorScene* current = reinterpret_cast<LevelCreatorScene*>(pare);
+	entity->SetFilePath(current->exportFolder + entity->key + ".json");
 
 
 	Logging::GetInstance("LevelCreator.log").LogToAll("Creating->", entity->key.c_str());
@@ -1419,6 +1425,7 @@ void LevelCreatorScene::AddDoorEntity(Entity* entity)
 {
 	Scene* pare = LevelCreatorSceneGetInstance();
 	LevelCreatorScene* current = reinterpret_cast<LevelCreatorScene*>(pare);
+	entity->SetFilePath(current->exportFolder + entity->key + ".json");
 
 
 	Logging::GetInstance("LevelCreator.log").LogToAll("Creating->", entity->key.c_str());
@@ -1453,6 +1460,7 @@ void LevelCreatorScene::AddMirrorEntity(Entity* entity)
 {
 	Scene* pare = LevelCreatorSceneGetInstance();
 	LevelCreatorScene* current = reinterpret_cast<LevelCreatorScene*>(pare);
+	entity->SetFilePath(current->exportFolder + entity->key + ".json");
 
 
 	Logging::GetInstance("LevelCreator.log").LogToAll("Creating->", entity->key.c_str());
@@ -1487,6 +1495,7 @@ void LevelCreatorScene::AddEmitterEntity(Entity* entity)
 {
 	Scene* pare = LevelCreatorSceneGetInstance();
 	LevelCreatorScene* current = reinterpret_cast<LevelCreatorScene*>(pare);
+	entity->SetFilePath(current->exportFolder + entity->key + ".json");
 
 
 	Logging::GetInstance("LevelCreator.log").LogToAll("Creating->", entity->key.c_str());
@@ -1524,6 +1533,7 @@ void LevelCreatorScene::AddRecieverEntity(Entity* entity)
 {
 	Scene* pare = LevelCreatorSceneGetInstance();
 	LevelCreatorScene* current = reinterpret_cast<LevelCreatorScene*>(pare);
+	entity->SetFilePath(current->exportFolder + entity->key + ".json");
 
 
 	Logging::GetInstance("LevelCreator.log").LogToAll("Creating->", entity->key.c_str());

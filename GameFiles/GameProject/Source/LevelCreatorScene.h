@@ -54,6 +54,7 @@ public:
 	void Update(float dt) override;
 	void Render(void) override;
 	std::vector<Entity*> tempEntities;
+	std::string exportFolder;
 private:
 	bool playerExists;
 	void ImGuiInterg();
