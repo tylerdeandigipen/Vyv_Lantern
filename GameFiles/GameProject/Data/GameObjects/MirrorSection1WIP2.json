@@ -7,43 +7,15 @@
       "Type": "Transform",
       "translation": {
         "x": 168.0,
-        "y": 352.0
+        "y": 356.0
       }
     },
     {
       "OldTranslation": {
         "x": 168.0,
-        "y": 352.0
+        "y": 356.0
       },
       "Type": "Physics"
-    },
-    {
-      "Type": "BehaviorSwitch",
-      "key": 1,
-      "NumPositions": 3,
-      "pos": [
-        {
-          "x": "168",
-          "y": "352"
-        },
-        {
-          "x": "168",
-          "y": "328"
-        },
-        {
-          "x": "168",
-          "y": "376"
-        }
-      ]
-    },
-    {
-      "Type": "BehaviorMirror",
-      "Direction": {
-        "DirectionX": 1.0,
-        "DirectionY": 1.0
-      },
-      "Radius": 10.0,
-      "key": 1
     }
   ],
   "FilePath": "./Data/GameObjects/MirrorSection1WIP2.json",

@@ -46,28 +46,28 @@
       "LeftMostPoint": {
         "x": 112.0,
         "y": 209.0
-      },       
+      },
       "RightMostPoint": {
-          "x": 212.0,
-          "y": 100.0
+        "x": 212.0,
+        "y": 100.0
       }
     },
     {
       "Type": "Emitter",
       "LaserDirection": {
-          "x": 1,
-          "y": 0
-      },       
+        "x": 1,
+        "y": 0
+      },
       "EmitterStart": {
         "x": 112.0,
         "y": 109.0
       },
       "EmitterEndPoint": {
-          "x": 9999,
-          "y": 0
+        "x": 9999,
+        "y": 0
       },
-	  "distance": 150,
-    "isSource": false
+      "distance": 150,
+      "isSource": false
     }
   ],
   "FilePath": "./Data/GameObjects/Mirror0.json",
@@ -76,7 +76,7 @@
   },
   "Name": "Switch",
   "Type": "Object",
-  "file": "./Assets/PPM/Mirror.ppm",
+  "file": "./Assets/PPM/CrystalSprites/MirrorCrystalDownRight.ppm",
   "frameSize": [
     8,
     8
