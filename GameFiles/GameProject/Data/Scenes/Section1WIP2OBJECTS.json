@@ -1,0 +1,41 @@
+{
+  "Circle": {
+    "count": 2
+  },
+  "Door": {
+    "count": 2
+  },
+  "Emitter": {
+    "count": 3
+  },
+  "FilePath": "./Data/Scenes/Section1WIP2OBJECTS.json",
+  "Mirror": {
+    "count": 7
+  },
+  "Objects": [
+    {
+      "FilePath": "./Data/GameObjects/EmitterSection1WIP0.json"
+    },
+    {
+      "FilePath": "./Data/GameObjects/RecieverSection1WIP1.json"
+    },
+    {
+      "FilePath": "./Data/GameObjects/MirrorSection1WIP0.json"
+    },
+    {
+      "FilePath": "./Data/GameObjects/MirrorSection1WIP1.json"
+    },
+    {
+      "FilePath": "./Data/GameObjects/MirrorSection1WIP2.json"
+    },
+    {
+      "FilePath": "./Data/GameObjects/MirrorSection1WIP3.json"
+    },
+    {
+      "FilePath": "./Data/GameObjects/MirrorSection1WIP4.json"
+    }
+  ],
+  "Reviever": {
+    "count": 1
+  }
+}

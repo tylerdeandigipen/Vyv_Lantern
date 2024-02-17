@@ -6,25 +6,25 @@
     {
       "Type": "Transform",
       "translation": {
-        "x": 344.0,
-        "y": 112.0
+        "x": 240.0,
+        "y": 384.0
       }
     },
     {
       "OldTranslation": {
-        "x": 344.0,
-        "y": 112.0
+        "x": 240.0,
+        "y": 384.0
       },
       "Type": "Physics"
     }
   ],
-  "FilePath": "./Data/GameObjects/Mirror6.json",
+  "FilePath": "./Data/GameObjects/RecieverSection1WIP1.json",
   "KeyObject": {
-    "key": "Mirror6"
+    "key": "Section1WIPReciever1"
   },
-  "Name": "Switch",
+  "Name": "Reciever",
   "Type": "Object",
-  "file": "./Assets/PPM/CrystalSprites/MirrorCrystalDownRight.ppm",
+  "file": "./Assets/PPM/tempReciever.ppm",
   "frameSize": [
     8,
     8
