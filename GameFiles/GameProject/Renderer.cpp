@@ -60,7 +60,6 @@ void Renderer::Update(float dt)
 
     UpdateObjects(dt);
     RenderLightingPass();
-    //for now lasers are temp hardcoded to get the look down
     RenderLasers();
     BlurLights(-1,2);
     outputBuffer->DitherBuffer(outputBuffer, renderOnlyLights, isFullbright,  lightR, lightG, lightB);
@@ -187,7 +186,7 @@ void Renderer::RenderLightingPass()
     particleManager->UpdateParticles();
 
     //for shadow casting
-    shadowCasterBuffer->Blit(lightBuffer, -CameraOffsetX, -CameraOffsetY);
+    //shadowCasterBuffer->Blit(lightBuffer, -CameraOffsetX, -CameraOffsetY);
 
     RenderParticles();
 
@@ -340,6 +339,7 @@ float Renderer::FindPixelLuminosity(float x, float y, Light* LightSource)
     return Result;
 }
 
+//depricated do not use
 void Renderer::CalculateShadows()
 {
     const int xSize = (int)outputBuffer->size.x;
@@ -349,13 +349,14 @@ void Renderer::CalculateShadows()
     Vector2 lightPos;
     int shadowsCast = 0;
 
-    #pragma omp parallel
+   // #pragma omp parallel
     {
-        #pragma omp for nowait collapse(3) private(lightPos, shadowsCast)
+       // #pragma omp for nowait collapse(3) private(lightPos, shadowsCast)
         for (int x = 0; x < xSize; ++x)
         {
             for (int y = 0; y < ySize; ++y)
             {
+                shadowsCast = 0;
                 if (lightR[x][y] != 0 && lightG[x][y] != 0 && lightB[x][y] != 0)
                 {
                     for (int i = 0; i < numLights; ++i)
@@ -363,7 +364,6 @@ void Renderer::CalculateShadows()
                         if (lightSource[i].intensity != 0)
                         {
                             lightPos = lightSource[i].position;
-
                             if (CheckLineForObject((int)lightPos.x - (int)cameraPos.x, (int)lightPos.y - (int)cameraPos.y, (int)x, (int)y) == true)
                             {
                                 shadowsCast += 1;
@@ -374,19 +374,17 @@ void Renderer::CalculateShadows()
                             }
                         }
                     }
-                    if (lightBuffer->SampleColor(x, y).GetAlpha() != 0)
+                    if (shadowCasterBuffer->SampleColor(x + CameraP.x, y + CameraP.y).GetAlpha() != 0) //make shadow casters not cast shadows on themselves
                     {
                         //maybe here do ham algo with the tilemap instead of pixels and if any tiles inbetween player and target tile then dont sub?
                         shadowsCast -= 1;
                     }
-
                     if (shadowsCast >= 1)
                     {
                         lightR[x][y] = 0;
                         lightG[x][y] = 0;
                         lightB[x][y] = 0;
                     }
-                    shadowsCast = 0;
                 }
             }
         }
@@ -410,7 +408,7 @@ bool Renderer::CalculateIfPixelIsLit(int x, int y, int i)
             if (inOutCount > 0)
             {
                 isLit = false;
-                if (lightBuffer->SampleColor(x, y).GetAlpha() != 0 && inOutCount == 1)
+                if (shadowCasterBuffer->SampleColor(x + CameraP.x, y + CameraP.y).GetAlpha() != 0 && inOutCount == 1)
                 {
                     isLit = true;
                 }
@@ -537,9 +535,9 @@ void Renderer::RenderLasers()
     float IntensityB = 0.0f;
     //optimize later to only calculate light near / in the laser line zone
     //maybe make so depending on distance it uses two different light func  tions
-//#pragma omp parallel
+    #pragma omp parallel
     {
-//#pragma omp for collapse(3) nowait private(IntensityR, IntensityG, IntensityB)
+    #pragma omp for collapse(3) nowait private(IntensityR, IntensityG, IntensityB)
         for (int x = 0; x < xSize; ++x)
         {
             for (int y = 0; y < ySize; ++y)
@@ -1065,7 +1063,7 @@ int Renderer::CheckLineForObject(int x1, int y1, int x2, int y2)
     {
         if (inOut == false)
         {
-            if (lightBuffer->SampleColor(x, y).GetAlpha() != 0)
+            if (shadowCasterBuffer->SampleColor(x + CameraP.x, y + CameraP.y).GetAlpha() != 0)
             {
                 inOutCount += 1;
                 inOut = true;
@@ -1073,7 +1071,7 @@ int Renderer::CheckLineForObject(int x1, int y1, int x2, int y2)
         }
         else
         {
-            if (lightBuffer->SampleColor(x, y).GetAlpha() == 0)
+            if (shadowCasterBuffer->SampleColor(x + CameraP.x, y + CameraP.y).GetAlpha() == 0)
             {
                 inOutCount += 1;
                 inOut = false;
@@ -1115,7 +1113,7 @@ gfxVector2 Renderer::CheckLineForObjects(int x1, int y1, int x2, int y2)
 
     while (x != x2 || y != y2)
     {
-        if (lightBuffer->SampleColor(x, y).GetAlpha() != 0)
+        if (shadowCasterBuffer->SampleColor(x + CameraP.x, y + CameraP.y).GetAlpha() == 0)
         {
             yes.x = x;
             yes.y = y;
