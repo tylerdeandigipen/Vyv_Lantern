@@ -16,6 +16,34 @@
         "y": 356.0
       },
       "Type": "Physics"
+    },
+    {
+      "Type": "BehaviorSwitch",
+      "key": 1,
+      "NumPositions": 3,
+      "pos": [
+        {
+          "x": "168",
+          "y": "356"
+        },
+        {
+          "x": "168",
+          "y": "332"
+        },
+        {
+          "x": "168",
+          "y": "380"
+        }
+      ]
+    },
+    {
+      "Type": "BehaviorMirror",
+      "Direction": {
+        "DirectionX": 1.0,
+        "DirectionY": 1.0
+      },
+      "Radius": 10.0,
+      "key": 1
     }
   ],
   "FilePath": "./Data/GameObjects/MirrorSection1WIP2.json",
@@ -24,7 +52,7 @@
   },
   "Name": "Switch",
   "Type": "Object",
-  "file": "./Assets/PPM/Mirror.ppm",
+  "file": "./Assets/PPM/CrystalSprites/MirrorCrystalDownRight.ppm",
   "frameSize": [
     8,
     8
