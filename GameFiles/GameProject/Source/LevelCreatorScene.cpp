@@ -21,6 +21,8 @@
 #include "PlatformSystem.h"
 #include "Engine.h"
 #include "BehaviorPlayer.h"
+#include "BehaviorMirror.h"
+#include "Entity.h"
 
 #include "Collider.h"
 #include "Emitter.h"
@@ -842,6 +844,7 @@ void LevelCreatorScene::ImGuiWindow()
 				else
 				{
 					FileIO::GetInstance()->ExportTileMap(myTextBuffer);
+					ImGui::OpenPopup("SuccessfulExport");
 				}
 			}
 
@@ -859,7 +862,18 @@ void LevelCreatorScene::ImGuiWindow()
 				else
 				{
 					ExportScene(myTextBuffer);
+					ImGui::OpenPopup("SuccessfulExport");
 				}
+			}
+
+			if (ImGui::BeginPopupModal("SuccessfulExport", NULL, ImGuiWindowFlags_AlwaysAutoResize))
+			{
+				ImGui::Text("Exported!");
+				if (ImGui::Button("OK"))
+				{
+					ImGui::CloseCurrentPopup();
+				}
+				ImGui::EndPopup();
 			}
 
 			if (ImGui::BeginPopupModal("EmptyExportFileNamePopup", NULL, ImGuiWindowFlags_AlwaysAutoResize))
@@ -954,6 +968,8 @@ void LevelCreatorScene::ImGuiWindow()
 							{
 								ImGui::OpenPopup("NoObjectsInScene");
 							}
+
+							ImGui::OpenPopup("SuccessfulImport");
 						}
 						else
 						{
@@ -961,6 +977,17 @@ void LevelCreatorScene::ImGuiWindow()
 						}
 					}
 				}
+
+				if (ImGui::BeginPopupModal("SuccessfulImport", NULL, ImGuiWindowFlags_AlwaysAutoResize))
+				{
+					ImGui::Text("Imported!");
+					if (ImGui::Button("OK"))
+					{
+						ImGui::CloseCurrentPopup();
+					}
+					ImGui::EndPopup();
+				}
+
 
 				if (ImGui::BeginPopupModal("NoObjectsInScene", NULL, ImGuiWindowFlags_AlwaysAutoResize))
 				{
@@ -1114,6 +1141,7 @@ void LevelCreatorScene::ImGuiWindow()
 	}
 	if (ImGui::Button("  Create Mirror"))
 	{
+		ImGui::OpenPopup("MirrorDirection");
 		CreateMirrorEntity();
 	}
 	if (ImGui::Button("  Create Emitter"))
@@ -1124,6 +1152,58 @@ void LevelCreatorScene::ImGuiWindow()
 	{
 		CreateRecieverEntity();
 	}
+
+	if (ImGui::BeginPopupModal("MirrorDirection", NULL, ImGuiWindowFlags_AlwaysAutoResize))
+	{
+		ImGui::Text("Pick a mirror direction.");
+		ImGui::Text("Warning, this cannot be changed.");
+
+		/* MICHAELLL */
+
+		/* PUT THE DIRECTIONAL BEHAVIOR HERE */
+
+		if (ImGui::Button("North")) 
+		{
+
+		}
+
+		if (ImGui::Button("East")) 
+		{
+
+		}
+
+		if (ImGui::Button("South")) 
+		{
+
+		}
+
+		if (ImGui::Button("West")) 
+		{
+
+		}
+
+		if (ImGui::Button("OK"))
+		{
+			/* probably set direction to null or something as default,
+			   then add a check right here saying if direction == null */
+			/* ImGui::OpenPopup("NoDirectionPicked"); */
+
+
+			ImGui::CloseCurrentPopup();
+		}
+		ImGui::EndPopup();
+	}
+
+	/*if (ImGui::BeginPopupModal("NoDirectionPicked", NULL, ImGuiWindowFlags_AlwaysAutoResize))
+	{
+		ImGui::Text("Pick a direction for mirror!");
+		if (ImGui::Button("OK"))
+		{
+			ImGui::CloseCurrentPopup();
+		}
+		ImGui::EndPopup();
+	}*/
+
 
 	ImGui::Separator();
 	g_Manager.EditEntity(Vector2{ static_cast<float>(Inputs::GetInstance()->getMouseX()), static_cast<float>(Inputs::GetInstance()->getMouseY()) });
@@ -1515,7 +1595,6 @@ void EntityManager::ShowEntityInfo()
 
 				if (ImGui::TreeNode(("Entity %s", creator->tempEntities[i]->key.c_str())))
 				{
-					//ImGui::Text("Name: %s", creator->tempEntities[i]->GetName());
 					if (creator->tempEntities[i]->Has(Transform))
 					{
 						ImGui::Text("Entity Number: %d", i);
@@ -1528,42 +1607,60 @@ void EntityManager::ShowEntityInfo()
 
 						ImGui::SliderInt2("Modify Translation", properties[creator->tempEntities[i]->key].translation, -500, 500);
 						creator->tempEntities[i]->Has(Transform)->SetTranslation({ static_cast<float>(properties[creator->tempEntities[i]->key].translation[0]), static_cast<float>(properties[creator->tempEntities[i]->key].translation[1]) });
-						//creator->tempEntities[i]->GetImage()->position = { static_cast<float>(properties[creator->tempEntities[i]->key].translation[0]), static_cast<float>(properties[creator->tempEntities[i]->key].translation[1]) };
 					}
 					ImGui::Checkbox((properties[creator->tempEntities[i]->key].isEditable ? "Entity edit enabled" : "Entity edit disabled"), &properties[creator->tempEntities[i]->key].isEditable);
 					ImGui::Checkbox((properties[creator->tempEntities[i]->key].isTileAttatch ? "Tile attatch enabled" : "Tile attatch disabled"), &properties[creator->tempEntities[i]->key].isTileAttatch);
 
+					if (creator->tempEntities[i]->addKey.compare("Mirror") == 0)
+					{
+						std::vector<std::pair<int, int>> positions;
+
+						static int xValue = 0;
+						static int yValue = 0;
+
+						ImGui::InputInt("X", &xValue);
+						ImGui::InputInt("Y", &yValue);
+
+						if (ImGui::Button("Confirm Placement..."))
+						{
+							positions.push_back(std::make_pair(xValue, yValue));
+						}
+					}
+
 					if (ImGui::Button("Delete"))
 					{
-						if (!creator->tempEntities.empty())
+						ImGui::OpenPopup("DeletingEntityConfirm");
+					}
+
+					if (ImGui::BeginPopupModal("DeletingEntityConfirm", NULL, ImGuiWindowFlags_AlwaysAutoResize))
+					{
+						ImGui::Text("Are you sure you want to delete this entity?");
+						if (ImGui::Button("Yes"))
 						{
-							/*for (unsigned j = 0; i < creator->tempEntities.size(); ++j)
+							ImGui::CloseCurrentPopup();
+							if (!creator->tempEntities.empty())
 							{
-								if (creator->tempEntities[j] == creator->tempEntities[i])
+								for (auto it = creator->tempEntities.begin(); it != creator->tempEntities.end(); ++it)
 								{
-									if (creator->tempEntities[j]->key.compare(creator->tempEntities[i]->key) == 0)
+									if (*it == creator->tempEntities[i])
 									{
-										creator->tempEntities[j]->FreeComponents();
-										delete creator->tempEntities[j];
-										creator->tempEntities[j] = nullptr;
-										break;
-									}
-								}
-							}*/
-							for (auto it = creator->tempEntities.begin(); it != creator->tempEntities.end(); ++it)
-							{
-								if (*it == creator->tempEntities[i])
-								{
-									if ((*it)->key.compare(creator->tempEntities[i]->key) == 0)
-									{
-										(*it)->FreeComponents();
-										delete* it;
-										*it = nullptr;
-										break;
+										if ((*it)->key.compare(creator->tempEntities[i]->key) == 0)
+										{
+											(*it)->FreeComponents();
+											delete* it;
+											*it = nullptr;
+											break;
+										}
 									}
 								}
 							}
 						}
+
+						if (ImGui::Button("No"))
+						{
+							ImGui::CloseCurrentPopup();
+						}
+						ImGui::EndPopup();
 					}
 
 					if (!creator->tempEntities[i])
