@@ -59,11 +59,27 @@ void Renderer::Update(float dt)
     omp_set_num_threads(maxThreadsAllowed);
 
     UpdateObjects(dt);
-    RenderLightingPass();
-    RenderLasers();
-    BlurLights(-1,2);
-    outputBuffer->DitherBuffer(outputBuffer, renderOnlyLights, isFullbright,  lightR, lightG, lightB);
-    //RenderFog();
+
+    //prep buffers for rendering
+    int CameraOffsetX = (int)CameraP.x;
+    int CameraOffsetY = (int)CameraP.y;
+
+    outputBuffer->ClearImageBuffer();
+    lightBuffer->ClearImageBuffer();
+
+    backgroundLayer->Blit(outputBuffer, -CameraOffsetX, -CameraOffsetY);
+    objectLayer->Blit(outputBuffer, -CameraOffsetX, -CameraOffsetY);
+    foregroundLayer->Blit(outputBuffer, -CameraOffsetX, -CameraOffsetY);
+    particleManager->UpdateParticles();
+    RenderParticles();
+
+    if (isFullbright != true)
+    {
+        RenderLightingPass();
+        RenderLasers();
+        BlurLights(-1, 2);
+        outputBuffer->DitherBuffer(outputBuffer, renderOnlyLights, isFullbright, lightR, lightG, lightB);
+    }
     RenderToOutbuffer();
 
     if (DebugBuffer != NULL)
@@ -165,7 +181,6 @@ void Renderer::RenderToOutbuffer()
     {
         RenderWallCollidersToDebugBuffer();
     }
-
     if (Engine::GetInstance()->Paused() == true)
     {
         RenderMenu();
@@ -174,22 +189,6 @@ void Renderer::RenderToOutbuffer()
 
 void Renderer::RenderLightingPass()
 {
-    int CameraOffsetX = (int)CameraP.x;
-    int CameraOffsetY = (int)CameraP.y;
-
-    outputBuffer->ClearImageBuffer();
-    lightBuffer->ClearImageBuffer();
-
-    backgroundLayer->Blit(outputBuffer, -CameraOffsetX, -CameraOffsetY);
-    objectLayer->Blit(outputBuffer, -CameraOffsetX, -CameraOffsetY);
-    foregroundLayer->Blit(outputBuffer, -CameraOffsetX, -CameraOffsetY);
-    particleManager->UpdateParticles();
-
-    //for shadow casting
-    //shadowCasterBuffer->Blit(lightBuffer, -CameraOffsetX, -CameraOffsetY);
-
-    RenderParticles();
-
 #if 1
     const int xSize = (int)outputBuffer->size.x;
     const int ySize = (int)outputBuffer->size.y;
