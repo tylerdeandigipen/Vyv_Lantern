@@ -18,6 +18,7 @@ Emitter::Emitter() : Component(Component::cEmitter)
 	isSource = false;
 	hit = false;
 	isDirty = true;
+	laserReference = 0;
 }
 
 Emitter::Emitter(Emitter const& emitter2cpy) : Component(emitter2cpy)
@@ -26,12 +27,22 @@ Emitter::Emitter(Emitter const& emitter2cpy) : Component(emitter2cpy)
 	position = new gfxVector2(*emitter2cpy.position);
 	direction = new gfxVector2(*emitter2cpy.direction);
 	endpoint = new gfxVector2(*emitter2cpy.endpoint);
+	distance = 0.0f;
+	isEmitting = false;
+	isSource = false;
+	hit = false;
+	isDirty = true;
+	laserReference = 0;
+	//Data ONLY gets set in the Read function.
 }
 
 Emitter::~Emitter()
 {
+	delete position;
+	delete direction;
+	delete endpoint;
+	Renderer::GetInstance()->numLasers = 0;
 
-	
 }
 
 Component* Emitter::Clone() const
@@ -42,27 +53,29 @@ Component* Emitter::Clone() const
 void Emitter::Read(json jsonData)
 {
 	/*
-		
+
 		note:
 		1,0 right
 		0,1 down
 		-1,0 left
 		0,-1 up
+	{
 	  "Type": "Emitter",
-      "LaserDirection": {
-          "x": 0,
-          "y": 0
-      },       
-      "EmitterStart": {
-          "x": 50,
-          "y": 0
-      },
-      "EmitterEndPoint": {
-          "x": 0,
-          "y": 0
-      },
+	  "LaserDirection": {
+		  "x": 0,
+		  "y": 0
+	  },
+	  "EmitterStart": {
+		  "x": 50,
+		  "y": 0
+	  },
+	  "EmitterEndPoint": {
+		  "x": 0,
+		  "y": 0
+	  },
 	  "distance": 100,
 	  "isSource": true
+	}
 
 	*/
 
@@ -123,7 +136,7 @@ void Emitter::Read(json jsonData)
 	else if (GetDirection().y < 0)
 	{
 
-		endpoint -> x = GetPosition().x;
+		endpoint->x = GetPosition().x;
 		endpoint->y = GetPosition().y - GetDistance();
 	};
 
@@ -142,18 +155,38 @@ void Emitter::Read(json jsonData)
 
 }
 
-void Emitter::Update(float dt) 
+void Emitter::Update(float dt)
 {
 	if (isDirty)
 	{
 		//update the correct system
-		//update other things too if needed
+		//update other things too if needed such as it's position if it moves... but it should be handled by others?
+		//this is the only relevant data
 		Renderer* pointyBoi = Renderer::GetInstance();
 		pointyBoi->laserPoints1[laserReference] = *position;
 		pointyBoi->laserPoints2[laserReference] = *endpoint;
 
 		isDirty = false;
 	}
+
+	if (hit && !isSource)
+	{
+		Renderer* pointyBoi = Renderer::GetInstance();
+		if ((pointyBoi->laserPoints1[laserReference]) == (pointyBoi->laserPoints2[hitbyLaser]))
+		{
+			// the laser that was pointing at it is still pointing at it
+		}
+		else
+		{
+
+			hit = false;
+			Vector2 breakLaser = { 9.11, 9.11 };
+			SetEndpoint(breakLaser);
+			isEmitting = false;
+		}
+	}
+
+
 }
 
 //second opinion maybe consider making a lazer a different component and emmit that component rather than this immiter 
@@ -162,18 +195,18 @@ void Emitter::Render() const
 
 
 	/*if debug
-	* 
-	* 
-	* 
-	* 
+	*
+	*
+	*
+	*
 	*/
 
 }
 
 /*
-* learned code from 
+* learned code from
 */
-inline bool LineToLineCollision(Emitter * laser, Entity& line, int flag, bool interuptflag)
+inline bool LineToLineCollision(Emitter* laser, Entity& line, int flag, bool interuptflag)
 {
 
 }
@@ -187,7 +220,7 @@ inline bool LineToLineCollision(Emitter * laser, Entity& line, int flag, bool in
 inline bool DoCalculations(Emitter* obj)
 {
 
-	Renderer*	pointyBoi = Renderer::GetInstance();
+	Renderer* pointyBoi = Renderer::GetInstance();
 
 
 	gfxVector2 compare = { 0,0 };
@@ -213,7 +246,7 @@ inline bool DoCalculations(Emitter* obj)
 		compare = pointyBoi->CheckLineForObjects(obj->GetPosition().x, obj->GetPosition().y,
 			obj->GetPosition().x, obj->GetPosition().y - obj->GetDistance());
 	}
-	
+
 	if (compare.operator == (obj->GetEndpoint()))
 	{
 		return false;
@@ -242,136 +275,180 @@ void Emitter::EmitterCollisionHandler(Entity& object1, Entity& object2)
 		//if laser collider ishit and 
 
 		Emitter* laser = object1.Has(Emitter);
+
 		if (!laser->isEmitting)
 		{
+			//for rendering code
 			Vector2 breakLaser = { 9.11, 9.11 };
 			laser->SetEndpoint(breakLaser);
 			return;
 		}
 
+
 		bool struckShadow = DoCalculations(laser);
 
 
-			//this is a  single emitter case may need to adjust for future ifor mulit emitter cases
-			if (object2.Has(Emitter))
+		//this is a  single emitter case may need to adjust for future ifor mulit emitter cases
+		if (object2.Has(Emitter))
+		{
+
+			LineCollider* line = object2.Has(LineCollider); //note that position one should be the left most and position 2 should be the right most
+
+			Emitter* lineEmitter = object2.Has(Emitter);
+			gfxVector2 tempDir = laser->GetDirection();
+
+			float inbetween; // check if  mirror is too far
+			//between x values
+			if (laser->GetPosition().x >= line->GetPosition1()->x && laser->GetPosition().x <= line->GetPosition2()->x)
 			{
 
-				LineCollider* line = object2.Has(LineCollider); //note that position one should be the left most and position 2 should be the right most
+				//doesn't matter matter if it doesn't strike will set to 1st wall struck
 
-				Emitter* lineEmitter = object2.Has(Emitter);
-				gfxVector2 tempDir = laser->GetDirection();
-				bool struckShadow = DoCalculations(laser);
-				float inbetween;
-				//between x values
-				if (laser->GetPosition().x >= line->GetPosition1()->x && laser->GetPosition().x <= line->GetPosition2()->x)
+				if (tempDir.y > 0)
 				{
-
-					//doesn't matter matter if it doesn't strike will set to 1st wall struck
-
-					if (tempDir.y > 0)
+					if (laser->GetPosition().y < lineEmitter->GetPosition().y)
 					{
-						if (laser->GetPosition().y < lineEmitter->GetPosition().y)
+
+
+
+						if (struckShadow && lineEmitter->GetPosition().y < laser->GetEndpoint().y)
 						{
 
-							//inbetween = lineEmitter->GetPosition().y - laser->GetPosition().y;
-							// aboce is potential distance between mirros
-							// 
-							//simple recalculations
-
-
-							if (struckShadow && lineEmitter->GetPosition().y < laser->GetEndpoint().y)
-							{
-
-								//compare the emitter position against the  current end position
-								// if it is '>' or '<' depending in direction then do not truncate
-								laser->SetEndpoint(lineEmitter->GetPosition());
-								lineEmitter->SetEmitting(true);
-							}
-							else
-							{
-								//if (inbetween > laser->GetDistance())
-								//{
-								//	Vector2 BrokenLaser = { 404.1,404.1 };
-								//	laser->SetEndpoint(BrokenLaser);
-								//	return;
-								//}
-
-								laser->SetEndpoint(lineEmitter->GetPosition());
-								lineEmitter->SetEmitting(true);
-							}
-
-
+							//compare the emitter position against the  current end position
+							// if it is '>' or '<' depending in direction then do not truncate
+							laser->SetEndpoint(lineEmitter->GetPosition());
+							lineEmitter->SetEmitting(true);
+							lineEmitter->SetHit(true, laser->laserReference);
 						}
-					}
-					else if (tempDir.y < 0)
-					{
-						if (laser->position->y > lineEmitter->GetPosition().y)
+						else
 						{
-							//does collide do thing
-														//simple recalculations
-							if (struckShadow && lineEmitter->GetPosition().y < laser->GetEndpoint().y)
+
+							inbetween = lineEmitter->GetPosition().y - laser->position->y;
+							//does not reach
+							if (inbetween > laser->GetDistance())
 							{
-								//compare the emitter position against the  current end position
-								// if it is '>' or '<' depending in direction then do not truncate
-								laser->SetEndpoint(lineEmitter->GetPosition());
-								lineEmitter->SetEmitting(true);
+								return;
 							}
-							else
-							{
-								laser->SetEndpoint(lineEmitter->GetPosition());
-								lineEmitter->SetEmitting(true);
-							}
+
+
+							laser->SetEndpoint(lineEmitter->GetPosition());
+							lineEmitter->SetEmitting(true);
+							lineEmitter->SetHit(true, laser->laserReference);
 						}
+
+
 					}
-
-
-				
 				}
-
-				//between y values
-				if (laser->GetPosition().y >= line->GetPosition1()->y && laser->GetPosition().y <= line->GetPosition2()->x)
+				else if (tempDir.y < 0)
 				{
-					if (tempDir.x > 0)
+					if (laser->position->y > lineEmitter->GetPosition().y)
 					{
-						if (laser->position->x > line->GetPosition1()->x)
+						//does collide do thing
+													//simple recalculations
+						if (struckShadow && lineEmitter->GetPosition().y < laser->GetEndpoint().y)
 						{
-							//does collide	do thing
-														//simple recalculations
-							if (struckShadow && lineEmitter->GetPosition().x < laser->GetEndpoint().x)
-							{
-								//compare the emitter position against the  current end position
-								// if it is '>' or '<' depending in direction then do not truncate
-								laser->SetEndpoint(lineEmitter->GetPosition());
-								lineEmitter->SetEmitting(true);
-							}
+							//compare the emitter position against the  current end position
+							// if it is '>' or '<' depending in direction then do not truncate
+							laser->SetEndpoint(lineEmitter->GetPosition());
+							lineEmitter->SetEmitting(true);
 						}
-					}
-					else if (tempDir.x < 0)
-					{
-						if (laser->position->x < line->GetPosition1()->x)
+						else
 						{
-							if (struckShadow && lineEmitter->GetPosition().x > laser->GetEndpoint().x)
+							inbetween = laser->position->y - lineEmitter->GetPosition().y;
+
+							//does not reach
+							if (inbetween > laser->GetDistance())
 							{
-								//compare the emitter position against the  current end position
-								// if it is '>' or '<' depending in direction then do not truncate
-								laser->SetEndpoint(lineEmitter->GetPosition());
-								lineEmitter->SetEmitting(true);
+								return;
 							}
-							//does collide do thing
 
-
+							laser->SetEndpoint(lineEmitter->GetPosition());
+							lineEmitter->SetEmitting(true);
+							lineEmitter->SetHit(true, laser->laserReference);
 						}
 					}
 				}
-				//turn of code for laser look somethingl like this make endpoint->x position->x+1f and should stop rendering the laser.
+
+
 
 			}
-			else
+
+			//between y values
+			if (laser->GetPosition().y >= line->GetPosition1()->y && laser->GetPosition().y <= line->GetPosition2()->x)
 			{
+				if (tempDir.x > 0)
+				{
+					if (laser->position->x > line->GetPosition1()->x)
+					{
+						//does collide	do thing
+													//simple recalculations
+						if (struckShadow && lineEmitter->GetPosition().x < laser->GetEndpoint().x)
+						{
+							//compare the emitter position against the  current end position
+							// if it is '>' or '<' depending in direction then do not truncate
+							laser->SetEndpoint(lineEmitter->GetPosition());
+							lineEmitter->SetEmitting(true);
+							lineEmitter->SetHit(true, laser->laserReference);
+						}
+						else
+						{
+							inbetween = laser->position->x - lineEmitter->GetPosition().x;
+							//does not reach
+							if (inbetween > laser->GetDistance())
+							{
+								return;
+							}
 
-				//come here for other behaviors i guess.
-				return;
+							laser->SetEndpoint(lineEmitter->GetPosition());
+							lineEmitter->SetEmitting(true);
+							lineEmitter->SetHit(true, laser->laserReference);
+						}
+					}
+				}
+				else if (tempDir.x < 0)
+				{
+					if (laser->position->x < line->GetPosition1()->x)
+					{
+						if (struckShadow && lineEmitter->GetPosition().x > laser->GetEndpoint().x)
+						{
+							//compare the emitter position against the  current end position
+							// if it is '>' or '<' depending in direction then do not truncate
+							laser->SetEndpoint(lineEmitter->GetPosition());
+							lineEmitter->SetEmitting(true);
+							lineEmitter->SetHit(true, laser->laserReference);
+						}
+						else
+						{
+							inbetween = lineEmitter->GetPosition().x - laser->position->x;
+							//does not reach
+							if (inbetween > laser->GetDistance())
+							{
+								return;
+							}
+
+							laser->SetEndpoint(lineEmitter->GetPosition());
+							lineEmitter->SetEmitting(true);
+							lineEmitter->SetHit(true, laser->laserReference);
+						}
+
+
+					}
+				}
 			}
+			//turn of code for laser look somethingl like this make endpoint->x position->x+1f and should stop rendering the laser.
+
+		}
+		else
+		{
+			// other behaviors
+
+
+
+
+
+			//come here for other behaviors i guess.
+			return;
+		}
 
 
 		//the 2nd object is the one emitting
@@ -382,7 +459,7 @@ void Emitter::EmitterCollisionHandler(Entity& object1, Entity& object2)
 
 	}
 	//potentially more stuff for line colliders maybe break this up into different behaviors.
-	
+
 }
 
 
