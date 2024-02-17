@@ -211,7 +211,7 @@ void Renderer::RenderLightingPass()
 
                 for (int i = 0; i < numLights; ++i)
                 {
-                    if (CalculateIfPixelIsLit(x, y, i) == true)
+                    if (CalculateIfPixelIsLit(x, y, i) == true || doFog == true)
                     {
                         Light* LightSource = lightSource + i;
                         float lightMultiplier = FindPixelLuminosity((float)x, (float)y, LightSource);
@@ -310,7 +310,7 @@ float Renderer::FindPixelLuminosity(float x, float y, Light* LightSource)
     }
 
     //Normal map calculations
-    if (Result > 0)
+    if (Result > 0 && doFog != true)
     {
         if ((int)x + CameraP.x <= normalBuffer->BufferSizeX && (int)x + CameraP.x >= 0 && (int)y + CameraP.y <= normalBuffer->BufferSizeY && (int)y + CameraP.y >= 0)
         {
