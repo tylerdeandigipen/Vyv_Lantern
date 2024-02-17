@@ -36,6 +36,7 @@ void LineCollider::Update(float dt) {
 void LineCollider::Read(json jsonData)
 {
 	/*
+	{
 	  "Type": "LineCollider",
       "LeftMostPoint": {
           "x": 0,
@@ -45,7 +46,7 @@ void LineCollider::Read(json jsonData)
           "x": 50,
           "y": 0
       }
-
+	}
 	*/
 
 	

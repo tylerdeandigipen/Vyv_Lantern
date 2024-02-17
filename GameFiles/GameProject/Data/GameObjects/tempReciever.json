@@ -1,8 +1,8 @@
 {
   "Type": "Object",
   "Name": "Emitter",
-  "file": "./Assets/PPM/tempReciever.ppm",
-  "FilePath": "./Data/GameObjects/Emitter.json",
+  "file": "./Assets/PPM/CrystalSprites/GoalCrystal.ppm",
+  "FilePath": "./Data/GameObjects/tempReciever.json",
   "isAnimated": false,
   "frameSize": [ 8, 8 ],
   "Components": [

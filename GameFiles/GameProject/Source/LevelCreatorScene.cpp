@@ -1390,7 +1390,7 @@ void LevelCreatorScene::AddMirrorEntity(Entity* entity)
 	mirrorData["FilePath"] = entity->GetFilePath();
 	mirrorData["Name"] = "Switch";
 	mirrorData["Type"] = "Object";
-	mirrorData["file"] = "./Assets/PPM/Mirror.ppm";
+	mirrorData["file"] = "./Assets/PPM/CrystalSprites/MirrorCrystalDownRight.ppm";
 	mirrorData["frameSize"] = { 8,8 };
 	mirrorData["isAnimated"] = false;
 	mirrorData["KeyObject"] = { {"key", entity->key} };
@@ -1415,6 +1415,8 @@ void LevelCreatorScene::AddEmitterEntity(Entity* entity)
 	json collider = { {"Type", "ColliderAABB"} };
 	json transform = { {"Type", "Transform"}, {"translation", { { "x", entity->Has(Transform)->GetTranslation()->x }, {"y", entity->Has(Transform)->GetTranslation()->y} } } };
 	json physics = { {"Type", "Physics"}, {"OldTranslation", { { "x", entity->Has(Transform)->GetTranslation()->x }, {"y", entity->Has(Transform)->GetTranslation()->y} } } };
+	json emitter = { };
+	json lineCollider = {};
 
 	components.push_back(collider);
 	components.push_back(transform);
@@ -1450,6 +1452,7 @@ void LevelCreatorScene::AddRecieverEntity(Entity* entity)
 	json collider = { {"Type", "ColliderAABB"} };
 	json transform = { {"Type", "Transform"}, {"translation", { { "x", entity->Has(Transform)->GetTranslation()->x }, {"y", entity->Has(Transform)->GetTranslation()->y} } } };
 	json physics = { {"Type", "Physics"}, {"OldTranslation", { { "x", entity->Has(Transform)->GetTranslation()->x }, {"y", entity->Has(Transform)->GetTranslation()->y} } } };
+	json lineCollider = {};
 
 	components.push_back(collider);
 	components.push_back(transform);
@@ -1459,7 +1462,7 @@ void LevelCreatorScene::AddRecieverEntity(Entity* entity)
 	mirrorData["FilePath"] = entity->GetFilePath();
 	mirrorData["Name"] = "Reciever";
 	mirrorData["Type"] = "Object";
-	mirrorData["file"] = "./Assets/PPM/tempReciever.ppm";
+	mirrorData["file"] = "./Assets/PPM/CrystalSprites/GoalCrystal.ppm";
 	mirrorData["frameSize"] = { 8,8 };
 	mirrorData["isAnimated"] = false;
 	mirrorData["KeyObject"] = { {"key", entity->key} };
