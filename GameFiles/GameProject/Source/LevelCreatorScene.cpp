@@ -1152,6 +1152,7 @@ void LevelCreatorScene::ImGuiWindow()
 	}
 	if (ImGui::Button("  Create Emitter"))
 	{
+		ImGui::OpenPopup("EmitterDirection");
 		CreateEmitterEntity();
 	}
 	if (ImGui::Button("  Create Reciever"))
@@ -1170,6 +1171,7 @@ void LevelCreatorScene::ImGuiWindow()
 
 		if (ImGui::Button("North")) 
 		{
+			// mirror.direction = direction
 
 		}
 
@@ -1200,9 +1202,50 @@ void LevelCreatorScene::ImGuiWindow()
 		ImGui::EndPopup();
 	}
 
+	if (ImGui::BeginPopupModal("EmitterDirection", NULL, ImGuiWindowFlags_AlwaysAutoResize))
+	{
+		ImGui::Text("Pick a mirror direction.");
+		ImGui::Text("Warning, this cannot be changed.");
+
+		/* MICHAELLL */
+
+		/* PUT THE DIRECTIONAL BEHAVIOR HERE */
+
+		if (ImGui::Button("North"))
+		{
+
+		}
+
+		if (ImGui::Button("East"))
+		{
+
+		}
+
+		if (ImGui::Button("South"))
+		{
+
+		}
+
+		if (ImGui::Button("West"))
+		{
+
+		}
+
+		if (ImGui::Button("OK"))
+		{
+			/* probably set direction to null or something as default,
+			   then add a check right here saying if direction == null */
+			   /* ImGui::OpenPopup("NoDirectionPicked"); */
+
+
+			ImGui::CloseCurrentPopup();
+		}
+		ImGui::EndPopup();
+	}
+
 	/*if (ImGui::BeginPopupModal("NoDirectionPicked", NULL, ImGuiWindowFlags_AlwaysAutoResize))
 	{
-		ImGui::Text("Pick a direction for mirror!");
+		ImGui::Text("Pick a direction!");
 		if (ImGui::Button("OK"))
 		{
 			ImGui::CloseCurrentPopup();
@@ -1623,6 +1666,8 @@ void EntityManager::ShowEntityInfo()
 
 					if (creator->tempEntities[i]->addKey.compare("Mirror") == 0)
 					{
+						// show direction info once set
+
 						std::vector<std::pair<int, int>> positions;
 
 						static int xValue = 0;
@@ -1635,6 +1680,28 @@ void EntityManager::ShowEntityInfo()
 						{
 							positions.push_back(std::make_pair(xValue, yValue));
 						}
+					}
+
+					if (creator->tempEntities[i]->addKey.compare("Emitter") == 0)
+					{
+						// show direction info once set
+						//ImGui::Text("bewomp emitter");
+					}
+
+					if (creator->tempEntities[i]->addKey.compare("Reciever") == 0)
+					{
+						// once there is a way to attach the door, add a if else here
+						ImGui::Text("No door is connected to this reciever.");
+
+						// put here a way to get the door its connected to. 
+						//ImGui::Text("Receiver connected to: %s", (PUT KEY OR SMTH));
+					}
+
+					if (creator->tempEntities[i]->addKey.compare("Door") == 0)
+					{
+						ImGui::Text("No reciever is attached.");
+
+						// do basically the same as reciever
 					}
 
 					if (ImGui::Button("Delete"))
