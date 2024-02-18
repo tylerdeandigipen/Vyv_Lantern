@@ -522,10 +522,12 @@ void Renderer::RenderLasers()
 {
     const int xSize = (int)outputBuffer->size.x;
     const int ySize = (int)outputBuffer->size.y;
+    /*
     laserPoints1[1] = {200,100};
     laserPoints2[1] = { 100,100 };
     laserPoints1[2] = { 100,300 };
     laserPoints2[2] = { 100,100 };
+    */
     Color tempLaserColor[1];
     tempLaserColor[0] = Color{ 84,0,255,255 };
 

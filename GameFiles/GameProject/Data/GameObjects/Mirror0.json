@@ -59,14 +59,14 @@
         "y": 0
       },
       "EmitterStart": {
-        "x": 112.0,
+        "x": 113.0,
         "y": 109.0
       },
       "EmitterEndPoint": {
         "x": 9999,
         "y": 0
       },
-      "distance": 150,
+      "distance": 20,
       "isSource": false
     }
   ],
