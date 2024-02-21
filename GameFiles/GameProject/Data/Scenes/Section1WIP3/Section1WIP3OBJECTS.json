@@ -1,0 +1,41 @@
+{
+  "Circle": {
+    "count": 3
+  },
+  "Door": {
+    "count": 3
+  },
+  "Emitter": {
+    "count": 4
+  },
+  "FilePath": "./Data/Scenes/Section1WIP3/Section1WIP3OBJECTS.json",
+  "Mirror": {
+    "count": 8
+  },
+  "Objects": [
+    {
+      "FilePath": "./Data/Scenes/Section1WIP3/Section1WIPEmitter0.json"
+    },
+    {
+      "FilePath": "./Data/Scenes/Section1WIP3/Section1WIPReciever1.json"
+    },
+    {
+      "FilePath": "./Data/Scenes/Section1WIP3/Section1WIPMirror0.json"
+    },
+    {
+      "FilePath": "./Data/Scenes/Section1WIP3/Section1WIPMirror1.json"
+    },
+    {
+      "FilePath": "./Data/Scenes/Section1WIP3/Section1WIPMirror2.json"
+    },
+    {
+      "FilePath": "./Data/Scenes/Section1WIP3/Section1WIPMirror3.json"
+    },
+    {
+      "FilePath": "./Data/Scenes/Section1WIP3/Section1WIPMirror4.json"
+    }
+  ],
+  "Reviever": {
+    "count": 1
+  }
+}

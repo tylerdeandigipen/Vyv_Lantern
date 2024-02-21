@@ -6,49 +6,36 @@
     {
       "Type": "Transform",
       "translation": {
-        "x": 120.0,
-        "y": 332.0
+        "x": 216.0,
+        "y": 380.0
       }
     },
     {
       "OldTranslation": {
-        "x": 120.0,
-        "y": 332.0
+        "x": 216.0,
+        "y": 380.0
       },
       "Type": "Physics"
     },
     {
+      "NumPositions": 2,
       "Type": "BehaviorSwitch",
       "key": 1,
-      "NumPositions": 3,
       "pos": [
         {
-          "x": "120",
-          "y": "332"
+          "x": "216.000000",
+          "y": "380.000000"
         },
         {
-          "x": "120",
-          "y": "356"
-        },
-        {
-          "x": "120",
-          "y": "316"
+          "x": "192.000000",
+          "y": "380.000000"
         }
       ]
-    },
-    {
-      "Type": "BehaviorMirror",
-      "Direction": {
-        "DirectionX": 1.0,
-        "DirectionY": 1.0
-      },
-      "Radius": 10.0,
-      "key": 1
     }
   ],
-  "FilePath": "./Data/GameObjects/MirrorSection1WIP0.json",
+  "FilePath": "./Data/Scenes/Section1WIP3/Section1WIPMirror4.json",
   "KeyObject": {
-    "key": "Section1WIPMirror0"
+    "key": "Section1WIPMirror4"
   },
   "Name": "Switch",
   "Type": "Object",
