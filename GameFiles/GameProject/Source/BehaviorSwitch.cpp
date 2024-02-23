@@ -5,7 +5,7 @@
 // Purpose:		Implementation of behaviormirror class for controlling switch 
 //              entities.
 // 
-// Copyright © 2023 DigiPen (USA) Corporation.
+// Copyright ?2023 DigiPen (USA) Corporation.
 //
 //------------------------------------------------------------------------------
 #include "BehaviorSwitch.h"
@@ -92,7 +92,7 @@ void BehaviorSwitch::Update(float dt)
         Controller(dt);
     if (GetLerped() == true)
     {
-        gfxVector2 lerped = lerpValue(*Parent()->Has(Transform)->GetTranslation(), pos[currentPos], 1.0f * dt);
+        gfxVector2 lerped = lerpValue(*Parent()->Has(Transform)->GetTranslation(), pos[currentPos], 1.5f * dt);
         Parent()->Has(Transform)->SetTranslation(lerped);
         if (lerped.x >= (pos[currentPos].x - 1) &&
             lerped.x <= (pos[currentPos].x + 1) &&
