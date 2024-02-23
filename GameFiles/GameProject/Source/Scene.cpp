@@ -11,9 +11,7 @@
 #include "Scene.h"
 
 Scene::Scene(const char* _name)
-{ 
+{
 	name = _name;
 	mode = Mode::Play;
 }
-
-

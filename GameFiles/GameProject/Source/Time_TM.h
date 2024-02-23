@@ -14,15 +14,15 @@
 class Time
 {
 public:
-    Time();
-    ~Time();
-    float Delta();
-    float GetDt();
-    static Time& Instance();
+	Time();
+	~Time();
+	float Delta();
+	float GetDt();
+	static Time& Instance();
 
 private:
-    float last_tick_time;
-    float delta;
+	float last_tick_time;
+	float delta;
 };
 
 #endif TIME_H

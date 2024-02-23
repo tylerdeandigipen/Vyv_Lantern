@@ -25,12 +25,10 @@ EntityContainer* EntityContainer::instance = new EntityContainer();
 
 EntityContainer::EntityContainer() : entities()
 {
-
 }
 
 EntityContainer::~EntityContainer()
 {
-	
 }
 
 Engine::EngineCode EntityContainer::Init()
@@ -50,8 +48,9 @@ void EntityContainer::Render()
 void EntityContainer::ReadEntities(std::string filepath)
 {
 	Renderer* pixel = Renderer::GetInstance();
-	
+
 	json listData = FileIO::GetInstance()->OpenJSON(filepath);
+
 	//if (jsonData["Entities"].is_array())
 	//{
 	for (auto& entityData : listData["Objects"])
@@ -62,6 +61,7 @@ void EntityContainer::ReadEntities(std::string filepath)
 		Entity* newEnt = FileIO::GetInstance()->ReadEntity(jsonData);
 		AddEntity(newEnt);
 	}
+
 	//}
 }
 
@@ -130,25 +130,22 @@ void EntityContainer::CheckCollisions()
 		Collider* collider = entities[current]->Has(Collider);
 		if (collider)
 		{
- 		   for (unsigned i = current + 1; i < entities.size(); ++i)
- 		   {
+			for (unsigned i = current + 1; i < entities.size(); ++i)
+			{
 				if (entities[i])
- 				{
+				{
 					Collider* secCollider = entities[i]->Has(Collider);
 					if (secCollider)
 					{
 						collider->Check(secCollider);
 					}
 
-
 					if (entities[current]->Has(Emitter) && entities[i]->Has(LineCollider))
 					{
 						Emitter::EmitterCollisionHandler(*entities[current], *entities[i]);
 					}
-
-					
- 				}
- 		   }
+				}
+			}
 		}
 		++current;
 	}

@@ -27,11 +27,12 @@ enum class SceneType
 	SCENE_TEST = 1,
 	SCENE_LEVELCREATOR = 2,
 	NULL_SCENE,
+
 	// Add more scenes as needed
 };
 
 // singleton instance
-SceneSystem * SceneSystem::instance = new SceneSystem();
+SceneSystem* SceneSystem::instance = new SceneSystem();
 
 Inputs* inputHandlerScene = Inputs::GetInstance();
 
@@ -39,6 +40,7 @@ Engine::EngineCode SceneSystem::Init()
 {
 	// make sure the default scene isn't null
 	assert(DefaultSceneInstance != nullptr && "Default scene is NULL. Location: SceneSystem::Init()");
+
 	//current scene instance set to default
 	instance->SetScene(DefaultSceneInstance);
 	return Engine::NothingBad;
@@ -68,7 +70,6 @@ void SceneSystem::Update(float dt)
 
 	assert(activeScene != nullptr && "Active scene is NULL. Location: SceneSystem::Update()");
 	activeScene->Update(dt);
-
 }
 
 void SceneSystem::Render()
@@ -273,7 +274,6 @@ bool CheckGameScenes()
 
 	return true;
 }
-
 
 bool CheckRestart()
 {

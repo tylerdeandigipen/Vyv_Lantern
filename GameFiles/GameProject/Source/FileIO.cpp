@@ -17,7 +17,6 @@
 #include "Renderer.h"
 #include "Logging.h"
 
-
 std::unique_ptr<FileIO> FileIO::instance = nullptr;
 
 FileIO::FileIO()
@@ -26,7 +25,6 @@ FileIO::FileIO()
 
 FileIO::~FileIO()
 {
-	
 }
 
 json FileIO::OpenJSON(std::string filename)
@@ -42,6 +40,7 @@ json FileIO::OpenJSON(std::string filename)
 	else
 	{
 		Logging::GetInstance("debugLog.log").LogLine("Opened %s", filename.c_str());
+
 		//perror("JSON file does not exist");
 		assert("File did not exist");
 	}
@@ -64,7 +63,7 @@ void FileIO::ReadLight(Light& light, json& jsonData)
 		json color = jsonData["color"];
 		light.color = { color["r"], color["g"], color["b"], color["a"] };
 	}
-	
+
 	light.minAngle = jsonData["minAngle"];
 	light.maxAngle = jsonData["maxAngle"];
 	light.angle = jsonData["angle"];
@@ -102,6 +101,7 @@ int** FileIO::ReadTiledMap(json jsonData)
 	{
 		json tiles = jsonData["TiledData"];
 		tiles = OpenJSON(tiles["TileMapFile"]);
+
 		//int i = 0, j = 0; //, hatelife = 0; used to debug
 		int SizeX = tiles["width"];
 		int SizeY = tiles["height"];
@@ -109,7 +109,6 @@ int** FileIO::ReadTiledMap(json jsonData)
 
 		LevelBuilder::GetInstance()->SetX(SizeX);
 		LevelBuilder::GetInstance()->SetY(SizeY);
-
 
 		if (tiles["layers"].is_array())
 		{
@@ -137,6 +136,7 @@ int** FileIO::ReadTiledMap(json jsonData)
 									--newVal;
 								}
 								TileMap[i][j] = newVal;
+
 								//++hatelife; used to debug json
 							}
 						}
@@ -187,6 +187,7 @@ int** FileIO::ReadTylerTileMap(json jsonData)
 				if (Array[i][j].is_number())
 				{
 					TileMap[i][j] = Array[i][j];
+
 					//++hatelife; used to debug json
 				}
 			}
@@ -195,17 +196,14 @@ int** FileIO::ReadTylerTileMap(json jsonData)
 	return TileMap;
 }
 
-
-
 FileIO* FileIO::GetInstance()
 {
-	if (!instance) 
+	if (!instance)
 	{
 		instance.reset(new FileIO());
 	}
 	return instance.get();
 }
-
 
 void FileIO::ReadTileSet(std::string filename, Renderer* pixel, int tileSetType)
 {
@@ -235,7 +233,7 @@ void FileIO::ReadTileSet(std::string filename, Renderer* pixel, int tileSetType)
 			{
 				pixel->AddTileToTileset(temp);
 			}
-			else if(tileSetType == 1)
+			else if (tileSetType == 1)
 			{
 				pixel->AddNormalToNormalTileset(temp);
 			}
@@ -245,8 +243,8 @@ void FileIO::ReadTileSet(std::string filename, Renderer* pixel, int tileSetType)
 			}
 		}
 	}
-	
-    delete spriteSheet;
+
+	delete spriteSheet;
 }
 
 int FileIO::ReadInt(FILE* stream)
@@ -291,6 +289,7 @@ Entity* FileIO::ReadEntity(json entityData)
 		if (newEnt->IsAnimated())
 		{
 			newEnt->AddToRenderer(Renderer::GetInstance(), entityData["file"]);
+
 			//newEnt->Has(Transform)->SetTranslation(&pixel->animatedObjects[0][0]->position);
 			//newEnt->SetImage(pixel->animatedObjects[0][0]);
 		}
@@ -318,6 +317,7 @@ Entity* FileIO::ReadEntity(std::string filename)
 		if (newEnt->IsAnimated())
 		{
 			newEnt->AddToRenderer(Renderer::GetInstance(), entityData["file"]);
+
 			//newEnt->Has(Transform)->SetTranslation(&pixel->animatedObjects[0][0]->position);
 			//newEnt->SetImage(pixel->animatedObjects[0][0]);
 		}
@@ -330,15 +330,13 @@ Entity* FileIO::ReadEntity(std::string filename)
 	return newEnt;
 }
 
-
 //
-// 
+//
 //
 void FileIO::ReadScene(std::string fileName)
 {
 	json jsonData = OpenJSON(fileName);
 	EntityContainer::GetInstance()->ReadEntities(jsonData["GameObjects"]);
-
 }
 
 void FileIO::ExportTileMap(std::string name)
@@ -350,7 +348,7 @@ void FileIO::ExportTileMap(std::string name)
 	std::vector<int> tilemap;
 	std::vector<int> walls;
 	bool found = false;
-	for (int i = 0; i < columns; ++i) 
+	for (int i = 0; i < columns; ++i)
 	{
 		for (int j = 0; j < rows; ++j)
 		{
@@ -377,16 +375,16 @@ void FileIO::ExportTileMap(std::string name)
 	json name1;
 	json name2;
 	json tilemapCol; //collideables
-	
+
 	tilemapArray["width"] = rows;
 	tilemapArray["height"] = columns;
-	
+
 	tilemapData["width"] = rows;
 	tilemapData["height"] = columns;
 
 	tilemapCol["width"] = rows;
 	tilemapCol["height"] = columns;
-	
+
 	tilemapData["name"] = "TileMap";
 	tilemapCol["name"] = "Walls";
 

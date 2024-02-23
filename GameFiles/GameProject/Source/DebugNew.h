@@ -1,9 +1,10 @@
 #pragma once
+
 //------------------------------------------------------------------------------
 //
 // File Name:	DebugNew.h
 // Author(s):	Louis Wang
-// Purpose:		Code to check for memory leaks and specific file + line 
+// Purpose:		Code to check for memory leaks and specific file + line
 //
 // Copyright © 2023 DigiPen (USA) Corporation.
 //

@@ -14,7 +14,6 @@ Maths functions like min max, special value like PI and deg->rad conversions
 ----------------------------------------------------------------------------- */
 #include "Math_Header.h"
 
-
 #undef min
 #undef max
 
@@ -28,6 +27,7 @@ const float EPSILON = 0.00000001f; // ϵ for error checking
 
 /*                                                                  functions
 ----------------------------------------------------------------------------- */
+
 //finding the min between 2 elements
 template<typename T_>
 inline T_ min(const T_& l, const T_& r);
@@ -67,7 +67,6 @@ public:
 		return "Divide by zero!";
 	}
 };
-
 
 // calculate distance from 2 points
 float distance(float x1, float y1, float x2, float y2);

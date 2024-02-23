@@ -2,7 +2,7 @@
 //
 // File Name:	Sprite.h
 // Author(s):	TayLee Young
-// Purpose:		Sprite class declaration to handle sprites and animations. 
+// Purpose:		Sprite class declaration to handle sprites and animations.
 //
 // Copyright © 2023 DigiPen (USA) Corporation.
 //

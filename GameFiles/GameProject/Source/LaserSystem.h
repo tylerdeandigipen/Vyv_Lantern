@@ -17,8 +17,8 @@
 
 struct laser_emitter
 {
-    Vector2 Position;
-    Vector2 Direction;
+	Vector2 Position;
+	Vector2 Direction;
 
 	uint32_t FirstPathNodeIndex;
 	uint32_t OnePastLastPathNodeIndex;
@@ -26,25 +26,25 @@ struct laser_emitter
 
 struct reflector
 {
-    Vector2 Position;
-    Vector2 Direction;
-    float Radius;
+	Vector2 Position;
+	Vector2 Direction;
+	float Radius;
 };
 
 struct beam_path_node
 {
-    Vector2 Position;
-    bool AtInfinity;
+	Vector2 Position;
+	bool AtInfinity;
 };
 
 struct emitter_id
 {
-    uint32_t Value;
+	uint32_t Value;
 };
 
 struct reflector_id
 {
-    uint32_t Value;
+	uint32_t Value;
 };
 
 class BaseSystem;
@@ -63,7 +63,7 @@ public:
 		bool IsValid(void)
 		{
 			bool Result = false;
-			if(Emitter)
+			if (Emitter)
 			{
 				Result = (CurrentNodeIndex < Emitter->OnePastLastPathNodeIndex);
 			}
@@ -80,11 +80,11 @@ public:
 
 public:
 
-    static LaserSystem *GetInstance(void);
-    
-    LaserSystem(void);
-    virtual ~LaserSystem(void);
-    
+	static LaserSystem* GetInstance(void);
+
+	LaserSystem(void);
+	virtual ~LaserSystem(void);
+
 	Engine::EngineCode Init();
 	Engine::EngineCode Close();
 	void Update(float dt);
@@ -93,34 +93,34 @@ public:
 	void HandleSceneChange(void);
 
 	beam_path_iterator IterateEmitterPath(emitter_id Emitter);
-	
-	emitter_id CreateEmitter(void);
-    laser_emitter *GetEmitter(emitter_id ID);
 
-    reflector_id CreateReflector(void);
-    reflector *GetReflector(reflector_id ID);
-    
+	emitter_id CreateEmitter(void);
+	laser_emitter* GetEmitter(emitter_id ID);
+
+	reflector_id CreateReflector(void);
+	reflector* GetReflector(reflector_id ID);
+
 private:
 
-    bool DEBUGKeyPressed(int KeyCode, Inputs *InputManager);
-    
+	bool DEBUGKeyPressed(int KeyCode, Inputs* InputManager);
+
 #define MAX_LASER_EMITTERS 256
 	laser_emitter Emitters[MAX_LASER_EMITTERS];
 	uint32_t EmitterCount;
 
 #define MAX_REFLECTORS 256
-    reflector Reflectors[MAX_REFLECTORS];
+	reflector Reflectors[MAX_REFLECTORS];
 	uint32_t ReflectorCount = 1;
 
-    Logging *ErrorLog;
+	Logging* ErrorLog;
 
-    int DEBUGPreviousScancode;
-    bool DEBUGVisualizeReflectorBounces;
+	int DEBUGPreviousScancode;
+	bool DEBUGVisualizeReflectorBounces;
 
-    beam_path_node BeamPathNodes[4096];
-    uint32_t PathNodeCount;
+	beam_path_node BeamPathNodes[4096];
+	uint32_t PathNodeCount;
 
-	beam_path_node *GetPathNode(uint32_t NodeIndex);
+	beam_path_node* GetPathNode(uint32_t NodeIndex);
 	static LaserSystem* instance;
 };
 

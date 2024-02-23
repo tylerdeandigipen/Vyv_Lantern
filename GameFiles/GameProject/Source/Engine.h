@@ -14,8 +14,9 @@
 
 class BaseSystem;
 typedef class Time Time;
+
 // to be safe, may change later on - taylee
-#define MAX_SYSTEMS 15 
+#define MAX_SYSTEMS 15
 
 class Engine
 {
@@ -30,9 +31,9 @@ public:
 	bool Paused();
 	void SetPause(bool pause);
 	void SetCloseRequest(bool close);
-	
+
 	static Engine* GetInstance();
-    
+
 private:
 	Engine();
 	~Engine();
@@ -44,7 +45,6 @@ private:
 	EngineCode Update();
 	EngineCode Render();
 	EngineCode ShutDown();
-
 
 	BaseSystem* systems[MAX_SYSTEMS];
 	int systemCount;

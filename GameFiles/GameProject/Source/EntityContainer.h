@@ -13,6 +13,7 @@
 #define ENTITYCONTAINER_H
 
 #include "BaseSystem.h"
+#include <string>
 #include <vector>
 
 typedef class Entity Entity;
@@ -22,6 +23,7 @@ using namespace std;
 class EntityContainer : public BaseSystem
 {
 public:
+
 	bool AddEntity(Entity* _entity);
 	Entity* FindByName(const char* entity_name);
 	Entity* operator[](int index);

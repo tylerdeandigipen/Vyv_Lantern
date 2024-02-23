@@ -3,7 +3,7 @@
 // File Name:	Collider.h
 // Author(s):	Michael Howard (michael.howard)
 // Purpose:		collider component
-// 
+//
 // Copyright © 2023 DigiPen (USA) Corporation.
 //
 //------------------------------------------------------------------------------
@@ -16,7 +16,6 @@ class Collider : public Component
 public:
 	enum ColliderType { AABB };
 
-
 	_inline Collider::ColliderType type() const { return bType; };
 	_inline Collider* Type() const { return _type; };
 
@@ -24,6 +23,7 @@ public:
 	Collider(Collider const& other);
 	~Collider();
 	std::string GetName() override { return std::string(); };
+
 	//virtual CreateComponent(mType);
 
 	// used to invoke the copy constructor
@@ -40,14 +40,12 @@ public:
 	void SetCollisionHandler(std::function<void(Entity*, Entity*)> _handler);
 	std::function<void(Entity*, Entity*)> GetCollisionHandler();
 
-
 	static void PlayerCollisionHandler(Entity* thisone, Entity* other);
-
 
 	Collider* _type;
 
 private:
-	ColliderType bType; 
+	ColliderType bType;
 	std::function<void(Entity*, Entity*)> handler;
 };
 

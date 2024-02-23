@@ -3,7 +3,7 @@
 // File Name:	ColliderAABB.cpp
 // Author(s):	Michael, Louis
 // Purpose:		AABB collider for most if not all game objects
-// 
+//
 // Copyright ?2023 DigiPen (USA) Corporation.
 //
 //------------------------------------------------------------------------------
@@ -13,18 +13,16 @@
 #include "Transform.h"
 ColliderAABB::ColliderAABB() : Collider(ColliderType::AABB)
 {
-
 }
 
 ColliderAABB::ColliderAABB(ColliderAABB const& other) : Collider(other)
 {
-
 }
 
 ColliderAABB::~ColliderAABB()
 {
-
 }
+
 //virtual CreateComponent(mType);
 
 // used to invoke the copy constructor
@@ -48,12 +46,11 @@ bool ColliderAABB::IsColliding(const Collider& other)
 {
 	ImageBuffer checks = *Parent()->GetImage();
 	ImageBuffer otherChecks = *other.Parent()->GetImage();
-	
+
 	Vector2 firstPosition = *Parent()->Has(Transform)->GetTranslation();
 	Vector2 secondPosition = *other.Parent()->Has(Transform)->GetTranslation();
 
-
-	checks.aabb.min = { firstPosition.x, firstPosition.y};
+	checks.aabb.min = { firstPosition.x, firstPosition.y };
 	checks.aabb.max = { firstPosition.x + checks.BufferSizeX,
 		firstPosition.y + checks.BufferSizeY };
 

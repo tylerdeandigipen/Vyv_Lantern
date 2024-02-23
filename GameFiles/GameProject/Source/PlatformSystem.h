@@ -14,7 +14,7 @@
 //#define Name "Lantern"
 
 struct SDL_Window;
-typedef void *SDL_GLContext;
+typedef void* SDL_GLContext;
 
 class PlatformSystem : public BaseSystem
 {

@@ -19,9 +19,9 @@ class ScopeTimer
 	std::string name_;
 
 public:
-    ScopeTimer(std::string name)
+	ScopeTimer(std::string name)
 	{
-        name_ = name;
+		name_ = name;
 		startTimept = std::chrono::high_resolution_clock::now();
 	}
 
@@ -34,8 +34,8 @@ public:
 		auto duration = end - start;
 		double microseconds_elapsed = duration * 0.001f;
 
-        // @TODO: Consider some kind of visual profiler to output this to.
-        //Logging &Logger = Logging::GetInstance("debugLog.log");
-        //Logger.LogLine("SCOPED TIMER (%s): %f", name_.c_str(), microseconds_elapsed);
+		// @TODO: Consider some kind of visual profiler to output this to.
+		//Logging &Logger = Logging::GetInstance("debugLog.log");
+		//Logger.LogLine("SCOPED TIMER (%s): %f", name_.c_str(), microseconds_elapsed);
 	}
 };

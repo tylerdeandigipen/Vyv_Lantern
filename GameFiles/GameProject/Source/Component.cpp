@@ -2,9 +2,9 @@
 //
 // File Name:	Component.cpp
 // Author(s):	Michael Howard (michael.howard)
-// Purpose:		(Borrowed from cs230) creates a base componenet class for 
+// Purpose:		(Borrowed from cs230) creates a base componenet class for
 //				entities
-// 
+//
 // Copyright © 2023 DigiPen (USA) Corporation.
 //
 //------------------------------------------------------------------------------
@@ -23,6 +23,3 @@ Component::Component(Component const& other) : mType(other.mType), mParent(other
 Component::~Component()
 {
 }
-
-
-

@@ -12,6 +12,7 @@
 
 /*                                                                  functions
 ----------------------------------------------------------------------------- */
+
 //finding the min between 2 elements
 template<typename T_>
 inline T_ min(const T_& l, const T_& r)
@@ -70,7 +71,6 @@ inline unsigned IntRand()
 {
 	return rand();
 }
-
 
 // calculate distance from 2 points
 float distance(float x1, float y1, float x2, float y2)

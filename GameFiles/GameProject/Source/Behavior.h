@@ -3,7 +3,7 @@
 // File Name:	Behavior.h
 // Author(s):	Michael Howard (michael.howard)
 // Purpose:		behavior component
-// 
+//
 // Copyright © 2023 DigiPen (USA) Corporation.
 //
 //------------------------------------------------------------------------------
@@ -28,13 +28,13 @@ public:
 
 	virtual void SetInputHandler(Inputs* input) {};
 	Component* Clone(void) const override;
-	
+
 	virtual void SetCurr(int state);
 	virtual void SetNext(int state);
 	virtual int GetCurr() const;
 	virtual int GetNext() const;
 
-	virtual void Init() {} ;
+	virtual void Init() {};
 	void Update(float dt);
 	Behavior* _type;
 

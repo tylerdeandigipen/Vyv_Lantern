@@ -27,11 +27,11 @@ class EntityManager;
 class Scene;
 Scene* LevelCreatorSceneGetInstance(void);
 
-
 struct EntityProperties
 {
 	int translation[2] = { 0 };
 	float rotation;
+
 	// bool isCollidable;
 	bool isPicked = false;
 	bool isEditable = false;
@@ -42,7 +42,7 @@ class LevelCreatorScene : public Scene
 {
 	friend class EntityManager;
 public:
-	
+
 	LevelCreatorScene();
 	~LevelCreatorScene();
 
@@ -74,7 +74,6 @@ private:
 	static void AddEmitterEntity(Entity* entity);
 	static void AddRecieverEntity(Entity* entity);
 
-
 	int CreatePlayerEntity();
 	int CreateCircleEntity();
 	int CreateDoorEntity();
@@ -86,20 +85,21 @@ private:
 	void ExportScene(std::string);
 
 	//int CreateEntity(const std::string& entityType);
-	// assetFilePath is which asset do you want the thing to use. 
+	// assetFilePath is which asset do you want the thing to use.
 	// ex:
 	// circle = "Circle_2x2";
 	// door = "Door_Closed"
 	// mirror = "Mirror"
 	//void AddEntity(Entity* entity, const std::string& entityType, const std::string& assetFilePath);
-	
+
 	// member variables
 	bool winState = false;
-	// have a current list as a default so it can just be overwritten 
+
+	// have a current list as a default so it can just be overwritten
 	std::string currentGameObjectsList = "./Data/GameObjects/ObjectListLevelBuilder.json";
 	std::string listToExport;
 	json gameObjects;
-	std::unordered_map<std::string, std::function<void (Entity*)>> AddFunc;
+	std::unordered_map<std::string, std::function<void(Entity*)>> AddFunc;
 	std::string currentTileMapList;
 	char myTextBuffer[256]{};
 	char LoadBuffer[256]{};

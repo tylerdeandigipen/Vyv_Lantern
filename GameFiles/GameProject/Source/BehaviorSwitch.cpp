@@ -2,9 +2,9 @@
 //
 // File Name:	BehaviorSwitch.cpp
 // Author(s):	Louis Wang
-// Purpose:		Implementation of behaviormirror class for controlling switch 
+// Purpose:		Implementation of behaviormirror class for controlling switch
 //              entities.
-// 
+//
 // Copyright © 2023 DigiPen (USA) Corporation.
 //
 //------------------------------------------------------------------------------
@@ -39,7 +39,7 @@ BehaviorSwitch::BehaviorSwitch(BehaviorSwitch const& other) : Behavior(other), i
 
 BehaviorSwitch::~BehaviorSwitch()
 {
-    currentPos = 0;
+	currentPos = 0;
 }
 
 std::string BehaviorSwitch::GetName()
@@ -58,155 +58,151 @@ void BehaviorSwitch::SetInputHandler(Inputs* _input)
 
 void BehaviorSwitch::Init()
 {
-
-
-    if (Parent())
-    {
-        // Set collision handler for switches
-        Collider* collider = Parent()->Has(Collider);
-        if (collider)
-        {
-            collider->SetCollisionHandler(SwitchCollisionHandler);
-        }
-    }
+	if (Parent())
+	{
+		// Set collision handler for switches
+		Collider* collider = Parent()->Has(Collider);
+		if (collider)
+		{
+			collider->SetCollisionHandler(SwitchCollisionHandler);
+		}
+	}
 }
 
 Behavior* BehaviorSwitch::Clone() const
 {
-    return new BehaviorSwitch(*this);
+	return new BehaviorSwitch(*this);
 }
 
 gfxVector2 lerpValue(gfxVector2 a, gfxVector2 b, float t)
 {
-    gfxVector2 lerpedVector = a;
+	gfxVector2 lerpedVector = a;
 
-    lerpedVector.x += t * (b.x - a.x);
-    lerpedVector.y += t * (b.y - a.y);
+	lerpedVector.x += t * (b.x - a.x);
+	lerpedVector.y += t * (b.y - a.y);
 
-    return lerpedVector;
+	return lerpedVector;
 }
 
 void BehaviorSwitch::Update(float dt)
 {
-    if (Parent())
-        Controller(dt);
-    if (GetLerped() == true)
-    {
-        gfxVector2 lerped = lerpValue(*Parent()->Has(Transform)->GetTranslation(), pos[currentPos], 1.0f * dt);
-        Parent()->Has(Transform)->SetTranslation(lerped);
-        if (lerped.x >= (pos[currentPos].x - 1) &&
-            lerped.x <= (pos[currentPos].x + 1) &&
-            lerped.y >= (pos[currentPos].y - 1) &&
-            lerped.y <= (pos[currentPos].y + 1))
-        {
-            Parent()->Has(Transform)->SetTranslation(pos[currentPos]);
-            SetLerped();
-        }
-    }
+	if (Parent())
+		Controller(dt);
+	if (GetLerped() == true)
+	{
+		gfxVector2 lerped = lerpValue(*Parent()->Has(Transform)->GetTranslation(), pos[currentPos], 1.0f * dt);
+		Parent()->Has(Transform)->SetTranslation(lerped);
+		if (lerped.x >= (pos[currentPos].x - 1) &&
+			lerped.x <= (pos[currentPos].x + 1) &&
+			lerped.y >= (pos[currentPos].y - 1) &&
+			lerped.y <= (pos[currentPos].y + 1))
+		{
+			Parent()->Has(Transform)->SetTranslation(pos[currentPos]);
+			SetLerped();
+		}
+	}
 }
 
 void BehaviorSwitch::Read(json jsonData)
 {
-    Init();
-    /*What values to load into the switches here*/
-    maxCount = jsonData["NumPositions"] - 1;
-    for (auto& positions : jsonData["pos"])
-    {
-        // Extract "x" and "y" values, convert them to integers, and store in the vector
-        float x = std::stoi(positions["x"].get<std::string>());
-        float y = std::stoi(positions["y"].get<std::string>());
-        
-        pos.push_back({ x,y });
-    }
-    key = jsonData["key"];
+	Init();
+	/*What values to load into the switches here*/
+	maxCount = jsonData["NumPositions"] - 1;
+	for (auto& positions : jsonData["pos"])
+	{
+		// Extract "x" and "y" values, convert them to integers, and store in the vector
+		float x = std::stoi(positions["x"].get<std::string>());
+		float y = std::stoi(positions["y"].get<std::string>());
+
+		pos.push_back({ x,y });
+	}
+	key = jsonData["key"];
 }
-
-
 
 ImageBuffer* prompt = NULL;
 static bool isColliding = false;
 void BehaviorSwitch::SwitchCollisionHandler(Entity* entity1, Entity* entity2)
 {
-    Inputs* input = Inputs::GetInstance();
-    if (prompt != NULL)
-        prompt->isCulled = true;
+	Inputs* input = Inputs::GetInstance();
+	if (prompt != NULL)
+		prompt->isCulled = true;
 
-    // find which switch is actually a switch 
-    BehaviorSwitch* switch1 = reinterpret_cast<BehaviorSwitch*>(entity1->Has(Behavior));
-    BehaviorSwitch* switch2 = reinterpret_cast<BehaviorSwitch*>(entity2->Has(Behavior));
-    BehaviorSwitch* theSwitch = NULL;
-    if (switch2 && switch2->GetName().compare("BehaviorSwitch") == 0)
-    {
-        theSwitch = switch2;
-    }
-    else if (switch1 && switch1->GetName().compare("BehaviorSwitch") == 0)
-    {
-        theSwitch = switch1;
-    }
+	// find which switch is actually a switch
+	BehaviorSwitch* switch1 = reinterpret_cast<BehaviorSwitch*>(entity1->Has(Behavior));
+	BehaviorSwitch* switch2 = reinterpret_cast<BehaviorSwitch*>(entity2->Has(Behavior));
+	BehaviorSwitch* theSwitch = NULL;
+	if (switch2 && switch2->GetName().compare("BehaviorSwitch") == 0)
+	{
+		theSwitch = switch2;
+	}
+	else if (switch1 && switch1->GetName().compare("BehaviorSwitch") == 0)
+	{
+		theSwitch = switch1;
+	}
 
-    if (entity1->GetRealName().compare("Player") == 0 && entity2->GetRealName().compare("Switch") == 0 || entity1->GetRealName().compare("Switch") == 0 && entity2->GetRealName().compare("Player") == 0)
-    {
-        /*Check if player is inside switch*/
-        isColliding = true;
+	if (entity1->GetRealName().compare("Player") == 0 && entity2->GetRealName().compare("Switch") == 0 || entity1->GetRealName().compare("Switch") == 0 && entity2->GetRealName().compare("Player") == 0)
+	{
+		/*Check if player is inside switch*/
+		isColliding = true;
 
-        if(prompt != NULL)
-        {
-            prompt->position.x = entity2->GetImage()->position.x + 10;
-            prompt->position.y = entity2->GetImage()->position.y - 10;
-        }
+		if (prompt != NULL)
+		{
+			prompt->position.x = entity2->GetImage()->position.x + 10;
+			prompt->position.y = entity2->GetImage()->position.y - 10;
+		}
 
-        if (prompt == NULL)
-        {
-            prompt = new ImageBuffer{"./Assets/PPM/Press_E.ppm"};
-            Renderer::GetInstance()->AddObject(prompt);
-        }
-        if (theSwitch && (theSwitch->GetLerped() == false))
-        {
-            prompt->isCulled = false;
+		if (prompt == NULL)
+		{
+			prompt = new ImageBuffer{ "./Assets/PPM/Press_E.ppm" };
+			Renderer::GetInstance()->AddObject(prompt);
+		}
+		if (theSwitch && (theSwitch->GetLerped() == false))
+		{
+			prompt->isCulled = false;
 
-            if (input->keyPressed(SDL_SCANCODE_E))
-            {
-                // swaps bool value
-                theSwitch->SetLerped();
-                OnOff = true;
-                /*Mirror will move here*/
-                //BehaviorMirror::SwitchOn(OnOff);
-                AudioManager.PlaySFX("laser");
+			if (input->keyPressed(SDL_SCANCODE_E))
+			{
+				// swaps bool value
+				theSwitch->SetLerped();
+				OnOff = true;
+				/*Mirror will move here*/
 
-                // temporary win condition
-                if (theSwitch->currentPos == theSwitch->maxCount)
-                {
-                    AudioManager.PlaySFX("door");
-                    LevelBuilder::setDoor(true);
-                    theSwitch->currentPos = 0;
-                }
-                else
-                {
-                    theSwitch->currentPos++;
-                }
-                //prompt->isCulled = true;
-                if (prompt->isCulled == false)
-                {
-                    prompt->isCulled = true;
-                }
-                OnOff = false;
+				//BehaviorMirror::SwitchOn(OnOff);
+				AudioManager.PlaySFX("laser");
 
-                /*Move switch*/
-            }
-        }
-        else
-        {
-            if (prompt)
-            {
-                prompt->isCulled = true;
-            }
-        }
-    }
+				// temporary win condition
+				if (theSwitch->currentPos == theSwitch->maxCount)
+				{
+					AudioManager.PlaySFX("door");
+					LevelBuilder::setDoor(true);
+					theSwitch->currentPos = 0;
+				}
+				else
+				{
+					theSwitch->currentPos++;
+				}
+
+				//prompt->isCulled = true;
+				if (prompt->isCulled == false)
+				{
+					prompt->isCulled = true;
+				}
+				OnOff = false;
+
+				/*Move switch*/
+			}
+		}
+		else
+		{
+			if (prompt)
+			{
+				prompt->isCulled = true;
+			}
+		}
+	}
 }
-
-
 
 void BehaviorSwitch::Controller(float dt)
 {
-    // DO SWITCH THINGS HERE
+	// DO SWITCH THINGS HERE
 }

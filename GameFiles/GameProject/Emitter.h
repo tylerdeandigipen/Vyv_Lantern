@@ -5,6 +5,7 @@ class gfxVector2;
 /*
 *
 * work to Create_dumbfire line_line collision.
+
 //laser system list
 works like a laser emmit from point go in stright line hits anything must stop.
 
@@ -16,7 +17,6 @@ Reflector reflector subtypes or flags to set. are a subset of emmitter will pseu
 "catches laser" and emmits it will need to pass laser component
 
 mirrors have emmitters and have behavior reflector
-
 
 hit reflector. change direction 90 degrees
 
@@ -31,7 +31,6 @@ mirro types of 2, one side reflect 2 side reflect. independant
 line drawing (get information)
 
 */
-
 
 class Emitter : public Component
 {
@@ -50,8 +49,6 @@ public:
 
 	void SetEmittingRight(bool state) { isEmittingRight = state; isDirty = true; }; //probably a control flag and collision flag
 	void SetEmittingLeft(bool state) { isEmittingLeft = state; isDirty = true; }; //probably a control flag and collision flag
-
-
 
 	//standard get/set funcitons
 	float GetMaxEmitDistance() { return emitMaxDistance; };
@@ -109,6 +106,5 @@ private:
 	bool leftTrigger;
 	int iLeftLaser;
 	int iRightLaser;
-
 };
 

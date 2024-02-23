@@ -20,7 +20,6 @@ public:
 	void Update(float dt) override;
 	void Render(void) override;
 private:
-
 };
 
 Scene* StubSceneGetInstance(void);

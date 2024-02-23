@@ -13,6 +13,7 @@ gfxVector2::gfxVector2() : x(), y() {};
 gfxVector2::gfxVector2(float x, float y) : x(x), y(y)
 {
 };
+
 //arithmetic operators
 gfxVector2 operator+(const gfxVector2& l, const gfxVector2& r)
 {
@@ -54,7 +55,6 @@ float operator*(const gfxVector2& l, const gfxVector2& r)
 {
 	return (l.x * r.x + l.y * r.y);
 }
-
 
 //cross product between 2 vectors
 float operator^(const gfxVector2& l, const gfxVector2& r)

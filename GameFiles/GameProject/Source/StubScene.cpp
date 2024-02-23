@@ -1,7 +1,7 @@
 //------------------------------------------------------------------------------
 //
 // File Name:	StubScene.cpp
-// Author(s):	
+// Author(s):
 // Purpose:		Change this to whatever you need
 //
 // Copyright © 2023 DigiPen (USA) Corporation.
@@ -17,12 +17,10 @@ Scene* StubSceneinstance = NULL; //SORRY MIKEY L MEYERS!!!!!!!!!!!!!!!!!!!!!!
 
 StubScene::StubScene() : Scene("Stub")
 {
-
 }
 
 StubScene::~StubScene()
 {
-
 }
 
 Engine::EngineCode StubScene::Init()

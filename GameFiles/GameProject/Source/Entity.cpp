@@ -40,7 +40,7 @@ Entity::Entity() : isDestroyed(false), components(), name{}, image(NULL), mName(
 Entity::Entity(std::string type, const std::string file, json Animated) : isDestroyed(0), components(), name{}, image(NULL), mName(), isLight(false), isObject(false), isAnimated(false), AnimationArray()
 {
 	if (type.compare("Object") == 0)
-	{	
+	{
 		if (Animated["isAnimated"])
 		{
 			isAnimated = true;
@@ -55,7 +55,6 @@ Entity::Entity(std::string type, const std::string file, json Animated) : isDest
 		}
 	}
 }
-
 
 Entity::Entity(Entity const& ent) : isDestroyed(ent.isDestroyed), name{}, components(ent.components), image(ent.image), mName(ent.mName), isLight(ent.isLight), isObject(ent.isObject), isAnimated(ent.isAnimated)
 {
@@ -106,7 +105,7 @@ bool Entity::IsDestroyed() { return isDestroyed; }
 bool Entity::IsObject() { return isObject; };
 bool Entity::IsAnimated() { return isAnimated; }
 
-void Entity::Read(json &jsonData)
+void Entity::Read(json& jsonData)
 {
 	if (jsonData["KeyObject"].is_object())
 	{
@@ -299,7 +298,7 @@ void Entity::AddToRenderer(Renderer* pixel, std::string _file)
 	else
 	{
 		image = pixel->CreateAnimatedObject(_file, FrameSize);
-		if(image)
+		if (image)
 		{
 			Has(Transform)->SetTranslation(&image->position);
 		}

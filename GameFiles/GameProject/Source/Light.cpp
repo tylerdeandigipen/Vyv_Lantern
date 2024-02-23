@@ -32,7 +32,7 @@ Light::Light(const Light& rhs) : Component(rhs)
 	frustumWeight = rhs.frustumWeight;
 	volumetricIntensity = rhs.volumetricIntensity;
 
-    memcpy(Attenuation, rhs.Attenuation, sizeof(Attenuation));
+	memcpy(Attenuation, rhs.Attenuation, sizeof(Attenuation));
 }
 Light::Light() : Component(Component::cLight)
 {
@@ -47,9 +47,9 @@ Light::Light() : Component(Component::cLight)
 	frustumWeight = 0.15f;
 	volumetricIntensity = 0;
 
-    Attenuation[0] = 0.0f;
-    Attenuation[1] = 1.0f;
-    Attenuation[2] = 1.0f;
+	Attenuation[0] = 0.0f;
+	Attenuation[1] = 1.0f;
+	Attenuation[2] = 1.0f;
 }
 
 Component* Light::Clone() const
@@ -67,7 +67,6 @@ void Light::Read(json jsonData)
 	std::string file = jsonData["File"];
 	FileIO::GetInstance()->ReadLight(file, *this);
 	Renderer::GetInstance()->AddLight(*this);
-
 }
 
 std::string Light::TheName()
@@ -84,4 +83,3 @@ std::string Light::TheName()
 //{
 //	return std::string();
 //}
-

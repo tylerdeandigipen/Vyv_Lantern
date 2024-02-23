@@ -17,7 +17,7 @@ Emitter::Emitter() : Component(Component::cEmitter)
 	DrawDistance = 0.0f;
 	emitLTrigDir = new  gfxVector2();
 	emitRTrigDir = new gfxVector2();
-	emitPositionRight  = new gfxVector2();
+	emitPositionRight = new gfxVector2();
 	emitPositionLeft = new gfxVector2();
 	emitpositionEndL = new gfxVector2();
 	emitpositionEndR = new gfxVector2();
@@ -31,9 +31,6 @@ Emitter::Emitter() : Component(Component::cEmitter)
 	{
 		pointyBoi = Renderer::GetInstance();
 	}
-
-
-
 }
 
 Emitter::Emitter(Emitter const& emitter2cpy) : Component(emitter2cpy)
@@ -54,8 +51,8 @@ Emitter::~Emitter()
 	delete emitLTrigDir;
 	delete emitPositionRight;
 	delete emitPositionLeft;
+
 	//maybe need to remove lasers and such
-	
 }
 
 Component* Emitter::Clone() const
@@ -72,7 +69,7 @@ void Emitter::Read(json jsonData)
 	* 3rd MaxDistance
 	* 4th bool emitting T/F default to false only make true if you want this to be a constant source that you can push a mirror in front of.
 	*/
-	
+
 	if (jsonData["positionRight"].is_object())
 	{
 		json pos = jsonData["positionRight"];
@@ -102,7 +99,7 @@ void Emitter::Read(json jsonData)
 	}
 
 	emitMaxDistance = jsonData["maxDistance"];
-	
+
 	if (jsonData["emitRight"].is_boolean())
 	{
 		isEmittingRight = jsonData["emitRight"];
@@ -111,7 +108,6 @@ void Emitter::Read(json jsonData)
 	{
 		rightTrigger = jsonData["trigRight"];
 	}
-
 
 	if (emitLTrigDir->x > 0)
 	{
@@ -129,7 +125,6 @@ void Emitter::Read(json jsonData)
 	{
 		emitpositionEndL->y = emitPositionLeft->y - emitMaxDistance;
 	}
-
 
 	if (emitRTrigDir->x > 0)
 	{
@@ -157,10 +152,9 @@ void Emitter::Read(json jsonData)
 	pointyBoi->laserPoints2[iLeftLaser] = *emitpositionEndL;
 	pointyBoi->laserPoints1[iRightLaser] = *emitPositionRight;
 	pointyBoi->laserPoints2[iRightLaser] = *emitpositionEndR;
-
 }
 
-void Emitter::Update(float dt) 
+void Emitter::Update(float dt)
 {
 	//cleans up the hasCollided flag for the emitter
 	//should turn off when you stop emitting.
@@ -169,6 +163,7 @@ void Emitter::Update(float dt)
 		pointyBoi->laserPoints1[iRightLaser] = *emitPositionRight;
 		pointyBoi->laserPoints2[iRightLaser] = *emitpositionEndR;
 		hasCollidedRight = isEmittingRight;
+
 		//update positions potentially. may need to flag... maybe.
 	}
 	if (hasCollidedLeft)
@@ -187,34 +182,32 @@ void Emitter::Update(float dt)
 	}
 }
 
-//second opinion maybe consider making a lazer a different component and emmit that component rather than this immiter 
+//second opinion maybe consider making a lazer a different component and emmit that component rather than this immiter
 void Emitter::Render() const
 {
 	if (isEmittingRight)
 	{
-
 	}
 
 	if (isEmittingLeft)
 	{
-
 	}
 
 	/*if debug
-	* 
-	* 
-	* 
-	* 
+	*
+	*
+	*
+	*
 	*/
-
 }
 
 /*
-* learned code from 
+* learned code from
 */
-inline bool LineToLineCollision(Emitter * laser, Entity& line, int flag, bool interuptflag)
+inline bool LineToLineCollision(Emitter* laser, Entity& line, int flag, bool interuptflag)
 {
-	LineCollider*  literalLine = line.Has(LineCollider);
+	LineCollider* literalLine = line.Has(LineCollider);
+
 	//first line
 	float x1 = literalLine->GetPosition1()->x;
 	float y1 = literalLine->GetPosition1()->y;
@@ -224,14 +217,14 @@ inline bool LineToLineCollision(Emitter * laser, Entity& line, int flag, bool in
 	//second line
 	float x3 = 0.0f;
 	float y3 = 0.0f;
-	
+
 	switch (flag)
 	{
 	case 1:
 		x3 = laser->GetPositionRight()->x;
 		y3 = laser->GetPositionRight()->y;
 		break;
-	case 2: 
+	case 2:
 		x3 = laser->GetPositionLeft()->x;
 		y3 = laser->GetPositionLeft()->y;
 		break;
@@ -239,14 +232,13 @@ inline bool LineToLineCollision(Emitter * laser, Entity& line, int flag, bool in
 		break;
 	}
 
-
 	float x4 = 0.0f;
 	float y4 = 0.0f;
+
 	//end second line
 	bool withinx = false;
 	bool withiny = false;
 	bool didcollide = false;
-
 
 	//y3 x3 are the starting point before the emitting point
 	//y1,y2, x1,x2 are the line collider points
@@ -267,7 +259,6 @@ inline bool LineToLineCollision(Emitter * laser, Entity& line, int flag, bool in
 	{
 		x = laser->GetDirectionRight()->x;
 		y = laser->GetDirectionRight()->y;
-
 	}
 	else if (flag == 2)
 	{
@@ -283,7 +274,6 @@ inline bool LineToLineCollision(Emitter * laser, Entity& line, int flag, bool in
 		y4 = y3 + (laser->GetMaxEmitDistance() * y);
 	}
 
-
 	if (withiny)
 	{
 		y4 = y3;
@@ -296,17 +286,18 @@ inline bool LineToLineCollision(Emitter * laser, Entity& line, int flag, bool in
 
 	if (uA >= 0 && uA <= 1 && uB >= 0 && uB <= 1) {
 		didcollide = true;
+
 		//exact collision point calculations
 		float intersectionX = x1 + (uA * (x2 - x1));
 		float intersectionY = y1 + (uA * (y2 - y1));
-		
+
 		if (line.Has(Emitter))
 		{
 			switch (flag)
 			{
-
 			case 1:
-				//may need to use direction to determin wether or not to check greater than lessthan 
+
+				//may need to use direction to determin wether or not to check greater than lessthan
 				//need to use interupt flag to properly set the setup.
 				//compare based on direction
 				//the potential inturpt flag is set in doCalculations which checks for any shadow casting objects.
@@ -327,7 +318,6 @@ inline bool LineToLineCollision(Emitter * laser, Entity& line, int flag, bool in
 						{
 							return false;
 						}
-						
 					}
 					else if (x < 0)
 					{
@@ -355,7 +345,6 @@ inline bool LineToLineCollision(Emitter * laser, Entity& line, int flag, bool in
 						{
 							return false;
 						}
-
 					}
 					else if (y < 0)
 					{
@@ -375,7 +364,6 @@ inline bool LineToLineCollision(Emitter * laser, Entity& line, int flag, bool in
 				laser->SetEmitPositionEndR(intersectionX, intersectionY);
 				line.Has(Emitter)->SetPositionRight(intersectionX, intersectionY);
 				return true;
-				
 
 				break;
 
@@ -398,7 +386,6 @@ inline bool LineToLineCollision(Emitter * laser, Entity& line, int flag, bool in
 						{
 							return false;
 						}
-
 					}
 					else if (x < 0)
 					{
@@ -428,7 +415,6 @@ inline bool LineToLineCollision(Emitter * laser, Entity& line, int flag, bool in
 					{
 						return false;
 					}
-
 				}
 				else if (y < 0)
 				{
@@ -443,26 +429,18 @@ inline bool LineToLineCollision(Emitter * laser, Entity& line, int flag, bool in
 						return false;
 					}
 				}
-				
-
 
 				laser->SetEmitPositionEndL(intersectionX, intersectionY);
 				line.Has(Emitter)->SetPositionLeft(intersectionX, intersectionY);
 				return true;
-				
+
 				break;
 			default:
 
 				break;
 			}
-
 		}
-		
 	}
-
-
-
-
 
 	return didcollide;
 }
@@ -473,7 +451,7 @@ inline bool LineToLineCollision(Emitter * laser, Entity& line, int flag, bool in
 * 1 = right
 * 2 = left
 */
-inline bool DoCalculations(Emitter* obj,int flag)
+inline bool DoCalculations(Emitter* obj, int flag)
 {
 	//vectors gods this was a dumb name should done vecX vecY
 	float x = 0;
@@ -496,19 +474,19 @@ inline bool DoCalculations(Emitter* obj,int flag)
 		xPos = obj->GetPositionLeft()->x;
 		yPos = obj->GetPositionLeft()->y;
 	}
-	
+
 	Renderer* renderer = Renderer::GetInstance();
 
 	//banks on the fact that we are using North South East West.
 	if (x > 0)
 	{
 		gfxVector2 comparison = renderer->CheckLineForObjects(xPos, yPos, xPos + obj->GetMaxEmitDistance(), yPos);
-		if (!(comparison.x == xPos+obj->GetMaxEmitDistance()) && (comparison.y == yPos))
+		if (!(comparison.x == xPos + obj->GetMaxEmitDistance()) && (comparison.y == yPos))
 		{
 			//comback and revise this later
 			switch (flag)
 			{
-			case 1: 
+			case 1:
 				obj->SetEmitPositionEndR(comparison.x, comparison.y);
 				obj->SetCollidedRight(true);
 				break;
@@ -525,7 +503,6 @@ inline bool DoCalculations(Emitter* obj,int flag)
 	}
 	else if (x < 0)
 	{
-
 		gfxVector2 comparison = renderer->CheckLineForObjects(xPos, yPos, xPos - obj->GetMaxEmitDistance(), yPos);
 		if (!(comparison.x == xPos - obj->GetMaxEmitDistance()) && (comparison.y == yPos))
 		{
@@ -595,15 +572,11 @@ inline bool DoCalculations(Emitter* obj,int flag)
 		}
 	}
 
-
 	return false;
-	
 }
 
 void Emitter::EmitterCollisionHandler(Entity& object1, Entity& object2)
 {
-
-
 	//this may be terrible currently ignores terrain
 	//additionally does not have a way to turn off... will need to group source to fix issue can't think of how off the top of head.
 	if (object1.Has(Emitter) && object2.Has(LineCollider))
@@ -617,19 +590,18 @@ void Emitter::EmitterCollisionHandler(Entity& object1, Entity& object2)
 		if (Obj1->IsEmittingRight() && !Obj1->GetCollidedRight() || Obj1->IsEmittingLeft() && !Obj1->GetCollidedLeft())
 		{
 			bool potentialInterupt = false;
+
 			//also need to check vs terrain if it hits needs to truncate the draw distance of the emitter line.
 			//need flag for both. instead reworked the flag system will need to remove the left trigger/right trigger flags.
 			if (Obj1->IsEmittingRight() && !Obj1->GetCollidedRight())
 			{
 				flag = 1;
 				potentialInterupt = DoCalculations(Obj1, flag);
-
 			}
 			if (Obj1->IsEmittingRight() && !Obj1->GetCollidedLeft())
 			{
 				flag = 2;
 				potentialInterupt = DoCalculations(Obj1, flag);
-
 			}
 
 			LineCollider* Line = object2.Has(LineCollider);
@@ -641,9 +613,8 @@ void Emitter::EmitterCollisionHandler(Entity& object1, Entity& object2)
 				//do collision calculations
 
 				Emitter* ToEffect = object2.Has(Emitter);
-				
 
-				if (LineToLineCollision(Obj1,object2, flag, potentialInterupt))
+				if (LineToLineCollision(Obj1, object2, flag, potentialInterupt))
 				{
 					//calculate which direction using dot product
 					//lineColliders consist of 2 points that make a line. point one should be the left most point.
@@ -674,9 +645,7 @@ void Emitter::EmitterCollisionHandler(Entity& object1, Entity& object2)
 						Line->CollidedLeft(Obj1);
 						ToEffect->SetLeftTrigger(true);//placeholding unsure of left right
 					}
-
 				}
-
 			}
 		}
 
@@ -689,9 +658,7 @@ void Emitter::EmitterCollisionHandler(Entity& object1, Entity& object2)
 		//copy the stuff from uptop
 	}
 
-
 	//potentially more stuff for line colliders maybe break this up into different behaviors.
-	
 }
 
 void Emitter::SetEmitPositionEndR(float x, float y)

@@ -22,7 +22,7 @@ enum Particle_Type
 class Particle
 {
 public:
-	Particle(Vector2 pos, Vector2 dir, Vector2 spd, Color otherColor, Particle_Type partType, Vector2 attractPoint = {0,0});
+	Particle(Vector2 pos, Vector2 dir, Vector2 spd, Color otherColor, Particle_Type partType, Vector2 attractPoint = { 0,0 });
 	Particle();
 	void Update(float dt);
 
@@ -35,7 +35,7 @@ public:
 	Color color;
 	bool isDead = false;
 	Vector2 mothAttractionPoint{ 0,0 };
-	Vector2 tileMapSize{240,136};
+	Vector2 tileMapSize{ 240,136 };
 };
 
-#endif 
+#endif

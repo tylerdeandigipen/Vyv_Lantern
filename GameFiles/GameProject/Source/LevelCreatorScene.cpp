@@ -1,7 +1,7 @@
 //------------------------------------------------------------------------------
 //
 // File Name:	LevelCreatorScene.cpp
-// Author(s):	Tyler Dean, Michael Howard, TayLee Young, 
+// Author(s):	Tyler Dean, Michael Howard, TayLee Young,
 //              Thomas Stephenson, Louis Wang
 // Purpose:     Main scene for the game.
 //
@@ -67,7 +67,6 @@ static int recieverCount = 0;
 
 LevelCreatorScene::LevelCreatorScene() : Scene("LevelCreatortest"), playerExists(false), tempEntities()
 {
-
 }
 
 LevelCreatorScene::~LevelCreatorScene()
@@ -100,7 +99,7 @@ Engine::EngineCode LevelCreatorScene::Init()
 
 	LevelBuilder::GetInstance()->LoadTileMap("./Data/Scenes/LevelCreatorScene.json");
 
-	// this is gonna add any objects that exist in the imported scene and transfer them to 
+	// this is gonna add any objects that exist in the imported scene and transfer them to
 	// the tempEntities vector so they can be modified (this will have to be added in the import section as well)
 	if (EntityContainer::GetInstance()->CountEntities() > 0)
 	{
@@ -129,9 +128,8 @@ Engine::EngineCode LevelCreatorScene::Init()
 	AddFunc.emplace("Emitter", &LevelCreatorScene::AddEmitterEntity);
 	AddFunc.emplace("Reciever", &LevelCreatorScene::AddRecieverEntity);
 
-
-	//AddFunc.emplace("Door", 
-	//AddFunc.emplace("Mirror", 
+	//AddFunc.emplace("Door",
+	//AddFunc.emplace("Mirror",
 
 	g_Manager.pRenderer = LevelCreatorPixelRenderer;
 
@@ -140,8 +138,6 @@ Engine::EngineCode LevelCreatorScene::Init()
 	previousTile = { -1000,-1000 };
 	currentTile = 1;
 	return Engine::NothingBad;
-
-
 }
 
 Vector2 pos1, pos2;
@@ -218,7 +214,6 @@ void LevelCreatorScene::ToolSquareFill(Inputs* inputHandler, Vector2 CursourP)
 				}
 			}
 		}
-
 
 		for (int x = (int)pos1.x; x < (int)pos2.x + 1; x++)
 		{
@@ -332,7 +327,7 @@ void LevelCreatorScene::ExportScene(std::string name)
 
 	readable["GameObjectList"] = { {"GameObjectFile", listToExport } };
 
-	//the filemap to read for the scene 
+	//the filemap to read for the scene
 	std::ofstream actualfile("./Data/Scenes/" + name + ".json");
 	actualfile << std::setw(2) << readable << std::endl;
 }
@@ -522,7 +517,6 @@ void LevelCreatorScene::ToolHandler()
 		}
 		LevelCreatorPixelRenderer->isFullbright = true;
 
-
 		if (inputHandler->keyPressed(SDL_SCANCODE_LSHIFT) && inputHandler->mouseButtonPressed(SDL_BUTTON_LEFT))
 		{
 			//Draw Square
@@ -592,13 +586,10 @@ static void CheckCollisions()
 							collider->Check(secCollider);
 						}
 
-
 						if (level->tempEntities[current]->Has(Emitter) && level->tempEntities[i]->Has(LineCollider))
 						{
 							Emitter::EmitterCollisionHandler(*level->tempEntities[current], *level->tempEntities[i]);
 						}
-
-
 					}
 				}
 			}
@@ -639,7 +630,6 @@ void LevelCreatorScene::Update(float dt)
 
 void LevelCreatorScene::Render()
 {
-
 	return;
 }
 
@@ -652,8 +642,6 @@ Engine::EngineCode LevelCreatorScene::Exit()
 	doorCount = 0;
 	emitterCount = 0;
 	recieverCount = 0;
-
-
 
 	if (!tempEntities.empty())
 	{
@@ -882,7 +870,6 @@ void LevelCreatorScene::ImGuiWindow()
 				ImGui::EndPopup();
 			}
 
-
 			ImGui::TreePop();
 		}
 
@@ -928,7 +915,7 @@ void LevelCreatorScene::ImGuiWindow()
 								}
 							}
 							json counts = FileIO::GetInstance()->OpenJSON("./Data/Scenes/" + std::string(filenameBuffer) + "OBJECTS.json");
-							
+
 							if (counts["Circle"].is_object())
 							{
 								circleCount = counts["Circle"]["count"];
@@ -1074,7 +1061,7 @@ void LevelCreatorScene::ImGuiWindow()
 		ImGui::TreePop();
 	}
 
-	// removing the treenode messed with the spacing, so im adjusting the 
+	// removing the treenode messed with the spacing, so im adjusting the
 	// spacing so the stuff isnt cuttoff
 	ImGui::SetCursorPosX(ImGui::GetCursorPosX() + 20);
 	ImGui::Text("Object Selector:");
@@ -1137,6 +1124,7 @@ void LevelCreatorScene::ImGuiWindow()
 /* int LevelCreatorScene::CreateEntity(const std::string& entityType)
 {
 	static int entityCount = 0;
+
 	//int entityExistingCount = 0;
 
 	std::string number = "./Data/GameObjects/" + entityType;
@@ -1197,7 +1185,6 @@ int LevelCreatorScene::CreateCircleEntity()
 	++circleCount;
 	return 0;
 }
-
 
 //static int doorCount = 0;
 int LevelCreatorScene::CreateDoorEntity()
@@ -1300,14 +1287,12 @@ int LevelCreatorScene::CreateRecieverEntity()
 	currentScene->gameObjects.push_back(newobject);
 } */
 
-
 /* these look like a lot of copy and paste code but for now its so that json can be exported easier
    in order to get it generalized we'd have to just check for the right components */
 void LevelCreatorScene::AddCircleEntity(Entity* entity)
 {
 	Scene* pare = LevelCreatorSceneGetInstance();
 	LevelCreatorScene* current = reinterpret_cast<LevelCreatorScene*>(pare);
-
 
 	Logging::GetInstance("LevelCreator.log").LogToAll("Creating->", entity->key.c_str());
 	json circleData;
@@ -1340,7 +1325,6 @@ void LevelCreatorScene::AddDoorEntity(Entity* entity)
 	Scene* pare = LevelCreatorSceneGetInstance();
 	LevelCreatorScene* current = reinterpret_cast<LevelCreatorScene*>(pare);
 
-
 	Logging::GetInstance("LevelCreator.log").LogToAll("Creating->", entity->key.c_str());
 	json doorData; // the main thing for all pieces to be put inside
 	json components; // the components array
@@ -1351,7 +1335,6 @@ void LevelCreatorScene::AddDoorEntity(Entity* entity)
 	components.push_back(collider);
 	components.push_back(transform);
 	components.push_back(physics);
-
 
 	doorData["Components"] = components;
 	doorData["FilePath"] = entity->GetFilePath();
@@ -1374,7 +1357,6 @@ void LevelCreatorScene::AddMirrorEntity(Entity* entity)
 	Scene* pare = LevelCreatorSceneGetInstance();
 	LevelCreatorScene* current = reinterpret_cast<LevelCreatorScene*>(pare);
 
-
 	Logging::GetInstance("LevelCreator.log").LogToAll("Creating->", entity->key.c_str());
 	json mirrorData; // the main thing for all pieces to be put inside
 	json components; // the components array
@@ -1395,7 +1377,6 @@ void LevelCreatorScene::AddMirrorEntity(Entity* entity)
 	mirrorData["isAnimated"] = false;
 	mirrorData["KeyObject"] = { {"key", entity->key} };
 
-
 	std::ofstream doorCreated(entity->GetFilePath());
 	doorCreated << std::setw(2) << mirrorData << std::endl;
 
@@ -1407,7 +1388,6 @@ void LevelCreatorScene::AddEmitterEntity(Entity* entity)
 {
 	Scene* pare = LevelCreatorSceneGetInstance();
 	LevelCreatorScene* current = reinterpret_cast<LevelCreatorScene*>(pare);
-
 
 	Logging::GetInstance("LevelCreator.log").LogToAll("Creating->", entity->key.c_str());
 	json mirrorData; // the main thing for all pieces to be put inside
@@ -1430,7 +1410,6 @@ void LevelCreatorScene::AddEmitterEntity(Entity* entity)
 
 	mirrorData["KeyObject"] = { {"key", entity->key} };
 
-
 	std::ofstream doorCreated(entity->GetFilePath());
 	doorCreated << std::setw(2) << mirrorData << std::endl;
 
@@ -1442,7 +1421,6 @@ void LevelCreatorScene::AddRecieverEntity(Entity* entity)
 {
 	Scene* pare = LevelCreatorSceneGetInstance();
 	LevelCreatorScene* current = reinterpret_cast<LevelCreatorScene*>(pare);
-
 
 	Logging::GetInstance("LevelCreator.log").LogToAll("Creating->", entity->key.c_str());
 	json mirrorData; // the main thing for all pieces to be put inside
@@ -1464,14 +1442,12 @@ void LevelCreatorScene::AddRecieverEntity(Entity* entity)
 	mirrorData["isAnimated"] = false;
 	mirrorData["KeyObject"] = { {"key", entity->key} };
 
-
 	std::ofstream doorCreated(entity->GetFilePath());
 	doorCreated << std::setw(2) << mirrorData << std::endl;
 
 	json newobject = { {"FilePath", entity->GetFilePath()} };
 	current->gameObjects.push_back(newobject);
 }
-
 
 void LevelCreatorScene::AddToFile(std::string nametoadd, Entity* entity)
 {
@@ -1520,9 +1496,9 @@ void EntityManager::ShowEntityInfo()
 					ImGui::Text("Rotation: (%f, %f)", properties[creator->tempEntities[i]->key].rotation);
 					ImGui::Text("Size: (%d, %d)", static_cast<int>(g_Manager.pRenderer->objects[i]->size.x), static_cast<int>(g_Manager.pRenderer->objects[i]->size.y));
 
-
 					ImGui::SliderInt2("Modify Translation", properties[creator->tempEntities[i]->key].translation, -500, 500);
 					creator->tempEntities[i]->Has(Transform)->SetTranslation({ static_cast<float>(properties[creator->tempEntities[i]->key].translation[0]), static_cast<float>(properties[creator->tempEntities[i]->key].translation[1]) });
+
 					//creator->tempEntities[i]->GetImage()->position = { static_cast<float>(properties[creator->tempEntities[i]->key].translation[0]), static_cast<float>(properties[creator->tempEntities[i]->key].translation[1]) };
 
 					ImGui::Checkbox((properties[creator->tempEntities[i]->key].isEditable ? "Entity edit enabled" : "Entity edit disabled"), &properties[creator->tempEntities[i]->key].isEditable);
@@ -1676,6 +1652,7 @@ void EntityManager::EditText()
 			if (ImGui::MenuItem("Save"))
 			{
 				auto textToSave = editor.GetText();
+
 				/// save text....
 			}
 			if (ImGui::MenuItem("Load"))

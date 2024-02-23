@@ -23,59 +23,58 @@ enum ImageType
 	COLLIDABLE,
 	SWITCH,
 	PLAYER,
-    WALL,
-    NA
+	WALL,
+	NA
 };
 
 class ImageBuffer
 {
 public:
 
-    ImageType type;
+	ImageType type;
 
-    int BufferSizeX = 0;
-    int BufferSizeY = 0;
-    float screenScale = 6;
-    gfxVector2 size;
-    gfxVector2 position;
-    std::string name = "";
-    int layer = 0;
-    int currentFrame = 0;
-    int totalFrames = 0;
-    bool isFlipped = false;
-    bool isCulled = false;
-    Color* buffer;
-    AABB aabb;
+	int BufferSizeX = 0;
+	int BufferSizeY = 0;
+	float screenScale = 6;
+	gfxVector2 size;
+	gfxVector2 position;
+	std::string name = "";
+	int layer = 0;
+	int currentFrame = 0;
+	int totalFrames = 0;
+	bool isFlipped = false;
+	bool isCulled = false;
+	Color* buffer;
+	AABB aabb;
 
-    ImageBuffer(const std::string filename);
-    ImageBuffer(ImageBuffer &rhs);
-    ImageBuffer(float x, float y);
-    ImageBuffer();
-    ~ImageBuffer();
+	ImageBuffer(const std::string filename);
+	ImageBuffer(ImageBuffer& rhs);
+	ImageBuffer(float x, float y);
+	ImageBuffer();
+	~ImageBuffer();
 
 	ImageBuffer& AddSprite(ImageBuffer* sprite, Vector2 CameraP = Vector2(0, 0));
-    ImageBuffer& AddSpriteIgnoreAlpha(ImageBuffer* sprite, Vector2 CameraP = Vector2(0, 0));
-	void Blit(ImageBuffer *Destination, int OffsetX = 0, int OffsetY = 0);
-    void BlitIgnoreAlpha(ImageBuffer* Destination, int OffsetX = 0, int OffsetY = 0);
+	ImageBuffer& AddSpriteIgnoreAlpha(ImageBuffer* sprite, Vector2 CameraP = Vector2(0, 0));
+	void Blit(ImageBuffer* Destination, int OffsetX = 0, int OffsetY = 0);
+	void BlitIgnoreAlpha(ImageBuffer* Destination, int OffsetX = 0, int OffsetY = 0);
 
-    void Update(float dt);
+	void Update(float dt);
 
-    Color &SampleColor(int x, int y);
-    
-    void FlipSprite();
-    ImageBuffer& ClearImageBuffer();
-    void MergeLayers(ImageBuffer* bottom, ImageBuffer* top);
-    void MergeLayersIndvPixel(ImageBuffer* bottom, ImageBuffer* middle, ImageBuffer* top, int x, int y);
-    void BlurBuffer(int imageBlurRangelow, int imageBlurRangeHigh);
-    void FloorBrightness(float floor);
-    void GenerateVornoiPoints();
-    void MakeVornoiNoiseBuffer(Vector2 camPos, float falloffModifier, float brightnessMultiplier, float minBrightness);
-    void DitherBuffer(ImageBuffer* output = NULL, bool renderOnlyLights = false, bool isFullbright = false, float** lightR = NULL, float** lightG = NULL, float** lightB = NULL);
+	Color& SampleColor(int x, int y);
 
-    ImageBuffer& operator =(const ImageBuffer& rhs);
+	void FlipSprite();
+	ImageBuffer& ClearImageBuffer();
+	void MergeLayers(ImageBuffer* bottom, ImageBuffer* top);
+	void MergeLayersIndvPixel(ImageBuffer* bottom, ImageBuffer* middle, ImageBuffer* top, int x, int y);
+	void BlurBuffer(int imageBlurRangelow, int imageBlurRangeHigh);
+	void FloorBrightness(float floor);
+	void GenerateVornoiPoints();
+	void MakeVornoiNoiseBuffer(Vector2 camPos, float falloffModifier, float brightnessMultiplier, float minBrightness);
+	void DitherBuffer(ImageBuffer* output = NULL, bool renderOnlyLights = false, bool isFullbright = false, float** lightR = NULL, float** lightG = NULL, float** lightB = NULL);
 
-    private:
-    Vector2 vornoiPoints[MAX_NUM_VORNOI_POINTS] = { Vector2{0,0} };
+	ImageBuffer& operator =(const ImageBuffer& rhs);
 
+private:
+	Vector2 vornoiPoints[MAX_NUM_VORNOI_POINTS] = { Vector2{0,0} };
 };
 #endif

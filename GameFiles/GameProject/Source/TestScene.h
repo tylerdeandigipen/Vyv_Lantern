@@ -21,7 +21,7 @@ class Scene;
 class TestScene : public Scene
 {
 public:
-	
+
 	TestScene();
 	~TestScene();
 
@@ -34,11 +34,10 @@ public:
 private:
 	void ImGuiInterg();
 	void ImGuiWindow();
-	
+
 	emitter_id ControlledEmitter;
 
-
-	laser_emitter *NewEmitter(void)
+	laser_emitter* NewEmitter(void)
 	{
 		laser_emitter* Result = NULL;
 
@@ -48,7 +47,7 @@ private:
 		return(Result);
 	}
 
-	reflector *NewReflector(void)
+	reflector* NewReflector(void)
 	{
 		reflector* Result = NULL;
 

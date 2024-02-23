@@ -13,7 +13,6 @@
 
 Physics::Physics() : Component(Component::cPhysics)
 {
-
 }
 
 Physics::Physics(Physics const& phys) : Component(phys)

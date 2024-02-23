@@ -21,13 +21,11 @@ Transform::Transform(Transform const& trans) : Component(trans), isDirty(trans.i
 	translation = new gfxVector2(*trans.translation);
 }
 
-
 Transform::~Transform()
 {
 	if (!this->Parent()->IsObject())
 		delete translation;
 }
-
 
 Component* Transform::Clone() const
 {
@@ -46,7 +44,6 @@ std::string Transform::Name()
 
 void Transform::Read(json jsonData)
 {
-	
 	if (jsonData["translation"].is_object())
 	{
 		json trans = jsonData["translation"];
@@ -58,10 +55,8 @@ void Transform::Read(json jsonData)
 	}
 	else
 	{
-
 	}
 }
-
 
 const gfxVector2* Transform::GetTranslation() { return translation; }
 float Transform::GetRotation() { return rotation; }

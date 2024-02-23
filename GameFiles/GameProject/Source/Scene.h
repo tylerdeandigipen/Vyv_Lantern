@@ -14,9 +14,10 @@
 class Scene
 {
 private:
-//	typedef Engine::EngineCode(*SceneCode)(void);
-//	typedef void (*VoidFloat)(float);
-//	typedef void (*VoidVoid)(void);
+
+	//	typedef Engine::EngineCode(*SceneCode)(void);
+	//	typedef void (*VoidFloat)(float);
+	//	typedef void (*VoidVoid)(void);
 public:
 	Scene(const char* name);
 	const char* name;

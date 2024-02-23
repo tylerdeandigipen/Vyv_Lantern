@@ -19,7 +19,7 @@ Color::Color(uint8_t r, uint8_t g, uint8_t b, uint8_t a) // constructor definiti
 {
 }
 
-Color::Color(Color& rhs) 
+Color::Color(Color& rhs)
 	: r{ rhs.r }
 	, g{ rhs.g }
 	, b{ rhs.b }

@@ -1,7 +1,6 @@
 #include "LineCollider.h"
 
-
-LineCollider::LineCollider(): Component(Component::cLineCollider)
+LineCollider::LineCollider() : Component(Component::cLineCollider)
 {
 	collidingWithRight = nullptr;
 	collidingWithLeft = nullptr;
@@ -9,14 +8,13 @@ LineCollider::LineCollider(): Component(Component::cLineCollider)
 	position2 = new gfxVector2();
 }
 
-LineCollider::LineCollider(LineCollider const & cpy) : Component(Component::cLineCollider)
+LineCollider::LineCollider(LineCollider const& cpy) : Component(Component::cLineCollider)
 {
 	collidingWithLeft = nullptr;
 	collidingWithRight = nullptr;
 	position1 = new gfxVector2(*cpy.position1);
 	position2 = new gfxVector2(*cpy.position2);
 }
-
 
 LineCollider::~LineCollider()
 {
@@ -30,9 +28,8 @@ Component* LineCollider::Clone(void) const
 }
 
 //component-specific render code.
-void LineCollider::Update(float dt) { 
-	dt = dt; 
-
+void LineCollider::Update(float dt) {
+	dt = dt;
 
 	if (collidingWithLeft)
 	{
@@ -41,9 +38,7 @@ void LineCollider::Update(float dt) {
 
 	if (collidingWithRight)
 	{
-
 	}
-
 }
 
 void LineCollider::Read(json jsonData)
@@ -61,13 +56,9 @@ void LineCollider::Read(json jsonData)
 		position1->x = pos["x"];
 		position1->y = pos["y"];
 	}
-
 }
 
 void LineCollider::Render() const
 {
 	//does not render
 };
-
-
-

@@ -19,28 +19,28 @@
 
 enum light_source_type
 {
-    LightSourceType_Point,
-    LightSourceType_Directional, //to follow the mouse it has to be made directional first
-    LightSourceType_EnumCount
+	LightSourceType_Point,
+	LightSourceType_Directional, //to follow the mouse it has to be made directional first
+	LightSourceType_EnumCount
 };
 using string = std::string;
-class Light : public Component 
+class Light : public Component
 {
 public:
 	Light();
-	Light(const Light &rhs);
+	Light(const Light& rhs);
 
 	Component* Clone() const override;
 	void Update(float dt) override;
 	void Read(json jsonData) override;
-    gfxVector2 position;
+	gfxVector2 position;
 	Color color;
 
 	gfxVector2 leftAnglePos;
 	gfxVector2 rightAnglePos;
 
 	enum light_source_type Type = LightSourceType_Point;
-    float minAngle = 0;
+	float minAngle = 0;
 	float maxAngle = 0;
 	float angle = 0;
 	float intensity = 1;
@@ -51,10 +51,9 @@ public:
 	float frustumWeight = 0.15f;
 	float volumetricIntensity = 0;
 
-    float Attenuation[3];
+	float Attenuation[3];
 	static std::string TheName();
 private:
 };
 
-
-#endif 
+#endif

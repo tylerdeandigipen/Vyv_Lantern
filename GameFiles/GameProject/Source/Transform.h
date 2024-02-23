@@ -23,6 +23,7 @@ public:
 	std::string GetName() override;
 	static std::string Name();
 	void Read(json jsonData) override;
+
 	//const Matrix2D* GetMatrix();
 	const gfxVector2* GetTranslation();
 	float GetRotation();
@@ -30,7 +31,7 @@ public:
 	void SetTranslation(gfxVector2* _translation);
 	void SetTranslation(gfxVector2 _translation);
 	void SetRotation(float _rotation);
-    void SetScale(const gfxVector2* _scale);
+	void SetScale(const gfxVector2* _scale);
 private:
 
 	gfxVector2* scale;

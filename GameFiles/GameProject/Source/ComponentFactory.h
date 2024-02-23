@@ -39,7 +39,7 @@ private:
 	static Component& CreateEmitter(void);
 	static Component& CreateLineCollider(void);
 	static ComponentFactory* instance;
-	std::unordered_map<std::string, std::function<Component&()>> component_map;
+	std::unordered_map<std::string, std::function<Component& ()>> component_map;
 	const char* name;
-	void Add(std::string name, std::function<Component&()> create);
+	void Add(std::string name, std::function<Component& ()> create);
 };

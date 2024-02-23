@@ -22,7 +22,7 @@ struct emitter_id;
 class TbdTestScene : public Scene
 {
 public:
-	
+
 	TbdTestScene();
 
 	Engine::EngineCode Load(void) override;

@@ -75,6 +75,7 @@ void gfxMatrix3::setIdentity()
 {
 	// set all elements to 0 first
 	setZero();
+
 	// set [0][0],[1][1] and [2][2] to 1
 	a[0] = a[4] = a[8] = 1;
 }
@@ -119,9 +120,11 @@ gfxMatrix3 gfxMatrix3::getTranspose(gfxMatrix3 m) const
 gfxMatrix3 gfxMatrix3::getInverse() const
 {
 	gfxMatrix3 inv_matx(*this);
+
 	//find determinant aqz + brz + cpy - ary - bpz - cqx
 	float det = (a[0] * a[4] * a[8]) + (a[3] * a[7] * a[2]) + (a[6] * a[1] * a[5]) -
 		(a[0] * a[7] * a[5]) - (a[3] * a[1] * a[8] - (a[6] * a[4] * a[2]));
+
 	//if det is negative, throw error
 	if (abs(det) < EPSILON)
 	{
@@ -152,7 +155,6 @@ gfxMatrix3 gfxMatrix3::getInverse() const
 		inv_matx.a[8] *= inv_det;
 	}
 	return inv_matx;
-
 }
 /*
 | cosO		-sinO		0		|
@@ -174,8 +176,6 @@ void gfxMatrix3::SetRotation(float degree, float x_Axis, float y_Axis)
 	rot_mat.a[6] = 0;
 	rot_mat.a[7] = 0;
 	rot_mat.a[8] = 1;
-
-
 }
 
 //set matrix to scaling matrix
@@ -192,6 +192,7 @@ void gfxMatrix3::SetScale(float sx, float sy)
 	a[0] = sx;
 	a[4] = sy;
 }
+
 //set matrix to translation matrix
 /*
 | a[0]		a[3]		a[tx]	|

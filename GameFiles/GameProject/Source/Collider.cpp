@@ -3,7 +3,7 @@
 // File Name:	Collider.cpp
 // Author(s):	Michael Howard (michael.howard)
 // Purpose:		collider component
-// 
+//
 // Copyright ?2023 DigiPen (USA) Corporation.
 //
 //------------------------------------------------------------------------------
@@ -47,5 +47,3 @@ std::function<void(Entity*, Entity*)> Collider::GetCollisionHandler()
 {
 	return handler;
 }
-
-

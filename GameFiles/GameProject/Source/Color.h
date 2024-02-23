@@ -17,7 +17,7 @@ class Color
 public:
 
 	Color(uint8_t r, uint8_t g, uint8_t b, uint8_t a);
-	Color(Color &rhs);
+	Color(Color& rhs);
 	Color();
 
 	uint8_t GetAlpha();
@@ -45,5 +45,4 @@ public:
 	uint8_t a = 0;
 };
 
-
-#endif 
+#endif

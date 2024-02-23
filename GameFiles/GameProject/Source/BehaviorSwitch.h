@@ -35,7 +35,6 @@ public:
 	bool GetLerped() { return isLerping; }
 	void SetLerped() { isLerping = !isLerping; }
 
-
 	void Update(float dt);
 	void Read(json jsonData) override;
 	static void SwitchCollisionHandler(Entity* entity1, Entity* entity2);

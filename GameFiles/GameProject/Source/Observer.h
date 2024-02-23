@@ -2,7 +2,7 @@
 //
 // File Name:	Observer.h
 // Author(s):	TayLee Young
-// Purpose:		Observer class declaration 
+// Purpose:		Observer class declaration
 //
 // Copyright © 2023 DigiPen (USA) Corporation.
 //
@@ -13,22 +13,22 @@
 
 class Subject; //fForward declaration
 
-class Observer 
+class Observer
 {
 public:
-    friend class Subject; // allow Subject to access the "next" pointer bc linked list
+	friend class Subject; // allow Subject to access the "next" pointer bc linked list
 
-    Observer() : observerNext(nullptr) {}
-    virtual ~Observer() {}
+	Observer() : observerNext(nullptr) {}
+	virtual ~Observer() {}
 
-    virtual void onNotify(const Entity& entity, EventType event) = 0;
+	virtual void onNotify(const Entity& entity, EventType event) = 0;
 
 private:
-    Observer* observerNext;
+	Observer* observerNext;
 };
 
-class PlayerMoveLeftObserver : public Observer 
+class PlayerMoveLeftObserver : public Observer
 {
 public:
-    virtual void onNotify(const Entity& entity, EventType eventType);
+	virtual void onNotify(const Entity& entity, EventType eventType);
 };

@@ -22,13 +22,13 @@ class LevelBuilder : public BaseSystem
 public:
 	LevelBuilder();
 	~LevelBuilder();
-	void Read(json &jsonData);
+	void Read(json& jsonData);
 	Engine::EngineCode Init();
 	void Update(float dt);
 
 	void Render();
 	Engine::EngineCode Close();
-	
+
 	static LevelBuilder* GetInstance();
 	void LoadTileMap(std::string filename);
 	void ReLoadLevel();

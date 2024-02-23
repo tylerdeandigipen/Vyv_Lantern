@@ -16,12 +16,11 @@
 #include <vector>
 #include <SDL/SDL.h>
 
-
 class Entity
 {
 public:
 	Entity();
-	Entity(std::string type, const std::string file = NULL, json Animation = NULL );
+	Entity(std::string type, const std::string file = NULL, json Animation = NULL);
 	Entity(Entity const& entity);
 	~Entity();
 	Entity* Clone();
@@ -34,7 +33,7 @@ public:
 
 	bool IsNamed(const char* name);
 	bool IsPicked(Renderer* pRenderder, Vector2 mousePos);
-	void Read(json &stream);
+	void Read(json& stream);
 	void FreeComponents();
 	void Add(Component*);
 	void AddToRenderer(Renderer* pixel, std::string _file = "");
@@ -46,8 +45,6 @@ public:
 	void SetName(const char* name);
 	void SetInputHandler(Inputs* input);
 
-	
-	
 	Component* Get(Component::TypeEnum type) const;
 	std::string GetRealName();
 	const char* GetName();
@@ -73,7 +70,6 @@ public:
 
 	bool IsObject();
 	bool IsAnimated();
-
 
 	void Update(float dt);
 	void Render();
@@ -102,5 +98,4 @@ private:
 	Vector2 FrameSize;
 
 	std::vector<Component*> components;
-	
 };

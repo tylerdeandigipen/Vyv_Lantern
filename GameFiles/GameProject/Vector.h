@@ -18,8 +18,8 @@ Vector header file for all 2D vector calculations
 ----------------------------------------------------------------------------- */
 class gfxVector2
 {
-
 public:
+
 	//constructors & destructors
 	gfxVector2();
 	gfxVector2(float x, float y);
@@ -27,6 +27,7 @@ public:
 	~gfxVector2() { /*delete[] &mVec[2];*/ };
 
 	gfxVector2(gfxVector2&&) = default;
+
 	//operator = assignment
 	gfxVector2& operator=(const gfxVector2& v)
 	{
@@ -34,6 +35,7 @@ public:
 		this->y = v.y;
 		return *this;
 	}
+
 	//arithmetic operators
 	friend gfxVector2 operator+(const gfxVector2& l, const gfxVector2& r);
 	friend gfxVector2 operator-(const gfxVector2& l, const gfxVector2& r);
@@ -42,7 +44,6 @@ public:
 
 	//dot product between 2 vectors
 	friend float operator*(const gfxVector2& l, const gfxVector2& r);
-
 
 	//cross product between 2 vectors
 	friend float operator^(const gfxVector2& l, const gfxVector2& r);
@@ -102,40 +103,40 @@ public:
 		vecResult.y = vec.y / length(vec);
 	}
 
-    static inline float DotProduct(const gfxVector2 &a, const gfxVector2 &b)
-    {
-        float Result = a * b;
-        return(Result);
-    }
+	static inline float DotProduct(const gfxVector2& a, const gfxVector2& b)
+	{
+		float Result = a * b;
+		return(Result);
+	}
 
 	static inline float Length(const gfxVector2& v)
 	{
 		float Result = sqrtf(DotProduct(v, v));
-        return(Result);
+		return(Result);
 	}
 
-	static inline gfxVector2 Normalize(const gfxVector2 &vec)
+	static inline gfxVector2 Normalize(const gfxVector2& vec)
 	{
 		gfxVector2 Result = {};
 		Result.x = vec.x / Length(vec);
 		Result.y = vec.y / Length(vec);
-        return(Result);
+		return(Result);
 	}
 
-	static inline gfxVector2 Perp(const gfxVector2 &vec)
+	static inline gfxVector2 Perp(const gfxVector2& vec)
 	{
-		gfxVector2 Result = {-vec.y, vec.x};
-        return(Result);
+		gfxVector2 Result = { -vec.y, vec.x };
+		return(Result);
 	}
-    
+
 	//delegates
 	float x; //access to X component
 	float y; //access to Y component
 
 private:
+
 	//data member
 	float mVec[2]{};
-
 };
 
 typedef gfxVector2 Vector2;

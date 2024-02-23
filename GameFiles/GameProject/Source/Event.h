@@ -9,23 +9,23 @@
 //------------------------------------------------------------------------------
 #pragma once
 
-enum class EventType 
+enum class EventType
 {
-    PLAYER_MOVED_LEFT,
-    PLAYER_MOVED_RIGHT,
-    PLAYER_MOVED_UP,
-    PLAYER_MOVED_DOWN
+	PLAYER_MOVED_LEFT,
+	PLAYER_MOVED_RIGHT,
+	PLAYER_MOVED_UP,
+	PLAYER_MOVED_DOWN
 };
 
-class Event 
+class Event
 {
 public:
-    Event(EventType type) : type_(type) {}
+	Event(EventType type) : type_(type) {}
 
-    EventType getType() const {
-        return type_;
-    }
+	EventType getType() const {
+		return type_;
+	}
 
 private:
-    EventType type_;
+	EventType type_;
 };

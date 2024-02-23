@@ -6,23 +6,22 @@
 
 class LineCollider : public Component
 {
-
 public:
 	LineCollider();
-	LineCollider(LineCollider const & cpy);
+	LineCollider(LineCollider const& cpy);
 	~LineCollider();
 
 	// used to invoke the copy constructor
 	Component* Clone(void) const;
 
 	void Read(json jsonData);
+
 	//component-specific render code.
 	void Update(float dt);
-	
+
 	void Render() const;
 	void CollidedLeft(Emitter* get) { collidingWithLeft = get; };
 	void CollidedRight(Emitter* get) { collidingWithLeft = get; };
-
 
 	static std::string Name()
 	{
@@ -34,17 +33,16 @@ public:
 		return std::string();
 	};
 
-
 	gfxVector2* GetPosition1() { return position1; };
 	gfxVector2* GetPosition2() { return position2; };
 
 private:
-	
+
 	Emitter* collidingWithLeft;
 	Emitter* collidingWithRight;
+
 	//load position leftpoint rightpoint
 	gfxVector2* position1;
 	gfxVector2* position2;
-
 };
 
