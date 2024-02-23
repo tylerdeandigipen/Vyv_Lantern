@@ -77,7 +77,6 @@ public:
 	void AddShadowCasterToShadowCasterTileset(ImageBuffer* tile);
 
 	//Helper Functions
-	Renderer();
 	void UpdateObjects(float dt);
 	ImageBuffer* GetObjectByName(std::string name_);
 	void AddLight(Light light);
@@ -152,6 +151,8 @@ public:
 	Vector2 laserPoints2[MAX_LASER_POINTS];
 	int numLasers = 0;
 private:
+	Renderer();
+
 	//Various Counters
 	int numTiles = 0;
 	int numNormalTiles = 0;
@@ -185,7 +186,7 @@ private:
 	//Misc.
 	unsigned int maxThreadsAllowed = 8;
 	Vector2 CameraP;
-	static Renderer* instance;
+	static std::unique_ptr<Renderer> instance;
 	ImageBuffer* DebugBuffer = NULL;
 	uint32_t OutputBufferTexture = NULL;
 };

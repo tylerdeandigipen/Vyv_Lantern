@@ -18,7 +18,7 @@
 #include "Logging.h"
 
 
-FileIO* FileIO::instance = new FileIO;
+std::unique_ptr<FileIO> FileIO::instance = nullptr;
 
 FileIO::FileIO()
 {
@@ -26,10 +26,7 @@ FileIO::FileIO()
 
 FileIO::~FileIO()
 {
-	if (instance != NULL)
-	{
-		delete instance;
-	}
+	
 }
 
 json FileIO::OpenJSON(std::string filename)
@@ -202,11 +199,11 @@ int** FileIO::ReadTylerTileMap(json jsonData)
 
 FileIO* FileIO::GetInstance()
 {
-	if (instance == nullptr)
+	if (!instance) 
 	{
-		instance = new FileIO();
+		instance.reset(new FileIO());
 	}
-	return instance;
+	return instance.get();
 }
 
 

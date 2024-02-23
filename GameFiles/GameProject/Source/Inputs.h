@@ -10,16 +10,13 @@
 #pragma once
 
 #include <SDL/SDL.h>
+#include <memory>
 
 class Inputs
 {
 public:
-	Inputs();
-
-	Inputs(SDL_Window* window);
 
 	~Inputs();
-
 	static Inputs* GetInstance();
 
 	void handleInput();
@@ -39,7 +36,11 @@ public:
 
 	void SetWindow(SDL_Window* window);
 private:
-	static Inputs* instance;
+	static std::unique_ptr<Inputs> instance;
+
+	Inputs();
+
+	Inputs(SDL_Window* window);
 
 	SDL_Window* window;
 

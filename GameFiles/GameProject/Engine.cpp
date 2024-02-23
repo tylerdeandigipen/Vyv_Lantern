@@ -171,7 +171,7 @@ Engine::EngineCode Engine::ShutDown()
 	}
 
 	delete time;
-	delete Renderer::GetInstance();
+	//delete Renderer::GetInstance();
 	return EngineExit;
 }
 

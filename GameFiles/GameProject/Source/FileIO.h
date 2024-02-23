@@ -18,7 +18,6 @@ class Renderer;
 class FileIO
 {
 public:
-	FileIO();
 	~FileIO();
 	json OpenJSON(std::string filename);
 	void ReadLight(Light& light, json& jsonData);
@@ -45,6 +44,7 @@ public:
 
 	static FileIO* GetInstance();
 private:
-	static FileIO* instance;
+	FileIO();
+	static std::unique_ptr<FileIO> instance;
 };
 

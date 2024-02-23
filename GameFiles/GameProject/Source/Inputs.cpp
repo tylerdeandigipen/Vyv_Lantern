@@ -16,7 +16,7 @@
 #include "Engine.h"
 
 // singleton instance
-Inputs* Inputs::instance = new Inputs();
+std::unique_ptr<Inputs> Inputs::instance = nullptr;
 
 Inputs::Inputs()
 {
@@ -42,13 +42,16 @@ Inputs::Inputs(SDL_Window* window) : Inputs()
 
 Inputs::~Inputs()
 {
-    delete instance;
+
 }
 
 // get singleotn instance
 Inputs* Inputs::GetInstance()
 {
-    return instance;
+    if (!instance) {
+        instance.reset(new Inputs());
+    }
+    return instance.get();
 }
 
 // this handles all input events 

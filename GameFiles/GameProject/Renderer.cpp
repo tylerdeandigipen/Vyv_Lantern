@@ -47,8 +47,7 @@
 #define new DEBUG_NEW
 #endif
 
-Renderer* Renderer::instance = new Renderer();
-
+std::unique_ptr<Renderer> Renderer::instance = nullptr;
 //split into Update and Render functions
 void Renderer::Update(float dt)
 {
@@ -1040,11 +1039,10 @@ void Renderer::SetCameraPosition(Vector2 NewCameraP)
 
 Renderer* Renderer::GetInstance()
 {
-    if (instance == nullptr)
-    {
-        instance = new Renderer();
+    if (!instance) {
+        instance.reset(new Renderer());
     }
-    return instance;
+    return instance.get();
 }
 
 int Renderer::CheckLineForObject(int x1, int y1, int x2, int y2)
