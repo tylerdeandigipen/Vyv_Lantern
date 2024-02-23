@@ -18,35 +18,26 @@
       "Type": "Physics"
     },
     {
+      "NumPositions": 3,
       "Type": "BehaviorSwitch",
       "key": 1,
-      "NumPositions": 3,
       "pos": [
         {
-          "x": "120",
-          "y": "332"
+          "x": "120.000000",
+          "y": "332.000000"
         },
         {
-          "x": "120",
-          "y": "356"
+          "x": "120.000000",
+          "y": "356.000000"
         },
         {
-          "x": "120",
-          "y": "316"
+          "x": "120.000000",
+          "y": "316.000000"
         }
       ]
-    },
-    {
-      "Type": "BehaviorMirror",
-      "Direction": {
-        "DirectionX": 1.0,
-        "DirectionY": 1.0
-      },
-      "Radius": 10.0,
-      "key": 1
     }
   ],
-  "FilePath": "./Data/GameObjects/MirrorSection1WIP0.json",
+  "FilePath": "./Data/Scenes/Section1WIP3/Section1WIPMirror0.json",
   "KeyObject": {
     "key": "Section1WIPMirror0"
   },

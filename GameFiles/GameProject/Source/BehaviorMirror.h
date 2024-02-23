@@ -29,8 +29,8 @@ public:
 
 	void Init() override;
 	int GetKey() { return key; }
-	Behavior* Clone() const override;
 
+	Behavior* Clone() const override;
 	void Update(float dt);
 	void Read(json jsonData) override;
 	static void SwitchOn(bool collided);

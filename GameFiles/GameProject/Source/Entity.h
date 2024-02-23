@@ -86,6 +86,7 @@ private:
 	ImageBuffer* AnimationArray;
 
 	std::string filePath;
+	std::string spritePath;
 
 	char name[256];
 

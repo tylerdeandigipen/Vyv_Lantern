@@ -50,6 +50,7 @@ Entity::Entity(std::string type, const std::string file, json Animated) : isDest
 		}
 		else
 		{
+			spritePath = file;
 			CreateImage(file);
 			isObject = true;
 		}

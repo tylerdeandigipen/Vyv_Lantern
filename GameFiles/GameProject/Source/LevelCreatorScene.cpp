@@ -20,10 +20,11 @@
 #include "Scene.h"
 #include "PlatformSystem.h"
 #include "Engine.h"
+
+#include "BehaviorSwitch.h"
 #include "BehaviorPlayer.h"
 #include "BehaviorMirror.h"
 #include "Entity.h"
-
 #include "Collider.h"
 #include "Emitter.h"
 #include "LineCollider.h"
@@ -932,6 +933,7 @@ void LevelCreatorScene::ImGuiWindow()
 						if (file.is_open())
 						{
 							file.close();
+							Renderer::GetInstance()->CleanRenderer();
 							LevelBuilder::GetInstance()->LoadTileMap(filename);
 							if (EntityContainer::GetInstance()->CountEntities() > 0)
 							{
@@ -1152,6 +1154,7 @@ void LevelCreatorScene::ImGuiWindow()
 	}
 	if (ImGui::Button("  Create Emitter"))
 	{
+		ImGui::OpenPopup("EmitterDirection");
 		CreateEmitterEntity();
 	}
 	if (ImGui::Button("  Create Reciever"))
@@ -1170,6 +1173,7 @@ void LevelCreatorScene::ImGuiWindow()
 
 		if (ImGui::Button("North")) 
 		{
+			// mirror.direction = direction
 
 		}
 
@@ -1200,9 +1204,50 @@ void LevelCreatorScene::ImGuiWindow()
 		ImGui::EndPopup();
 	}
 
+	if (ImGui::BeginPopupModal("EmitterDirection", NULL, ImGuiWindowFlags_AlwaysAutoResize))
+	{
+		ImGui::Text("Pick a mirror direction.");
+		ImGui::Text("Warning, this cannot be changed.");
+
+		/* MICHAELLL */
+
+		/* PUT THE DIRECTIONAL BEHAVIOR HERE */
+
+		if (ImGui::Button("North"))
+		{
+
+		}
+
+		if (ImGui::Button("East"))
+		{
+
+		}
+
+		if (ImGui::Button("South"))
+		{
+
+		}
+
+		if (ImGui::Button("West"))
+		{
+
+		}
+
+		if (ImGui::Button("OK"))
+		{
+			/* probably set direction to null or something as default,
+			   then add a check right here saying if direction == null */
+			   /* ImGui::OpenPopup("NoDirectionPicked"); */
+
+
+			ImGui::CloseCurrentPopup();
+		}
+		ImGui::EndPopup();
+	}
+
 	/*if (ImGui::BeginPopupModal("NoDirectionPicked", NULL, ImGuiWindowFlags_AlwaysAutoResize))
 	{
-		ImGui::Text("Pick a direction for mirror!");
+		ImGui::Text("Pick a direction!");
 		if (ImGui::Button("OK"))
 		{
 			ImGui::CloseCurrentPopup();
@@ -1260,8 +1305,8 @@ int LevelCreatorScene::CreatePlayerEntity()
 
 	temp->addKey = "Player"; // this is for the map holding functions and gives access to function for circle
 
-	temp->key = sceneName + "Player" + std::to_string(playerCount);
-	temp->SetFilePath("./Data/GameObjects/Player" + sceneName + std::to_string(playerCount) + ".json");
+	temp->key = "Player" + std::to_string(playerCount);
+	temp->SetFilePath("./Data/GameObjects/Player" + std::to_string(playerCount) + ".json");
 	tempEntities.push_back(temp);
 	++playerCount;
 
@@ -1279,7 +1324,7 @@ int LevelCreatorScene::CreateCircleEntity()
 
 	temp->addKey = "Circle"; // this is for the map holding functions and gives access to function for circle
 
-	temp->key = sceneName + "Circle" + std::to_string(circleCount);
+	temp->key = "Circle" + std::to_string(circleCount);
 	tempEntities.push_back(temp);
 	++circleCount;
 	return 0;
@@ -1297,7 +1342,7 @@ int LevelCreatorScene::CreateDoorEntity()
 
 	temp->addKey = "Door"; // this is for the map holding functions and gives access to function for circle
 
-	temp->key = sceneName + "Door" + std::to_string(doorCount);
+	temp->key = "Door" + std::to_string(doorCount);
 	//temp->SetFilePath("./Data/GameObjects/Door" + sceneName + std::to_string(doorCount) + ".json");
 	tempEntities.push_back(temp);
 	++doorCount;
@@ -1315,7 +1360,7 @@ int LevelCreatorScene::CreateMirrorEntity()
 
 	temp->addKey = "Mirror"; // this is for the map holding functions and gives access to function for circle
 
-	temp->key = sceneName + "Mirror" + std::to_string(mirrorCount);
+	temp->key = "Mirror" + std::to_string(mirrorCount);
 	//temp->SetFilePath("./Data/GameObjects/Mirror" + sceneName + std::to_string(mirrorCount) + ".json");
 	tempEntities.push_back(temp);
 	++mirrorCount;
@@ -1332,7 +1377,7 @@ int LevelCreatorScene::CreateEmitterEntity()
 
 	temp->addKey = "Emitter"; // this is for the map holding functions and gives access to function for circle
 
-	temp->key = sceneName + "Emitter" + std::to_string(emitterCount);
+	temp->key = "Emitter" + std::to_string(emitterCount);
 	//temp->SetFilePath("./Data/GameObjects/Emitter"+ sceneName + std::to_string(emitterCount) + ".json");
 	tempEntities.push_back(temp);
 	++emitterCount;
@@ -1347,7 +1392,7 @@ int LevelCreatorScene::CreateRecieverEntity()
 
 	Entity* temp = FileIO::GetInstance()->ReadEntity(filename); 
 	temp->addKey = "Reciever"; // this is for the map holding functions and gives access to function for circle
-	temp->key = sceneName + "Reciever" + std::to_string(emitterCount);
+	temp->key = "Reciever" + std::to_string(emitterCount);
 	//temp->SetFilePath("./Data/GameObjects/Reciever" + sceneName + std::to_string(emitterCount) + ".json");
 	tempEntities.push_back(temp);
 	++recieverCount;
@@ -1410,7 +1455,7 @@ void LevelCreatorScene::AddCircleEntity(Entity* entity)
 	circleData["FilePath"] = entity->GetFilePath();
 	circleData["Name"] = "Switch";
 	circleData["Type"] = "Object";
-	circleData["file"] = "./Assets/PPM/Circle_2x2.ppm";
+	circleData["file"] = entity->spritePath;
 	circleData["frameSize"] = { 8,8 };
 	circleData["isAnimated"] = false;
 
@@ -1444,7 +1489,7 @@ void LevelCreatorScene::AddDoorEntity(Entity* entity)
 	doorData["FilePath"] = entity->GetFilePath();
 	doorData["Name"] = "Door";
 	doorData["Type"] = "Object";
-	doorData["file"] = "./Assets/PPM/Door_Closed.ppm";
+	doorData["file"] = entity->spritePath;
 	doorData["frameSize"] = { 8,8 };
 	doorData["isAnimated"] = false;
 	doorData["KeyObject"] = { {"key", entity->key} };
@@ -1469,16 +1514,30 @@ void LevelCreatorScene::AddMirrorEntity(Entity* entity)
 	json collider = { {"Type", "ColliderAABB"} };
 	json transform = { {"Type", "Transform"}, {"translation", { { "x", entity->Has(Transform)->GetTranslation()->x }, {"y", entity->Has(Transform)->GetTranslation()->y} } } };
 	json physics = { {"Type", "Physics"}, {"OldTranslation", { { "x", entity->Has(Transform)->GetTranslation()->x }, {"y", entity->Has(Transform)->GetTranslation()->y} } } };
+	BehaviorSwitch* entSwitch = dynamic_cast<BehaviorSwitch*>(entity->Has(Behavior));
+	json bSwitch;
+	if (entSwitch && entSwitch->GetKey() >= 0)
+	{
+		bSwitch = { {"Type", "BehaviorSwitch"}, { "key", entSwitch->GetKey() },{"NumPositions", entSwitch->GetMaxCount() + 1}};
+		for (int i = 0; i < dynamic_cast<BehaviorSwitch*>(entity->Has(Behavior))->GetMaxCount() + 1; ++i)
+		{
+			json pos = { {"x", std::to_string((*entSwitch)[i].x)}, {"y", std::to_string((*entSwitch)[i].y)}};
+			bSwitch["pos"].push_back(pos);
+		}
+	}
+
 
 	components.push_back(collider);
 	components.push_back(transform);
 	components.push_back(physics);
+	if (entSwitch)
+		components.push_back(bSwitch);
 
 	mirrorData["Components"] = components;
 	mirrorData["FilePath"] = entity->GetFilePath();
 	mirrorData["Name"] = "Switch";
 	mirrorData["Type"] = "Object";
-	mirrorData["file"] = "./Assets/PPM/CrystalSprites/MirrorCrystalDownRight.ppm";
+	mirrorData["file"] = entity->spritePath;
 	mirrorData["frameSize"] = { 8,8 };
 	mirrorData["isAnimated"] = false;
 	mirrorData["KeyObject"] = { {"key", entity->key} };
@@ -1515,7 +1574,7 @@ void LevelCreatorScene::AddEmitterEntity(Entity* entity)
 	mirrorData["FilePath"] = entity->GetFilePath();
 	mirrorData["Name"] = "Emitter";
 	mirrorData["Type"] = "Object";
-	mirrorData["file"] = "./Assets/PPM/squareEmitter.ppm";
+	mirrorData["file"] = entity->spritePath;
 	mirrorData["frameSize"] = { 8,8 };
 	mirrorData["isAnimated"] = false;
 
@@ -1552,7 +1611,7 @@ void LevelCreatorScene::AddRecieverEntity(Entity* entity)
 	mirrorData["FilePath"] = entity->GetFilePath();
 	mirrorData["Name"] = "Reciever";
 	mirrorData["Type"] = "Object";
-	mirrorData["file"] = "./Assets/PPM/CrystalSprites/GoalCrystal.ppm";
+	mirrorData["file"] = entity->spritePath;
 	mirrorData["frameSize"] = { 8,8 };
 	mirrorData["isAnimated"] = false;
 	mirrorData["KeyObject"] = { {"key", entity->key} };
@@ -1605,24 +1664,24 @@ void EntityManager::ShowEntityInfo()
 
 				if (ImGui::TreeNode(("Entity %s", creator->tempEntities[i]->key.c_str())))
 				{
-					if (creator->tempEntities[i]->Has(Transform))
-					{
-						ImGui::Text("Entity Number: %d", i);
-						ImGui::Text("Mouse Pos: %f %f", mousePos_.x, mousePos_.y);
+					ImGui::Text("Entity Number: %d", i);
+					ImGui::Text("Mouse Pos: %f %f", mousePos_.x, mousePos_.y);
 
-						ImGui::Text("Translation: (%d, %d)", properties[creator->tempEntities[i]->key].translation[0], properties[creator->tempEntities[i]->key].translation[1]);
-						ImGui::Text("Rotation: (%f, %f)", properties[creator->tempEntities[i]->key].rotation);
-						ImGui::Text("Size: (%d, %d)", static_cast<int>(g_Manager.pRenderer->objects[i]->size.x), static_cast<int>(g_Manager.pRenderer->objects[i]->size.y));
+					ImGui::Text("Translation: (%d, %d)", properties[creator->tempEntities[i]->key].translation[0], properties[creator->tempEntities[i]->key].translation[1]);
+					ImGui::Text("Rotation: (%f, %f)", properties[creator->tempEntities[i]->key].rotation);
+					ImGui::Text("Size: (%d, %d)", static_cast<int>(g_Manager.pRenderer->objects[i]->size.x), static_cast<int>(g_Manager.pRenderer->objects[i]->size.y));
 
 
-						ImGui::SliderInt2("Modify Translation", properties[creator->tempEntities[i]->key].translation, -500, 500);
-						creator->tempEntities[i]->Has(Transform)->SetTranslation({ static_cast<float>(properties[creator->tempEntities[i]->key].translation[0]), static_cast<float>(properties[creator->tempEntities[i]->key].translation[1]) });
-					}
+					ImGui::SliderInt2("Modify Translation", properties[creator->tempEntities[i]->key].translation, -500, 500);
+					creator->tempEntities[i]->Has(Transform)->SetTranslation({ static_cast<float>(properties[creator->tempEntities[i]->key].translation[0]), static_cast<float>(properties[creator->tempEntities[i]->key].translation[1]) });
+					
 					ImGui::Checkbox((properties[creator->tempEntities[i]->key].isEditable ? "Entity edit enabled" : "Entity edit disabled"), &properties[creator->tempEntities[i]->key].isEditable);
 					ImGui::Checkbox((properties[creator->tempEntities[i]->key].isTileAttatch ? "Tile attatch enabled" : "Tile attatch disabled"), &properties[creator->tempEntities[i]->key].isTileAttatch);
 
 					if (creator->tempEntities[i]->addKey.compare("Mirror") == 0)
 					{
+						// show direction info once set
+
 						std::vector<std::pair<int, int>> positions;
 
 						static int xValue = 0;
@@ -1635,6 +1694,28 @@ void EntityManager::ShowEntityInfo()
 						{
 							positions.push_back(std::make_pair(xValue, yValue));
 						}
+					}
+
+					if (creator->tempEntities[i]->addKey.compare("Emitter") == 0)
+					{
+						// show direction info once set
+						//ImGui::Text("bewomp emitter");
+					}
+
+					if (creator->tempEntities[i]->addKey.compare("Reciever") == 0)
+					{
+						// once there is a way to attach the door, add a if else here
+						ImGui::Text("No door is connected to this reciever.");
+
+						// put here a way to get the door its connected to. 
+						//ImGui::Text("Receiver connected to: %s", (PUT KEY OR SMTH));
+					}
+
+					if (creator->tempEntities[i]->addKey.compare("Door") == 0)
+					{
+						ImGui::Text("No reciever is attached.");
+
+						// do basically the same as reciever
 					}
 
 					if (ImGui::Button("Delete"))
