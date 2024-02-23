@@ -10,6 +10,7 @@
 #include "EntityContainer.h"
 #include "Transform.h"
 #include "LevelCreatorScene.h"
+#include "BehaviorDoor.h"
 
 #include "Entity.h"
 #include "TextEditor.h"
@@ -25,6 +26,7 @@ struct EntityProperties
 	bool isPicked = false;
 	bool isEditable = false;
 	bool isTileAttatch = false;
+	Vector2 destination;
 };
 
 class EntityManager

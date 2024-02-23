@@ -4,7 +4,7 @@
 // Author(s):	Michael Howard
 // Purpose:		Factory to construct components
 //
-// Copyright © 2023 DigiPen (USA) Corporation.
+// Copyright ?2023 DigiPen (USA) Corporation.
 //
 //------------------------------------------------------------------------------
 #pragma once

@@ -4,7 +4,7 @@
 // Author(s):	Michael Howard, Louis Wang
 // Purpose:		Factory to construct components
 //
-// Copyright © 2023 DigiPen (USA) Corporation.
+// Copyright ?2023 DigiPen (USA) Corporation.
 //
 //------------------------------------------------------------------------------
 #include "stdafx.h"

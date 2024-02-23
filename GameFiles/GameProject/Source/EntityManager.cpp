@@ -32,6 +32,9 @@ auto EntityManager::ShowEntityInfo() -> void
 					ImGui::SliderInt2("Modify Translation", properties[creator->tempEntities[i]->key].translation, -500, 500);
 					creator->tempEntities[i]->Has(Transform)->SetTranslation({ static_cast<float>(properties[creator->tempEntities[i]->key].translation[0]), static_cast<float>(properties[creator->tempEntities[i]->key].translation[1]) });
 
+					if (creator->tempEntities[i]->Has(BehaviorDoor) != nullptr)
+						ImGui::Text("Destination: (%f, %f)", creator->tempEntities[i]->Has(BehaviorDoor)->GetDestinationPosition().position.x, creator->tempEntities[i]->Has(BehaviorDoor)->GetDestinationPosition().position.y);
+
 					ImGui::Checkbox((properties[creator->tempEntities[i]->key].isEditable ? "Entity edit enabled" : "Entity edit disabled"), &properties[creator->tempEntities[i]->key].isEditable);
 					ImGui::Checkbox((properties[creator->tempEntities[i]->key].isTileAttatch ? "Tile attatch enabled" : "Tile attatch disabled"), &properties[creator->tempEntities[i]->key].isTileAttatch);
 
@@ -251,7 +254,7 @@ auto EntityManager::InitializeProperties(std::string file_path) -> bool
 		if (creator->tempEntities[i])
 		{
 			Transform* t = creator->tempEntities[i]->Has(Transform);
-			properties[creator->tempEntities[i]->key] = EntityProperties{ {static_cast<int>(std::floorf(t->GetTranslation()->x)), static_cast<int>(std::floorf(t->GetTranslation()->y))}, {0.f}, false, false };
+			properties[creator->tempEntities[i]->key] = EntityProperties{ {static_cast<int>(std::floorf(t->GetTranslation()->x)), static_cast<int>(std::floorf(t->GetTranslation()->y))}, {0.f}, false, false,{0.f} };
 		}
 	}
 

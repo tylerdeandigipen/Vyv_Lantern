@@ -5,7 +5,7 @@
 // Purpose:		Implementation of behaviormirror class for controlling switch 
 //              entities.
 // 
-// Copyright © 2023 DigiPen (USA) Corporation.
+// Copyright ?2023 DigiPen (USA) Corporation.
 //
 //------------------------------------------------------------------------------
 #include "BehaviorSwitch.h"

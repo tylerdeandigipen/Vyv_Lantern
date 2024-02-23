@@ -5,7 +5,7 @@
 // Purpose:		Declaration of BehaviorMirror class for controlling mirror 
 //              entities.
 // 
-// Copyright © 2023 DigiPen (USA) Corporation.
+// Copyright ?2023 DigiPen (USA) Corporation.
 //
 //------------------------------------------------------------------------------
 #pragma once

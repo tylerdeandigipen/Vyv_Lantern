@@ -14,14 +14,13 @@
 #include "Inputs.h"
 #include "ImageBuffer.h"
 #include "LevelBuilder.h"
-#include "Maths/Vector.h"
 #include "Physics.h"
 #include "Renderer.h"
 #include "Transform.h"
 #include "Renderer.h"
 #include "TbdTestScene.h"
 
-BehaviorDoor::BehaviorDoor() : Behavior(Behavior::Door), isDoorClosed(false), AddedToForeGround(false), closedPPM(), openPPM(), tempImage(nullptr)
+BehaviorDoor::BehaviorDoor() : Behavior(Behavior::Door), mDestination(), AddedToForeGround(false), closedPPM(), openPPM(), tempImage(nullptr)
 {
     _type = this;
 }
@@ -33,6 +32,11 @@ BehaviorDoor::BehaviorDoor(BehaviorDoor const& other) : Behavior(other), isDoorC
 
 BehaviorDoor::~BehaviorDoor()
 {
+	/*if (tempImage != nullptr)
+	{
+		delete tempImage;
+		tempImage = nullptr;
+	}*/
 }
 
 Behavior* BehaviorDoor::Clone() const
@@ -103,24 +107,65 @@ void BehaviorDoor::Read(json jsonData)
             SetCurr(cOpen);
         }
     }
+    if (jsonData["Destination"].is_object())
+    {
+		mDestination.position.x = jsonData["Destination"]["x"];
+		mDestination.position.y = jsonData["Destination"]["y"];
+	}
     closedPPM = jsonData["ClosedSprite"];
     openPPM = jsonData["OpenSprite"];
 }
 
 void BehaviorDoor::DoorCollisionHandler(Entity* entity1, Entity* entity2)
 {
+    BehaviorDoor* door = nullptr;
+
+    if (reinterpret_cast<BehaviorDoor*>(entity2->Has(Behavior)) && reinterpret_cast<BehaviorDoor*>(entity2->Has(Behavior))->GetName().compare("BehaviorDoor") == 0)
+    {
+        door = reinterpret_cast<BehaviorDoor*>(entity2->Has(Behavior));
+    }
+    else if (reinterpret_cast<BehaviorDoor*>(entity1->Has(Behavior)) && reinterpret_cast<BehaviorDoor*>(entity1->Has(Behavior))->GetName().compare("BehaviorDoor") == 0)
+    {
+        door = reinterpret_cast<BehaviorDoor*>(entity1->Has(Behavior));
+    }
+
     // Check if the win state is already set
-    if (!LevelBuilder::IsWinStateSet() && LevelBuilder::getDoor()) {
+    if (LevelBuilder::IsWinStateSet() == false && LevelBuilder::getDoor() == false) {
         // Check the player and the door collision
         if ((entity1->GetRealName().compare("Player") == 0 && entity2->GetRealName().compare("Door") == 0) ||
             (entity1->GetRealName().compare("Door") == 0 && entity2->GetRealName().compare("Player") == 0))
         {
-            LevelBuilder::SetWinState(true);
+            //LevelBuilder::SetWinState(true);
+
+            if (entity1->GetRealName().compare("Door") == 0)
+            {
+#ifdef _DEBUG
+                Inputs* input = Inputs::GetInstance();
+                if (input->keyPressed(SDL_SCANCODE_E))
+                {
+                    entity1->SetImage(door->openPPM);
+                    door->isDoorClosed = false;
+                    door->SetCurr(cOpen);
+                }
+#endif
+            }
+            else if (entity2->GetRealName().compare("Door") == 0)
+            {
+#ifdef _DEBUG
+                Inputs* input = Inputs::GetInstance();
+                if (input->keyPressed(SDL_SCANCODE_E))
+                {
+                    entity2->SetImage(door->openPPM);
+                    door->isDoorClosed = false;
+                    door->SetCurr(cOpen);
+                }
+#endif
+            }
 
             // Play sound effects only when the win state is set for the first time
             AudioManager.PlaySFX("cheer");
-            
         }
+
     }
 }
 
@@ -131,5 +176,13 @@ bool BehaviorDoor::GetDoorClosed()
 
 void BehaviorDoor::SetDoorClosed()
 {
-    isDoorClosed = true;
+    if (isDoorClosed == false)
+	{
+		isDoorClosed = true;
+	}
+}
+
+auto BehaviorDoor::GetDestinationPosition() -> Destination
+{
+    return mDestination;
 }
