@@ -536,9 +536,9 @@ void Renderer::RenderLasers()
     float IntensityB = 0.0f;
     //optimize later to only calculate light near / in the laser line zone
     //maybe make so depending on distance it uses two different light func  tions
-    #pragma omp parallel
+    //#pragma omp parallel
     {
-    #pragma omp for collapse(3) nowait private(IntensityR, IntensityG, IntensityB)
+    //#pragma omp for collapse(3) nowait private(IntensityR, IntensityG, IntensityB)
         for (int x = 0; x < xSize; ++x)
         {
             for (int y = 0; y < ySize; ++y)
@@ -1114,7 +1114,7 @@ gfxVector2 Renderer::CheckLineForObjects(int x1, int y1, int x2, int y2)
 
     while (x != x2 || y != y2)
     {
-        if (shadowCasterBuffer->SampleColor(x + CameraP.x, y + CameraP.y).GetAlpha() == 0)
+        if (shadowCasterBuffer->SampleColor(x + CameraP.x, y + CameraP.y).GetAlpha() != 0)
         {
             yes.x = x;
             yes.y = y;

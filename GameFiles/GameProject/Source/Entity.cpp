@@ -138,7 +138,7 @@ void Entity::Read(json &jsonData)
 	{
 		if (image)
 		{
-			Has(Transform)->SetTranslation(&(image->position));
+			GetComponent<Transform>()->SetTranslation(&(image->position));
 		}
 	}
 }

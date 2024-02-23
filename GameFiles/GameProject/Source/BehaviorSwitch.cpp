@@ -132,8 +132,10 @@ void BehaviorSwitch::SwitchCollisionHandler(Entity* entity1, Entity* entity2)
         prompt->isCulled = true;
 
     // find which switch is actually a switch 
-    BehaviorSwitch* switch1 = reinterpret_cast<BehaviorSwitch*>(entity1->Has(Behavior));
-    BehaviorSwitch* switch2 = reinterpret_cast<BehaviorSwitch*>(entity2->Has(Behavior));
+    BehaviorSwitch* switch1 = entity1->GetComponent<BehaviorSwitch>();
+    //BehaviorSwitch* switch1 = reinterpret_cast<BehaviorSwitch*>(entity1->Has(Behavior));
+    BehaviorSwitch* switch2 = entity2->GetComponent<BehaviorSwitch>();
+   // BehaviorSwitch* switch2 = reinterpret_cast<BehaviorSwitch*>(entity2->Has(Behavior));
     BehaviorSwitch* theSwitch = NULL;
     if (switch2 && switch2->GetName().compare("BehaviorSwitch") == 0)
     {
