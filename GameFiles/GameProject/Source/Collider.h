@@ -4,7 +4,7 @@
 // Author(s):	Michael Howard (michael.howard)
 // Purpose:		collider component
 // 
-// Copyright © 2023 DigiPen (USA) Corporation.
+// Copyright ?2023 DigiPen (USA) Corporation.
 //
 //------------------------------------------------------------------------------
 #pragma once

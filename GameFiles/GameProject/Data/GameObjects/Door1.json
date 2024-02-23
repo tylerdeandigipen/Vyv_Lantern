@@ -1,0 +1,39 @@
+{
+  "Type": "Object",
+  "Name": "Door",
+  "file": "./Assets/PPM/Door_Closed.ppm",
+  "FilePath": "./Data/GameObjects/Door.json",
+  "Components": [
+    {
+      "Type": "ColliderAABB"
+    },
+    {
+      "Type": "Transform",
+      "translation": {
+        "x": 103.0,
+        "y": 480.0
+      }
+    },
+    {
+      "OldTranslation": {
+        "x": 103.0,
+        "y": 480.0
+      },
+      "Type": "Physics"
+    },
+    {
+      "Type": "BehaviorDoor",
+      "DoorClosed": true,
+      "ClosedSprite": "./Assets/PPM/Door_Closed.ppm",
+      "OpenSprite": "./Assets/PPM/Door_Open.ppm"
+    }
+  ],
+  "KeyObject": {
+    "key": "Door1"
+  },
+  "frameSize": [
+    8,
+    8
+  ],
+  "isAnimated": false
+}

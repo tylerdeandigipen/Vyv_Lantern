@@ -4,13 +4,21 @@
 // Author(s):	Michael Howard (michael.howard)
 // Purpose:		BehaviorDoor class declaration for door specific behavior
 //
-// Copyright © 2023 DigiPen (USA) Corporation.
+// Copyright ?2023 DigiPen (USA) Corporation.
 //
 //------------------------------------------------------------------------------
 #pragma once
 #include "Behavior.h"
+#include "Vector.h"
+#include <utility>
 
 class ImageBuffer;
+
+struct Destination
+{
+	std::string name;
+	Vector2 position;
+};
 
 class BehaviorDoor : public Behavior
 {
@@ -29,12 +37,14 @@ public:
 
 	void Update(float dt);
 	void Read(json jsonData) override;
-	static void DoorCollisionHandler(Entity* thisone, Entity* other);
+	static void DoorCollisionHandler(Entity* entity1, Entity* entity2);
 	bool GetDoorClosed();
 	void SetDoorClosed();
+	auto GetDestinationPosition() -> Destination;
 
 private:
-	bool isDoorClosed;
+	Destination mDestination;
+	bool isDoorClosed = false;
 	bool AddedToForeGround;
 	std::string closedPPM;
 	std::string openPPM;

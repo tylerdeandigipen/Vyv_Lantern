@@ -202,6 +202,7 @@ xcopy "$(ProjectDir)Fmod\*.dll" "$(OutDir)" /s /r /y /q /i</Command>
     <ClInclude Include="Source\Entity.h" />
     <ClInclude Include="Source\EntityContainer.h" />
     <ClInclude Include="Source\EntityFactory.h" />
+    <ClInclude Include="Source\EntityManager.h" />
     <ClInclude Include="Source\Event.h" />
     <ClInclude Include="Source\FileIO.h" />
     <ClInclude Include="Source\FrameRate.h" />
@@ -272,6 +273,7 @@ xcopy "$(ProjectDir)Fmod\*.dll" "$(OutDir)" /s /r /y /q /i</Command>
     <ClCompile Include="Source\Entity.cpp" />
     <ClCompile Include="Source\EntityContainer.cpp" />
     <ClCompile Include="Source\EntityFactory.cpp" />
+    <ClCompile Include="Source\EntityManager.cpp" />
     <ClCompile Include="Source\FileIO.cpp" />
     <ClCompile Include="Source\FontSystem.cpp" />
     <ClCompile Include="Source\FrameRate.cpp" />

@@ -8,35 +8,11 @@
 //
 //------------------------------------------------------------------------------
 #pragma once
-#include "stdafx.h"
-#include "Engine.h"
-#include "Scene.h"
-#include "SceneSystem.h"
-#include "AudioEngine.h"
-#include "Collision.h"
-#include "Inputs.h"
-#include "EntityContainer.h"
-#include "Transform.h"
 
-#include "Entity.h"
-#include "TextEditor.h"
+#include "EntityManager.h"
 
-#include <map>
-
-class EntityManager;
 class Scene;
 Scene* LevelCreatorSceneGetInstance(void);
-
-
-struct EntityProperties
-{
-	int translation[2] = { 0 };
-	float rotation;
-	// bool isCollidable;
-	bool isPicked = false;
-	bool isEditable = false;
-	bool isTileAttatch = false;
-};
 
 class LevelCreatorScene : public Scene
 {
@@ -106,6 +82,7 @@ private:
 	std::string currentTileMapList;
 	char myTextBuffer[256]{};
 	char LoadBuffer[256]{};
+	std::unique_ptr<EntityManager> entityManager;
 
 	enum ObjType
 	{
@@ -113,29 +90,3 @@ private:
 		COUNT
 	};
 };
-
-/* fucntion for adding funcitons to map */
-
-class EntityManager
-{
-public:
-	void EditEntity(Vector2 mousePos);
-	void ShowEntityInfo();
-	int ApplyProperties();
-	bool InitializeProperties(std::string file_path);
-	void EditText();
-	void EntityPicker();
-	void SetMousePos(Vector2 mousePos);
-
-	bool IsEntityPicked(const std::string& key) const;
-
-	TextEditor editor;
-	std::unordered_map<std::string, EntityProperties> properties;
-	std::string fileToEdit = "Data/GameObjects/Circle.json";
-	std::ifstream file;
-	TextEditor::LanguageDefinition lang = TextEditor::LanguageDefinition::CPlusPlus();
-	Renderer* pRenderer;
-	Vector2 mousePos_;
-	Inputs* pInput;
-};
-
