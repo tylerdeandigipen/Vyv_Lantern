@@ -307,7 +307,12 @@ void ImageBuffer::FlipSprite()
 
 Color &ImageBuffer::SampleColor(int x, int y)
 {
-    Color &Result = buffer[x + (BufferSizeX * y)];
+    if (x >= 0 && x <= BufferSizeX && y >= 0 && y <= BufferSizeX)
+    {
+        Color& Result = buffer[x + (BufferSizeX * y)];
+        return(Result);
+    }
+    Color& Result = buffer[0];
     return(Result);
 }
 

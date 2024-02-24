@@ -5,7 +5,7 @@
 // Purpose:		Implementation of behaviormirror class for controlling switch 
 //              entities.
 // 
-// Copyright © 2023 DigiPen (USA) Corporation.
+// Copyright ?2023 DigiPen (USA) Corporation.
 //
 //------------------------------------------------------------------------------
 #include "BehaviorSwitch.h"
@@ -92,7 +92,7 @@ void BehaviorSwitch::Update(float dt)
         Controller(dt);
     if (GetLerped() == true)
     {
-        gfxVector2 lerped = lerpValue(*Parent()->Has(Transform)->GetTranslation(), pos[currentPos], 1.0f * dt);
+        gfxVector2 lerped = lerpValue(*Parent()->Has(Transform)->GetTranslation(), pos[currentPos], 1.5f * dt);
         Parent()->Has(Transform)->SetTranslation(lerped);
         if (lerped.x >= (pos[currentPos].x - 1) &&
             lerped.x <= (pos[currentPos].x + 1) &&
@@ -132,8 +132,10 @@ void BehaviorSwitch::SwitchCollisionHandler(Entity* entity1, Entity* entity2)
         prompt->isCulled = true;
 
     // find which switch is actually a switch 
-    BehaviorSwitch* switch1 = reinterpret_cast<BehaviorSwitch*>(entity1->Has(Behavior));
-    BehaviorSwitch* switch2 = reinterpret_cast<BehaviorSwitch*>(entity2->Has(Behavior));
+    BehaviorSwitch* switch1 = entity1->GetComponent<BehaviorSwitch>();
+    //BehaviorSwitch* switch1 = reinterpret_cast<BehaviorSwitch*>(entity1->Has(Behavior));
+    BehaviorSwitch* switch2 = entity2->GetComponent<BehaviorSwitch>();
+   // BehaviorSwitch* switch2 = reinterpret_cast<BehaviorSwitch*>(entity2->Has(Behavior));
     BehaviorSwitch* theSwitch = NULL;
     if (switch2 && switch2->GetName().compare("BehaviorSwitch") == 0)
     {

@@ -76,6 +76,7 @@ void Renderer::Update(float dt)
     if (isFullbright != true)
     {
         RenderLightingPass();
+        laserHandler.UpdateLasers();
         RenderLasers();
         BlurLights(-1, 2);
         outputBuffer->DitherBuffer(outputBuffer, renderOnlyLights, isFullbright, lightR, lightG, lightB);
@@ -84,6 +85,15 @@ void Renderer::Update(float dt)
 
     if (DebugBuffer != NULL)
     {
+        Color& DestPixel = DebugBuffer->SampleColor(100,100);
+        DestPixel = Color{255,0,0,255};
+
+        Color& DestPixel2 = DebugBuffer->SampleColor(160, 150);
+        DestPixel2 = Color{ 255,0,255,255 };
+
+        Color& DestPixel3 = DebugBuffer->SampleColor(160, 50);
+        DestPixel3 = Color{ 255,0,255,255 };
+
         DebugBuffer->Blit(outputBuffer, -GetCameraPosition().x, -GetCameraPosition().y);
         DebugBuffer->ClearImageBuffer();
     }
@@ -523,10 +533,10 @@ void Renderer::RenderLasers()
     const int xSize = (int)outputBuffer->size.x;
     const int ySize = (int)outputBuffer->size.y;
     /*
-    laserPoints1[1] = {200,100};
-    laserPoints2[1] = { 100,100 };
-    laserPoints1[2] = { 100,300 };
-    laserPoints2[2] = { 100,100 };
+    laserPoints1[1] = Vector2{200,100} - CameraP;
+    laserPoints2[1] = Vector2{ 100,100 } - CameraP;
+    laserPoints1[2] = Vector2{ 100,300 } - CameraP;
+    laserPoints2[2] = Vector2{ 100,100 } - CameraP;
     */
     Color tempLaserColor[1];
     tempLaserColor[0] = Color{ 84,0,255,255 };
@@ -536,9 +546,9 @@ void Renderer::RenderLasers()
     float IntensityB = 0.0f;
     //optimize later to only calculate light near / in the laser line zone
     //maybe make so depending on distance it uses two different light func  tions
-    #pragma omp parallel
+    //#pragma omp parallel
     {
-    #pragma omp for collapse(3) nowait private(IntensityR, IntensityG, IntensityB)
+    //#pragma omp for collapse(3) nowait private(IntensityR, IntensityG, IntensityB)
         for (int x = 0; x < xSize; ++x)
         {
             for (int y = 0; y < ySize; ++y)
@@ -548,12 +558,8 @@ void Renderer::RenderLasers()
                     IntensityR = 0.0f;
                     IntensityG = 0.0f;
                     IntensityB = 0.0f;
-                    Vector2 temp1 = laserPoints1[i];
-                    Vector2 temp2 = laserPoints2[i];
-                    laserPoints1[i] = temp1 - CameraP;
-                    laserPoints2[i] = temp2 - CameraP;
                     //Check if the laser is along the x axis
-                    if (laserPoints1[i].y - laserPoints2[i].y == 0)
+                    if ((int)laserPoints1[i].y - (int)laserPoints2[i].y == 0)
                     {
                         bool doRender = false;
                         //check if x is inbetween the two points
@@ -578,7 +584,7 @@ void Renderer::RenderLasers()
                         }
 
                     } // Check if laser is along the y axis
-                    else if (laserPoints1[i].x - laserPoints2[i].x == 0)
+                    else if ((int)laserPoints1[i].x - (int)laserPoints2[i].x == 0)
                     {
                         bool doRender = false;
                         //check if y is inbetween the two points
@@ -605,8 +611,6 @@ void Renderer::RenderLasers()
                     lightR[x][y] += IntensityR;
                     lightG[x][y] += IntensityG;
                     lightB[x][y] += IntensityB;
-                    laserPoints1[i] = temp1;
-                    laserPoints2[i] = temp2;
                 }
             }
         }
@@ -1100,25 +1104,25 @@ int Renderer::CheckLineForObject(int x1, int y1, int x2, int y2)
 }
 
 
-gfxVector2 Renderer::CheckLineForObjects(int x1, int y1, int x2, int y2)
+gfxVector2 Renderer::LaserCheckLineForObject(Vector2 pos1, Vector2 pos2)
 {
-    int dx = abs(x2 - x1);
-    int dy = abs(y2 - y1);
-    int sx = (x1 < x2) ? 1 : -1;
-    int sy = (y1 < y2) ? 1 : -1;
-    gfxVector2 yes;
+    int dx = abs(pos2.x - pos1.x);
+    int dy = abs(pos2.y - pos1.y);
+    int sx = (pos1.x < pos2.x) ? 1 : -1;
+    int sy = (pos1.y < pos2.y) ? 1 : -1;
+    gfxVector2 result;
     int error = dx - dy;
-    int x = x1;
-    int y = y1;
+    int x = pos1.x;
+    int y = pos1.y;
 
 
-    while (x != x2 || y != y2)
+    while (x != pos1.x || y != pos1.y)
     {
-        if (shadowCasterBuffer->SampleColor(x + CameraP.x, y + CameraP.y).GetAlpha() == 0)
+        if (shadowCasterBuffer->SampleColor(x + CameraP.x, y + CameraP.y).GetAlpha() != 0)
         {
-            yes.x = x;
-            yes.y = y;
-            return yes;
+            result.x = x;
+            result.y = y;
+            return result;
         }
 
         int error2 = 2 * error;
@@ -1133,9 +1137,9 @@ gfxVector2 Renderer::CheckLineForObjects(int x1, int y1, int x2, int y2)
             y += sy;
         }
     }
-    yes.x = x2;
-    yes.y = y2;
-    return yes;
+    result.x = pos2.x;
+    result.y = pos2.y;
+    return result;
 }
 
 
