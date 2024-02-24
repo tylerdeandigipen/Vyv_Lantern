@@ -44,7 +44,7 @@ public:
 
 private:
 	Destination mDestination;
-	bool isDoorClosed = false;
+	bool isDoorClosed = true;
 	bool AddedToForeGround;
 	std::string closedPPM;
 	std::string openPPM;
