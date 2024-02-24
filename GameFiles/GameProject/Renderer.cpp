@@ -1118,7 +1118,7 @@ gfxVector2 Renderer::LaserCheckLineForObject(Vector2 pos1, Vector2 pos2)
 
     while (x != pos1.x || y != pos1.y)
     {
-        if (shadowCasterBuffer->SampleColor(x + CameraP.x, y + CameraP.y).GetAlpha() == 0)
+        if (shadowCasterBuffer->SampleColor(x + CameraP.x, y + CameraP.y).GetAlpha() != 0)
         {
             result.x = x;
             result.y = y;

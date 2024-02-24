@@ -46,6 +46,21 @@ public:
 	void SetName(const char* name);
 	void SetInputHandler(Inputs* input);
 
+	template<typename T>
+	T* GetComponent()
+	{
+		for (Component* component : components)
+		{
+			if (typeid(*component) == typeid(T))
+			{
+				return dynamic_cast<T*>(component);
+			}
+		}
+
+		// If the component of the specified type is not found, return nullptr or handle it according to your needs.
+		return nullptr;
+	}
+	
 	
 	
 	Component* Get(Component::TypeEnum type) const;
