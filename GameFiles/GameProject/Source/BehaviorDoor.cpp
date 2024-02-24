@@ -20,7 +20,7 @@
 #include "Renderer.h"
 #include "TbdTestScene.h"
 
-BehaviorDoor::BehaviorDoor() : Behavior(Behavior::Door), mDestination(), AddedToForeGround(false), closedPPM(), openPPM(), tempImage(nullptr)
+BehaviorDoor::BehaviorDoor() : Behavior(Behavior::Door), mDestination(), AddedToForeGround(false), closedPPM(), openPPM(), tempImage(nullptr), isDoorClosed(true)
 {
     _type = this;
 }
