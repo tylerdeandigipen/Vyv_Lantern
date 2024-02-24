@@ -10,11 +10,11 @@
 #pragma once
 
 #include <SDL/SDL.h>
+#include <memory>
 
 class Inputs
 {
 public:
-	Inputs();
 
 	Inputs(SDL_Window* window);
 
@@ -39,8 +39,8 @@ public:
 
 	void SetWindow(SDL_Window* window);
 private:
-	static Inputs* instance;
-
+	Inputs();
+	static std::unique_ptr<Inputs> instance;
 	SDL_Window* window;
 
 	int mouseX;

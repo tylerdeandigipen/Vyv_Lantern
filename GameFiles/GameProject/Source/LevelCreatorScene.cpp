@@ -1,7 +1,7 @@
 //------------------------------------------------------------------------------
 //
 // File Name:	LevelCreatorScene.cpp
-// Author(s):	Tyler Dean, Michael Howard, TayLee Young, 
+// Author(s):	Tyler Dean, Michael Howard, TayLee Young,
 //              Thomas Stephenson, Louis Wang
 // Purpose:     Main scene for the game.
 //
@@ -15,6 +15,7 @@
 #include <glad/glad.h>
 #include <iostream>
 #include <algorithm>
+#include "ImGuiManager.h"
 
 #include "LevelCreatorScene.h"
 #include "Scene.h"
@@ -83,12 +84,11 @@ int expansionRange = 1;
 
 LevelCreatorScene::LevelCreatorScene() : Scene("LevelCreatortest"), playerExists(false), tempEntities()
 {
-	entityManager  = std::make_unique<EntityManager>();
+	entityManager = std::make_unique<EntityManager>();
 }
 
 LevelCreatorScene::~LevelCreatorScene()
 {
-
 }
 
 Engine::EngineCode LevelCreatorScene::Load()
@@ -108,7 +108,8 @@ Engine::EngineCode LevelCreatorScene::Init()
 	LevelCreatorPixelRenderer->window = LevelCreatorWindow;
 
 	LevelBuilder::GetInstance()->LoadTileMap("./Data/Scenes/LevelCreatorScene.json");
-	// this is gonna add any objects that exist in the imported scene and transfer them to 
+
+	// this is gonna add any objects that exist in the imported scene and transfer them to
 	// the tempEntities vector so they can be modified (this will have to be added in the import section as well)
 	if (EntityContainer::GetInstance()->CountEntities() > 0)
 	{
@@ -143,8 +144,6 @@ Engine::EngineCode LevelCreatorScene::Init()
 	previousTile = { -1000,-1000 };
 	currentTile = 1;
 	return Engine::NothingBad;
-
-
 }
 
 void LevelCreatorScene::ToolEyedroper(Inputs* inputHandler, Vector2 CursourP)
@@ -218,7 +217,6 @@ void LevelCreatorScene::ToolSquareFill(Inputs* inputHandler, Vector2 CursourP)
 				}
 			}
 		}
-
 
 		for (int x = (int)pos1.x; x < (int)pos2.x + 1; x++)
 		{
@@ -339,7 +337,7 @@ void LevelCreatorScene::ExportScene(std::string name)
 
 	readable["GameObjectList"] = { {"GameObjectFile", listToExport } };
 
-	//the filemap to read for the scene 
+	//the filemap to read for the scene
 	std::ofstream actualfile(exportFolder + name + ".json");
 	actualfile << std::setw(2) << readable << std::endl;
 }
@@ -413,7 +411,7 @@ Vector2 LevelCreatorScene::PlaceTile(Vector2 tilePos)
 			if (tilePos.y < 0)
 			{
 				LevelCreatorPixelRenderer->ExpandTileMapInDirection(Vector2{ 0,-1 }, expansionRange);
-				tilePos.y += expansionRange; 
+				tilePos.y += expansionRange;
 				displacement.y += expansionRange;
 				moveVector.y += expansionRange * TILE_SIZE;
 			}
@@ -529,7 +527,6 @@ void LevelCreatorScene::ToolHandler()
 		}
 		LevelCreatorPixelRenderer->isFullbright = true;
 
-
 		if (inputHandler->keyPressed(SDL_SCANCODE_LSHIFT) && inputHandler->mouseButtonPressed(SDL_BUTTON_LEFT))
 		{
 			//Draw Square
@@ -599,13 +596,10 @@ static void CheckCollisions()
 							collider->Check(secCollider);
 						}
 
-
 						if (level->tempEntities[current]->Has(Emitter) && level->tempEntities[i]->Has(LineCollider))
 						{
 							Emitter::EmitterCollisionHandler(*level->tempEntities[current], *level->tempEntities[i]);
 						}
-
-
 					}
 				}
 			}
@@ -646,7 +640,6 @@ void LevelCreatorScene::Update(float dt)
 
 void LevelCreatorScene::Render()
 {
-
 	return;
 }
 
@@ -804,36 +797,9 @@ void LevelCreatorScene::ImGuiWindow()
 				}
 			}
 
-			if (ImGui::BeginPopupModal("SuccessfulExport", NULL, ImGuiWindowFlags_AlwaysAutoResize))
-			{
-				ImGui::Text("Exported!");
-				if (ImGui::Button("OK"))
-				{
-					ImGui::CloseCurrentPopup();
-				}
-				ImGui::EndPopup();
-			}
-
-			if (ImGui::BeginPopupModal("EmptyExportFileNamePopup", NULL, ImGuiWindowFlags_AlwaysAutoResize))
-			{
-				ImGui::Text("Please provide a file name for export!");
-				if (ImGui::Button("OK"))
-				{
-					ImGui::CloseCurrentPopup();
-				}
-				ImGui::EndPopup();
-			}
-
-			if (ImGui::BeginPopupModal("InvalidExportFileNamePopup", NULL, ImGuiWindowFlags_AlwaysAutoResize))
-			{
-				ImGui::Text("Illegal characters in the tilemap name GOOBER!");
-				if (ImGui::Button("OK"))
-				{
-					ImGui::CloseCurrentPopup();
-				}
-				ImGui::EndPopup();
-			}
-
+			ImGuiManager::RenderOKPopup("SuccessfulExport", "Exported!");
+			ImGuiManager::RenderOKPopup("EmptyExportFileNamePopup", "Please provide a file name for export!");
+			ImGuiManager::RenderOKPopup("InvalidExportFileNamePopup", "Illegal characters in the tilemap name GOOBER!");
 
 			ImGui::TreePop();
 		}
@@ -883,7 +849,7 @@ void LevelCreatorScene::ImGuiWindow()
 								}
 							}
 							json counts = FileIO::GetInstance()->OpenJSON("./Data/Scenes/" + std::string(filenameBuffer) + "OBJECTS.json");
-							
+
 							if (counts["Circle"].is_object())
 							{
 								circleCount = counts["Circle"]["count"];
@@ -917,56 +883,17 @@ void LevelCreatorScene::ImGuiWindow()
 					}
 				}
 
-				if (ImGui::BeginPopupModal("SuccessfulImport", NULL, ImGuiWindowFlags_AlwaysAutoResize))
-				{
-					ImGui::Text("Imported!");
-					if (ImGui::Button("OK"))
-					{
-						ImGui::CloseCurrentPopup();
-					}
-					ImGui::EndPopup();
-				}
+				ImGuiManager::RenderOKPopup("SuccessfulImport", "Successfully imported the scene!");
 
+				ImGuiManager::RenderOKPopup("NoObjectsInScene", "Objects do not exist in this scene.");
 
-				if (ImGui::BeginPopupModal("NoObjectsInScene", NULL, ImGuiWindowFlags_AlwaysAutoResize))
-				{
-					ImGui::Text("Objects do not exist in the scene");
-					if (ImGui::Button("OK"))
-					{
-						ImGui::CloseCurrentPopup();
-					}
-					ImGui::EndPopup();
-				}
+				ImGuiManager::RenderOKPopup("EmptyImportFileNamePopup", "Please provide a file name for import!");
 
-				if (ImGui::BeginPopupModal("EmptyImportFileNamePopup", NULL, ImGuiWindowFlags_AlwaysAutoResize))
-				{
-					ImGui::Text("Please provide a file name for import!");
-					if (ImGui::Button("OK"))
-					{
-						ImGui::CloseCurrentPopup();
-					}
-					ImGui::EndPopup();
-				}
+				ImGuiManager::RenderOKPopup("InvalidImportFileNamePopup", "Please provide a valid file name without illegal characters for import!");
 
-				if (ImGui::BeginPopupModal("InvalidImportFileNamePopup", NULL, ImGuiWindowFlags_AlwaysAutoResize))
-				{
-					ImGui::Text("Please provide a valid file name without illegal characters for import!");
-					if (ImGui::Button("OK"))
-					{
-						ImGui::CloseCurrentPopup();
-					}
-					ImGui::EndPopup();
-				}
+				ImGuiManager::RenderOKPopup("InvalidImportFileNamePopup", "Please provide a valid file name without illegal characters for import!");
 
-				if (ImGui::BeginPopupModal("FileNotFoundPopup", NULL, ImGuiWindowFlags_AlwaysAutoResize))
-				{
-					ImGui::Text("File not found!");
-					if (ImGui::Button("OK"))
-					{
-						ImGui::CloseCurrentPopup();
-					}
-					ImGui::EndPopup();
-				}
+				ImGuiManager::RenderOKPopup("FileNotFoundPopup", "File not found!");
 			}
 			ImGui::TreePop();
 		}
@@ -1042,7 +969,7 @@ void LevelCreatorScene::ImGuiWindow()
 		ImGui::TreePop();
 	}
 
-	// removing the treenode messed with the spacing, so im adjusting the 
+	// removing the treenode messed with the spacing, so im adjusting the
 	// spacing so the stuff isnt cuttoff
 	ImGui::SetCursorPosX(ImGui::GetCursorPosX() + 20);
 	ImGui::Text("Object Selector:");
@@ -1060,15 +987,7 @@ void LevelCreatorScene::ImGuiWindow()
 		}
 	}
 
-	if (ImGui::BeginPopupModal("PlayerAlreadyExists", NULL, ImGuiWindowFlags_AlwaysAutoResize))
-	{
-		ImGui::Text("Player Object Already in Scene!");
-		if (ImGui::Button("OK"))
-		{
-			ImGui::CloseCurrentPopup();
-		}
-		ImGui::EndPopup();
-	}
+	ImGuiManager::RenderOKPopup("PlayerAlreadyExists", "Player Object Already in Scene!");
 
 	if (ImGui::Button("  Create Switch"))
 	{
@@ -1093,99 +1012,8 @@ void LevelCreatorScene::ImGuiWindow()
 		CreateRecieverEntity();
 	}
 
-	if (ImGui::BeginPopupModal("MirrorDirection", NULL, ImGuiWindowFlags_AlwaysAutoResize))
-	{
-		ImGui::Text("Pick a mirror direction.");
-		ImGui::Text("Warning, this cannot be changed.");
-
-		/* MICHAELLL */
-
-		/* PUT THE DIRECTIONAL BEHAVIOR HERE */
-
-		if (ImGui::Button("North")) 
-		{
-			// mirror.direction = direction
-
-		}
-
-		if (ImGui::Button("East")) 
-		{
-
-		}
-
-		if (ImGui::Button("South")) 
-		{
-
-		}
-
-		if (ImGui::Button("West")) 
-		{
-
-		}
-
-		if (ImGui::Button("OK"))
-		{
-			/* probably set direction to null or something as default,
-			   then add a check right here saying if direction == null */
-			/* ImGui::OpenPopup("NoDirectionPicked"); */
-
-
-			ImGui::CloseCurrentPopup();
-		}
-		ImGui::EndPopup();
-	}
-
-	if (ImGui::BeginPopupModal("EmitterDirection", NULL, ImGuiWindowFlags_AlwaysAutoResize))
-	{
-		ImGui::Text("Pick a mirror direction.");
-		ImGui::Text("Warning, this cannot be changed.");
-
-		/* MICHAELLL */
-
-		/* PUT THE DIRECTIONAL BEHAVIOR HERE */
-
-		if (ImGui::Button("North"))
-		{
-
-		}
-
-		if (ImGui::Button("East"))
-		{
-
-		}
-
-		if (ImGui::Button("South"))
-		{
-
-		}
-
-		if (ImGui::Button("West"))
-		{
-
-		}
-
-		if (ImGui::Button("OK"))
-		{
-			/* probably set direction to null or something as default,
-			   then add a check right here saying if direction == null */
-			   /* ImGui::OpenPopup("NoDirectionPicked"); */
-
-
-			ImGui::CloseCurrentPopup();
-		}
-		ImGui::EndPopup();
-	}
-
-	/*if (ImGui::BeginPopupModal("NoDirectionPicked", NULL, ImGuiWindowFlags_AlwaysAutoResize))
-	{
-		ImGui::Text("Pick a direction!");
-		if (ImGui::Button("OK"))
-		{
-			ImGui::CloseCurrentPopup();
-		}
-		ImGui::EndPopup();
-	}*/
-
+	ImGuiManager::RenderDirPopup("MirrorDirection", "Pick a mirror direction.");
+	ImGuiManager::RenderDirPopup("EmitterDirection", "Pick an emitter direction.");
 
 	ImGui::Separator();
 	entityManager->EditEntity(Vector2{ static_cast<float>(Inputs::GetInstance()->getMouseX()), static_cast<float>(Inputs::GetInstance()->getMouseY()) });
@@ -1242,7 +1070,6 @@ int LevelCreatorScene::CreateCircleEntity()
 	return 0;
 }
 
-
 //static int doorCount = 0;
 int LevelCreatorScene::CreateDoorEntity()
 {
@@ -1255,6 +1082,7 @@ int LevelCreatorScene::CreateDoorEntity()
 	temp->addKey = "Door"; // this is for the map holding functions and gives access to function for circle
 
 	temp->key = "Door" + std::to_string(doorCount);
+
 	//temp->SetFilePath("./Data/GameObjects/Door" + sceneName + std::to_string(doorCount) + ".json");
 	tempEntities.push_back(temp);
 	++doorCount;
@@ -1273,6 +1101,7 @@ int LevelCreatorScene::CreateMirrorEntity()
 	temp->addKey = "Mirror"; // this is for the map holding functions and gives access to function for circle
 
 	temp->key = "Mirror" + std::to_string(mirrorCount);
+
 	//temp->SetFilePath("./Data/GameObjects/Mirror" + sceneName + std::to_string(mirrorCount) + ".json");
 	tempEntities.push_back(temp);
 	++mirrorCount;
@@ -1290,6 +1119,7 @@ int LevelCreatorScene::CreateEmitterEntity()
 	temp->addKey = "Emitter"; // this is for the map holding functions and gives access to function for circle
 
 	temp->key = "Emitter" + std::to_string(emitterCount);
+
 	//temp->SetFilePath("./Data/GameObjects/Emitter"+ sceneName + std::to_string(emitterCount) + ".json");
 	tempEntities.push_back(temp);
 	++emitterCount;
@@ -1302,9 +1132,10 @@ int LevelCreatorScene::CreateRecieverEntity()
 	std::string number = "./Data/GameObjects/Reciever";
 	std::string filename = "./Data/GameObjects/tempReciever.json";
 
-	Entity* temp = FileIO::GetInstance()->ReadEntity(filename); 
+	Entity* temp = FileIO::GetInstance()->ReadEntity(filename);
 	temp->addKey = "Reciever"; // this is for the map holding functions and gives access to function for circle
 	temp->key = "Reciever" + std::to_string(emitterCount);
+
 	//temp->SetFilePath("./Data/GameObjects/Reciever" + sceneName + std::to_string(emitterCount) + ".json");
 	tempEntities.push_back(temp);
 	++recieverCount;
@@ -1396,14 +1227,13 @@ void LevelCreatorScene::AddMirrorEntity(Entity* entity)
 	json bSwitch;
 	if (entSwitch && entSwitch->GetKey() >= 0)
 	{
-		bSwitch = { {"Type", "BehaviorSwitch"}, { "key", entSwitch->GetKey() },{"NumPositions", entSwitch->GetMaxCount() + 1}};
+		bSwitch = { {"Type", "BehaviorSwitch"}, { "key", entSwitch->GetKey() },{"NumPositions", entSwitch->GetMaxCount() + 1} };
 		for (int i = 0; i < dynamic_cast<BehaviorSwitch*>(entity->Has(Behavior))->GetMaxCount() + 1; ++i)
 		{
-			json pos = { {"x", std::to_string((*entSwitch)[i].x)}, {"y", std::to_string((*entSwitch)[i].y)}};
+			json pos = { {"x", std::to_string((*entSwitch)[i].x)}, {"y", std::to_string((*entSwitch)[i].y)} };
 			bSwitch["pos"].push_back(pos);
 		}
 	}
-
 
 	components.push_back(collider);
 	components.push_back(transform);
@@ -1433,7 +1263,6 @@ void LevelCreatorScene::AddEmitterEntity(Entity* entity)
 	LevelCreatorScene* current = reinterpret_cast<LevelCreatorScene*>(pare);
 	entity->SetFilePath(current->exportFolder + entity->key + ".json");
 
-
 	Logging::GetInstance("LevelCreator.log").LogToAll("Creating->", entity->key.c_str());
 	json mirrorData; // the main thing for all pieces to be put inside
 	json components; // the components array
@@ -1457,7 +1286,6 @@ void LevelCreatorScene::AddEmitterEntity(Entity* entity)
 
 	mirrorData["KeyObject"] = { {"key", entity->key} };
 
-
 	std::ofstream doorCreated(entity->GetFilePath());
 	doorCreated << std::setw(2) << mirrorData << std::endl;
 
@@ -1470,7 +1298,6 @@ void LevelCreatorScene::AddRecieverEntity(Entity* entity)
 	Scene* pare = LevelCreatorSceneGetInstance();
 	LevelCreatorScene* current = reinterpret_cast<LevelCreatorScene*>(pare);
 	entity->SetFilePath(current->exportFolder + entity->key + ".json");
-
 
 	Logging::GetInstance("LevelCreator.log").LogToAll("Creating->", entity->key.c_str());
 	json mirrorData; // the main thing for all pieces to be put inside
@@ -1493,14 +1320,12 @@ void LevelCreatorScene::AddRecieverEntity(Entity* entity)
 	mirrorData["isAnimated"] = false;
 	mirrorData["KeyObject"] = { {"key", entity->key} };
 
-
 	std::ofstream doorCreated(entity->GetFilePath());
 	doorCreated << std::setw(2) << mirrorData << std::endl;
 
 	json newobject = { {"FilePath", entity->GetFilePath()} };
 	current->gameObjects.push_back(newobject);
 }
-
 
 void LevelCreatorScene::AddToFile(std::string nametoadd, Entity* entity)
 {

@@ -27,15 +27,17 @@ public:
 	void Update(float dt);
 	void Render();
 	std::string ObjectName();
+
 	//std::string LightName();
 	static EntityFactory* GetInstance();
 	Entity* CreateEntity(std::string const& type, const std::string file, json thing = NULL);
 	Engine::EngineCode Close();
 private:
 	static Entity& CreateObject(std::string, const std::string file, json thing = NULL);
+
 	//static Entity& CreateLight(std::string type, const std::string file, json thing = NULL);
 	//static Entity& CreateLight(void);
-	static EntityFactory* instance;
+	static std::unique_ptr<EntityFactory> instance;
 	std::unordered_map<std::string, std::function<Entity& (std::string, const std::string, json)>> entity_map;
 	const char* name;
 	void Add(std::string name, std::function<Entity& (std::string, const std::string, json)> create);

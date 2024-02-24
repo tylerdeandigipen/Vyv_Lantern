@@ -170,6 +170,7 @@ xcopy "$(ProjectDir)Fmod\*.dll" "$(OutDir)" /s /r /y /q /i</Command>
   <ItemGroup>
     <ClInclude Include="Emitter.h" />
     <ClInclude Include="glfw-3.3.8.bin.WIN64\glfw-3.3.8.bin.WIN64\include\GLFW\glfw3.h" />
+    <ClInclude Include="ImGuiManager.h" />
     <ClInclude Include="IMGUI\imconfig.h" />
     <ClInclude Include="IMGUI\imgui.h" />
     <ClInclude Include="IMGUI\ImguiFunction.h" />
@@ -243,6 +244,7 @@ xcopy "$(ProjectDir)Fmod\*.dll" "$(OutDir)" /s /r /y /q /i</Command>
     <ClCompile Include="Emitter.cpp" />
     <ClCompile Include="Engine.cpp" />
     <ClCompile Include="ImageBuffer.cpp" />
+    <ClCompile Include="ImGuiManager.cpp" />
     <ClCompile Include="IMGUI\imgui.cpp" />
     <ClCompile Include="IMGUI\ImguiFunctions.cpp" />
     <ClCompile Include="IMGUI\imgui_demo.cpp" />

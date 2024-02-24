@@ -1,4 +1,3 @@
-
 #include "EntityManager.h"
 
 auto EntityManager::ShowEntityInfo() -> void
@@ -179,6 +178,7 @@ auto EntityManager::EditText() -> void
 			if (ImGui::MenuItem("Save"))
 			{
 				auto textToSave = editor.GetText();
+
 				/// save text....
 			}
 			if (ImGui::MenuItem("Load"))

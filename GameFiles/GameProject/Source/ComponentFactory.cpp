@@ -19,11 +19,10 @@
 #include "Light.h"
 #include "Emitter.h"
 #include "LineCollider.h"
-ComponentFactory* ComponentFactory::instance = new ComponentFactory();
+std::unique_ptr<ComponentFactory> ComponentFactory::instance = nullptr;
 
 ComponentFactory::ComponentFactory() : name("ComptFact")
 {
-
 }
 
 ComponentFactory::~ComponentFactory()
@@ -32,122 +31,113 @@ ComponentFactory::~ComponentFactory()
 
 Engine::EngineCode ComponentFactory::Init()
 {
-    Add(BehaviorPlayer::Name(), &ComponentFactory::CreateBehaviorPlayer);
-    Add(BehaviorSwitch::Name(), &ComponentFactory::CreateBehaviorSwitch);
-    Add(BehaviorDoor::Name(), & ComponentFactory::CreateBehaviorDoor);
-    Add(BehaviorMirror::Name(), &ComponentFactory::CreateBehaviorMirror);
-    Add(ColliderAABB::Name(), &ComponentFactory::CreateColliderAABB);
-    Add(Transform::Name(), &ComponentFactory::CreateTransform);
-    Add(Physics::Name(), &ComponentFactory::CreatePhysics);
-    Add(Light::TheName(), &ComponentFactory::CreateLight);
-    Add(Emitter::Name(), &ComponentFactory::CreateEmitter);
-    Add(LineCollider::Name(), &ComponentFactory::CreateLineCollider);
-    assert(winHandle != NULL);
-    return Engine::NothingBad;
+	Add(BehaviorPlayer::Name(), &ComponentFactory::CreateBehaviorPlayer);
+	Add(BehaviorSwitch::Name(), &ComponentFactory::CreateBehaviorSwitch);
+	Add(BehaviorDoor::Name(), &ComponentFactory::CreateBehaviorDoor);
+	Add(BehaviorMirror::Name(), &ComponentFactory::CreateBehaviorMirror);
+	Add(ColliderAABB::Name(), &ComponentFactory::CreateColliderAABB);
+	Add(Transform::Name(), &ComponentFactory::CreateTransform);
+	Add(Physics::Name(), &ComponentFactory::CreatePhysics);
+	Add(Light::TheName(), &ComponentFactory::CreateLight);
+	Add(Emitter::Name(), &ComponentFactory::CreateEmitter);
+	Add(LineCollider::Name(), &ComponentFactory::CreateLineCollider);
+	assert(winHandle != NULL);
+	return Engine::NothingBad;
 }
 
 void ComponentFactory::Update(float dt)
 {
-    UNREFERENCED_PARAMETER(dt);
+	UNREFERENCED_PARAMETER(dt);
 }
 
 void ComponentFactory::Render() { }
 
 ComponentFactory* ComponentFactory::GetInstance()
 {
-    if (instance == nullptr)
-    {
-        instance = new ComponentFactory();
-    }
-    return instance;
+	if (!instance)
+	{
+		instance.reset(new ComponentFactory());
+	}
+	return instance.get();
 }
 
 Component* ComponentFactory::CreateComponent(std::string const& type)
 {
-    if (component_map.count(type))
-    {
-        return &component_map[type]();
-    }
-    else
-        return NULL;
+	if (component_map.count(type))
+	{
+		return &component_map[type]();
+	}
+	else
+		return NULL;
 }
-
 
 Engine::EngineCode ComponentFactory::Close()
 {
-    if (instance != NULL)
-    {
-        delete instance;
-    }
-
-    return Engine::NothingBad;
+	return Engine::NothingBad;
 }
 
 void ComponentFactory::Add(std::string name, std::function<Component& (void)> create)
 {
-    component_map.emplace(name, create);
+	component_map.emplace(name, create);
 }
-
-
 
 Component& ComponentFactory::CreateBehaviorPlayer()
 {
-    Behavior* behavior = new BehaviorPlayer();
-    return *behavior;
+	Behavior* behavior = new BehaviorPlayer();
+	return *behavior;
 }
 
 Component& ComponentFactory::CreateBehaviorDoor(void)
 {
-    Behavior* behavior = new BehaviorDoor();
-    return *behavior;
+	Behavior* behavior = new BehaviorDoor();
+	return *behavior;
 }
 
 Component& ComponentFactory::CreateBehaviorSwitch()
 {
-    Behavior* behaviorSwitch = new BehaviorSwitch();
-    return *behaviorSwitch;
+	Behavior* behaviorSwitch = new BehaviorSwitch();
+	return *behaviorSwitch;
 }
 
 Component& ComponentFactory::CreateBehaviorMirror()
 {
-    Behavior* behaviorMirror = new BehaviorMirror();
-    return *behaviorMirror;
+	Behavior* behaviorMirror = new BehaviorMirror();
+	return *behaviorMirror;
 }
 
 Component& ComponentFactory::CreateColliderAABB(void)
 {
-    Collider* collider = new ColliderAABB();
-    return *collider;
+	Collider* collider = new ColliderAABB();
+	return *collider;
 }
 
 Component& ComponentFactory::CreateTransform()
 {
-    Component* transform = new Transform();
-    return *transform;
+	Component* transform = new Transform();
+	return *transform;
 }
 
 Component& ComponentFactory::CreatePhysics()
 {
-    Component* physics = new Physics();
-    return *physics;
+	Component* physics = new Physics();
+	return *physics;
 }
-
 
 Component& ComponentFactory::CreateLight()
 {
-    Component* light = new Light();
+	Component* light = new Light();
 
-    return *light;
+	return *light;
 }
 
 Component& ComponentFactory::CreateEmitter()
 {
-    Component* emitter = new Emitter();
-    return *emitter;
+	Component* emitter = new Emitter();
+	return *emitter;
 }
 
 Component& ComponentFactory::CreateLineCollider()
 {
-    Component* lineCollider = new LineCollider();
-    return *lineCollider;
+	Component* lineCollider = new LineCollider();
+	return *lineCollider;
 }

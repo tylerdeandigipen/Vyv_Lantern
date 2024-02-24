@@ -28,7 +28,7 @@ void ParticleManager::UpdateParticles()
 {
 	//Loop through each particle here
 	float dt = Time::Instance().GetDt();
-    #pragma omp parallel for
+#pragma omp parallel for
 	for (int i = 0; i < totalParticles; i++)
 	{
 		if (particleArray[i] != NULL)

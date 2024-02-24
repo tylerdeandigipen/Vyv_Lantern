@@ -11,28 +11,29 @@
 #pragma once
 
 #include <string>
+#include <memory>
 
 class PauseMenu {
 public:
-    PauseMenu();
-    ~PauseMenu();
+	PauseMenu();
+	~PauseMenu();
 
-    void Render();
-    void HandleInput();
+	void Render();
+	void HandleInput();
 
-    static PauseMenu* GetInstance();
+	static PauseMenu* GetInstance();
 
 private:
-    void RenderButtons();
-    void HandleButtonInput();
+	void RenderButtons();
+	void HandleButtonInput();
 
-    bool IsMouseOverBackButton();
-    bool IsMouseOverExitButton();
-    bool IsMouseOverSettingsButton();
+	bool IsMouseOverBackButton();
+	bool IsMouseOverExitButton();
+	bool IsMouseOverSettingsButton();
 
-    void HandleBack();
-    void HandleExit();
-    void HandleSettings();
+	void HandleBack();
+	void HandleExit();
+	void HandleSettings();
 
-    static PauseMenu* instance;
+	static std::unique_ptr<PauseMenu> instance;
 };

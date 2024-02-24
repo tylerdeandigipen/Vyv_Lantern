@@ -10,12 +10,14 @@
 #pragma once
 
 #include "BaseSystem.h"
+#include <memory>
 
 class Scene;
 
 class SceneSystem : public BaseSystem
 {
 public:
+	~SceneSystem();
 	Engine::EngineCode Init();
 	Engine::EngineCode Close();
 	void Update(float dt);
@@ -31,7 +33,6 @@ public:
 
 private:
 	SceneSystem();
-	~SceneSystem();
 
 	// prohibits copying and conversion! - taylee
 	SceneSystem(SceneSystem const&) = delete;
@@ -39,7 +40,7 @@ private:
 
 	void ChangeScene();
 
-	static SceneSystem* instance;
+	static std::unique_ptr<SceneSystem> instance;
 	Scene* DefaultSceneInstance;
 
 	Scene* activeScene;
