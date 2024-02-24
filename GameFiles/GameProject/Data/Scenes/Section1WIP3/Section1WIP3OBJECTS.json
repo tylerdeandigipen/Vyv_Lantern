@@ -10,7 +10,7 @@
   },
   "FilePath": "./Data/Scenes/Section1WIP3/Section1WIP3OBJECTS.json",
   "Mirror": {
-    "count": 8
+    "count": 15
   },
   "Objects": [
     {
@@ -33,9 +33,33 @@
     },
     {
       "FilePath": "./Data/Scenes/Section1WIP3/Section1WIPMirror4.json"
+    },
+    {
+      "FilePath": "./Data/Scenes/Section1WIP3/Reciever3.json"
+    },
+    {
+      "FilePath": "./Data/Scenes/Section1WIP3/Mirror7.json"
+    },
+    {
+      "FilePath": "./Data/Scenes/Section1WIP3/Mirror8.json"
+    },
+    {
+      "FilePath": "./Data/Scenes/Section1WIP3/Mirror9.json"
+    },
+    {
+      "FilePath": "./Data/Scenes/Section1WIP3/Mirror10.json"
+    },
+    {
+      "FilePath": "./Data/Scenes/Section1WIP3/Mirror11.json"
+    },
+    {
+      "FilePath": "./Data/Scenes/Section1WIP3/Mirror12.json"
+    },
+    {
+      "FilePath": "./Data/Scenes/Section1WIP3/Mirror13.json"
     }
   ],
   "Reviever": {
-    "count": 1
+    "count": 2
   }
 }
