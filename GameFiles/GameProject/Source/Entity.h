@@ -19,13 +19,13 @@
 
 class Entity
 {
+	friend class LevelCreatorScene; // do not judge me won
 public:
 	Entity();
 	Entity(std::string type, const std::string file = NULL, json Animation = NULL );
 	Entity(Entity const& entity);
 	~Entity();
 	Entity* Clone();
-
 	std::string key; //used to seperate entities in levelcreator
 	std::string addKey; // used in levelcreator addfunctions
 
@@ -46,6 +46,21 @@ public:
 	void SetName(const char* name);
 	void SetInputHandler(Inputs* input);
 
+	template<typename T>
+	T* GetComponent()
+	{
+		for (Component* component : components)
+		{
+			if (typeid(*component) == typeid(T))
+			{
+				return dynamic_cast<T*>(component);
+			}
+		}
+
+		// If the component of the specified type is not found, return nullptr or handle it according to your needs.
+		return nullptr;
+	}
+	
 	
 	
 	Component* Get(Component::TypeEnum type) const;
@@ -86,6 +101,7 @@ private:
 	ImageBuffer* AnimationArray;
 
 	std::string filePath;
+	std::string spritePath;
 
 	char name[256];
 

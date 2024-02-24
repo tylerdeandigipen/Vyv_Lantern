@@ -1,7 +1,7 @@
 {
   "Type": "Object",
   "Name": "Mirror",
-  "file": "./Assets/PPM/Mirror.ppm",
+  "file": "./Assets/PPM/CrystalSprites/MirrorCrystalDownRight.ppm",
   "FilePath":  "./Data/GameObjects/Mirror.json",
   "isAnimated": false,
   "frameSize": [ 8, 8 ],

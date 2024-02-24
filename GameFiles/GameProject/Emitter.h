@@ -51,6 +51,7 @@ public:
 	void SetEmitting(bool state) { isEmitting = state; isDirty = true; }
 
 	float GetDistance() const { return distance; };
+	void SetHit(bool state, int bylaser) { hit = state; bylaser = hitbyLaser; isDirty = true; };
 	//standard get/set funcitons
 
 	void SetPosition(Vector2 SetP);
@@ -77,6 +78,7 @@ private:
 	Vector2* endpoint;
 	Vector2* direction;
 	int laserReference;
+	int hitbyLaser;
 
 	float distance;
 

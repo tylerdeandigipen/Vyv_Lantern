@@ -17,6 +17,7 @@ Scene* LevelCreatorSceneGetInstance(void);
 class LevelCreatorScene : public Scene
 {
 	friend class EntityManager;
+	friend class Entity; // do not judge me won
 public:
 	
 	LevelCreatorScene();
@@ -29,6 +30,7 @@ public:
 	void Update(float dt) override;
 	void Render(void) override;
 	std::vector<Entity*> tempEntities;
+	std::string exportFolder;
 private:
 	bool playerExists;
 	void ImGuiInterg();
@@ -74,6 +76,7 @@ private:
 	// have a current list as a default so it can just be overwritten 
 	std::string currentGameObjectsList = "./Data/GameObjects/ObjectListLevelBuilder.json";
 	std::string listToExport;
+	std::string sceneName;
 	json gameObjects;
 	std::unordered_map<std::string, std::function<void (Entity*)>> AddFunc;
 	std::string currentTileMapList;

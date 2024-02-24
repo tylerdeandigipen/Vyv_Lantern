@@ -20,8 +20,11 @@
 #include "Scene.h"
 #include "PlatformSystem.h"
 #include "Engine.h"
-#include "BehaviorPlayer.h"
 
+#include "BehaviorSwitch.h"
+#include "BehaviorPlayer.h"
+#include "BehaviorMirror.h"
+#include "Entity.h"
 #include "Collider.h"
 #include "Emitter.h"
 #include "LineCollider.h"
@@ -39,6 +42,7 @@
 
 #include "TestScene.h"
 #include "TbdTestScene.h"
+#include <direct.h>
 
 Logging& LevelCreatorLogger = Logging::GetInstance("debugLog.log");
 
@@ -104,7 +108,6 @@ Engine::EngineCode LevelCreatorScene::Init()
 	LevelCreatorPixelRenderer->window = LevelCreatorWindow;
 
 	LevelBuilder::GetInstance()->LoadTileMap("./Data/Scenes/LevelCreatorScene.json");
-
 	// this is gonna add any objects that exist in the imported scene and transfer them to 
 	// the tempEntities vector so they can be modified (this will have to be added in the import section as well)
 	if (EntityContainer::GetInstance()->CountEntities() > 0)
@@ -243,7 +246,13 @@ void LevelCreatorScene::ExportScene(std::string name)
 	Renderer* pixel = Renderer::GetInstance();
 	int rows = pixel->tileMapSize.x;
 	int columns = pixel->tileMapSize.y;
-
+	std::string folder = "./Data/Scenes/" + name;
+	exportFolder = folder;
+	exportFolder += "/";
+	if (_mkdir(folder.c_str()) == 0)
+	{
+		Logging::GetInstance("FailedToMakeFolder.log").LogLine("failed to make file");
+	}
 	std::vector<int> tilemap;
 	std::vector<int> walls;
 	bool found = false;
@@ -294,16 +303,16 @@ void LevelCreatorScene::ExportScene(std::string name)
 	tilemapArray["layers"][1] = tilemapCol;
 
 	// save tilemap to a file
-	std::ofstream tileFile("./Data/Scenes/" + name + "MAP" + ".json");
+	std::ofstream tileFile(exportFolder + name + "MAP" + ".json");
 	tileFile << std::setw(2) << tilemapArray << std::endl;
 
 	json readable;
 	json data;
-	data["TileMapFile"] = "./Data/Scenes/" + name + "MAP" + ".json";
+	data["TileMapFile"] = exportFolder + name + "MAP" + ".json";
 	readable["TiledData"] = data;
 
 	// this will be the object list part
-	listToExport = "./Data/Scenes/" + name + "OBJECTS" + ".json";
+	listToExport = exportFolder + name + "OBJECTS" + ".json";
 
 	Scene* pare = LevelCreatorSceneGetInstance();
 	LevelCreatorScene* current = reinterpret_cast<LevelCreatorScene*>(pare);
@@ -331,7 +340,7 @@ void LevelCreatorScene::ExportScene(std::string name)
 	readable["GameObjectList"] = { {"GameObjectFile", listToExport } };
 
 	//the filemap to read for the scene 
-	std::ofstream actualfile("./Data/Scenes/" + name + ".json");
+	std::ofstream actualfile(exportFolder + name + ".json");
 	actualfile << std::setw(2) << readable << std::endl;
 }
 
@@ -773,6 +782,7 @@ void LevelCreatorScene::ImGuiWindow()
 				else
 				{
 					FileIO::GetInstance()->ExportTileMap(myTextBuffer);
+					ImGui::OpenPopup("SuccessfulExport");
 				}
 			}
 
@@ -790,7 +800,18 @@ void LevelCreatorScene::ImGuiWindow()
 				else
 				{
 					ExportScene(myTextBuffer);
+					ImGui::OpenPopup("SuccessfulExport");
 				}
+			}
+
+			if (ImGui::BeginPopupModal("SuccessfulExport", NULL, ImGuiWindowFlags_AlwaysAutoResize))
+			{
+				ImGui::Text("Exported!");
+				if (ImGui::Button("OK"))
+				{
+					ImGui::CloseCurrentPopup();
+				}
+				ImGui::EndPopup();
 			}
 
 			if (ImGui::BeginPopupModal("EmptyExportFileNamePopup", NULL, ImGuiWindowFlags_AlwaysAutoResize))
@@ -827,6 +848,7 @@ void LevelCreatorScene::ImGuiWindow()
 				if (ImGui::Button("Submit"))
 				{
 					std::string filename = "./Data/Scenes/" + std::string(filenameBuffer) + ".json";
+
 					if (std::string(filenameBuffer).empty())
 					{
 						ImGui::OpenPopup("EmptyImportFileNamePopup");
@@ -838,9 +860,11 @@ void LevelCreatorScene::ImGuiWindow()
 					else
 					{
 						std::ifstream file(filename);
+						sceneName = std::string(filenameBuffer);
 						if (file.is_open())
 						{
 							file.close();
+							Renderer::GetInstance()->CleanRenderer();
 							LevelBuilder::GetInstance()->LoadTileMap(filename);
 							if (EntityContainer::GetInstance()->CountEntities() > 0)
 							{
@@ -883,6 +907,8 @@ void LevelCreatorScene::ImGuiWindow()
 							{
 								ImGui::OpenPopup("NoObjectsInScene");
 							}
+
+							ImGui::OpenPopup("SuccessfulImport");
 						}
 						else
 						{
@@ -890,6 +916,17 @@ void LevelCreatorScene::ImGuiWindow()
 						}
 					}
 				}
+
+				if (ImGui::BeginPopupModal("SuccessfulImport", NULL, ImGuiWindowFlags_AlwaysAutoResize))
+				{
+					ImGui::Text("Imported!");
+					if (ImGui::Button("OK"))
+					{
+						ImGui::CloseCurrentPopup();
+					}
+					ImGui::EndPopup();
+				}
+
 
 				if (ImGui::BeginPopupModal("NoObjectsInScene", NULL, ImGuiWindowFlags_AlwaysAutoResize))
 				{
@@ -1043,16 +1080,112 @@ void LevelCreatorScene::ImGuiWindow()
 	}
 	if (ImGui::Button("  Create Mirror"))
 	{
+		ImGui::OpenPopup("MirrorDirection");
 		CreateMirrorEntity();
 	}
 	if (ImGui::Button("  Create Emitter"))
 	{
+		ImGui::OpenPopup("EmitterDirection");
 		CreateEmitterEntity();
 	}
 	if (ImGui::Button("  Create Reciever"))
 	{
 		CreateRecieverEntity();
 	}
+
+	if (ImGui::BeginPopupModal("MirrorDirection", NULL, ImGuiWindowFlags_AlwaysAutoResize))
+	{
+		ImGui::Text("Pick a mirror direction.");
+		ImGui::Text("Warning, this cannot be changed.");
+
+		/* MICHAELLL */
+
+		/* PUT THE DIRECTIONAL BEHAVIOR HERE */
+
+		if (ImGui::Button("North")) 
+		{
+			// mirror.direction = direction
+
+		}
+
+		if (ImGui::Button("East")) 
+		{
+
+		}
+
+		if (ImGui::Button("South")) 
+		{
+
+		}
+
+		if (ImGui::Button("West")) 
+		{
+
+		}
+
+		if (ImGui::Button("OK"))
+		{
+			/* probably set direction to null or something as default,
+			   then add a check right here saying if direction == null */
+			/* ImGui::OpenPopup("NoDirectionPicked"); */
+
+
+			ImGui::CloseCurrentPopup();
+		}
+		ImGui::EndPopup();
+	}
+
+	if (ImGui::BeginPopupModal("EmitterDirection", NULL, ImGuiWindowFlags_AlwaysAutoResize))
+	{
+		ImGui::Text("Pick a mirror direction.");
+		ImGui::Text("Warning, this cannot be changed.");
+
+		/* MICHAELLL */
+
+		/* PUT THE DIRECTIONAL BEHAVIOR HERE */
+
+		if (ImGui::Button("North"))
+		{
+
+		}
+
+		if (ImGui::Button("East"))
+		{
+
+		}
+
+		if (ImGui::Button("South"))
+		{
+
+		}
+
+		if (ImGui::Button("West"))
+		{
+
+		}
+
+		if (ImGui::Button("OK"))
+		{
+			/* probably set direction to null or something as default,
+			   then add a check right here saying if direction == null */
+			   /* ImGui::OpenPopup("NoDirectionPicked"); */
+
+
+			ImGui::CloseCurrentPopup();
+		}
+		ImGui::EndPopup();
+	}
+
+	/*if (ImGui::BeginPopupModal("NoDirectionPicked", NULL, ImGuiWindowFlags_AlwaysAutoResize))
+	{
+		ImGui::Text("Pick a direction!");
+		if (ImGui::Button("OK"))
+		{
+			ImGui::CloseCurrentPopup();
+		}
+		ImGui::EndPopup();
+	}*/
+
 
 	ImGui::Separator();
 	entityManager->EditEntity(Vector2{ static_cast<float>(Inputs::GetInstance()->getMouseX()), static_cast<float>(Inputs::GetInstance()->getMouseY()) });
@@ -1104,7 +1237,6 @@ int LevelCreatorScene::CreateCircleEntity()
 	temp->addKey = "Circle"; // this is for the map holding functions and gives access to function for circle
 
 	temp->key = "Circle" + std::to_string(circleCount);
-	temp->SetFilePath("./Data/GameObjects/Circle" + std::to_string(circleCount) + ".json");
 	tempEntities.push_back(temp);
 	++circleCount;
 	return 0;
@@ -1123,7 +1255,7 @@ int LevelCreatorScene::CreateDoorEntity()
 	temp->addKey = "Door"; // this is for the map holding functions and gives access to function for circle
 
 	temp->key = "Door" + std::to_string(doorCount);
-	temp->SetFilePath("./Data/GameObjects/Door" + std::to_string(doorCount) + ".json");
+	//temp->SetFilePath("./Data/GameObjects/Door" + sceneName + std::to_string(doorCount) + ".json");
 	tempEntities.push_back(temp);
 	++doorCount;
 	return 0;
@@ -1141,7 +1273,7 @@ int LevelCreatorScene::CreateMirrorEntity()
 	temp->addKey = "Mirror"; // this is for the map holding functions and gives access to function for circle
 
 	temp->key = "Mirror" + std::to_string(mirrorCount);
-	temp->SetFilePath("./Data/GameObjects/Mirror" + std::to_string(mirrorCount) + ".json");
+	//temp->SetFilePath("./Data/GameObjects/Mirror" + sceneName + std::to_string(mirrorCount) + ".json");
 	tempEntities.push_back(temp);
 	++mirrorCount;
 	return 0;
@@ -1158,7 +1290,7 @@ int LevelCreatorScene::CreateEmitterEntity()
 	temp->addKey = "Emitter"; // this is for the map holding functions and gives access to function for circle
 
 	temp->key = "Emitter" + std::to_string(emitterCount);
-	temp->SetFilePath("./Data/GameObjects/Emitter" + std::to_string(emitterCount) + ".json");
+	//temp->SetFilePath("./Data/GameObjects/Emitter"+ sceneName + std::to_string(emitterCount) + ".json");
 	tempEntities.push_back(temp);
 	++emitterCount;
 	return 0;
@@ -1170,12 +1302,10 @@ int LevelCreatorScene::CreateRecieverEntity()
 	std::string number = "./Data/GameObjects/Reciever";
 	std::string filename = "./Data/GameObjects/tempReciever.json";
 
-	Entity* temp = FileIO::GetInstance()->ReadEntity(filename);
-
+	Entity* temp = FileIO::GetInstance()->ReadEntity(filename); 
 	temp->addKey = "Reciever"; // this is for the map holding functions and gives access to function for circle
-
 	temp->key = "Reciever" + std::to_string(emitterCount);
-	temp->SetFilePath("./Data/GameObjects/Reciever" + std::to_string(emitterCount) + ".json");
+	//temp->SetFilePath("./Data/GameObjects/Reciever" + sceneName + std::to_string(emitterCount) + ".json");
 	tempEntities.push_back(temp);
 	++recieverCount;
 	return 0;
@@ -1187,6 +1317,7 @@ void LevelCreatorScene::AddCircleEntity(Entity* entity)
 {
 	Scene* pare = LevelCreatorSceneGetInstance();
 	LevelCreatorScene* current = reinterpret_cast<LevelCreatorScene*>(pare);
+	entity->SetFilePath(current->exportFolder + entity->key + ".json");
 
 	Logging::GetInstance("LevelCreator.log").LogToAll("Creating->", entity->key.c_str());
 	json circleData;
@@ -1203,7 +1334,7 @@ void LevelCreatorScene::AddCircleEntity(Entity* entity)
 	circleData["FilePath"] = entity->GetFilePath();
 	circleData["Name"] = "Switch";
 	circleData["Type"] = "Object";
-	circleData["file"] = "./Assets/PPM/Circle_2x2.ppm";
+	circleData["file"] = entity->spritePath;
 	circleData["frameSize"] = { 8,8 };
 	circleData["isAnimated"] = false;
 
@@ -1218,6 +1349,7 @@ void LevelCreatorScene::AddDoorEntity(Entity* entity)
 {
 	Scene* pare = LevelCreatorSceneGetInstance();
 	LevelCreatorScene* current = reinterpret_cast<LevelCreatorScene*>(pare);
+	entity->SetFilePath(current->exportFolder + entity->key + ".json");
 
 	Logging::GetInstance("LevelCreator.log").LogToAll("Creating->", entity->key.c_str());
 	json doorData; // the main thing for all pieces to be put inside
@@ -1234,7 +1366,7 @@ void LevelCreatorScene::AddDoorEntity(Entity* entity)
 	doorData["FilePath"] = entity->GetFilePath();
 	doorData["Name"] = "Door";
 	doorData["Type"] = "Object";
-	doorData["file"] = "./Assets/PPM/Door_Closed.ppm";
+	doorData["file"] = entity->spritePath;
 	doorData["frameSize"] = { 8,8 };
 	doorData["isAnimated"] = false;
 	doorData["KeyObject"] = { {"key", entity->key} };
@@ -1250,6 +1382,7 @@ void LevelCreatorScene::AddMirrorEntity(Entity* entity)
 {
 	Scene* pare = LevelCreatorSceneGetInstance();
 	LevelCreatorScene* current = reinterpret_cast<LevelCreatorScene*>(pare);
+	entity->SetFilePath(current->exportFolder + entity->key + ".json");
 
 	Logging::GetInstance("LevelCreator.log").LogToAll("Creating->", entity->key.c_str());
 	json mirrorData; // the main thing for all pieces to be put inside
@@ -1257,16 +1390,30 @@ void LevelCreatorScene::AddMirrorEntity(Entity* entity)
 	json collider = { {"Type", "ColliderAABB"} };
 	json transform = { {"Type", "Transform"}, {"translation", { { "x", entity->Has(Transform)->GetTranslation()->x }, {"y", entity->Has(Transform)->GetTranslation()->y} } } };
 	json physics = { {"Type", "Physics"}, {"OldTranslation", { { "x", entity->Has(Transform)->GetTranslation()->x }, {"y", entity->Has(Transform)->GetTranslation()->y} } } };
+	BehaviorSwitch* entSwitch = dynamic_cast<BehaviorSwitch*>(entity->Has(Behavior));
+	json bSwitch;
+	if (entSwitch && entSwitch->GetKey() >= 0)
+	{
+		bSwitch = { {"Type", "BehaviorSwitch"}, { "key", entSwitch->GetKey() },{"NumPositions", entSwitch->GetMaxCount() + 1}};
+		for (int i = 0; i < dynamic_cast<BehaviorSwitch*>(entity->Has(Behavior))->GetMaxCount() + 1; ++i)
+		{
+			json pos = { {"x", std::to_string((*entSwitch)[i].x)}, {"y", std::to_string((*entSwitch)[i].y)}};
+			bSwitch["pos"].push_back(pos);
+		}
+	}
+
 
 	components.push_back(collider);
 	components.push_back(transform);
 	components.push_back(physics);
+	if (entSwitch)
+		components.push_back(bSwitch);
 
 	mirrorData["Components"] = components;
 	mirrorData["FilePath"] = entity->GetFilePath();
 	mirrorData["Name"] = "Switch";
 	mirrorData["Type"] = "Object";
-	mirrorData["file"] = "./Assets/PPM/Mirror.ppm";
+	mirrorData["file"] = entity->spritePath;
 	mirrorData["frameSize"] = { 8,8 };
 	mirrorData["isAnimated"] = false;
 	mirrorData["KeyObject"] = { {"key", entity->key} };
@@ -1282,6 +1429,7 @@ void LevelCreatorScene::AddEmitterEntity(Entity* entity)
 {
 	Scene* pare = LevelCreatorSceneGetInstance();
 	LevelCreatorScene* current = reinterpret_cast<LevelCreatorScene*>(pare);
+	entity->SetFilePath(current->exportFolder + entity->key + ".json");
 
 
 	Logging::GetInstance("LevelCreator.log").LogToAll("Creating->", entity->key.c_str());
@@ -1290,6 +1438,8 @@ void LevelCreatorScene::AddEmitterEntity(Entity* entity)
 	json collider = { {"Type", "ColliderAABB"} };
 	json transform = { {"Type", "Transform"}, {"translation", { { "x", entity->Has(Transform)->GetTranslation()->x }, {"y", entity->Has(Transform)->GetTranslation()->y} } } };
 	json physics = { {"Type", "Physics"}, {"OldTranslation", { { "x", entity->Has(Transform)->GetTranslation()->x }, {"y", entity->Has(Transform)->GetTranslation()->y} } } };
+	json emitter = { };
+	json lineCollider = {};
 
 	components.push_back(collider);
 	components.push_back(transform);
@@ -1299,7 +1449,7 @@ void LevelCreatorScene::AddEmitterEntity(Entity* entity)
 	mirrorData["FilePath"] = entity->GetFilePath();
 	mirrorData["Name"] = "Emitter";
 	mirrorData["Type"] = "Object";
-	mirrorData["file"] = "./Assets/PPM/squareEmitter.ppm";
+	mirrorData["file"] = entity->spritePath;
 	mirrorData["frameSize"] = { 8,8 };
 	mirrorData["isAnimated"] = false;
 
@@ -1317,6 +1467,7 @@ void LevelCreatorScene::AddRecieverEntity(Entity* entity)
 {
 	Scene* pare = LevelCreatorSceneGetInstance();
 	LevelCreatorScene* current = reinterpret_cast<LevelCreatorScene*>(pare);
+	entity->SetFilePath(current->exportFolder + entity->key + ".json");
 
 
 	Logging::GetInstance("LevelCreator.log").LogToAll("Creating->", entity->key.c_str());
@@ -1325,6 +1476,7 @@ void LevelCreatorScene::AddRecieverEntity(Entity* entity)
 	json collider = { {"Type", "ColliderAABB"} };
 	json transform = { {"Type", "Transform"}, {"translation", { { "x", entity->Has(Transform)->GetTranslation()->x }, {"y", entity->Has(Transform)->GetTranslation()->y} } } };
 	json physics = { {"Type", "Physics"}, {"OldTranslation", { { "x", entity->Has(Transform)->GetTranslation()->x }, {"y", entity->Has(Transform)->GetTranslation()->y} } } };
+	json lineCollider = {};
 
 	components.push_back(collider);
 	components.push_back(transform);
@@ -1334,7 +1486,7 @@ void LevelCreatorScene::AddRecieverEntity(Entity* entity)
 	mirrorData["FilePath"] = entity->GetFilePath();
 	mirrorData["Name"] = "Reciever";
 	mirrorData["Type"] = "Object";
-	mirrorData["file"] = "./Assets/PPM/tempReciever.ppm";
+	mirrorData["file"] = entity->spritePath;
 	mirrorData["frameSize"] = { 8,8 };
 	mirrorData["isAnimated"] = false;
 	mirrorData["KeyObject"] = { {"key", entity->key} };

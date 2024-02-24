@@ -1,14 +1,15 @@
 #include "LineCollider.h"
 
 
-LineCollider::LineCollider(): Component(Component::cLineCollider)
+LineCollider::LineCollider() : Component(Component::cLineCollider)
 {
 
 	position1 = new gfxVector2();
 	position2 = new gfxVector2();
+	isDirty = false;
 }
 
-LineCollider::LineCollider(LineCollider const & cpy) : Component(Component::cLineCollider)
+LineCollider::LineCollider(LineCollider const& cpy) : Component(Component::cLineCollider)
 {
 
 	position1 = new gfxVector2(*cpy.position1);
@@ -28,27 +29,28 @@ Component* LineCollider::Clone(void) const
 }
 
 //component-specific render code.
-void LineCollider::Update(float dt) { 
-	dt = dt; 
-
+void LineCollider::Update(float dt) {
+	dt = dt;
+	//if IsDirty
+	// Do Stuff
 }
 
 void LineCollider::Read(json jsonData)
 {
 	/*
 	  "Type": "LineCollider",
-      "LeftMostPoint": {
-          "x": 0,
-          "y": 0
-      },       
-      "RightMostPint": {
-          "x": 50,
-          "y": 0
-      }
+	  "LeftMostPoint": {
+		  "x": 0,
+		  "y": 0
+	  },
+	  "RightMostPoint": {
+		  "x": 50,
+		  "y": 0
+	  }
 
 	*/
 
-	
+
 	if (jsonData["LeftMostPoint"].is_object())
 	{
 		json pos = jsonData["LeftMostPoint"];
@@ -59,8 +61,8 @@ void LineCollider::Read(json jsonData)
 	if (jsonData["RightMostPoint"].is_object())
 	{
 		json pos = jsonData["RightMostPoint"];
-		position1->x = pos["x"];
-		position1->y = pos["y"];
+		position2->x = pos["x"];
+		position2->y = pos["y"];
 	}
 
 }
@@ -71,4 +73,16 @@ void LineCollider::Render() const
 };
 
 
+void LineCollider::SetPosition1(gfxVector2* position)
+{
+	position1->x = position->x;
+	position1->y = position->y;
+	isDirty = true;
+}
 
+void LineCollider::SetPosition2(gfxVector2* position)
+{
+	position2->x = position->x;
+	position2->y = position->y;
+	isDirty = true;
+}

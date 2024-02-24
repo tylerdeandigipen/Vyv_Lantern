@@ -1,0 +1,33 @@
+{
+  "Components": [
+    {
+      "Type": "ColliderAABB"
+    },
+    {
+      "Type": "Transform",
+      "translation": {
+        "x": 216.0,
+        "y": 318.0
+      }
+    },
+    {
+      "OldTranslation": {
+        "x": 216.0,
+        "y": 318.0
+      },
+      "Type": "Physics"
+    }
+  ],
+  "FilePath": "./Data/GameObjects/MirrorSection1WIP3.json",
+  "KeyObject": {
+    "key": "Section1WIPMirror3"
+  },
+  "Name": "Switch",
+  "Type": "Object",
+  "file": "./Assets/PPM/CrystalSprites/MirrorCrystalDownRight.ppm",
+  "frameSize": [
+    8,
+    8
+  ],
+  "isAnimated": false
+}

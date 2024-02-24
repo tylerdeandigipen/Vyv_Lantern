@@ -16,6 +16,12 @@
         "y": 84.0
       },
       "Type": "Physics"
+    },
+    {
+      "Type": "BehaviorDoor",
+      "DoorClosed": true,
+      "ClosedSprite": "./Assets/PPM/Door_Closed.ppm",
+      "OpenSprite": "./Assets/PPM/Door_Open.ppm"
     }
   ],
   "FilePath": "./Data/GameObjects/Door0.json",

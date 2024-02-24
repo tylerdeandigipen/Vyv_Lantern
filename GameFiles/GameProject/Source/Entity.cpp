@@ -50,6 +50,7 @@ Entity::Entity(std::string type, const std::string file, json Animated) : isDest
 		}
 		else
 		{
+			spritePath = file;
 			CreateImage(file);
 			isObject = true;
 		}
@@ -74,7 +75,10 @@ Entity::Entity(Entity const& ent) : isDestroyed(ent.isDestroyed), name{}, compon
 Entity::~Entity()
 {
 	if (image != NULL)
+	{
 		delete image;
+		image = NULL;
+	}
 }
 
 Entity* Entity::Clone()
@@ -134,7 +138,7 @@ void Entity::Read(json &jsonData)
 	{
 		if (image)
 		{
-			Has(Transform)->SetTranslation(&(image->position));
+			GetComponent<Transform>()->SetTranslation(&(image->position));
 		}
 	}
 }
