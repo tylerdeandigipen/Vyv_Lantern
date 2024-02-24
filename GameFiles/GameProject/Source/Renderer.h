@@ -12,6 +12,7 @@
 #define RENDERER_H
 
 #include "ImageBuffer.h"
+#include "TBDLasers.h"
 #include "Light.h"
 #include "ParticleManager.h"
 #include <SDL/SDL.h>
@@ -89,7 +90,7 @@ public:
 	void SetCameraPosition(Vector2 NewCameraP);
 	static Renderer* GetInstance();
 	int CheckLineForObject(int x1, int y1, int x2, int y2);
-	gfxVector2 CheckLineForObjects(int x1, int y1, int x2, int y2);
+	gfxVector2 LaserCheckLineForObject(Vector2 pos1, Vector2 pos2);
 	void BlurLights(int blurRangeLow, int blurRangeHigh);
 	void ExpandTileMapInDirection(Vector2 direction, int distance);
 	
@@ -184,6 +185,7 @@ private:
 
 	//Misc.
 	unsigned int maxThreadsAllowed = 8;
+	TBDLasers laserHandler;
 	Vector2 CameraP;
 	static Renderer* instance;
 	ImageBuffer* DebugBuffer = NULL;

@@ -225,28 +225,28 @@ inline bool DoCalculations(Emitter* obj)
 
 	gfxVector2 compare = { 0,0 };
 	//if direction then compare
-
+	/*
 	if (obj->GetDirection().x > 0)
 	{
-		compare = pointyBoi->CheckLineForObjects(obj->GetPosition().x, obj->GetPosition().y,
+		compare = pointyBoi->LaserCheckLineForObject(obj->GetPosition().x, obj->GetPosition().y,
 			obj->GetPosition().x + obj->GetDistance(), obj->GetPosition().y);
 	}
 	else if (obj->GetDirection().y > 0)
 	{
-		compare = pointyBoi->CheckLineForObjects(obj->GetPosition().x, obj->GetPosition().y,
+		compare = pointyBoi->LaserCheckLineForObject(obj->GetPosition().x, obj->GetPosition().y,
 			obj->GetPosition().x, obj->GetPosition().y + obj->GetDistance());
 	}
 	else if (obj->GetDirection().x < 0)
 	{
-		compare = pointyBoi->CheckLineForObjects(obj->GetPosition().x, obj->GetPosition().y,
+		compare = pointyBoi->LaserCheckLineForObject(obj->GetPosition().x, obj->GetPosition().y,
 			obj->GetPosition().x - obj->GetDistance(), obj->GetPosition().y);
 	}
 	else if (obj->GetDirection().y < 0)
 	{
-		compare = pointyBoi->CheckLineForObjects(obj->GetPosition().x, obj->GetPosition().y,
+		compare = pointyBoi->LaserCheckLineForObject(obj->GetPosition().x, obj->GetPosition().y,
 			obj->GetPosition().x, obj->GetPosition().y - obj->GetDistance());
 	}
-
+	*/
 	Vector2 end = obj->GetEndpoint();
 
 	if (compare.operator == (obj->GetEndpoint()))
