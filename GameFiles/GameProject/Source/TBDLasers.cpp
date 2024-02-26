@@ -65,6 +65,7 @@ void TBDLasers::UpdateLasers()
 
 		tempLaser->pos = Vector2{ 100,100 };
 		tempLaser->dir = Vector2{ 1,0 };
+		tempLaser->isEmiting = true;
 
 		tempMirror->pos1 = Vector2{ 160,150 };
 		tempMirror->pos2 = Vector2{ 160,50 };
@@ -82,17 +83,25 @@ void TBDLasers::UpdateLasers()
 		tempThingLol = 1;
 	}
 
+	for (int i = 0; i < numMirrors; i++)
+	{
+		mirrors[i]->isActivated = false;
+	}
 	for (int i = 0; i < numLasers; i++)
 	{
 		renderer->numLasers = numLasers;
 		renderer->laserPoints1[i] = lasers[i]->pos - renderer->GetCameraPosition(); 
 		renderer->laserPoints2[i] = CheckCollision(i);
+		if (renderer->laserPoints2[i].x == 9001)//9001 is a code for if the current laser is invalid
+		{
+			lasers[i]->isEmiting = false;
+		}
 	}
 }
 
 Vector2 TBDLasers::CheckCollision(int laserIndex)
 {
-	if (lasers[laserIndex] == NULL)
+	if (lasers[laserIndex] == NULL || lasers[laserIndex]->isEmiting == false)
 	{
 		return Vector2{9001,9001};
 	}
@@ -131,10 +140,11 @@ Vector2 TBDLasers::CheckCollision(int laserIndex)
 							{
 								mirrors[i]->reflectedLaser.pos = laserPos2;
 								mirrors[i]->reflectedLaser.dir = mirrors[i]->reflectDir;
-								mirrors[i]->isActivated = true;
 							}
-							return laserPos2;
+							mirrors[i]->isActivated = true;
+							mirrors[i]->reflectedLaser.isEmiting = true;
 						}
+						return laserPos2;
 					}
 				}
 			}
@@ -161,8 +171,9 @@ Vector2 TBDLasers::CheckCollision(int laserIndex)
 							{
 								mirrors[i]->reflectedLaser.pos = laserPos2;
 								mirrors[i]->reflectedLaser.dir = mirrors[i]->reflectDir;
-								mirrors[i]->isActivated = true;
 							}
+							mirrors[i]->isActivated = true;
+							mirrors[i]->reflectedLaser.isEmiting = true;
 						}
 						return laserPos2;
 					}
