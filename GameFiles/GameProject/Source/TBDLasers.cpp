@@ -57,32 +57,6 @@ bool TBDLasers::AddMirror(Mirror* mirror)
 bool tempThingLol = 0;
 void TBDLasers::UpdateLasers()
 {
-	if (tempThingLol == 0)
-	{
-		Laser* tempLaser = new Laser;
-		Mirror* tempMirror = new Mirror;
-		Mirror* tempMirror2 = new Mirror;
-
-		tempLaser->pos = Vector2{ 100,100 };
-		tempLaser->dir = Vector2{ 1,0 };
-		tempLaser->isEmiting = true;
-
-		tempMirror->pos1 = Vector2{ 160,150 };
-		tempMirror->pos2 = Vector2{ 160,50 };
-		tempMirror->reflectDir = Vector2{ 0,1 };
-
-
-		tempMirror2->pos1 = Vector2{ 130,130 };
-		tempMirror2->pos2 = Vector2{ 190,130 };
-		tempMirror2->reflectDir = Vector2{ -1,0 };
-
-		AddLaser(tempLaser);
-		AddMirror(tempMirror);
-		AddMirror(tempMirror2);
-
-		tempThingLol = 1;
-	}
-
 	for (int i = 0; i < numMirrors; i++)
 	{
 		mirrors[i]->isActivated = false;
