@@ -88,10 +88,10 @@ void Renderer::Update(float dt)
 		Color& DestPixel = DebugBuffer->SampleColor(100, 100);
 		DestPixel = Color{ 255,0,0,255 };
 
-		Color& DestPixel2 = DebugBuffer->SampleColor(160, 150);
+		Color& DestPixel2 = DebugBuffer->SampleColor(130, 130);
 		DestPixel2 = Color{ 255,0,255,255 };
 
-		Color& DestPixel3 = DebugBuffer->SampleColor(160, 50);
+		Color& DestPixel3 = DebugBuffer->SampleColor(190, 130);
 		DestPixel3 = Color{ 255,0,255,255 };
 
 		DebugBuffer->Blit(outputBuffer, -GetCameraPosition().x, -GetCameraPosition().y);
@@ -181,7 +181,7 @@ void Renderer::RenderToOutbuffer()
 				}
 				else if (renderNormalMap == true)
 				{
-					DestPixel = normalBuffer->SampleColor(x + CameraP.x, y + CameraP.y);
+					DestPixel = shadowCasterBuffer->SampleColor(x + CameraP.x, y + CameraP.y);
 				}
 			}
 		}
@@ -1111,9 +1111,9 @@ gfxVector2 Renderer::LaserCheckLineForObject(Vector2 pos1, Vector2 pos2)
 	int x = pos1.x;
 	int y = pos1.y;
 
-	while (x != pos1.x || y != pos1.y)
+	while (x != (int)pos2.x || y != (int)pos2.y)
 	{
-		if (shadowCasterBuffer->SampleColor(x + CameraP.x, y + CameraP.y).GetAlpha() != 0)
+		if (shadowCasterBuffer->SampleColor(x + (int)CameraP.x, y + (int)CameraP.y).GetAlpha() != 0)
 		{
 			result.x = x;
 			result.y = y;
@@ -1132,9 +1132,8 @@ gfxVector2 Renderer::LaserCheckLineForObject(Vector2 pos1, Vector2 pos2)
 			y += sy;
 		}
 	}
-	result.x = pos2.x;
-	result.y = pos2.y;
-	return result;
+	
+	return pos2;
 }
 
 void Renderer::BlurLights(int blurRangeLow, int blurRangeHigh)

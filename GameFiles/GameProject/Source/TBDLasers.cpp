@@ -61,23 +61,31 @@ void TBDLasers::UpdateLasers()
 	{
 		Laser* tempLaser = new Laser;
 		Mirror* tempMirror = new Mirror;
+		Mirror* tempMirror2 = new Mirror;
 
 		tempLaser->pos = Vector2{ 100,100 };
 		tempLaser->dir = Vector2{ 1,0 };
 
 		tempMirror->pos1 = Vector2{ 160,150 };
 		tempMirror->pos2 = Vector2{ 160,50 };
-		tempMirror->reflectDir = Vector2{ 0,-1 };
+		tempMirror->reflectDir = Vector2{ 0,1 };
+
+
+		tempMirror2->pos1 = Vector2{ 130,130 };
+		tempMirror2->pos2 = Vector2{ 190,130 };
+		tempMirror2->reflectDir = Vector2{ -1,0 };
 
 		AddLaser(tempLaser);
 		AddMirror(tempMirror);
+		AddMirror(tempMirror2);
 
 		tempThingLol = 1;
 	}
+
 	for (int i = 0; i < numLasers; i++)
 	{
 		renderer->numLasers = numLasers;
-		renderer->laserPoints1[i] = lasers[i]->pos;
+		renderer->laserPoints1[i] = lasers[i]->pos - renderer->GetCameraPosition(); 
 		renderer->laserPoints2[i] = CheckCollision(i);
 	}
 }
@@ -96,8 +104,8 @@ Vector2 TBDLasers::CheckCollision(int laserIndex)
 	{
 		if (mirrors[i] != NULL && &mirrors[i]->reflectedLaser != lasers[laserIndex])
 		{
-			Vector2 mirrorPoint1 = mirrors[i]->pos1 - renderer->GetCameraPosition();;
-			Vector2 mirrorPoint2 = mirrors[i]->pos2 - renderer->GetCameraPosition();;
+			Vector2 mirrorPoint1 = mirrors[i]->pos1 - renderer->GetCameraPosition();
+			Vector2 mirrorPoint2 = mirrors[i]->pos2 - renderer->GetCameraPosition();
 
 			//check if its along the y axis
 			if (lasers[laserIndex]->dir.y != 0)
@@ -114,20 +122,19 @@ Vector2 TBDLasers::CheckCollision(int laserIndex)
 				if (laserPos1.x > mirrorPoint1.x && laserPos1.x < mirrorPoint2.x)
 				{
 					//check if mirror is in the same dir as laser
-					if ((lasers[laserIndex]->dir.y > 0 && laserPos1.y - mirrorPoint1.y > 0) || (lasers[laserIndex]->dir.y < 0 && laserPos1.y - mirrorPoint1.y < 0))
+					if ((lasers[laserIndex]->dir.y > 0 && laserPos1.y < mirrorPoint1.y) || (lasers[laserIndex]->dir.y < 0 && laserPos1.y > mirrorPoint1.y))
 					{
 						laserPos2 = renderer->LaserCheckLineForObject(laserPos1, Vector2{ laserPos1.x, mirrorPoint1.y });
 						if (laserPos2.y == mirrorPoint1.y)
 						{
-							//add check for reflector later
 							if (AddLaser(&mirrors[i]->reflectedLaser))
 							{
 								mirrors[i]->reflectedLaser.pos = laserPos2;
 								mirrors[i]->reflectedLaser.dir = mirrors[i]->reflectDir;
 								mirrors[i]->isActivated = true;
 							}
+							return laserPos2;
 						}
-						return laserPos2;
 					}
 				}
 			}
@@ -157,12 +164,13 @@ Vector2 TBDLasers::CheckCollision(int laserIndex)
 								mirrors[i]->isActivated = true;
 							}
 						}
+						return laserPos2;
 					}
-					return laserPos2;
 				}
 			}
 		}
 	}
-	return laserPos1 + (lasers[laserIndex]->dir * 300); //300 is abitrary max length
+	laserPos2 = laserPos1 + (lasers[laserIndex]->dir * 300); //300 is abitrary max length
+	return renderer->LaserCheckLineForObject(laserPos1, laserPos2);
 }
 
