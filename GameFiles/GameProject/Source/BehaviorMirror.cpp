@@ -78,10 +78,10 @@ void BehaviorMirror::Init()
                 std::string file = Parent()->GetSpritePath();
                 if (file.compare("./Assets/PPM/CrystalSprites/MirrorCrystalDownRight.ppm") == 0)
                 {
-                    mirror->pos1 = { trans->GetTranslation()->x + test.x, trans->GetTranslation()->y };
-                    mirror->pos2 = { trans->GetTranslation()->x, trans->GetTranslation()->y + test.y };
+                    mirror->pos1 = { trans->GetTranslation()->x, trans->GetTranslation()->y + (test.y /2)};
+                    mirror->pos2 = { trans->GetTranslation()->x + (test.x), trans->GetTranslation()->y + (test.y /2) };
                     mirror->reflectDir = { 1 , 0 };
-                    mirror->reflectFromLeft = true;
+                   // mirror->reflectFromLeft = true;
                 }
                 else if (file.compare("./Assets/PPM/CrystalSprites/MirrorCrystalDownLeft.ppm") == 0)
                 {
@@ -127,13 +127,13 @@ void BehaviorMirror::Update(float dt)
         ImageBuffer* image = Parent()->GetImage();
         Transform* trans = Parent()->Has(Transform);
         gfxVector2 test = image->size;
+        float testvalue = (test.y / 2);
         std::string file = Parent()->GetSpritePath();
         if (file.compare("./Assets/PPM/CrystalSprites/MirrorCrystalDownRight.ppm") == 0)
         {
-            mirror->pos1 = { trans->GetTranslation()->x + test.x, trans->GetTranslation()->y };
-            mirror->pos2 = { trans->GetTranslation()->x, trans->GetTranslation()->y + test.y };
-            mirror->reflectDir = { 1 , 0 };
-            mirror->reflectFromLeft = true;
+            mirror->pos1 = { trans->GetTranslation()->x, trans->GetTranslation()->y + testvalue };
+            mirror->pos2 = { trans->GetTranslation()->x + test.x, trans->GetTranslation()->y + testvalue };
+            //mirror->reflectFromLeft = true;
         }
         else if (file.compare("./Assets/PPM/CrystalSprites/MirrorCrystalDownLeft.ppm") == 0)
         {
