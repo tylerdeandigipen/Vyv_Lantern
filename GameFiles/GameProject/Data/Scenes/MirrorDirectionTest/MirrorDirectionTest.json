@@ -1,0 +1,8 @@
+{
+  "GameObjectList": {
+    "GameObjectFile": "./Data/Scenes/MirrorDirectionTest/MirrorDirectionTestOBJECTS.json"
+  },
+  "TiledData": {
+    "TileMapFile": "./Data/Scenes/MirrorDirectionTest/MirrorDirectionTestMAP.json"
+  }
+}

@@ -85,6 +85,7 @@ public:
 	{
 		return filePath;
 	}
+	std::string GetSpritePath() { return spritePath; };
 
 	bool IsObject();
 	bool IsAnimated();

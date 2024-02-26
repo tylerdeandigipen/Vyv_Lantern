@@ -33,6 +33,7 @@ private:
 	static Component& CreateBehaviorPlayer(void);
 	static Component& CreateBehaviorSwitch(void);
 	static Component& CreateBehaviorMirror(void);
+	static Component& CreateBehaviorEmitter();
 	static Component& CreateColliderAABB(void);
 	static Component& CreateBehaviorDoor(void);
 	static Component& CreateTransform(void);

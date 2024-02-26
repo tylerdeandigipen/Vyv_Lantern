@@ -56,8 +56,8 @@ private:
 	int CreatePlayerEntity();
 	int CreateCircleEntity();
 	int CreateDoorEntity();
-	int CreateMirrorEntity();
-	int CreateEmitterEntity();
+	int CreateMirrorEntity(int direction);
+	int CreateEmitterEntity(int direction);
 	int CreateRecieverEntity();
 
 	void AddToFile(std::string nametoadd, Entity* entity);

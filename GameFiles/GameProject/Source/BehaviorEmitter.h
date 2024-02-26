@@ -1,9 +1,8 @@
 //------------------------------------------------------------------------------
 //
-// File Name:	BehaviorMirror.h
-// Author(s):	Louis Wang
-// Purpose:		Declaration of BehaviorMirror class for controlling mirror 
-//              entities.
+// File Name:	BehaviorEmitter.h
+// Author(s):	Michael Howard
+// Purpose:		Declaration of BehaviorEmitter class for controlling emitters
 // 
 // Copyright ?2023 DigiPen (USA) Corporation.
 //
@@ -14,14 +13,13 @@
 #include "TBDLasers.h"
 
 class gfxVector2;
-struct Mirror;
 
-class BehaviorMirror : public Behavior
+class BehaviorEmitter : public Behavior
 {
 public:
-	BehaviorMirror();
-	BehaviorMirror(BehaviorMirror const& other);
-	~BehaviorMirror();
+	BehaviorEmitter();
+	BehaviorEmitter(BehaviorEmitter const& other);
+	~BehaviorEmitter();
 
 	std::string GetName() override;
 	static std::string Name();
@@ -29,18 +27,16 @@ public:
 	void SetInputHandler(Inputs* _input) override;
 
 	void Init() override;
-	int GetKey() { return key; }
 
 	Behavior* Clone() const override;
 	void Update(float dt);
 	void Read(json jsonData) override;
 	static void SwitchOn(bool collided);
-	static void MirrorCollisionHandler(Entity* thisone, Entity* other);
+	static void EmitterCollisionHandler(Entity* thisone, Entity* other); // may not need one
 
 private:
-	void Controller(float dt);
 	//reflector* reflect;
-	Mirror* mirror;
+	Laser* mirror;
 	std::vector<gfxVector2> pos;
 	static int count;
 	int key;

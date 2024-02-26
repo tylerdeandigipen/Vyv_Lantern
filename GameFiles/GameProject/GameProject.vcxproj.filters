@@ -184,6 +184,9 @@
     <ClCompile Include="ImGuiManager.cpp">
       <Filter>Source FIles\Engine\Systems</Filter>
     </ClCompile>
+    <ClCompile Include="BehaviorEmitter.cpp">
+      <Filter>Source FIles\Objects\Components\Sub Components</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="IMGUI\imgui.h">
@@ -393,6 +396,7 @@
     <ClInclude Include="ImGuiManager.h">
       <Filter>Header FIles\Engine\Systems</Filter>
     </ClInclude>
+    <ClInclude Include="BehaviorEmitter.h" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Misc\GameProject.ico">

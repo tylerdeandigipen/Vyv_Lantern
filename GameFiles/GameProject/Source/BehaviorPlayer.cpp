@@ -22,7 +22,7 @@
 const float pushForce = 1.0f;
 float soundCooldown = 0.0f;
 
-BehaviorPlayer::BehaviorPlayer() : Behavior(Behavior::Player), playerMoveSpeed(0)
+BehaviorPlayer::BehaviorPlayer() : Behavior(Behavior::bPlayer), playerMoveSpeed(0)
 {
     _type = this;
 }

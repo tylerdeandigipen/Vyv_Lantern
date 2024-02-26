@@ -153,6 +153,7 @@ public:
 	Vector2 laserPoints1[MAX_LASER_POINTS];
 	Vector2 laserPoints2[MAX_LASER_POINTS];
 	int numLasers = 0;
+	TBDLasers laserHandler; // handler for mirrors and lasers
 private:
 	Renderer();
 
@@ -188,7 +189,6 @@ private:
 
 	//Misc.
 	unsigned int maxThreadsAllowed = 8;
-	TBDLasers laserHandler;
 	Vector2 CameraP;
 	static std::unique_ptr<Renderer> instance;
 	ImageBuffer* DebugBuffer = NULL;
