@@ -85,15 +85,6 @@ void Renderer::Update(float dt)
 
 	if (DebugBuffer != NULL)
 	{
-		Color& DestPixel = DebugBuffer->SampleColor(100, 100);
-		DestPixel = Color{ 255,0,0,255 };
-
-		Color& DestPixel2 = DebugBuffer->SampleColor(130, 130);
-		DestPixel2 = Color{ 255,0,255,255 };
-
-		Color& DestPixel3 = DebugBuffer->SampleColor(190, 130);
-		DestPixel3 = Color{ 255,0,255,255 };
-
 		DebugBuffer->Blit(outputBuffer, -GetCameraPosition().x, -GetCameraPosition().y);
 		DebugBuffer->ClearImageBuffer();
 	}
@@ -545,9 +536,9 @@ void Renderer::RenderLasers()
 
 	//optimize later to only calculate light near / in the laser line zone
 	//maybe make so depending on distance it uses two different light func  tions
-	//#pragma omp parallel
+	#pragma omp parallel
 	{
-		//#pragma omp for collapse(3) nowait private(IntensityR, IntensityG, IntensityB)
+		#pragma omp for collapse(3) nowait private(IntensityR, IntensityG, IntensityB)
 		for (int x = 0; x < xSize; ++x)
 		{
 			for (int y = 0; y < ySize; ++y)
