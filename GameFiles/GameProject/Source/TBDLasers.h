@@ -31,6 +31,7 @@ struct Mirror
 	Vector2 pos1{ 0,0 };
 	Vector2 pos2{ 0,0 };
 	Vector2 reflectDir{ 0,0 };
+	//not implemented yet
 	bool reflectFromLeft = 0;
 	bool reflectFromRight = 0;
 	
