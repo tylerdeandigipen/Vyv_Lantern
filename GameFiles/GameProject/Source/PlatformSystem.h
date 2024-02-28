@@ -14,11 +14,12 @@
 //#define Name "Lantern"
 
 struct SDL_Window;
-typedef void *SDL_GLContext;
+typedef void* SDL_GLContext;
 
 class PlatformSystem : public BaseSystem
 {
 public:
+	~PlatformSystem();
 	Engine::EngineCode Init();
 	void Update(float dt);
 	void Render();
@@ -32,9 +33,8 @@ public:
 	SDL_Window* GetWindowHandle();
 private:
 	PlatformSystem();
-	~PlatformSystem();
 
-	static PlatformSystem* instance;
+	static std::unique_ptr<PlatformSystem> instance;
 	SDL_Window* winHandle;
 
 	SDL_GLContext oglContext;

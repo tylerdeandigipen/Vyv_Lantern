@@ -27,11 +27,11 @@ Engine::EngineCode Engine::Start()
 	// initalize all systems
 	for (int i = 0; i < systemCount; ++i)
 	{
-		try 
+		try
 		{
 			systems[i]->Init();
 		}
-		catch (EngineCode engineFailure) 
+		catch (EngineCode engineFailure)
 		{
 			assert(engineFailure && "Engine failed to initialize. Location: Engine::Start(), Init()");
 			return engineFailure;
@@ -55,7 +55,7 @@ Engine::EngineCode Engine::Start()
 		if (code == CloseWindow)
 			break;
 
-		try 
+		try
 		{
 			code = Render();
 		}
@@ -74,11 +74,11 @@ Engine::EngineCode Engine::Start()
 
 Engine::EngineCode Engine::Stop()
 {
-	try 
+	try
 	{
 		ShutDown();
 	}
-	catch (EngineCode shutdown) 
+	catch (EngineCode shutdown)
 	{
 		assert(shutdown, "Engine failed to shut down. Location: Engine::Stop(), ShutDown()");
 		return shutdown;
@@ -92,19 +92,19 @@ void Engine::EngineAddSystem(BaseSystem* sys)
 	systems[systemCount++] = sys;
 }
 
-bool Engine::Paused() 
-{ 
-	return paused; 
+bool Engine::Paused()
+{
+	return paused;
 }
 
-void Engine::SetPause(bool pause) 
-{ 
-	paused = pause; 
+void Engine::SetPause(bool pause)
+{
+	paused = pause;
 }
 
 // get the singleton instance
-Engine* Engine::GetInstance() 
-{ 
+Engine* Engine::GetInstance()
+{
 	if (instance == nullptr)
 	{
 		instance = new Engine();
@@ -114,7 +114,6 @@ Engine* Engine::GetInstance()
 
 Engine::Engine() : isRunning(true), systemCount(0), systems(), paused(false), time(NULL), closeRequested(false)
 {
-
 }
 
 Engine::~Engine()
@@ -169,7 +168,6 @@ Engine::EngineCode Engine::ShutDown()
 	}
 
 	delete time;
-	delete Renderer::GetInstance();
 	return EngineExit;
 }
 

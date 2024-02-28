@@ -21,6 +21,8 @@ struct Laser
 	// laser must always be on a single axis
 	Vector2 pos{ 0,0 };
 	Vector2 dir{ 0,0 };
+	//lasers are turned off by default 
+	bool isEmiting = false;
 };
 
 struct Mirror
@@ -29,6 +31,7 @@ struct Mirror
 	Vector2 pos1{ 0,0 };
 	Vector2 pos2{ 0,0 };
 	Vector2 reflectDir{ 0,0 };
+	//not implemented yet
 	bool reflectFromLeft = 0;
 	bool reflectFromRight = 0;
 	

@@ -27,11 +27,12 @@ enum class SceneType
 	SCENE_TEST = 1,
 	SCENE_LEVELCREATOR = 2,
 	NULL_SCENE,
+
 	// Add more scenes as needed
 };
 
 // singleton instance
-SceneSystem * SceneSystem::instance = new SceneSystem();
+std::unique_ptr<SceneSystem> SceneSystem::instance = nullptr;
 
 Inputs* inputHandlerScene = Inputs::GetInstance();
 
@@ -39,6 +40,7 @@ Engine::EngineCode SceneSystem::Init()
 {
 	// make sure the default scene isn't null
 	assert(DefaultSceneInstance != nullptr && "Default scene is NULL. Location: SceneSystem::Init()");
+
 	//current scene instance set to default
 	instance->SetScene(DefaultSceneInstance);
 	return Engine::NothingBad;
@@ -68,7 +70,6 @@ void SceneSystem::Update(float dt)
 
 	assert(activeScene != nullptr && "Active scene is NULL. Location: SceneSystem::Update()");
 	activeScene->Update(dt);
-
 }
 
 void SceneSystem::Render()
@@ -88,11 +89,6 @@ Engine::EngineCode SceneSystem::Close()
 		activeScene->Exit();
 		activeScene->Unload();
 		activeScene = nullptr;
-	}
-
-	if (instance != NULL)
-	{
-		delete instance;
 	}
 
 	return Engine::NothingBad;
@@ -132,11 +128,11 @@ Scene* SceneSystem::GetActiveScene()
 
 SceneSystem* SceneSystem::GetInstance()
 {
-	if (instance == nullptr)
+	if (!instance)
 	{
-		instance = new SceneSystem();
+		instance.reset(new SceneSystem());
 	}
-	return instance;
+	return instance.get();
 }
 
 // I CANNOT STRESS ENOUGH CHANGE DEFAULT SCENE INSTANCE ONCE WE HAVE A FEW SCENES GOING POR FAVOR
@@ -273,7 +269,6 @@ bool CheckGameScenes()
 
 	return true;
 }
-
 
 bool CheckRestart()
 {

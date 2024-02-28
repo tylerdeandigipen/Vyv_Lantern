@@ -16,7 +16,7 @@ class Inputs;
 class Behavior : public Component
 {
 public:
-	enum BehaviorType { Player, Switch, Door, Mirror };
+	enum BehaviorType { bPlayer, bSwitch, bDoor, bMirror, bEmitter };
 	_inline Behavior::BehaviorType type() const { return bType; };
 	inline Behavior* Type() const { return _type; };
 

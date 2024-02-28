@@ -21,16 +21,14 @@
 #include "LineCollider.h"
 
 int EntityContainer::entityCount = 0;
-EntityContainer* EntityContainer::instance = new EntityContainer();
+std::unique_ptr<EntityContainer> EntityContainer::instance = nullptr;
 
 EntityContainer::EntityContainer() : entities()
 {
-
 }
 
 EntityContainer::~EntityContainer()
 {
-
 }
 
 Engine::EngineCode EntityContainer::Init()
@@ -50,8 +48,9 @@ void EntityContainer::Render()
 void EntityContainer::ReadEntities(std::string filepath)
 {
 	Renderer* pixel = Renderer::GetInstance();
-	
+
 	json listData = FileIO::GetInstance()->OpenJSON(filepath);
+
 	//if (jsonData["Entities"].is_array())
 	//{
 	for (auto& entityData : listData["Objects"])
@@ -62,15 +61,12 @@ void EntityContainer::ReadEntities(std::string filepath)
 		Entity* newEnt = FileIO::GetInstance()->ReadEntity(jsonData);
 		AddEntity(newEnt);
 	}
+
 	//}
 }
 
 Engine::EngineCode EntityContainer::Close()
 {
-	if (instance != NULL)
-	{
-		delete instance;
-	}
 	return Engine::NothingBad;
 }
 
@@ -91,7 +87,6 @@ Entity* EntityContainer::FindByName(const char* name)
 				return entities[i];
 	}
 	return NULL;
-
 }
 
 // allows the ability to loop through and get the information of each entity/game-object
@@ -131,25 +126,22 @@ void EntityContainer::CheckCollisions()
 		Collider* collider = entities[current]->Has(Collider);
 		if (collider)
 		{
- 		   for (unsigned i = current + 1; i < entities.size(); ++i)
- 		   {
+			for (unsigned i = current + 1; i < entities.size(); ++i)
+			{
 				if (entities[i])
- 				{
+				{
 					Collider* secCollider = entities[i]->Has(Collider);
 					if (secCollider)
 					{
 						collider->Check(secCollider);
 					}
 
-
 					if (entities[current]->Has(Emitter) && entities[i]->Has(LineCollider))
 					{
 						Emitter::EmitterCollisionHandler(*entities[current], *entities[i]);
 					}
-
-					
- 				}
- 		   }
+				}
+			}
 		}
 		++current;
 	}
@@ -208,7 +200,11 @@ void EntityContainer::FreeAll()
 
 EntityContainer* EntityContainer::GetInstance()
 {
-	return instance;
+	if (!instance)
+	{
+		instance.reset(new EntityContainer());
+	}
+	return instance.get();
 }
 
 int EntityContainer::CountEntities()

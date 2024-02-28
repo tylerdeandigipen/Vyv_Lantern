@@ -2,7 +2,7 @@
 //
 // File Name:	Main.c
 // Author(s):	TayLee Young
-// 
+//
 // Copyright © 2023 DigiPen (USA) Corporation.
 //
 //------------------------------------------------------------------------------
@@ -41,44 +41,45 @@ LRESULT CALLBACK    WndProc(HWND, UINT, WPARAM, LPARAM);
 INT_PTR CALLBACK    About(HWND, UINT, WPARAM, LPARAM);
 
 int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
-                     _In_opt_ HINSTANCE hPrevInstance,
-                     _In_ LPWSTR    lpCmdLine,
-                     _In_ int       nCmdShow)
+	_In_opt_ HINSTANCE hPrevInstance,
+	_In_ LPWSTR    lpCmdLine,
+	_In_ int       nCmdShow)
 {
-    UNREFERENCED_PARAMETER(hPrevInstance);
-    UNREFERENCED_PARAMETER(lpCmdLine);
+	UNREFERENCED_PARAMETER(hPrevInstance);
+	UNREFERENCED_PARAMETER(lpCmdLine);
 
-    ULONG stackSize = 32000;
-    SetThreadStackGuarantee(&stackSize);
-    SetUnhandledExceptionFilter(WriteDump);
+	ULONG stackSize = 32000;
+	SetThreadStackGuarantee(&stackSize);
+	SetUnhandledExceptionFilter(WriteDump);
 
-    Engine* engine = Engine::GetInstance();
+	Engine* engine = Engine::GetInstance();
 	engine->EngineAddSystem(LaserSystem::GetInstance());
-    engine->EngineAddSystem(EntityContainer::GetInstance());
+	engine->EngineAddSystem(EntityContainer::GetInstance());
 	engine->EngineAddSystem(LevelBuilder::GetInstance());
-    engine->EngineAddSystem(EntityFactory::GetInstance());
-    engine->EngineAddSystem(ComponentFactory::GetInstance());
-    engine->EngineAddSystem(PlatformSystem::GetInstance());
-    engine->EngineAddSystem(SceneSystem::GetInstance());
-	
-    Engine::EngineCode returnCode = engine->Start(); 
-    //_CrtDumpMemoryLeaks();
-    // Enable run-time memory check for debug builds.
-    #if defined(DEBUG) | defined(_DEBUG)
-        _CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF); //do not remove this line!!!
-        _CrtSetBreakAlloc(34555); //use this to detect memory leaks, replace the number with mem leak location    
-    #endif
-    switch (returnCode)
-    {
-    case Engine::NullWindowHandle:
-        return 1;
-        break;
-    default:
-        return 0;
-        break;
-    }
+	engine->EngineAddSystem(EntityFactory::GetInstance());
+	engine->EngineAddSystem(ComponentFactory::GetInstance());
+	engine->EngineAddSystem(PlatformSystem::GetInstance());
+	engine->EngineAddSystem(SceneSystem::GetInstance());
 
-    MSG msg;
+	Engine::EngineCode returnCode = engine->Start();
 
-    return (int) msg.hwnd;
+	//_CrtDumpMemoryLeaks();
+	// Enable run-time memory check for debug builds.
+#if defined(DEBUG) | defined(_DEBUG)
+	_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF); //do not remove this line!!!
+	_CrtSetBreakAlloc(34555); //use this to detect memory leaks, replace the number with mem leak location
+#endif
+	switch (returnCode)
+	{
+	case Engine::NullWindowHandle:
+		return 1;
+		break;
+	default:
+		return 0;
+		break;
+	}
+
+	MSG msg;
+
+	return (int)msg.hwnd;
 }

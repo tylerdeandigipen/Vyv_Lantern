@@ -22,7 +22,6 @@ using namespace std;
 class EntityContainer : public BaseSystem
 {
 public:
-	EntityContainer();
 	~EntityContainer();
 	bool AddEntity(Entity* _entity);
 	Entity* FindByName(const char* entity_name);
@@ -43,7 +42,8 @@ public:
 
 	int CountEntities();
 private:
-	static EntityContainer* instance;
+	EntityContainer();
+	static std::unique_ptr<EntityContainer> instance;
 	static int entityCount;
 	std::vector<Entity*> entities;
 };
