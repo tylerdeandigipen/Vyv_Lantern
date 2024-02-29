@@ -112,7 +112,7 @@ Vector2 TBDLasers::CheckCollision(int laserIndex)
 						{
 							if (AddLaser(&mirrors[i]->reflectedLaser))
 							{
-								mirrors[i]->reflectedLaser.pos = laserPos2;
+								mirrors[i]->reflectedLaser.pos = laserPos2 + renderer->GetCameraPosition();
 								mirrors[i]->reflectedLaser.dir = mirrors[i]->reflectDir;
 							}
 							mirrors[i]->isActivated = true;
@@ -143,7 +143,7 @@ Vector2 TBDLasers::CheckCollision(int laserIndex)
 						{
 							if (AddLaser(&mirrors[i]->reflectedLaser))
 							{
-								mirrors[i]->reflectedLaser.pos = laserPos2;
+								mirrors[i]->reflectedLaser.pos = laserPos2 + renderer->GetCameraPosition();
 								mirrors[i]->reflectedLaser.dir = mirrors[i]->reflectDir;
 							}
 							mirrors[i]->isActivated = true;
