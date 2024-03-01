@@ -143,11 +143,15 @@ void BehaviorDoor::DoorCollisionHandler(Entity* entity1, Entity* entity2)
                 Inputs* input = Inputs::GetInstance();
                 if (input->keyPressed(SDL_SCANCODE_E))
                 {
-                    entity1->SetImage(door->openPPM);
                     door->isDoorClosed = false;
                     door->SetCurr(cOpen);
+                    entity1->SetImage(door->openPPM);
                 }
 #endif
+                /*if (door && door->isDoorClosed == false)
+				{
+					door->SetNext(cOpen);
+				}*/
             }
             else if (entity2->GetRealName().compare("Door") == 0)
             {
@@ -155,11 +159,15 @@ void BehaviorDoor::DoorCollisionHandler(Entity* entity1, Entity* entity2)
                 Inputs* input = Inputs::GetInstance();
                 if (input->keyPressed(SDL_SCANCODE_E))
                 {
-                    entity2->SetImage(door->openPPM);
                     door->isDoorClosed = false;
                     door->SetCurr(cOpen);
+                    entity2->SetImage(door->openPPM);
                 }
 #endif
+                /*if (door && door->isDoorClosed == false)
+                {
+                    door->SetNext(cOpen);
+                }*/
             }
 
             // Play sound effects only when the win state is set for the first time
