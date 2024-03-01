@@ -152,6 +152,7 @@ public:
 
 	Vector2 laserPoints1[MAX_LASER_POINTS];
 	Vector2 laserPoints2[MAX_LASER_POINTS];
+	Color laserColor[MAX_LASER_POINTS];
 	int numLasers = 0;
 	TBDLasers laserHandler; // handler for mirrors and lasers
 private:

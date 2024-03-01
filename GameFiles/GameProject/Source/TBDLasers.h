@@ -12,6 +12,7 @@
 #define TBDLasers_H
 #include <cstdint>
 #include "Math.h"
+#include "Color.h"
 #include "Vector.h"
 #define MAX_LASERS 20
 #define MAX_MIRRORS 20
@@ -21,6 +22,7 @@ struct Laser
 	// laser must always be on a single axis
 	Vector2 pos{ 0,0 };
 	Vector2 dir{ 0,0 };
+	Color color{0,0,0,0};
 	//lasers are turned off by default 
 	bool isEmiting = false;
 };
@@ -34,7 +36,8 @@ struct Mirror
 	//not implemented yet
 	bool reflectFromLeft = 0;
 	bool reflectFromRight = 0;
-	
+	//keep as zero to inherit the color laser that hits the mirror
+	Color overwriteColor{ 0,0,0,0 };
 	//do not modify
 	bool isActivated = 0;
 	Laser reflectedLaser;
