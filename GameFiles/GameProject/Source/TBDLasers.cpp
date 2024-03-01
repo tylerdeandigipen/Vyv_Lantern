@@ -57,8 +57,10 @@ bool TBDLasers::AddMirror(Mirror* mirror)
 bool tempThingLol = 0;
 void TBDLasers::UpdateLasers()
 {
+	// temp stuff can delete 
 	lasers[0]->color = Color{ 84,0,255,255 };
-
+	//mirrors[0]->overwriteColor = Color{ 255,255,0,255 };
+	
 	for (int i = 0; i < numMirrors; i++)
 	{
 		if (mirrors[i]->isActivated == false)
@@ -129,6 +131,10 @@ Vector2 TBDLasers::CheckCollision(int laserIndex)
 							{
 								mirrors[i]->reflectedLaser.color = lasers[i]->color;
 							}
+							else
+							{
+								mirrors[i]->reflectedLaser.color = mirrors[i]->overwriteColor;
+							}
 						}
 						return laserPos2;
 					}
@@ -163,6 +169,10 @@ Vector2 TBDLasers::CheckCollision(int laserIndex)
 							if (mirrors[i]->overwriteColor == defaultColor)
 							{
 								mirrors[i]->reflectedLaser.color = lasers[i]->color;
+							}
+							else
+							{
+								mirrors[i]->reflectedLaser.color = mirrors[i]->overwriteColor;
 							}
 						}
 						return laserPos2;
