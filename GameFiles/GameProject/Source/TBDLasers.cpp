@@ -38,6 +38,24 @@ bool TBDLasers::AddLaser(Laser* laser)
 	return false;
 }
 
+bool TBDLasers::AddCheckPoint(CheckPoint* checkPoint)
+{
+	if (numCheckPoints < MAX_CHECKPOINTS)
+	{
+		for (int i = 0; i < numCheckPoints; i++)
+		{
+			if (checkPoints[i] == checkPoint)
+			{
+				return false;
+			}
+		}
+		checkPoints[numLasers] = checkPoint;
+		numCheckPoints += 1;
+		return true;
+	}
+	return false;
+}
+
 bool TBDLasers::AddMirror(Mirror* mirror)
 {
 	if (numMirrors < MAX_MIRRORS)
@@ -61,7 +79,26 @@ void TBDLasers::UpdateLasers()
 {
 	// temp stuff can delete 
 	lasers[0]->color = Color{ 84,0,255,255 };
-	//mirrors[0]->overwriteColor = Color{ 255,255,0,255 };
+	if (tempThingLol == 0)
+	{
+		checkPoints[0] = new CheckPoint();
+		checkPoints[0]->xPos1 = Vector2{ 126, 190 };
+		checkPoints[0]->xPos2 = Vector2{ 106, 190 };
+
+		checkPoints[0]->yPos1 = Vector2{ 116, 200 };
+		checkPoints[0]->yPos2 = Vector2{ 116, 180 };
+
+		checkPoints[1] = new CheckPoint();
+		checkPoints[1]->xPos1 = Vector2{ 186, 168 };
+		checkPoints[1]->xPos2 = Vector2{ 166, 168 };
+
+		checkPoints[1]->yPos1 = Vector2{ 176, 158 };
+		checkPoints[1]->yPos2 = Vector2{ 176, 178 };
+		checkPoints[1]->isSolid = true;
+
+		numCheckPoints = 2;
+		tempThingLol = 1;
+	}
 	
 	for (int i = 0; i < numMirrors; i++)
 	{
@@ -71,6 +108,17 @@ void TBDLasers::UpdateLasers()
 		}
 		mirrors[i]->isActivated = false;
 	}
+
+	bool isSolved = true;
+	for (int i = 0; i < numCheckPoints; i++)
+	{
+		if (checkPoints[i]->isActivated == false)
+		{
+			isSolved = false;
+		}
+		checkPoints[i]->isActivated = false;
+	}
+
 	for (int i = 0; i < numLasers; i++)
 	{
 		renderer->numLasers = numLasers;
@@ -94,7 +142,7 @@ Vector2 TBDLasers::CheckCollision(int laserIndex)
 
 	Vector2 laserPos1 = lasers[laserIndex]->pos - renderer->GetCameraPosition();
 	Vector2 laserPos2 = laserPos1 + (lasers[laserIndex]->dir * 10); //10 is an arbitrary constant
-	float minDist = 9999;
+	float minDist = 999999;
 	//check for mirror collision
 	for (int i = 0; i < numMirrors; i++)
 	{
@@ -120,16 +168,16 @@ Vector2 TBDLasers::CheckCollision(int laserIndex)
 					if ((lasers[laserIndex]->dir.y > 0 && laserPos1.y < mirrorPoint1.y) || (lasers[laserIndex]->dir.y < 0 && laserPos1.y > mirrorPoint1.y))
 					{
 						Vector2 tempPos2 = renderer->LaserCheckLineForObject(laserPos1, Vector2{ laserPos1.x, mirrorPoint1.y });
-						if ((tempPos2.y - laserPos1.y) * (tempPos2.y - laserPos1.y) < minDist)
+						if (abs((tempPos2.y - laserPos1.y) * (tempPos2.y - laserPos1.y)) < minDist)
 						{
 							laserPos2 = tempPos2;
-							minDist = (tempPos2.y - laserPos1.y) * (tempPos2.y - laserPos1.y);
+							minDist = abs((tempPos2.y - laserPos1.y) * (tempPos2.y - laserPos1.y));
 							if (laserPos2.y == mirrorPoint1.y)
 							{
 								if (AddLaser(&mirrors[i]->reflectedLaser))
 								{
 									mirrors[i]->reflectedLaser.pos = laserPos2 + renderer->GetCameraPosition();
-									mirrors[i]->reflectedLaser.dir = mirrors[i]->reflectDir;
+									mirrors[i]->reflectedLaser.dir = Vector2{mirrors[i]->reflectDir.x, 0};
 								}
 								mirrors[i]->isActivated = true;
 								mirrors[i]->reflectedLaser.isEmiting = true;
@@ -165,16 +213,16 @@ Vector2 TBDLasers::CheckCollision(int laserIndex)
 					if ((lasers[laserIndex]->dir.x > 0 && laserPos1.x < mirrorPoint1.x) || (lasers[laserIndex]->dir.x < 0 && laserPos1.x > mirrorPoint1.x))
 					{
 						Vector2 tempPos2 = renderer->LaserCheckLineForObject(laserPos1, Vector2{ mirrorPoint1.x, laserPos1.y });
-						if ((tempPos2.x - laserPos1.x) * (tempPos2.x - laserPos1.x) < minDist)
+						if (abs((tempPos2.x - laserPos1.x) * (tempPos2.x - laserPos1.x)) < minDist)
 						{
 							laserPos2 = tempPos2;
-							minDist = (tempPos2.x - laserPos1.x) * (tempPos2.x - laserPos1.x);
+							minDist = abs((tempPos2.x - laserPos1.x) * (tempPos2.x - laserPos1.x));
 							if (laserPos2.x == mirrorPoint1.x)
 							{
 								if (AddLaser(&mirrors[i]->reflectedLaser))
 								{
 									mirrors[i]->reflectedLaser.pos = laserPos2 + renderer->GetCameraPosition();
-									mirrors[i]->reflectedLaser.dir = mirrors[i]->reflectDir;
+									mirrors[i]->reflectedLaser.dir = Vector2{ 0, mirrors[i]->reflectDir.y };
 								}
 								mirrors[i]->isActivated = true;
 								mirrors[i]->reflectedLaser.isEmiting = true;
@@ -194,7 +242,7 @@ Vector2 TBDLasers::CheckCollision(int laserIndex)
 		}
 	}
 
-	/*
+
 	for (int i = 0; i < numCheckPoints; i++)
 	{
 		if (checkPoints[i] != NULL)
@@ -219,16 +267,16 @@ Vector2 TBDLasers::CheckCollision(int laserIndex)
 					if ((lasers[laserIndex]->dir.y > 0 && laserPos1.y < mirrorPoint1.y) || (lasers[laserIndex]->dir.y < 0 && laserPos1.y > mirrorPoint1.y))
 					{
 						Vector2 tempPos2 = renderer->LaserCheckLineForObject(laserPos1, Vector2{ laserPos1.x, mirrorPoint1.y });
-						if ((tempPos2.y - laserPos1.y) * (tempPos2.y - laserPos1.y) < minDist)
-						{
-							laserPos2 = tempPos2;
-							minDist = (tempPos2.y - laserPos1.y) * (tempPos2.y - laserPos1.y);
-							if (laserPos2.y == mirrorPoint1.y)
+						if (abs((tempPos2.y - laserPos1.y) * (tempPos2.y - laserPos1.y)) < minDist && abs((tempPos2.y - laserPos1.y) * (tempPos2.y - laserPos1.y)) <= abs((mirrorPoint1.y - laserPos1.y) * (mirrorPoint1.y - laserPos1.y)))
+						{	
+							if (checkPoints[i]->isSolid)
 							{
-								if (checkPoints[i]->requiredColor == defaultColor || checkPoints[i]->requiredColor == lasers[i]->color)
-								{
-									mirrors[i]->reflectedLaser.color = lasers[i]->color;
-								}
+								laserPos2 = tempPos2;
+								minDist = abs((tempPos2.y - laserPos1.y) * (tempPos2.y - laserPos1.y));
+							}
+							if (checkPoints[i]->requiredColor == defaultColor || checkPoints[i]->requiredColor == lasers[i]->color)
+							{
+								checkPoints[i]->isActivated = true;
 							}
 						}
 					}
@@ -236,8 +284,8 @@ Vector2 TBDLasers::CheckCollision(int laserIndex)
 			}
 			else if (lasers[laserIndex]->dir.x != 0) //check if its along the x axis
 			{
-				Vector2 mirrorPoint1 = mirrors[i]->yPos1 - renderer->GetCameraPosition();
-				Vector2 mirrorPoint2 = mirrors[i]->yPos2 - renderer->GetCameraPosition();
+				Vector2 mirrorPoint1 = checkPoints[i]->yPos1 - renderer->GetCameraPosition();
+				Vector2 mirrorPoint2 = checkPoints[i]->yPos2 - renderer->GetCameraPosition();
 				//sanitize mirror
 				if (mirrorPoint1.y > mirrorPoint2.y)
 				{
@@ -253,27 +301,16 @@ Vector2 TBDLasers::CheckCollision(int laserIndex)
 					if ((lasers[laserIndex]->dir.x > 0 && laserPos1.x < mirrorPoint1.x) || (lasers[laserIndex]->dir.x < 0 && laserPos1.x > mirrorPoint1.x))
 					{
 						Vector2 tempPos2 = renderer->LaserCheckLineForObject(laserPos1, Vector2{ mirrorPoint1.x, laserPos1.y });
-						if ((tempPos2.x - laserPos1.x) * (tempPos2.x - laserPos1.x) < minDist)
+						if (abs((tempPos2.x - laserPos1.x) * (tempPos2.x - laserPos1.x)) < minDist && abs((tempPos2.x - laserPos1.x) * (tempPos2.x - laserPos1.x)) <= abs((mirrorPoint1.x - laserPos1.x) * (mirrorPoint1.x - laserPos1.x)))
 						{
-							laserPos2 = tempPos2;
-							minDist = (tempPos2.x - laserPos1.x) * (tempPos2.x - laserPos1.x);
-							if (laserPos2.x == mirrorPoint1.x)
+							if (checkPoints[i]->isSolid)
 							{
-								if (AddLaser(&mirrors[i]->reflectedLaser))
-								{
-									mirrors[i]->reflectedLaser.pos = laserPos2 + renderer->GetCameraPosition();
-									mirrors[i]->reflectedLaser.dir = mirrors[i]->reflectDir;
-								}
-								mirrors[i]->isActivated = true;
-								mirrors[i]->reflectedLaser.isEmiting = true;
-								if (mirrors[i]->overwriteColor == defaultColor)
-								{
-									mirrors[i]->reflectedLaser.color = lasers[i]->color;
-								}
-								else
-								{
-									mirrors[i]->reflectedLaser.color = mirrors[i]->overwriteColor;
-								}
+								laserPos2 = tempPos2;
+								minDist = abs((tempPos2.x - laserPos1.x) * (tempPos2.x - laserPos1.x));
+							}
+							if (checkPoints[i]->requiredColor == defaultColor || checkPoints[i]->requiredColor == lasers[i]->color)
+							{
+								checkPoints[i]->isActivated = true;
 							}
 						}
 					}
@@ -281,13 +318,14 @@ Vector2 TBDLasers::CheckCollision(int laserIndex)
 			}
 		}
 	}
-	*/
+	
 
 	if (laserPos1 + (lasers[laserIndex]->dir * 10) == laserPos2) //10 is an arbitrary constant
 	{
 		laserPos2 = laserPos1 + (lasers[laserIndex]->dir * 300); //300 is abitrary max length
 		return renderer->LaserCheckLineForObject(laserPos1, laserPos2);
 	}
+
 	return laserPos2;
 }
 
