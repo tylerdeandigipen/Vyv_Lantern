@@ -997,26 +997,27 @@ void LevelCreatorScene::ImGuiWindow()
 	{
 		CreateDoorEntity();
 	}
-	int scaredConfused = ImGuiManager::RenderDirPopup("MirrorDirection", "Pick a mirror direction.");
+	int scaredConfused = ImGuiManager::RenderDirPopup("MirrorDirection", "Pick a mirror direction.", "Mirror");
 	if (ImGui::Button("  Create Mirror") || scaredConfused > 0)
 	{
 		ImGui::OpenPopup("MirrorDirection");
+
+		//ImGuiManager::MirrorCheckBox(scaredConfused);
 		if (scaredConfused > 0)
 			CreateMirrorEntity(scaredConfused);
 	}
-	int emitterDirection = ImGuiManager::RenderDirPopup("EmitterDirection", "Pick a Emitter direction.");
+	int emitterDirection = ImGuiManager::RenderDirPopup("EmitterDirection", "Pick a Emitter direction.", "Emitter");
 	if (ImGui::Button("  Create Emitter") || emitterDirection > 0)
 	{
 		ImGui::OpenPopup("EmitterDirection");
 		if (emitterDirection > 0)
 			CreateEmitterEntity(emitterDirection); // temporary value untill i fix it
 	}
- 	
+
 	if (ImGui::Button("  Create Reciever"))
 	{
 		CreateRecieverEntity();
 	}
-
 
 	ImGui::Separator();
 	entityManager->EditEntity(Vector2{ static_cast<float>(Inputs::GetInstance()->getMouseX()), static_cast<float>(Inputs::GetInstance()->getMouseY()) });
@@ -1100,7 +1101,7 @@ int LevelCreatorScene::CreateMirrorEntity(int direction)
 	UNREFERENCED_PARAMETER(door_existing);
 
 	std::string number = "./Data/GameObjects/Mirror";
-	
+
 	std::string filename;
 	switch (direction) {
 	case 1: filename = "./Data/GameObjects/MirrorTopLeft.json"; break;
@@ -1133,7 +1134,7 @@ int LevelCreatorScene::CreateEmitterEntity(int direction)
 
 	//std::string filename;
 	switch (direction) {
-	case 1: 
+	case 1:
 	{
 		BehaviorEmitter* mine = temp->GetComponent<BehaviorEmitter>();
 		mine->SetDirection({ 0.0f, 1.0f });
