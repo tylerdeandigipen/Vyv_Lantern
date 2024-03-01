@@ -57,6 +57,8 @@ bool TBDLasers::AddMirror(Mirror* mirror)
 bool tempThingLol = 0;
 void TBDLasers::UpdateLasers()
 {
+	lasers[0]->color = Color{ 84,0,255,255 };
+
 	for (int i = 0; i < numMirrors; i++)
 	{
 		if (mirrors[i]->isActivated == false)
@@ -70,6 +72,7 @@ void TBDLasers::UpdateLasers()
 		renderer->numLasers = numLasers;
 		renderer->laserPoints1[i] = lasers[i]->pos - renderer->GetCameraPosition(); 
 		renderer->laserPoints2[i] = CheckCollision(i);
+		renderer->laserColor[i] = lasers[i]->color;
 		if (renderer->laserPoints2[i].x == 9001 && renderer->laserPoints2[i].y == -9001)//9001 is a code for if the current laser is invalid
 		{
 			lasers[i]->isEmiting = false;
@@ -77,6 +80,7 @@ void TBDLasers::UpdateLasers()
 	}
 }
 
+Color defaultColor{ 0,0,0,0 };
 Vector2 TBDLasers::CheckCollision(int laserIndex)
 {
 	if (lasers[laserIndex] == NULL || lasers[laserIndex]->isEmiting == false)
@@ -121,6 +125,10 @@ Vector2 TBDLasers::CheckCollision(int laserIndex)
 							}
 							mirrors[i]->isActivated = true;
 							mirrors[i]->reflectedLaser.isEmiting = true;
+							if (mirrors[i]->overwriteColor == defaultColor)
+							{
+								mirrors[i]->reflectedLaser.color = lasers[i]->color;
+							}
 						}
 						return laserPos2;
 					}
@@ -152,6 +160,10 @@ Vector2 TBDLasers::CheckCollision(int laserIndex)
 							}
 							mirrors[i]->isActivated = true;
 							mirrors[i]->reflectedLaser.isEmiting = true;
+							if (mirrors[i]->overwriteColor == defaultColor)
+							{
+								mirrors[i]->reflectedLaser.color = lasers[i]->color;
+							}
 						}
 						return laserPos2;
 					}

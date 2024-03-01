@@ -521,14 +521,6 @@ void Renderer::RenderLasers()
 {
 	const int xSize = (int)outputBuffer->size.x;
 	const int ySize = (int)outputBuffer->size.y;
-	/*
-	laserPoints1[1] = Vector2{200,100} - CameraP;
-	laserPoints2[1] = Vector2{ 100,100 } - CameraP;
-	laserPoints1[2] = Vector2{ 100,300 } - CameraP;
-	laserPoints2[2] = Vector2{ 100,100 } - CameraP;
-	*/
-	Color tempLaserColor[1];
-	tempLaserColor[0] = Color{ 84,0,255,255 };
 
 	float IntensityR = 0.0f;
 	float IntensityG = 0.0f;
@@ -536,9 +528,9 @@ void Renderer::RenderLasers()
 
 	//optimize later to only calculate light near / in the laser line zone
 	//maybe make so depending on distance it uses two different light func  tions
-	//#pragma omp parallel
+	#pragma omp parallel
 	{
-		//#pragma omp for collapse(3) nowait private(IntensityR, IntensityG, IntensityB)
+		#pragma omp for collapse(3) nowait private(IntensityR, IntensityG, IntensityB)
 		for (int x = 0; x < xSize; ++x)
 		{
 			for (int y = 0; y < ySize; ++y)
@@ -566,12 +558,12 @@ void Renderer::RenderLasers()
 						if (doRender == true)
 						{
 							//check distance from laser line
-							if ((y - laserPoints2[i].y) >= -5 && (y - laserPoints2[i].y) <= 5)
+							if ((y - laserPoints2[i].y) >= -2 && (y - laserPoints2[i].y) <= 2)
 							{
 								//     some func that makes distance into intensity  |  scale by intensity of color channel
-								IntensityR = ((5 - abs(y - laserPoints2[i].y)) / 5) * ((float)tempLaserColor[0].r / 255.0f);
-								IntensityG = ((5 - abs(y - laserPoints2[i].y)) / 5) * ((float)tempLaserColor[0].g / 255.0f);
-								IntensityB = ((5 - abs(y - laserPoints2[i].y)) / 5) * ((float)tempLaserColor[0].b / 255.0f);
+								IntensityR = ((2 - abs(y - laserPoints2[i].y)) / 2) * ((float)laserColor[i].r / 255.0f);
+								IntensityG = ((2 - abs(y - laserPoints2[i].y)) / 2) * ((float)laserColor[i].g / 255.0f);
+								IntensityB = ((2 - abs(y - laserPoints2[i].y)) / 2) * ((float)laserColor[i].b / 255.0f);
 							}
 						}
 					} // Check if laser is along the y axis
@@ -591,12 +583,12 @@ void Renderer::RenderLasers()
 						if (doRender == true)
 						{
 							//check distance from laser line
-							if ((x - laserPoints2[i].x) > -5 && (x - laserPoints2[i].x) < 5)
+							if ((x - laserPoints2[i].x) > -2 && (x - laserPoints2[i].x) < 2)
 							{
 								//     some func that makes distance into intensity  |  scale by intensity of color channel
-								IntensityR = ((5 - abs(x - laserPoints2[i].x)) / 5) * ((float)tempLaserColor[0].r / 255.0f);
-								IntensityG = ((5 - abs(x - laserPoints2[i].x)) / 5) * ((float)tempLaserColor[0].g / 255.0f);
-								IntensityB = ((5 - abs(x - laserPoints2[i].x)) / 5) * ((float)tempLaserColor[0].b / 255.0f);
+								IntensityR = ((2 - abs(x - laserPoints2[i].x)) / 2) * ((float)laserColor[i].r / 255.0f);
+								IntensityG = ((2 - abs(x - laserPoints2[i].x)) / 2) * ((float)laserColor[i].g / 255.0f);
+								IntensityB = ((2 - abs(x - laserPoints2[i].x)) / 2) * ((float)laserColor[i].b / 255.0f);
 							}
 						}
 					}
