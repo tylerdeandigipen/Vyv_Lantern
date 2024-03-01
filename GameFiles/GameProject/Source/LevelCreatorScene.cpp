@@ -24,6 +24,7 @@
 
 #include "BehaviorSwitch.h"
 #include "BehaviorPlayer.h"
+#include "BehaviorEmitter.h"
 #include "BehaviorMirror.h"
 #include "Entity.h"
 #include "Collider.h"
@@ -1003,13 +1004,14 @@ void LevelCreatorScene::ImGuiWindow()
 		if (scaredConfused > 0)
 			CreateMirrorEntity(scaredConfused);
 	}
-	if (ImGui::Button("  Create Emitter"))
+	int emitterDirection = ImGuiManager::RenderDirPopup("EmitterDirection", "Pick a Emitter direction.");
+	if (ImGui::Button("  Create Emitter") || emitterDirection > 0)
 	{
 		ImGui::OpenPopup("EmitterDirection");
-		CreateEmitterEntity( 1); // temporary value untill i fix it
+		if (emitterDirection > 0)
+			CreateEmitterEntity(emitterDirection); // temporary value untill i fix it
 	}
  	
-	ImGuiManager::RenderDirPopup("EmitterDirection", "Pick an emitter direction.");
 	if (ImGui::Button("  Create Reciever"))
 	{
 		CreateRecieverEntity();
@@ -1124,6 +1126,35 @@ int LevelCreatorScene::CreateEmitterEntity(int direction)
 	std::string filename = "./Data/GameObjects/tempEmitter.json";
 
 	Entity* temp = FileIO::GetInstance()->ReadEntity(filename);
+
+	//std::string filename;
+	switch (direction) {
+	case 1: 
+	{
+		BehaviorEmitter* mine = temp->GetComponent<BehaviorEmitter>();
+		mine->SetDirection({ 0.0f, 1.0f });
+		mine->SetPosition(*temp->GetComponent<Transform>()->GetTranslation());
+		break;
+	}
+	case 2:
+	{
+		BehaviorEmitter* mine = temp->GetComponent<BehaviorEmitter>();
+		mine->SetDirection({ 1.0f, 0.0f });
+		break;
+	}
+	case 3:
+	{
+		BehaviorEmitter* mine = temp->GetComponent<BehaviorEmitter>();
+		mine->SetDirection({ 0.0f, -1.0f });
+		break;
+	}
+	case 4:
+	{
+		BehaviorEmitter* mine = temp->GetComponent<BehaviorEmitter>();
+		mine->SetDirection({ -1.0f, 0.0f });
+		break;
+	}	default: return 0;
+	}
 
 	temp->addKey = "Emitter"; // this is for the map holding functions and gives access to function for circle
 
@@ -1243,13 +1274,21 @@ void LevelCreatorScene::AddMirrorEntity(Entity* entity)
 			bSwitch["pos"].push_back(pos);
 		}
 	}
+	BehaviorMirror* entMirr = entity->GetComponent<BehaviorMirror>();
+	json bMirror;
+	if (entMirr)
+	{
+		json direction = { {"DirectionX", entity->GetComponent<BehaviorMirror>()->GetReflectDirection().x}, {"DirectionY", entity->GetComponent<BehaviorMirror>()->GetReflectDirection().y} };
+		bMirror = { {"Type", "BehaviorMirror"}, {"Direction", direction} }; // will add color if it comes up again but will not for now
+	}
 
 	components.push_back(collider);
 	components.push_back(transform);
 	components.push_back(physics);
 	if (entSwitch)
 		components.push_back(bSwitch);
-
+	if (entMirr)
+		components.push_back(bMirror);
 	mirrorData["Components"] = components;
 	mirrorData["FilePath"] = entity->GetFilePath();
 	mirrorData["Name"] = "Switch";
