@@ -10,6 +10,7 @@
 
 Emitter::Emitter() : Component(Component::cEmitter)
 {
+	hitbyLaser = 0;
 	position = new gfxVector2();
 	endpoint = new gfxVector2();
 	direction = new gfxVector2();
@@ -33,6 +34,7 @@ Emitter::Emitter(Emitter const& emitter2cpy) : Component(emitter2cpy)
 	hit = false;
 	isDirty = true;
 	laserReference = 0;
+	hitbyLaser = 0;
 	//Data ONLY gets set in the Read function.
 }
 
@@ -157,6 +159,7 @@ void Emitter::Read(json jsonData)
 
 void Emitter::Update(float dt)
 {
+	UNREFERENCED_PARAMETER(dt);
 	if (isDirty)
 	{
 		//update the correct system
@@ -208,7 +211,10 @@ void Emitter::Render() const
 */
 inline bool LineToLineCollision(Emitter* laser, Entity& line, int flag, bool interuptflag)
 {
-
+	UNREFERENCED_PARAMETER(laser);
+	UNREFERENCED_PARAMETER(line);
+	UNREFERENCED_PARAMETER(flag);
+	UNREFERENCED_PARAMETER(interuptflag);
 }
 
 /*
@@ -220,7 +226,7 @@ inline bool LineToLineCollision(Emitter* laser, Entity& line, int flag, bool int
 inline bool DoCalculations(Emitter* obj)
 {
 
-	Renderer* pointyBoi = Renderer::GetInstance();
+	//Renderer* pointyBoi = Renderer::GetInstance();
 
 
 	gfxVector2 compare = { 0,0 };
@@ -281,7 +287,7 @@ void Emitter::EmitterCollisionHandler(Entity& object1, Entity& object2)
 		if (!laser->isEmitting)
 		{
 			//for rendering code
-			Vector2 breakLaser = { 9.11, 9.11 };
+			Vector2 breakLaser = { 9.11f, 9.11f };
 			laser->SetEndpoint(breakLaser);
 			return;
 		}

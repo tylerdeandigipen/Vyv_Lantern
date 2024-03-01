@@ -70,4 +70,6 @@ int ImGuiManager::RenderDirPopup(const std::string& popupTitle, const std::strin
 		ImGui::EndPopup();
 		return returnVal;
 	}
+	//not sure if this will cause issues shouldn't because warning.
+	return returnVal; 
 }

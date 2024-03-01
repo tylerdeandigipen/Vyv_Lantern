@@ -348,7 +348,7 @@ void FileIO::ExportTileMap(std::string name)
 {
 	Renderer* pixel = Renderer::GetInstance();
 	int rows = static_cast<int>(pixel->tileMapSize.x);
-	int columns = pixel->tileMapSize.y;
+	int columns = (int)pixel->tileMapSize.y;
 
 	std::vector<int> tilemap;
 	std::vector<int> walls;

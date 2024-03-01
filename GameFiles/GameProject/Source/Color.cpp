@@ -65,22 +65,22 @@ Color Color::BlendColors(Color top, Color bottom, float blendPercent)
 	Color result;
 	if (bottom.r >= top.r)
 	{
-		result.r = (bottom.r - top.r) * (blendPercent * 0.01) + top.r;
+		result.r = (uint8_t)((bottom.r - top.r) * (blendPercent * 0.01) + top.r);
 	}
 	else
-		result.r = (top.r - bottom.r) * ((100 - blendPercent) * 0.01) + bottom.r;
+		result.r = (uint8_t)((top.r - bottom.r) * ((100 - blendPercent) * 0.01) + bottom.r);
 	if (bottom.g >= top.g)
 	{
-		result.g = (bottom.g - top.g) * (blendPercent * 0.01) + top.g;
+		result.g = (uint8_t)((bottom.g - top.g) * (blendPercent * 0.01) + top.g);
 	}
 	else
-		result.g = (top.g - bottom.g) * ((100 - blendPercent) * 0.01) + bottom.g;
+		result.g = (uint8_t)((top.g - bottom.g) * ((100 - blendPercent) * 0.01) + bottom.g);
 	if (bottom.b >= top.b)
 	{
-		result.b = (bottom.b - top.b) * (blendPercent * 0.01) + top.b;
+		result.b = (uint8_t)((bottom.b - top.b) * (blendPercent * 0.01) + top.b);
 	}
 	else
-		result.b = (top.b - bottom.b) * ((100 - blendPercent) * 0.01) + bottom.b;
+		result.b = (uint8_t)((top.b - bottom.b) * ((100 - blendPercent) * 0.01) + bottom.b);
 
 	return result;
 }
@@ -88,9 +88,9 @@ Color Color::BlendColors(Color top, Color bottom, float blendPercent)
 Color Color::ScaleIndividual(float rScale, float gScale, float bScale)
 {
 	Color result;
-	result.r = clamp(this->r * rScale, 0, 255);
-	result.g = clamp(this->g * gScale, 0, 255);
-	result.b = clamp(this->b * bScale, 0, 255);
+	result.r = (uint8_t)clamp((float)this->r * rScale, 0.0f, 255.0f);
+	result.g = (uint8_t)clamp((float)this->g * gScale, 0.0f, 255.0f);
+	result.b = (uint8_t)clamp((float)this->b * bScale, 0.0f, 255.0f);
 	return result;
 }
 bool Color::operator ==(const Color& rhs)&
@@ -119,50 +119,50 @@ Color& Color::operator =(Color const& rhs)& {
 };
 
 Color& Color::operator +=(Color const& rhs)& {
-	r = clamp(r + rhs.r, 0, 255);
-	g = clamp(g + rhs.g, 0, 255);
-	b = clamp(b + rhs.b, 0, 255);
+	r = (uint8_t)clamp((float)(r + rhs.r), 0.0f, 255.0f);
+	g = (uint8_t)clamp((float)(g + rhs.g), 0.0f, 255.0f);
+	b = (uint8_t)clamp((float)(b + rhs.b), 0.0f, 255.0f);
 	return *this;
 };
 Color Color::operator +(const Color& rhs) {
 	Color result;
-	result.r = clamp(this->r + rhs.r, 0, 255);
-	result.g = clamp(this->g + rhs.g, 0, 255);
-	result.b = clamp(this->b + rhs.b, 0, 255);
+	result.r = (uint8_t)clamp((float)(this->r + rhs.r), 0.0f, 255.0f);
+	result.g = (uint8_t)clamp((float)(this->g + rhs.g), 0.0f, 255.0f);
+	result.b = (uint8_t)clamp((float)(this->b + rhs.b), 0.0f, 255.0f);
 
 	return result;
 };
 Color& Color::operator -=(Color const& rhs)& {
-	r = clamp(r - rhs.r, 0, 255);
-	g = clamp(g - rhs.g, 0, 255);
-	b = clamp(b - rhs.b, 0, 255);
+	r = (uint8_t)clamp((float)(r - rhs.r), 0.0f, 255.0f);
+	g = (uint8_t)clamp((float)(g - rhs.g), 0.0f, 255.0f);
+	b = (uint8_t)clamp((float)(b - rhs.b), 0.0f, 255.0f);
 	return *this;
 };
 Color Color::operator -(const Color& rhs) {
 	Color result;
-	result.r = clamp(this->r - rhs.r, 0, 255);
-	result.g = clamp(this->g - rhs.g, 0, 255);
-	result.b = clamp(this->b - rhs.b, 0, 255);
+	result.r = (uint8_t)clamp((float)(this->r - rhs.r), 0.0f, 255.0f);
+	result.g = (uint8_t)clamp((float)(this->g - rhs.g), 0.0f, 255.0f);
+	result.b = (uint8_t)clamp((float)(this->b - rhs.b), 0.0f, 255.0f);
 	return result;
 };
 Color Color::operator *(const float rhs) {
 	Color result;
-	result.r = clamp(this->r * rhs, 0, 255);
-	result.g = clamp(this->g * rhs, 0, 255);
-	result.b = clamp(this->b * rhs, 0, 255);
+	result.r = (uint8_t)clamp((float)(this->r * rhs), 0.0f, 255.0f);
+	result.g = (uint8_t)clamp((float)(this->g * rhs), 0.0f, 255.0f);
+	result.b = (uint8_t)clamp((float)(this->b * rhs), 0.0f, 255.0f);
 	return result;
 };
 Color Color::operator *(const Color& rhs) {
 	Color result;
-	result.r = clamp(this->r * rhs.r, 0, 255);
-	result.g = clamp(this->g * rhs.g, 0, 255);
-	result.b = clamp(this->b * rhs.b, 0, 255);
+	result.r = (uint8_t)clamp((float)(this->r * rhs.r), 0.0f, 255.0f);
+	result.g = (uint8_t)clamp((float)(this->g * rhs.g), 0.0f, 255.0f);
+	result.b = (uint8_t)clamp((float)(this->b * rhs.b), 0.0f, 255.0f);
 	return result;
 };
 Color Color::operator /(const float rhs) {
 	Color result;
-	result.r = clamp(this->r / rhs, 0, 255);
-	result.g = clamp(this->g / rhs, 0, 255);
-	result.b = clamp(this->b / rhs, 0, 255);
+	result.r = (uint8_t)clamp(this->r / rhs, 0, 255);
+	result.g = (uint8_t)clamp(this->g / rhs, 0, 255);
+	result.b = (uint8_t)clamp(this->b / rhs, 0, 255);
 	return result;
 };

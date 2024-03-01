@@ -45,6 +45,8 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 	_In_ LPWSTR    lpCmdLine,
 	_In_ int       nCmdShow)
 {
+	UNREFERENCED_PARAMETER(hInstance);
+	UNREFERENCED_PARAMETER(nCmdShow);
 	UNREFERENCED_PARAMETER(hPrevInstance);
 	UNREFERENCED_PARAMETER(lpCmdLine);
 
@@ -79,7 +81,8 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 		break;
 	}
 
-	MSG msg;
+	//shouldn't caue anything bad
+	//MSG msg;
 
-	return (int)msg.hwnd;
+	//return (int)msg.hwnd;
 }

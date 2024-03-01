@@ -47,7 +47,7 @@ void EntityContainer::Render()
 
 void EntityContainer::ReadEntities(std::string filepath)
 {
-	Renderer* pixel = Renderer::GetInstance();
+	//Renderer* pixel = Renderer::GetInstance();
 
 	json listData = FileIO::GetInstance()->OpenJSON(filepath);
 
@@ -209,7 +209,7 @@ EntityContainer* EntityContainer::GetInstance()
 
 int EntityContainer::CountEntities()
 {
-	return entities.size();
+	return (int)entities.size();
 }
 
 bool EntityContainer::RemoveEntity(Entity* _entity)

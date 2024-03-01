@@ -35,7 +35,7 @@ public:
 	virtual void Read(json jsonData) override;
 	virtual void Init() {};
 
-	virtual void Check(Collider* other) {};
+	virtual void Check(Collider* other) { UNREFERENCED_PARAMETER(other); };
 
 	void SetCollisionHandler(std::function<void(Entity*, Entity*)> _handler);
 	std::function<void(Entity*, Entity*)> GetCollisionHandler();

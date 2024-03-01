@@ -24,7 +24,7 @@ public:
 	Mode mode;
 	virtual Engine::EngineCode Load() = 0;
 	virtual Engine::EngineCode Init() = 0;
-	virtual void Update(float dt) {};
+	virtual void Update(float dt) { if (dt) {} };
 	virtual void Render() {};
 	virtual Engine::EngineCode Exit() = 0;
 	virtual Engine::EngineCode Unload() = 0;

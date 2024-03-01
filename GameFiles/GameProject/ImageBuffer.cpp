@@ -56,7 +56,8 @@ ImageBuffer::ImageBuffer() : buffer(new Color[BufferSizeX * BufferSizeY])
 
 	size.x = (float)BufferSizeX;
 	size.y = (float)BufferSizeY;
-    bool isCulled = false;
+    isCulled = false;
+ 
 }
 
 ImageBuffer::ImageBuffer(float x, float y)
@@ -69,7 +70,7 @@ ImageBuffer::ImageBuffer(float x, float y)
     
 	size.x = x;
 	size.y = y;
-    bool isCulled = false;
+    isCulled = false;
 }
 
 ImageBuffer::ImageBuffer(const std::string file)
@@ -86,8 +87,8 @@ ImageBuffer::ImageBuffer(const std::string file)
         uint8_t green = 0;
         uint8_t blue = 0;
         
-        fscanf_s(fp, "%c", &hold);
-        fscanf_s(fp, "%c", &hold);
+        fscanf_s(fp, "%c", &hold, 1);
+        fscanf_s(fp, "%c", &hold, 1);
         fscanf_s(fp, "%d", &temp);
         BufferSizeX = temp;
         fscanf_s(fp, "%d", &temp);
@@ -120,7 +121,7 @@ ImageBuffer::ImageBuffer(const std::string file)
         }
     }
     type = NA;
-    bool isCulled = false;
+    isCulled = false;
 }
 
 ImageBuffer::~ImageBuffer()
@@ -326,8 +327,8 @@ void ImageBuffer::BlurBuffer(int imageBlurRangelow, int imageBlurRangeHigh)
 {
     ImageBuffer* tempBuffer = new ImageBuffer{*this};
     int count;
-    int xSize = size.x;
-    int ySize = size.y;
+    int xSize = (int)size.x;
+    int ySize = (int)size.y;
     #pragma omp parallel for collapse(4) private(count)
     for (int x = 0; x < xSize; ++x)
     {
@@ -371,8 +372,8 @@ void ImageBuffer::BlurBuffer(int imageBlurRangelow, int imageBlurRangeHigh)
 void ImageBuffer::FloorBrightness(float floor)
 {
     Color clear{ 0, 0, 0, 0 };
-    const int xSize = size.x;
-    const int ySize = size.y;
+    const int xSize = (int)size.x;
+    const int ySize = (int)size.y;
     #pragma omp parallel for collapse(2) shared(clear)
     for (int x = 0; x < xSize; ++x)
     {
@@ -397,8 +398,8 @@ void ImageBuffer::GenerateVornoiPoints()
 
 void ImageBuffer::MakeVornoiNoiseBuffer(Vector2 camPos, float falloffModifier, float brightnessMultiplier, float minBrightness)
 {
-    const int xSize = size.x;
-    const int ySize = size.y;
+    const int xSize = (int)size.x;
+    const int ySize = (int)size.y;
     #pragma omp parallel
     {
     #pragma omp for nowait collapse(3)
@@ -409,7 +410,7 @@ void ImageBuffer::MakeVornoiNoiseBuffer(Vector2 camPos, float falloffModifier, f
                 float oldDist = 9999;
                 for (int i = 0; i < MAX_NUM_VORNOI_POINTS; ++i)
                 {
-                    float tempDist = distanceSquared(vornoiPoints[i].x - camPos.x, vornoiPoints[i].y - camPos.y, x, y);
+                    float tempDist = distanceSquared(vornoiPoints[i].x - camPos.x, vornoiPoints[i].y - camPos.y, (float)x, (float)y);
                     if (oldDist > tempDist)
                     {
                         oldDist = tempDist;

@@ -85,10 +85,10 @@ void Renderer::Update(float dt)
 
 	if (DebugBuffer != NULL)
 	{
-		DebugBuffer->Blit(outputBuffer, -GetCameraPosition().x, -GetCameraPosition().y);
+		DebugBuffer->Blit(outputBuffer, -(int)GetCameraPosition().x, -(int)GetCameraPosition().y);
 		DebugBuffer->ClearImageBuffer();
 	}
-	float AverageFrameRate = FrameRate::CalculateAverageFrameRate(PreviousFrameLengths, _countof(PreviousFrameLengths), currentTime, PreviousFrameBeginTime);
+	float AverageFrameRate = FrameRate::CalculateAverageFrameRate(PreviousFrameLengths, _countof(PreviousFrameLengths), (float)currentTime, (float)PreviousFrameBeginTime);
 
 	FrameRate::UpdateWindowTitle(window, AverageFrameRate);
 
@@ -110,7 +110,7 @@ void Renderer::Update(float dt)
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, OutputBufferTexture);
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8,
-		outputBuffer->size.x, outputBuffer->size.y,
+		(GLsizei)outputBuffer->size.x, (GLsizei)outputBuffer->size.y,
 		0,
 		GL_RGBA, GL_UNSIGNED_BYTE,
 		(void*)outputBuffer->buffer);
@@ -172,7 +172,7 @@ void Renderer::RenderToOutbuffer()
 				}
 				else if (renderNormalMap == true)
 				{
-					DestPixel = shadowCasterBuffer->SampleColor(x + CameraP.x, y + CameraP.y);
+					DestPixel = shadowCasterBuffer->SampleColor(x + (int)CameraP.x, y + (int)CameraP.y);
 				}
 			}
 		}
@@ -315,8 +315,8 @@ float Renderer::FindPixelLuminosity(float x, float y, Light* LightSource)
 	{
 		if ((int)x + CameraP.x <= normalBuffer->BufferSizeX && (int)x + CameraP.x >= 0 && (int)y + CameraP.y <= normalBuffer->BufferSizeY && (int)y + CameraP.y >= 0)
 		{
-			float normalR = (float)normalBuffer->SampleColor((int)x + CameraP.x, (int)y + CameraP.y).r;
-			float normalG = (float)normalBuffer->SampleColor((int)x + CameraP.x, (int)y + CameraP.y).g;
+			float normalR = (float)normalBuffer->SampleColor((int)x + (int)CameraP.x, (int)y + (int)CameraP.y).r;
+			float normalG = (float)normalBuffer->SampleColor((int)x + (int)CameraP.x, (int)y + (int)CameraP.y).g;
 
 			if (normalR == 0 && normalG == 0)
 			{
@@ -364,7 +364,7 @@ void Renderer::CalculateShadows()
 						if (lightSource[i].intensity != 0)
 						{
 							lightPos = lightSource[i].position;
-							if (CheckLineForObject((int)lightPos.x - (int)cameraPos.x, (int)lightPos.y - (int)cameraPos.y, (int)x, (int)y) == true)
+							if ((bool)CheckLineForObject((int)lightPos.x - (int)cameraPos.x, (int)lightPos.y - (int)cameraPos.y, (int)x, (int)y) == true)
 							{
 								shadowsCast += 1;
 							}
@@ -374,7 +374,7 @@ void Renderer::CalculateShadows()
 							}
 						}
 					}
-					if (shadowCasterBuffer->SampleColor(x + CameraP.x, y + CameraP.y).GetAlpha() != 0) //make shadow casters not cast shadows on themselves
+					if (shadowCasterBuffer->SampleColor(x + (int)CameraP.x, y + (int)CameraP.y).GetAlpha() != 0) //make shadow casters not cast shadows on themselves
 					{
 						//maybe here do ham algo with the tilemap instead of pixels and if any tiles inbetween player and target tile then dont sub?
 						shadowsCast -= 1;
@@ -407,7 +407,7 @@ bool Renderer::CalculateIfPixelIsLit(int x, int y, int i)
 			if (inOutCount > 0)
 			{
 				isLit = false;
-				if (shadowCasterBuffer->SampleColor(x + CameraP.x, y + CameraP.y).GetAlpha() != 0 && inOutCount == 1)
+				if (shadowCasterBuffer->SampleColor(x + (int)CameraP.x, y + (int)CameraP.y).GetAlpha() != 0 && inOutCount == 1)
 				{
 					isLit = true;
 				}
@@ -1048,7 +1048,7 @@ int Renderer::CheckLineForObject(int x1, int y1, int x2, int y2)
 	{
 		if (inOut == false)
 		{
-			if (shadowCasterBuffer->SampleColor(x + CameraP.x, y + CameraP.y).GetAlpha() != 0)
+			if (shadowCasterBuffer->SampleColor(x + (int)CameraP.x, y + (int)CameraP.y).GetAlpha() != 0)
 			{
 				inOutCount += 1;
 				inOut = true;
@@ -1056,7 +1056,7 @@ int Renderer::CheckLineForObject(int x1, int y1, int x2, int y2)
 		}
 		else
 		{
-			if (shadowCasterBuffer->SampleColor(x + CameraP.x, y + CameraP.y).GetAlpha() == 0)
+			if (shadowCasterBuffer->SampleColor(x + (int)CameraP.x, y + (int)CameraP.y).GetAlpha() == 0)
 			{
 				inOutCount += 1;
 				inOut = false;
@@ -1085,21 +1085,21 @@ int Renderer::CheckLineForObject(int x1, int y1, int x2, int y2)
 
 gfxVector2 Renderer::LaserCheckLineForObject(Vector2 pos1, Vector2 pos2)
 {
-	int dx = abs(pos2.x - pos1.x);
-	int dy = abs(pos2.y - pos1.y);
+	int dx = (int)abs(pos2.x - pos1.x);
+	int dy = (int)abs(pos2.y - pos1.y);
 	int sx = (pos1.x < pos2.x) ? 1 : -1;
 	int sy = (pos1.y < pos2.y) ? 1 : -1;
 	gfxVector2 result;
 	int error = dx - dy;
-	int x = pos1.x;
-	int y = pos1.y;
+	int x = (int)pos1.x;
+	int y = (int)pos1.y;
 
 	while (x != (int)pos2.x || y != (int)pos2.y)
 	{
 		if (shadowCasterBuffer->SampleColor(x + (int)CameraP.x, y + (int)CameraP.y).GetAlpha() != 0)
 		{
-			result.x = x;
-			result.y = y;
+			result.x = (float)x;
+			result.y = (float)y;
 			return result;
 		}
 
@@ -1264,7 +1264,8 @@ void Renderer::CleanRenderer()
 //Move outside into own class
 void Renderer::ClearLights()
 {
-	delete[] lightSource;
+	//not necessaru since it is predefined in the header it iwll naturally call this.
+	//delete[] lightSource;
 }
 
 void Renderer::ClearSprites()
@@ -1324,24 +1325,24 @@ void Renderer::ExpandTileMapInDirection(Vector2 direction, int distance)
 {
 	int** tempTileMap = NULL;
 	Vector2 newTileMapSize = Vector2{ tileMapSize.x + (abs(direction.x) * distance), tileMapSize.y + (abs(direction.y) * distance) };
-	tempTileMap = new int* [newTileMapSize.x];
+	tempTileMap = new int* [(size_t)newTileMapSize.x];
 
 	for (int x = 0; x < newTileMapSize.x; ++x)
 	{
-		tempTileMap[x] = new int[newTileMapSize.y];
+		tempTileMap[x] = new int[(size_t)newTileMapSize.y];
 	}
 
-	for (int x = 0; x < newTileMapSize.x; ++x)
+	for (int x = 0; x < (int)newTileMapSize.x; ++x)
 	{
-		for (int y = 0; y < newTileMapSize.y; ++y)
+		for (int y = 0; y < (int)newTileMapSize.y; ++y)
 		{
 			tempTileMap[x][y] = 0;
 		}
 	}
 
-	for (int x = 0; x < tileMapSize.x; ++x)
+	for (int x = 0; x < (int)tileMapSize.x; ++x)
 	{
-		for (int y = 0; y < tileMapSize.y; ++y)
+		for (int y = 0; y < (int)tileMapSize.y; ++y)
 		{
 			if (direction.x >= 0 && direction.y >= 0)
 			{
@@ -1422,13 +1423,13 @@ void Renderer::DrawLine(Vector2 P0, Vector2 P1, const Color& LineColor)
 	{
 		ClippedMinY = 0;
 	}
-	if (ClippedMaxX > (DebugBuffer->size.x - 1))
+	if (ClippedMaxX > ((int)DebugBuffer->size.x - 1))
 	{
-		ClippedMaxX = DebugBuffer->size.x - 1;
+		ClippedMaxX = (int)DebugBuffer->size.x - 1;
 	}
-	if (ClippedMaxY > (DebugBuffer->size.y - 1))
+	if (ClippedMaxY > ((int)DebugBuffer->size.y - 1))
 	{
-		ClippedMaxY = DebugBuffer->size.y - 1;
+		ClippedMaxY = (int)DebugBuffer->size.y - 1;
 	}
 
 	Vector2 D = P1 - P0;

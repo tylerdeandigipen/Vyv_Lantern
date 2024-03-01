@@ -243,8 +243,8 @@ void LevelCreatorScene::ToolSquareFill(Inputs* inputHandler, Vector2 CursourP)
 void LevelCreatorScene::ExportScene(std::string name)
 {
 	Renderer* pixel = Renderer::GetInstance();
-	int rows = pixel->tileMapSize.x;
-	int columns = pixel->tileMapSize.y;
+	int rows = (int)pixel->tileMapSize.x;
+	int columns = (int)pixel->tileMapSize.y;
 	std::string folder = "./Data/Scenes/" + name;
 	exportFolder = folder;
 	exportFolder += "/";
@@ -407,7 +407,7 @@ Vector2 LevelCreatorScene::PlaceTile(Vector2 tilePos)
 			}
 			if (tilePos.x > LevelCreatorPixelRenderer->tileMapSize.x)
 			{
-				LevelCreatorPixelRenderer->ExpandTileMapInDirection(Vector2{ 1,0 }, expansionRange + (tilePos.x - LevelCreatorPixelRenderer->tileMapSize.x));
+				LevelCreatorPixelRenderer->ExpandTileMapInDirection(Vector2{ 1,0 }, expansionRange + (int)(tilePos.x - LevelCreatorPixelRenderer->tileMapSize.x));
 			}
 			if (tilePos.y < 0)
 			{
@@ -418,7 +418,7 @@ Vector2 LevelCreatorScene::PlaceTile(Vector2 tilePos)
 			}
 			if (tilePos.y > LevelCreatorPixelRenderer->tileMapSize.y)
 			{
-				LevelCreatorPixelRenderer->ExpandTileMapInDirection(Vector2{ 0,1 }, expansionRange + (tilePos.y - LevelCreatorPixelRenderer->tileMapSize.y));
+				LevelCreatorPixelRenderer->ExpandTileMapInDirection(Vector2{ 0,1 }, expansionRange + (int)(tilePos.y - LevelCreatorPixelRenderer->tileMapSize.y));
 			}
 		}
 		LevelCreatorPixelRenderer->MakeTileMap(LevelCreatorPixelRenderer->tileMap);
@@ -471,7 +471,7 @@ void LevelCreatorScene::ToolHandler()
 					playerSpawned = true;
 				}
 				LevelCreatorPixelRenderer->animatedObjects[0][0]->position = CursourP + LevelCreatorPixelRenderer->GetCameraPosition() - Vector2{ 3,3 };
-				int* walls = new int[LevelCreatorPixelRenderer->tileMapSize.x * LevelCreatorPixelRenderer->tileMapSize.y];
+				int* walls = new int[(size_t)LevelCreatorPixelRenderer->tileMapSize.x * (size_t)LevelCreatorPixelRenderer->tileMapSize.y];
 
 				for (int x = 0; x < LevelCreatorPixelRenderer->tileMapSize.x; ++x)
 				{
@@ -489,8 +489,8 @@ void LevelCreatorScene::ToolHandler()
 						}
 					}
 				}
-				LevelBuilder::GetInstance()->SetX(LevelCreatorPixelRenderer->tileMapSize.x);
-				LevelBuilder::GetInstance()->SetY(LevelCreatorPixelRenderer->tileMapSize.y);
+				LevelBuilder::GetInstance()->SetX((int)LevelCreatorPixelRenderer->tileMapSize.x);
+				LevelBuilder::GetInstance()->SetY((int)LevelCreatorPixelRenderer->tileMapSize.y);
 				delete[] LevelBuilder::GetInstance()->GetWalls();
 				LevelBuilder::GetInstance()->SetWalls(walls);
 				playMode = true;
@@ -958,7 +958,7 @@ void LevelCreatorScene::ImGuiWindow()
 		{
 			static int selected = -1;
 
-			for (auto n = 0; n < entityManager->pRenderer->GetTileCount(); n++)
+			for (unsigned n = 0; n < entityManager->pRenderer->GetTileCount(); n++)
 			{
 				if (ImGui::Selectable(("Tile " + TileNumToString(n)).c_str(), selected == n))
 					currentTile = n;
@@ -1096,6 +1096,9 @@ int LevelCreatorScene::CreateDoorEntity()
 int LevelCreatorScene::CreateMirrorEntity(int direction)
 {
 	int door_existing = 0;
+
+	UNREFERENCED_PARAMETER(door_existing);
+
 	std::string number = "./Data/GameObjects/Mirror";
 	
 	std::string filename;
@@ -1122,6 +1125,7 @@ int LevelCreatorScene::CreateMirrorEntity(int direction)
 //static int emitterCount = 0;
 int LevelCreatorScene::CreateEmitterEntity(int direction)
 {
+	UNREFERENCED_PARAMETER(direction);
 	std::string number = "./Data/GameObjects/Emitter";
 	std::string filename = "./Data/GameObjects/tempEmitter.json";
 

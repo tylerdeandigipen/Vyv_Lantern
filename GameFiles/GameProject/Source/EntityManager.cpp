@@ -61,8 +61,8 @@ auto EntityManager::ShowEntityInfo() -> void
 					{
 						continue;
 					}
-					pRenderer->objects[i]->position.x = properties[creator->tempEntities[i]->key].translation[0];
-					pRenderer->objects[i]->position.y = properties[creator->tempEntities[i]->key].translation[1];
+					pRenderer->objects[i]->position.x = (float)properties[creator->tempEntities[i]->key].translation[0];
+					pRenderer->objects[i]->position.y = (float)properties[creator->tempEntities[i]->key].translation[1];
 
 					ImGui::TreePop();
 				}
@@ -254,7 +254,7 @@ auto EntityManager::InitializeProperties(std::string file_path) -> bool
 		if (creator->tempEntities[i])
 		{
 			Transform* t = creator->tempEntities[i]->Has(Transform);
-			properties[creator->tempEntities[i]->key] = EntityProperties{ {static_cast<int>(std::floorf(t->GetTranslation()->x)), static_cast<int>(std::floorf(t->GetTranslation()->y))}, {0.f}, false, false,{0.f} };
+			properties[creator->tempEntities[i]->key] = EntityProperties{ {static_cast<int>(std::floorf(t->GetTranslation()->x)), static_cast<int>(std::floorf(t->GetTranslation()->y))}, {0.f}, false, false,{(bool)0.f} };
 		}
 	}
 

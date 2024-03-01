@@ -54,6 +54,7 @@ std::string BehaviorSwitch::Name()
 
 void BehaviorSwitch::SetInputHandler(Inputs* _input)
 {
+    UNREFERENCED_PARAMETER(_input);
 }
 
 void BehaviorSwitch::Init()
@@ -113,8 +114,8 @@ void BehaviorSwitch::Read(json jsonData)
     for (auto& positions : jsonData["pos"])
     {
         // Extract "x" and "y" values, convert them to integers, and store in the vector
-        float x = std::stoi(positions["x"].get<std::string>());
-        float y = std::stoi(positions["y"].get<std::string>());
+        float x = (float)std::stoi(positions["x"].get<std::string>());
+        float y = (float)std::stoi(positions["y"].get<std::string>());
         
         pos.push_back({ x,y });
     }
@@ -210,5 +211,6 @@ void BehaviorSwitch::SwitchCollisionHandler(Entity* entity1, Entity* entity2)
 
 void BehaviorSwitch::Controller(float dt)
 {
+    UNREFERENCED_PARAMETER(dt);
     // DO SWITCH THINGS HERE
 }

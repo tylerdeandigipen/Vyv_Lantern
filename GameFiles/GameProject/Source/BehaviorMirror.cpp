@@ -32,12 +32,14 @@ int BehaviorMirror::maxCount = 4;
 
 BehaviorMirror::BehaviorMirror() : Behavior(Behavior::bMirror), mirror(), pos()
 {
+    key = 0;
     mirror = new Mirror;
     _type = this; // i dont know what this is
 }
 
 BehaviorMirror::BehaviorMirror(BehaviorMirror const& other) : Behavior(other), mirror(other.mirror), pos(other.pos)
 {
+    key = 0;
     _type = this;
 }
 
@@ -58,6 +60,7 @@ std::string BehaviorMirror::Name()
 
 void BehaviorMirror::SetInputHandler(Inputs* _input)
 {
+    UNREFERENCED_PARAMETER(_input);
 }
 
 void BehaviorMirror::Init()
@@ -102,6 +105,7 @@ Behavior* BehaviorMirror::Clone() const
 
 void BehaviorMirror::Update(float dt)
 {
+    UNREFERENCED_PARAMETER(dt);
     if (Parent() && Parent()->Has(Transform)) {
         Vector2 position = *Parent()->Has(Transform)->GetTranslation();
         // set reflection position when the mirror stops moving or is not moving;
@@ -142,8 +146,8 @@ void BehaviorMirror::Read(json jsonData)
     {
         // Extract "x" and "y" values, convert them to integers, and store in the vector
         Vector2 position{};
-        position.x = std::stoi(positions["x"].get<std::string>());
-        position.y = std::stoi(positions["y"].get<std::string>());
+        position.x = (float)std::stoi(positions["x"].get<std::string>());
+        position.y = (float)std::stoi(positions["y"].get<std::string>());
         pos.push_back(position);
     }
     key = jsonData["key"];
@@ -170,11 +174,13 @@ void BehaviorMirror::SwitchOn(bool collided)
 
 void BehaviorMirror::MirrorCollisionHandler(Entity* thisone, Entity* other)
 {
+    UNREFERENCED_PARAMETER(thisone);
+    UNREFERENCED_PARAMETER(other);
 }
 
 void BehaviorMirror::Controller(float dt)
 {
-
+    UNREFERENCED_PARAMETER(dt);
  //   float lerpFactor = 0.5f; // Adjust this value for speed
 
 //    currentPos = currentPos + lerpFactor * (targetPos - currentPos);

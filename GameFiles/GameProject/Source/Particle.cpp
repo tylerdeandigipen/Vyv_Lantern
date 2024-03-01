@@ -83,8 +83,8 @@ void Particle::Update(float dt)
 			temp /= RAND_RANGE_DUST;
 			direction += temp;
 
-			position.x += cos(direction.x) * speed.x * dt;
-			position.y += (0.5 + sin(direction.y)) * speed.y * dt;
+			position.x += cosf(direction.x) * speed.x * dt;
+			position.y += (0.5f + sinf(direction.y)) * speed.y * dt;
 
 			//screen wrapping for dust
 			if (position.y > tileMapSize.y + PARTICLE_EDGE_BUFFER)
