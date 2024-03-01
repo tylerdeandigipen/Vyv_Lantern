@@ -76,35 +76,19 @@ void BehaviorMirror::Init()
                 Transform* trans = Parent()->Has(Transform);
                 gfxVector2 test = image->size;
                 std::string file = Parent()->GetSpritePath();
-                if (file.compare("./Assets/PPM/CrystalSprites/MirrorCrystalDownRight.ppm") == 0)
-                {
-                    mirror->pos1 = { trans->GetTranslation()->x, trans->GetTranslation()->y + (test.y /2)};
-                    mirror->pos2 = { trans->GetTranslation()->x + (test.x), trans->GetTranslation()->y + (test.y /2) };
-                    mirror->reflectDir = { 1 , 0 };
-                   // mirror->reflectFromLeft = true;
-                }
-                else if (file.compare("./Assets/PPM/CrystalSprites/MirrorCrystalDownLeft.ppm") == 0)
-                {
-                    mirror->pos1 = { trans->GetTranslation()->x, trans->GetTranslation()->y };
-                    mirror->pos2 = { trans->GetTranslation()->x + test.x, trans->GetTranslation()->y + test.y };
-                    mirror->reflectDir = { 0 , 1 };
-                    mirror->reflectFromLeft = true;
-                }
-                else if (file.compare("./Assets/PPM/CrystalSprites/MirrorCrystalUpRight.ppm") == 0)
-                {
-                    mirror->pos1 = { trans->GetTranslation()->x, trans->GetTranslation()->y };
-                    mirror->pos2 = { trans->GetTranslation()->x + test.x, trans->GetTranslation()->y + test.y };
-                    mirror->reflectDir = { 0 , -1 };
-                    mirror->reflectFromLeft = true;
+                gfxVector2 up = { 0.0f, 1.0f };
+                gfxVector2 right = { 1.0f, 0.0f };
+                gfxVector2 left = { -1.0f, 0.0f };
+                gfxVector2 down = { 0.0f, -1.0f };
 
-                }
-                else if (file.compare("./Assets/PPM/CrystalSprites/MirrorCrystalUpLeft.ppm") == 0)
-                {
-                    mirror->pos1 = { trans->GetTranslation()->x + test.x, trans->GetTranslation()->y + test.y };
-                    mirror->pos2 = { trans->GetTranslation()->x, trans->GetTranslation()->y + test.y };
-                    mirror->reflectDir = { 0 , -1 };
-                    mirror->reflectFromRight = true;
-                }
+                // horizontal
+                mirror->xPos1 = { trans->GetTranslation()->x, trans->GetTranslation()->y + (test.y / 2) };
+                mirror->xPos2 = { trans->GetTranslation()->x + (test.x), trans->GetTranslation()->y + (test.y / 2) };
+                // vertical 
+                mirror->yPos1 = { trans->GetTranslation()->x + (test.x / 2), trans->GetTranslation()->y };
+                mirror->yPos2 = { trans->GetTranslation()->x + (test.y / 2), trans->GetTranslation()->y + test.y };
+                //mirror->reflectDir = { 1 , 0 };
+                // mirror->reflectFromLeft = true;
             }
         }
         Renderer::GetInstance()->laserHandler.AddMirror(mirror);
@@ -129,49 +113,29 @@ void BehaviorMirror::Update(float dt)
         gfxVector2 test = image->size;
         float testvalue = (test.y / 1.5);
         std::string file = Parent()->GetSpritePath();
-        if (file.compare("./Assets/PPM/CrystalSprites/MirrorCrystalDownRight.ppm") == 0)
-        {
-            mirror->pos1 = { trans->GetTranslation()->x, trans->GetTranslation()->y + testvalue };
-            mirror->pos2 = { trans->GetTranslation()->x + test.x, trans->GetTranslation()->y + testvalue };
-            //mirror->reflectFromLeft = true;
-        }
-        else if (file.compare("./Assets/PPM/CrystalSprites/MirrorCrystalDownLeft.ppm") == 0)
-        {
-            mirror->pos1 = { trans->GetTranslation()->x, trans->GetTranslation()->y };
-            mirror->pos2 = { trans->GetTranslation()->x + test.x, trans->GetTranslation()->y + test.y };
-            mirror->reflectDir = { 0 , 1 };
-            mirror->reflectFromLeft = true;
-        }
-        else if (file.compare("./Assets/PPM/CrystalSprites/MirrorCrystalUpRight.ppm") == 0)
-        {
-            mirror->pos1 = { trans->GetTranslation()->x, trans->GetTranslation()->y };
-            mirror->pos2 = { trans->GetTranslation()->x + test.x, trans->GetTranslation()->y + test.y };
-            mirror->reflectDir = { 0 , -1 };
-            mirror->reflectFromLeft = true;
-
-        }
-        else if (file.compare("./Assets/PPM/CrystalSprites/MirrorCrystalUpLeft.ppm") == 0)
-        {
-            mirror->pos1 = { trans->GetTranslation()->x + test.x, trans->GetTranslation()->y + test.y };
-            mirror->pos2 = { trans->GetTranslation()->x, trans->GetTranslation()->y + test.y };
-            mirror->reflectDir = { 0 , -1 };
-            mirror->reflectFromRight = true;
-        }
+        // horizontal
+        mirror->xPos1 = { trans->GetTranslation()->x, trans->GetTranslation()->y + (test.y / 2) };
+        mirror->xPos2 = { trans->GetTranslation()->x + (test.x), trans->GetTranslation()->y + (test.y / 2) };
+        // vertical 
+        mirror->yPos1 = { trans->GetTranslation()->x + (test.x / 2), trans->GetTranslation()->y };
+        mirror->yPos2 = { trans->GetTranslation()->x + (test.y / 2), trans->GetTranslation()->y + test.y };
 
     }
 }
 
 void BehaviorMirror::Read(json jsonData)
 {
-    Init();
 
     if (jsonData["Direction"].is_object())
     {
         json direction = jsonData["Direction"];
-        gfxVector2 angle;
-        angle.x = direction["DirectionX"];
-        angle.y = direction["DirectionY"];
+        //gfxVector2 angle;
+        //angle.x = direction["DirectionX"];
+        //angle.y = direction["DirectionY"];
+        mirror->reflectDir.x = direction["DirectionX"];
+        mirror->reflectDir.y = direction["DirectionY"];
     }
+    Init();
 
 
     for (auto& positions : jsonData["pos"])
