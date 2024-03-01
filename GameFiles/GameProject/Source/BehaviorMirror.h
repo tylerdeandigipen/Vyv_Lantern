@@ -36,6 +36,7 @@ public:
 	void Read(json jsonData) override;
 	static void SwitchOn(bool collided);
 	static void MirrorCollisionHandler(Entity* thisone, Entity* other);
+	gfxVector2 GetReflectDirection() { return mirror->reflectDir; };
 
 private:
 	void Controller(float dt);

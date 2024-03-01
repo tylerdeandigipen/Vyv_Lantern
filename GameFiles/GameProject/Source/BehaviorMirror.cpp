@@ -127,7 +127,7 @@ void BehaviorMirror::Update(float dt)
         ImageBuffer* image = Parent()->GetImage();
         Transform* trans = Parent()->Has(Transform);
         gfxVector2 test = image->size;
-        float testvalue = (test.y / 2);
+        float testvalue = (test.y / 1.5);
         std::string file = Parent()->GetSpritePath();
         if (file.compare("./Assets/PPM/CrystalSprites/MirrorCrystalDownRight.ppm") == 0)
         {

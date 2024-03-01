@@ -135,6 +135,7 @@ void BehaviorSwitch::SwitchCollisionHandler(Entity* entity1, Entity* entity2)
     BehaviorSwitch* switch1 = entity1->GetComponent<BehaviorSwitch>();
     //BehaviorSwitch* switch1 = reinterpret_cast<BehaviorSwitch*>(entity1->Has(Behavior));
     BehaviorSwitch* switch2 = entity2->GetComponent<BehaviorSwitch>();
+    switch1->GetLerped();
    // BehaviorSwitch* switch2 = reinterpret_cast<BehaviorSwitch*>(entity2->Has(Behavior));
     BehaviorSwitch* theSwitch = NULL;
     if (switch2 && switch2->GetName().compare("BehaviorSwitch") == 0)
@@ -145,7 +146,6 @@ void BehaviorSwitch::SwitchCollisionHandler(Entity* entity1, Entity* entity2)
     {
         theSwitch = switch1;
     }
-
     if (entity1->GetRealName().compare("Player") == 0 && entity2->GetRealName().compare("Switch") == 0 || entity1->GetRealName().compare("Switch") == 0 && entity2->GetRealName().compare("Player") == 0)
     {
         /*Check if player is inside switch*/
