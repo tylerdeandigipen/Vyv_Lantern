@@ -11,6 +11,12 @@
       }
     },
     {
+      "Type": "BehaviorDoor",
+      "DoorClosed": true,
+      "ClosedSprite": "./Assets/PPM/Door_Closed.ppm",
+      "OpenSprite": "./Assets/PPM/Door_Open.ppm"
+    },
+    {
       "OldTranslation": {
         "x": 596.0,
         "y": 84.0

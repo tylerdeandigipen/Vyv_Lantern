@@ -4,7 +4,7 @@
 // Author(s):	Louis Wang
 // Purpose:		BehaviorSwitch class declaration for switch specific behavior
 //
-// Copyright © 2023 DigiPen (USA) Corporation.
+// Copyright ?2023 DigiPen (USA) Corporation.
 //
 //------------------------------------------------------------------------------
 #pragma once

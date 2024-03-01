@@ -22,7 +22,7 @@
 const float pushForce = 1.0f;
 float soundCooldown = 0.0f;
 
-BehaviorPlayer::BehaviorPlayer() : Behavior(Behavior::Player), playerMoveSpeed(0)
+BehaviorPlayer::BehaviorPlayer() : Behavior(Behavior::bPlayer), playerMoveSpeed(0)
 {
     _type = this;
 }
@@ -331,56 +331,64 @@ bool BehaviorPlayer::checkWalls(gfxVector2 position)
     
 }
 
-
-
 void BehaviorPlayer::PlayerCollisionHandler(Entity* entity1, Entity* entity2)
 {
     // check which one is player and what the other one is
     // make each instance of what the player can collide 
     // with and set interactable value pressed to true if 'E' is entered
-    if (entity1->GetRealName().compare("Player") == 0 && entity2->GetRealName().compare("Object") == 0)
+    if (entity1->GetRealName().compare("Player") == 0 && entity2->GetRealName().compare("Door") == 0)
     {
-        // Calculate the vector from object 'a' to object 'b'
+        auto door = reinterpret_cast<BehaviorDoor*>(entity2->Has(Behavior));
+
         float pushDirX = entity2->GetImage()->position.x - entity1->GetImage()->position.x;
         float pushDirY = entity2->GetImage()->position.y - entity1->GetImage()->position.y;
-        // Calculate the length of the vector
+
         float pushDirLength = sqrt(pushDirX * pushDirX + pushDirY * pushDirY);
 
-        // Normalize the vector to obtain a unit vector
-        if (pushDirLength > 0)
+        float overlap = 20.0f; // You can adjust this value as needed
+
+        if (door->GetDoorClosed())
         {
-            pushDirX /= pushDirLength;
-            pushDirY /= pushDirLength;
-        }
-
-        // Apply the push force to both objects
-        entity1->GetImage()->position.x -= pushDirX * pushForce;
-        entity1->GetImage()->position.y -= pushDirY * pushForce;
-        entity2->GetImage()->position.x += pushDirX * pushForce;
-        entity2->GetImage()->position.y += pushDirY * pushForce;
-    }
-    if (entity1->GetRealName().compare("Player") == 0 && entity2->GetRealName().compare("Object") == 0)
-    {
-        // Calculate the vector from object 'a' to object 'b'
-        float pushDirX = entity2->GetImage()->position.x - entity1->GetImage()->position.x;
-        float pushDirY = entity2->GetImage()->position.y - entity1->GetImage()->position.y;
-        // Calculate the length of the vector
-        float pushDirLength = sqrt(pushDirX * pushDirX + pushDirY * pushDirY);
-
-        // Normalize the vector to obtain a unit vector
-        if (pushDirLength > 0)
-        {
-            pushDirX /= pushDirLength;
-            pushDirY /= pushDirLength;
-
-            // Define the minimum distance (overlap) to prevent overlap
-            float overlap = 10.0f; // You can adjust this value as needed
-
             // Apply the push force only if there is overlap
-            if (pushDirLength < overlap)
+            if (pushDirLength > 0)
             {
-                entity1->GetImage()->position.x -= pushDirX * (overlap - pushDirLength);
-                entity1->GetImage()->position.y -= pushDirY * (overlap - pushDirLength);
+                pushDirX /= pushDirLength;
+                pushDirY /= pushDirLength;
+
+                // Apply the push force only if there is overlap
+                if (pushDirLength < overlap)
+                {
+                    entity1->GetImage()->position.x -= pushDirX * (overlap - pushDirLength);
+                    entity1->GetImage()->position.y -= pushDirY * (overlap - pushDirLength);
+                }
+            }
+        }
+    }
+    if (entity2->GetRealName().compare("Player") == 0 && entity1->GetRealName().compare("Door") == 0)
+    {
+        auto door = reinterpret_cast<BehaviorDoor*>(entity1->Has(Behavior));
+
+        float pushDirX = entity1->GetImage()->position.x - entity2->GetImage()->position.x;
+        float pushDirY = entity1->GetImage()->position.y - entity2->GetImage()->position.y;
+
+        float pushDirLength = sqrt(pushDirX * pushDirX + pushDirY * pushDirY);
+
+        float overlap = 20.0f; // You can adjust this value as needed
+
+        if (door->GetDoorClosed())
+        {
+            // Apply the push force only if there is overlap
+            if (pushDirLength > 0)
+            {
+                pushDirX /= pushDirLength;
+                pushDirY /= pushDirLength;
+
+                // Apply the push force only if there is overlap
+                if (pushDirLength < overlap)
+                {
+                    entity2->GetImage()->position.x -= pushDirX * (overlap - pushDirLength);
+                    entity2->GetImage()->position.y -= pushDirY * (overlap - pushDirLength);
+                }
             }
         }
     }

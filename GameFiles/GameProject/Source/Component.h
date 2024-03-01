@@ -5,7 +5,7 @@
 // Purpose:		(Borrowed from cs230) creates a base componenet class for 
 //				entities
 // 
-// Copyright © 2023 DigiPen (USA) Corporation.
+// Copyright ?2023 DigiPen (USA) Corporation.
 //
 //------------------------------------------------------------------------------
 
@@ -23,7 +23,7 @@ class Component
 {
 public:
 
-	enum TypeEnum { cBehavior, cCollider, cImageBuffer, cLight, cPhysics, cTransform, cSprite, cAnimation, cMirror, cSwitch, cEmitter, cDoor, cLineCollider};
+	enum TypeEnum { cBehavior, cBehaviorDoor, cCollider, cImageBuffer, cLight, cPhysics, cTransform, cSprite, cAnimation, cMirror, cSwitch, cEmitter, cDoor, cLineCollider  };
 	_inline Component::TypeEnum type() const { return mType; };
 
 	_inline void Parent(Entity* entity) { mParent = entity; }

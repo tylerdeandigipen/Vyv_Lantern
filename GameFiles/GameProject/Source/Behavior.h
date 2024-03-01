@@ -1,10 +1,11 @@
+
 //------------------------------------------------------------------------------
 //
 // File Name:	Behavior.h
 // Author(s):	Michael Howard (michael.howard)
 // Purpose:		behavior component
 // 
-// Copyright © 2023 DigiPen (USA) Corporation.
+// Copyright ?2023 DigiPen (USA) Corporation.
 //
 //------------------------------------------------------------------------------
 #pragma once
@@ -15,9 +16,9 @@ class Inputs;
 class Behavior : public Component
 {
 public:
-	enum BehaviorType { Player, Switch, Door, Mirror };
+	enum BehaviorType { bPlayer, bSwitch, bDoor, bMirror, bEmitter };
 	_inline Behavior::BehaviorType type() const { return bType; };
-	_inline Behavior* Type() const { return _type; };
+	inline Behavior* Type() const { return _type; };
 
 	Behavior(BehaviorType _type);
 	Behavior(Behavior const& other);

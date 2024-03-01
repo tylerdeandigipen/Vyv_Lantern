@@ -168,8 +168,10 @@ xcopy "$(ProjectDir)Fmod\*.dll" "$(OutDir)" /s /r /y /q /i</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="BehaviorEmitter.h" />
     <ClInclude Include="Emitter.h" />
     <ClInclude Include="glfw-3.3.8.bin.WIN64\glfw-3.3.8.bin.WIN64\include\GLFW\glfw3.h" />
+    <ClInclude Include="ImGuiManager.h" />
     <ClInclude Include="IMGUI\imconfig.h" />
     <ClInclude Include="IMGUI\imgui.h" />
     <ClInclude Include="IMGUI\ImguiFunction.h" />
@@ -202,6 +204,7 @@ xcopy "$(ProjectDir)Fmod\*.dll" "$(OutDir)" /s /r /y /q /i</Command>
     <ClInclude Include="Source\Entity.h" />
     <ClInclude Include="Source\EntityContainer.h" />
     <ClInclude Include="Source\EntityFactory.h" />
+    <ClInclude Include="Source\EntityManager.h" />
     <ClInclude Include="Source\Event.h" />
     <ClInclude Include="Source\FileIO.h" />
     <ClInclude Include="Source\FrameRate.h" />
@@ -239,9 +242,11 @@ xcopy "$(ProjectDir)Fmod\*.dll" "$(OutDir)" /s /r /y /q /i</Command>
     <ClInclude Include="Vector.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="BehaviorEmitter.cpp" />
     <ClCompile Include="Emitter.cpp" />
     <ClCompile Include="Engine.cpp" />
     <ClCompile Include="ImageBuffer.cpp" />
+    <ClCompile Include="ImGuiManager.cpp" />
     <ClCompile Include="IMGUI\imgui.cpp" />
     <ClCompile Include="IMGUI\ImguiFunctions.cpp" />
     <ClCompile Include="IMGUI\imgui_demo.cpp" />
@@ -273,6 +278,7 @@ xcopy "$(ProjectDir)Fmod\*.dll" "$(OutDir)" /s /r /y /q /i</Command>
     <ClCompile Include="Source\Entity.cpp" />
     <ClCompile Include="Source\EntityContainer.cpp" />
     <ClCompile Include="Source\EntityFactory.cpp" />
+    <ClCompile Include="Source\EntityManager.cpp" />
     <ClCompile Include="Source\FileIO.cpp" />
     <ClCompile Include="Source\FontSystem.cpp" />
     <ClCompile Include="Source\FrameRate.cpp" />

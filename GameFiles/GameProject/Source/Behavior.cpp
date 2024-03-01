@@ -4,7 +4,7 @@
 // Author(s):	Michael Howard
 // Purpose:		Defines entity behavior.
 //
-// Copyright © 2023 DigiPen (USA) Corporation.
+// Copyright ?2023 DigiPen (USA) Corporation.
 //
 //------------------------------------------------------------------------------
 #include "Behavior.h"

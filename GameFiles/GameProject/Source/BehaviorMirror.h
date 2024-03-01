@@ -5,15 +5,16 @@
 // Purpose:		Declaration of BehaviorMirror class for controlling mirror 
 //              entities.
 // 
-// Copyright © 2023 DigiPen (USA) Corporation.
+// Copyright ?2023 DigiPen (USA) Corporation.
 //
 //------------------------------------------------------------------------------
 #pragma once
 #include "Behavior.h"
-#include "LaserSystem.h"
+//#include "LaserSystem.h"
+#include "TBDLasers.h"
 
 class gfxVector2;
-struct reflector;
+struct Mirror;
 
 class BehaviorMirror : public Behavior
 {
@@ -38,11 +39,13 @@ public:
 
 private:
 	void Controller(float dt);
-	reflector* reflect;
+	//reflector* reflect;
+	Mirror* mirror;
 	std::vector<gfxVector2> pos;
 	static int count;
 	int key;
 	static int maxCount;
 	static gfxVector2 currentPos; // Current position of the mirror
 	static gfxVector2 targetPos; // Target position for interpolation
+	bool inited = false;
 };

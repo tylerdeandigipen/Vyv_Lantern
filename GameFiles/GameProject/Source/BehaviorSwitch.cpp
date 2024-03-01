@@ -27,7 +27,7 @@
 
 bool BehaviorSwitch::OnOff = false;
 
-BehaviorSwitch::BehaviorSwitch() : Behavior(Behavior::Switch), isLerping(false), currentPos(0), maxCount(0)
+BehaviorSwitch::BehaviorSwitch() : Behavior(Behavior::bSwitch), isLerping(false), currentPos(0), maxCount(0)
 {
 	_type = this;
 }

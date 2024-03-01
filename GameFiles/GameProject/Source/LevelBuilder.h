@@ -4,7 +4,7 @@
 // Author(s):	Michael Howard
 // Purpose:		Function declarations for building of the levels
 //
-// Copyright © 2023 DigiPen (USA) Corporation.
+// Copyright ?2023 DigiPen (USA) Corporation.
 //
 //------------------------------------------------------------------------------
 #pragma once
@@ -20,15 +20,14 @@ class Renderer;
 class LevelBuilder : public BaseSystem
 {
 public:
-	LevelBuilder();
 	~LevelBuilder();
-	void Read(json &jsonData);
+	void Read(json& jsonData);
 	Engine::EngineCode Init();
 	void Update(float dt);
 
 	void Render();
 	Engine::EngineCode Close();
-	
+
 	static LevelBuilder* GetInstance();
 	void LoadTileMap(std::string filename);
 	void ReLoadLevel();
@@ -49,8 +48,9 @@ public:
 	static bool getDoor();
 
 private:
+	LevelBuilder();
 	void AddTileSets();
-	static LevelBuilder* instance;
+	static std::unique_ptr<LevelBuilder> instance;
 	static bool WinState;
 	static bool door;
 	EntityContainer* entity_container;

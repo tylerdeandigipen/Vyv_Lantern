@@ -32,6 +32,7 @@
 class Renderer
 {
 public:
+
 	//Visual Effects Settings
 	float screenScale = 6;
 	float normalStrength = 0.5f;
@@ -66,6 +67,7 @@ public:
 	//Animation Functions
 	void UpdateAnimations(float dt);
 	ImageBuffer* CreateAnimatedObject(const std::string filename, Vector2 frameSize);
+
 	// 0 = forward, 1 = down, 2 = up, 3 = blink
 	void UpdateFace(int& faceState_);
 
@@ -78,7 +80,6 @@ public:
 	void AddShadowCasterToShadowCasterTileset(ImageBuffer* tile);
 
 	//Helper Functions
-	Renderer();
 	void UpdateObjects(float dt);
 	ImageBuffer* GetObjectByName(std::string name_);
 	void AddLight(Light light);
@@ -93,7 +94,7 @@ public:
 	gfxVector2 LaserCheckLineForObject(Vector2 pos1, Vector2 pos2);
 	void BlurLights(int blurRangeLow, int blurRangeHigh);
 	void ExpandTileMapInDirection(Vector2 direction, int distance);
-	
+
 	auto GetTileCount() -> unsigned int;
 
 	//Cleanup Functions
@@ -105,7 +106,7 @@ public:
 	void ResizeBuffers();
 
 	//Debug Functions
-	void DrawLine(Vector2 P0, Vector2 P1, const Color &LineColor);
+	void DrawLine(Vector2 P0, Vector2 P1, const Color& LineColor);
 	void RenderWallCollidersToDebugBuffer();
 
 	//Output Buffer
@@ -121,14 +122,14 @@ public:
 	ImageBuffer* lightBuffer = NULL;
 	ImageBuffer* shadowCasterBuffer = NULL;
 	ImageBuffer* normalBuffer = NULL;
-	
+
 	//ImageBuffer* fogBuffer = NULL;
 
 	//Object References
 	Light lightSource[MAX_LIGHT_SOURCES];
 	ImageBuffer* objects[MAX_OBJECTS];
 	ImageBuffer* animatedObjects[MAX_ANIMATED_OBJECTS][MAX_ANIMATION_FRAMES];
-	
+
 	//Needed to be public (maybe make private later by adding helper funcs)
 	int faceState = 0;
 	Vector2 tileMapSize;
@@ -146,13 +147,17 @@ public:
 
 	int** tileMap = NULL;
 
-	int nonWalkableTiles[NUM_NON_WALKABLE_TILES] = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 26, 27, 28, 29, 30, 31, 41, 42, 43, 45, 46, 47, 48, 49, 50, 51, 52};
+	int nonWalkableTiles[NUM_NON_WALKABLE_TILES] = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 26, 27, 28, 29, 30, 31, 41, 42, 43, 45, 46, 47, 48, 49, 50, 51, 52 };
 	int numNonWalkTiles = NUM_NON_WALKABLE_TILES;
 
 	Vector2 laserPoints1[MAX_LASER_POINTS];
 	Vector2 laserPoints2[MAX_LASER_POINTS];
+	Color laserColor[MAX_LASER_POINTS];
 	int numLasers = 0;
+	TBDLasers laserHandler; // handler for mirrors and lasers
 private:
+	Renderer();
+
 	//Various Counters
 	int numTiles = 0;
 	int numNormalTiles = 0;
@@ -163,14 +168,14 @@ private:
 
 	//Fog Variables
 	bool fogIsDirty = true;
-	Vector2 fogOffSet{0,0};
-	Vector2 fogPos{0,0};
+	Vector2 fogOffSet{ 0,0 };
+	Vector2 fogPos{ 0,0 };
 
 	//Face Variables
 	int faceIndex = -99;
 
 	//Tilemap Variables
-	const int wallTileIndexes[NUM_WALL_TILES] = {6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 26, 27, 28, 29, 30, 31};
+	const int wallTileIndexes[NUM_WALL_TILES] = { 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 26, 27, 28, 29, 30, 31 };
 	ImageBuffer* tileSet[MAX_TILES];
 	ImageBuffer* normalTileSet[MAX_TILES];
 	ImageBuffer* shadowCasterTileset[MAX_TILES];
@@ -179,17 +184,16 @@ private:
 	int frameCount = 0;
 	float timer = 0;
 	float timeBetweenFrames = 0.1f;
-    Uint32 startTime;
-    uint32_t PreviousFrameBeginTime = NULL;
-    float PreviousFrameLengths[15];
+	Uint32 startTime;
+	uint32_t PreviousFrameBeginTime = NULL;
+	float PreviousFrameLengths[15];
 
 	//Misc.
 	unsigned int maxThreadsAllowed = 8;
-	TBDLasers laserHandler;
 	Vector2 CameraP;
-	static Renderer* instance;
+	static std::unique_ptr<Renderer> instance;
 	ImageBuffer* DebugBuffer = NULL;
 	uint32_t OutputBufferTexture = NULL;
 };
 
-#endif 
+#endif

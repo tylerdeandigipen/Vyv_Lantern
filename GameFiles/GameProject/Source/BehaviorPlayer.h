@@ -4,11 +4,12 @@
 // Author(s):	Michael Howard (michael.howard)
 // Purpose:		The players behavior
 // 
-// Copyright © 2023 DigiPen (USA) Corporation.
+// Copyright ?2023 DigiPen (USA) Corporation.
 //
 //------------------------------------------------------------------------------
 #pragma once
 #include "Behavior.h"
+#include "BehaviorDoor.h"
 #include "Inputs.h"
 #include "Vector.h"
 #include <random>

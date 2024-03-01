@@ -24,24 +24,24 @@
 #define SCREEN_SIZE_Y 136
 
 // singleton instance
-PlatformSystem* PlatformSystem::instance = new PlatformSystem();
+std::unique_ptr<PlatformSystem> PlatformSystem::instance = nullptr;
 
 Engine::EngineCode PlatformSystem::Init()
 {
-    // init SDL library 
-	if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_EVENTS) != 0) 
-    {
+	// init SDL library
+	if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_EVENTS) != 0)
+	{
 	}
 
-    winHandle = SDL_CreateWindow("LanternGame", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, (SCREEN_SIZE_X * 6), (SCREEN_SIZE_Y * 6), SDL_WINDOW_OPENGL);
+	winHandle = SDL_CreateWindow("LanternGame", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, (SCREEN_SIZE_X * 6), (SCREEN_SIZE_Y * 6), SDL_WINDOW_OPENGL);
 
-    if (!winHandle)
-    {
-        SDL_Quit();
-        return Engine::NullWindowHandle;
-    }
+	if (!winHandle)
+	{
+		SDL_Quit();
+		return Engine::NullWindowHandle;
+	}
 
-	// NOTE(thomas): Creating the ONE-AND-ONLY OpenGL context 
+	// NOTE(thomas): Creating the ONE-AND-ONLY OpenGL context
 	oglContext = SDL_GL_CreateContext(winHandle);
 	SDL_GL_SetSwapInterval(0);
 	gladLoadGLLoader(SDL_GL_GetProcAddress);
@@ -59,59 +59,54 @@ Engine::EngineCode PlatformSystem::Init()
 #endif
 
 	assert(winHandle != NULL);
-    return Engine::NothingBad;
+	return Engine::NothingBad;
 }
 
 void PlatformSystem::Update(float dt)
 {
-    UNREFERENCED_PARAMETER(dt);
+	UNREFERENCED_PARAMETER(dt);
 }
 
 void PlatformSystem::Render()
-{ 
+{
 }
 
 // Close it all down
 Engine::EngineCode PlatformSystem::Close()
 {
-    assert(instance != NULL);
+	assert(instance != NULL);
 #ifdef _DEBUG
 	ImGui_ImplOpenGL3_Shutdown();
 	ImGui_ImplSDL2_Shutdown();
 	ImGui::DestroyContext();
 #endif
 	SDL_GL_DeleteContext(oglContext);
-	
+
 	SDL_DestroyWindow(winHandle);
-    SDL_Quit();
+	SDL_Quit();
 
-	if (instance != NULL)
-	{
-		delete instance;
-	}
-
-    return Engine::NothingBad;
+	return Engine::NothingBad;
 }
 
 // get the singleton instance
 PlatformSystem* PlatformSystem::GetInstance()
 {
-	if (instance == nullptr)
+	if (!instance)
 	{
-		instance = new PlatformSystem();
+		instance.reset(new PlatformSystem());
 	}
-	return instance;
+	return instance.get();
 }
 
 void PlatformSystem::ChangeTitle(const char* title)
 {
-    assert(title != NULL);
-    SDL_SetWindowTitle(winHandle, title);
+	assert(title != NULL);
+	SDL_SetWindowTitle(winHandle, title);
 }
 
 SDL_Window* PlatformSystem::GetWindowHandle()
 {
-    return winHandle;
+	return winHandle;
 }
 
 PlatformSystem::PlatformSystem() : BaseSystem("PlatformSystem"), winHandle(NULL) {}

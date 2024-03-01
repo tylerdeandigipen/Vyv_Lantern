@@ -7,7 +7,7 @@
 // Purpose:		This file includes standard system include files, or project-specific 
 //   include files that are used frequently, but are changed infrequently.
 //
-// Copyright © 2023 DigiPen (USA) Corporation.
+// Copyright ?2023 DigiPen (USA) Corporation.
 //
 //------------------------------------------------------------------------------
 

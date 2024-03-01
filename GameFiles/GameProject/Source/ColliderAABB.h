@@ -4,7 +4,7 @@
 // Author(s):	Michael Howard (michael.howard)
 // Purpose:		AABB collider for most if not all game objects
 // 
-// Copyright © 2023 DigiPen (USA) Corporation.
+// Copyright ?2023 DigiPen (USA) Corporation.
 //
 //------------------------------------------------------------------------------
 #pragma once

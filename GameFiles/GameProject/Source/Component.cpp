@@ -5,7 +5,7 @@
 // Purpose:		(Borrowed from cs230) creates a base componenet class for 
 //				entities
 // 
-// Copyright © 2023 DigiPen (USA) Corporation.
+// Copyright ?2023 DigiPen (USA) Corporation.
 //
 //------------------------------------------------------------------------------
 
