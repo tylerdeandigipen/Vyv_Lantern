@@ -242,7 +242,6 @@ xcopy "$(ProjectDir)Fmod\*.dll" "$(OutDir)" /s /r /y /q /i</Command>
     <ClInclude Include="Vector.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="BehaviorEmitter.cpp" />
     <ClCompile Include="Emitter.cpp" />
     <ClCompile Include="Engine.cpp" />
     <ClCompile Include="ImageBuffer.cpp" />
@@ -266,6 +265,7 @@ xcopy "$(ProjectDir)Fmod\*.dll" "$(OutDir)" /s /r /y /q /i</Command>
     <ClCompile Include="Source\BaseSystem.cpp" />
     <ClCompile Include="Source\Behavior.cpp" />
     <ClCompile Include="Source\BehaviorDoor.cpp" />
+    <ClCompile Include="Source\BehaviorEmitter.cpp" />
     <ClCompile Include="Source\BehaviorMirror.cpp" />
     <ClCompile Include="Source\BehaviorPlayer.cpp" />
     <ClCompile Include="Source\BehaviorSwitch.cpp" />

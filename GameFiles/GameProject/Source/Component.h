@@ -23,7 +23,7 @@ class Component
 {
 public:
 
-	enum TypeEnum { cBehavior, cBehaviorDoor, cCollider, cImageBuffer, cLight, cPhysics, cTransform, cSprite, cAnimation, cMirror, cSwitch, cEmitter, cDoor, cLineCollider  };
+	enum TypeEnum { cBehavior, cBehaviorDoor, cBehaviorEmitter, cCollider, cImageBuffer, cLight, cPhysics, cTransform, cSprite, cAnimation, cMirror, cSwitch, cEmitter, cDoor, cLineCollider  };
 	_inline Component::TypeEnum type() const { return mType; };
 
 	_inline void Parent(Entity* entity) { mParent = entity; }

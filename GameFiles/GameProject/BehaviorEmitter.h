@@ -35,6 +35,7 @@ public:
 	static void EmitterCollisionHandler(Entity* thisone, Entity* other); // may not need one
 
 private:
+	void SetLaserDirection(gfxVector2 dir);
 	Laser* laser;
 	//bool inited = false;
 };

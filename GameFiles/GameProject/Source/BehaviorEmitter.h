@@ -33,15 +33,10 @@ public:
 	void Read(json jsonData) override;
 	static void SwitchOn(bool collided);
 	static void EmitterCollisionHandler(Entity* thisone, Entity* other); // may not need one
+	void SetDirection(gfxVector2 dir);
+	void SetPosition(gfxVector2 pos) { laser->pos = pos; };
 
 private:
-	//reflector* reflect;
-	Laser* mirror;
-	std::vector<gfxVector2> pos;
-	static int count;
-	int key;
-	static int maxCount;
-	static gfxVector2 currentPos; // Current position of the mirror
-	static gfxVector2 targetPos; // Target position for interpolation
-	bool inited = false;
+	//bool inited = false;
+	Laser* laser;
 };
