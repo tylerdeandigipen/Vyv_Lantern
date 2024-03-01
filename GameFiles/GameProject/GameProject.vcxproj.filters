@@ -175,6 +175,8 @@
     </ClCompile>
     <ClCompile Include="Emitter.cpp" />
     <ClCompile Include="LineCollider.cpp" />
+    <ClCompile Include="Source\reciever.cpp" />
+    <ClCompile Include="Source\Emitter_Container.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="IMGUI\imgui.h">
@@ -375,6 +377,8 @@
     </ClInclude>
     <ClInclude Include="Emitter.h" />
     <ClInclude Include="LineCollider.h" />
+    <ClInclude Include="Source\reciever.h" />
+    <ClInclude Include="Source\Emitter_Container.h" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Misc\GameProject.ico">

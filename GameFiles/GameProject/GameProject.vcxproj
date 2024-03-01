@@ -198,6 +198,7 @@ xcopy "$(ProjectDir)Fmod\*.dll" "$(OutDir)" /s /r /y /q /i</Command>
     <ClInclude Include="Source\ComponentFactory.h" />
     <ClInclude Include="Source\CrashHandler.hpp" />
     <ClInclude Include="Source\DebugNew.h" />
+    <ClInclude Include="Source\Emitter_Container.h" />
     <ClInclude Include="Source\Engine.h" />
     <ClInclude Include="Source\Entity.h" />
     <ClInclude Include="Source\EntityContainer.h" />
@@ -220,6 +221,7 @@ xcopy "$(ProjectDir)Fmod\*.dll" "$(OutDir)" /s /r /y /q /i</Command>
     <ClInclude Include="Source\PauseMenu.h" />
     <ClInclude Include="Source\Physics.h" />
     <ClInclude Include="Source\PlatformSystem.h" />
+    <ClInclude Include="Source\reciever.h" />
     <ClInclude Include="Source\Renderer.h" />
     <ClInclude Include="Source\Resource.h" />
     <ClInclude Include="Source\Scene.h" />
@@ -269,6 +271,7 @@ xcopy "$(ProjectDir)Fmod\*.dll" "$(OutDir)" /s /r /y /q /i</Command>
     <ClCompile Include="Source\Color.cpp" />
     <ClCompile Include="Source\Component.cpp" />
     <ClCompile Include="Source\ComponentFactory.cpp" />
+    <ClCompile Include="Source\Emitter_Container.cpp" />
     <ClCompile Include="Source\Entity.cpp" />
     <ClCompile Include="Source\EntityContainer.cpp" />
     <ClCompile Include="Source\EntityFactory.cpp" />
@@ -286,6 +289,7 @@ xcopy "$(ProjectDir)Fmod\*.dll" "$(OutDir)" /s /r /y /q /i</Command>
     <ClCompile Include="Source\PauseMenu.cpp" />
     <ClCompile Include="Source\Physics.cpp" />
     <ClCompile Include="Source\PlatformSystem.cpp" />
+    <ClCompile Include="Source\reciever.cpp" />
     <ClCompile Include="Source\Scene.cpp" />
     <ClCompile Include="Source\SceneSystem.cpp" />
     <ClCompile Include="Source\Sprite.cpp" />
