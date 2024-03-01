@@ -185,3 +185,8 @@ Vector2 TBDLasers::CheckCollision(int laserIndex)
 	return renderer->LaserCheckLineForObject(laserPos1, laserPos2);
 }
 
+void TBDLasers::Clear()
+{
+	numLasers = 0;
+	numMirrors = 0;
+}

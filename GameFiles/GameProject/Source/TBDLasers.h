@@ -47,6 +47,7 @@ class TBDLasers
 {
 public:
 	TBDLasers();
+	void Clear();
 
 	//returns true if succesful
 	bool AddLaser(Laser* laser);

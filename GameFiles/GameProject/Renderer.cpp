@@ -1237,9 +1237,7 @@ void Renderer::CleanRenderer()
 	normalBuffer->ClearImageBuffer();
 	lightBuffer->ClearImageBuffer();
 
-	//normalBufferPostCam->ClearImageBuffer();
-	//fogBuffer->ClearImageBuffer();
-	//fogBufferPostCam->ClearImageBuffer();
+	laserHandler.Clear();
 
 	if (menuBuffer != NULL)
 	{
@@ -1250,9 +1248,6 @@ void Renderer::CleanRenderer()
 	particleManager->ClearParticles();
 	ReallocateLightArrays();
 	ClearTilesets();
-
-	//ClearSprites();
-	//ClearLights();
 
 	faceIndex = -1;
 	numTiles = 0;
