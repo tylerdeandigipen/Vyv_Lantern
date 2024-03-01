@@ -336,16 +336,17 @@ void BehaviorPlayer::PlayerCollisionHandler(Entity* entity1, Entity* entity2)
     // check which one is player and what the other one is
     // make each instance of what the player can collide 
     // with and set interactable value pressed to true if 'E' is entered
+
     if (entity1->GetRealName().compare("Player") == 0 && entity2->GetRealName().compare("Door") == 0)
     {
         auto door = reinterpret_cast<BehaviorDoor*>(entity2->Has(Behavior));
 
-        float pushDirX = entity2->GetImage()->position.x - entity1->GetImage()->position.x;
-        float pushDirY = entity2->GetImage()->position.y - entity1->GetImage()->position.y;
+        float pushDirX = (entity2->GetImage()->position.x + 5.f) - entity1->GetImage()->position.x;
+        float pushDirY = (entity2->GetImage()->position.y + 5.f) - entity1->GetImage()->position.y;
 
         float pushDirLength = sqrt(pushDirX * pushDirX + pushDirY * pushDirY);
 
-        float overlap = 20.0f; // You can adjust this value as needed
+        float overlap = 18.0f; // You can adjust this value as needed
 
         if (door->GetDoorClosed())
         {
@@ -358,8 +359,8 @@ void BehaviorPlayer::PlayerCollisionHandler(Entity* entity1, Entity* entity2)
                 // Apply the push force only if there is overlap
                 if (pushDirLength < overlap)
                 {
-                    entity1->GetImage()->position.x -= pushDirX * (overlap - pushDirLength);
-                    entity1->GetImage()->position.y -= pushDirY * (overlap - pushDirLength);
+                    entity1->GetImage()->position.x -= (pushDirX * (overlap - pushDirLength)) / 3.f;
+                    entity1->GetImage()->position.y -= (pushDirY * (overlap - pushDirLength)) / 3.f;
                 }
             }
         }
@@ -368,12 +369,12 @@ void BehaviorPlayer::PlayerCollisionHandler(Entity* entity1, Entity* entity2)
     {
         auto door = reinterpret_cast<BehaviorDoor*>(entity1->Has(Behavior));
 
-        float pushDirX = entity1->GetImage()->position.x - entity2->GetImage()->position.x;
-        float pushDirY = entity1->GetImage()->position.y - entity2->GetImage()->position.y;
+        float pushDirX = (entity1->GetImage()->position.x) / 2.f - entity2->GetImage()->position.x;
+        float pushDirY = (entity1->GetImage()->position.y) / 2.f - entity2->GetImage()->position.y;
 
         float pushDirLength = sqrt(pushDirX * pushDirX + pushDirY * pushDirY);
 
-        float overlap = 20.0f; // You can adjust this value as needed
+        float overlap = 18.0f; // You can adjust this value as needed
 
         if (door->GetDoorClosed())
         {
@@ -386,8 +387,8 @@ void BehaviorPlayer::PlayerCollisionHandler(Entity* entity1, Entity* entity2)
                 // Apply the push force only if there is overlap
                 if (pushDirLength < overlap)
                 {
-                    entity2->GetImage()->position.x -= pushDirX * (overlap - pushDirLength);
-                    entity2->GetImage()->position.y -= pushDirY * (overlap - pushDirLength);
+                    entity2->GetImage()->position.x -= (pushDirX * (overlap - pushDirLength)) / 3.f;
+                    entity2->GetImage()->position.y -= (pushDirY * (overlap - pushDirLength)) / 3.f;
                 }
             }
         }

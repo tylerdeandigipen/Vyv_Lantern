@@ -71,7 +71,6 @@ public:
     void GenerateVornoiPoints();
     void MakeVornoiNoiseBuffer(Vector2 camPos, float falloffModifier, float brightnessMultiplier, float minBrightness);
     void DitherBuffer(ImageBuffer* output = NULL, bool renderOnlyLights = false, bool isFullbright = false, float** lightR = NULL, float** lightG = NULL, float** lightB = NULL);
-
     ImageBuffer& operator =(const ImageBuffer& rhs);
 
     private:
