@@ -109,7 +109,7 @@ void TBDLasers::UpdateLasers()
 		mirrors[i]->isActivated = false;
 	}
 
-	bool isSolved = true;
+	isSolved = true;
 	for (int i = 0; i < numCheckPoints; i++)
 	{
 		if (checkPoints[i]->isActivated == false)

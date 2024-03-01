@@ -75,6 +75,8 @@ public:
 	Vector2 CheckCollision(int laserIndex);
 	void UpdateLasers();
 
+	bool isSolved = false;
+
 	int numLasers;
 	Laser* lasers[MAX_LASERS];
 
