@@ -6,25 +6,25 @@
     {
       "Type": "Transform",
       "translation": {
-        "x": 144.0,
-        "y": 168.0
+        "x": 384.0,
+        "y": 224.0
       }
     },
     {
       "OldTranslation": {
-        "x": 144.0,
-        "y": 168.0
+        "x": 384.0,
+        "y": 224.0
       },
       "Type": "Physics"
     }
   ],
-  "FilePath": "./Data/Scenes/TutorialScene/Reciever0.json",
+  "FilePath": "./Data/Scenes/Section1WIP4/Emitter4.json",
   "KeyObject": {
-    "key": "Reciever0"
+    "key": "Emitter4"
   },
-  "Name": "Reciever",
+  "Name": "Emitter",
   "Type": "Object",
-  "file": "./Assets/PPM/CrystalSprites/GoalCrystal.ppm",
+  "file": "./Assets/PPM/CrystalSprites/EmitterCrystal.ppm",
   "frameSize": [
     8,
     8

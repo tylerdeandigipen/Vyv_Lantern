@@ -24,7 +24,7 @@
   },
   "Name": "Reciever",
   "Type": "Object",
-  "file": "./Assets/PPM/tempReciever.ppm",
+  "file": "./Assets/PPM/CrystalSprites/GoalCrystal.ppm",
   "frameSize": [
     8,
     8

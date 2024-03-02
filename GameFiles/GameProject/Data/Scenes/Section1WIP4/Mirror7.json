@@ -6,36 +6,40 @@
     {
       "Type": "Transform",
       "translation": {
-        "x": 112.0,
-        "y": 132.0
+        "x": 200.0,
+        "y": 84.0
       }
     },
     {
       "OldTranslation": {
-        "x": 112.0,
-        "y": 124.0
+        "x": 200.0,
+        "y": 84.0
       },
       "Type": "Physics"
     },
     {
-      "NumPositions": 2,
+      "NumPositions": 3,
       "Type": "BehaviorSwitch",
       "key": 1,
       "pos": [
         {
-          "x": "112.000000",
-          "y": "132.000000"
+          "x": "200.000000",
+          "y": "84.000000"
         },
         {
-          "x": "112.000000",
+          "x": "200.000000",
+          "y": "60.000000"
+        },
+        {
+          "x": "200.000000",
           "y": "108.000000"
         }
       ]
     }
   ],
-  "FilePath": "./Data/Scenes/TutorialScene/Mirror2.json",
+  "FilePath": "./Data/Scenes/Section1WIP4/Mirror7.json",
   "KeyObject": {
-    "key": "Mirror2"
+    "key": "Mirror7"
   },
   "Name": "Switch",
   "Type": "Object",
