@@ -150,7 +150,7 @@ void BehaviorMirror::Read(json jsonData)
         position.y = (float)std::stoi(positions["y"].get<std::string>());
         pos.push_back(position);
     }
-    key = jsonData["key"];
+    //key = jsonData["key"];
     //currentPos = pos[0];
     //targetPos = pos[0];
 }
