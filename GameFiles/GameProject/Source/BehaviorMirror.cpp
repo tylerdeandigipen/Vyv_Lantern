@@ -130,6 +130,7 @@ void BehaviorMirror::Update(float dt)
 void BehaviorMirror::Read(json jsonData)
 {
 
+    Init();
     if (jsonData["Direction"].is_object())
     {
         json direction = jsonData["Direction"];
@@ -139,7 +140,6 @@ void BehaviorMirror::Read(json jsonData)
         mirror->reflectDir.x = direction["DirectionX"];
         mirror->reflectDir.y = direction["DirectionY"];
     }
-    Init();
 
 
     for (auto& positions : jsonData["pos"])

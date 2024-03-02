@@ -1284,7 +1284,7 @@ void LevelCreatorScene::AddMirrorEntity(Entity* entity)
 	if (entMirr)
 	{
 		json direction = { {"DirectionX", entity->GetComponent<BehaviorMirror>()->GetReflectDirection().x}, {"DirectionY", entity->GetComponent<BehaviorMirror>()->GetReflectDirection().y} };
-		bMirror = { {"Type", "BehaviorMirror"}, {"Direction", direction} }; // will add color if it comes up again but will not for now
+		bMirror = { {"Type", "BehaviorMirror"}, {"Direction", direction}, {"key", 0} }; // will add color if it comes up again but will not for now
 	}
 
 	components.push_back(collider);
