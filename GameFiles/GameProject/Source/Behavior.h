@@ -27,7 +27,7 @@ public:
 	std::string GetName() override { return std::string(); };
 	void Read(json jsonData);
 
-	virtual void SetInputHandler(Inputs* input) {};
+	virtual void SetInputHandler(Inputs* input) { UNREFERENCED_PARAMETER(input); };
 	Component* Clone(void) const override;
 	
 	virtual void SetCurr(int state);

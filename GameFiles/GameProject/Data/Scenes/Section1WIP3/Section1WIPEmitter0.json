@@ -24,7 +24,7 @@
   },
   "Name": "Emitter",
   "Type": "Object",
-  "file": "./Assets/PPM/squareEmitter.ppm",
+  "file": "./Assets/PPM/CrystalSprites/EmitterCrystal.ppm",
   "frameSize": [
     8,
     8

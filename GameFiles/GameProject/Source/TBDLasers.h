@@ -16,7 +16,7 @@
 #include "Vector.h"
 #define MAX_LASERS 20
 #define MAX_MIRRORS 20
-
+#define MAX_CHECKPOINTS 20
 struct Laser
 {
 	// laser must always be on a single axis
@@ -27,11 +27,29 @@ struct Laser
 	bool isEmiting = false;
 };
 
+struct CheckPoint
+{
+	// each set must always be on a single axis
+	Vector2 xPos1{ 0,0 };
+	Vector2 xPos2{ 0,0 };
+	Vector2 yPos1{ 0,0 };
+	Vector2 yPos2{ 0,0 };
+
+	//set to true to stop laser from passing through checkpoint
+	bool isSolid = false;
+	//Color required to activate, leave blank for any color to work
+	Color requiredColor{ 0,0,0,0 };
+	bool isActivated = false;
+};
+
 struct Mirror
 {
-	// mirror must always share an axis
-	Vector2 pos1{ 0,0 };
-	Vector2 pos2{ 0,0 };
+	// each set must always share an axis
+	Vector2 xPos1{ 0,0 };
+	Vector2 xPos2{ 0,0 };
+	Vector2 yPos1{ 0,0 };
+	Vector2 yPos2{ 0,0 };
+
 	Vector2 reflectDir{ 0,0 };
 	//not implemented yet
 	bool reflectFromLeft = 0;
@@ -47,19 +65,26 @@ class TBDLasers
 {
 public:
 	TBDLasers();
+	void Clear();
 
 	//returns true if succesful
 	bool AddLaser(Laser* laser);
 	bool AddMirror(Mirror* mirror);
+	bool AddCheckPoint(CheckPoint* checkPoint);
 
 	Vector2 CheckCollision(int laserIndex);
 	void UpdateLasers();
+
+	bool isSolved = false;
 
 	int numLasers;
 	Laser* lasers[MAX_LASERS];
 
 	int numMirrors;
-	Mirror* mirrors[MAX_LASERS];
+	Mirror* mirrors[MAX_MIRRORS];
+
+	int numCheckPoints;
+	CheckPoint* checkPoints[MAX_CHECKPOINTS];
 };
 
 #endif 

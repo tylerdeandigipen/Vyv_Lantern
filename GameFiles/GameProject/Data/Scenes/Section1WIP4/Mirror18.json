@@ -6,14 +6,14 @@
     {
       "Type": "Transform",
       "translation": {
-        "x": 92.0,
-        "y": 83.0
+        "x": 352.0,
+        "y": 228.0
       }
     },
     {
       "OldTranslation": {
-        "x": 92.0,
-        "y": 83.0
+        "x": 352.0,
+        "y": 228.0
       },
       "Type": "Physics"
     },
@@ -39,15 +39,22 @@
           "y": "100.000000"
         }
       ]
+    },
+    {
+      "Direction": {
+        "DirectionX": 1.0,
+        "DirectionY": 0.0
+      },
+      "Type": "BehaviorMirror"
     }
   ],
-  "FilePath": "./Data/Scenes/MirrorDirectionTest/Mirror1.json",
+  "FilePath": "./Data/Scenes/Section1WIP4/Mirror18.json",
   "KeyObject": {
-    "key": "Mirror1"
+    "key": "Mirror18"
   },
   "Name": "Switch",
   "Type": "Object",
-  "file": "./Assets/PPM/CrystalSprites/MirrorCrystalUpRight.ppm",
+  "file": "./Assets/PPM/CrystalSprites/MirrorCrystalDownRight.ppm",
   "frameSize": [
     8,
     8

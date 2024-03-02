@@ -58,7 +58,7 @@ Entity::Entity(std::string type, const std::string file, json Animated) : isDest
 }
 
 
-Entity::Entity(Entity const& ent) : isDestroyed(ent.isDestroyed), name{}, components(ent.components), image(ent.image), mName(ent.mName), isLight(ent.isLight), isObject(ent.isObject), isAnimated(ent.isAnimated)
+Entity::Entity(Entity const& ent) : isDestroyed(ent.isDestroyed), name{}, components(ent.components), image(ent.image), mName(ent.mName), isLight(ent.isLight), isObject(ent.isObject), isAnimated(ent.isAnimated), AnimationArray()
 {
 	if (ent.name)
 		strcpy_s(name, _countof(name), ent.name);
@@ -202,6 +202,8 @@ bool Entity::IsNamed(const char* _name)
 
 bool Entity::IsPicked(Renderer* pRenderder, Vector2 mousePos)
 {
+	UNREFERENCED_PARAMETER(pRenderder);
+	UNREFERENCED_PARAMETER(mousePos);
 	return false;
 }
 

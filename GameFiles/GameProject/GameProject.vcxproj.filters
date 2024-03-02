@@ -184,7 +184,7 @@
     <ClCompile Include="ImGuiManager.cpp">
       <Filter>Source FIles\Engine\Systems</Filter>
     </ClCompile>
-    <ClCompile Include="BehaviorEmitter.cpp">
+    <ClCompile Include="Source\BehaviorEmitter.cpp">
       <Filter>Source FIles\Objects\Components\Sub Components</Filter>
     </ClCompile>
   </ItemGroup>

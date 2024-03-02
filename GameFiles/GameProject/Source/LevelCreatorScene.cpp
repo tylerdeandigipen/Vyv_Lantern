@@ -24,6 +24,7 @@
 
 #include "BehaviorSwitch.h"
 #include "BehaviorPlayer.h"
+#include "BehaviorEmitter.h"
 #include "BehaviorMirror.h"
 #include "Entity.h"
 #include "Collider.h"
@@ -242,8 +243,8 @@ void LevelCreatorScene::ToolSquareFill(Inputs* inputHandler, Vector2 CursourP)
 void LevelCreatorScene::ExportScene(std::string name)
 {
 	Renderer* pixel = Renderer::GetInstance();
-	int rows = pixel->tileMapSize.x;
-	int columns = pixel->tileMapSize.y;
+	int rows = (int)pixel->tileMapSize.x;
+	int columns = (int)pixel->tileMapSize.y;
 	std::string folder = "./Data/Scenes/" + name;
 	exportFolder = folder;
 	exportFolder += "/";
@@ -406,7 +407,7 @@ Vector2 LevelCreatorScene::PlaceTile(Vector2 tilePos)
 			}
 			if (tilePos.x > LevelCreatorPixelRenderer->tileMapSize.x)
 			{
-				LevelCreatorPixelRenderer->ExpandTileMapInDirection(Vector2{ 1,0 }, expansionRange + (tilePos.x - LevelCreatorPixelRenderer->tileMapSize.x));
+				LevelCreatorPixelRenderer->ExpandTileMapInDirection(Vector2{ 1,0 }, expansionRange + (int)(tilePos.x - LevelCreatorPixelRenderer->tileMapSize.x));
 			}
 			if (tilePos.y < 0)
 			{
@@ -417,7 +418,7 @@ Vector2 LevelCreatorScene::PlaceTile(Vector2 tilePos)
 			}
 			if (tilePos.y > LevelCreatorPixelRenderer->tileMapSize.y)
 			{
-				LevelCreatorPixelRenderer->ExpandTileMapInDirection(Vector2{ 0,1 }, expansionRange + (tilePos.y - LevelCreatorPixelRenderer->tileMapSize.y));
+				LevelCreatorPixelRenderer->ExpandTileMapInDirection(Vector2{ 0,1 }, expansionRange + (int)(tilePos.y - LevelCreatorPixelRenderer->tileMapSize.y));
 			}
 		}
 		LevelCreatorPixelRenderer->MakeTileMap(LevelCreatorPixelRenderer->tileMap);
@@ -470,7 +471,7 @@ void LevelCreatorScene::ToolHandler()
 					playerSpawned = true;
 				}
 				LevelCreatorPixelRenderer->animatedObjects[0][0]->position = CursourP + LevelCreatorPixelRenderer->GetCameraPosition() - Vector2{ 3,3 };
-				int* walls = new int[LevelCreatorPixelRenderer->tileMapSize.x * LevelCreatorPixelRenderer->tileMapSize.y];
+				int* walls = new int[(size_t)LevelCreatorPixelRenderer->tileMapSize.x * (size_t)LevelCreatorPixelRenderer->tileMapSize.y];
 
 				for (int x = 0; x < LevelCreatorPixelRenderer->tileMapSize.x; ++x)
 				{
@@ -488,8 +489,8 @@ void LevelCreatorScene::ToolHandler()
 						}
 					}
 				}
-				LevelBuilder::GetInstance()->SetX(LevelCreatorPixelRenderer->tileMapSize.x);
-				LevelBuilder::GetInstance()->SetY(LevelCreatorPixelRenderer->tileMapSize.y);
+				LevelBuilder::GetInstance()->SetX((int)LevelCreatorPixelRenderer->tileMapSize.x);
+				LevelBuilder::GetInstance()->SetY((int)LevelCreatorPixelRenderer->tileMapSize.y);
 				delete[] LevelBuilder::GetInstance()->GetWalls();
 				LevelBuilder::GetInstance()->SetWalls(walls);
 				playMode = true;
@@ -957,7 +958,7 @@ void LevelCreatorScene::ImGuiWindow()
 		{
 			static int selected = -1;
 
-			for (auto n = 0; n < entityManager->pRenderer->GetTileCount(); n++)
+			for (unsigned n = 0; n < entityManager->pRenderer->GetTileCount(); n++)
 			{
 				if (ImGui::Selectable(("Tile " + TileNumToString(n)).c_str(), selected == n))
 					currentTile = n;
@@ -996,25 +997,27 @@ void LevelCreatorScene::ImGuiWindow()
 	{
 		CreateDoorEntity();
 	}
-	int scaredConfused = ImGuiManager::RenderDirPopup("MirrorDirection", "Pick a mirror direction.");
+	int scaredConfused = ImGuiManager::RenderDirPopup("MirrorDirection", "Pick a mirror direction.", "Mirror");
 	if (ImGui::Button("  Create Mirror") || scaredConfused > 0)
 	{
 		ImGui::OpenPopup("MirrorDirection");
+
+		//ImGuiManager::MirrorCheckBox(scaredConfused);
 		if (scaredConfused > 0)
 			CreateMirrorEntity(scaredConfused);
 	}
-	if (ImGui::Button("  Create Emitter"))
+	int emitterDirection = ImGuiManager::RenderDirPopup("EmitterDirection", "Pick a Emitter direction.", "Emitter");
+	if (ImGui::Button("  Create Emitter") || emitterDirection > 0)
 	{
 		ImGui::OpenPopup("EmitterDirection");
-		CreateEmitterEntity( 1); // temporary value untill i fix it
+		if (emitterDirection > 0)
+			CreateEmitterEntity(emitterDirection); // temporary value untill i fix it
 	}
- 	
-	ImGuiManager::RenderDirPopup("EmitterDirection", "Pick an emitter direction.");
+
 	if (ImGui::Button("  Create Reciever"))
 	{
 		CreateRecieverEntity();
 	}
-
 
 	ImGui::Separator();
 	entityManager->EditEntity(Vector2{ static_cast<float>(Inputs::GetInstance()->getMouseX()), static_cast<float>(Inputs::GetInstance()->getMouseY()) });
@@ -1094,8 +1097,11 @@ int LevelCreatorScene::CreateDoorEntity()
 int LevelCreatorScene::CreateMirrorEntity(int direction)
 {
 	int door_existing = 0;
+
+	UNREFERENCED_PARAMETER(door_existing);
+
 	std::string number = "./Data/GameObjects/Mirror";
-	
+
 	std::string filename;
 	switch (direction) {
 	case 1: filename = "./Data/GameObjects/MirrorTopLeft.json"; break;
@@ -1120,10 +1126,40 @@ int LevelCreatorScene::CreateMirrorEntity(int direction)
 //static int emitterCount = 0;
 int LevelCreatorScene::CreateEmitterEntity(int direction)
 {
+	UNREFERENCED_PARAMETER(direction);
 	std::string number = "./Data/GameObjects/Emitter";
 	std::string filename = "./Data/GameObjects/tempEmitter.json";
 
 	Entity* temp = FileIO::GetInstance()->ReadEntity(filename);
+
+	//std::string filename;
+	switch (direction) {
+	case 1:
+	{
+		BehaviorEmitter* mine = temp->GetComponent<BehaviorEmitter>();
+		mine->SetDirection({ 0.0f, 1.0f });
+		mine->SetPosition(*temp->GetComponent<Transform>()->GetTranslation());
+		break;
+	}
+	case 2:
+	{
+		BehaviorEmitter* mine = temp->GetComponent<BehaviorEmitter>();
+		mine->SetDirection({ 1.0f, 0.0f });
+		break;
+	}
+	case 3:
+	{
+		BehaviorEmitter* mine = temp->GetComponent<BehaviorEmitter>();
+		mine->SetDirection({ 0.0f, -1.0f });
+		break;
+	}
+	case 4:
+	{
+		BehaviorEmitter* mine = temp->GetComponent<BehaviorEmitter>();
+		mine->SetDirection({ -1.0f, 0.0f });
+		break;
+	}	default: return 0;
+	}
 
 	temp->addKey = "Emitter"; // this is for the map holding functions and gives access to function for circle
 
@@ -1243,13 +1279,21 @@ void LevelCreatorScene::AddMirrorEntity(Entity* entity)
 			bSwitch["pos"].push_back(pos);
 		}
 	}
+	BehaviorMirror* entMirr = entity->GetComponent<BehaviorMirror>();
+	json bMirror;
+	if (entMirr)
+	{
+		json direction = { {"DirectionX", entity->GetComponent<BehaviorMirror>()->GetReflectDirection().x}, {"DirectionY", entity->GetComponent<BehaviorMirror>()->GetReflectDirection().y} };
+		bMirror = { {"Type", "BehaviorMirror"}, {"Direction", direction}, {"key", 0} }; // will add color if it comes up again but will not for now
+	}
 
 	components.push_back(collider);
 	components.push_back(transform);
 	components.push_back(physics);
 	if (entSwitch)
 		components.push_back(bSwitch);
-
+	if (entMirr)
+		components.push_back(bMirror);
 	mirrorData["Components"] = components;
 	mirrorData["FilePath"] = entity->GetFilePath();
 	mirrorData["Name"] = "Switch";

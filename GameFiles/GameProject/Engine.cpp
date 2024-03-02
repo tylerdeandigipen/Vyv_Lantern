@@ -80,7 +80,7 @@ Engine::EngineCode Engine::Stop()
 	}
 	catch (EngineCode shutdown)
 	{
-		assert(shutdown, "Engine failed to shut down. Location: Engine::Stop(), ShutDown()");
+		assert(shutdown && "Engine failed to shut down. Location: Engine::Stop(), ShutDown()");
 		return shutdown;
 	}
 
