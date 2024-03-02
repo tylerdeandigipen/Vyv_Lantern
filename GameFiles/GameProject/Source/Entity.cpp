@@ -178,15 +178,26 @@ void Entity::SetName(const char* _name)
 
 bool Entity::IsNamed(const char* _name)
 {
-	if (_name && name)
+	bool result = false;
+
+	if (_name && key.c_str())
 	{
-		if (!strcmp(name, _name))
+		if (!strcmp(key.c_str(), _name))
 			return true;
 		else
-			return false;
+			result = false;
 	}
 
-	return false;
+	if (_name && mName.c_str())
+	{
+		if (!strcmp(mName.c_str(), _name))
+			return true;
+		else
+			result = false;
+	}
+
+
+	return result;
 }
 
 bool Entity::IsPicked(Renderer* pRenderder, Vector2 mousePos)

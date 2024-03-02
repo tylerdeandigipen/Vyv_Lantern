@@ -39,7 +39,6 @@ public:
 	void Read(json jsonData) override;
 	static void DoorCollisionHandler(Entity* entity1, Entity* entity2);
 	bool GetDoorClosed();
-	void SetDoorClosed();
 	auto GetDestinationPosition() -> Destination;
 
 private:
@@ -49,5 +48,7 @@ private:
 	std::string closedPPM;
 	std::string openPPM;
 	ImageBuffer* tempImage;
+	std::string _receiver;
+	std::string _key;
 };
 
