@@ -85,28 +85,6 @@ void Renderer::Update(float dt)
 
 	if (DebugBuffer != NULL)
 	{
-		Color& pixel = DebugBuffer->SampleColor(116, 190);
-		pixel = Color{ 255,0,0,255 };
-		Color& pixel1 = DebugBuffer->SampleColor(126, 190);
-		pixel1 = Color{ 255,0,0,255 };
-		Color& pixel2 = DebugBuffer->SampleColor(106, 190);
-		pixel2 = Color{ 255,0,0,255 };
-		Color& pixel3 = DebugBuffer->SampleColor(116, 200);
-		pixel3 = Color{ 255,0,0,255 };
-		Color& pixel4 = DebugBuffer->SampleColor(116, 180);
-		pixel4 = Color{ 255,0,0,255 };
-
-		Color& pixel02 = DebugBuffer->SampleColor(176, 168);
-		pixel02 = Color{ 255,0,0,255 };
-		Color& pixel12 = DebugBuffer->SampleColor(186, 168);
-		pixel12 = Color{ 255,0,0,255 };
-		Color& pixel22 = DebugBuffer->SampleColor(166, 168);
-		pixel22 = Color{ 255,0,0,255 };
-		Color& pixel32 = DebugBuffer->SampleColor(176, 158);
-		pixel32 = Color{ 255,0,0,255 };
-		Color& pixel42 = DebugBuffer->SampleColor(176, 178);
-		pixel42 = Color{ 255,0,0,255 };
-
 		DebugBuffer->Blit(outputBuffer, -GetCameraPosition().x, -GetCameraPosition().y);
 		DebugBuffer->ClearImageBuffer();
 	}
@@ -539,6 +517,12 @@ void Renderer::RenderFog()
 	*/
 }
 
+float laserSize = 3.15f;
+float laserWeight = 1;
+float laserAreaLightRange = 12;
+Color laserAreaLightColor;
+float lightWeight = 0.1f;
+float laserThreshold = 0.52f;
 void Renderer::RenderLasers()
 {
 	const int xSize = (int)outputBuffer->size.x;
@@ -580,12 +564,12 @@ void Renderer::RenderLasers()
 						if (doRender == true)
 						{
 							//check distance from laser line
-							if ((y - laserPoints2[i].y) >= -2 && (y - laserPoints2[i].y) <= 2)
+							if ((y - laserPoints2[i].y) >= -laserSize && (y - laserPoints2[i].y) <= laserSize)
 							{
 								//     some func that makes distance into intensity  |  scale by intensity of color channel
-								IntensityR = ((2 - abs(y - laserPoints2[i].y)) / 2) * ((float)laserColor[i].r / 255.0f);
-								IntensityG = ((2 - abs(y - laserPoints2[i].y)) / 2) * ((float)laserColor[i].g / 255.0f);
-								IntensityB = ((2 - abs(y - laserPoints2[i].y)) / 2) * ((float)laserColor[i].b / 255.0f);
+								IntensityR += ((laserSize - abs(y - (int)laserPoints2[i].y)) / laserSize) * ((float)laserColor[i].r / 255.0f);
+								IntensityG += ((laserSize - abs(y - (int)laserPoints2[i].y)) / laserSize) * ((float)laserColor[i].g / 255.0f);
+								IntensityB += ((laserSize - abs(y - (int)laserPoints2[i].y)) / laserSize) * ((float)laserColor[i].b / 255.0f);
 							}
 						}
 					} // Check if laser is along the y axis
@@ -605,18 +589,40 @@ void Renderer::RenderLasers()
 						if (doRender == true)
 						{
 							//check distance from laser line
-							if ((x - laserPoints2[i].x) > -2 && (x - laserPoints2[i].x) < 2)
+							if ((x - laserPoints2[i].x) > -laserAreaLightRange && (x - laserPoints2[i].x) < laserAreaLightRange)
 							{
+								// How do i make this look good AAAAAAAAAAAAAAA
 								//     some func that makes distance into intensity  |  scale by intensity of color channel
-								IntensityR = ((2 - abs(x - laserPoints2[i].x)) / 2) * ((float)laserColor[i].r / 255.0f);
-								IntensityG = ((2 - abs(x - laserPoints2[i].x)) / 2) * ((float)laserColor[i].g / 255.0f);
-								IntensityB = ((2 - abs(x - laserPoints2[i].x)) / 2) * ((float)laserColor[i].b / 255.0f);
+								IntensityR += (((laserAreaLightRange - abs(x - (int)laserPoints2[i].x)) / laserAreaLightRange) * (217.0f / 255.0f));// +lightR[x][y]);
+								IntensityG += (((laserAreaLightRange - abs(x - (int)laserPoints2[i].x)) / laserAreaLightRange) * (220.0f / 255.0f));// +lightG[x][y]);
+								IntensityB += (((laserAreaLightRange - abs(x - (int)laserPoints2[i].x)) / laserAreaLightRange) * (255.0f / 255.0f));// +lightB[x][y]);
+
+								if ((x - laserPoints2[i].x) > -laserSize && (x - laserPoints2[i].x) < laserSize)
+								{
+									float tempIntensityR = ((laserSize - abs(x - (int)laserPoints2[i].x)) / laserSize) * ((float)laserColor[i].r / 255.0f);
+									float tempIntensityG = ((laserSize - abs(x - (int)laserPoints2[i].x)) / laserSize) * ((float)laserColor[i].g / 255.0f);
+									float tempIntensityB = ((laserSize - abs(x - (int)laserPoints2[i].x)) / laserSize) * ((float)laserColor[i].b / 255.0f);
+									if (tempIntensityR >= laserThreshold || tempIntensityG >= laserThreshold || tempIntensityB >= laserThreshold)
+									{
+										IntensityR = tempIntensityR;
+										IntensityG = tempIntensityG;
+										IntensityB = tempIntensityB;
+
+										Color& DestPixel = outputBuffer->SampleColor(x, y);
+										DestPixel.r = clampInt8(((IntensityR * laserWeight)) * 255, 0, 254);
+										DestPixel.g = clampInt8(((IntensityG * laserWeight)) * 255, 0, 254);
+										DestPixel.b = clampInt8(((IntensityB * laserWeight)) * 255, 0, 254);
+									}
+								}
 							}
 						}
 					}
-					lightR[x][y] += IntensityR;
-					lightG[x][y] += IntensityG;
-					lightB[x][y] += IntensityB;
+					if (IntensityR >= laserThreshold || IntensityG >= laserThreshold || IntensityB >= laserThreshold)
+					{   
+						lightR[x][y] = IntensityR * laserWeight + (lightR[x][y] * lightWeight);
+						lightG[x][y] = IntensityG * laserWeight + (lightG[x][y] * lightWeight);
+						lightB[x][y] = IntensityB * laserWeight + (lightB[x][y] * lightWeight);
+					}
 				}
 			}
 		}

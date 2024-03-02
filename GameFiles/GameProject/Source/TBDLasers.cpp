@@ -78,7 +78,7 @@ bool tempThingLol = 0;
 void TBDLasers::UpdateLasers()
 {
 	// temp stuff can delete 
-	lasers[0]->color = Color{ 84,0,255,255 };
+	lasers[0]->color = Color{ 160,0,255,255 };
 	if (tempThingLol == 0)
 	{
 		checkPoints[0] = new CheckPoint();
