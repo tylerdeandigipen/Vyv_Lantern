@@ -10,6 +10,7 @@
 #pragma once
 #include "Behavior.h"
 #include "Vector.h"
+#include "TBDLasers.h"
 #include <utility>
 
 class ImageBuffer;
@@ -50,5 +51,6 @@ private:
 	ImageBuffer* tempImage;
 	std::string _receiver;
 	std::string _key;
+	TBDLasers lasers;
 };
 

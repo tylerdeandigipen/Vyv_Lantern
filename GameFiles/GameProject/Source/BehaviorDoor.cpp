@@ -21,6 +21,7 @@
 #include "TbdTestScene.h"
 #include "EntityContainer.h"
 
+
 BehaviorDoor::BehaviorDoor() : Behavior(Behavior::bDoor), mDestination(), AddedToForeGround(false), closedPPM(), openPPM(), tempImage(nullptr), isDoorClosed(true)
 {
     _type = this;
@@ -94,6 +95,12 @@ void BehaviorDoor::Update(float dt)
     {
         Parent()->SetImage(closedPPM);
         SetNext(cIdle);
+    }
+
+    if (lasers.isSolved == true)
+    {
+        isDoorClosed = false;
+        SetNext(cOpen);
     }
 
     if (EntityContainer::GetInstance()->FindByName("Player"))
@@ -181,6 +188,7 @@ void BehaviorDoor::DoorCollisionHandler(Entity* entity1, Entity* entity2)
                 }
             }
 #endif
+
             // Play sound effects only when the win state is set for the first time
             AudioManager.PlaySFX("cheer");
         }
