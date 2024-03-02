@@ -86,6 +86,7 @@ void BehaviorDoor::Update(float dt)
     {
         SetCurr(GetNext());
     }
+
     if (GetCurr() == cOpen)
     {   
         Parent()->SetImage(openPPM);
@@ -96,11 +97,13 @@ void BehaviorDoor::Update(float dt)
         Parent()->SetImage(closedPPM);
         SetNext(cIdle);
     }
-
-    if (lasers.isSolved == true)
+    else if (GetCurr() == cIdle)
     {
-        isDoorClosed = false;
-        SetNext(cOpen);
+        if (Renderer::GetInstance()->laserHandler.isSolved == true && GetDoorClosed() == true)
+        {
+            isDoorClosed = false;
+            SetNext(cOpen);
+        }
     }
 
     if (EntityContainer::GetInstance()->FindByName("Player"))
@@ -109,9 +112,7 @@ void BehaviorDoor::Update(float dt)
         Inputs* input = Inputs::GetInstance();
         if (input->keyPressed(SDL_SCANCODE_T))
         {
-            this->isDoorClosed = false;
-            this->SetCurr(cOpen);
-            EntityContainer::GetInstance()->FindByName(_key.c_str())->SetImage(this->openPPM);
+            Renderer::GetInstance()->laserHandler.isSolved = true;
         }
 #endif
     }
@@ -188,7 +189,6 @@ void BehaviorDoor::DoorCollisionHandler(Entity* entity1, Entity* entity2)
                 }
             }
 #endif
-
             // Play sound effects only when the win state is set for the first time
             AudioManager.PlaySFX("cheer");
         }

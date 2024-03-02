@@ -51,6 +51,5 @@ private:
 	ImageBuffer* tempImage;
 	std::string _receiver;
 	std::string _key;
-	TBDLasers lasers;
 };
 
