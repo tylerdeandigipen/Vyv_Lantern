@@ -85,7 +85,29 @@ void Renderer::Update(float dt)
 
 	if (DebugBuffer != NULL)
 	{
-		DebugBuffer->Blit(outputBuffer, -(int)GetCameraPosition().x, -(int)GetCameraPosition().y);
+		Color& pixel = DebugBuffer->SampleColor(116, 190);
+		pixel = Color{ 255,0,0,255 };
+		Color& pixel1 = DebugBuffer->SampleColor(126, 190);
+		pixel1 = Color{ 255,0,0,255 };
+		Color& pixel2 = DebugBuffer->SampleColor(106, 190);
+		pixel2 = Color{ 255,0,0,255 };
+		Color& pixel3 = DebugBuffer->SampleColor(116, 200);
+		pixel3 = Color{ 255,0,0,255 };
+		Color& pixel4 = DebugBuffer->SampleColor(116, 180);
+		pixel4 = Color{ 255,0,0,255 };
+
+		Color& pixel02 = DebugBuffer->SampleColor(176, 168);
+		pixel02 = Color{ 255,0,0,255 };
+		Color& pixel12 = DebugBuffer->SampleColor(186, 168);
+		pixel12 = Color{ 255,0,0,255 };
+		Color& pixel22 = DebugBuffer->SampleColor(166, 168);
+		pixel22 = Color{ 255,0,0,255 };
+		Color& pixel32 = DebugBuffer->SampleColor(176, 158);
+		pixel32 = Color{ 255,0,0,255 };
+		Color& pixel42 = DebugBuffer->SampleColor(176, 178);
+		pixel42 = Color{ 255,0,0,255 };
+
+		DebugBuffer->Blit(outputBuffer, -GetCameraPosition().x, -GetCameraPosition().y);
 		DebugBuffer->ClearImageBuffer();
 	}
 	float AverageFrameRate = FrameRate::CalculateAverageFrameRate(PreviousFrameLengths, _countof(PreviousFrameLengths), (float)currentTime, (float)PreviousFrameBeginTime);

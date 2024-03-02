@@ -70,9 +70,12 @@ public:
 	//returns true if succesful
 	bool AddLaser(Laser* laser);
 	bool AddMirror(Mirror* mirror);
+	bool AddCheckPoint(CheckPoint* checkPoint);
 
 	Vector2 CheckCollision(int laserIndex);
 	void UpdateLasers();
+
+	bool isSolved = false;
 
 	int numLasers;
 	Laser* lasers[MAX_LASERS];
