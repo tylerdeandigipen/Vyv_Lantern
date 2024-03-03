@@ -3,7 +3,8 @@
 #include "Engine.h"
 #include "Scene.h"
 #include "SceneSystem.h"
-
+#include "Entity.h"
+#include "FileIO.h"
 class Scene;
 
 class SplashScene : public Scene
@@ -20,7 +21,9 @@ public:
 	void Update(float dt) override;
 	void Render(void) override;
 private:
-
+	float time;
+	Entity* logo;
+	
 };
 
 Scene* SplashSceneGetInstance(void);

@@ -115,7 +115,7 @@ void BehaviorMirror::Update(float dt)
         ImageBuffer* image = Parent()->GetImage();
         Transform* trans = Parent()->Has(Transform);
         gfxVector2 test = image->size;
-        float testvalue = (test.y / 1.5);
+        float testvalue = (test.y / 1.5f);
         std::string file = Parent()->GetSpritePath();
         // horizontal
         mirror->xPos1 = { trans->GetTranslation()->x, trans->GetTranslation()->y + (test.y / 2) };

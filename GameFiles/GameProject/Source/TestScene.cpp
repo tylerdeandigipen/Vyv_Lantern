@@ -331,7 +331,7 @@ void TestScene::ImGuiWindow()
     if (TSshow_custom_window)
     {
         ImGui::Begin("custom window");
-        ImGui::Text("hey how you doin ;)");
+        ImGui::Text("hey how you doin ;)  <(#)w(#)< YIPPEEEEE!");
 
         int numEntities = EntityContainer::GetInstance()->CountEntities();
         ImGui::Text("Number of Entities: %d", numEntities);
