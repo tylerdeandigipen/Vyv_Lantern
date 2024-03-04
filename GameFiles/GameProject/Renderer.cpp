@@ -534,9 +534,9 @@ void Renderer::RenderLasers()
 
 	//optimize later to only calculate light near / in the laser line zone
 	//maybe make so depending on distance it uses two different light func  tions
-	#pragma omp parallel
+	//#pragma omp parallel
 	{
-		#pragma omp for collapse(3) nowait private(IntensityR, IntensityG, IntensityB)
+		//#pragma omp for collapse(3) nowait private(IntensityR, IntensityG, IntensityB)
 		for (int x = 0; x < xSize; ++x)
 		{
 			for (int y = 0; y < ySize; ++y)
@@ -564,12 +564,30 @@ void Renderer::RenderLasers()
 						if (doRender == true)
 						{
 							//check distance from laser line
-							if ((y - laserPoints2[i].y) >= -laserSize && (y - laserPoints2[i].y) <= laserSize)
+							if ((y - laserPoints2[i].y) > -laserSize && (y - laserPoints2[i].y) < laserSize)
 							{
 								//     some func that makes distance into intensity  |  scale by intensity of color channel
-								IntensityR += ((laserSize - abs(y - (int)laserPoints2[i].y)) / laserSize) * ((float)laserColor[i].r / 255.0f);
-								IntensityG += ((laserSize - abs(y - (int)laserPoints2[i].y)) / laserSize) * ((float)laserColor[i].g / 255.0f);
-								IntensityB += ((laserSize - abs(y - (int)laserPoints2[i].y)) / laserSize) * ((float)laserColor[i].b / 255.0f);
+								IntensityR += (((laserAreaLightRange - abs(y - (int)laserPoints2[i].y)) / laserAreaLightRange) * (217.0f / 255.0f));// +lightR[x][y]);
+								IntensityG += (((laserAreaLightRange - abs(y - (int)laserPoints2[i].y)) / laserAreaLightRange) * (220.0f / 255.0f));// +lightG[x][y]);
+								IntensityB += (((laserAreaLightRange - abs(y - (int)laserPoints2[i].y)) / laserAreaLightRange) * (255.0f / 255.0f));// +lightB[x][y]);
+
+								if ((x - laserPoints2[i].y) > -laserSize && (y - laserPoints2[i].y) < laserSize)
+								{
+									float tempIntensityR = ((laserSize - abs(y - (int)laserPoints2[i].y)) / laserSize) * ((float)laserColor[i].r / 255.0f);
+									float tempIntensityG = ((laserSize - abs(y - (int)laserPoints2[i].y)) / laserSize) * ((float)laserColor[i].g / 255.0f);
+									float tempIntensityB = ((laserSize - abs(y - (int)laserPoints2[i].y)) / laserSize) * ((float)laserColor[i].b / 255.0f);
+									if (tempIntensityR >= laserThreshold || tempIntensityG >= laserThreshold || tempIntensityB >= laserThreshold)
+									{
+										IntensityR = tempIntensityR;
+										IntensityG = tempIntensityG;
+										IntensityB = tempIntensityB;
+
+										Color& DestPixel = outputBuffer->SampleColor(x, y);
+										DestPixel.r = clampInt8(((IntensityR * laserWeight)) * 255, 0, 254);
+										DestPixel.g = clampInt8(((IntensityG * laserWeight)) * 255, 0, 254);
+										DestPixel.b = clampInt8(((IntensityB * laserWeight)) * 255, 0, 254);
+									}
+								}
 							}
 						}
 					} // Check if laser is along the y axis
