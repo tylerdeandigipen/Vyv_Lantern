@@ -187,6 +187,10 @@
     <ClCompile Include="Source\BehaviorEmitter.cpp">
       <Filter>Source FIles\Objects\Components\Sub Components</Filter>
     </ClCompile>
+    <ClCompile Include="Source\SplashScene.cpp" />
+    <ClCompile Include="BehaviorReciever.cpp">
+      <Filter>Source FIles\Objects\Components\Sub Components</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="IMGUI\imgui.h">
@@ -397,6 +401,8 @@
       <Filter>Header FIles\Engine\Systems</Filter>
     </ClInclude>
     <ClInclude Include="BehaviorEmitter.h" />
+    <ClInclude Include="Source\SplashScene.h" />
+    <ClInclude Include="BehaviorReciever.h" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Misc\GameProject.ico">

@@ -6,25 +6,32 @@
     {
       "Type": "Transform",
       "translation": {
-        "x": 200.0,
-        "y": 112.0
+        "x": 92.0,
+        "y": 100.0
       }
     },
     {
       "OldTranslation": {
-        "x": 200.0,
-        "y": 112.0
+        "x": 92.0,
+        "y": 100.0
       },
       "Type": "Physics"
+    },
+    {
+      "Type": "BehaviorEmitter",
+      "direction": {
+        "x": 1.0,
+        "y": 0.0
+      }
     }
   ],
-  "FilePath": "./Data/GameObjects/Emitter1.json",
+  "FilePath": "./Data/Scenes/EmitterTest2/Emitter3.json",
   "KeyObject": {
-    "key": "Emitter1"
+    "key": "Emitter3"
   },
   "Name": "Emitter",
   "Type": "Object",
-  "file": "./Assets/PPM/squareEmitter.ppm",
+  "file": "./Assets/PPM/CrystalSprites/EmitterCrystal.ppm",
   "frameSize": [
     8,
     8

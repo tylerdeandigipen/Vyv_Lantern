@@ -18,23 +18,6 @@
       "Type": "Physics"
     },
     {
-      "Type": "Emitter",
-      "LaserDirection": {
-          "x": 0,
-          "y": -1
-      },       
-      "EmitterStart": {
-        "x": 112.0,
-        "y": 209.0
-      },
-      "EmitterEndPoint": {
-          "x": 9999,
-          "y": 0
-      },
-	  "distance": 10  ,
-    "isSource": true
-    },
-    {
       "Type": "BehaviorEmitter",
       "direction": {
         "x": 0,

@@ -65,6 +65,7 @@ void BehaviorEmitter::Update(float dt)
 void BehaviorEmitter::Read(json jsonData)
 {
     Init();
+    Renderer::GetInstance()->laserHandler.AddLaser(laser);
     if (jsonData["direction"].is_object())
     {
         json data = jsonData["direction"];
@@ -74,7 +75,6 @@ void BehaviorEmitter::Read(json jsonData)
         laser->dir = direct;
         laser->isEmiting = true;
     }
-    Renderer::GetInstance()->laserHandler.AddLaser(laser);
 
 }
 

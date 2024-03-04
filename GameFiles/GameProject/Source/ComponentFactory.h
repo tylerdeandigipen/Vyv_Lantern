@@ -34,6 +34,7 @@ private:
 	static Component& CreateBehaviorSwitch(void);
 	static Component& CreateBehaviorMirror(void);
 	static Component& CreateBehaviorEmitter();
+	static Component& CreateBehaviorReceiver();
 	static Component& CreateColliderAABB(void);
 	static Component& CreateBehaviorDoor(void);
 	static Component& CreateTransform(void);

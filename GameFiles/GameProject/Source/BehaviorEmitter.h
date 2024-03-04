@@ -33,6 +33,7 @@ public:
 	void Read(json jsonData) override;
 	static void SwitchOn(bool collided);
 	static void EmitterCollisionHandler(Entity* thisone, Entity* other); // may not need one
+	gfxVector2 GetDirection() { return laser->dir; };
 	void SetDirection(gfxVector2 dir);
 	void SetPosition(gfxVector2 pos) { laser->pos = pos; };
 

@@ -1126,7 +1126,6 @@ int LevelCreatorScene::CreateMirrorEntity(int direction)
 //static int emitterCount = 0;
 int LevelCreatorScene::CreateEmitterEntity(int direction)
 {
-	UNREFERENCED_PARAMETER(direction);
 	std::string number = "./Data/GameObjects/Emitter";
 	std::string filename = "./Data/GameObjects/tempEmitter.json";
 
@@ -1137,7 +1136,7 @@ int LevelCreatorScene::CreateEmitterEntity(int direction)
 	case 1:
 	{
 		BehaviorEmitter* mine = temp->GetComponent<BehaviorEmitter>();
-		mine->SetDirection({ 0.0f, 1.0f });
+		mine->SetDirection({ 0.0f, -1.0f });
 		mine->SetPosition(*temp->GetComponent<Transform>()->GetTranslation());
 		break;
 	}
@@ -1150,7 +1149,7 @@ int LevelCreatorScene::CreateEmitterEntity(int direction)
 	case 3:
 	{
 		BehaviorEmitter* mine = temp->GetComponent<BehaviorEmitter>();
-		mine->SetDirection({ 0.0f, -1.0f });
+		mine->SetDirection({ 0.0f, 1.0f });
 		break;
 	}
 	case 4:
@@ -1158,7 +1157,8 @@ int LevelCreatorScene::CreateEmitterEntity(int direction)
 		BehaviorEmitter* mine = temp->GetComponent<BehaviorEmitter>();
 		mine->SetDirection({ -1.0f, 0.0f });
 		break;
-	}	default: return 0;
+	}	
+	default: return 0;
 	}
 
 	temp->addKey = "Emitter"; // this is for the map holding functions and gives access to function for circle
@@ -1322,13 +1322,21 @@ void LevelCreatorScene::AddEmitterEntity(Entity* entity)
 	json collider = { {"Type", "ColliderAABB"} };
 	json transform = { {"Type", "Transform"}, {"translation", { { "x", entity->Has(Transform)->GetTranslation()->x }, {"y", entity->Has(Transform)->GetTranslation()->y} } } };
 	json physics = { {"Type", "Physics"}, {"OldTranslation", { { "x", entity->Has(Transform)->GetTranslation()->x }, {"y", entity->Has(Transform)->GetTranslation()->y} } } };
-	json emitter = { };
-	json lineCollider = {};
+
+	json emitter;
+	BehaviorEmitter* entEmit = entity->GetComponent<BehaviorEmitter>();
+	if (entEmit)
+	{
+		json direction = { {"x", entity->GetComponent<BehaviorEmitter>()->GetDirection().x}, {"y", entity->GetComponent<BehaviorEmitter>()->GetDirection().y} };
+		emitter = { {"Type", "BehaviorEmitter"}, {"direction", direction} }; // will add color if it comes up again but will not for now
+	}
+
 
 	components.push_back(collider);
 	components.push_back(transform);
 	components.push_back(physics);
-
+	if (entEmit)
+		components.push_back(emitter);
 	mirrorData["Components"] = components;
 	mirrorData["FilePath"] = entity->GetFilePath();
 	mirrorData["Name"] = "Emitter";

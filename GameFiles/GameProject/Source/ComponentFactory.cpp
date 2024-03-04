@@ -16,6 +16,7 @@
 #include "BehaviorSwitch.h"
 #include "BehaviorMirror.h"
 #include "BehaviorEmitter.h"
+#include "BehaviorReciever.h"
 #include "Physics.h"
 #include "Light.h"
 #include "Emitter.h"
@@ -37,6 +38,7 @@ Engine::EngineCode ComponentFactory::Init()
 	Add(BehaviorDoor::Name(), &ComponentFactory::CreateBehaviorDoor);
 	Add(BehaviorMirror::Name(), &ComponentFactory::CreateBehaviorMirror);
 	Add(BehaviorEmitter::Name(), &ComponentFactory::CreateBehaviorEmitter);
+	Add(BehaviorReceiver::Name(), &ComponentFactory::CreateBehaviorReceiver);
 	Add(ColliderAABB::Name(), &ComponentFactory::CreateColliderAABB);
 	Add(Transform::Name(), &ComponentFactory::CreateTransform);
 	Add(Physics::Name(), &ComponentFactory::CreatePhysics);
@@ -111,6 +113,12 @@ Component& ComponentFactory::CreateBehaviorEmitter()
 {
 	Behavior* behaviorEmitter = new BehaviorEmitter();
 	return *behaviorEmitter;
+}
+
+Component& ComponentFactory::CreateBehaviorReceiver()
+{
+	Behavior* behaviorReceiver = new BehaviorReceiver();
+	return *behaviorReceiver;
 }
 
 Component& ComponentFactory::CreateColliderAABB(void)

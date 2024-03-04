@@ -38,36 +38,7 @@
         "DirectionX": 1.0,
         "DirectionY": 0.0
       },
-      "Radius": 10.0,
       "key": 1
-    },
-    {
-      "Type": "LineCollider",
-      "LeftMostPoint": {
-        "x": 112.0,
-        "y": 209.0
-      },
-      "RightMostPoint": {
-        "x": 212.0,
-        "y": 100.0
-      }
-    },
-    {
-      "Type": "Emitter",
-      "LaserDirection": {
-        "x": 1,
-        "y": 0
-      },
-      "EmitterStart": {
-        "x": 113.0,
-        "y": 109.0
-      },
-      "EmitterEndPoint": {
-        "x": 9999,
-        "y": 0
-      },
-      "distance": 20,
-      "isSource": false
     }
   ],
   "FilePath": "./Data/GameObjects/Mirror0.json",
