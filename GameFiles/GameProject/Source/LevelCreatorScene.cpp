@@ -997,7 +997,7 @@ void LevelCreatorScene::ImGuiWindow()
 	{
 		CreateDoorEntity();
 	}
-	int scaredConfused = ImGuiManager::RenderDirPopup("MirrorDirection", "Pick a mirror direction.", "Mirror");
+	int scaredConfused = ImGuiManager::RenderMirrorDirPopup("MirrorDirection", "Pick a mirror direction.");
 	if (ImGui::Button("  Create Mirror") || scaredConfused > 0)
 	{
 		ImGui::OpenPopup("MirrorDirection");
@@ -1006,7 +1006,7 @@ void LevelCreatorScene::ImGuiWindow()
 		if (scaredConfused > 0)
 			CreateMirrorEntity(scaredConfused);
 	}
-	int emitterDirection = ImGuiManager::RenderDirPopup("EmitterDirection", "Pick a Emitter direction.", "Emitter");
+	int emitterDirection = ImGuiManager::RenderEmitterDirPopup("EmitterDirection", "Pick a Emitter direction.");
 	if (ImGui::Button("  Create Emitter") || emitterDirection > 0)
 	{
 		ImGui::OpenPopup("EmitterDirection");
@@ -1157,7 +1157,7 @@ int LevelCreatorScene::CreateEmitterEntity(int direction)
 		BehaviorEmitter* mine = temp->GetComponent<BehaviorEmitter>();
 		mine->SetDirection({ -1.0f, 0.0f });
 		break;
-	}	
+	}
 	default: return 0;
 	}
 
@@ -1330,7 +1330,6 @@ void LevelCreatorScene::AddEmitterEntity(Entity* entity)
 		json direction = { {"x", entity->GetComponent<BehaviorEmitter>()->GetDirection().x}, {"y", entity->GetComponent<BehaviorEmitter>()->GetDirection().y} };
 		emitter = { {"Type", "BehaviorEmitter"}, {"direction", direction} }; // will add color if it comes up again but will not for now
 	}
-
 
 	components.push_back(collider);
 	components.push_back(transform);
