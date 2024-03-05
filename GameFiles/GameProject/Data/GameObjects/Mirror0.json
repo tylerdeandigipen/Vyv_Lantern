@@ -6,29 +6,29 @@
     {
       "Type": "Transform",
       "translation": {
-        "x": 96.0,
-        "y": 160.0
+        "x": 136.0,
+        "y": 100.0
       }
     },
     {
       "OldTranslation": {
-        "x": 96.0,
-        "y": 160.0
+        "x": 136.0,
+        "y": 100.0
       },
       "Type": "Physics"
     },
     {
+      "NumPositions": 2,
       "Type": "BehaviorSwitch",
       "key": 1,
-      "NumPositions": 2,
       "pos": [
         {
-          "x": "96",
-          "y": "160"
+          "x": "136.000000",
+          "y": "100.000000"
         },
         {
-          "x": "112",
-          "y": "160"
+          "x": "136.000000",
+          "y": "118.000000"
         }
       ]
     },
@@ -36,7 +36,7 @@
       "Type": "BehaviorMirror",
       "Direction": {
         "DirectionX": 1.0,
-        "DirectionY": 0.0
+        "DirectionY": 1.0
       },
       "key": 1
     }

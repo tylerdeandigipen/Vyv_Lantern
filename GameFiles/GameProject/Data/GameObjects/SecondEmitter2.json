@@ -6,21 +6,28 @@
     {
       "Type": "Transform",
       "translation": {
-        "x": 260.0,
-        "y": 112.0
+        "x": 160.0,
+        "y": 100.0
       }
     },
     {
       "OldTranslation": {
-        "x": 260.0,
-        "y": 112.0
+        "x": 160.0,
+        "y": 100.0
       },
       "Type": "Physics"
+    },
+    {
+      "Type": "BehaviorEmitter",
+      "direction": {
+        "x": -1.0,
+        "y": 0.0
+      }
     }
   ],
-  "FilePath": "./Data/Scenes/TutorialScene/Emitter2.json",
+  "FilePath": "./Data/Scenes/EmitterTest2/Emitter3.json",
   "KeyObject": {
-    "key": "Emitter2"
+    "key": "Emitter3"
   },
   "Name": "Emitter",
   "Type": "Object",

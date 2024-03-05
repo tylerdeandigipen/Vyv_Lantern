@@ -57,8 +57,11 @@ struct Mirror
 	//keep as zero to inherit the color laser that hits the mirror
 	Color overwriteColor{ 0,0,0,0 };
 	//do not modify
-	bool isActivated = 0;
-	Laser reflectedLaser;
+	bool isActivated1 = 0;
+	bool isActivated2 = 0;
+
+	Laser reflectedLaser1;
+	Laser reflectedLaser2;
 };
 
 class TBDLasers
@@ -85,6 +88,11 @@ public:
 
 	int numCheckPoints;
 	CheckPoint* checkPoints[MAX_CHECKPOINTS];
+
+private:
+	void SetReflectedLaserValuesX(Laser* laser, Mirror* mirror, Vector2 startPos);
+	void SetReflectedLaserValuesY(Laser* laser, Mirror* mirror, Vector2 startPos);
+
 };
 
 #endif 
