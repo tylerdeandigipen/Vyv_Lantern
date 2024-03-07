@@ -74,7 +74,6 @@ bool TBDLasers::AddMirror(Mirror* mirror)
 	return false;
 }
 
-bool tempThingLol = 0;
 void TBDLasers::UpdateLasers()
 {
 	// temp stuff can delete 

@@ -332,7 +332,7 @@ float Renderer::FindPixelLuminosity(float x, float y, Light* LightSource)
 			float normalFalloff = -Vector2::DotProduct(distNormalized, normalDir);
 			normalFalloff += normalMin;
 			normalFalloff = clamp(normalFalloff, 0.0f, 1.0f);
-			Result = normalFalloff * Result;
+			//Result = (normalFalloff * normalStrength * Result);
 		}
 	}
 
@@ -520,7 +520,7 @@ void Renderer::RenderFog()
 float laserSize = 3.15f;
 float laserWeight = 1;
 float laserAreaLightRange = 20;
-Color laserAreaLightColor;
+Color laserAreaLightColor{217,220,255,255};
 float lightWeight = 1;
 float laserThreshold = 0.52f;
 void Renderer::RenderLasers()
@@ -534,9 +534,9 @@ void Renderer::RenderLasers()
 
 	//optimize later to only calculate light near / in the laser line zone
 	//maybe make so depending on distance it uses two different light func  tions
-	//#pragma omp parallel
+	#pragma omp parallel
 	{
-		//#pragma omp for collapse(3) nowait private(IntensityR, IntensityG, IntensityB)
+		#pragma omp for collapse(3) nowait private(IntensityR, IntensityG, IntensityB)
 		for (int x = 0; x < xSize; ++x)
 		{
 			for (int y = 0; y < ySize; ++y)
@@ -566,18 +566,26 @@ void Renderer::RenderLasers()
 							//check distance from laser line
 							if (abs(y - laserPoints2[i].y) < laserAreaLightRange)
 							{
-								float scaledDist = abs(y - (int)laserPoints2[i].y) / laserAreaLightRange;
-								float scaledDistSquared = scaledDist * scaledDist;
+								int inOutCount = CheckLineForObject(x, laserPoints2[i].y, x, y);
+								bool isLit = false;
+								if (inOutCount <= 1)
+								{
+									isLit = true;
+								}
+								if (isLit == true)
+								{
+									float scaledDist = abs(y - (int)laserPoints2[i].y) / laserAreaLightRange;
+									float scaledDistSquared = scaledDist * scaledDist;
 
-								float falloff = 0.8f * (float)pow((1 - scaledDistSquared), 2) / (1 + .5f * scaledDist);
-								IntensityR = (IntensityR + falloff * (217.0f / 255.0f));
-								IntensityG = (IntensityG + falloff * (220.0f / 255.0f));
-								IntensityB = (IntensityB + falloff * (255.0f / 255.0f));
+									float falloff = 0.8f * (float)pow((1 - scaledDistSquared), 2) / (1 + .5f * scaledDist);
+									IntensityR = (IntensityR + falloff * (laserAreaLightColor.r / 255.0f));
+									IntensityG = (IntensityG + falloff * (laserAreaLightColor.g / 255.0f));
+									IntensityB = (IntensityB + falloff * (laserAreaLightColor.b / 255.0f));
 
-								lightR[x][y] += IntensityR * lightWeight;
-								lightG[x][y] += IntensityG * lightWeight;
-								lightB[x][y] += IntensityB * lightWeight;
-
+									lightR[x][y] += IntensityR * lightWeight;
+									lightG[x][y] += IntensityG * lightWeight;
+									lightB[x][y] += IntensityB * lightWeight;
+								}
 								if (abs(y - laserPoints2[i].y) < laserSize)
 								{
 									float scaledDistFromCenter = (laserSize - abs(y - (int)laserPoints2[i].y)) / laserSize;
@@ -617,17 +625,26 @@ void Renderer::RenderLasers()
 							//check distance from laser line
 							if (abs(x - laserPoints2[i].x) < laserAreaLightRange)
 							{
-								float scaledDist = abs(x - (int)laserPoints2[i].x) / laserAreaLightRange;
-								float scaledDistSquared = scaledDist * scaledDist;
+								int inOutCount = CheckLineForObject(laserPoints2[i].x, y, x, y);
+								bool isLit = false;
+								if (inOutCount <= 1)
+								{
+									isLit = true;
+								}
+								if(isLit == true)
+								{
+									float scaledDist = abs(x - (int)laserPoints2[i].x) / laserAreaLightRange;
+									float scaledDistSquared = scaledDist * scaledDist;
 
-								float falloff = 0.8f * (float)pow((1 - scaledDistSquared), 2) / (1 + .5f * scaledDist);
-								IntensityR = (IntensityR + falloff * (217.0f / 255.0f));
-								IntensityG = (IntensityG + falloff * (220.0f / 255.0f));
-								IntensityB = (IntensityB + falloff * (255.0f / 255.0f));
+									float falloff = 0.8f * (float)pow((1 - scaledDistSquared), 2) / (1 + .5f * scaledDist);
+									IntensityR = (IntensityR + falloff * (laserAreaLightColor.r / 255.0f));
+									IntensityG = (IntensityG + falloff * (laserAreaLightColor.g / 255.0f));
+									IntensityB = (IntensityB + falloff * (laserAreaLightColor.b / 255.0f));
 
-								lightR[x][y] += IntensityR * lightWeight;
-								lightG[x][y] += IntensityG * lightWeight;
-								lightB[x][y] += IntensityB * lightWeight;
+									lightR[x][y] += IntensityR * lightWeight;
+									lightG[x][y] += IntensityG * lightWeight;
+									lightB[x][y] += IntensityB * lightWeight;
+								}
 
 								if (abs(x - laserPoints2[i].x) < laserSize)
 								{
