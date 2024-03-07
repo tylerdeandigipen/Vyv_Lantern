@@ -79,26 +79,8 @@ void TBDLasers::UpdateLasers()
 {
 	// temp stuff can delete 
 	lasers[0]->color = Color{ 160,0,255,255 };
-	if (tempThingLol == 0)
-	{
-		checkPoints[0] = new CheckPoint();
-		checkPoints[0]->xPos1 = Vector2{ 126, 190 };
-		checkPoints[0]->xPos2 = Vector2{ 106, 190 };
+	lasers[1]->color = Color{ 160,0,255,255 };
 
-		checkPoints[0]->yPos1 = Vector2{ 116, 200 };
-		checkPoints[0]->yPos2 = Vector2{ 116, 180 };
-
-		checkPoints[1] = new CheckPoint();
-		checkPoints[1]->xPos1 = Vector2{ 186, 168 };
-		checkPoints[1]->xPos2 = Vector2{ 166, 168 };
-
-		checkPoints[1]->yPos1 = Vector2{ 176, 158 };
-		checkPoints[1]->yPos2 = Vector2{ 176, 178 };
-		checkPoints[1]->isSolid = true;
-
-		numCheckPoints = 2;
-		tempThingLol = 1;
-	}
 	
 	for (int i = 0; i < numMirrors; i++)
 	{

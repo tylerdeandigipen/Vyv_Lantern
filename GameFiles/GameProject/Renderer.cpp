@@ -553,11 +553,11 @@ void Renderer::RenderLasers()
 						bool doRender = false;
 
 						//check if x is inbetween the two points
-						if (x >= laserPoints1[i].x && x <= laserPoints2[i].x)
+						if (x >= laserPoints1[i].x && x <= laserPoints2[i].x && (int)laserPoints1[i].x - (int)laserPoints2[i].x < 0)
 						{
 							doRender = true;
 						}
-						else if (x <= laserPoints1[i].x && x >= laserPoints2[i].x)
+						else if (x <= laserPoints1[i].x && x >= laserPoints2[i].x && (int)laserPoints1[i].x - (int)laserPoints2[i].x > 0)
 						{
 							doRender = true;
 						}
@@ -604,11 +604,11 @@ void Renderer::RenderLasers()
 						bool doRender = false;
 
 						//check if y is inbetween the two points
-						if ((int)y >= (int)laserPoints1[i].y && (int)y <= (int)laserPoints2[i].y)
+						if ((int)y >= (int)laserPoints1[i].y && (int)y <= (int)laserPoints2[i].y && (int)laserPoints1[i].y - (int)laserPoints2[i].y < 0)
 						{
 							doRender = true;
 						}
-						else if ((int)y <= (int)laserPoints1[i].y && (int)y >= (int)laserPoints2[i].y)
+						else if ((int)y <= (int)laserPoints1[i].y && (int)y >= (int)laserPoints2[i].y && (int)laserPoints1[i].y - (int)laserPoints2[i].y > 0)
 						{
 							doRender = true;
 						}
