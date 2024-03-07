@@ -519,9 +519,9 @@ void Renderer::RenderFog()
 
 float laserSize = 3.15f;
 float laserWeight = 1;
-float laserAreaLightRange = 12;
+float laserAreaLightRange = 20;
 Color laserAreaLightColor;
-float lightWeight = 0.75f;
+float lightWeight = 1;
 float laserThreshold = 0.52f;
 void Renderer::RenderLasers()
 {
@@ -534,9 +534,9 @@ void Renderer::RenderLasers()
 
 	//optimize later to only calculate light near / in the laser line zone
 	//maybe make so depending on distance it uses two different light func  tions
-	#pragma omp parallel
+	//#pragma omp parallel
 	{
-		#pragma omp for collapse(3) nowait private(IntensityR, IntensityG, IntensityB)
+		//#pragma omp for collapse(3) nowait private(IntensityR, IntensityG, IntensityB)
 		for (int x = 0; x < xSize; ++x)
 		{
 			for (int y = 0; y < ySize; ++y)
@@ -570,9 +570,9 @@ void Renderer::RenderLasers()
 								float scaledDistSquared = scaledDist * scaledDist;
 
 								float falloff = 0.8f * (float)pow((1 - scaledDistSquared), 2) / (1 + .5f * scaledDist);
-								IntensityR = (IntensityR + falloff * (217.0f / 255.0f));// +lightR[x][y]);
-								IntensityG = (IntensityG + falloff * (220.0f / 255.0f));// +lightG[x][y]);
-								IntensityB = (IntensityB + falloff * (255.0f / 255.0f));// +lightB[x][y]);
+								IntensityR = (IntensityR + falloff * (217.0f / 255.0f));
+								IntensityG = (IntensityG + falloff * (220.0f / 255.0f));
+								IntensityB = (IntensityB + falloff * (255.0f / 255.0f));
 
 								lightR[x][y] += IntensityR * lightWeight;
 								lightG[x][y] += IntensityG * lightWeight;
@@ -604,11 +604,11 @@ void Renderer::RenderLasers()
 						bool doRender = false;
 
 						//check if y is inbetween the two points
-						if (y >= laserPoints1[i].y && y <= laserPoints2[i].y)
+						if ((int)y >= (int)laserPoints1[i].y && (int)y <= (int)laserPoints2[i].y)
 						{
 							doRender = true;
 						}
-						else if (y <= laserPoints1[i].y && y >= laserPoints2[i].y)
+						else if ((int)y <= (int)laserPoints1[i].y && (int)y >= (int)laserPoints2[i].y)
 						{
 							doRender = true;
 						}
@@ -621,9 +621,9 @@ void Renderer::RenderLasers()
 								float scaledDistSquared = scaledDist * scaledDist;
 
 								float falloff = 0.8f * (float)pow((1 - scaledDistSquared), 2) / (1 + .5f * scaledDist);
-								IntensityR = (IntensityR + falloff * (217.0f / 255.0f)) / 2;// +lightR[x][y]);
-								IntensityG = (IntensityG + falloff * (220.0f / 255.0f)) / 2;// +lightG[x][y]);
-								IntensityB = (IntensityB + falloff * (255.0f / 255.0f)) / 2;// +lightB[x][y]);
+								IntensityR = (IntensityR + falloff * (217.0f / 255.0f));
+								IntensityG = (IntensityG + falloff * (220.0f / 255.0f));
+								IntensityB = (IntensityB + falloff * (255.0f / 255.0f));
 
 								lightR[x][y] += IntensityR * lightWeight;
 								lightG[x][y] += IntensityG * lightWeight;
@@ -647,6 +647,7 @@ void Renderer::RenderLasers()
 										DestPixel.b = clampInt8(lightB[x][y] * 255, 0, 254);
 									}
 								}
+							}
 						}
 					}
 				}
