@@ -322,6 +322,10 @@ void TBDLasers::SetReflectedLaserValuesY(Laser* laser, Mirror* mirror, Vector2 s
 		}
 		else
 			mirror->reflectedLaser2.dir = Vector2{ mirror->reflectDir.x, 0 };
+		if (mirror->reflectedLaser1.dir == mirror->reflectedLaser2.dir)
+		{
+			return;
+		}
 		mirror->isActivated2 = true;
 		mirror->reflectedLaser2.isEmiting = true;
 		if (mirror->overwriteColor == defaultColor)
@@ -346,7 +350,6 @@ void TBDLasers::SetReflectedLaserValuesX(Laser* laser, Mirror* mirror, Vector2 s
 		}
 		else
 			mirror->reflectedLaser1.dir = Vector2{ 0, -mirror->reflectDir.y };
-			
 		mirror->isActivated1 = true;
 		mirror->reflectedLaser1.isEmiting = true;
 		if (mirror->overwriteColor == defaultColor)
@@ -367,6 +370,10 @@ void TBDLasers::SetReflectedLaserValuesX(Laser* laser, Mirror* mirror, Vector2 s
 		}
 		else
 			mirror->reflectedLaser2.dir = Vector2{ 0, -mirror->reflectDir.y };
+		if (mirror->reflectedLaser1.dir == mirror->reflectedLaser2.dir)
+		{
+			return;
+		}
 		mirror->isActivated2 = true;
 		mirror->reflectedLaser2.isEmiting = true;
 		if (mirror->overwriteColor == defaultColor)
