@@ -25,7 +25,7 @@ void ImGuiManager::RenderOKPopup(const std::string& popupTitle, const std::strin
 
 MirrorData ImGuiManager::RenderMirrorDirPopup(const std::string& popupTitle, const std::string& message, bool openPopup)
 {
-    MirrorData dontworry;
+	MirrorData dontworry;
 	int returnVal = 0;
 	static ImVec4 pickedColor = ImVec4(160.0f / 255.0f, 0.0f, 255.0f / 255.0f, 1.0f);
 
@@ -52,6 +52,7 @@ MirrorData ImGuiManager::RenderMirrorDirPopup(const std::string& popupTitle, con
 		if (topLeftChecked)
 		{
 			returnVal = 1;
+
 			//ImGui::CloseCurrentPopup();
 		}
 
@@ -90,6 +91,7 @@ MirrorData ImGuiManager::RenderMirrorDirPopup(const std::string& popupTitle, con
 
 		ImGui::Text("Insert reflection direction.");
 		dontworry.spriteDirection = returnVal;
+
 		//std::vector<std::pair<int, int>> positions;
 
 		static float xValue = 0;
@@ -206,50 +208,3 @@ EmitterData ImGuiManager::RenderEmitterDirPopup(const std::string& popupTitle, c
 	}
 	return emitData;
 }
-
-/*void ImGuiManager::MirrorCheckBox(int dir)
-{
-	ImGui::OpenPopup("MirroReflectPopUp");
-	if (ImGui::BeginPopupModal("MirroReflectPopUp", NULL, ImGuiWindowFlags_AlwaysAutoResize))
-	{
-		ImGui::Text("Pick a reflect direction.");
-
-		if (dir == 1)
-		{
-			ImGui::Text("TOP LEFT SELECTED");
-
-			//ImGui::Checkbox("Up", );
-			//ImGui::Checkbox("Left");
-			if (ImGui::Button("OK"))
-			{
-				ImGui::CloseCurrentPopup();
-			}
-			ImGui::EndPopup();
-		}
-		else if (dir == 2)
-		{
-			ImGui::Text("TOP RIGHT SELECTED");
-
-			//ImGui::Checkbox("Up", );
-			//ImGui::Checkbox("Right");
-		}
-		else if (dir == 3)
-		{
-			ImGui::Text("BOTTOM LEFT SELECTED");
-
-			//ImGui::Checkbox("Down", );
-			//ImGui::Checkbox("Left");
-		}
-		else if (dir == 4)
-		{
-			ImGui::Text("BOTTOM RIGHT SELECTED");
-
-			//ImGui::Checkbox("Down", );
-			//ImGui::Checkbox("Right");
-		}
-		else
-		{
-			assert("What did you do wrong?");
-		}
-	}
-}*/
