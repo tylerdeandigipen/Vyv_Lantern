@@ -75,6 +75,19 @@ void BehaviorEmitter::Read(json jsonData)
         laser->dir = direct;
         laser->isEmiting = true;
     }
+    if (jsonData["color"].is_object())
+    {
+        json color = jsonData["color"];
+        uint8_t r = color["red"];
+        uint8_t g = color["green"];
+        uint8_t b = color["blue"];
+        uint8_t a = color["alpha"];
+        laser->color = Color{ r, g, b, a };
+    }
+    else
+    {
+        laser->color = Color{ 160,0,255,255 };
+    }
 
 }
 
