@@ -6,14 +6,14 @@
     {
       "Type": "Transform",
       "translation": {
-        "x": 112.0,
-        "y": 209.0
+        "x": 384.0,
+        "y": 224.0
       }
     },
     {
       "OldTranslation": {
-        "x": 112.0,
-        "y": 209.0
+        "x": 384.0,
+        "y": 224.0
       },
       "Type": "Physics"
     },
@@ -25,9 +25,9 @@
       }
     }
   ],
-  "FilePath": "./Data/Scenes/TutorialScene/Emitter0.json",
+  "FilePath": "./Data/Scenes/Section1WIP5/Emitter4.json",
   "KeyObject": {
-    "key": "Emitter0"
+    "key": "Emitter4"
   },
   "Name": "Emitter",
   "Type": "Object",

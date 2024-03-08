@@ -519,11 +519,11 @@ void Renderer::RenderFog()
 
 float laserSize = 3.15f;
 float laserWeight = 1;
-float laserAreaLightRange = 20;
-Color laserAreaLightColor{217,220,255,255};
-float lightWeight = 1;
+float laserAreaLightRange = 15;
+Color laserAreaLightColor{200,170,230,255};
+float lightWeight = 3;
 float laserThreshold = 0.52f;
-float lightMultiplier = 0.65;
+float lightMultiplier = 0.5;
 void Renderer::RenderLasers()
 {
 	const int xSize = (int)outputBuffer->size.x;

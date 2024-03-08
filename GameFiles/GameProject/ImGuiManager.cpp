@@ -25,6 +25,8 @@ void ImGuiManager::RenderOKPopup(const std::string& popupTitle, const std::strin
 int ImGuiManager::RenderMirrorDirPopup(const std::string& popupTitle, const std::string& message, bool openPopup)
 {
 	int returnVal = 0;
+	static ImVec4 pickedColor = ImVec4(160.0f / 255.0f, 0.0f, 255.0f / 255.0f, 1.0f);
+
 	if (openPopup)
 	{
 		ImGui::OpenPopup(popupTitle.c_str());
@@ -38,39 +40,50 @@ int ImGuiManager::RenderMirrorDirPopup(const std::string& popupTitle, const std:
 
 		ImGui::Text(message.c_str());
 
-		//1
-		if (ImGui::Button("Top Left"))
+		bool topLeftChecked = false;
+		bool topRightChecked = false;
+		bool bottomLeftChecked = false;
+		bool bottomRightChecked = false;
+
+		// 1
+		ImGui::Checkbox("Top Left", &topLeftChecked);
+		if (topLeftChecked)
 		{
 			returnVal = 1;
-			ImGui::CloseCurrentPopup();
+
+			//ImGui::CloseCurrentPopup();
 		}
 
-		//2
-		if (ImGui::Button("Top Right"))
+		// 2
+		ImGui::Checkbox("Top Right", &topRightChecked);
+		if (topRightChecked)
 		{
-			// put your code here for mirror/emitter dir. set the direction based on button.
-			ImGui::CloseCurrentPopup();
 			returnVal = 2;
+
+			//ImGui::CloseCurrentPopup();
 		}
 
-		//3
-		if (ImGui::Button("Bottom Left"))
+		// 3
+		ImGui::Checkbox("Bottom Left", &bottomLeftChecked);
+		if (bottomLeftChecked)
 		{
-			ImGui::CloseCurrentPopup();
 			returnVal = 3;
+
+			//ImGui::CloseCurrentPopup();
 		}
 
-		//4
-		if (ImGui::Button("Bottom Right"))
+		// 4
+		ImGui::Checkbox("Bottom Right", &bottomRightChecked);
+		if (bottomRightChecked)
 		{
-			ImGui::CloseCurrentPopup();
 			returnVal = 4;
+
+			//ImGui::CloseCurrentPopup();
 		}
 
-		if (ImGui::Button("OK"))
-		{
-			ImGui::CloseCurrentPopup();
-		}
+		ImGui::Separator();
+
+		ImGui::ColorPicker4("Pick a Color", (float*)&pickedColor);
 
 		ImGui::Text("Insert reflection direction.");
 
@@ -85,6 +98,11 @@ int ImGuiManager::RenderMirrorDirPopup(const std::string& popupTitle, const std:
 		if (ImGui::Button("Confirm Placement..."))
 		{
 			positions.push_back(std::make_pair(xValue, yValue));
+		}
+
+		if (ImGui::Button("OK"))
+		{
+			ImGui::CloseCurrentPopup();
 		}
 
 		ImGui::EndPopup();
@@ -95,6 +113,8 @@ int ImGuiManager::RenderMirrorDirPopup(const std::string& popupTitle, const std:
 int ImGuiManager::RenderEmitterDirPopup(const std::string& popupTitle, const std::string& message, bool openPopup)
 {
 	int returnVal = 0;
+	static ImVec4 pickedColor = ImVec4(160.0f / 255.0f, 0.0f, 255.0f / 255.0f, 1.0f);
+
 	if (openPopup)
 	{
 		ImGui::OpenPopup(popupTitle.c_str());
@@ -108,41 +128,57 @@ int ImGuiManager::RenderEmitterDirPopup(const std::string& popupTitle, const std
 
 		ImGui::Text(message.c_str());
 
-		//1
-		if (ImGui::Button("Up"))
+		bool upChecked = false;
+		bool downChecked = false;
+		bool rightChecked = false;
+		bool leftChecked = false;
+
+		// 1
+		ImGui::Checkbox("Up", &upChecked);
+		if (upChecked)
 		{
 			returnVal = 1;
-			ImGui::CloseCurrentPopup();
+
+			//ImGui::CloseCurrentPopup();
 		}
 
-		//2
-		if (ImGui::Button("Down"))
+		// 2
+		ImGui::Checkbox("Down", &downChecked);
+		if (downChecked)
 		{
-			// put your code here for mirror/emitter dir. set the direction based on button.
-			ImGui::CloseCurrentPopup();
 			returnVal = 2;
+
+			//ImGui::CloseCurrentPopup();
 		}
 
-		//3
-		if (ImGui::Button("Right"))
+		// 3
+		ImGui::Checkbox("Right", &rightChecked);
+		if (rightChecked)
 		{
-			ImGui::CloseCurrentPopup();
 			returnVal = 3;
+
+			//ImGui::CloseCurrentPopup();
 		}
 
-		//4
-		if (ImGui::Button("Left"))
+		// 4
+		ImGui::Checkbox("Left", &leftChecked);
+		if (leftChecked)
 		{
-			ImGui::CloseCurrentPopup();
 			returnVal = 4;
+
+			//ImGui::CloseCurrentPopup();
 		}
+
+		ImGui::Separator();
+
+		ImGui::ColorPicker4("Pick a Color", (float*)&pickedColor);
 
 		if (ImGui::Button("OK"))
 		{
 			ImGui::CloseCurrentPopup();
 		}
 
-		ImGui::Text("Insert reflection direction.");
+		/*ImGui::Text("Insert reflection direction.");
 
 		std::vector<std::pair<int, int>> positions;
 
@@ -155,7 +191,7 @@ int ImGuiManager::RenderEmitterDirPopup(const std::string& popupTitle, const std
 		if (ImGui::Button("Confirm Placement..."))
 		{
 			positions.push_back(std::make_pair(xValue, yValue));
-		}
+		}*/
 
 		ImGui::EndPopup();
 		return returnVal;

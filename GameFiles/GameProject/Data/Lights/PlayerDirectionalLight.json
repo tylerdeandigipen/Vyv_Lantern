@@ -5,19 +5,19 @@
     "y": 90
   },
   "color": {
-    "r": 216,
-    "g": 247,
+    "r": 255,
+    "g": 255,
     "b": 255,
     "a": 255
   },
-  "minAngle": 35,
-  "maxAngle": -35,
-  "angle": 200,
-  "intensity": 2,
-  "radius": 100,
-  "radialFalloff": 4,
+  "minAngle": 25,
+  "maxAngle": -25,
+  "angle": 180,
+  "intensity": 3.2,
+  "radius": 250,
+  "radialFalloff": 9,
   "radialWeight": 1,
-  "angularWeight": 2.0,
+  "angularWeight": 1,
   "frustumWeight": 0.15,
-  "volumetricIntensity": 0.25
+  "volumetricIntensity": 0.4
 }
