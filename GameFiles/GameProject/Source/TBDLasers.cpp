@@ -49,7 +49,7 @@ bool TBDLasers::AddCheckPoint(CheckPoint* checkPoint)
 				return false;
 			}
 		}
-		checkPoints[numLasers] = checkPoint;
+		checkPoints[numCheckPoints] = checkPoint;
 		numCheckPoints += 1;
 		return true;
 	}

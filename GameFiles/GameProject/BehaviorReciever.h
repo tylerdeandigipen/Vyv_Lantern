@@ -21,7 +21,11 @@ public:
 	void Update(float dt);
 	void Read(json jsonData) override;
 	static void EmitterCollisionHandler(Entity* thisone, Entity* other); // may not need one
-	void GetActive() { receiver->isActivated; }
+	bool GetActive() { return receiver->isActivated; }
+	void SetActive()
+	{
+		receiver->isActivated ? receiver->isActivated = false : receiver->isActivated = true;
+	}
 
 private:
 	//bool inited = false;

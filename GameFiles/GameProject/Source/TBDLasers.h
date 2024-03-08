@@ -80,13 +80,13 @@ public:
 
 	bool isSolved = false;
 
-	int numLasers;
+	int numLasers = 0;
 	Laser* lasers[MAX_LASERS];
 
-	int numMirrors;
+	int numMirrors = 0;
 	Mirror* mirrors[MAX_MIRRORS];
 
-	int numCheckPoints;
+	int numCheckPoints = 0;
 	CheckPoint* checkPoints[MAX_CHECKPOINTS];
 
 private:

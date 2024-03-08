@@ -16,11 +16,14 @@
         "y": 168.0
       },
       "Type": "Physics"
+    },
+    {
+      "Type": "BehaviorReceiver"
     }
   ],
   "FilePath": "./Data/GameObjects/Reciever0.json",
   "KeyObject": {
-    "key": "Reciever0"
+    "key": "Receiver0"
   },
   "Name": "Reciever",
   "Type": "Object",
