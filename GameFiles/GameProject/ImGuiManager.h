@@ -16,8 +16,5 @@ public:
 	* RETURN: 1 - top left, 2, top  right, 3 bottom left, 4 bottom right */
 	static MirrorData RenderMirrorDirPopup(const std::string& popupTitle, const std::string& message, bool openPopup = false);
 	static EmitterData RenderEmitterDirPopup(const std::string& popupTitle, const std::string& message, bool openPopup = false);
-
-	static void MirrorCheckBox(int dir);
-
 private:
 };
