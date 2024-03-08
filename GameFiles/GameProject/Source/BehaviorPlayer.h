@@ -50,6 +50,7 @@ private:
 	float MIN_RAND = 6.0f, MAX_RAND = 9.0f;
 	void Controller(float dt);
     float playerMoveSpeed;
+	float followCursorScalar = 0.2f;
 	int wehavewalls[20] = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 45, 46, 48, 29, 26, 31, 41, 39, 36 };
 	static std::pair<BehaviorPlayer*, std::string> player;
 	bool checkWalls(gfxVector2 position);

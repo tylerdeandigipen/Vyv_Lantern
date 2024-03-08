@@ -42,7 +42,7 @@ public:
 	bool doFog = false;
 	Vector2 fogMoveDir{ 0.08f, 0.01f };
 	float fogOpacity = 5;
-	float minBrightness = 20;
+	float minBrightness = 23;
 
 	//Debug Draw Toggles
 	bool isFullbright = false;

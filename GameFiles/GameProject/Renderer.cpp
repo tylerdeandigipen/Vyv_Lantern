@@ -476,54 +476,13 @@ void Renderer::RenderParticles()
 	}
 }
 
-void Renderer::RenderFog()
-{
-	/*
-	if (doFog == true)
-	{
-		if (fogIsDirty == true)
-		{
-			delete fogBuffer;
-			fogBuffer = new ImageBuffer{ "./Assets/PPM/Premade_Fog_2.ppm" };
-			fogBuffer->BlurBuffer(-4, 5);
-			fogIsDirty = false;
-		}
-		fogPos += fogMoveDir;
-		fogPos += GetCameraPosition();
-		if (fogPos.x > SCREEN_SIZE_X || fogPos.x < -SCREEN_SIZE_X)
-		{
-			fogPos.x = 0;
-		}
-		if (fogPos.y > SCREEN_SIZE_Y || fogPos.y < -SCREEN_SIZE_Y)
-		{
-			fogPos.y = 0;
-		}
-		fogBufferPostCam->ClearImageBuffer();
-
-		fogBuffer->Blit(fogBufferPostCam, -fogPos.x, -fogPos.y);
-
-		fogBuffer->Blit(fogBufferPostCam, -fogPos.x + SCREEN_SIZE_X, -fogPos.y);
-		fogBuffer->Blit(fogBufferPostCam, -fogPos.x, -fogPos.y + SCREEN_SIZE_Y);
-		fogBuffer->Blit(fogBufferPostCam, -fogPos.x - SCREEN_SIZE_X, -fogPos.y);
-		fogBuffer->Blit(fogBufferPostCam, -fogPos.x, -fogPos.y - SCREEN_SIZE_Y);
-
-		fogBuffer->Blit(fogBufferPostCam, -fogPos.x + SCREEN_SIZE_X, -fogPos.y + SCREEN_SIZE_Y);
-		fogBuffer->Blit(fogBufferPostCam, -fogPos.x + SCREEN_SIZE_X, -fogPos.y - SCREEN_SIZE_Y);
-		fogBuffer->Blit(fogBufferPostCam, -fogPos.x - SCREEN_SIZE_X, -fogPos.y + SCREEN_SIZE_Y);
-		fogBuffer->Blit(fogBufferPostCam, -fogPos.x - SCREEN_SIZE_X, -fogPos.y - SCREEN_SIZE_Y);
-		fogPos -= GetCameraPosition();
-		fogBufferPostCam->DitherBuffer();
-	}
-	*/
-}
-
 float laserSize = 3.15f;
 float laserWeight = 1;
-float laserAreaLightRange = 15;
-Color laserAreaLightColor{200,170,230,255};
-float lightWeight = 3;
+float laserAreaLightRange = 20;
+Color laserAreaLightColor{ 217,220,255,255 };
+float lightWeight = 1;
 float laserThreshold = 0.52f;
-float lightMultiplier = 0.5;
+float lightMultiplier = 0.65;
 void Renderer::RenderLasers()
 {
 	const int xSize = (int)outputBuffer->size.x;
@@ -1362,15 +1321,7 @@ void Renderer::CleanRenderer()
 	numLights = 0;
 	frameCount = 0;
 	timer = 0;
-	fogIsDirty = true;
 	CameraP = Vector2{ 0,0 };
-}
-
-//Move outside into own class
-void Renderer::ClearLights()
-{
-	//not necessaru since it is predefined in the header it iwll naturally call this.
-	//delete[] lightSource;
 }
 
 void Renderer::ClearSprites()
@@ -1398,8 +1349,6 @@ void Renderer::ClearSprites()
 	numAnimatedObjects = 0;
 	faceIndex = -1;
 }
-
-//End of move out
 
 void Renderer::ClearTilesets()
 {
