@@ -332,7 +332,7 @@ float Renderer::FindPixelLuminosity(float x, float y, Light* LightSource)
 			float normalFalloff = -Vector2::DotProduct(distNormalized, normalDir);
 			normalFalloff += normalMin;
 			normalFalloff = clamp(normalFalloff, 0.0f, 1.0f);
-			//Result = (normalFalloff * normalStrength * Result);
+			Result = (normalFalloff * normalStrength * Result);
 		}
 	}
 
@@ -523,6 +523,7 @@ float laserAreaLightRange = 20;
 Color laserAreaLightColor{217,220,255,255};
 float lightWeight = 1;
 float laserThreshold = 0.52f;
+float lightMultiplier = 0.65;
 void Renderer::RenderLasers()
 {
 	const int xSize = (int)outputBuffer->size.x;
@@ -582,9 +583,9 @@ void Renderer::RenderLasers()
 									IntensityG = (IntensityG + falloff * (laserAreaLightColor.g / 255.0f));
 									IntensityB = (IntensityB + falloff * (laserAreaLightColor.b / 255.0f));
 
-									lightR[x][y] += IntensityR * lightWeight;
-									lightG[x][y] += IntensityG * lightWeight;
-									lightB[x][y] += IntensityB * lightWeight;
+									lightR[x][y] += IntensityR * lightWeight * lightMultiplier;
+									lightG[x][y] += IntensityG * lightWeight * lightMultiplier;
+									lightB[x][y] += IntensityB * lightWeight * lightMultiplier;
 								}
 								if (abs(y - laserPoints2[i].y) < laserSize)
 								{
@@ -602,6 +603,37 @@ void Renderer::RenderLasers()
 										DestPixel.r = clampInt8(lightR[x][y] * 255, 0, 254);
 										DestPixel.g = clampInt8(lightG[x][y] * 255, 0, 254);
 										DestPixel.b = clampInt8(lightB[x][y] * 255, 0, 254);
+									}
+								}
+							}
+						}
+						else if ((x <= laserPoints1[i].x + laserAreaLightRange && x >= laserPoints2[i].x - laserAreaLightRange && (int)laserPoints1[i].x - (int)laserPoints2[i].x > 0) || (x >= laserPoints1[i].x - laserAreaLightRange && x <= laserPoints2[i].x + laserAreaLightRange && (int)laserPoints1[i].x - (int)laserPoints2[i].x < 0))
+						{ 
+							if (abs(y - laserPoints2[i].y) < laserAreaLightRange)
+							{
+								float distSquared = abs(distanceSquared(laserPoints2[i].x, laserPoints2[i].y, x, y));
+								if (distSquared < laserAreaLightRange * laserAreaLightRange)
+								{
+									int inOutCount = CheckLineForObject(laserPoints2[i].x, laserPoints2[i].y, x, y);
+									bool isLit = false;
+									if (inOutCount <= 1)
+									{
+										isLit = true;
+									}
+									if (isLit == true)
+									{
+
+										float dist = sqrt(distSquared);
+										float s = dist / laserAreaLightRange;
+										float s2 = s * s;
+										float falloff = 0.8f * (float)pow((1 - s2), 2) / (1 + .5f * s);
+										IntensityR = (IntensityR + falloff * (laserAreaLightColor.r / 255.0f));
+										IntensityG = (IntensityG + falloff * (laserAreaLightColor.g / 255.0f));
+										IntensityB = (IntensityB + falloff * (laserAreaLightColor.b / 255.0f));
+
+										lightR[x][y] += IntensityR * lightWeight * lightMultiplier;
+										lightG[x][y] += IntensityG * lightWeight * lightMultiplier;
+										lightB[x][y] += IntensityB * lightWeight * lightMultiplier;
 									}
 								}
 							}
@@ -641,9 +673,9 @@ void Renderer::RenderLasers()
 									IntensityG = (IntensityG + falloff * (laserAreaLightColor.g / 255.0f));
 									IntensityB = (IntensityB + falloff * (laserAreaLightColor.b / 255.0f));
 
-									lightR[x][y] += IntensityR * lightWeight;
-									lightG[x][y] += IntensityG * lightWeight;
-									lightB[x][y] += IntensityB * lightWeight;
+									lightR[x][y] += IntensityR * lightWeight * lightMultiplier;
+									lightG[x][y] += IntensityG * lightWeight * lightMultiplier;
+									lightB[x][y] += IntensityB * lightWeight * lightMultiplier;
 								}
 
 								if (abs(x - laserPoints2[i].x) < laserSize)
