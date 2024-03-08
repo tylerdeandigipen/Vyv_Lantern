@@ -454,7 +454,7 @@ const	int BAYER_PATTERN_8X8[8][8] = {	//	8x8 Bayer Dithering Matrix. Color level
 };
 int bayerSize = 8;
 
-void ImageBuffer::DitherBuffer(ImageBuffer* output, bool renderOnlyLights, bool isFullbright, float** lightR, float** lightG, float** lightB)
+void ImageBuffer::DitherBuffer(ImageBuffer* output, bool renderOnlyLights, bool isFullbright, float minBrightness, float** lightR, float** lightG, float** lightB)
 {
     if (output == NULL)
     {
@@ -473,9 +473,9 @@ void ImageBuffer::DitherBuffer(ImageBuffer* output, bool renderOnlyLights, bool 
     const int xSize = (int)size.x;
     const int ySize = (int)size.y;
     Color black{ 0,0,0,255 };
-    #pragma omp parallel
+    //#pragma omp parallel
     {
-        #pragma omp for nowait collapse(2) private(red, green, blue, bayerNum, corr, i1, i2, i3)
+        //#pragma omp for nowait collapse(2) private(red, green, blue, bayerNum, corr, minBrightness, i1, i2, i3)
         for (int x = 0; x < xSize; ++x)
         {
             for (int y = 0; y < ySize; ++y)
@@ -517,10 +517,18 @@ void ImageBuffer::DitherBuffer(ImageBuffer* output, bool renderOnlyLights, bool 
                         {
                             DestPixel = buffer[x + (BufferSizeX * y)];
                         }
+                        else if (i1 + i2 + i3 == 0)
+                        {
+                            float tempScale = (minBrightness / 255);
+                            DestPixel = SourcePixel.ScaleIndividual(tempScale, tempScale, tempScale);
+                        }
                         else
                         {
+                            float tempScale = (minBrightness / 255);
                             DestPixel = SourcePixel.ScaleIndividual(((float)i1 / 7), ((float)i2 / 7), ((float)i3 / 7));
+                            DestPixel += DestPixel.ScaleIndividual(tempScale, tempScale, tempScale);
                         }
+                     
                     }
                     else
                     {

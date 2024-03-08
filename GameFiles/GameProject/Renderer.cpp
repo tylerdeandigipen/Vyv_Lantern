@@ -79,7 +79,7 @@ void Renderer::Update(float dt)
 		laserHandler.UpdateLasers();
 		RenderLasers();
 		BlurLights(-1, 2);
-		outputBuffer->DitherBuffer(outputBuffer, renderOnlyLights, isFullbright, lightR, lightG, lightB);
+		outputBuffer->DitherBuffer(outputBuffer, renderOnlyLights, isFullbright, minBrightness, lightR, lightG, lightB);
 	}
 	RenderToOutbuffer();
 
