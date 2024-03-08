@@ -1,4 +1,5 @@
 #include "ImGuiManager.h"
+#include "LevelCreatorScene.h"
 #include <string.h>
 #include <imgui.h>
 #include <cassert>
@@ -22,8 +23,9 @@ void ImGuiManager::RenderOKPopup(const std::string& popupTitle, const std::strin
 	}
 }
 
-int ImGuiManager::RenderMirrorDirPopup(const std::string& popupTitle, const std::string& message, bool openPopup)
+MirrorData ImGuiManager::RenderMirrorDirPopup(const std::string& popupTitle, const std::string& message, bool openPopup)
 {
+    MirrorData dontworry;
 	int returnVal = 0;
 	static ImVec4 pickedColor = ImVec4(160.0f / 255.0f, 0.0f, 255.0f / 255.0f, 1.0f);
 
@@ -50,7 +52,6 @@ int ImGuiManager::RenderMirrorDirPopup(const std::string& popupTitle, const std:
 		if (topLeftChecked)
 		{
 			returnVal = 1;
-
 			//ImGui::CloseCurrentPopup();
 		}
 
@@ -58,6 +59,8 @@ int ImGuiManager::RenderMirrorDirPopup(const std::string& popupTitle, const std:
 		ImGui::Checkbox("Top Right", &topRightChecked);
 		if (topRightChecked)
 		{
+			// put your code here for mirror/emitter dir. set the direction based on button.
+			//ImGui::CloseCurrentPopup();
 			returnVal = 2;
 
 			//ImGui::CloseCurrentPopup();
@@ -86,18 +89,19 @@ int ImGuiManager::RenderMirrorDirPopup(const std::string& popupTitle, const std:
 		ImGui::ColorPicker4("Pick a Color", (float*)&pickedColor);
 
 		ImGui::Text("Insert reflection direction.");
+		dontworry.spriteDirection = returnVal;
+		//std::vector<std::pair<int, int>> positions;
 
-		std::vector<std::pair<int, int>> positions;
+		static float xValue = 0;
+		static float yValue = 0;
 
-		static int xValue = 0;
-		static int yValue = 0;
-
-		ImGui::InputInt("X", &xValue);
-		ImGui::InputInt("Y", &yValue);
+		ImGui::InputFloat("X", &xValue);
+		ImGui::InputFloat("Y", &yValue);
 
 		if (ImGui::Button("Confirm Placement..."))
 		{
-			positions.push_back(std::make_pair(xValue, yValue));
+			//positions.push_back(std::make_pair(xValue, yValue));
+			dontworry.direction = { xValue, yValue };
 		}
 
 		if (ImGui::Button("OK"))
@@ -106,13 +110,15 @@ int ImGuiManager::RenderMirrorDirPopup(const std::string& popupTitle, const std:
 		}
 
 		ImGui::EndPopup();
-		return returnVal;
+		return dontworry;
 	}
+	return dontworry;
 }
 
-int ImGuiManager::RenderEmitterDirPopup(const std::string& popupTitle, const std::string& message, bool openPopup)
+EmitterData ImGuiManager::RenderEmitterDirPopup(const std::string& popupTitle, const std::string& message, bool openPopup)
 {
 	int returnVal = 0;
+	EmitterData emitData;
 	static ImVec4 pickedColor = ImVec4(160.0f / 255.0f, 0.0f, 255.0f / 255.0f, 1.0f);
 
 	if (openPopup)
@@ -146,6 +152,7 @@ int ImGuiManager::RenderEmitterDirPopup(const std::string& popupTitle, const std
 		ImGui::Checkbox("Down", &downChecked);
 		if (downChecked)
 		{
+			// put your code here for mirror/emitter dir. set the direction based on button.
 			returnVal = 2;
 
 			//ImGui::CloseCurrentPopup();
@@ -176,6 +183,7 @@ int ImGuiManager::RenderEmitterDirPopup(const std::string& popupTitle, const std
 		if (ImGui::Button("OK"))
 		{
 			ImGui::CloseCurrentPopup();
+			return emitData;
 		}
 
 		/*ImGui::Text("Insert reflection direction.");
@@ -194,8 +202,9 @@ int ImGuiManager::RenderEmitterDirPopup(const std::string& popupTitle, const std
 		}*/
 
 		ImGui::EndPopup();
-		return returnVal;
+		return emitData;
 	}
+	return emitData;
 }
 
 /*void ImGuiManager::MirrorCheckBox(int dir)
