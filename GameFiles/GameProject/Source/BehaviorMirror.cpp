@@ -46,6 +46,8 @@ BehaviorMirror::BehaviorMirror(BehaviorMirror const& other) : Behavior(other), m
 BehaviorMirror::~BehaviorMirror()
 {
     // call the function to delete mirror whenever tyler makes it ioujdfsjklsdfjkl;dfsjkl;
+    delete mirror;
+    mirror = NULL;
 }
 
 std::string BehaviorMirror::GetName()

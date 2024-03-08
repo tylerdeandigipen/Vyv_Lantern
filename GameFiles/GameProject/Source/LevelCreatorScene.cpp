@@ -997,20 +997,20 @@ void LevelCreatorScene::ImGuiWindow()
 	{
 		CreateDoorEntity();
 	}
-	int scaredConfused = ImGuiManager::RenderMirrorDirPopup("MirrorDirection", "Pick a mirror direction.");
-	if (ImGui::Button("  Create Mirror") || scaredConfused > 0)
+	MirrorData scaredConfused = ImGuiManager::RenderMirrorDirPopup("MirrorDirection", "Pick a mirror direction.");
+	if (ImGui::Button("  Create Mirror") || (scaredConfused.spriteDirection > 0 && scaredConfused.done))
 	{
 		ImGui::OpenPopup("MirrorDirection");
 
 		//ImGuiManager::MirrorCheckBox(scaredConfused);
-		if (scaredConfused > 0)
+		if (scaredConfused.spriteDirection > 0 && scaredConfused.done)
 			CreateMirrorEntity(scaredConfused);
 	}
-	int emitterDirection = ImGuiManager::RenderEmitterDirPopup("EmitterDirection", "Pick a Emitter direction.");
-	if (ImGui::Button("  Create Emitter") || emitterDirection > 0)
+	EmitterData emitterDirection = ImGuiManager::RenderEmitterDirPopup("EmitterDirection", "Pick a Emitter direction.");
+	if (ImGui::Button("  Create Emitter") || (emitterDirection.spriteDirection > 0 && emitterDirection.done))
 	{
 		ImGui::OpenPopup("EmitterDirection");
-		if (emitterDirection > 0)
+		if (emitterDirection.spriteDirection > 0 && emitterDirection.done)
 			CreateEmitterEntity(emitterDirection); // temporary value untill i fix it
 	}
 
@@ -1094,7 +1094,7 @@ int LevelCreatorScene::CreateDoorEntity()
 }
 
 //static int mirrorCount = 0;
-int LevelCreatorScene::CreateMirrorEntity(int direction)
+int LevelCreatorScene::CreateMirrorEntity(MirrorData mirror)
 {
 	int door_existing = 0;
 
@@ -1103,7 +1103,7 @@ int LevelCreatorScene::CreateMirrorEntity(int direction)
 	std::string number = "./Data/GameObjects/Mirror";
 
 	std::string filename;
-	switch (direction) {
+	switch (mirror.spriteDirection) {
 	case 1: filename = "./Data/GameObjects/MirrorTopLeft.json"; break;
 	case 2: filename = "./Data/GameObjects/MirrorTopRight.json"; break;
 	case 3: filename = "./Data/GameObjects/MirrorBottomLeft.json"; break;
@@ -1124,7 +1124,7 @@ int LevelCreatorScene::CreateMirrorEntity(int direction)
 }
 
 //static int emitterCount = 0;
-int LevelCreatorScene::CreateEmitterEntity(int direction)
+int LevelCreatorScene::CreateEmitterEntity(EmitterData emit)
 {
 	std::string number = "./Data/GameObjects/Emitter";
 	std::string filename = "./Data/GameObjects/tempEmitter.json";
@@ -1132,7 +1132,7 @@ int LevelCreatorScene::CreateEmitterEntity(int direction)
 	Entity* temp = FileIO::GetInstance()->ReadEntity(filename);
 
 	//std::string filename;
-	switch (direction) {
+	switch (emit.spriteDirection) {
 	case 1:
 	{
 		BehaviorEmitter* mine = temp->GetComponent<BehaviorEmitter>();

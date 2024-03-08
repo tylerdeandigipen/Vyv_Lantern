@@ -10,9 +10,46 @@
 #pragma once
 
 #include "EntityManager.h"
-
+#include "Color.h"
 class Scene;
 Scene* LevelCreatorSceneGetInstance(void);
+
+struct MirrorData 
+{
+	gfxVector2 direction = {0.0f,0.0f};
+	Color newcolor = { 0,0,0,0 }; // pnly used if its different
+	int spriteDirection = 0; // case for the sprite update
+	bool done = false;
+	MirrorData() {};
+	MirrorData(MirrorData const& rhs)
+	{
+		*this = rhs;
+	}
+	MirrorData& operator=(MirrorData const& rhs) {
+		newcolor = rhs.newcolor;
+		spriteDirection = rhs.spriteDirection;
+		direction = rhs.direction;
+		return *this;
+	};
+};
+
+struct EmitterData
+{
+	Color newcolor = { 0,0,0,0 }; // needs color
+	int spriteDirection = 0; // case for the sprite update
+	bool done = false;
+	EmitterData() {};
+	EmitterData(EmitterData const& rhs)
+	{
+		*this = rhs;
+	}
+	EmitterData& operator=(EmitterData const& rhs) {
+		newcolor = rhs.newcolor;
+		spriteDirection = rhs.spriteDirection;
+		return *this;
+	};
+};
+
 
 class LevelCreatorScene : public Scene
 {
@@ -56,8 +93,8 @@ private:
 	int CreatePlayerEntity();
 	int CreateCircleEntity();
 	int CreateDoorEntity();
-	int CreateMirrorEntity(int direction);
-	int CreateEmitterEntity(int direction);
+	int CreateMirrorEntity(MirrorData direction);
+	int CreateEmitterEntity(EmitterData direction);
 	int CreateRecieverEntity();
 
 	void AddToFile(std::string nametoadd, Entity* entity);

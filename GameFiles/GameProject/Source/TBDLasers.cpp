@@ -77,8 +77,8 @@ bool TBDLasers::AddMirror(Mirror* mirror)
 void TBDLasers::UpdateLasers()
 {
 	// temp stuff can delete 
-	lasers[0]->color = Color{ 160,0,255,255 };
-	lasers[1]->color = Color{ 160,0,255,255 };
+//	lasers[0]->color = Color{ 160,0,255,255 };
+//	lasers[1]->color = Color{ 160,0,255,255 };
 
 	
 	for (int i = 0; i < numMirrors; i++)
