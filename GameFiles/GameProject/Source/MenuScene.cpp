@@ -48,7 +48,6 @@ SDL_GLContext MenuGlContext;
 
 Scene* MenuSceneinstance = NULL;
 
-laser_emitter* MenuLaser;
 
 MenuScene::MenuScene() : Scene("Menutest")
 {
