@@ -13,6 +13,7 @@
 #include "SceneSystem.h"
 #include "AudioEngine.h"
 #include "Collision.h"
+#include "EntityManager.h"
 
 #include "LaserSystem.h"
 
@@ -22,7 +23,7 @@ struct emitter_id;
 class TbdTestScene : public Scene
 {
 public:
-	
+
 	TbdTestScene();
 
 	Engine::EngineCode Load(void) override;
@@ -33,6 +34,7 @@ public:
 	void Render(void) override;
 	bool winState = false;
 private:
+	std::unique_ptr<EntityManager> entityManagerTBD;
 	emitter_id ControlledEmitter;
 
 	void ImGuiInterg();
