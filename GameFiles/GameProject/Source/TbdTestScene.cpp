@@ -580,7 +580,8 @@ void TbdTestScene::ImGuiWindow()
 				}
 			}
 
-			ImGui::SliderFloat("Minimum Brightness", &TbdPixelRenderer->minBrightness, 0.0f, 255.0f);
+			ImGui::SliderFloat("Brightness", &TbdPixelRenderer->minBrightness, 0.0f, 255.0f);
+			ImGui::SliderFloat("Saturation", &TbdPixelRenderer->saturationPercent, 0.0f, 1.0f);
 
 			ImGui::Separator();
 		}
