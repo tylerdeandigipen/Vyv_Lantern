@@ -58,6 +58,7 @@ void Renderer::Update(float dt)
 	//make higher if preformance is low, make lower if too much cpu usage
 	omp_set_num_threads(maxThreadsAllowed);
 
+	//fixes janky cam movements
 	CameraP.x = (int)nextCamPos.x;
 	CameraP.y = (int)nextCamPos.y;
 
@@ -162,20 +163,21 @@ void Renderer::RenderToOutbuffer()
 			for (int y = 0; y < ySize; ++y)
 			{
 				Color& DestPixel = outputBuffer->SampleColor(x, y);
+				if (saturationPercent != 1)
+				{
+					DestPixel.ChangeSaturation(saturationPercent);
+				}
+
 				if (renderNormalMap != true)
 				{
 					if (y % 2 == 0 && doScanLines == true)
 					{
-						DestPixel = (outputBuffer->SampleColor(x, y) * scanLineOpacity);
-					}
-					else
-					{
-						DestPixel = outputBuffer->SampleColor(x, y);
+						DestPixel = DestPixel * scanLineOpacity;
 					}
 				}
 				else if (renderNormalMap == true)
 				{
-					DestPixel = shadowCasterBuffer->SampleColor(x + (int)CameraP.x, y + (int)CameraP.y);
+					DestPixel = normalBuffer->SampleColor(x + (int)CameraP.x, y + (int)CameraP.y);
 				}
 			}
 		}

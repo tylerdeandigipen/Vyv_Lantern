@@ -35,6 +35,7 @@ public:
 
 	//Visual Effects Settings
 	float screenScale = 6;
+	float saturationPercent = 1;
 	float normalStrength = 0.5f;
 	bool doBlur = true;
 	bool doScanLines = true;

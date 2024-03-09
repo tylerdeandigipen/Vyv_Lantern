@@ -8,6 +8,7 @@
 //
 //------------------------------------------------------------------------------
 #include "Color.h"
+#include "Math.h"
 
 float clamp(float value, float min, float max);
 
@@ -83,6 +84,33 @@ Color Color::BlendColors(Color top, Color bottom, float blendPercent)
 		result.b = (uint8_t)((top.b - bottom.b) * ((100 - blendPercent) * 0.01) + bottom.b);
 
 	return result;
+}
+
+
+#define  Pr  .299
+#define  Pg  .587
+#define  Pb  .114
+
+//  public-domain function by Darel Rex Finley
+//
+//  The passed-in RGB values can be on any desired scale, such as 0 to
+//  to 1, or 0 to 255.  (But use the same scale for all three!)
+//
+//  The "change" parameter works like this:
+//    0.0 creates a black-and-white image.
+//    0.5 reduces the color saturation by half.
+//    1.0 causes no change.
+//  Note:  A "change" value greater than 1.0 may project your RGB values
+//  beyond their normal range, in which case you probably should truncate
+//  them to the desired range before trying to use them in an image.
+
+void Color::ChangeSaturation(double percent)
+{
+	double  P = sqrt((r) * (r) * Pr + (g) * (g) * Pg + (b) * (b) * Pb);
+
+	r = (uint8_t)(P + ((r) - P) * percent);
+	g = (uint8_t)(P + ((g) - P) * percent);
+	b = (uint8_t)(P + ((b) - P) * percent);
 }
 
 Color Color::ScaleIndividual(float rScale, float gScale, float bScale)
