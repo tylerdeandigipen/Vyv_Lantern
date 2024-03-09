@@ -20,6 +20,7 @@
 #include "Renderer.h"
 #include "TbdTestScene.h"
 #include "EntityContainer.h"
+#include "BehaviorReciever.h"
 
 
 BehaviorDoor::BehaviorDoor() : Behavior(Behavior::bDoor), mDestination(), AddedToForeGround(false), closedPPM(), openPPM(), tempImage(nullptr), isDoorClosed(true)
@@ -99,23 +100,27 @@ void BehaviorDoor::Update(float dt)
     }
     else if (GetCurr() == cIdle)
     {
-        if (Renderer::GetInstance()->laserHandler.isSolved == true && GetDoorClosed() == true)
+        if (EntityContainer::GetInstance()->FindByName(_receiver.c_str())->GetComponent<BehaviorReceiver>() && GetDoorClosed() == true)
         {
-            isDoorClosed = false;
-            SetNext(cOpen);
+            if (EntityContainer::GetInstance()->FindByName(_receiver.c_str())->GetComponent<BehaviorReceiver>()->GetActive())
+            {
+                isDoorClosed = false;
+                SetNext(cOpen);
+            }
         }
     }
-
-    if (EntityContainer::GetInstance()->FindByName("Player"))
-    {
+    
+    
 #ifdef _DEBUG
+    if (EntityContainer::GetInstance()->FindByName(_receiver.c_str())->GetComponent<BehaviorReceiver>() && GetDoorClosed() == true)
+    {
         Inputs* input = Inputs::GetInstance();
         if (input->keyPressed(SDL_SCANCODE_T))
         {
-            Renderer::GetInstance()->laserHandler.isSolved = true;
+            EntityContainer::GetInstance()->FindByName(_receiver.c_str())->GetComponent<BehaviorReceiver>()->SetActive();
         }
-#endif
     }
+#endif
 }
 
 
@@ -133,6 +138,10 @@ void BehaviorDoor::Read(json jsonData)
         {
             SetCurr(cOpen);
         }
+    }
+    if (jsonData["PairName"].is_string())
+    {
+        _receiver = jsonData["PairName"];
     }
     if (Parent()->key.c_str())
     {

@@ -26,7 +26,7 @@ std::string BehaviorReceiver::GetName()
 
 std::string BehaviorReceiver::Name()
 {
-    return "BehaviorReciever";
+    return "BehaviorReceiver";
 }
 
 void BehaviorReceiver::SetInputHandler(Inputs* _input)
@@ -48,6 +48,7 @@ void BehaviorReceiver::Init()
             // vertical 
             receiver->yPos1 = { trans->GetTranslation()->x + (test.x / 2), trans->GetTranslation()->y };
             receiver->yPos2 = { trans->GetTranslation()->x + (test.y / 2), trans->GetTranslation()->y + test.y };
+            Renderer::GetInstance()->laserHandler.AddCheckPoint(receiver);
         }
     }
 }

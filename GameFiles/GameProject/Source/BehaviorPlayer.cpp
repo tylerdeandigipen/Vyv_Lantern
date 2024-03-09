@@ -170,7 +170,8 @@ void BehaviorPlayer::Controller(float dt)
         {
             Vector2 ScreenHalfSize = 0.5f * Vector2(SCREEN_SIZE_X, SCREEN_SIZE_Y);
             Vector2 BitmapHalfDim = 0.5f * playerEntity->size;
-            Renderer::GetInstance()->SetCameraPosition(playerEntity->position - ScreenHalfSize + BitmapHalfDim);
+            Vector2 newCamPos = (playerEntity->position - ScreenHalfSize + BitmapHalfDim) + ((CursourP - Renderer::GetInstance()->GetCameraPosition() - ScreenHalfSize + BitmapHalfDim) * followCursorScalar);
+            Renderer::GetInstance()->SetCameraPosition(newCamPos);
         }
         
     }
