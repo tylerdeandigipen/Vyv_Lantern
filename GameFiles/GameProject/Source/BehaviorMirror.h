@@ -37,6 +37,8 @@ public:
 	static void SwitchOn(bool collided);
 	static void MirrorCollisionHandler(Entity* thisone, Entity* other);
 	gfxVector2 GetReflectDirection() { return mirror->reflectDir; };
+	void SetColor(Color theCol) { mirror->overwriteColor = theCol; };
+	void SetReflection(gfxVector2 dir) { mirror->reflectDir = dir; };
 
 private:
 	void Controller(float dt);

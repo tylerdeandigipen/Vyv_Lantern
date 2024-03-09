@@ -1000,18 +1000,26 @@ void LevelCreatorScene::ImGuiWindow()
 	MirrorData scaredConfused = ImGuiManager::RenderMirrorDirPopup("MirrorDirection", "Pick a mirror direction.");
 	if (ImGui::Button("  Create Mirror") || (scaredConfused.spriteDirection > 0 && scaredConfused.done))
 	{
-		ImGui::OpenPopup("MirrorDirection");
+		if (!scaredConfused.done)
+			ImGui::OpenPopup("MirrorDirection");
 
 		//ImGuiManager::MirrorCheckBox(scaredConfused);
 		if (scaredConfused.spriteDirection > 0 && scaredConfused.done)
+		{
 			CreateMirrorEntity(scaredConfused);
+			scaredConfused = MirrorData(); // reset values
+		}
 	}
 	EmitterData emitterDirection = ImGuiManager::RenderEmitterDirPopup("EmitterDirection", "Pick a Emitter direction.");
 	if (ImGui::Button("  Create Emitter") || (emitterDirection.spriteDirection > 0 && emitterDirection.done))
 	{
-		ImGui::OpenPopup("EmitterDirection");
+		if (!emitterDirection.done)
+			ImGui::OpenPopup("EmitterDirection");
 		if (emitterDirection.spriteDirection > 0 && emitterDirection.done)
+		{
 			CreateEmitterEntity(emitterDirection); // temporary value untill i fix it
+			emitterDirection = EmitterData(); // reset values
+		}
 	}
 
 	if (ImGui::Button("  Create Reciever"))
@@ -1110,9 +1118,10 @@ int LevelCreatorScene::CreateMirrorEntity(MirrorData mirror)
 	case 4: filename = "./Data/GameObjects/MirrorBottomRight.json"; break;
 	default: return 0;
 	}
-
+	
 	Entity* temp = FileIO::GetInstance()->ReadEntity(filename);
-
+	temp->GetComponent<BehaviorMirror>()->SetReflection(mirror.direction);
+	//temp->GetComponent<BehaviorMirror>()->SetColor(mirror.newcolor);
 	temp->addKey = "Mirror"; // this is for the map holding functions and gives access to function for circle
 
 	temp->key = "Mirror" + std::to_string(mirrorCount);
@@ -1143,24 +1152,26 @@ int LevelCreatorScene::CreateEmitterEntity(EmitterData emit)
 	case 2:
 	{
 		BehaviorEmitter* mine = temp->GetComponent<BehaviorEmitter>();
-		mine->SetDirection({ 1.0f, 0.0f });
+		mine->SetPosition(*temp->GetComponent<Transform>()->GetTranslation());
+		mine->SetDirection({ 0.0f, 1.0f });
 		break;
 	}
 	case 3:
 	{
 		BehaviorEmitter* mine = temp->GetComponent<BehaviorEmitter>();
-		mine->SetDirection({ 0.0f, 1.0f });
+		mine->SetDirection({ 1.0f, 0.0f });
+		mine->SetPosition(*temp->GetComponent<Transform>()->GetTranslation());
 		break;
 	}
 	case 4:
 	{
 		BehaviorEmitter* mine = temp->GetComponent<BehaviorEmitter>();
 		mine->SetDirection({ -1.0f, 0.0f });
+		mine->SetPosition(*temp->GetComponent<Transform>()->GetTranslation());
 		break;
 	}
 	default: return 0;
 	}
-
 	temp->addKey = "Emitter"; // this is for the map holding functions and gives access to function for circle
 
 	temp->key = "Emitter" + std::to_string(emitterCount);

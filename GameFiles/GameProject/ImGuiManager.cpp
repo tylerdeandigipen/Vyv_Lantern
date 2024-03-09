@@ -23,12 +23,17 @@ void ImGuiManager::RenderOKPopup(const std::string& popupTitle, const std::strin
 	}
 }
 
+static bool topLeftChecked = false;
+static bool topRightChecked = false;
+static bool bottomLeftChecked = false;
+static bool bottomRightChecked = false;
+static int returnVal = 0;
+static MirrorData dontworry;
+static MirrorData emptyThing;
 MirrorData ImGuiManager::RenderMirrorDirPopup(const std::string& popupTitle, const std::string& message, bool openPopup)
 {
-	MirrorData dontworry;
-	int returnVal = 0;
-	static ImVec4 pickedColor = ImVec4(160.0f / 255.0f, 0.0f, 255.0f / 255.0f, 1.0f);
-
+	static ImVec4 pickedColor = ImVec4(160.0 / 255.0f, 0.0f, 255.0f / 255.0f, 1.0f);
+	returnVal = 0;
 	if (openPopup)
 	{
 		ImGui::OpenPopup(popupTitle.c_str());
@@ -41,11 +46,6 @@ MirrorData ImGuiManager::RenderMirrorDirPopup(const std::string& popupTitle, con
 		ImGui::Text("Warning, this cannot be changed.");
 
 		ImGui::Text(message.c_str());
-
-		bool topLeftChecked = false;
-		bool topRightChecked = false;
-		bool bottomLeftChecked = false;
-		bool bottomRightChecked = false;
 
 		// 1
 		ImGui::Checkbox("Top Left", &topLeftChecked);
@@ -90,7 +90,6 @@ MirrorData ImGuiManager::RenderMirrorDirPopup(const std::string& popupTitle, con
 		ImGui::ColorPicker4("Pick a Color", (float*)&pickedColor);
 
 		ImGui::Text("Insert reflection direction.");
-		dontworry.spriteDirection = returnVal;
 
 		//std::vector<std::pair<int, int>> positions;
 
@@ -109,18 +108,36 @@ MirrorData ImGuiManager::RenderMirrorDirPopup(const std::string& popupTitle, con
 		if (ImGui::Button("OK"))
 		{
 			ImGui::CloseCurrentPopup();
+			dontworry.newcolor = { static_cast<uint8_t>(pickedColor.w), static_cast<uint8_t>(pickedColor.x), static_cast<uint8_t>(pickedColor.y), static_cast<uint8_t>(pickedColor.z) };
+			dontworry.spriteDirection = returnVal;
+			dontworry.done = true;
+			// clean up
+			returnVal = 0;
+			topLeftChecked = false;
+			topRightChecked = false;
+			bottomLeftChecked = false;
+			bottomRightChecked = false;
+			ImGui::EndPopup();
+			MirrorData worried(dontworry); // returns a copy so the values can be reset
+			dontworry = MirrorData();
+			return worried;
 		}
 
 		ImGui::EndPopup();
 		return dontworry;
 	}
-	return dontworry;
+	return emptyThing;
 }
 
+static bool upChecked = false;
+static bool downChecked = false;
+static bool rightChecked = false;
+static bool leftChecked = false;
 EmitterData ImGuiManager::RenderEmitterDirPopup(const std::string& popupTitle, const std::string& message, bool openPopup)
 {
-	int returnVal = 0;
-	EmitterData emitData;
+	static EmitterData emitData;
+	static EmitterData emptyEmit;
+	returnVal = 0;
 	static ImVec4 pickedColor = ImVec4(160.0f / 255.0f, 0.0f, 255.0f / 255.0f, 1.0f);
 
 	if (openPopup)
@@ -135,11 +152,6 @@ EmitterData ImGuiManager::RenderEmitterDirPopup(const std::string& popupTitle, c
 		ImGui::Text("Warning, this cannot be changed.");
 
 		ImGui::Text(message.c_str());
-
-		bool upChecked = false;
-		bool downChecked = false;
-		bool rightChecked = false;
-		bool leftChecked = false;
 
 		// 1
 		ImGui::Checkbox("Up", &upChecked);
@@ -184,8 +196,20 @@ EmitterData ImGuiManager::RenderEmitterDirPopup(const std::string& popupTitle, c
 
 		if (ImGui::Button("OK"))
 		{
+			emitData.done = true;
+			emitData.spriteDirection = returnVal;
+			emitData.newcolor = { static_cast<uint8_t>(pickedColor.x), static_cast<uint8_t>(pickedColor.y), static_cast<uint8_t>(pickedColor.z), static_cast<uint8_t>(pickedColor.w) };
+			returnVal = 0;
+			// clean up
+			upChecked = false;
+			downChecked = false;
+			rightChecked = false;
+			leftChecked = false;
 			ImGui::CloseCurrentPopup();
-			return emitData;
+			ImGui::EndPopup();
+			EmitterData hatethis(emitData); // returns a copy so the values can be reset
+			emitData = EmitterData();
+			return hatethis;
 		}
 
 		/*ImGui::Text("Insert reflection direction.");
@@ -206,5 +230,5 @@ EmitterData ImGuiManager::RenderEmitterDirPopup(const std::string& popupTitle, c
 		ImGui::EndPopup();
 		return emitData;
 	}
-	return emitData;
+	return emptyEmit;
 }

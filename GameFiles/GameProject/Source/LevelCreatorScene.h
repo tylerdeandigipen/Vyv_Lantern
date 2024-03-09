@@ -29,6 +29,7 @@ struct MirrorData
 		newcolor = rhs.newcolor;
 		spriteDirection = rhs.spriteDirection;
 		direction = rhs.direction;
+		done = rhs.done;
 		return *this;
 	};
 };
@@ -46,6 +47,7 @@ struct EmitterData
 	EmitterData& operator=(EmitterData const& rhs) {
 		newcolor = rhs.newcolor;
 		spriteDirection = rhs.spriteDirection;
+		done = rhs.done;
 		return *this;
 	};
 };

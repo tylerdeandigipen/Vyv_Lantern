@@ -58,7 +58,9 @@ void BehaviorEmitter::Update(float dt)
         Vector2 position = *Parent()->Has(Transform)->GetTranslation();
         // set reflection position when the mirror stops moving or is not moving;
         //mirror->p
-
+        laser->pos = position;
+        laser->pos.x += (Parent()->GetImage()->size.x / 2);
+        laser->pos.y += (Parent()->GetImage()->size.y / 2);
     }
 }
 
@@ -66,6 +68,7 @@ void BehaviorEmitter::Read(json jsonData)
 {
     Init();
     Renderer::GetInstance()->laserHandler.AddLaser(laser);
+    laser->isEmiting = true;
     if (jsonData["direction"].is_object())
     {
         json data = jsonData["direction"];
