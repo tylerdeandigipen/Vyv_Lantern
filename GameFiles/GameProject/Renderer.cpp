@@ -476,13 +476,13 @@ void Renderer::RenderParticles()
 	}
 }
 
-float laserSize = 3.15f;
-float laserWeight = 1;
-float laserAreaLightRange = 20;
-Color laserAreaLightColor{ 217,220,255,255 };
-float lightWeight = 1;
-float laserThreshold = 0.52f;
-float lightMultiplier = 0.65;
+float laserSize = 2.15f;
+float laserWeight = 2;
+float laserAreaLightRange = 15;
+Color laserAreaLightColor{ 150,150,150,255 };
+float lightWeight = 1.4;
+float laserThreshold = .52f;
+float lightMultiplier = 1.3f;
 void Renderer::RenderLasers()
 {
 	const int xSize = (int)outputBuffer->size.x;

@@ -86,7 +86,7 @@ void BehaviorEmitter::Read(json jsonData)
     }
     else
     {
-        laser->color = Color{ 160,0,255,255 };
+        laser->color = Color{ 230,230,230,255 };
     }
 
 }

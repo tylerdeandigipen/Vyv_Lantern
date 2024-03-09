@@ -66,10 +66,10 @@ void Inputs::handleInput()
 		// vs inputs for IMGUI itself
 #ifdef _DEBUG
 		ImGui_ImplSDL2_ProcessEvent(&event);
-#endif
 		ImGuiIO& io = ImGui::GetIO();
 		if (!io.WantCaptureKeyboard)
 		{
+#endif
 			switch (event.type)
 			{
 			case SDL_QUIT:
@@ -131,7 +131,10 @@ void Inputs::handleInput()
 				}
 				break;
 			}
+		
+#ifdef _DEBUG
 		}
+#endif
 	}
 }
 
