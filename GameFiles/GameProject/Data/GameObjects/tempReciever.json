@@ -24,37 +24,7 @@
       }
     },
     {
-      "Type": "LineCollider",
-      "LeftMostPoint": {
-        "x": 0,
-        "y": 90
-      },
-      "RightMostPoint": {
-        "x": 1000,
-        "y": 90
-      }
-    },
-    {
-      "Type": "Emitter",
-      "positionRight": {
-        "x": 90,
-        "y": 90
-      },
-      "positionLeft": {
-        "x": 90,
-        "y": 90
-      },
-      "LeftDirectionTrigger": {
-        "x": 1,
-        "y": 0
-      },
-      "RightDirectionTrigger": {
-        "x": 1,
-        "y": 0
-      },
-      "maxDistance": 80,
-      "emitRight": false,
-      "trigRight": false
+      "Type":"BehaviorReceiver"
     }
   ]
 }

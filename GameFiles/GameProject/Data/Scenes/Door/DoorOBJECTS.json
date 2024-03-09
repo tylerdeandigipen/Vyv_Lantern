@@ -1,0 +1,23 @@
+{
+  "Circle": {
+    "count": 1
+  },
+  "Door": {
+    "count": 2
+  },
+  "Emitter": {
+    "count": 1
+  },
+  "FilePath": "./Data/Scenes/Door/DoorOBJECTS.json",
+  "Mirror": {
+    "count": 1
+  },
+  "Objects": [
+    {
+      "FilePath": "./Data/Scenes/Door/Door0.json"
+    }
+  ],
+  "Reviever": {
+    "count": 1
+  }
+}

@@ -1,4 +1,5 @@
 #include "EntityManager.h"
+#pragma comment(lib, "Comdlg32.lib")
 
 auto EntityManager::ShowEntityInfo() -> void
 {
@@ -159,6 +160,104 @@ auto EntityManager::EntityPicker() -> void
 	}
 }
 
+std::wstring OpenFileDialog(bool save = false)
+{
+	OPENFILENAMEW ofn;       // Common dialog box structure
+	WCHAR szFile[260];       // Buffer for file name
+	HWND hwnd = NULL;        // Owner window
+	HANDLE hf;               // File handle
+
+	// Initialize OPENFILENAME
+	ZeroMemory(&ofn, sizeof(ofn));
+	ofn.lStructSize = sizeof(ofn);
+	ofn.hwndOwner = hwnd;
+	ofn.lpstrFile = szFile;
+	// Set lpstrFile[0] to '\0' so that GetOpenFileName does not
+	// use the contents of szFile to initialize itself.
+	ofn.lpstrFile[0] = '\0';
+	ofn.nMaxFile = sizeof(szFile) / sizeof(WCHAR);
+	ofn.lpstrFilter = L"All\0*.*\0Text\0*.TXT\0";
+	ofn.nFilterIndex = 1;
+	ofn.lpstrFileTitle = NULL;
+	ofn.nMaxFileTitle = 0;
+	ofn.lpstrInitialDir = NULL;
+	ofn.Flags = OFN_PATHMUSTEXIST | OFN_FILEMUSTEXIST;
+
+	BOOL result;
+	if (save)
+	{
+		ofn.Flags = OFN_OVERWRITEPROMPT; // Ensure the user gets a prompt if the file already exists
+		result = GetSaveFileNameW(&ofn); // Use the save file dialog
+	}
+	else
+	{
+		result = GetOpenFileNameW(&ofn); // Use the open file dialog
+	}
+
+	if (result == TRUE)
+	{
+		// For GetSaveFileName, there's no need to open and then immediately close the file handle,
+		// since we're just getting the file name to save to.
+		// This check is only relevant if reusing the dialog function for opening files.
+		if (!save)
+		{
+			hf = CreateFileW(ofn.lpstrFile, GENERIC_READ, 0, NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
+			if (hf != INVALID_HANDLE_VALUE)
+			{
+				CloseHandle(hf); // Close the handle after opening to read the content separately
+			}
+		}
+		return ofn.lpstrFile; // Directly return the wide string
+	}
+	return L"";
+}
+
+std::string WStringToString(const std::wstring& wstr)
+{
+	if (wstr.empty()) return std::string();
+
+	int sizeNeeded = WideCharToMultiByte(CP_UTF8, 0, &wstr[0], (int)wstr.size(), NULL, 0, NULL, NULL);
+	std::string strTo(sizeNeeded, 0);
+	WideCharToMultiByte(CP_UTF8, 0, &wstr[0], (int)wstr.size(), &strTo[0], sizeNeeded, NULL, NULL);
+
+	return strTo;
+}
+
+std::wstring StringToWString(const std::string& str)
+{
+	std::wstring convertedStr(str.begin(), str.end());
+	return convertedStr;
+}
+
+auto EntityManager::fileReader(std::string filePath) -> void
+{
+	std::ifstream file(filePath);
+	if (!file)
+	{
+		std::cerr << "Failed to open file at " << filePath << std::endl;
+		return; // or handle the error as appropriate
+	}
+
+	std::stringstream buffer;
+
+	buffer << file.rdbuf();
+	fileToEdit = buffer.str();
+	file.close();
+}
+
+void SaveTextToFile(const std::wstring& filePath, const std::string& text)
+{
+	std::wofstream outFile(filePath);
+	if (!outFile)
+	{
+		std::wcerr << L"Failed to open file for writing: " << filePath << std::endl;
+		return;
+	}
+
+	outFile << StringToWString(text);
+	outFile.close();
+}
+
 auto EntityManager::EditText() -> void
 {
 	if (!pRenderer || !pInput)
@@ -178,12 +277,21 @@ auto EntityManager::EditText() -> void
 			if (ImGui::MenuItem("Save"))
 			{
 				auto textToSave = editor.GetText();
-
-				/// save text....
+				
+				if (!OpenFileDialog(true).empty())
+				{
+					SaveTextToFile(OpenFileDialog(true), textToSave);
+				}
 			}
-			if (ImGui::MenuItem("Load"))
+			else if (ImGui::MenuItem("Load"))
 			{
-				ImGui::Begin("Select File", nullptr, ImGuiWindowFlags_AlwaysVerticalScrollbar);
+				std::wstring filePath = OpenFileDialog();
+				if (!filePath.empty())
+				{
+					fileReader(WStringToString(filePath));
+					//editor.InsertText(WStringToString(fileToEdit));
+					editor.SetText(fileToEdit);
+				}
 				ImGui::End();
 			}
 			ImGui::EndMenu();
@@ -256,19 +364,6 @@ auto EntityManager::InitializeProperties(std::string file_path) -> bool
 			Transform* t = creator->tempEntities[i]->Has(Transform);
 			properties[creator->tempEntities[i]->key] = EntityProperties{ {static_cast<int>(std::floorf(t->GetTranslation()->x)), static_cast<int>(std::floorf(t->GetTranslation()->y))}, {0.f}, false, false,{(bool)0.f} };
 		}
-	}
-
-	file = std::ifstream(fileToEdit);
-
-	if (file.good())
-	{
-		std::string str((std::istreambuf_iterator<char>(file)), std::istreambuf_iterator<char>());
-		editor.SetText(str);
-	}
-	else
-	{
-		std::cerr << "Error opening file" << std::endl;
-		return false;
 	}
 
 	return true;

@@ -17,6 +17,11 @@
 
 #include <map>
 
+#include <windows.h>
+#include <commdlg.h>
+#include <sstream>
+#include <fstream>
+
 auto TileNumToString(unsigned int tileNum) -> std::string;
 
 struct EntityProperties
@@ -40,11 +45,12 @@ public:
 	auto EditText() -> void;
 	auto EntityPicker() -> void;
 	auto IsEntityPicked(const std::string& key) -> bool const;
+	auto fileReader(std::string filePath) -> void;
 
 	TextEditor editor;
 	std::unordered_map<std::string, EntityProperties> properties;
-	std::string fileToEdit = "";
-	std::ifstream file;
+	std::string fileToEdit;
+	
 	TextEditor::LanguageDefinition lang = TextEditor::LanguageDefinition::CPlusPlus();
 	Renderer* pRenderer;
 	Vector2 mousePos_;

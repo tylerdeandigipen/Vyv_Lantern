@@ -41,6 +41,7 @@ public:
 	static void DoorCollisionHandler(Entity* entity1, Entity* entity2);
 	bool GetDoorClosed();
 	auto GetDestinationPosition() -> Destination;
+	auto GetPairName() -> std::string { return _receiver; };
 
 private:
 	Destination mDestination;
