@@ -100,7 +100,8 @@ void BehaviorDoor::Update(float dt)
     }
     else if (GetCurr() == cIdle)
     {
-        if (EntityContainer::GetInstance()->FindByName(_receiver.c_str())->GetComponent<BehaviorReceiver>() && GetDoorClosed() == true)
+        Entity* ent = EntityContainer::GetInstance()->FindByName(_receiver.c_str());
+        if (ent && ent->GetComponent<BehaviorReceiver>() && GetDoorClosed() == true)
         {
             if (EntityContainer::GetInstance()->FindByName(_receiver.c_str())->GetComponent<BehaviorReceiver>()->GetActive())
             {
@@ -112,7 +113,8 @@ void BehaviorDoor::Update(float dt)
     
     
 #ifdef _DEBUG
-    if (EntityContainer::GetInstance()->FindByName(_receiver.c_str())->GetComponent<BehaviorReceiver>() && GetDoorClosed() == true)
+    Entity* ent = EntityContainer::GetInstance()->FindByName(_receiver.c_str());
+    if (ent && ent->GetComponent<BehaviorReceiver>() && GetDoorClosed() == true)
     {
         Inputs* input = Inputs::GetInstance();
         if (input->keyPressed(SDL_SCANCODE_T))
