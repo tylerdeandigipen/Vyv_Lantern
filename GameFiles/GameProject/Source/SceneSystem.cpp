@@ -19,6 +19,7 @@
 #include "LevelCreatorScene.h"
 #include "SplashScene.h"
 #include "Inputs.h"
+#include "MenuScene.h"
 
 // enums for different scene types
 enum class SceneType
@@ -27,6 +28,7 @@ enum class SceneType
 	SCENE_TEST = 1,
 	SCENE_LEVELCREATOR = 2,
 	SCENE_SPLASH = 3,
+	SCENE_MENU = 4,
 	NULL_SCENE,
 
 	// Add more scenes as needed
@@ -231,7 +233,10 @@ bool CheckGameScenes()
 	{
 		activeSceneType = SceneType::SCENE_SPLASH;
 	}
-
+	else if (activeScene == MenuSceneGetInstance())
+	{
+		activeSceneType = SceneType::SCENE_MENU;
+	}
 	assert(activeSceneType != SceneType::NULL_SCENE && "Active scene type is NULL. Location: CheckGameScenes()");
 
 	if (inputHandlerScene->keyPressed(SDL_SCANCODE_1))
@@ -276,6 +281,17 @@ bool CheckGameScenes()
 		else
 		{
 			sceneSystem->SetScene(SplashSceneGetInstance());
+		}
+	}
+	else if (inputHandlerScene->keyPressed(SDL_SCANCODE_5))
+	{
+		if (activeSceneType == SceneType::SCENE_MENU)
+		{
+			sceneSystem->RestartScene();
+		}
+		else
+		{
+			sceneSystem->SetScene(MenuSceneGetInstance());
 		}
 	}
 	else

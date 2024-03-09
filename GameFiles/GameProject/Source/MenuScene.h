@@ -1,17 +1,29 @@
+//------------------------------------------------------------------------------
+//
+// File Name:	MenuScene.h
+// Author(s):	TayLee Young, Louis Wang, Michael Howard, Tyler Dean
+// Purpose:		Test scene for our game
+//
+// Copyright  © 2023 DigiPen (USA) Corporation.
+//
+//------------------------------------------------------------------------------
 #pragma once
-
 #include "Engine.h"
 #include "Scene.h"
 #include "SceneSystem.h"
+#include "AudioEngine.h"
+#include "Collision.h"
+
+#include "LaserSystem.h"
 
 class Scene;
+struct emitter_id;
 
 class MenuScene : public Scene
 {
 public:
 
 	MenuScene();
-	~MenuScene();
 
 	Engine::EngineCode Load(void) override;
 	Engine::EngineCode Init(void) override;
@@ -19,17 +31,40 @@ public:
 	Engine::EngineCode Unload(void) override;
 	void Update(float dt) override;
 	void Render(void) override;
+	bool winState = false;
 private:
-	void RenderButtons();
-	void HandleButtonInput();
+	emitter_id ControlledEmitter;
 
-	bool IsMouseOverBackButton();
-	bool IsMouseOverExitButton();
-	bool IsMouseOverSettingsButton();
+	void ImGuiInterg();
+	void ImGuiWindow();
+	void handleCheatCodes();
 
-	void HandleBack();
-	void HandleExit();
-	void HandleSettings();
+	void cheatFullbright();
+	void cheatOnlyLights();
+	void cheatNormalMap();
+	void cheatWallHitboxes();
+	void cheatScanlines();
+	void cheatBlur();
+	void cheatOnlyFog();
+	void cheatFog();
+	laser_emitter* NewEmitter(void)
+	{
+		laser_emitter* Result = NULL;
+
+		emitter_id ResultID = LaserSystem::GetInstance()->CreateEmitter();
+		Result = LaserSystem::GetInstance()->GetEmitter(ResultID);
+
+		return(Result);
+	}
+	reflector* NewReflector(void)
+	{
+		reflector* Result = NULL;
+
+		reflector_id ResultID = LaserSystem::GetInstance()->CreateReflector();
+		Result = LaserSystem::GetInstance()->GetReflector(ResultID);
+
+		return(Result);
+	}
 };
 
 Scene* MenuSceneGetInstance(void);
