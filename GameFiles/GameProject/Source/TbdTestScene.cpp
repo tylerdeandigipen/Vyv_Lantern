@@ -52,12 +52,16 @@ laser_emitter* TestLaser;
 
 TbdTestScene::TbdTestScene() : Scene("tbdtest")
 {
+	entityManagerTBD = std::make_unique<EntityManager>();
 }
 
 Engine::EngineCode TbdTestScene::Load()
 {
 	//AudioManager.LoadMusicFromJSON("./Data/music.json");
 	//AudioManager.LoadSFXFromJSON("./Data/SFX.json");
+
+	if (entityManagerTBD->InitializeProperties("./Data/GameObjects/ObjectList.json"))
+		std::cout << "Property load success!\n";
 
 	return Engine::NothingBad;
 }
@@ -104,6 +108,8 @@ Engine::EngineCode TbdTestScene::Init()
 	FontSystem fontSystem;
 
 	fontSystem.init("Font/MouldyCheeseRegular-WyMWG.ttf", 10);
+
+	entityManagerTBD->pRenderer = TbdPixelRenderer;
 
 	Engine::GetInstance()->SetPause(false);
 	return Engine::NothingBad;
@@ -467,6 +473,7 @@ void TbdTestScene::Update(float dt)
 
 	ImGuiInterg();
 	TbdPixelRenderer->Update(dt);
+	entityManagerTBD->pInput = Inputs::GetInstance();
 }
 
 void TbdTestScene::Render()
@@ -525,39 +532,62 @@ void TbdTestScene::ImGuiWindow()
 #ifdef _DEBUG
 	if (show_custom_window)
 	{
-		ImGui::Begin("custom window");
-		ImGui::Text("hey how you doin ;)");
-		ImGui::Text("welcome to the tbdtestscene debug window");
+		ImGui::Begin("TBDTestScene");
+		ImGui::BeginMainMenuBar();
 
-		/* mousePos_.x = (mousePos.x) / pRenderer->screenScale + pRenderer->GetCameraPosition().x;
-	mousePos_.y = (mousePos.y) / pRenderer->screenScale + pRenderer->GetCameraPosition().y; */
+		if (ImGui::MenuItem("Reset Scene", NULL, false, true))
+			SceneSystem::GetInstance()->RestartScene();
+		if (ImGui::MenuItem("Test Scene", NULL, false, true))
+			SceneSystem::GetInstance()->SetScene(TestSceneGetInstance());
+		if (ImGui::MenuItem("TbdTest Scene", NULL, false, true))
+			SceneSystem::GetInstance()->SetScene(TbdTestSceneGetInstance());
 
+		ImGui::EndMainMenuBar();
+
+		ImGui::Text("have fun,");
+		ImGui::Text("welcome to the test window!");
 		ImGui::Separator();
 
-		int mouseX = Inputs::GetInstance()->getMouseX();
-		int mouseY = Inputs::GetInstance()->getMouseY();
-		float screenScale = TbdPixelRenderer->screenScale;
-		float cameraPosX = TbdPixelRenderer->GetCameraPosition().x;
-		float cameraPosY = TbdPixelRenderer->GetCameraPosition().y;
-		float worldMouseX = (mouseX - cameraPosX) / screenScale;
-		float worldMouseY = (mouseY - cameraPosY) / screenScale;
-
-		ImGui::Text("Mouse Position: (%.2f, %.2f)", worldMouseX, worldMouseY);
-
-		ImGui::Text("Keys Pressed:");
-		for (int i = 0; i < SDL_NUM_SCANCODES; ++i)
+		if (ImGui::Button("Toggle Metrics/Debug Bar"))
 		{
-			if (Inputs::GetInstance()->keyPressed(i))
-			{
-				const char* keyName = SDL_GetKeyName(SDL_GetKeyFromScancode(static_cast<SDL_Scancode>(i)));
-				ImGui::BulletText("%s is being pressed", keyName);
-			}
+			show_metrics_debug_bar = !show_metrics_debug_bar;
 		}
 
-		ImGui::SliderFloat("Minimum Brightness", &TbdPixelRenderer->minBrightness, 0.0f, 255.0f);
+		if (show_metrics_debug_bar)
+		{
+			ImGui::Text("Metrics/Debugger:");
+			ImGui::Separator();
+			ImGui::Text("Frame Time: %.3f ms/frame", 1000.0f / ImGui::GetIO().Framerate);
+			ImGui::Text("Framerate: %.1f FPS", ImGui::GetIO().Framerate);
+
+			int mouseX = Inputs::GetInstance()->getMouseX();
+			int mouseY = Inputs::GetInstance()->getMouseY();
+			float screenScale = TbdPixelRenderer->screenScale;
+			float cameraPosX = TbdPixelRenderer->GetCameraPosition().x;
+			float cameraPosY = TbdPixelRenderer->GetCameraPosition().y;
+			float worldMouseX = (mouseX - cameraPosX) / screenScale;
+			float worldMouseY = (mouseY - cameraPosY) / screenScale;
+
+			ImGui::Text("Mouse Position: (%.2f, %.2f)", worldMouseX, worldMouseY);
+
+			ImGui::Text("Keys Pressed:");
+			for (int i = 0; i < SDL_NUM_SCANCODES; ++i)
+			{
+				if (Inputs::GetInstance()->keyPressed(i))
+				{
+					const char* keyName = SDL_GetKeyName(SDL_GetKeyFromScancode(static_cast<SDL_Scancode>(i)));
+					ImGui::BulletText("%s is being pressed", keyName);
+				}
+			}
+
+			ImGui::SliderFloat("Minimum Brightness", &TbdPixelRenderer->minBrightness, 0.0f, 255.0f);
+
+			ImGui::Separator();
+		}
 
 		ImGui::Separator();
-		ImGui::Text("Cheat Status:");
+
+		ImGui::Text("Cheats:");
 
 		if (ImGui::Button("FullBright Cheat:"))
 		{
@@ -636,6 +666,7 @@ void TbdTestScene::ImGuiWindow()
 		ImGui::Text(isGPressedForCheat ? "Active" : "Inactive");
 
 		ImGui::Separator();
+
 		ImGui::Text("Entities:");
 		EntityContainer* entityContainer = EntityContainer::GetInstance();
 		int numEntities = entityContainer->CountEntities();
@@ -658,6 +689,9 @@ void TbdTestScene::ImGuiWindow()
 			}
 			ImGui::TreePop();
 		}
+
+		// this does nothing will need to keep working on it
+		entityManagerTBD->ShowEntityInfo();
 
 		ImGui::Separator();
 
@@ -687,46 +721,7 @@ void TbdTestScene::ImGuiWindow()
 		}
 
 		ImGui::Separator();
-
-		if (ImGui::TreeNode("Tilesets in use:"))
-		{
-			ImGui::BulletText("TileMapSprites.json");
-			ImGui::BulletText("TileMapNormals.json");
-			ImGui::TreePop();
-		}
-
-		ImGui::Separator();
 		ImGui::Text("Scene Tools:");
-
-		if (ImGui::Button("Toggle Metrics/Debug Bar"))
-		{
-			show_metrics_debug_bar = !show_metrics_debug_bar;
-		}
-
-		if (ImGui::Button("Reset Scene"))
-		{
-			SceneSystem::GetInstance()->RestartScene();
-		}
-
-		if (ImGui::Button("Test Scene"))
-		{
-			SceneSystem::GetInstance()->SetScene(TestSceneGetInstance());
-		}
-
-		if (ImGui::Button("Level Creator Scene"))
-		{
-			SceneSystem::GetInstance()->SetScene(LevelCreatorSceneGetInstance());
-		}
-
-		if (show_metrics_debug_bar)
-		{
-			ImGui::Text("Metrics/Debugger:");
-			ImGui::Separator();
-			ImGui::Text("Frame Time: %.3f ms/frame", 1000.0f / ImGui::GetIO().Framerate);
-			ImGui::Text("Framerate: %.1f FPS", ImGui::GetIO().Framerate);
-
-			ImGui::Separator();
-		}
 
 		ImGui::End();
 	}
