@@ -14,8 +14,8 @@
 #include "Math.h"
 #include "Color.h"
 #include "Vector.h"
-#define MAX_LASERS 20
-#define MAX_MIRRORS 20
+#define MAX_LASERS 30
+#define MAX_MIRRORS 30
 #define MAX_CHECKPOINTS 20
 struct Laser
 {

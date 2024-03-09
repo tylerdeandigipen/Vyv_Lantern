@@ -16,6 +16,14 @@
         "y": 60.0
       },
       "Type": "Physics"
+    },
+    {
+      "Type": "BehaviorMirror",
+      "Direction": {
+        "DirectionX": 1.0,
+        "DirectionY": -1.0
+      },
+      "key": 1
     }
   ],
   "FilePath": "./Data/Scenes/Section1WIP5/Mirror8.json",

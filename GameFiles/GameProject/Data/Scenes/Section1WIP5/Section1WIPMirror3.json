@@ -16,6 +16,14 @@
         "y": 318.0
       },
       "Type": "Physics"
+    },
+    {
+      "Type": "BehaviorMirror",
+      "Direction": {
+        "DirectionX": 1.0,
+        "DirectionY": -1.0
+      },
+      "key": 1
     }
   ],
   "FilePath": "./Data/Scenes/Section1WIP5/Section1WIPMirror3.json",

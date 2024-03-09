@@ -35,6 +35,14 @@
           "y": "380.000000"
         }
       ]
+    },
+    {
+      "Type": "BehaviorMirror",
+      "Direction": {
+        "DirectionX": 1.0,
+        "DirectionY": -1.0
+      },
+      "key": 1
     }
   ],
   "FilePath": "./Data/Scenes/Section1WIP5/Section1WIPMirror2.json",

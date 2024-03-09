@@ -37,12 +37,12 @@
       ]
     },
     {
+      "Type": "BehaviorMirror",
       "Direction": {
-        "DirectionX": 1.0,
+        "DirectionX": -1.0,
         "DirectionY": 1.0
       },
-      "Type": "BehaviorMirror",
-      "key": 0
+      "key": 1
     }
   ],
   "FilePath": "./Data/Scenes/Section1WIP5/Mirror23.json",

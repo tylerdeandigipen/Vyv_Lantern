@@ -6,7 +6,7 @@
     {
       "Type": "Transform",
       "translation": {
-        "x": 80.0,
+        "x": 112.0,
         "y": 204.0
       }
     },
@@ -23,22 +23,22 @@
       "key": 1,
       "pos": [
         {
-          "x": "80.000000",
+          "x": "112.000000",
           "y": "204.000000"
         },
         {
-          "x": "112.000000",
+          "x": "80.000000",
           "y": "204.000000"
         }
       ]
     },
     {
+      "Type": "BehaviorMirror",
       "Direction": {
-        "DirectionX": 1.0,
+        "DirectionX": -1.0,
         "DirectionY": 1.0
       },
-      "Type": "BehaviorMirror",
-      "key": 0
+      "key": 1
     }
   ],
   "FilePath": "./Data/Scenes/Section1WIP5/Mirror27.json",
