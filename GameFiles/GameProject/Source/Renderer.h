@@ -34,7 +34,7 @@ class Renderer
 public:
 
 	//Visual Effects Settings
-	float screenScale = 6;
+	float screenScale = 6; //doesnt work for some reason, havent looked into yet bc not too important
 	float saturationPercent = 1;
 	float normalStrength = 0.5f;
 	bool doBlur = true;
