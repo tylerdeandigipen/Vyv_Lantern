@@ -58,6 +58,9 @@ void Renderer::Update(float dt)
 	//make higher if preformance is low, make lower if too much cpu usage
 	omp_set_num_threads(maxThreadsAllowed);
 
+	CameraP.x = (int)nextCamPos.x;
+	CameraP.y = (int)nextCamPos.y;
+
 	UpdateObjects(dt);
 
 	//prep buffers for rendering
@@ -313,7 +316,7 @@ float Renderer::FindPixelLuminosity(float x, float y, Light* LightSource)
 	//Normal map calculations
 	if (Result > 0 && doFog != true)
 	{
-		if ((int)x + CameraP.x <= normalBuffer->BufferSizeX && (int)x + CameraP.x >= 0 && (int)y + CameraP.y <= normalBuffer->BufferSizeY && (int)y + CameraP.y >= 0)
+		if ((int)x + (int)CameraP.x <= normalBuffer->BufferSizeX && (int)x + (int)CameraP.x >= 0 && (int)y + (int)CameraP.y <= normalBuffer->BufferSizeY && (int)y + (int)CameraP.y >= 0)
 		{
 			float normalR = (float)normalBuffer->SampleColor((int)x + (int)CameraP.x, (int)y + (int)CameraP.y).r;
 			float normalG = (float)normalBuffer->SampleColor((int)x + (int)CameraP.x, (int)y + (int)CameraP.y).g;
@@ -368,7 +371,7 @@ void Renderer::CalculateShadows()
 							{
 								shadowsCast += 1;
 							}
-							else if (distanceSquared(lightPos.x - cameraPos.x, lightPos.y - cameraPos.y, (float)x, (float)y) <= lightSource[i].radius * lightSource[i].radius)
+							else if (distanceSquared(lightPos.x - (int)cameraPos.x, lightPos.y - (int)cameraPos.y, (float)x, (float)y) <= lightSource[i].radius * lightSource[i].radius)
 							{
 								shadowsCast -= 1;
 							}
@@ -1082,7 +1085,7 @@ Vector2 Renderer::GetCameraPosition(void)
 
 void Renderer::SetCameraPosition(Vector2 NewCameraP)
 {
-	CameraP = NewCameraP;
+	nextCamPos = NewCameraP;
 }
 
 Renderer* Renderer::GetInstance()

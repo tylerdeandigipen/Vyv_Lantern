@@ -90,6 +90,11 @@ void BehaviorPlayer::Controller(float dt)
     Renderer::GetInstance()->faceState = 0;
     Transform* transform = Parent()->Has(Transform);
     gfxVector2 translation = *transform->GetTranslation();
+    if (realPos == Vector2(-9999, -9999))
+    {
+        realPos = translation;
+    }
+    translation = realPos;
     Inputs* input = Inputs::GetInstance();
     if (input->keyPressed(SDL_SCANCODE_W))
     {
@@ -214,6 +219,11 @@ void BehaviorPlayer::moveEntityTowards(Vector2 targetPosition)
 {
 	Transform* transform = Parent()->Has(Transform);
 	Vector2 oldPosition = *transform->GetTranslation();
+    if (realPos == Vector2(-9999, -9999))
+    {
+        realPos = oldPosition;
+    }
+    oldPosition = realPos;
 	Vector2 newPosition = oldPosition;
 
 	Vector2 playerDisplacement = targetPosition - oldPosition;
@@ -278,6 +288,10 @@ void BehaviorPlayer::moveEntityTowards(Vector2 targetPosition)
     
 	if(transform)
 	{
+        realPos = newPosition;
+        newPosition.x = (int)newPosition.x;
+        newPosition.y = (int)newPosition.y;
+
 		transform->SetTranslation(newPosition);
 	}
 #undef TILE_SIZE_IN_PIXELS

@@ -191,6 +191,7 @@ private:
 
 	//Misc.
 	unsigned int maxThreadsAllowed = 8;
+	Vector2 nextCamPos;
 	Vector2 CameraP;
 	static std::unique_ptr<Renderer> instance;
 	ImageBuffer* DebugBuffer = NULL;
