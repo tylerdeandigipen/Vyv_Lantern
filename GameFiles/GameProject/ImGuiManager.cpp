@@ -111,6 +111,7 @@ MirrorData ImGuiManager::RenderMirrorDirPopup(const std::string& popupTitle, con
 			dontworry.newcolor = { static_cast<uint8_t>(pickedColor.w), static_cast<uint8_t>(pickedColor.x), static_cast<uint8_t>(pickedColor.y), static_cast<uint8_t>(pickedColor.z) };
 			dontworry.spriteDirection = returnVal;
 			dontworry.done = true;
+
 			// clean up
 			returnVal = 0;
 			topLeftChecked = false;
@@ -200,6 +201,7 @@ EmitterData ImGuiManager::RenderEmitterDirPopup(const std::string& popupTitle, c
 			emitData.spriteDirection = returnVal;
 			emitData.newcolor = { static_cast<uint8_t>(pickedColor.x), static_cast<uint8_t>(pickedColor.y), static_cast<uint8_t>(pickedColor.z), static_cast<uint8_t>(pickedColor.w) };
 			returnVal = 0;
+
 			// clean up
 			upChecked = false;
 			downChecked = false;
@@ -231,4 +233,23 @@ EmitterData ImGuiManager::RenderEmitterDirPopup(const std::string& popupTitle, c
 		return emitData;
 	}
 	return emptyEmit;
+}
+
+void ImGuiManager::RenderFilePopup()
+{
+	//ImGui::MenuItem("(demo menu)", NULL, false, false);
+	if (ImGui::MenuItem("New")) {}
+	if (ImGui::MenuItem("Open", "Ctrl+O")) {}
+	if (ImGui::BeginMenu("Open Recent"))
+	{
+		ImGui::MenuItem("yo_mama.c");
+		ImGui::MenuItem("testing_this.inl");
+		ImGui::MenuItem("fish_hat.h");
+
+		ImGui::EndMenu();
+	}
+	if (ImGui::MenuItem("Save", "Ctrl+S")) {}
+	if (ImGui::MenuItem("Save As..")) {}
+
+	ImGui::EndMenu();
 }

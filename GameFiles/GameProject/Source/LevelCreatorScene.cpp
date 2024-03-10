@@ -729,7 +729,7 @@ void LevelCreatorScene::ImGuiWindow()
 {
 	if (showCreatorToolsWindow)
 	{
-		ImGui::Begin("Design Tools");
+		ImGui::Begin("Design Tools", NULL, ImGuiWindowFlags_NoMove);
 		ImGui::BeginMainMenuBar();
 
 		if (ImGui::MenuItem("Reset Scene", NULL, false, true))
@@ -755,6 +755,50 @@ void LevelCreatorScene::ImGuiWindow()
 		ImGui::Text("have fun designers,");
 		ImGui::Text("welcome to the creator window!");
 		ImGui::Separator();
+
+		/*if (ImGui::Button("File"))
+			ImGui::OpenPopup("my_file_popup");
+
+		ImGui::SetNextWindowPos(ImGui::GetCursorPos());
+		if (ImGui::BeginPopup("my_file_popup"))
+		{
+			ImGuiManager::RenderFilePopup();
+			ImGui::EndPopup();
+		}*/
+
+		if (ImGui::Button("dont touch!"))
+			ImGui::OpenPopup("my_file_popup");
+		if (ImGui::BeginPopup("my_file_popup", ImGuiWindowFlags_MenuBar))
+		{
+			if (ImGui::BeginMenuBar())
+			{
+				if (ImGui::BeginMenu("File"))
+				{
+					ImGui::MenuItem("(demo menu)", NULL, false, false);
+					if (ImGui::MenuItem("New")) {}
+					if (ImGui::MenuItem("Open (import)", "Ctrl+O")) {}
+					if (ImGui::MenuItem("Save (export)", "Ctrl+C")) {}
+					if (ImGui::BeginMenu("Open Recent"))
+					{
+						ImGui::MenuItem("yo_mama.cpp");
+						ImGui::MenuItem("horse_react.h");
+						ImGui::MenuItem("b-man.tyler");
+
+						ImGui::EndMenu();
+					}
+					ImGui::EndMenu();
+				}
+				if (ImGui::BeginMenu("Edit"))
+				{
+					ImGui::MenuItem("why are you here?");
+					ImGui::EndMenu();
+				}
+				ImGui::EndMenuBar();
+			}
+			ImGui::Text("this is a test!");
+			ImGui::Button("these all do nothing...");
+			ImGui::EndPopup();
+		}
 
 		ImGui::Text("Scene Settings");
 		ImGui::Text("./Data/Scenes/''LevelNameHere''");
@@ -954,28 +998,34 @@ void LevelCreatorScene::ImGuiWindow()
 			ImGui::TreePop();
 		}
 
-		if (ImGui::TreeNode("Tile Selector:"))
-		{
-			static int selected = -1;
+		static int selected = -1;
 
+		if (ImGui::Button("Select Tile"))
+			ImGui::OpenPopup("Tile Selector");
+
+		ImGui::SameLine();
+		ImGui::Text("Current Tile: %s", TileNumToString(selected).c_str());
+
+		if (ImGui::BeginPopup("Tile Selector"))
+		{
 			for (unsigned n = 0; n < entityManager->pRenderer->GetTileCount(); n++)
 			{
-				if (ImGui::Selectable(("Tile " + TileNumToString(n)).c_str(), selected == n))
-					currentTile = n;
+				if (ImGui::Selectable(TileNumToString(n).c_str(), selected == n))
+				{
+					selected = n;
+					currentTile = n; // Update the currentTile when a tile is selected
+				}
 			}
-
-			ImGui::Text("Current Tile: %d", currentTile);
-			ImGui::TreePop();
+			ImGui::EndPopup();
 		}
-		ImGui::TreePop();
 	}
 
 	// removing the treenode messed with the spacing, so im adjusting the
 	// spacing so the stuff isnt cuttoff
-	ImGui::SetCursorPosX(ImGui::GetCursorPosX() + 20);
+	ImGui::Spacing();
+	ImGui::Spacing();
+	ImGui::Spacing();
 	ImGui::Text("Object Selector:");
-
-	ImGui::SetCursorPosX(ImGui::GetCursorPosX() + 20); // Adjust the value as needed
 	if (ImGui::Button(" Create Player"))
 	{
 		if (playerExists == true)
@@ -1118,9 +1168,10 @@ int LevelCreatorScene::CreateMirrorEntity(MirrorData mirror)
 	case 4: filename = "./Data/GameObjects/MirrorBottomRight.json"; break;
 	default: return 0;
 	}
-	
+
 	Entity* temp = FileIO::GetInstance()->ReadEntity(filename);
 	temp->GetComponent<BehaviorMirror>()->SetReflection(mirror.direction);
+
 	//temp->GetComponent<BehaviorMirror>()->SetColor(mirror.newcolor);
 	temp->addKey = "Mirror"; // this is for the map holding functions and gives access to function for circle
 
@@ -1244,7 +1295,7 @@ void LevelCreatorScene::AddDoorEntity(Entity* entity)
 	json collider = { {"Type", "ColliderAABB"} };
 	json transform = { {"Type", "Transform"}, {"translation", { { "x", entity->Has(Transform)->GetTranslation()->x }, {"y", entity->Has(Transform)->GetTranslation()->y} } } };
 	json physics = { {"Type", "Physics"}, {"OldTranslation", { { "x", entity->Has(Transform)->GetTranslation()->x }, {"y", entity->Has(Transform)->GetTranslation()->y} } } };
-	json behaivor = { {"Type", "BehaviorDoor"}, {"DoorClosed", true}, {"ClosedSprite", "./Assets/PPM/Door_Closed.ppm"}, {"OpenSprite", "./Assets/PPM/Door_Open.ppm"}, {"PairName", entity->GetComponent<BehaviorDoor>()->GetPairName() }};
+	json behaivor = { {"Type", "BehaviorDoor"}, {"DoorClosed", true}, {"ClosedSprite", "./Assets/PPM/Door_Closed.ppm"}, {"OpenSprite", "./Assets/PPM/Door_Open.ppm"}, {"PairName", entity->GetComponent<BehaviorDoor>()->GetPairName() } };
 
 	components.push_back(collider);
 	components.push_back(transform);
