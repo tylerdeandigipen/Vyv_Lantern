@@ -6,15 +6,15 @@
         {
             "Type": "Transform",
             "translation": {
-                "x": 260.0,
-                "y": 112.0
+                "x": 296,
+                "y": 135
             }
         },
         {
             "Type": "BehaviorEmitter",
             "direction": {
-                "x": 1,
-                "y": 0
+                "x": 0,
+                "y": -1
             }
         },
         {
