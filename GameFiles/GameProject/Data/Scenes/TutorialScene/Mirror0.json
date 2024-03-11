@@ -1,38 +1,46 @@
 {
-  "Components": [
-    {
-      "Type": "ColliderAABB"
-    },
-    {
-      "Type": "Transform",
-      "translation": {
-        "x": 96.0,
-        "y": 164.0
-      }
-    },
-    {
-      "OldTranslation": {
-        "x": 136.0,
-        "y": 100.0
-      },
-      "Type": "Physics"
-    },
-    {
-      "NumPositions": 2,
-      "Type": "BehaviorSwitch",
-      "key": 1,
-      "pos": [
+    "Components": [
         {
-          "x": "96.000000",
-          "y": "164.000000"
+            "Type": "ColliderAABB"
         },
         {
-          "x": "112.000000",
-          "y": "164.000000"
+            "Type": "Transform",
+            "translation": {
+                "x": 96.0,
+                "y": 164.0
+            }
+        },
+        {
+            "Type": "BehaviorMirror",
+            "Direction": {
+                "DirectionX": -1.0,
+                "DirectionY": 1.0
+            },
+            "key": 1
+        },
+        {
+            "OldTranslation": {
+                "x": 136.0,
+                "y": 100.0
+            },
+            "Type": "Physics"
+        },
+        {
+            "NumPositions": 2,
+            "Type": "BehaviorSwitch",
+            "key": 1,
+            "pos": [
+                {
+                    "x": "96.000000",
+                    "y": "164.000000"
+                },
+                {
+                    "x": "112.000000",
+                    "y": "164.000000"
+                }
+            ]
         }
-      ]
-    }
-  ],
+    ],
   "FilePath": "./Data/Scenes/TutorialScene/Mirror0.json",
   "KeyObject": {
     "key": "Mirror0"

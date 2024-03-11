@@ -1,23 +1,30 @@
 {
-  "Components": [
-    {
-      "Type": "ColliderAABB"
-    },
-    {
-      "Type": "Transform",
-      "translation": {
-        "x": 260.0,
-        "y": 112.0
-      }
-    },
-    {
-      "OldTranslation": {
-        "x": 260.0,
-        "y": 112.0
-      },
-      "Type": "Physics"
-    }
-  ],
+    "Components": [
+        {
+            "Type": "ColliderAABB"
+        },
+        {
+            "Type": "Transform",
+            "translation": {
+                "x": 260.0,
+                "y": 112.0
+            }
+        },
+        {
+            "Type": "BehaviorEmitter",
+            "direction": {
+                "x": 1,
+                "y": 0
+            }
+        },
+        {
+            "OldTranslation": {
+                "x": 260.0,
+                "y": 112.0
+            },
+            "Type": "Physics"
+        }
+    ],
   "FilePath": "./Data/Scenes/TutorialScene/Emitter2.json",
   "KeyObject": {
     "key": "Emitter2"

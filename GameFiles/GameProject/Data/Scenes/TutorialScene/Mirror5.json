@@ -1,23 +1,31 @@
 {
-  "Components": [
-    {
-      "Type": "ColliderAABB"
-    },
-    {
-      "Type": "Transform",
-      "translation": {
-        "x": 296.0,
-        "y": 76.0
-      }
-    },
-    {
-      "OldTranslation": {
-        "x": 296.0,
-        "y": 76.0
-      },
-      "Type": "Physics"
-    }
-  ],
+    "Components": [
+        {
+            "Type": "ColliderAABB"
+        },
+        {
+            "Type": "Transform",
+            "translation": {
+                "x": 296.0,
+                "y": 76.0
+            }
+        },
+        {
+            "Type": "BehaviorMirror",
+            "Direction": {
+                "DirectionX": -1.0,
+                "DirectionY": 1.0
+            },
+            "key": 1
+        },
+        {
+            "OldTranslation": {
+                "x": 296.0,
+                "y": 76.0
+            },
+            "Type": "Physics"
+        }
+    ],
   "FilePath": "./Data/Scenes/TutorialScene/Mirror5.json",
   "KeyObject": {
     "key": "Mirror5"

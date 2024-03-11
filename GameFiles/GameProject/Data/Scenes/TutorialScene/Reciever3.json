@@ -4,12 +4,15 @@
       "Type": "ColliderAABB"
     },
     {
-      "Type": "Transform",
-      "translation": {
-        "x": 344.0,
-        "y": 72.0
-      }
+        "Type": "Transform",
+        "translation": {
+            "x": 344.0,
+            "y": 72.0
+        }
     },
+    {
+        "Type": "BehaviorReceiver"
+    } ,
     {
       "OldTranslation": {
         "x": 344.0,
