@@ -124,6 +124,7 @@ Vector2 TBDLasers::CheckCollision(int laserIndex)
 	Vector2 laserPos1 = lasers[laserIndex]->pos - renderer->GetCameraPosition();
 	Vector2 laserPos2 = laserPos1 + (lasers[laserIndex]->dir * 10); //10 is an arbitrary constant
 	float minDist = 999999;
+	int closestMirrorIndex = 99;
 	//check for mirror collision
 	for (int i = 0; i < numMirrors; i++)
 	{
@@ -155,9 +156,7 @@ Vector2 TBDLasers::CheckCollision(int laserIndex)
 							minDist = abs((tempPos2.y - laserPos1.y) * (tempPos2.y - laserPos1.y));
 							if (laserPos2.y == mirrorPoint1.y)
 							{
-								AddLaser(&mirrors[i]->reflectedLaser1);
-								AddLaser(&mirrors[i]->reflectedLaser2);
-								SetReflectedLaserValuesY(lasers[laserIndex], mirrors[i], laserPos2);
+								closestMirrorIndex = i;
 							}
 						}
 					}
@@ -188,9 +187,7 @@ Vector2 TBDLasers::CheckCollision(int laserIndex)
 							minDist = abs((tempPos2.x - laserPos1.x) * (tempPos2.x - laserPos1.x));
 							if (laserPos2.x == mirrorPoint1.x)
 							{
-								AddLaser(&mirrors[i]->reflectedLaser1);
-								AddLaser(&mirrors[i]->reflectedLaser2);
-								SetReflectedLaserValuesX(lasers[laserIndex], mirrors[i], laserPos2);
+								closestMirrorIndex = i;
 							}
 						}
 					}
@@ -199,6 +196,19 @@ Vector2 TBDLasers::CheckCollision(int laserIndex)
 		}
 	}
 
+	if (closestMirrorIndex != 99)
+	{
+		AddLaser(&mirrors[closestMirrorIndex]->reflectedLaser1);
+		AddLaser(&mirrors[closestMirrorIndex]->reflectedLaser2);
+		if (lasers[laserIndex]->dir.x != 0)
+		{
+			SetReflectedLaserValuesX(lasers[laserIndex], mirrors[closestMirrorIndex], laserPos2);
+		}
+		else
+		{
+			SetReflectedLaserValuesY(lasers[laserIndex], mirrors[closestMirrorIndex], laserPos2);
+		}
+	}
 
 	for (int i = 0; i < numCheckPoints; i++)
 	{
@@ -297,6 +307,12 @@ void TBDLasers::SetReflectedLaserValuesY(Laser* laser, Mirror* mirror, Vector2 s
 		}
 		else
 			mirror->reflectedLaser1.dir = Vector2{ mirror->reflectDir.x, 0 };
+
+		if (mirror->reflectedLaser1.dir == mirror->reflectedLaser2.dir && mirror->reflectedLaser2.isEmiting)
+		{
+			return;
+		}
+
 		mirror->isActivated1 = true;
 		mirror->reflectedLaser1.isEmiting = true;
 		if (mirror->overwriteColor == defaultColor)
@@ -317,6 +333,7 @@ void TBDLasers::SetReflectedLaserValuesY(Laser* laser, Mirror* mirror, Vector2 s
 		}
 		else
 			mirror->reflectedLaser2.dir = Vector2{ mirror->reflectDir.x, 0 };
+
 		if (mirror->reflectedLaser1.dir == mirror->reflectedLaser2.dir)
 		{
 			return;
