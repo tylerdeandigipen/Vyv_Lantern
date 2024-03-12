@@ -585,8 +585,7 @@ void Renderer::RenderLasers()
 										isLit = true;
 									}
 									if (isLit == true)
-									{
-
+									{								
 										float dist = sqrt(distSquared);
 										float s = dist / laserAreaLightRange;
 										float s2 = s * s;

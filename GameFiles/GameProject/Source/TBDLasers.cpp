@@ -403,4 +403,5 @@ void TBDLasers::Clear()
 {
 	numLasers = 0;
 	numMirrors = 0;
+	numCheckPoints = 0;
 }
