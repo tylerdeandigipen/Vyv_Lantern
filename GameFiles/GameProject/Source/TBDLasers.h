@@ -14,9 +14,9 @@
 #include "Math.h"
 #include "Color.h"
 #include "Vector.h"
-#define MAX_LASERS 30
-#define MAX_MIRRORS 30
-#define MAX_CHECKPOINTS 20
+#define MAX_LASERS 50
+#define MAX_MIRRORS 50
+#define MAX_CHECKPOINTS 50
 struct Laser
 {
 	// laser must always be on a single axis
