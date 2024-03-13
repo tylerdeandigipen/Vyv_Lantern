@@ -6,28 +6,28 @@
     {
       "Type": "Transform",
       "translation": {
-        "x": 128,
-        "y": 148
+        "x": 215.0,
+        "y": 91.0
       }
     },
     {
-      "Type": "BehaviorDoor",
-      "DoorClosed": true,
-      "ClosedSprite": "./Assets/PPM/Door_Closed.ppm",
-      "OpenSprite": "./Assets/PPM/Door_Open.ppm",
-      "PairName": "Receiver0"
-    },
-    {
       "OldTranslation": {
-        "x": 596.0,
-        "y": 84.0
+        "x": 215.0,
+        "y": 91.0
       },
       "Type": "Physics"
+    },
+    {
+      "ClosedSprite": "./Assets/PPM/Door_Closed.ppm",
+      "DoorClosed": true,
+      "OpenSprite": "./Assets/PPM/Door_Open.ppm",
+      "PairName": "",
+      "Type": "BehaviorDoor"
     }
   ],
-  "FilePath": "./Data/Scenes/TutorialScene/Door0.json",
+  "FilePath": "./Data/Scenes/TutorialScene/TutorialScene/Door5.json",
   "KeyObject": {
-    "key": "Door0"
+    "key": "Door5"
   },
   "Name": "Door",
   "Type": "Object",

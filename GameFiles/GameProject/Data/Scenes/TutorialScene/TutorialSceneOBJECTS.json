@@ -50,7 +50,10 @@
       "FilePath": "./Data/Scenes/TutorialScene/Mirror5.json"
     },
     {
-      "FilePath": "./Data/Scenes/TutorialScene/Mirror6.json"
+        "FilePath": "./Data/Scenes/TutorialScene/Mirror6.json"
+    },
+    {
+        "FilePath": "./Data/Scenes/TutorialScene/Door1.json"
     }
   ],
   "Reviever": {

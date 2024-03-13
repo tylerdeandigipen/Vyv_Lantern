@@ -4,14 +4,11 @@
       "Type": "ColliderAABB"
     },
     {
-        "Type": "Transform",
-        "translation": {
-            "x": 190.0,
-            "y": 77.0
-        }
-    },
-    {
-        "Type": "BehaviorReceiver"
+      "Type": "Transform",
+      "translation": {
+        "x": 200.0,
+        "y": 80.0
+      }
     },
     {
       "OldTranslation": {
@@ -19,9 +16,12 @@
         "y": 80.0
       },
       "Type": "Physics"
+    },
+    {
+      "Type": "BehaviorReceiver"
     }
   ],
-  "FilePath": "./Data/Scenes/TutorialScene/Reciever1.json",
+  "FilePath": "./Data/Scenes/TutorialScene/TutorialScene/Reciever1.json",
   "KeyObject": {
     "key": "Reciever1"
   },
