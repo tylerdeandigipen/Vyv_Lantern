@@ -313,7 +313,8 @@ Color &ImageBuffer::SampleColor(int x, int y)
         Color& Result = buffer[x + (BufferSizeX * y)];
         return(Result);
     }
-    return JunkPixel;
+    Color& Result = buffer[0];
+    return Result;
 }
 
 ImageBuffer& ImageBuffer::operator =(const ImageBuffer& rhs)
