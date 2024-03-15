@@ -32,7 +32,6 @@ class Animation : public Component
 	void SetCurrentFrame(int index);
 
 	ImageBuffer* CreateAnimatedObject(const std::string filename, Vector2 frameSize);
-	void UpdateFace(int& faceState);
 
 private:
 	std::vector<ImageBuffer*> frames;
