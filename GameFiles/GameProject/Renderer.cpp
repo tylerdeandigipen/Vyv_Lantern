@@ -942,7 +942,7 @@ void Renderer::UpdateObjects(float dt)
 {
 	objectLayer->ClearImageBuffer();
 	UpdateAnimations(dt);
-	UpdateFace(faceState);
+	//UpdateFace(faceState);
 
 	for (int i = 0; i < numObjects; ++i)
 	{
