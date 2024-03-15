@@ -63,7 +63,7 @@ uint8_t Color::GetBlue()
 
 uint8_t Color::GetAlpha()
 {
-	if (this != NULL && this->a != NULL)
+	if (this != nullptr)
 	{
 		return a;
 	}

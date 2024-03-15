@@ -75,6 +75,6 @@ public:
 
     private:
     Vector2 vornoiPoints[MAX_NUM_VORNOI_POINTS] = { Vector2{0,0} };
-
+    Color JunkPixel{0,0,0,0};
 };
 #endif
