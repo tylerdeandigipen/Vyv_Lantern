@@ -1,16 +1,16 @@
 {
   "Circle": {
-    "count": 5
-  },
-  "Door": {
     "count": 6
   },
+  "Door": {
+    "count": 7
+  },
   "Emitter": {
-    "count": 3
+    "count": 4
   },
   "FilePath": "./Data/Scenes/Splash/SplashOBJECTS.json",
   "Mirror": {
-    "count": 3
+    "count": 4
   },
   "Objects": [
     {
