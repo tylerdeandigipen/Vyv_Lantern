@@ -77,52 +77,62 @@ void BehaviorDoor::Update(float dt)
    //     Renderer::GetInstance()->foregroundLayer->AddSprite(Parent()->GetImage());
    //     AddedToForeGround = true;
    // }
-    if ((LevelBuilder::getDoor() == true) && (isDoorClosed == true))
-    {
-        SetNext(1);
-        isDoorClosed = false;
-    }
+
     UNREFERENCED_PARAMETER(dt);
     if (GetCurr() != GetNext())
     {
         SetCurr(GetNext());
     }
-
-    if (GetCurr() == cOpen)
-    {   
-        Parent()->SetImage(openPPM);
+    
+    if (GetCurr() == cIdle)
+    {
+        Entity* ent = EntityContainer::GetInstance()->FindByName(_receiver.c_str());
+        if (ent && ent->GetComponent<BehaviorReceiver>())
+        {
+            if (EntityContainer::GetInstance()->FindByName(_receiver.c_str())->GetComponent<BehaviorReceiver>()->GetActive())
+            {
+                SetNext(cOpen);
+            }
+            else
+            {
+                if (isDoorClosed)
+                {
+                    SetNext(cIdle);
+                }
+                else
+                {
+                    SetNext(cClosed);
+                }
+            }
+        }
+    }
+    else if (GetCurr() == cOpen)
+    {
+        if (isDoorClosed)
+            Parent()->SetImage(openPPM);
+        isDoorClosed = false;
         SetNext(cIdle);
     }
     else if (GetCurr() == cClosed)
     {
-        Parent()->SetImage(closedPPM);
+        if (!isDoorClosed)
+            Parent()->SetImage(closedPPM);
+        isDoorClosed = true;
         SetNext(cIdle);
     }
-    else if (GetCurr() == cIdle)
-    {
-        Entity* ent = EntityContainer::GetInstance()->FindByName(_receiver.c_str());
-        if (ent && ent->GetComponent<BehaviorReceiver>() && GetDoorClosed() == true)
-        {
-            if (EntityContainer::GetInstance()->FindByName(_receiver.c_str())->GetComponent<BehaviorReceiver>()->GetActive())
-            {
-                isDoorClosed = false;
-                SetNext(cOpen);
-            }
-        }
-    }
     
     
-#ifdef _DEBUG
-    Entity* ent = EntityContainer::GetInstance()->FindByName(_receiver.c_str());
-    if (ent && ent->GetComponent<BehaviorReceiver>() && GetDoorClosed() == true)
-    {
-        Inputs* input = Inputs::GetInstance();
-        if (input->keyPressed(SDL_SCANCODE_T))
-        {
-            EntityContainer::GetInstance()->FindByName(_receiver.c_str())->GetComponent<BehaviorReceiver>()->SetActive();
-        }
-    }
-#endif
+//#ifdef _DEBUG
+//    Entity* ent = EntityContainer::GetInstance()->FindByName(_receiver.c_str());
+//    if (ent && ent->GetComponent<BehaviorReceiver>() && GetDoorClosed() == true)
+//    {
+//        Inputs* input = Inputs::GetInstance();
+//        if (input->keyPressed(SDL_SCANCODE_T))
+//        {
+//            EntityContainer::GetInstance()->FindByName(_receiver.c_str())->GetComponent<BehaviorReceiver>()->SetActive();
+//        }
+//    }
+//#endif
 }
 
 

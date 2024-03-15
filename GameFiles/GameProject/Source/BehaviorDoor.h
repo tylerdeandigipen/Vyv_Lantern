@@ -27,7 +27,7 @@ public:
 	BehaviorDoor();
 	BehaviorDoor(BehaviorDoor const& other);
 	~BehaviorDoor();
-	enum { cClosed, cOpen, cIdle };
+	enum { cIdle, cOpen, cClosed };
 
 	std::string GetName() override;
 	static std::string Name();
