@@ -1,0 +1,40 @@
+{
+    "Components": [
+        {
+            "Type": "ColliderAABB"
+        },
+        {
+            "Type": "Transform",
+            "translation": {
+                "x": 200.0,
+                "y": 112.0
+            }
+        },
+        {
+            "Type": "BehaviorEmitter",
+            "direction": {
+                "x": -1,
+                "y": 0
+            }
+        },
+        {
+            "OldTranslation": {
+                "x": 200.0,
+                "y": 112.0
+            },
+            "Type": "Physics"
+        }
+    ],
+  "FilePath": "./Data/Scenes/TutorialScene/Emitter1.json",
+  "KeyObject": {
+    "key": "Emitter1"
+  },
+  "Name": "Emitter",
+  "Type": "Object",
+  "file": "./Assets/PPM/CrystalSprites/EmitterCrystal.ppm",
+  "frameSize": [
+    8,
+    8
+  ],
+  "isAnimated": false
+}

@@ -1,0 +1,65 @@
+{
+  "Circle": {
+    "count": 4
+  },
+  "Door": {
+    "count": 1
+  },
+  "Emitter": {
+    "count": 7
+  },
+  "FilePath": "./Data/Scenes/TutorialScene/TutorialSceneOBJECTS.json",
+  "Mirror": {
+    "count": 10
+  },
+    "Objects": [
+        {
+            "FilePath": "./Data/Scenes/TutorialScene/Mirror0.json"
+        },
+        {
+            "FilePath": "./Data/Scenes/TutorialScene/Door0.json"
+        },
+        {
+            "FilePath": "./Data/Scenes/TutorialScene/Door2.json"
+        },
+        {
+            "FilePath": "./Data/Scenes/TutorialScene/Receiver0.json"
+        },
+        {
+            "FilePath": "./Data/Scenes/TutorialScene/Receiver1.json"
+        },
+        {
+            "FilePath": "./Data/Scenes/TutorialScene/Emitter0.json"
+        },
+        {
+            "FilePath": "./Data/Scenes/TutorialScene/Emitter1.json"
+        },
+        {
+            "FilePath": "./Data/Scenes/TutorialScene/Mirror1.json"
+        },
+        {
+            "FilePath": "./Data/Scenes/TutorialScene/Mirror2.json"
+        },
+        {
+            "FilePath": "./Data/Scenes/TutorialScene/Emitter2.json"
+        },
+        {
+            "FilePath": "./Data/Scenes/TutorialScene/Mirror3.json"
+        },
+        {
+            "FilePath": "./Data/Scenes/TutorialScene/Receiver2.json"
+        },
+        {
+            "FilePath": "./Data/Scenes/TutorialScene/Mirror5.json"
+        },
+        {
+            "FilePath": "./Data/Scenes/TutorialScene/Mirror6.json"
+        },
+        {
+            "FilePath": "./Data/Scenes/TutorialScene/Door1.json"
+        }
+    ],
+  "Reviever": {
+    "count": 2
+  }
+}

@@ -1,0 +1,61 @@
+{
+  "Components": [
+    {
+      "Type": "ColliderAABB"
+    },
+    {
+      "Type": "Transform",
+      "translation": {
+        "x": 112.0,
+        "y": 128.0
+      }
+    },
+    {
+      "OldTranslation": {
+        "x": 112.0,
+        "y": 128.0
+      },
+      "Type": "Physics"
+    },
+    {
+      "Type": "BehaviorSwitch",
+      "key": 1,
+      "NumPositions": 3,
+      "pos": [
+        {
+          "x": "112",
+          "y": "128"
+        },
+        {
+          "x": "112",
+          "y": "120"
+        },
+        {
+          "x": "112",
+          "y": "112"
+        }
+      ]
+    },
+    {
+      "Type": "BehaviorMirror",
+      "Direction": {
+        "DirectionX": 1.0,
+        "DirectionY": 1.0
+      },
+      "Radius": 10.0,
+      "key": 1
+    }
+  ],
+  "FilePath": "./Data/GameObjects/Mirror2.json",
+  "KeyObject": {
+    "key": "Mirror2"
+  },
+  "Name": "Switch",
+  "Type": "Object",
+  "file": "./Assets/PPM/CrystalSprites/MirrorCrystalDownRight.ppm",
+  "frameSize": [
+    8,
+    8
+  ],
+  "isAnimated": false
+}

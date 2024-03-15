@@ -1,0 +1,33 @@
+{
+  "Components": [
+    {
+      "Type": "ColliderAABB"
+    },
+    {
+      "Type": "Transform",
+      "translation": {
+        "x": 344.0,
+        "y": 72.0
+      }
+    },
+    {
+      "OldTranslation": {
+        "x": 344.0,
+        "y": 72.0
+      },
+      "Type": "Physics"
+    }
+  ],
+  "FilePath": "./Data/GameObjects/Reciever3.json",
+  "KeyObject": {
+    "key": "Reciever3"
+  },
+  "Name": "Reciever",
+  "Type": "Object",
+  "file": "./Assets/PPM/tempReciever.ppm",
+  "frameSize": [
+    8,
+    8
+  ],
+  "isAnimated": false
+}

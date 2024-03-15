@@ -1,0 +1,32 @@
+{
+  "Circle": {
+    "count": 1
+  },
+  "Door": {
+    "count": 5
+  },
+  "Emitter": {
+    "count": 1
+  },
+  "FilePath": "./Data/Scenes/DoorTestOBJECTS.json",
+  "Mirror": {
+    "count": 1
+  },
+  "Objects": [
+    {
+      "FilePath": "./Data/GameObjects/Door0.json"
+    },
+    {
+      "FilePath": "./Data/GameObjects/Door1.json"
+    },
+    {
+      "FilePath": "./Data/GameObjects/Door2.json"
+    },
+    {
+      "FilePath": "./Data/GameObjects/Door3.json"
+    }
+  ],
+  "Reviever": {
+    "count": 1
+  }
+}

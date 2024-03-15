@@ -1,0 +1,40 @@
+{
+  "Components": [
+    {
+      "Type": "ColliderAABB"
+    },
+    {
+      "Type": "Transform",
+      "translation": {
+        "x": 120.0,
+        "y": 416.0
+      }
+    },
+    {
+      "OldTranslation": {
+        "x": 120.0,
+        "y": 416.0
+      },
+      "Type": "Physics"
+    },
+    {
+      "Type": "BehaviorEmitter",
+      "direction": {
+        "x": 0,
+        "y": -1
+      }
+    }
+  ],
+  "FilePath": "./Data/Scenes/Section1WIP5/Section1WIPEmitter0.json",
+  "KeyObject": {
+    "key": "Section1WIPEmitter0"
+  },
+  "Name": "Emitter",
+  "Type": "Object",
+  "file": "./Assets/PPM/CrystalSprites/EmitterCrystal.ppm",
+  "frameSize": [
+    8,
+    8
+  ],
+  "isAnimated": false
+}
