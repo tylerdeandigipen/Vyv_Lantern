@@ -23,10 +23,10 @@
             "FilePath": "./Data/Scenes/TutorialScene/Door2.json"
         },
         {
-            "FilePath": "./Data/Scenes/TutorialScene/Receiver0.json"
+            "FilePath": "./Data/Scenes/TutorialScene/Reciever0.json"
         },
         {
-            "FilePath": "./Data/Scenes/TutorialScene/Receiver1.json"
+            "FilePath": "./Data/Scenes/TutorialScene/Reciever1.json"
         },
         {
             "FilePath": "./Data/Scenes/TutorialScene/Emitter0.json"
@@ -47,7 +47,7 @@
             "FilePath": "./Data/Scenes/TutorialScene/Mirror3.json"
         },
         {
-            "FilePath": "./Data/Scenes/TutorialScene/Receiver2.json"
+            "FilePath": "./Data/Scenes/TutorialScene/Reciever3.json"
         },
         {
             "FilePath": "./Data/Scenes/TutorialScene/Mirror5.json"

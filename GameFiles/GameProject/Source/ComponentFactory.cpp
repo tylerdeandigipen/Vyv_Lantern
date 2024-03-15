@@ -16,7 +16,7 @@
 #include "BehaviorSwitch.h"
 #include "BehaviorMirror.h"
 #include "BehaviorEmitter.h"
-#include "BehaviorReceiver.h"
+#include "BehaviorReciever.h"
 #include "Physics.h"
 #include "Light.h"
 #include "Emitter.h"

@@ -20,7 +20,7 @@
 #include "Renderer.h"
 #include "TbdTestScene.h"
 #include "EntityContainer.h"
-#include "BehaviorReceiver.h"
+#include "BehaviorReciever.h"
 
 
 BehaviorDoor::BehaviorDoor() : Behavior(Behavior::bDoor), mDestination(), AddedToForeGround(false), closedPPM(), openPPM(), tempImage(nullptr), isDoorClosed(true)

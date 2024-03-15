@@ -89,7 +89,7 @@ private:
 	static void AddDoorEntity(Entity* entity);
 	static void AddMirrorEntity(Entity* entity);
 	static void AddEmitterEntity(Entity* entity);
-	static void AddReceiverEntity(Entity* entity);
+	static void AddRecieverEntity(Entity* entity);
 
 
 	int CreatePlayerEntity();
@@ -97,7 +97,7 @@ private:
 	int CreateDoorEntity();
 	int CreateMirrorEntity(MirrorData direction);
 	int CreateEmitterEntity(EmitterData direction);
-	int CreateReceiverEntity();
+	int CreateRecieverEntity();
 
 	void AddToFile(std::string nametoadd, Entity* entity);
 	void ExportScene(std::string);
