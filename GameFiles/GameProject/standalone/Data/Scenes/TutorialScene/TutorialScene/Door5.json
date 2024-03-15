@@ -1,0 +1,40 @@
+{
+  "Components": [
+    {
+      "Type": "ColliderAABB"
+    },
+    {
+      "Type": "Transform",
+      "translation": {
+        "x": 215.0,
+        "y": 91.0
+      }
+    },
+    {
+      "OldTranslation": {
+        "x": 215.0,
+        "y": 91.0
+      },
+      "Type": "Physics"
+    },
+    {
+      "ClosedSprite": "./Assets/PPM/Door_Closed.ppm",
+      "DoorClosed": true,
+      "OpenSprite": "./Assets/PPM/Door_Open.ppm",
+      "PairName": "",
+      "Type": "BehaviorDoor"
+    }
+  ],
+  "FilePath": "./Data/Scenes/TutorialScene/TutorialScene/Door5.json",
+  "KeyObject": {
+    "key": "Door5"
+  },
+  "Name": "Door",
+  "Type": "Object",
+  "file": "./Assets/PPM/Door_Closed.ppm",
+  "frameSize": [
+    8,
+    8
+  ],
+  "isAnimated": false
+}

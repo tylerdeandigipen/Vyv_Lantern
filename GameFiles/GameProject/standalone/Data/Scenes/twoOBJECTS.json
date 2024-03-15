@@ -1,0 +1,98 @@
+{
+  "Circle": {
+    "count": 4
+  },
+  "Door": {
+    "count": 5
+  },
+  "Emitter": {
+    "count": 7
+  },
+  "FilePath": "./Data/Scenes/twoOBJECTS.json",
+  "Mirror": {
+    "count": 10
+  },
+  "Objects": [
+    {
+      "FilePath": "./Data/GameObjects/Mirror0.json"
+    },
+    {
+      "FilePath": "./Data/GameObjects/Door0.json"
+    },
+    {
+      "FilePath": "./Data/GameObjects/Reciever0.json"
+    },
+    {
+      "FilePath": "./Data/GameObjects/Emitter0.json"
+    },
+    {
+      "FilePath": "./Data/GameObjects/Reciever1.json"
+    },
+    {
+      "FilePath": "./Data/GameObjects/Emitter1.json"
+    },
+    {
+      "FilePath": "./Data/GameObjects/Mirror1.json"
+    },
+    {
+      "FilePath": "./Data/GameObjects/Mirror2.json"
+    },
+    {
+      "FilePath": "./Data/GameObjects/Emitter2.json"
+    },
+    {
+      "FilePath": "./Data/GameObjects/Mirror3.json"
+    },
+    {
+      "FilePath": "./Data/GameObjects/Reciever3.json"
+    },
+    {
+      "FilePath": "./Data/GameObjects/Mirror5.json"
+    },
+    {
+      "FilePath": "./Data/GameObjects/Mirror6.json"
+    },
+    {
+      "FilePath": "./Data/GameObjects/Mirror0.json"
+    },
+    {
+      "FilePath": "./Data/GameObjects/Door0.json"
+    },
+    {
+      "FilePath": "./Data/GameObjects/Reciever0.json"
+    },
+    {
+      "FilePath": "./Data/GameObjects/Emitter0.json"
+    },
+    {
+      "FilePath": "./Data/GameObjects/Reciever1.json"
+    },
+    {
+      "FilePath": "./Data/GameObjects/Emitter1.json"
+    },
+    {
+      "FilePath": "./Data/GameObjects/Mirror1.json"
+    },
+    {
+      "FilePath": "./Data/GameObjects/Mirror2.json"
+    },
+    {
+      "FilePath": "./Data/GameObjects/Emitter2.json"
+    },
+    {
+      "FilePath": "./Data/GameObjects/Mirror3.json"
+    },
+    {
+      "FilePath": "./Data/GameObjects/Reciever3.json"
+    },
+    {
+      "FilePath": "./Data/GameObjects/Mirror5.json"
+    },
+    {
+      "FilePath": "./Data/GameObjects/Mirror6.json"
+    }
+  ],
+  "Reviever": {
+    "count": 1
+  }
+}

@@ -1,0 +1,86 @@
+{
+  "Circle": {
+    "count": 4
+  },
+  "Door": {
+    "count": 4
+  },
+  "Emitter": {
+    "count": 6
+  },
+  "FilePath": "./Data/Scenes/Section1WIP4/Section1WIP4OBJECTS.json",
+  "Mirror": {
+    "count": 21
+  },
+  "Objects": [
+    {
+      "FilePath": "./Data/Scenes/Section1WIP4/Section1WIPEmitter0.json"
+    },
+    {
+      "FilePath": "./Data/Scenes/Section1WIP4/Section1WIPReciever1.json"
+    },
+    {
+      "FilePath": "./Data/Scenes/Section1WIP4/Section1WIPMirror0.json"
+    },
+    {
+      "FilePath": "./Data/Scenes/Section1WIP4/Section1WIPMirror1.json"
+    },
+    {
+      "FilePath": "./Data/Scenes/Section1WIP4/Section1WIPMirror2.json"
+    },
+    {
+      "FilePath": "./Data/Scenes/Section1WIP4/Section1WIPMirror3.json"
+    },
+    {
+      "FilePath": "./Data/Scenes/Section1WIP4/Section1WIPMirror4.json"
+    },
+    {
+      "FilePath": "./Data/Scenes/Section1WIP4/Reciever3.json"
+    },
+    {
+      "FilePath": "./Data/Scenes/Section1WIP4/Mirror7.json"
+    },
+    {
+      "FilePath": "./Data/Scenes/Section1WIP4/Mirror8.json"
+    },
+    {
+      "FilePath": "./Data/Scenes/Section1WIP4/Mirror9.json"
+    },
+    {
+      "FilePath": "./Data/Scenes/Section1WIP4/Mirror10.json"
+    },
+    {
+      "FilePath": "./Data/Scenes/Section1WIP4/Mirror11.json"
+    },
+    {
+      "FilePath": "./Data/Scenes/Section1WIP4/Mirror12.json"
+    },
+    {
+      "FilePath": "./Data/Scenes/Section1WIP4/Mirror13.json"
+    },
+    {
+      "FilePath": "./Data/Scenes/Section1WIP4/Emitter4.json"
+    },
+    {
+      "FilePath": "./Data/Scenes/Section1WIP4/Mirror15.json"
+    },
+    {
+      "FilePath": "./Data/Scenes/Section1WIP4/Mirror16.json"
+    },
+    {
+      "FilePath": "./Data/Scenes/Section1WIP4/Mirror17.json"
+    },
+    {
+      "FilePath": "./Data/Scenes/Section1WIP4/Mirror18.json"
+    },
+    {
+      "FilePath": "./Data/Scenes/Section1WIP4/Mirror19.json"
+    },
+    {
+      "FilePath": "./Data/Scenes/Section1WIP4/Reciever5.json"
+    }
+  ],
+  "Reviever": {
+    "count": 2
+  }
+}

@@ -1,0 +1,33 @@
+{
+  "Components": [
+    {
+      "Type": "ColliderAABB"
+    },
+    {
+      "Type": "Transform",
+      "translation": {
+        "x": 384.0,
+        "y": 224.0
+      }
+    },
+    {
+      "OldTranslation": {
+        "x": 384.0,
+        "y": 224.0
+      },
+      "Type": "Physics"
+    }
+  ],
+  "FilePath": "./Data/Scenes/Section1WIP4/Emitter4.json",
+  "KeyObject": {
+    "key": "Emitter4"
+  },
+  "Name": "Emitter",
+  "Type": "Object",
+  "file": "./Assets/PPM/CrystalSprites/EmitterCrystal.ppm",
+  "frameSize": [
+    8,
+    8
+  ],
+  "isAnimated": false
+}

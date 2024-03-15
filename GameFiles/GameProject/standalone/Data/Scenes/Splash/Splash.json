@@ -1,0 +1,8 @@
+{
+  "GameObjectList": {
+    "GameObjectFile": "./Data/Scenes/Splash/SplashOBJECTS.json"
+  },
+  "TiledData": {
+    "TileMapFile": "./Data/Scenes/Splash/SplashMAP.json"
+  }
+}

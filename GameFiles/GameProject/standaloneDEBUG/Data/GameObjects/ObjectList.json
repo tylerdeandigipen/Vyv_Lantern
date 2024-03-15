@@ -1,0 +1,24 @@
+{
+  "FilePath": "./Data/GameObjects/ObjectList.json",
+  "Objects": [
+    {
+      "FilePath": "./Data/GameObjects/Player.json"
+    },
+    {
+      "FilePath": "./Data/GameObjects/Door.json"
+    },
+    {
+      "FilePath": "./Data/GameObjects/Mirror.json"
+    },
+    {
+      "FilePath": "./Data/GameObjects/Circle.json"
+    },
+    {
+      "FilePath": "./Data/GameObjects/Emitter.json"
+    },
+    {
+      "FilePath": "./Data/GameObjects/EmitterReceiver.json"
+    }
+
+  ]
+}

@@ -1,0 +1,63 @@
+{
+  "Components": [
+    {
+      "Type": "ColliderAABB"
+    },
+    {
+      "Type": "Transform",
+      "translation": {
+        "x": 328.0,
+        "y": 140.0
+      }
+    },
+    {
+      "OldTranslation": {
+        "x": 328.0,
+        "y": 140.0
+      },
+      "Type": "Physics"
+    },
+    {
+      "NumPositions": 4,
+      "Type": "BehaviorSwitch",
+      "key": 1,
+      "pos": [
+        {
+          "x": "30.000000",
+          "y": "50.000000"
+        },
+        {
+          "x": "30.000000",
+          "y": "70.000000"
+        },
+        {
+          "x": "30.000000",
+          "y": "80.000000"
+        },
+        {
+          "x": "30.000000",
+          "y": "100.000000"
+        }
+      ]
+    },
+    {
+      "Direction": {
+        "DirectionX": 1.0,
+        "DirectionY": 0.0
+      },
+      "Type": "BehaviorMirror"
+    }
+  ],
+  "FilePath": "./Data/Scenes/Section1WIP4/Mirror16.json",
+  "KeyObject": {
+    "key": "Mirror16"
+  },
+  "Name": "Switch",
+  "Type": "Object",
+  "file": "./Assets/PPM/CrystalSprites/MirrorCrystalDownRight.ppm",
+  "frameSize": [
+    8,
+    8
+  ],
+  "isAnimated": false
+}
