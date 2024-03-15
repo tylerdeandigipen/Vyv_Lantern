@@ -9,6 +9,7 @@
 //------------------------------------------------------------------------------
 #include "Color.h"
 #include "Math.h"
+#include <assert.h>
 
 float clamp(float value, float min, float max);
 
@@ -38,31 +39,47 @@ Color::Color() // default constructor definition
 
 uint8_t Color::GetRed()
 {
-	return r;
+	if (this != NULL && this->r != NULL)
+	{
+		return r;
+	}
 }
 
 uint8_t Color::GetGreen()
 {
-	return g;
+	if (this != NULL && this->g != NULL)
+	{
+		return g;
+	}
 }
 
 uint8_t Color::GetBlue()
 {
-	return b;
+	if (this != NULL && this->b != NULL)
+	{
+		return b;
+	}
 }
 
 uint8_t Color::GetAlpha()
 {
-	return a;
+	if (this != NULL && this->a != NULL)
+	{
+		return a;
+	}
 }
 
 void Color::SetAlpha(uint8_t a_)
 {
-	a = a_;
+	if (this != NULL && this->a != NULL)
+	{
+		a = a_;
+	}
 }
 
 Color Color::BlendColors(Color top, Color bottom, float blendPercent)
 {
+	assert(this != NULL);
 	Color result;
 	if (bottom.r >= top.r)
 	{
@@ -106,6 +123,7 @@ Color Color::BlendColors(Color top, Color bottom, float blendPercent)
 
 void Color::ChangeSaturation(double percent)
 {
+	assert(this != NULL);
 	double  P = sqrt((r) * (r) * Pr + (g) * (g) * Pg + (b) * (b) * Pb);
 
 	r = (uint8_t)(P + ((r) - P) * percent);
@@ -115,6 +133,7 @@ void Color::ChangeSaturation(double percent)
 
 Color Color::ScaleIndividual(float rScale, float gScale, float bScale)
 {
+	assert(this != NULL);
 	Color result;
 	result.r = (uint8_t)clamp((float)this->r * rScale, 0.0f, 255.0f);
 	result.g = (uint8_t)clamp((float)this->g * gScale, 0.0f, 255.0f);
@@ -123,6 +142,7 @@ Color Color::ScaleIndividual(float rScale, float gScale, float bScale)
 }
 bool Color::operator ==(const Color& rhs)&
 {
+	assert(this != NULL);
 	if (r == rhs.r && g == rhs.g && b == rhs.b)
 	{
 		return true;
@@ -131,6 +151,7 @@ bool Color::operator ==(const Color& rhs)&
 }
 bool Color::operator !=(const Color& rhs)&
 {
+	assert(this != NULL);
 	if (r != rhs.r || g != rhs.g || b != rhs.b)
 	{
 		return true;
@@ -138,7 +159,9 @@ bool Color::operator !=(const Color& rhs)&
 	return false;
 }
 
-Color& Color::operator =(Color const& rhs)& {
+Color& Color::operator =(Color const& rhs)& 
+{
+	assert(this != NULL);
 	r = rhs.r;
 	g = rhs.g;
 	b = rhs.b;
@@ -147,12 +170,14 @@ Color& Color::operator =(Color const& rhs)& {
 };
 
 Color& Color::operator +=(Color const& rhs)& {
+	assert(this != NULL);
 	r = (uint8_t)clamp((float)(r + rhs.r), 0.0f, 255.0f);
 	g = (uint8_t)clamp((float)(g + rhs.g), 0.0f, 255.0f);
 	b = (uint8_t)clamp((float)(b + rhs.b), 0.0f, 255.0f);
 	return *this;
 };
 Color Color::operator +(const Color& rhs) {
+	assert(this != NULL);
 	Color result;
 	result.r = (uint8_t)clamp((float)(this->r + rhs.r), 0.0f, 255.0f);
 	result.g = (uint8_t)clamp((float)(this->g + rhs.g), 0.0f, 255.0f);
@@ -161,12 +186,14 @@ Color Color::operator +(const Color& rhs) {
 	return result;
 };
 Color& Color::operator -=(Color const& rhs)& {
+	assert(this != NULL);
 	r = (uint8_t)clamp((float)(r - rhs.r), 0.0f, 255.0f);
 	g = (uint8_t)clamp((float)(g - rhs.g), 0.0f, 255.0f);
 	b = (uint8_t)clamp((float)(b - rhs.b), 0.0f, 255.0f);
 	return *this;
 };
 Color Color::operator -(const Color& rhs) {
+	assert(this != NULL);
 	Color result;
 	result.r = (uint8_t)clamp((float)(this->r - rhs.r), 0.0f, 255.0f);
 	result.g = (uint8_t)clamp((float)(this->g - rhs.g), 0.0f, 255.0f);
@@ -174,6 +201,7 @@ Color Color::operator -(const Color& rhs) {
 	return result;
 };
 Color Color::operator *(const float rhs) {
+	assert(this != NULL);
 	Color result;
 	result.r = (uint8_t)clamp((float)(this->r * rhs), 0.0f, 255.0f);
 	result.g = (uint8_t)clamp((float)(this->g * rhs), 0.0f, 255.0f);
@@ -181,6 +209,7 @@ Color Color::operator *(const float rhs) {
 	return result;
 };
 Color Color::operator *(const Color& rhs) {
+	assert(this != NULL);
 	Color result;
 	result.r = (uint8_t)clamp((float)(this->r * rhs.r), 0.0f, 255.0f);
 	result.g = (uint8_t)clamp((float)(this->g * rhs.g), 0.0f, 255.0f);
@@ -188,6 +217,7 @@ Color Color::operator *(const Color& rhs) {
 	return result;
 };
 Color Color::operator /(const float rhs) {
+	assert(this != NULL);
 	Color result;
 	result.r = (uint8_t)clamp(this->r / rhs, 0, 255);
 	result.g = (uint8_t)clamp(this->g / rhs, 0, 255);
