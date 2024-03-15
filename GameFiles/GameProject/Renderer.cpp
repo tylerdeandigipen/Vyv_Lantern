@@ -412,10 +412,6 @@ bool Renderer::CalculateIfPixelIsLit(int x, int y, int i)
 			if (inOutCount > 0)
 			{
 				isLit = false;
-				if (x + (int)CameraP.x >= 0 && x + (int)CameraP.x <= shadowCasterBuffer->BufferSizeX && shadowCasterBuffer->BufferSizeY <= y + (int)CameraP.y && y + (int)CameraP.y >= 0)
-				{
-					return false;
-				}
 				if (shadowCasterBuffer->SampleColor(x + (int)CameraP.x, y + (int)CameraP.y).GetAlpha() != 0 && inOutCount == 1)
 				{
 					isLit = true;

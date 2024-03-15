@@ -188,7 +188,7 @@
       <Filter>Source FIles\Objects\Components\Sub Components</Filter>
     </ClCompile>
     <ClCompile Include="Source\SplashScene.cpp" />
-    <ClCompile Include="BehaviorReciever.cpp">
+    <ClCompile Include="BehaviorReceiver.cpp">
       <Filter>Source FIles\Objects\Components\Sub Components</Filter>
     </ClCompile>
   </ItemGroup>
@@ -402,7 +402,7 @@
     </ClInclude>
     <ClInclude Include="BehaviorEmitter.h" />
     <ClInclude Include="Source\SplashScene.h" />
-    <ClInclude Include="BehaviorReciever.h" />
+    <ClInclude Include="BehaviorReceiver.h" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Misc\GameProject.ico">

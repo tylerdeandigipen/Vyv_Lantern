@@ -6,8 +6,8 @@
     {
         "Type": "Transform",
         "translation": {
-            "x": 144.0,
-            "y": 168.0
+            "x": 190.0,
+            "y": 77.0
         }
     },
     {
@@ -15,17 +15,17 @@
     },
     {
       "OldTranslation": {
-        "x": 144.0,
-        "y": 168.0
+        "x": 200.0,
+        "y": 80.0
       },
       "Type": "Physics"
     }
   ],
-  "FilePath": "./Data/Scenes/TutorialScene/Reciever0.json",
+  "FilePath": "./Data/Scenes/TutorialScene/Receiver1.json",
   "KeyObject": {
-    "key": "Receiver0"
+    "key": "Receiver1"
   },
-  "Name": "Receiver",
+  "Name": "Reciever",
   "Type": "Object",
   "file": "./Assets/PPM/CrystalSprites/GoalCrystal.ppm",
   "frameSize": [
