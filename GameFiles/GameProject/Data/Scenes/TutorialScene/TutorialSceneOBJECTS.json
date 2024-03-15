@@ -3,7 +3,7 @@
     "count": 4
   },
   "Door": {
-    "count": 5
+    "count": 1
   },
   "Emitter": {
     "count": 7
@@ -17,16 +17,16 @@
       "FilePath": "./Data/Scenes/TutorialScene/Mirror0.json"
     },
     {
-      "FilePath": "./Data/Scenes/TutorialScene/Door0.json"
+      "FilePath": "./Data/Scenes/TutorialScene/Door1.json"
     },
     {
       "FilePath": "./Data/Scenes/TutorialScene/Reciever0.json"
     },
     {
-      "FilePath": "./Data/Scenes/TutorialScene/Emitter0.json"
+      "FilePath": "./Data/Scenes/TutorialScene/Reciever1.json"
     },
     {
-      "FilePath": "./Data/Scenes/TutorialScene/Reciever1.json"
+      "FilePath": "./Data/Scenes/TutorialScene/Emitter0.json"
     },
     {
       "FilePath": "./Data/Scenes/TutorialScene/Emitter1.json"
@@ -57,6 +57,6 @@
     }
   ],
   "Reviever": {
-    "count": 1
+    "count": 2
   }
 }

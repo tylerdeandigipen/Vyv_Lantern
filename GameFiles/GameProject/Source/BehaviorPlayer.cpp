@@ -71,8 +71,12 @@ void BehaviorPlayer::Update(float dt)
     if (Parent())
     {
         Controller(dt);
+        
+        SetGoUp(true);
+        SetGoDown(true);
+        SetGoRight(true);
+        SetGoLeft(true);
     }
-
 }
 
 void BehaviorPlayer::Read(json jsonData)
@@ -99,13 +103,15 @@ void BehaviorPlayer::Controller(float dt)
     if (input->keyPressed(SDL_SCANCODE_W))
     {
         Renderer::GetInstance()->faceState = 2;
-        translation.y -= playerMoveSpeed * dt;
+        if (isUp)
+            translation.y -= playerMoveSpeed * dt;
         //AudioManager.PlaySFX("footsteps.ogg");
     }
     if (input->keyPressed(SDL_SCANCODE_S))
     {
         Renderer::GetInstance()->faceState = 1;
-        translation.y += playerMoveSpeed * dt;
+        if (isDown)
+            translation.y += playerMoveSpeed * dt;
         //AudioManager.PlaySFX("footsteps.ogg");
     }
     if (input->keyPressed(SDL_SCANCODE_D))
@@ -115,7 +121,8 @@ void BehaviorPlayer::Controller(float dt)
         {
             Parent()->GetImage()->FlipSprite();
         }
-        translation.x += playerMoveSpeed * dt;
+        if (isRight)
+            translation.x += playerMoveSpeed * dt;
         //AudioManager.PlaySFX("footsteps.ogg");
     }
     if (input->keyPressed(SDL_SCANCODE_A))
@@ -125,7 +132,8 @@ void BehaviorPlayer::Controller(float dt)
         {
             Parent()->GetImage()->FlipSprite();
         }
-        translation.x -= playerMoveSpeed * dt;
+        if (isLeft)
+            translation.x -= playerMoveSpeed * dt;
         //AudioManager.PlaySFX("footsteps.ogg");
     }
 
@@ -355,57 +363,82 @@ void BehaviorPlayer::PlayerCollisionHandler(Entity* entity1, Entity* entity2)
     if (entity1->GetRealName().compare("Player") == 0 && entity2->GetRealName().compare("Door") == 0)
     {
         auto door = reinterpret_cast<BehaviorDoor*>(entity2->Has(Behavior));
-
-        float pushDirX = (entity2->GetImage()->position.x + 5.f) - entity1->GetImage()->position.x;
-        float pushDirY = (entity2->GetImage()->position.y + 5.f) - entity1->GetImage()->position.y;
-
-        float pushDirLength = sqrt(pushDirX * pushDirX + pushDirY * pushDirY);
-
-        float overlap = 18.0f; // You can adjust this value as needed
-
+        auto player = reinterpret_cast<BehaviorPlayer*>(entity1->Has(Behavior));
         if (door->GetDoorClosed())
         {
-            // Apply the push force only if there is overlap
-            if (pushDirLength > 0)
-            {
-                pushDirX /= pushDirLength;
-                pushDirY /= pushDirLength;
-
-                // Apply the push force only if there is overlap
-                if (pushDirLength < overlap)
-                {
-                    entity1->GetImage()->position.x -= (pushDirX * (overlap - pushDirLength)) / 3.f;
-                    entity1->GetImage()->position.y -= (pushDirY * (overlap - pushDirLength)) / 3.f;
-                }
-            }
+            if (entity1->GetImage()->position.x + 2 < entity2->GetImage()->position.x)
+                player->SetGoRight(false);
+            if (entity1->GetImage()->position.x > entity2->GetImage()->position.x + 8)
+                player->SetGoLeft(false);
+            if (entity1->GetImage()->position.y + 2 < entity2->GetImage()->position.y)
+                player->SetGoDown(false);
+            if (entity1->GetImage()->position.y > entity2->GetImage()->position.y + 8)
+                player->SetGoUp(false);
         }
+        //float pushDirX = (entity2->GetImage()->position.x + 5.f) - entity1->GetImage()->position.x;
+        //float pushDirY = (entity2->GetImage()->position.y + 5.f) - entity1->GetImage()->position.y;
+
+        //float pushDirLength = sqrt(pushDirX * pushDirX + pushDirY * pushDirY);
+
+        //float overlap = 25.0f; // You can adjust this value as needed
+
+        //if (door->GetDoorClosed())
+        //{
+        //    // Apply the push force only if there is overlap
+        //    if (pushDirLength > 0)
+        //    {
+        //        pushDirX /= pushDirLength;
+        //        pushDirY /= pushDirLength;
+
+        //        // Apply the push force only if there is overlap
+        //        if (pushDirLength < overlap)
+        //        {
+        //            entity1->GetImage()->position.x -= (pushDirX * (overlap - pushDirLength)) / 3.f;
+        //            entity1->GetImage()->position.y -= (pushDirY * (overlap - pushDirLength)) / 3.f;
+        //        }
+        //    }
+        //}
     }
     if (entity2->GetRealName().compare("Player") == 0 && entity1->GetRealName().compare("Door") == 0)
     {
         auto door = reinterpret_cast<BehaviorDoor*>(entity1->Has(Behavior));
-
-        float pushDirX = (entity1->GetImage()->position.x) / 2.f - entity2->GetImage()->position.x;
-        float pushDirY = (entity1->GetImage()->position.y) / 2.f - entity2->GetImage()->position.y;
-
-        float pushDirLength = sqrt(pushDirX * pushDirX + pushDirY * pushDirY);
-
-        float overlap = 18.0f; // You can adjust this value as needed
+        auto player = reinterpret_cast<BehaviorPlayer*>(entity2->Has(Behavior));
 
         if (door->GetDoorClosed())
         {
-            // Apply the push force only if there is overlap
-            if (pushDirLength > 0)
-            {
-                pushDirX /= pushDirLength;
-                pushDirY /= pushDirLength;
-
-                // Apply the push force only if there is overlap
-                if (pushDirLength < overlap)
-                {
-                    entity2->GetImage()->position.x -= (pushDirX * (overlap - pushDirLength)) / 3.f;
-                    entity2->GetImage()->position.y -= (pushDirY * (overlap - pushDirLength)) / 3.f;
-                }
-            }
+            if (entity2->GetImage()->position.x + 2 < entity1->GetImage()->position.x)
+                player->SetGoRight(false);
+            if (entity2->GetImage()->position.x > entity1->GetImage()->position.x + 8)
+                player->SetGoLeft(false);
+            if (entity2->GetImage()->position.y + 2 < entity1->GetImage()->position.y)
+                player->SetGoDown(false);
+            if (entity2->GetImage()->position.y > entity1->GetImage()->position.y + 8)
+                player->SetGoUp(false);
         }
+        //auto door = reinterpret_cast<BehaviorDoor*>(entity1->Has(Behavior));
+
+        //float pushDirX = (entity1->GetImage()->position.x) / 2.f - entity2->GetImage()->position.x;
+        //float pushDirY = (entity1->GetImage()->position.y) / 2.f - entity2->GetImage()->position.y;
+
+        //float pushDirLength = sqrt(pushDirX * pushDirX + pushDirY * pushDirY);
+
+        //float overlap = 25.0f; // You can adjust this value as needed
+
+        //if (door->GetDoorClosed())
+        //{
+        //    // Apply the push force only if there is overlap
+        //    if (pushDirLength > 0)
+        //    {
+        //        pushDirX /= pushDirLength;
+        //        pushDirY /= pushDirLength;
+
+        //        // Apply the push force only if there is overlap
+        //        if (pushDirLength < overlap)
+        //        {
+        //            entity2->GetImage()->position.x -= (pushDirX * (overlap - pushDirLength)) / 3.f;
+        //            entity2->GetImage()->position.y -= (pushDirY * (overlap - pushDirLength)) / 3.f;
+        //        }
+        //    }
+        //}
     }
 }

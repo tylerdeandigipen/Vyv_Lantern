@@ -42,10 +42,30 @@ public:
 		return player;
 	}
 
+	void SetGoUp(bool go)
+	{
+		isUp = go;
+	}
+	void SetGoDown(bool go)
+	{
+		isDown = go;
+	}
+	void SetGoLeft(bool go)
+	{
+		isLeft = go;
+	}
+	void SetGoRight(bool go)
+	{
+		isRight = go;
+	}
 private:
 	float timeBetweenBlink = 8;
 	float timeDuringBlink = 0.115f;
 	float timer = 0;
+	bool isUp = true;
+	bool isDown = true;
+	bool isLeft = true;
+	bool isRight = true;
 	bool isBlinking = false;
 	float MIN_RAND = 6.0f, MAX_RAND = 9.0f;
 	void Controller(float dt);
