@@ -1,6 +1,6 @@
 #include "Entity.h"
 #include "Transform.h"
-#include "BehaviorReciever.h"
+#include "BehaviorReceiver.h"
 
 BehaviorReceiver::BehaviorReceiver() : Behavior(Behavior::bEmitter), receiver(new CheckPoint)
 {

@@ -6,24 +6,24 @@
     {
         "Type": "Transform",
         "translation": {
-            "x": 190.0,
-            "y": 77.0
+            "x": 339.0,
+            "y": 72.0
         }
     },
     {
         "Type": "BehaviorReceiver"
-    },
+    } ,
     {
       "OldTranslation": {
-        "x": 200.0,
-        "y": 80.0
+        "x": 344.0,
+        "y": 72.0
       },
       "Type": "Physics"
     }
   ],
-  "FilePath": "./Data/Scenes/TutorialScene/Reciever1.json",
+  "FilePath": "./Data/Scenes/TutorialScene/Receiver2.json",
   "KeyObject": {
-    "key": "Receiver1"
+    "key": "Receiver2"
   },
   "Name": "Reciever",
   "Type": "Object",

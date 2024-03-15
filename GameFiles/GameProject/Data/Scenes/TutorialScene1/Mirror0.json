@@ -1,0 +1,41 @@
+{
+  "Components": [
+    {
+      "Type": "ColliderAABB"
+    },
+    {
+      "Type": "Transform",
+      "translation": {
+        "x": 112.0,
+        "y": 164.0
+      }
+    },
+    {
+      "OldTranslation": {
+        "x": 112.0,
+        "y": 164.0
+      },
+      "Type": "Physics"
+    },
+    {
+      "Direction": {
+        "DirectionX": -1.0,
+        "DirectionY": 1.0
+      },
+      "Type": "BehaviorMirror",
+      "key": 0
+    }
+  ],
+  "FilePath": "./Data/Scenes/TutorialScene1/Mirror0.json",
+  "KeyObject": {
+    "key": "Mirror0"
+  },
+  "Name": "Switch",
+  "Type": "Object",
+  "file": "./Assets/PPM/CrystalSprites/MirrorCrystalDownRight.ppm",
+  "frameSize": [
+    8,
+    8
+  ],
+  "isAnimated": false
+}
