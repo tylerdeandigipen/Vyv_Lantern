@@ -170,7 +170,7 @@ xcopy "$(ProjectDir)Fmod\*.dll" "$(OutDir)" /s /r /y /q /i</Command>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="BehaviorEmitter.h" />
-    <ClInclude Include="BehaviorReciever.h" />
+    <ClInclude Include="BehaviorReceiver.h" />
     <ClInclude Include="Emitter.h" />
     <ClInclude Include="glfw-3.3.8.bin.WIN64\glfw-3.3.8.bin.WIN64\include\GLFW\glfw3.h" />
     <ClInclude Include="ImGuiManager.h" />
@@ -245,7 +245,7 @@ xcopy "$(ProjectDir)Fmod\*.dll" "$(OutDir)" /s /r /y /q /i</Command>
     <ClInclude Include="Vector.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="BehaviorReciever.cpp" />
+    <ClCompile Include="BehaviorReceiver.cpp" />
     <ClCompile Include="Emitter.cpp" />
     <ClCompile Include="Engine.cpp" />
     <ClCompile Include="ImageBuffer.cpp" />

@@ -67,7 +67,7 @@ static int circleCount = 0;
 static int mirrorCount = 0;
 static int doorCount = 0;
 static int emitterCount = 0;
-static int recieverCount = 0;
+static int ReceiverCount = 0;
 
 int currentTool = 0;
 int currentTile;
@@ -136,7 +136,7 @@ Engine::EngineCode LevelCreatorScene::Init()
 	AddFunc.emplace("Mirror", &LevelCreatorScene::AddMirrorEntity);
 	AddFunc.emplace("Switch", &LevelCreatorScene::AddMirrorEntity);
 	AddFunc.emplace("Emitter", &LevelCreatorScene::AddEmitterEntity);
-	AddFunc.emplace("Reciever", &LevelCreatorScene::AddRecieverEntity);
+	AddFunc.emplace("Receiver", &LevelCreatorScene::AddReceiverEntity);
 
 	entityManager->pRenderer = LevelCreatorPixelRenderer;
 
@@ -331,7 +331,7 @@ void LevelCreatorScene::ExportScene(std::string name)
 	ObjectFile["Mirror"] = { {"count", mirrorCount + 1} };
 	ObjectFile["Door"] = { {"count", doorCount + 1} };
 	ObjectFile["Emitter"] = { {"count", emitterCount + 1} };
-	ObjectFile["Reviever"] = { {"count", recieverCount + 1} };
+	ObjectFile["Reviever"] = { {"count", ReceiverCount + 1} };
 
 	std::ofstream objectList(listToExport);
 	objectList << std::setw(2) << ObjectFile << std::endl;
@@ -652,7 +652,7 @@ Engine::EngineCode LevelCreatorScene::Exit()
 	mirrorCount = 0;
 	doorCount = 0;
 	emitterCount = 0;
-	recieverCount = 0;
+	ReceiverCount = 0;
 
 	if (!tempEntities.empty())
 	{
@@ -678,7 +678,7 @@ Engine::EngineCode LevelCreatorScene::Unload()
 	mirrorCount = 0;
 	doorCount = 0;
 	emitterCount = 0;
-	recieverCount = 0;
+	ReceiverCount = 0;
 	delete LevelCreatorSceneinstance;
 	LevelCreatorSceneinstance = nullptr;
 	return Engine::NothingBad;
@@ -909,9 +909,9 @@ void LevelCreatorScene::ImGuiWindow()
 							}if (counts["Emitter"].is_object())
 							{
 								emitterCount = counts["Emitter"]["count"];
-							}if (counts["Reciever"].is_object())
+							}if (counts["Receiver"].is_object())
 							{
-								recieverCount = counts["Reciever"]["count"];
+								ReceiverCount = counts["Receiver"]["count"];
 							}
 
 							if (!entityManager->InitializeProperties(filename + "OBJECTS.json"))
@@ -1072,9 +1072,9 @@ void LevelCreatorScene::ImGuiWindow()
 		}
 	}
 
-	if (ImGui::Button("  Create Reciever"))
+	if (ImGui::Button("  Create Receiver"))
 	{
-		CreateRecieverEntity();
+		CreateReceiverEntity();
 	}
 
 	ImGui::Separator();
@@ -1233,19 +1233,19 @@ int LevelCreatorScene::CreateEmitterEntity(EmitterData emit)
 	return 0;
 }
 
-//static int recieverCount = 0;
-int LevelCreatorScene::CreateRecieverEntity()
+//static int ReceiverCount = 0;
+int LevelCreatorScene::CreateReceiverEntity()
 {
-	std::string number = "./Data/GameObjects/Reciever";
-	std::string filename = "./Data/GameObjects/tempReciever.json";
+	std::string number = "./Data/GameObjects/Receiver";
+	std::string filename = "./Data/GameObjects/tempReceiver.json";
 
 	Entity* temp = FileIO::GetInstance()->ReadEntity(filename);
-	temp->addKey = "Reciever"; // this is for the map holding functions and gives access to function for circle
-	temp->key = "Reciever" + std::to_string(emitterCount);
+	temp->addKey = "Receiver"; // this is for the map holding functions and gives access to function for circle
+	temp->key = "Receiver" + std::to_string(emitterCount);
 
-	//temp->SetFilePath("./Data/GameObjects/Reciever" + sceneName + std::to_string(emitterCount) + ".json");
+	//temp->SetFilePath("./Data/GameObjects/Receiver" + sceneName + std::to_string(emitterCount) + ".json");
 	tempEntities.push_back(temp);
-	++recieverCount;
+	++ReceiverCount;
 	return 0;
 }
 
@@ -1415,7 +1415,7 @@ void LevelCreatorScene::AddEmitterEntity(Entity* entity)
 	current->gameObjects.push_back(newobject);
 }
 
-void LevelCreatorScene::AddRecieverEntity(Entity* entity)
+void LevelCreatorScene::AddReceiverEntity(Entity* entity)
 {
 	Scene* pare = LevelCreatorSceneGetInstance();
 	LevelCreatorScene* current = reinterpret_cast<LevelCreatorScene*>(pare);
@@ -1436,7 +1436,7 @@ void LevelCreatorScene::AddRecieverEntity(Entity* entity)
 
 	mirrorData["Components"] = components;
 	mirrorData["FilePath"] = entity->GetFilePath();
-	mirrorData["Name"] = "Reciever";
+	mirrorData["Name"] = "Receiver";
 	mirrorData["Type"] = "Object";
 	mirrorData["file"] = entity->spritePath;
 	mirrorData["frameSize"] = { 8,8 };

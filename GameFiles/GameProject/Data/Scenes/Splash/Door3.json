@@ -6,31 +6,32 @@
     {
       "Type": "Transform",
       "translation": {
-        "x": 119.0,
-        "y": 56.0
+        "x": -174.0,
+        "y": 159.0
       }
     },
     {
       "OldTranslation": {
-        "x": 119.0,
-        "y": 56.0
+        "x": -174.0,
+        "y": 159.0
       },
       "Type": "Physics"
     },
     {
-      "ClosedSprite": "./Assets/PPM/Door_Closed.ppm",
+      "ClosedSprite": "./Assets/PPM/DigipenLogo.ppm",
       "DoorClosed": true,
       "OpenSprite": "./Assets/PPM/Door_Open.ppm",
+      "PairName": "",
       "Type": "BehaviorDoor"
     }
   ],
-  "FilePath": "./Data/Scenes/Splash/Door0.json",
+  "FilePath": "./Data/Scenes/Splash/Door3.json",
   "KeyObject": {
-    "key": "Door0"
+    "key": "Door3"
   },
   "Name": "Door",
   "Type": "Object",
-  "file": "./Assets/PPM/Door_Closed.ppm",
+  "file": "./Assets/PPM/Door_Open.ppm",
   "frameSize": [
     8,
     8

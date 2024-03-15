@@ -314,7 +314,7 @@ Color &ImageBuffer::SampleColor(int x, int y)
         return(Result);
     }
     Color& Result = buffer[0];
-    return Result;
+    return(Result);
 }
 
 ImageBuffer& ImageBuffer::operator =(const ImageBuffer& rhs)

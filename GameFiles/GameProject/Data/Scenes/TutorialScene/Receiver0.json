@@ -6,26 +6,26 @@
     {
         "Type": "Transform",
         "translation": {
-            "x": 339.0,
-            "y": 72.0
+            "x": 144.0,
+            "y": 168.0
         }
     },
     {
         "Type": "BehaviorReceiver"
-    } ,
+    },
     {
       "OldTranslation": {
-        "x": 344.0,
-        "y": 72.0
+        "x": 144.0,
+        "y": 168.0
       },
       "Type": "Physics"
     }
   ],
-  "FilePath": "./Data/Scenes/TutorialScene/Reciever3.json",
+  "FilePath": "./Data/Scenes/TutorialScene/Receiver0.json",
   "KeyObject": {
-    "key": "Reciever3"
+    "key": "Receiver0"
   },
-  "Name": "Reciever",
+  "Name": "Receiver",
   "Type": "Object",
   "file": "./Assets/PPM/CrystalSprites/GoalCrystal.ppm",
   "frameSize": [
