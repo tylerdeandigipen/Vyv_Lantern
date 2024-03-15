@@ -8,30 +8,34 @@
 // Copyright  © 2023 DigiPen (USA) Corporation.
 //
 //------------------------------------------------------------------------------
-#include "imgui.h"
-#include "imgui_impl_sdl2.h"
-#include "imgui_impl_opengl3.h"
 #include <SDL/SDL.h>
 #include <glad/glad.h>
 #include <iostream>
 #include <algorithm>
-
 #include "MenuScene.h"
 #include "LevelCreatorScene.h"
 #include "Scene.h"
-#include "PlatformSystem.h"
 #include "Engine.h"
-#include "Entity.h"
-#include "EntityContainer.h"
+
 #include "FileIO.h"
 #include "SceneSystem.h"
 #include "Renderer.h"
 #include "Inputs.h"
 #include "Logging.h"
 #include "Time.h"
+#include "SceneSystem.h"
+#include "Renderer.h"
+#include "PlatformSystem.h"
+#include "Scene.h"
+#include "Engine.h"
+#include "TestScene.h"
+#include "TBDTestScene.h"
+#include "LevelCreatorScene.h"
+#include "SplashScene.h"
+#include "Inputs.h"
+#include "MenuScene.h"
 
 #include "ImageBuffer.h"
-#include "Light.h"
 #include "LevelBuilder.h"
 #include "FontSystem.h"
 
@@ -43,8 +47,6 @@ SDL_Renderer* MenuRender;
 Renderer* MenuPixelRender = Renderer::GetInstance();
 
 SDL_Window* MenuWindow;
-
-SDL_GLContext MenuGlContext;
 
 Scene* MenuSceneinstance = NULL;
 
@@ -67,10 +69,6 @@ Engine::EngineCode MenuScene::Init()
     Inputs::GetInstance()->SetWindow(MenuWindow);
 
     //exporttests
-    //FileIO::GetInstance()->ExportTileMap("export_tests");
-
-    Light tempLight;
-    Light tempLight2;
 
     // Create SDL Window
     MenuWindow = PlatformSystem::GetInstance()->GetWindowHandle();
@@ -109,61 +107,36 @@ Engine::EngineCode MenuScene::Init()
     return Engine::NothingBad;
 }
 
+bool MenuScene::IsMouseOverBackButton()
+{
+    int mouseX = Inputs::GetInstance()->getMouseX();
+    int mouseY = Inputs::GetInstance()->getMouseY();
+
+    int exitButtonTopLeftX = 300;
+    int exitButtonTopLeftY = 250;
+    int exitButtonBottomRightX = 490;
+    int exitButtonBottomRightY = 370;
+
+    return (mouseX >= exitButtonTopLeftX && mouseX <= exitButtonBottomRightX &&
+        mouseY >= exitButtonTopLeftY && mouseY <= exitButtonBottomRightY);
+}
+
+
+void MenuScene::HandleExit()
+{
+    if (Inputs::GetInstance()->mouseButtonPressed(SDL_BUTTON_LEFT))
+    {
+        SceneSystem* sceneSystem = SceneSystem::GetInstance();
+        sceneSystem->SetScene(TbdTestSceneGetInstance());
+
+    }
+}
+
+
 #ifndef Render_Toggle_Functions
-int MenuCanPlaceLight = 0;
-bool MenuCanToggleFullBright = true;
-bool MenuCanToggleNormalDisplay = true;
-bool MenuCanToggleOnlyLights = true;
-bool MenuCanPause = true;
-bool MenucanToggleScanLines = true;
-bool MenuCanRenderWallHitboxes = true;
-bool MenucanRenderRawFog = true;
-bool MenucanToggleFog = true;
-
-static bool MenutabKeyPreviouslyPressed = false;
-static bool Menushow_demo_window = false;
-static bool Menushow_tool_metrics = false;
-static bool Menushow_custom_window = false;
-static bool Menushow_metrics_debug_bar = false;
-
-static bool MenuisGravePressedForCheat = false;
-static bool MenuisQPressedForCheat = false;
-static bool MenuisNPressedForCheat = false;
-static bool MenuisCPressedForCheat = false;
-static bool MenuisFPressedForCheat = false;
-static bool MenuisEPressedForCheat = false;
-static bool MenuisHPressedForCheat = false;
-static bool MenuisGPressedForCheat = false;
-
 
 #endif
 
-void MenuPlayerMovement(float dt)
-{
-    Inputs* inputHandler = Inputs::GetInstance();
-
-    if (inputHandler->keyPressed(SDL_SCANCODE_TAB))
-    {
-        if (!MenutabKeyPreviouslyPressed)
-        {
-            Menushow_demo_window = !Menushow_demo_window;
-            Menushow_tool_metrics = !Menushow_tool_metrics;
-            Menushow_custom_window = !Menushow_custom_window;
-
-        }
-        MenutabKeyPreviouslyPressed = true;
-    }
-    else
-    {
-        MenutabKeyPreviouslyPressed = false;
-    }
-
-    if (Engine::GetInstance()->Paused() == false)
-    {
-
-    }
-
-}
 
 void MenuScene::Update(float dt)
 {
@@ -178,11 +151,14 @@ void MenuScene::Update(float dt)
     AudioManager.Update();
     inputHandler->handleInput();
     bool check = winState;
-    if (inputHandler->keyPressed(SDL_SCANCODE_Y))
-    {
-        winState = (check ? false : true);
 
+
+    if (IsMouseOverBackButton())
+    {
+        HandleExit();
     }
+
+
     if (LevelBuilder::GetWinState())
     {
         if (dt != 0)
@@ -198,8 +174,6 @@ void MenuScene::Update(float dt)
         }
 
     }
-    MenuPlayerMovement(dt);
-
     MenuPixelRender->Update(dt);
 }
 
