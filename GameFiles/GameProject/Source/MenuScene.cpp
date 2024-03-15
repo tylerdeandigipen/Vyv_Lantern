@@ -34,12 +34,13 @@
 #include "SplashScene.h"
 #include "Inputs.h"
 #include "MenuScene.h"
-
+#include "Entity.h"
 #include "ImageBuffer.h"
 #include "LevelBuilder.h"
 #include "FontSystem.h"
-
+#include "Component.h"
 #include "TestScene.h"
+#include "Transform.h"
 
 Logging& MenuLogger = Logging::GetInstance("debugLog.log");
 
@@ -49,6 +50,8 @@ Renderer* MenuPixelRender = Renderer::GetInstance();
 SDL_Window* MenuWindow;
 
 Scene* MenuSceneinstance = NULL;
+
+Entity* Beginbutton;
 
 
 MenuScene::MenuScene() : Scene("Menutest")
@@ -69,6 +72,16 @@ Engine::EngineCode MenuScene::Init()
     Inputs::GetInstance()->SetWindow(MenuWindow);
 
     //exporttests
+
+    Beginbutton = new Entity("object", "./Assets/PPM/Mirror.ppm");
+
+
+    Beginbutton->CreateImage("./Assets/PPM/Mirror.ppm");
+
+    Transform BPOS;
+    BPOS.SetTranslation(gfxVector2{720,255});
+    Beginbutton->Add(&BPOS);
+
 
     // Create SDL Window
     MenuWindow = PlatformSystem::GetInstance()->GetWindowHandle();
@@ -107,22 +120,30 @@ Engine::EngineCode MenuScene::Init()
     return Engine::NothingBad;
 }
 
-bool MenuScene::IsMouseOverBackButton()
+bool MenuScene::IsMouseOverBeginingButton()
 {
     int mouseX = Inputs::GetInstance()->getMouseX();
     int mouseY = Inputs::GetInstance()->getMouseY();
 
-    int exitButtonTopLeftX = 300;
-    int exitButtonTopLeftY = 250;
-    int exitButtonBottomRightX = 490;
-    int exitButtonBottomRightY = 370;
 
-    return (mouseX >= exitButtonTopLeftX && mouseX <= exitButtonBottomRightX &&
-        mouseY >= exitButtonTopLeftY && mouseY <= exitButtonBottomRightY);
+    Vector2 position = {720,255};
+
+    int width = 100;
+    int high = 50;
+
+
+    int LeftOfButton = position.x - width;
+    int TopOfButton = position.y - high;
+    int RightOfButton = position.x + width;
+    int ButtomOfButton = position.y + high;
+
+    return (mouseX >=  LeftOfButton && mouseX <= RightOfButton &&
+        mouseY >= TopOfButton && mouseY <= ButtomOfButton);
+
 }
 
 
-void MenuScene::HandleExit()
+void MenuScene::HandleBegin()
 {
     if (Inputs::GetInstance()->mouseButtonPressed(SDL_BUTTON_LEFT))
     {
@@ -132,11 +153,37 @@ void MenuScene::HandleExit()
     }
 }
 
+bool MenuScene::IsMouseOverExitButton()
+{
+    int mouseX = Inputs::GetInstance()->getMouseX();
+    int mouseY = Inputs::GetInstance()->getMouseY();
 
-#ifndef Render_Toggle_Functions
 
-#endif
+    Vector2 position = { 720,455 };
 
+    int width = 100;
+    int high = 50;
+
+
+    int LeftOfButton = position.x - width;
+    int TopOfButton = position.y - high;
+    int RightOfButton = position.x + width;
+    int ButtomOfButton = position.y + high;
+
+    return (mouseX >= LeftOfButton && mouseX <= RightOfButton &&
+        mouseY >= TopOfButton && mouseY <= ButtomOfButton);
+}
+
+
+
+
+void MenuScene::HandleExit()
+{
+    if (Inputs::GetInstance()->mouseButtonPressed(SDL_BUTTON_LEFT))
+    {
+        Engine::GetInstance()->SetCloseRequest(true);
+    }
+}
 
 void MenuScene::Update(float dt)
 {
@@ -152,12 +199,18 @@ void MenuScene::Update(float dt)
     inputHandler->handleInput();
     bool check = winState;
 
+    MenuPixelRender->RenderMenu();
 
-    if (IsMouseOverBackButton())
+    Beginbutton->Render();
+
+    if (IsMouseOverBeginingButton())
+    {
+        HandleBegin();
+    }
+    if (IsMouseOverExitButton())
     {
         HandleExit();
     }
-
 
     if (LevelBuilder::GetWinState())
     {

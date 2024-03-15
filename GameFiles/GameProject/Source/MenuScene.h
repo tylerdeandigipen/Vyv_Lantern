@@ -32,7 +32,9 @@ public:
 	void Update(float dt) override;
 	void Render(void) override;
 	bool winState = false;
-	bool IsMouseOverBackButton();
+	bool IsMouseOverBeginingButton();
+	bool IsMouseOverExitButton();
+	void HandleBegin();
 	void HandleExit();
 private:
 	emitter_id ControlledEmitter;
