@@ -289,7 +289,7 @@ void TbdTestScene::handleCheatCodes()
 		TbdCanToggleNormalDisplay = true;
 	}
 
-	if (inputHandler->keyPressed(SDL_SCANCODE_LSHIFT))
+	if (inputHandler->keyPressed(SDL_SCANCODE_ESCAPE))
 	{
 		if (CanPause == true)
 		{
