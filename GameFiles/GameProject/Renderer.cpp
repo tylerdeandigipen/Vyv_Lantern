@@ -404,6 +404,10 @@ bool Renderer::CalculateIfPixelIsLit(int x, int y, int i)
 	bool isLit = true;
 	if (lightSource[i].intensity != 0)
 	{
+		if (x + (int)CameraP.x >= 0 && x + (int)CameraP.x <= shadowCasterBuffer->BufferSizeX && shadowCasterBuffer->BufferSizeY <= y + (int)CameraP.y && y + (int)CameraP.y >= 0)
+		{
+			return false;
+		}
 		diameter = lightSource[i].radius * lightSource[i].radius;
 		lightPos = lightSource[i].position;
 		if (distanceSquared((float)x, (float)y, lightPos.x - cameraPos.x, lightPos.y - cameraPos.y) <= diameter)
