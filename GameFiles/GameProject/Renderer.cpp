@@ -728,7 +728,7 @@ ImageBuffer* Renderer::CreateAnimatedObject(const std::string filename, Vector2 
 //maybe move into player class or component?
 void Renderer::UpdateFace(int faceState_)
 {
-	if (faceIndex == -1 || faceIndex > MAX_ANIMATED_OBJECTS)
+	if ((faceIndex == -1 || faceIndex > MAX_ANIMATED_OBJECTS) && numAnimatedObjects != 0)
 	{
 		faceIndex = numAnimatedObjects;
 		ImageBuffer* temp = CreateAnimatedObject("./Assets/PPM/Man_Faces.ppm", { 8,8 });
@@ -942,7 +942,7 @@ void Renderer::UpdateObjects(float dt)
 {
 	objectLayer->ClearImageBuffer();
 	UpdateAnimations(dt);
-	//UpdateFace(faceState);
+	UpdateFace(faceState);
 
 	for (int i = 0; i < numObjects; ++i)
 	{
