@@ -71,7 +71,7 @@ public:
 	ImageBuffer* CreateAnimatedObject(const std::string filename, Vector2 frameSize);
 
 	// 0 = forward, 1 = down, 2 = up, 3 = blink
-	void UpdateFace(int& faceState_);
+	void UpdateFace(int faceState_);
 
 	//Tilemap Functions
 	void MakeTileMap(int** tileMapArray);
@@ -133,7 +133,6 @@ public:
 	ImageBuffer* animatedObjects[MAX_ANIMATED_OBJECTS][MAX_ANIMATION_FRAMES];
 
 	//Needed to be public (maybe make private later by adding helper funcs)
-	int faceState = 0;
 	Vector2 tileMapSize;
 	ParticleManager* particleManager = NULL;
 	SDL_Window* window = NULL;
@@ -191,6 +190,7 @@ private:
 	float PreviousFrameLengths[15];
 
 	//Misc.
+	int faceState = 0;
 	unsigned int maxThreadsAllowed = 8;
 	Vector2 nextCamPos;
 	Vector2 CameraP;

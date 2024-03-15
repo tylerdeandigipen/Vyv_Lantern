@@ -675,7 +675,6 @@ void Renderer::RenderLasers()
 
 void Renderer::UpdateAnimations(float dt = 0)
 {
-	UpdateFace(faceState);
 	if (timer >= timeBetweenFrames)
 	{
 		for (int i = 0; i < numAnimatedObjects; ++i)
@@ -727,15 +726,15 @@ ImageBuffer* Renderer::CreateAnimatedObject(const std::string filename, Vector2 
 }
 
 //maybe move into player class or component?
-void Renderer::UpdateFace(int& faceState_)
+void Renderer::UpdateFace(int faceState_)
 {
-	if (faceIndex == -99 || faceIndex > MAX_ANIMATED_OBJECTS)
+	if (faceIndex == -1 || faceIndex > MAX_ANIMATED_OBJECTS)
 	{
 		faceIndex = numAnimatedObjects;
 		ImageBuffer* temp = CreateAnimatedObject("./Assets/PPM/Man_Faces.ppm", { 8,8 });
 		temp->isCulled = true;
 	}
-	else if (faceState >= 0 && animatedObjects[faceIndex][0] != NULL && faceState <= animatedObjects[faceIndex][0]->totalFrames && faceState == faceState_)
+	else if (faceState_ >= 0 && animatedObjects[faceIndex][0] != NULL && faceState_ <= animatedObjects[faceIndex][0]->totalFrames)
 	{
 		faceState = faceState_;
 		if (animatedObjects[0][animatedObjects[0][0]->currentFrame]->isFlipped != animatedObjects[faceIndex][faceState]->isFlipped)
@@ -943,6 +942,7 @@ void Renderer::UpdateObjects(float dt)
 {
 	objectLayer->ClearImageBuffer();
 	UpdateAnimations(dt);
+	//UpdateFace(faceState);
 
 	for (int i = 0; i < numObjects; ++i)
 	{

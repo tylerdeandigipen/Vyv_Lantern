@@ -61,6 +61,7 @@ public:
 private:
 	float timeBetweenBlink = 8;
 	float timeDuringBlink = 0.115f;
+	int faceState = 0;
 	float timer = 0;
 	bool isUp = true;
 	bool isDown = true;

@@ -92,4 +92,3 @@ ImageBuffer* Animation::CreateAnimatedObject(const std::string filename, Vector2
     return Result;
 }
 
-//void Animation::UpdateFace(int& faceState) {}
