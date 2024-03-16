@@ -36,6 +36,8 @@ public:
 	bool IsMouseOverExitButton();
 	void HandleBegin();
 	void HandleExit();
+	void cheatScanlines();
+
 private:
 	emitter_id ControlledEmitter;
 

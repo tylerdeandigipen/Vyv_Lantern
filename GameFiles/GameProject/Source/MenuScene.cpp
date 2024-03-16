@@ -71,6 +71,8 @@ Engine::EngineCode MenuScene::Init()
 {
     Inputs::GetInstance()->SetWindow(MenuWindow);
 
+    cheatScanlines();
+
     //exporttests
     json ignore{ {"isAnimated", false}};
     Beginbutton = new Entity("Object", "./Assets/PPM/Begin.ppm", ignore);
@@ -110,7 +112,7 @@ Engine::EngineCode MenuScene::Init()
     MenuLaser1->Direction = Vector2::Normalize(Vector2(-1.0f, 0.0f));
     */
     Color tempColor{ 141,141,141,255 };
-    int numTestDust = 120;
+    int numTestDust = 140;
     Vector2 tempRandNum;
     for (int i = 0; i < numTestDust; i++)
     {
@@ -124,13 +126,19 @@ Engine::EngineCode MenuScene::Init()
 
     //AudioManager.PlayMusic("forest");
 
-    FontSystem fontSystem;
 
-    fontSystem.init("Font/MouldyCheeseRegular-WyMWG.ttf", 10);
-
-    Engine::GetInstance()->SetPause(false);
     return Engine::NothingBad;
 }
+
+
+void MenuScene::cheatScanlines()
+{
+    if (MenuPixelRender->doScanLines == false)
+        MenuPixelRender->doScanLines = true;
+    else
+        MenuPixelRender->doScanLines = false;
+}
+
 
 bool MenuScene::IsMouseOverBeginingButton()
 {
@@ -202,10 +210,6 @@ void MenuScene::Update(float dt)
     if (CheckGameScenes() || CheckRestart())
         return;
 
-    //eventally have player handle these lights
-    MenuPixelRender->lightSource[1].position = MenuPixelRender->animatedObjects[0][0]->position + Vector2{ 3,3 };
-    MenuPixelRender->lightSource[0].position = MenuPixelRender->animatedObjects[0][0]->position + Vector2{ 3,3 };
-
     Inputs* inputHandler = Inputs::GetInstance();
     AudioManager.Update();
     inputHandler->handleInput();
@@ -226,21 +230,6 @@ void MenuScene::Update(float dt)
         HandleExit();
     }
 
-    if (LevelBuilder::GetWinState())
-    {
-        if (dt != 0)
-        {
-            MenuPixelRender->menuBuffer = new ImageBuffer{ SCREEN_SIZE_X,SCREEN_SIZE_Y };
-            ImageBuffer* temp = new ImageBuffer{ "./Assets/PPM/TemporaryWinScreen.ppm" };
-            MenuPixelRender->menuBuffer->AddSprite(temp, Vector2{ -20,-5 });
-            Engine::GetInstance()->SetPause(true);
-        }
-        if (inputHandler->keyPressed(SDL_SCANCODE_RETURN))
-        {
-            SceneSystem::RestartScene();
-        }
-
-    }
     MenuPixelRender->Update(dt);
 }
 
@@ -251,9 +240,6 @@ void MenuScene::Render()
 
 Engine::EngineCode MenuScene::Exit()
 {
-    EntityContainer::GetInstance()->FreeAll();
-    LevelBuilder::SetWinState(false);
-    LevelBuilder::setDoor(false);
     Inputs::GetInstance()->InputKeyClear();
     MenuPixelRender->CleanRenderer();
     winState = false;
