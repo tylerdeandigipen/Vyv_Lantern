@@ -70,6 +70,7 @@ void Renderer::Update(float dt)
 
 	outputBuffer->ClearImageBuffer();
 	lightBuffer->ClearImageBuffer();
+	laserBuffer->ClearImageBuffer();
 
 	backgroundLayer->Blit(outputBuffer, -CameraOffsetX, -CameraOffsetY);
 	objectLayer->Blit(outputBuffer, -CameraOffsetX, -CameraOffsetY);
@@ -82,6 +83,10 @@ void Renderer::Update(float dt)
 		RenderLightingPass();
 		laserHandler.UpdateLasers();
 		RenderLasers();
+
+		//DrawLaserLines(3);
+		//BlurLasers(-1, 2);
+
 		BlurLights(-1, 2);
 		outputBuffer->DitherBuffer(outputBuffer, renderOnlyLights, isFullbright, minBrightness, lightR, lightG, lightB);
 	}
@@ -152,12 +157,11 @@ void Renderer::Update(float dt)
 
 void Renderer::RenderToOutbuffer()
 {
-	Color black{ 0,0,0,255 };
 	const int xSize = (int)outputBuffer->size.x;
 	const int ySize = (int)outputBuffer->size.y;
 	if (renderWallHitboxes != true)
 	{
-#pragma omp parallel for collapse(2) shared(black)
+#pragma omp parallel for collapse(2)
 		for (int x = 0; x < xSize; ++x)
 		{
 			for (int y = 0; y < ySize; ++y)
@@ -177,7 +181,7 @@ void Renderer::RenderToOutbuffer()
 				}
 				else if (renderNormalMap == true)
 				{
-					DestPixel = normalBuffer->SampleColor(x + (int)CameraP.x, y + (int)CameraP.y);
+					DestPixel = normalBuffer->SampleColor(x + CameraP.x, y + CameraP.y);
 				}
 			}
 		}
@@ -672,6 +676,24 @@ void Renderer::RenderLasers()
 	}
 }
 
+void Renderer::DrawLaserLines(int thickness)
+{
+	float thicknessOver2 = (thickness / 2);
+	for (int i = 0; i < numLasers; i++)
+	{
+		for (int j = 0; j < thickness; j++)
+		{
+			if ((int)laserPoints1[i].x - (int)laserPoints2[i].x == 0)
+			{
+				DrawLine(Vector2((int)laserPoints1[i].x + j - thicknessOver2, (int)laserPoints1[i].y), Vector2((int)laserPoints2[i].x + j - thicknessOver2, (int)laserPoints2[i].y), laserColor[i], laserBuffer);
+			}
+			else if ((int)laserPoints1[i].y - (int)laserPoints2[i].y == 0)
+			{
+				DrawLine(Vector2((int)laserPoints1[i].x, (int)laserPoints1[i].y + j - thicknessOver2), Vector2((int)laserPoints2[i].x, (int)laserPoints2[i].y + j - thicknessOver2), laserColor[i], laserBuffer);
+			}
+		}
+	}
+}
 
 #endif
 
@@ -899,6 +921,7 @@ Renderer::Renderer() : objects{ NULL }
 {
 	outputBuffer = new ImageBuffer{ SCREEN_SIZE_X ,SCREEN_SIZE_Y };
 	lightBuffer = new ImageBuffer{ SCREEN_SIZE_X ,SCREEN_SIZE_Y };
+	laserBuffer = new ImageBuffer{ SCREEN_SIZE_X ,SCREEN_SIZE_Y };
 	shadowCasterBuffer = new ImageBuffer{ SCREEN_SIZE_X ,SCREEN_SIZE_Y };
 	particleManager = new ParticleManager;
 	faceIndex = -1;
@@ -1241,6 +1264,70 @@ void Renderer::BlurLights(int blurRangeLow, int blurRangeHigh)
 	}
 }
 
+void Renderer::BlurLasers(int blurRangeLow, int blurRangeHigh)
+{
+	const int xSize = (int)laserBuffer->size.x;
+	const int ySize = (int)laserBuffer->size.y;
+
+	int count;
+	float r = 0;
+	float g = 0;
+	float b = 0;
+	if (doBlur)
+	{
+#pragma omp parallel for collapse(2) private(count, r, g, b)
+		for (int x = 0; x < xSize; ++x)
+		{
+			for (int y = 0; y < ySize; ++y)
+			{
+				r = 0;
+				g = 0;
+				b = 0;
+				count = 0;
+#pragma omp parallel for collapse(2) shared(count,r,g,b)
+				for (int w = blurRangeLow; w < blurRangeHigh; ++w)
+				{
+					for (int h = blurRangeLow; h < blurRangeHigh; ++h)
+					{
+						if (x + w < SCREEN_SIZE_X && y + h < SCREEN_SIZE_Y && x + w >= 0 && y + h >= 0)
+						{
+							Color& curPixel = laserBuffer->SampleColor(x + w, y + h);
+							r += curPixel.r;
+							g += curPixel.g;
+							b += curPixel.b;
+							count += 1;
+						}
+					}
+				}
+				r /= count;
+				g /= count;
+				b /= count;
+
+				lightBuffer->SampleColor(x, y) = Color(r, g, b, 255);
+			}
+		}
+	}
+	else
+	{
+#pragma omp parallel for collapse(2) private(count, r, g, b)
+		for (int x = 0; x < xSize; ++x)
+		{
+			for (int y = 0; y < ySize; ++y)
+			{
+				lightBuffer->SampleColor(x, y) = laserBuffer->SampleColor(x, y);
+			}
+		}
+	}
+#pragma omp parallel for collapse(2) private(count, r, g, b)
+	for (int x = 0; x < xSize; ++x)
+	{
+		for (int y = 0; y < ySize; ++y)
+		{
+			laserBuffer->SampleColor(x, y) = lightBuffer->SampleColor(x, y);
+		}
+	}
+}
+
 #endif
 
 #ifndef Cleanup_Functions
@@ -1257,10 +1344,7 @@ Renderer::~Renderer(void)
 	delete lightBuffer;
 	delete particleManager;
 	delete shadowCasterBuffer;
-
-	//delete normalBufferPostCam;
-	//delete fogBuffer;
-	//delete fogBufferPostCam;
+	delete laserBuffer;
 
 	if (menuBuffer != NULL)
 	{
@@ -1308,6 +1392,7 @@ void Renderer::CleanRenderer()
 	foregroundLayer->ClearImageBuffer();
 	normalBuffer->ClearImageBuffer();
 	lightBuffer->ClearImageBuffer();
+	laserBuffer->ClearImageBuffer();
 
 	laserHandler.Clear();
 
@@ -1466,7 +1551,7 @@ void Renderer::ResizeBuffers()
 
 #ifndef Debug_Functions
 
-void Renderer::DrawLine(Vector2 P0, Vector2 P1, const Color& LineColor)
+void Renderer::DrawLine(Vector2 P0, Vector2 P1, const Color& LineColor, ImageBuffer* buffer)
 {
 	int MinX = (int)min(P0.x, P1.x);
 	int MinY = (int)min(P0.y, P1.y);
@@ -1504,7 +1589,7 @@ void Renderer::DrawLine(Vector2 P0, Vector2 P1, const Color& LineColor)
 			float d = fabsf(Vector2::DotProduct(N, PixelD));
 			if (d <= 0.5f)
 			{
-				Color& DestPixel = DebugBuffer->SampleColor(PixelX, PixelY);
+				Color& DestPixel = buffer->SampleColor(PixelX, PixelY);
 				DestPixel = LineColor;
 			}
 		}

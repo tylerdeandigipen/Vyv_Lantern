@@ -192,6 +192,14 @@ Color& Color::operator -=(Color const& rhs)& {
 	b = (uint8_t)clamp((float)(b - rhs.b), 0.0f, 255.0f);
 	return *this;
 };
+
+Color& Color::operator /=(const float rhs) {
+	assert(this != NULL);
+	r = (uint8_t)clamp(r / rhs, 0, 255);
+	g = (uint8_t)clamp(g / rhs, 0, 255);
+	b = (uint8_t)clamp(b / rhs, 0, 255);
+	return *this;
+};
 Color Color::operator -(const Color& rhs) {
 	assert(this != NULL);
 	Color result;

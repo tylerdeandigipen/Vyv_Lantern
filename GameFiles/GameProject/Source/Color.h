@@ -39,6 +39,7 @@ public:
 	Color operator *(const Color& rhs);
 	Color operator *(const float rhs);
 	Color operator /(const float rhs);
+	Color& operator /=(const float rhs);
 
 	uint8_t r = 0;
 	uint8_t g = 0;

@@ -43,7 +43,7 @@ public:
 	bool doFog = false;
 	Vector2 fogMoveDir{ 0.08f, 0.01f };
 	float fogOpacity = 5;
-	float minBrightness = 23;
+	float minBrightness = 34;
 
 	//Debug Draw Toggles
 	bool isFullbright = false;
@@ -65,6 +65,7 @@ public:
 	void RenderParticles();
 	void RenderFog();
 	void RenderLasers();
+	void DrawLaserLines(int thickness);
 
 	//Animation Functions
 	void UpdateAnimations(float dt);
@@ -95,6 +96,7 @@ public:
 	int CheckLineForObject(int x1, int y1, int x2, int y2);
 	gfxVector2 LaserCheckLineForObject(Vector2 pos1, Vector2 pos2);
 	void BlurLights(int blurRangeLow, int blurRangeHigh);
+	void BlurLasers(int blurRangeLow, int blurRangeHigh);
 	void ExpandTileMapInDirection(Vector2 direction, int distance);
 
 	auto GetTileCount() -> unsigned int;
@@ -108,7 +110,7 @@ public:
 	void ResizeBuffers();
 
 	//Debug Functions
-	void DrawLine(Vector2 P0, Vector2 P1, const Color& LineColor);
+	void DrawLine(Vector2 P0, Vector2 P1, const Color& LineColor, ImageBuffer* buffer = NULL);
 	void RenderWallCollidersToDebugBuffer();
 
 	//Output Buffer
@@ -122,9 +124,9 @@ public:
 
 	//Visual Effect Buffers
 	ImageBuffer* lightBuffer = NULL;
+	ImageBuffer* laserBuffer = NULL;
 	ImageBuffer* shadowCasterBuffer = NULL;
 	ImageBuffer* normalBuffer = NULL;
-
 	//ImageBuffer* fogBuffer = NULL;
 
 	//Object References
