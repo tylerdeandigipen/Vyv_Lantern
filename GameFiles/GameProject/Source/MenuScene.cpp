@@ -52,6 +52,8 @@ SDL_Window* MenuWindow;
 Scene* MenuSceneinstance = NULL;
 
 Entity* Beginbutton;
+Entity* Creditbutton;
+Entity* optionbutton;
 Entity* ExitButton;
 
 MenuScene::MenuScene() : Scene("Menutest")
@@ -75,24 +77,41 @@ Engine::EngineCode MenuScene::Init()
 
     //exporttests
     json ignore{ {"isAnimated", false}};
+
     Beginbutton = new Entity("Object", "./Assets/PPM/Begin.ppm", ignore);
     ExitButton = new Entity("Object", "./Assets/PPM/quit.ppm", ignore);
+    Creditbutton = new Entity("Object", "./Assets/PPM/credit.ppm", ignore);
+    optionbutton = new Entity("Object", "./Assets/PPM/option.ppm", ignore);
+
+
 
     Renderer::GetInstance()->isFullbright = true;
 
     Beginbutton->CreateImage("./Assets/PPM/Begin.ppm");
     ExitButton->CreateImage("./Assets/PPM/quit.ppm");
+    Creditbutton->CreateImage("./Assets/PPM/credit.ppm");
+    optionbutton->CreateImage("./Assets/PPM/option.ppm");
 
     Transform* BPOS = new Transform;
-    BPOS->SetTranslation(gfxVector2{70,25});
+    BPOS->SetTranslation(gfxVector2{92,25});
     Beginbutton->Add(BPOS);
     Beginbutton->AddToRenderer(MenuPixelRender, "");
 
+    
+    Transform* crepos = new Transform;
+    crepos->SetTranslation(gfxVector2{ 92,50 });
+    Creditbutton->Add(crepos);
+    Creditbutton->AddToRenderer(MenuPixelRender, "");
+
+    Transform* optpos = new Transform;
+    optpos->SetTranslation(gfxVector2{ 92,75 });
+    optionbutton->Add(optpos);
+    optionbutton->AddToRenderer(MenuPixelRender, "");
+
     Transform* BBPOS = new Transform;
-    BBPOS->SetTranslation(gfxVector2{ 70,65 });
+    BBPOS->SetTranslation(gfxVector2{ 92,100 });
     ExitButton->Add(BBPOS);
     ExitButton->AddToRenderer(MenuPixelRender, "");
-    
 
     // Create SDL Window
     MenuWindow = PlatformSystem::GetInstance()->GetWindowHandle();
@@ -146,10 +165,10 @@ bool MenuScene::IsMouseOverBeginingButton()
     int mouseY = Inputs::GetInstance()->getMouseY();
 
 
-    Vector2 position = {720,255};
+    Vector2 position = {700,215};
 
-    int width = 100;
-    int high = 50;
+    int width = (250/2);
+    int high = (128/2);
 
 
     int LeftOfButton = position.x - width;
@@ -179,10 +198,10 @@ bool MenuScene::IsMouseOverExitButton()
     int mouseY = Inputs::GetInstance()->getMouseY();
 
 
-    Vector2 position = { 720,455 };
+    Vector2 position = { 700,690 };
 
-    int width = 100;
-    int high = 50;
+    int width = (250 / 2);
+    int high = (128 / 2);
 
 
     int LeftOfButton = position.x - width;
@@ -205,6 +224,71 @@ void MenuScene::HandleExit()
     }
 }
 
+
+bool MenuScene::IsMouseOverCreditButton()
+{
+    int mouseX = Inputs::GetInstance()->getMouseX();
+    int mouseY = Inputs::GetInstance()->getMouseY();
+
+
+    Vector2 position = { 700,375 };
+
+    int width = (250 / 2);
+    int high = (128 / 2);
+
+
+    int LeftOfButton = position.x - width;
+    int TopOfButton = position.y - high;
+    int RightOfButton = position.x + width;
+    int ButtomOfButton = position.y + high;
+
+    return (mouseX >= LeftOfButton && mouseX <= RightOfButton &&
+        mouseY >= TopOfButton && mouseY <= ButtomOfButton);
+}
+
+void MenuScene::HandleCredit()
+{
+    if (Inputs::GetInstance()->mouseButtonPressed(SDL_BUTTON_LEFT))
+    {
+        //do something
+    }
+}
+
+
+bool MenuScene::IsMouseOverOptionButton()
+{
+    int mouseX = Inputs::GetInstance()->getMouseX();
+    int mouseY = Inputs::GetInstance()->getMouseY();
+
+
+    Vector2 position = { 700,520 };
+
+    int width = (250 / 2);
+    int high = (128 / 2);
+
+
+    int LeftOfButton = position.x - width;
+    int TopOfButton = position.y - high;
+    int RightOfButton = position.x + width;
+    int ButtomOfButton = position.y + high;
+
+    return (mouseX >= LeftOfButton && mouseX <= RightOfButton &&
+        mouseY >= TopOfButton && mouseY <= ButtomOfButton);
+}
+
+void MenuScene::HandleOption()
+{
+    if (Inputs::GetInstance()->mouseButtonPressed(SDL_BUTTON_LEFT))
+    {
+        //do something
+    }
+}
+
+
+
+
+
+
 void MenuScene::Update(float dt)
 {
     if (CheckGameScenes() || CheckRestart())
@@ -218,6 +302,9 @@ void MenuScene::Update(float dt)
     MenuPixelRender->RenderMenu();
     Beginbutton->Update(dt);
     ExitButton->Update(dt);
+    Creditbutton->Update(dt);
+    optionbutton->Update(dt);
+
 
     if (IsMouseOverBeginingButton())
     {
@@ -225,10 +312,22 @@ void MenuScene::Update(float dt)
         //Renderer::GetInstance()->isFullbright = false;
 
     }
+    if (IsMouseOverCreditButton())
+    {
+        HandleCredit();
+    }
+    if (IsMouseOverOptionButton())
+    {
+        HandleOption();
+    }
     if (IsMouseOverExitButton())
     {
         HandleExit();
     }
+
+
+
+
 
     MenuPixelRender->Update(dt);
 }

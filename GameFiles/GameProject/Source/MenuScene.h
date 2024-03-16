@@ -34,8 +34,16 @@ public:
 	bool winState = false;
 	bool IsMouseOverBeginingButton();
 	bool IsMouseOverExitButton();
+	bool IsMouseOverCreditButton();
+	bool IsMouseOverOptionButton();
+
 	void HandleBegin();
 	void HandleExit();
+	void HandleCredit();
+	void HandleOption();
+
+
+
 	void cheatScanlines();
 
 private:
