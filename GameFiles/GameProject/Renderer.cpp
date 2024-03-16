@@ -85,8 +85,23 @@ void Renderer::Update(float dt)
 		laserHandler.UpdateLasers();
 		RenderLasers();
 
-		//DrawLaserLines(3);
-		//BlurLasers(-1, 2);
+		/* this sucks if this is still here after spring break delete it
+		DrawLaserLines(7);
+		BlurLasers(-1, 2);
+		const int xSize = (int)laserBuffer->size.x;
+		const int ySize = (int)laserBuffer->size.y;
+		#pragma omp parallel for collapse(2)
+		for (int x = 0; x < xSize; ++x)
+		{
+			for (int y = 0; y < ySize; ++y)
+			{
+				Color temp = laserBuffer->SampleColor(x, y);
+				lightR[x][y] += ((float)temp.r / 255) * 2;
+				lightG[x][y] += ((float)temp.g / 255) * 2;
+				lightB[x][y] += ((float)temp.b / 255) * 2;
+			}
+		}
+		*/
 
 		BlurLights(-1, 2);
 		outputBuffer->DitherBuffer(outputBuffer, renderOnlyLights, isFullbright, minBrightness, lightR, lightG, lightB);
@@ -182,7 +197,7 @@ void Renderer::RenderToOutbuffer()
 				}
 				else if (renderNormalMap == true)
 				{
-					DestPixel = normalBuffer->SampleColor(x + CameraP.x, y + CameraP.y);
+					DestPixel = laserBuffer->SampleColor(x, y);
 				}
 			}
 		}
