@@ -59,8 +59,9 @@ void Renderer::Update(float dt)
 	omp_set_num_threads(maxThreadsAllowed);
 
 	//fixes janky cam movements
-	CameraP.x = (int)nextCamPos.x;
-	CameraP.y = (int)nextCamPos.y;
+	
+	CameraP.x = std::truncf(nextCamPos.x);
+	CameraP.y = std::truncf(nextCamPos.y);
 
 	UpdateObjects(dt);
 
@@ -94,7 +95,7 @@ void Renderer::Update(float dt)
 
 	if (DebugBuffer != NULL)
 	{
-		DebugBuffer->Blit(outputBuffer, -GetCameraPosition().x, -GetCameraPosition().y);
+		DebugBuffer->Blit(outputBuffer, -(int)GetCameraPosition().x, -(int)GetCameraPosition().y);
 		DebugBuffer->ClearImageBuffer();
 	}
 	float AverageFrameRate = FrameRate::CalculateAverageFrameRate(PreviousFrameLengths, _countof(PreviousFrameLengths), (float)currentTime, (float)PreviousFrameBeginTime);
@@ -203,7 +204,7 @@ void Renderer::RenderLightingPass()
 	const int xSize = (int)outputBuffer->size.x;
 	const int ySize = (int)outputBuffer->size.y;
 
-	float lightMultiplier = 0;
+	float lightMultiplier = 0.0f;
 
 	float IntensityR = 0.0f;
 	float IntensityG = 0.0f;
@@ -224,7 +225,7 @@ void Renderer::RenderLightingPass()
 					if (CalculateIfPixelIsLit(x, y, i) == true || doFog == true)
 					{
 						Light* LightSource = lightSource + i;
-						float lightMultiplier = FindPixelLuminosity((float)x, (float)y, LightSource);
+						lightMultiplier = FindPixelLuminosity((float)x, (float)y, LightSource);
 
 						if (lightMultiplier != 0)
 						{
