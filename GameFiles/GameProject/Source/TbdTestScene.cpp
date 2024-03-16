@@ -57,8 +57,9 @@ TbdTestScene::TbdTestScene() : Scene("tbdtest")
 
 Engine::EngineCode TbdTestScene::Load()
 {
-	//AudioManager.LoadMusicFromJSON("./Data/music.json");
-	//AudioManager.LoadSFXFromJSON("./Data/SFX.json");
+	AudioManager.LoadMusicFromJSON("./Data/music.json");//line is good
+	AudioManager.LoadSFXFromJSON("./Data/SFX.json");// line is goodplay
+
 
 	if (entityManagerTBD->InitializeProperties("./Data/GameObjects/ObjectList.json"))
 		std::cout << "Property load success!\n";
@@ -101,9 +102,9 @@ Engine::EngineCode TbdTestScene::Init()
 		TbdPixelRenderer->particleManager->AddParticle(testParticle);
 	}
 
-	//AudioManager.PlayMusic("drips");
+	AudioManager.PlayMusic("drips"); //line is good
 
-	//AudioManager.PlayMusic("forest");
+	AudioManager.PlayMusic("forest"); //line is good
 
 	FontSystem fontSystem;
 
@@ -234,6 +235,8 @@ void TbdTestScene::handleCheatCodes()
 	{
 		TbdCanPlaceLight = 1;
 	}
+
+
 
 	if (inputHandler->keyPressed(SDL_SCANCODE_GRAVE) && TbdCanToggleFullBright == true)
 	{
@@ -442,6 +445,7 @@ void TbdTestScene::Update(float dt)
 	if (CheckGameScenes() || CheckRestart())
 		return;
 
+
 	//eventally have player handle these lights
 	TbdPixelRenderer->lightSource[1].position = TbdPixelRenderer->animatedObjects[0][0]->position + Vector2{ 3,3 };
 	TbdPixelRenderer->lightSource[0].position = TbdPixelRenderer->animatedObjects[0][0]->position + Vector2{ 3,3 };
@@ -450,6 +454,14 @@ void TbdTestScene::Update(float dt)
 	AudioManager.Update();
 	inputHandler->handleInput();
 	bool check = winState;
+
+	if (inputHandler->keyPressed(SDL_SCANCODE_M))
+	{
+		AudioManager.StopMusic();
+		AudioManager.StopSFX();
+		AudioManager.StopVoice();
+	}
+
 	if (inputHandler->keyPressed(SDL_SCANCODE_Y))
 	{
 		winState = (check ? false : true);

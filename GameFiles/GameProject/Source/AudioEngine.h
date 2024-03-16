@@ -31,11 +31,10 @@ private:
     _audioManager(void);
     ~_audioManager(void);
     FMOD::System* fmodSystem = NULL;
-    FMOD::Channel* SFXchannel = nullptr;
-    FMOD::Channel* musicChannel = nullptr;
-    FMOD::Channel* voiceChannel = nullptr;
-    FMOD::ChannelGroup* channelGroup = nullptr;
+    FMOD::ChannelGroup* SFXChannelGroup = nullptr;
     FMOD::ChannelGroup* musicChannelGroup = nullptr;
+    FMOD::ChannelGroup* voiceChannelGroup = nullptr;
+    FMOD::ChannelGroup* channelGroup = nullptr;
     std::map<std::string, FMOD::Sound*> soundDatabase;
     std::map<std::string, FMOD::Sound*> musicDatabase;
     std::map<std::string, FMOD::Sound*> voiceDatabase;
@@ -46,9 +45,9 @@ private:
     ----------------------------------------------------------------------------- */
     public:
         static _audioManager& Instance(void);
-        FMOD::Channel* GetMusicChannel(void);
-        FMOD::Channel* GetAudioChannel(void);
-        FMOD::Channel* GetVoiceChannel(void);
+        FMOD::ChannelGroup* GetMusicChannel(void);
+        FMOD::ChannelGroup* GetAudioChannel(void);
+        FMOD::ChannelGroup* GetVoiceChannel(void);
         void PlaySFX(std::string audiClip);
         void PlayMusic(std::string musicTrack);
         void PlayVoice(std::string voiceClip);

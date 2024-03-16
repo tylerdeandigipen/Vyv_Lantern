@@ -46,18 +46,27 @@
         *   Create the channel group
         ----------------------------------------------------------------------------- */
         fmodSystem->createChannelGroup("inGameSoundEffects", &channelGroup);
+        fmodSystem->createChannelGroup("inGameSoundEffects", &SFXChannelGroup);
+        fmodSystem->createChannelGroup("inGameSoundEffects", &musicChannelGroup);
+        fmodSystem->createChannelGroup("inGameSoundEffects", &voiceChannelGroup);//this one i don't think is going to be used
+        
+
+
 
         /*
         *   Set music channel group
         ----------------------------------------------------------------------------- */
-        SFXchannel->setChannelGroup(channelGroup);
-        musicChannel->setChannelGroup(channelGroup);
-        voiceChannel->setChannelGroup(channelGroup);
+
+        //This logically doesn't work
+        //SFXchannel->setChannelGroup(channelGroup);
+        //musicChannel->setChannelGroup(channelGroup);
+        //voiceChannel->setChannelGroup(channelGroup);
+        
 
         /*
         *   Set a callback on the channel.
         ----------------------------------------------------------------------------- */
-        musicChannel->setCallback(&channelGroupCallback);
+        //musicChannel->setCallback(&channelGroupCallback);
 
         for (int i = 0; i < MAX_MUSIC_TRACKS; i++) {
             fmodSystem->playSound(nullptr, musicChannelGroup, true, &musicChannels[i]); // Create music channels
@@ -92,7 +101,7 @@
             audioClip = search->second;
 
         // Play the sound.
-        fmodSystem->playSound(audioClip, channelGroup, false, &SFXchannel);
+        fmodSystem->playSound(audioClip, SFXChannelGroup, false, nullptr);
     }
 
     /*!				void _audioManager::PlayMusic(string musicTrack)
@@ -111,14 +120,10 @@
 
         // Check if the audioClip is valid.
         if (audioClip) {
-            // Create a new channel for this music track.
-            FMOD::Channel* musicChannel = nullptr;
-            fmodSystem->playSound(audioClip, musicChannelGroup, false, &musicChannel);
+
+            fmodSystem->playSound(audioClip, musicChannelGroup, false, nullptr);
 
             // Handle channel-specific settings (fade, etc.) here if needed.
-
-            // Set the channel group and play the music.
-            musicChannel->setChannelGroup(musicChannelGroup);
         }
     }
 
@@ -139,7 +144,7 @@
             audioClip = search->second;
 
         // Play the sound.
-        fmodSystem->playSound(audioClip, channelGroup, false, &voiceChannel);
+        fmodSystem->playSound(audioClip, voiceChannelGroup, false, nullptr);
     }
 
     /*!				void _audioManager::StopMusic(void)
@@ -154,14 +159,13 @@
         unsigned long long dspclock;
         FMOD::Sound* snd;
         int rate;
-        musicChannel->setPaused(true);
-        musicChannel->getCurrentSound(&snd);
-        musicChannel->getDSPClock(0, &dspclock);
-        fmodSystem->getSoftwareFormat(&rate, 0, 0);
-        musicChannel->addFadePoint(dspclock, 1.0f);
-        musicChannel->addFadePoint(dspclock + rate, 0.0f);
-        musicChannel->setDelay(0, dspclock + rate, true);
-        musicChannel->setPaused(false);
+        musicChannelGroup->setPaused(true);
+        //musicChannel->getDSPClock(0, &dspclock);
+        //fmodSystem->getSoftwareFormat(&rate, 0, 0);
+        //musicChannel->addFadePoint(dspclock, 1.0f);
+        //musicChannel->addFadePoint(dspclock + rate, 0.0f);
+        //musicChannel->setDelay(0, dspclock + rate, true);
+        //musicChannel->setPaused(true);
     }
 
     /*!				void _audioManager::StopSFX(void)
@@ -173,7 +177,7 @@
     void _audioManager::StopSFX(void)
     {
         // stop play the sound.
-        SFXchannel->stop();
+        SFXChannelGroup->stop();
     }
 
     /*!				void _audioManager::StopVoice(void)
@@ -185,7 +189,7 @@
     void _audioManager::StopVoice(void)
     {
         // stop play the sound.
-        voiceChannel->stop();
+        voiceChannelGroup->stop();
     }
 
     /*!				void _audioManager::SetAudioVolume(float volume)
@@ -196,9 +200,9 @@
     */
     void _audioManager::SetAudioVolume(float volume)
     {
-        SFXchannel->setPaused(true);
-        SFXchannel->setVolume(volume);
-        SFXchannel->setPaused(false);
+        SFXChannelGroup->setPaused(true);
+        SFXChannelGroup->setVolume(volume);
+        SFXChannelGroup->setPaused(false);
     }
 
     /*!				void _audioManager::SetMusicVolume(float volume)
@@ -209,23 +213,23 @@
     */
     void _audioManager::SetMusicVolume(float volume)
     {
-        musicChannel->setPaused(true);
-        musicChannel->setVolume(volume);
-        musicChannel->setPaused(false);
+        musicChannelGroup->setPaused(true);
+        musicChannelGroup->setVolume(volume);
+        musicChannelGroup->setPaused(false);
     }
 
     void _audioManager::SetVoiceVolume(float volume)
     {
-        voiceChannel->setPaused(true);
-        voiceChannel->setVolume(volume);
-        voiceChannel->setPaused(false);
+        voiceChannelGroup->setPaused(true);
+        voiceChannelGroup->setVolume(volume);
+        voiceChannelGroup->setPaused(false);
     }
 
     void _audioManager::IncreaseMusicVolume()
     {
         float volume;
 
-        musicChannel->getVolume(&volume);
+        musicChannelGroup->getVolume(&volume);
         volume += 0.1f;
         SetMusicVolume(volume);
     }
@@ -234,7 +238,7 @@
     {
         float volume;
 
-        SFXchannel->getVolume(&volume);
+        SFXChannelGroup->getVolume(&volume);
         volume += 0.1f;
         SetAudioVolume(volume);
     }
@@ -243,7 +247,7 @@
     {
         float volume;
 
-        voiceChannel->getVolume(&volume);
+        voiceChannelGroup->getVolume(&volume);
         volume += 0.1f;
         SetVoiceVolume(volume);
     }
@@ -252,7 +256,7 @@
     {
         float volume;
 
-        musicChannel->getVolume(&volume);
+        musicChannelGroup->getVolume(&volume);
         volume -= 0.1f;
         SetMusicVolume(volume);
     }
@@ -261,7 +265,7 @@
     {
         float volume;
 
-        SFXchannel->getVolume(&volume);
+        SFXChannelGroup->getVolume(&volume);
         volume -= 0.1f;
         SetAudioVolume(volume);
     }
@@ -270,7 +274,7 @@
     {
         float volume;
 
-        voiceChannel->getVolume(&volume);
+        voiceChannelGroup->getVolume(&volume);
         volume -= 0.1f;
         SetVoiceVolume(volume);
     }
@@ -479,34 +483,34 @@
     /*
        *   get channel
        ----------------------------------------------------------------------------- */
-    FMOD::Channel* _audioManager::GetMusicChannel(void)
+    FMOD::ChannelGroup* _audioManager::GetMusicChannel(void)
     {
-        return musicChannel;
+        return musicChannelGroup;
     }
 
-    FMOD::Channel* _audioManager::GetAudioChannel()
+    FMOD::ChannelGroup* _audioManager::GetAudioChannel()
     {
-        return SFXchannel;
+        return SFXChannelGroup;
     }
 
-    FMOD::Channel* _audioManager::GetVoiceChannel()
+    FMOD::ChannelGroup* _audioManager::GetVoiceChannel()
     {
-        return voiceChannel;
+        return voiceChannelGroup;
     }
 
-    FMOD_RESULT F_CALLBACK channelGroupCallback(FMOD_CHANNELCONTROL* channelControl,
-        FMOD_CHANNELCONTROL_TYPE controlType, FMOD_CHANNELCONTROL_CALLBACK_TYPE callbackType,
-        void* commandData1, void* commandData2)
-    {
-        if (controlType == FMOD_CHANNELCONTROL_CHANNEL
-            && AudioManager.GetMusicChannel() == (FMOD::Channel*)channelControl
-            && callbackType == FMOD_CHANNELCONTROL_CALLBACK_END)
-        {
-            // music ended
-        }
+    //FMOD_RESULT F_CALLBACK channelGroupCallback(FMOD_CHANNELCONTROL* channelControl,
+    //    FMOD_CHANNELCONTROL_TYPE controlType, FMOD_CHANNELCONTROL_CALLBACK_TYPE callbackType,
+    //    void* commandData1, void* commandData2)
+    //{
+    //    if (controlType == FMOD_CHANNELCONTROL_CHANNEL
+    //        && AudioManager.GetMusicChannel() == (FMOD::Channel*)channelControl
+    //        && callbackType == FMOD_CHANNELCONTROL_CALLBACK_END)
+    //    {
+    //        // music ended
+    //    }
 
-        commandData1;
-        commandData2;
+    //    commandData1;
+    //    commandData2;
 
-        return FMOD_OK;
-    }
+    //    return FMOD_OK;
+    //}
