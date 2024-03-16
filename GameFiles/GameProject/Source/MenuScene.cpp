@@ -52,7 +52,7 @@ SDL_Window* MenuWindow;
 Scene* MenuSceneinstance = NULL;
 
 Entity* Beginbutton;
-
+Entity* ExitButton;
 
 MenuScene::MenuScene() : Scene("Menutest")
 {
@@ -72,20 +72,32 @@ Engine::EngineCode MenuScene::Init()
     Inputs::GetInstance()->SetWindow(MenuWindow);
 
     //exporttests
+    json ignore{ {"isAnimated", false}};
+    Beginbutton = new Entity("Object", "./Assets/PPM/Begin.ppm", ignore);
+    ExitButton = new Entity("Object", "./Assets/PPM/quit.ppm", ignore);
 
-    Beginbutton = new Entity("object", "./Assets/PPM/Mirror.ppm");
+    Renderer::GetInstance()->isFullbright = true;
 
+    Beginbutton->CreateImage("./Assets/PPM/Begin.ppm");
+    ExitButton->CreateImage("./Assets/PPM/quit.ppm");
 
-    Beginbutton->CreateImage("./Assets/PPM/Mirror.ppm");
+    Transform* BPOS = new Transform;
+    BPOS->SetTranslation(gfxVector2{70,25});
+    Beginbutton->Add(BPOS);
+    Beginbutton->AddToRenderer(MenuPixelRender, "");
 
-    Transform BPOS;
-    BPOS.SetTranslation(gfxVector2{720,255});
-    Beginbutton->Add(&BPOS);
-
+    Transform* BBPOS = new Transform;
+    BBPOS->SetTranslation(gfxVector2{ 70,65 });
+    ExitButton->Add(BBPOS);
+    ExitButton->AddToRenderer(MenuPixelRender, "");
+    
 
     // Create SDL Window
     MenuWindow = PlatformSystem::GetInstance()->GetWindowHandle();
     MenuPixelRender->window = MenuWindow;
+
+
+
 
     //initialize level data
     //EntityContainer::GetInstance()->ReadEntities();
@@ -200,12 +212,14 @@ void MenuScene::Update(float dt)
     bool check = winState;
 
     MenuPixelRender->RenderMenu();
-
-    Beginbutton->Render();
+    Beginbutton->Update(dt);
+    ExitButton->Update(dt);
 
     if (IsMouseOverBeginingButton())
     {
         HandleBegin();
+        //Renderer::GetInstance()->isFullbright = false;
+
     }
     if (IsMouseOverExitButton())
     {
