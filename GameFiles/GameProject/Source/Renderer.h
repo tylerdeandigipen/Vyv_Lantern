@@ -158,6 +158,7 @@ public:
 	Color laserColor[MAX_LASER_POINTS];
 	int numLasers = 0;
 	TBDLasers laserHandler; // handler for mirrors and lasers
+	const int GetNumLights() const { return numLights; };
 private:
 	Renderer();
 

@@ -11,6 +11,7 @@
 #include "FileIO.h"
 #include "Entity.h"
 #include "Renderer.h"
+#include "Transform.h"
 
 Light::Light(const Light& rhs) : Component(rhs)
 {
@@ -60,12 +61,25 @@ Component* Light::Clone() const
 void Light::Update(float dt)
 {
 	UNREFERENCED_PARAMETER(dt);
+	if (Parent())
+	{
+		Transform* trans = Parent()->GetComponent<Transform>();
+		if (trans)
+		{
+			position = *trans->GetTranslation();
+			ImageBuffer* image = Parent()->GetImage();
+			position.x += image->size.x / 2;
+			position.y += image->size.y / 2;
+			Renderer::GetInstance()->lightSource[currentIndex].position = position;
+		}
+	}
 }
 
 void Light::Read(json jsonData)
 {
 	std::string file = jsonData["File"];
 	FileIO::GetInstance()->ReadLight(file, *this);
+	currentIndex = Renderer::GetInstance()->GetNumLights();
 	Renderer::GetInstance()->AddLight(*this);
 
 }

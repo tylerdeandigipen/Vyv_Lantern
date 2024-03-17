@@ -1330,12 +1330,12 @@ void LevelCreatorScene::AddMirrorEntity(Entity* entity)
 	json collider = { {"Type", "ColliderAABB"} };
 	json transform = { {"Type", "Transform"}, {"translation", { { "x", entity->Has(Transform)->GetTranslation()->x }, {"y", entity->Has(Transform)->GetTranslation()->y} } } };
 	json physics = { {"Type", "Physics"}, {"OldTranslation", { { "x", entity->Has(Transform)->GetTranslation()->x }, {"y", entity->Has(Transform)->GetTranslation()->y} } } };
-	BehaviorSwitch* entSwitch = dynamic_cast<BehaviorSwitch*>(entity->Has(Behavior));
+	BehaviorSwitch* entSwitch = entity->GetComponent<BehaviorSwitch>();
 	json bSwitch;
 	if (entSwitch && entSwitch->GetKey() >= 0)
 	{
 		bSwitch = { {"Type", "BehaviorSwitch"}, { "key", entSwitch->GetKey() },{"NumPositions", entSwitch->GetMaxCount() + 1} };
-		for (int i = 0; i < dynamic_cast<BehaviorSwitch*>(entity->Has(Behavior))->GetMaxCount() + 1; ++i)
+		for (int i = 0; i < entSwitch->GetMaxCount() + 1; ++i)
 		{
 			json pos = { {"x", std::to_string((*entSwitch)[i].x)}, {"y", std::to_string((*entSwitch)[i].y)} };
 			bSwitch["pos"].push_back(pos);

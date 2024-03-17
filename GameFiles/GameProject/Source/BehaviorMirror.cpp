@@ -24,6 +24,7 @@
 #include <iostream>
 #include "EntityContainer.h"
 #include "BehaviorSwitch.h"
+#include "FileIO.h"
 
 int BehaviorMirror::count = 1;
 int BehaviorMirror::maxCount = 4;
@@ -69,6 +70,7 @@ void BehaviorMirror::Init()
 {
     if (Parent())
     {
+        //FileIO::GetInstance()->ReadLight("");
         // Set collision handler for mirrors with lasers maybe??
         Collider* collider = Parent()->Has(Collider);
         if (Parent() && Parent()->Has(Transform)) 

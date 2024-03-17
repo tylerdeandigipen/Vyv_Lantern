@@ -29,7 +29,6 @@ class Light : public Component
 public:
 	Light();
 	Light(const Light &rhs);
-
 	Component* Clone() const override;
 	void Update(float dt) override;
 	void Read(json jsonData) override;
@@ -38,6 +37,7 @@ public:
 
 	gfxVector2 leftAnglePos;
 	gfxVector2 rightAnglePos;
+	int currentIndex;
 
 	enum light_source_type Type = LightSourceType_Point;
     float minAngle = 0;
