@@ -512,8 +512,8 @@ void LevelCreatorScene::ToolHandler()
 			LevelCreatorPixelRenderer->animatedObjects[0][0]->isCulled = false;
 
 			//remove this when the player behavior is fixed
-			LevelCreatorPixelRenderer->lightSource[1].position = LevelCreatorPixelRenderer->animatedObjects[0][0]->position + Vector2{ 3,3 };
-			LevelCreatorPixelRenderer->lightSource[0].position = LevelCreatorPixelRenderer->animatedObjects[0][0]->position + Vector2{ 3,3 };
+			//LevelCreatorPixelRenderer->lightSource[1].position = LevelCreatorPixelRenderer->animatedObjects[0][0]->position + Vector2{ 3,3 };
+			//LevelCreatorPixelRenderer->lightSource[0].position = LevelCreatorPixelRenderer->animatedObjects[0][0]->position + Vector2{ 3,3 };
 
 			Vector2 LightP = LevelCreatorPixelRenderer->lightSource[0].position;
 			Vector2 D = LightP - CursourP - LevelCreatorPixelRenderer->GetCameraPosition();
@@ -1349,6 +1349,12 @@ void LevelCreatorScene::AddMirrorEntity(Entity* entity)
 		bMirror = { {"Type", "BehaviorMirror"}, {"Direction", direction}, {"key", 0} }; // will add color if it comes up again but will not for now
 	}
 
+	json bLight;
+	Light* light = entity->GetComponent<Light>();
+	if (light)
+	{
+
+	}
 	components.push_back(collider);
 	components.push_back(transform);
 	components.push_back(physics);

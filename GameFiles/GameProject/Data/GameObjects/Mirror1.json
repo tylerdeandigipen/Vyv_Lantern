@@ -25,6 +25,10 @@
       },
       "Radius": 10.0,
       "key": 1
+    },
+    {
+      "Type": "Light",
+      "File": "./Data/Lights/MirrorLight.json"
     }
   ],
   "FilePath": "./Data/GameObjects/Mirror1.json",
