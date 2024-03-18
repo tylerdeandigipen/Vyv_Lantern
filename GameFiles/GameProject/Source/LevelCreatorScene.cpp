@@ -318,6 +318,10 @@ void LevelCreatorScene::ExportScene(std::string name)
 
 	for (auto it : tempEntities)
 	{
+		if (it->addKey.compare("Reciever") == 0)
+		{
+			it->addKey = "Receiver";
+		}
 		if (it && AddFunc.count(it->addKey))
 		{
 			current->AddFunc[it->addKey](it);
@@ -515,10 +519,10 @@ void LevelCreatorScene::ToolHandler()
 			//LevelCreatorPixelRenderer->lightSource[1].position = LevelCreatorPixelRenderer->animatedObjects[0][0]->position + Vector2{ 3,3 };
 			//LevelCreatorPixelRenderer->lightSource[0].position = LevelCreatorPixelRenderer->animatedObjects[0][0]->position + Vector2{ 3,3 };
 
-			Vector2 LightP = LevelCreatorPixelRenderer->lightSource[0].position;
+			Vector2 LightP = LevelCreatorPixelRenderer->lightSource[EntityContainer::GetInstance()->FindByName("Player")->GetComponent<Light>()->currentIndex].position;
 			Vector2 D = LightP - CursourP - LevelCreatorPixelRenderer->GetCameraPosition();
 			float Angle = atan2f(D.x, D.y) * (180.0f / 3.14f) + 180.0f;
-			LevelCreatorPixelRenderer->lightSource[0].angle = Angle;
+			LevelCreatorPixelRenderer->lightSource[EntityContainer::GetInstance()->FindByName("Player")->GetComponent<Light>()->currentIndex].angle = Angle;
 			return;
 		}
 
@@ -1241,7 +1245,7 @@ int LevelCreatorScene::CreateReceiverEntity()
 
 	Entity* temp = FileIO::GetInstance()->ReadEntity(filename);
 	temp->addKey = "Receiver"; // this is for the map holding functions and gives access to function for circle
-	temp->key = "Receiver" + std::to_string(emitterCount);
+	temp->key = "Receiver" + std::to_string(ReceiverCount);
 
 	//temp->SetFilePath("./Data/GameObjects/Receiver" + sceneName + std::to_string(emitterCount) + ".json");
 	tempEntities.push_back(temp);
@@ -1353,7 +1357,7 @@ void LevelCreatorScene::AddMirrorEntity(Entity* entity)
 	Light* light = entity->GetComponent<Light>();
 	if (light)
 	{
-
+		bLight = { {"Type", "Light"}, { "File", "./Data/Lights/MirrorLight.json" } };
 	}
 	components.push_back(collider);
 	components.push_back(transform);
@@ -1362,6 +1366,8 @@ void LevelCreatorScene::AddMirrorEntity(Entity* entity)
 		components.push_back(bSwitch);
 	if (entMirr)
 		components.push_back(bMirror);
+	if (light)
+		components.push_back(bLight);
 	mirrorData["Components"] = components;
 	mirrorData["FilePath"] = entity->GetFilePath();
 	mirrorData["Name"] = "Switch";

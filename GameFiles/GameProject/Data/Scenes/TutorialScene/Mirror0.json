@@ -39,6 +39,10 @@
                     "y": "164.000000"
                 }
             ]
+        },
+        {
+            "Type": "Light",
+            "File": "./Data/Lights/MirrorLight.json"
         }
     ],
   "FilePath": "./Data/Scenes/TutorialScene/Mirror0.json",
