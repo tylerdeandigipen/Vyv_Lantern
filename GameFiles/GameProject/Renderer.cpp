@@ -509,7 +509,7 @@ float laserSize = 2.15f;
 float laserWeight = 2;
 float laserAreaLightRange = 15;
 Color laserAreaLightColor{ 150,150,150,255 };
-float lightWeight = 1.4;
+float lightWeight = 1.4f;
 float laserThreshold = .52f;
 float lightMultiplier = 1.3f;
 void Renderer::RenderLasers()
@@ -555,7 +555,7 @@ void Renderer::RenderLasers()
 							//check distance from laser line
 							if (abs(y - laserPoints2[i].y) < laserAreaLightRange)
 							{
-								int inOutCount = CheckLineForObject(x, laserPoints2[i].y, x, y);
+								int inOutCount = CheckLineForObject(x, (int)laserPoints2[i].y, x, y);
 								bool isLit = false;
 								if (inOutCount <= 1)
 								{
@@ -588,9 +588,9 @@ void Renderer::RenderLasers()
 										lightB[x][y] = tempIntensityB * laserWeight;
 
 										Color& DestPixel = outputBuffer->SampleColor(x, y);
-										DestPixel.r = clampInt8(lightR[x][y] * 255, 0, 254);
-										DestPixel.g = clampInt8(lightG[x][y] * 255, 0, 254);
-										DestPixel.b = clampInt8(lightB[x][y] * 255, 0, 254);
+										DestPixel.r = clampInt8((uint8_t)(lightR[x][y] * 255), 0, 254);
+										DestPixel.g = clampInt8((uint8_t)(lightG[x][y] * 255), 0, 254);
+										DestPixel.b = clampInt8((uint8_t)(lightB[x][y] * 255), 0, 254);
 									}
 								}
 							}
@@ -599,10 +599,10 @@ void Renderer::RenderLasers()
 						{ 
 							if (abs(y - laserPoints2[i].y) < laserAreaLightRange)
 							{
-								float distSquared = abs(distanceSquared(laserPoints2[i].x, laserPoints2[i].y, x, y));
+								float distSquared = abs(distanceSquared(laserPoints2[i].x, laserPoints2[i].y, (float)x, (float)y));
 								if (distSquared < laserAreaLightRange * laserAreaLightRange)
 								{
-									int inOutCount = CheckLineForObject(laserPoints2[i].x, laserPoints2[i].y, x, y);
+									int inOutCount = CheckLineForObject((int)laserPoints2[i].x, (int)laserPoints2[i].y, x, y);
 									bool isLit = false;
 									if (inOutCount <= 1)
 									{
@@ -644,7 +644,7 @@ void Renderer::RenderLasers()
 							//check distance from laser line
 							if (abs(x - laserPoints2[i].x) < laserAreaLightRange)
 							{
-								int inOutCount = CheckLineForObject(laserPoints2[i].x, y, x, y);
+								int inOutCount = CheckLineForObject((int)laserPoints2[i].x, y, x, y);
 								bool isLit = false;
 								if (inOutCount <= 1)
 								{
@@ -678,9 +678,9 @@ void Renderer::RenderLasers()
 										lightB[x][y] = tempIntensityB * laserWeight;
 
 										Color& DestPixel = outputBuffer->SampleColor(x, y);
-										DestPixel.r = clampInt8(lightR[x][y] * 255, 0, 254);
-										DestPixel.g = clampInt8(lightG[x][y] * 255, 0, 254);
-										DestPixel.b = clampInt8(lightB[x][y] * 255, 0, 254);
+										DestPixel.r = clampInt8((uint8_t)(lightR[x][y] * 255), 0, 254);
+										DestPixel.g = clampInt8((uint8_t)(lightG[x][y] * 255), 0, 254);
+										DestPixel.b = clampInt8((uint8_t)(lightB[x][y] * 255), 0, 254);
 									}
 								}
 							}
@@ -694,7 +694,7 @@ void Renderer::RenderLasers()
 
 void Renderer::DrawLaserLines(int thickness)
 {
-	float thicknessOver2 = (thickness / 2);
+	float thicknessOver2 = (float)(thickness / 2);
 	for (int i = 0; i < numLasers; i++)
 	{
 		for (int j = 0; j < thickness; j++)
@@ -770,13 +770,13 @@ ImageBuffer* Renderer::CreateAnimatedObject(const std::string filename, Vector2 
 //maybe move into player class or component?
 void Renderer::UpdateFace(int faceState_)
 {
-	if ((faceIndex == -1 || faceIndex > MAX_ANIMATED_OBJECTS) && numAnimatedObjects != 0)
+	if ((faceIndex < 0 || faceIndex > MAX_ANIMATED_OBJECTS) && numAnimatedObjects != 0)
 	{
 		faceIndex = numAnimatedObjects;
 		ImageBuffer* temp = CreateAnimatedObject("./Assets/PPM/Man_Faces.ppm", { 8,8 });
 		temp->isCulled = true;
 	}
-	else if (faceState_ >= 0 && animatedObjects[faceIndex][0] != NULL && faceState_ <= animatedObjects[faceIndex][0]->totalFrames)
+	else if (faceState_ >= 0 && faceIndex < MAX_ANIMATED_OBJECTS && animatedObjects[faceIndex][0] != NULL && faceState_ <= animatedObjects[faceIndex][0]->totalFrames)
 	{
 		faceState = faceState_;
 		if (animatedObjects[0][animatedObjects[0][0]->currentFrame]->isFlipped != animatedObjects[faceIndex][faceState]->isFlipped)
@@ -1289,6 +1289,11 @@ void Renderer::BlurLasers(int blurRangeLow, int blurRangeHigh)
 	float r = 0;
 	float g = 0;
 	float b = 0;
+	//not actually unreferenced but W4 gets pissy
+	UNREFERENCED_PARAMETER(r);
+	UNREFERENCED_PARAMETER(g);
+	UNREFERENCED_PARAMETER(b);
+
 	if (doBlur)
 	{
 #pragma omp parallel for collapse(2) private(count, r, g, b)
@@ -1319,7 +1324,7 @@ void Renderer::BlurLasers(int blurRangeLow, int blurRangeHigh)
 				g /= count;
 				b /= count;
 
-				lightBuffer->SampleColor(x, y) = Color(r, g, b, 255);
+				lightBuffer->SampleColor(x, y) = Color((uint8_t)r, (uint8_t)g, (uint8_t)b, 255);
 			}
 		}
 	}

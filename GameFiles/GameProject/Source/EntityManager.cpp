@@ -342,7 +342,7 @@ auto EntityManager::EditText() -> void
 	ImGui::Text("%6d/%-6d %6d lines  | %s | %s | %s | %s", cpos.mLine + 1, cpos.mColumn + 1, editor.GetTotalLines(),
 		editor.IsOverwrite() ? "Ovr" : "Ins",
 		editor.CanUndo() ? "*" : " ",
-		editor.GetLanguageDefinition().mName.c_str(), fileToEdit);
+		editor.GetLanguageDefinition().mName.c_str(), fileToEdit.c_str());
 
 	editor.Render("TextEditor");
 

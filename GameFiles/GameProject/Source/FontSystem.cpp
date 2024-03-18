@@ -24,14 +24,14 @@ FontSystem::~FontSystem() {
     TTF_Quit();
 }
 
-bool FontSystem::init(const std::string& fontPath, int fontSize) {
+bool FontSystem::init(const std::string& fontPath, int size) {
     close(); // Close existing font if initialized
 
     if (!loadFont(fontPath)) {
         return false;
     }
 
-    this->fontSize = fontSize;
+    this->fontSize = size;
     return true;
 }
 
@@ -79,8 +79,8 @@ void FontSystem::setFontSize(int newFontSize) {
 }
 
 // Example usage: fontSystem.setFontStyle(fontSystem.getFont(), TTF_STYLE_BOLD);
-void FontSystem::setFontStyle(TTF_Font* font, int style) {
-    TTF_SetFontStyle(font, style);
+void FontSystem::setFontStyle(TTF_Font* fonts, int style) {
+    TTF_SetFontStyle(fonts, style);
 }
 
 TTF_Font* FontSystem::getFont() const {

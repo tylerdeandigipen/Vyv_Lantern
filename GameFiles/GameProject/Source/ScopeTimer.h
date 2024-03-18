@@ -27,12 +27,12 @@ public:
 
 	~ScopeTimer()
 	{
-		auto endTimept = std::chrono::high_resolution_clock::now();
+		//auto endTimept = std::chrono::high_resolution_clock::now();
 
-		auto start = std::chrono::time_point_cast<std::chrono::microseconds>(startTimept).time_since_epoch().count();
-		auto end = std::chrono::time_point_cast<std::chrono::microseconds>(endTimept).time_since_epoch().count();
-		auto duration = end - start;
-		double microseconds_elapsed = duration * 0.001f;
+		//auto start = std::chrono::time_point_cast<std::chrono::microseconds>(startTimept).time_since_epoch().count();
+		//auto end = std::chrono::time_point_cast<std::chrono::microseconds>(endTimept).time_since_epoch().count();
+		//auto duration = end - start;
+		//double microseconds_elapsed = duration * 0.001f;
 
         // @TODO: Consider some kind of visual profiler to output this to.
         //Logging &Logger = Logging::GetInstance("debugLog.log");

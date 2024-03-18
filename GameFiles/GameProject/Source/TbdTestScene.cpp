@@ -386,6 +386,7 @@ void TbdTestScene::handleCheatCodes()
 
 void TbdPlayerMovement(float dt)
 {
+	UNREFERENCED_PARAMETER(dt);
 	Inputs* inputHandler = Inputs::GetInstance();
 
 	if (inputHandler->keyPressed(SDL_SCANCODE_TAB))
@@ -507,7 +508,7 @@ Engine::EngineCode TbdTestScene::Exit()
 Engine::EngineCode TbdTestScene::Unload()
 {
 	winState = false;
-	delete TbdTestSceneinstance;
+	TbdTestSceneinstance->~Scene();
 	TbdTestSceneinstance = nullptr;
 	return Engine::NothingBad;
 }

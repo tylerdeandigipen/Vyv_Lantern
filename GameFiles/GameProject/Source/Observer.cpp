@@ -14,6 +14,7 @@ Logging& loggerObs = Logging::GetInstance("debugLog.log");
 
 void PlayerMoveLeftObserver::onNotify(const Entity& entity, EventType event)
 {
+	UNREFERENCED_PARAMETER(entity);
 	switch (event)
 	{
 	case EventType::PLAYER_MOVED_LEFT:

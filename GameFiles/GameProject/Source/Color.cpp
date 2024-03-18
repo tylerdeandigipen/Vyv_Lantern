@@ -43,6 +43,7 @@ uint8_t Color::GetRed()
 	{
 		return r;
 	}
+	return 0;
 }
 
 uint8_t Color::GetGreen()
@@ -51,6 +52,7 @@ uint8_t Color::GetGreen()
 	{
 		return g;
 	}
+	return 0;
 }
 
 uint8_t Color::GetBlue()
@@ -59,6 +61,7 @@ uint8_t Color::GetBlue()
 	{
 		return b;
 	}
+	return 0;
 }
 
 uint8_t Color::GetAlpha()
@@ -67,6 +70,7 @@ uint8_t Color::GetAlpha()
 	{
 		return a;
 	}
+	return 0;
 }
 
 void Color::SetAlpha(uint8_t a_)

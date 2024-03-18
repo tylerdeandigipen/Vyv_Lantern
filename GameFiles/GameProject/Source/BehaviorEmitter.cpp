@@ -31,6 +31,7 @@ std::string BehaviorEmitter::Name()
 
 void BehaviorEmitter::SetInputHandler(Inputs* _input)
 {
+    UNREFERENCED_PARAMETER(_input);
 }
 
 void BehaviorEmitter::Init()
@@ -54,6 +55,7 @@ Behavior* BehaviorEmitter::Clone() const
 
 void BehaviorEmitter::Update(float dt)
 {
+    UNREFERENCED_PARAMETER(dt);
     if (Parent() && Parent()->Has(Transform)) {
         Vector2 position = *Parent()->Has(Transform)->GetTranslation();
         // set reflection position when the mirror stops moving or is not moving;
@@ -96,7 +98,7 @@ void BehaviorEmitter::Read(json jsonData)
 
 void BehaviorEmitter::SwitchOn(bool collided)
 {
-
+    UNREFERENCED_PARAMETER(collided);
 }
 
 void BehaviorEmitter::SetDirection(gfxVector2 dir)

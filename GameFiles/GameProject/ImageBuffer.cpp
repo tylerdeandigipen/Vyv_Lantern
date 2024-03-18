@@ -488,7 +488,8 @@ void ImageBuffer::DitherBuffer(ImageBuffer* output, bool renderOnlyLights, bool 
                     {
                         if (lightR[x][y] == 0 && lightG[x][y] == 0 && lightB[x][y] != 0)
                         {
-                            int m = 0;
+                            //what need?
+                            //int m = 0;
                         }
                         Color white{ 255,255,255,255 };
                         tempColor = white.ScaleIndividual(lightR[x][y], lightG[x][y], lightB[x][y]);
