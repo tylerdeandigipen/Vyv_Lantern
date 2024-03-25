@@ -305,16 +305,16 @@ void LevelCreatorScene::ExportScene(std::string named)
 	tilemapArray["layers"][1] = tilemapCol;
 
 	// save tilemap to a file
-	std::ofstream tileFile(exportFolder + name + "MAP" + ".json");
+	std::ofstream tileFile(exportFolder + named + "MAP" + ".json");
 	tileFile << std::setw(2) << tilemapArray << std::endl;
 
 	json readable;
 	json data;
-	data["TileMapFile"] = exportFolder + name + "MAP" + ".json";
+	data["TileMapFile"] = exportFolder + named + "MAP" + ".json";
 	readable["TiledData"] = data;
 
 	// this will be the object list part
-	listToExport = exportFolder + name + "OBJECTS" + ".json";
+	listToExport = exportFolder + named + "OBJECTS" + ".json";
 
 	Scene* pare = LevelCreatorSceneGetInstance();
 	LevelCreatorScene* current = reinterpret_cast<LevelCreatorScene*>(pare);
@@ -346,7 +346,7 @@ void LevelCreatorScene::ExportScene(std::string named)
 	readable["GameObjectList"] = { {"GameObjectFile", listToExport } };
 
 	//the filemap to read for the scene
-	std::ofstream actualfile(exportFolder + name + ".json");
+	std::ofstream actualfile(exportFolder + named + ".json");
 	actualfile << std::setw(2) << readable << std::endl;
 }
 
@@ -1249,7 +1249,7 @@ int LevelCreatorScene::CreateEmitterEntity(EmitterData emit)
 int LevelCreatorScene::CreateReceiverEntity()
 {
 	std::string number = "./Data/GameObjects/Receiver";
-	std::string filename = "./Data/GameObjects/tempReceiver.json";
+	std::string filename = "./Data/GameObjects/tempReciever.json";
 
 	Entity* temp = FileIO::GetInstance()->ReadEntity(filename);
 	temp->addKey = "Receiver"; // this is for the map holding functions and gives access to function for circle
