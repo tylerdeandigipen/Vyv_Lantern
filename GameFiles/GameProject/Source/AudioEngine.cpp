@@ -155,10 +155,10 @@
     */
     void _audioManager::StopMusic(void)
     {
-        // fade out the sound.
-        unsigned long long dspclock;
-        FMOD::Sound* snd;
-        int rate;
+        // Kill sound
+        //unsigned long long dspclock;
+        //FMOD::Sound* snd;
+        //int rate;
         musicChannelGroup->setPaused(true);
         //musicChannel->getDSPClock(0, &dspclock);
         //fmodSystem->getSoftwareFormat(&rate, 0, 0);

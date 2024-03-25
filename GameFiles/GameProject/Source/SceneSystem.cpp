@@ -17,6 +17,7 @@
 #include "TestScene.h"
 #include "TBDTestScene.h"
 #include "LevelCreatorScene.h"
+#include "WinScene.h"
 #include "SplashScene.h"
 #include "Inputs.h"
 
@@ -27,6 +28,7 @@ enum class SceneType
 	SCENE_TEST = 1,
 	SCENE_LEVELCREATOR = 2,
 	SCENE_SPLASH = 3,
+	SCENE_WIN = 4,
 	NULL_SCENE,
 
 	// Add more scenes as needed
@@ -230,6 +232,10 @@ bool CheckGameScenes()
 	else if (activeScene == SplashSceneGetInstance())
 	{
 		activeSceneType = SceneType::SCENE_SPLASH;
+	}
+	else if (activeScene == WinSceneGetInstance())
+	{
+		activeSceneType = SceneType::SCENE_WIN;
 	}
 
 	assert(activeSceneType != SceneType::NULL_SCENE && "Active scene type is NULL. Location: CheckGameScenes()");

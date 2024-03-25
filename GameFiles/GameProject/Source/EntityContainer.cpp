@@ -78,12 +78,12 @@ bool EntityContainer::AddEntity(Entity* entity)
 	return true;
 }
 
-Entity* EntityContainer::FindByName(const char* name)
+Entity* EntityContainer::FindByName(const char* named)
 {
 	for (unsigned i = 0; i < entities.size(); ++i)
 	{
 		if (entities[i])
-			if (entities[i]->IsNamed(name))
+			if (entities[i]->IsNamed(named))
 				return entities[i];
 	}
 	return NULL;

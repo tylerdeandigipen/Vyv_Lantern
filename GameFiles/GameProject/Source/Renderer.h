@@ -27,7 +27,7 @@
 #define TILE_SIZE 8
 #define NUM_WALL_TILES 17
 #define NUM_NON_WALKABLE_TILES 33
-#define MAX_LASER_POINTS 30
+#define MAX_LASER_POINTS 100
 
 class Renderer
 {

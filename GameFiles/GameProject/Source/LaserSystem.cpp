@@ -72,6 +72,7 @@ beam_path_node* LaserSystem::GetPathNode(uint32_t NodeIndex)
 
 void LaserSystem::Update(float dt)
 {
+	UNREFERENCED_PARAMETER(dt);
 	static Inputs* InputManager = Inputs::GetInstance();
 
 	if (InputManager->keyPressed(SDL_SCANCODE_LCTRL))

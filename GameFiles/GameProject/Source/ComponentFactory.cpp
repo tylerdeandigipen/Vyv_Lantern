@@ -80,9 +80,9 @@ Engine::EngineCode ComponentFactory::Close()
 	return Engine::NothingBad;
 }
 
-void ComponentFactory::Add(std::string name, std::function<Component& (void)> create)
+void ComponentFactory::Add(std::string named, std::function<Component& (void)> create)
 {
-	component_map.emplace(name, create);
+	component_map.emplace(named, create);
 }
 
 Component& ComponentFactory::CreateBehaviorPlayer()

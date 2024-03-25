@@ -31,6 +31,7 @@ std::string BehaviorReceiver::Name()
 
 void BehaviorReceiver::SetInputHandler(Inputs* _input)
 {
+    UNREFERENCED_PARAMETER(_input);
 }
 
 void BehaviorReceiver::Init()
@@ -60,6 +61,8 @@ Behavior* BehaviorReceiver::Clone() const
 
 void BehaviorReceiver::Update(float dt)
 {
+    UNREFERENCED_PARAMETER(dt);
+
     if (Parent() && Parent()->Has(Transform)) {
         Vector2 position = *Parent()->Has(Transform)->GetTranslation();
         // set reflection position when the mirror stops moving or is not moving;

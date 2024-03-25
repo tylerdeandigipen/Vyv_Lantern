@@ -163,7 +163,7 @@ void BehaviorPlayer::Controller(float dt)
 
         int x, y;
         Uint32 buttons = SDL_GetMouseState(&x, &y);
-
+        UNREFERENCED_PARAMETER(buttons);
         //This is the Scenes Player light tracking code or at least part of it
         // assuming Cursour Player and Light Player are the naming schemes.
         //no chnges needed
@@ -296,8 +296,8 @@ void BehaviorPlayer::moveEntityTowards(Vector2 targetPosition)
 	if(transform)
 	{
         realPos = newPosition;
-        newPosition.x = (int)newPosition.x;
-        newPosition.y = (int)newPosition.y;
+        newPosition.x = std::truncf(newPosition.x);
+        newPosition.y = std::truncf(newPosition.y);
 
 		transform->SetTranslation(newPosition);
 	}
@@ -362,6 +362,7 @@ void BehaviorPlayer::PlayerCollisionHandler(Entity* entity1, Entity* entity2)
     if (entity1->GetRealName().compare("Player") == 0 && entity2->GetRealName().compare("Door") == 0)
     {
         auto door = reinterpret_cast<BehaviorDoor*>(entity2->Has(Behavior));
+        //could we perhaps use a better name so that we don't hide a class member?
         auto player = reinterpret_cast<BehaviorPlayer*>(entity1->Has(Behavior));
         if (door->GetDoorClosed())
         {

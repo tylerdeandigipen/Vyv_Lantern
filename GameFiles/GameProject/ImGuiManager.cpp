@@ -32,7 +32,7 @@ static MirrorData dontworry;
 static MirrorData emptyThing;
 MirrorData ImGuiManager::RenderMirrorDirPopup(const std::string& popupTitle, const std::string& message, bool openPopup)
 {
-	static ImVec4 pickedColor = ImVec4(160.0 / 255.0f, 0.0f, 255.0f / 255.0f, 1.0f);
+	static ImVec4 pickedColor = ImVec4(160.0f / 255.0f, 0.0f, 255.0f / 255.0f, 1.0f);
 	returnVal = 0;
 	if (openPopup)
 	{

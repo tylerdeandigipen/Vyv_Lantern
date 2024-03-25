@@ -49,7 +49,7 @@ bool canMove = true; // Initialize to allow movement
 
 SDL_GLContext glContext; // OpenGL context for SDL2
 
-Scene* TestSceneinstance = NULL; // ITS A GLOBAL VARIABLE CALM DOWN!! SHOW ME ANOTHER WAY AND ITS GONE
+static Scene* TestSceneinstance = nullptr; // ITS A GLOBAL VARIABLE CALM DOWN!! SHOW ME ANOTHER WAY AND ITS GONE bro just make it static
 
 Color white(255, 255, 255, 255);
 Color black(0, 0, 0, 255);
@@ -202,7 +202,7 @@ void tempPlayerMovementLol(float dt)
 
     int x, y;
     Uint32 buttons = SDL_GetMouseState(&x, &y);
-
+    UNREFERENCED_PARAMETER(buttons);
     Vector2 CursourP = {(float)x, (float)y};
     CursourP *= 1.0f / pixelRenderer->screenScale;
     CursourP += pixelRenderer->GetCameraPosition();
@@ -210,6 +210,7 @@ void tempPlayerMovementLol(float dt)
     Vector2 LightP = pixelRenderer->lightSource[0].position;
     Vector2 D = LightP - CursourP;
     float Angle = atan2f(D.x, D.y) * (180.0f / 3.14f) + 180.0f;
+    UNREFERENCED_PARAMETER(Angle);
    // pixelRenderer->lightSource[0].angle = Angle;
 
     ImageBuffer *playerEntity = pixelRenderer->objects[1];
@@ -237,7 +238,7 @@ void TestScene::Update(float dt)
         int CursourX = 0;
         int CursourY = 0;
         uint32_t Buttons = SDL_GetMouseState(&CursourX, &CursourY);
-        
+        UNREFERENCED_PARAMETER(Buttons);
         Vector2 CursourP = Vector2((float)CursourX, (float)CursourY);
         CursourP *= 1.0f / pixelRenderer->screenScale;
         CursourP += pixelRenderer->GetCameraPosition();
@@ -291,7 +292,11 @@ Engine::EngineCode TestScene::Exit()
 
 Engine::EngineCode TestScene::Unload()
 {
-    delete TestSceneinstance;
+    if (TestSceneinstance)
+    {
+        TestSceneinstance->~Scene();
+    }
+
     TestSceneinstance = nullptr;
 
     LevelBuilder::GetInstance()->FreeLevel();
@@ -302,7 +307,7 @@ Engine::EngineCode TestScene::Unload()
 
 Scene* TestSceneGetInstance(void)
 {
-    static Scene* TestSceneinstance = nullptr; // Make it static to ensure a single instance
+    //since it is static this will only trigger once.
     if (!TestSceneinstance) {
         TestSceneinstance = new TestScene();
     }

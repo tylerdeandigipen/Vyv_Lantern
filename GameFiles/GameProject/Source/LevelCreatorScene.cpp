@@ -55,7 +55,7 @@ SDL_Window* LevelCreatorWindow;
 
 SDL_GLContext LevelCreatorGlContext;
 
-Scene* LevelCreatorSceneinstance = NULL;
+static Scene* LevelCreatorSceneinstance = nullptr;
 
 static bool showCreatorToolsWindow = true;
 
@@ -78,7 +78,9 @@ Vector2 oldMousePos;
 Vector2 previousTile;
 
 Vector2 pos1, pos2;
-bool temp = false;
+//but why?
+//bool temp = false;
+bool isPanning = false;
 bool wasDown = false;
 bool reloadTileMap = false;
 int expansionRange = 1;
@@ -166,6 +168,7 @@ void LevelCreatorScene::ToolEyedroper(Inputs* inputHandler, Vector2 CursourP)
 
 void LevelCreatorScene::ToolCenter(Inputs* inputHandler)
 {
+	UNREFERENCED_PARAMETER(inputHandler);
 	moveVector = { 0,0 };
 	previousTile = { -1000,-1000 };
 	LevelCreatorPixelRenderer->SetCameraPosition(moveVector);
@@ -240,12 +243,12 @@ void LevelCreatorScene::ToolSquareFill(Inputs* inputHandler, Vector2 CursourP)
 	}
 }
 
-void LevelCreatorScene::ExportScene(std::string name)
+void LevelCreatorScene::ExportScene(std::string named)
 {
 	Renderer* pixel = Renderer::GetInstance();
 	int rows = (int)pixel->tileMapSize.x;
 	int columns = (int)pixel->tileMapSize.y;
-	std::string folder = "./Data/Scenes/" + name;
+	std::string folder = "./Data/Scenes/" + named;
 	exportFolder = folder;
 	exportFolder += "/";
 	if (_mkdir(folder.c_str()) == 0)
@@ -318,6 +321,10 @@ void LevelCreatorScene::ExportScene(std::string name)
 
 	for (auto it : tempEntities)
 	{
+		if (it->addKey.compare("Reciever") == 0)
+		{
+			it->addKey = "Receiver";
+		}
 		if (it && AddFunc.count(it->addKey))
 		{
 			current->AddFunc[it->addKey](it);
@@ -345,18 +352,19 @@ void LevelCreatorScene::ExportScene(std::string name)
 
 void LevelCreatorScene::ToolPan(Inputs* inputHandler, Vector2 CursourP)
 {
+
 	if (inputHandler->mouseButtonPressed(SDL_BUTTON_RIGHT))
 	{
-		if (temp == false)
+		if (isPanning == false)
 		{
 			oldMousePos = CursourP;
 		}
 		LevelCreatorPixelRenderer->SetCameraPosition(moveVector + (oldMousePos - CursourP));
-		temp = true;
+		isPanning = true;
 	}
-	else if (temp)
+	else if (isPanning)
 	{
-		temp = false;
+		isPanning = false;
 		moveVector += oldMousePos - CursourP;
 	}
 }
@@ -458,6 +466,7 @@ void LevelCreatorScene::ToolHandler()
 
 		int x, y;
 		Uint32 buttons = SDL_GetMouseState(&x, &y);
+		UNREFERENCED_PARAMETER(buttons);
 		Vector2 CursourP = { (float)x, (float)y };
 		CursourP *= 1.0f / LevelCreatorPixelRenderer->screenScale;
 
@@ -473,9 +482,9 @@ void LevelCreatorScene::ToolHandler()
 				LevelCreatorPixelRenderer->animatedObjects[0][0]->position = CursourP + LevelCreatorPixelRenderer->GetCameraPosition() - Vector2{ 3,3 };
 				int* walls = new int[(size_t)LevelCreatorPixelRenderer->tileMapSize.x * (size_t)LevelCreatorPixelRenderer->tileMapSize.y];
 
-				for (int x = 0; x < LevelCreatorPixelRenderer->tileMapSize.x; ++x)
+				for (x = 0; x < LevelCreatorPixelRenderer->tileMapSize.x; ++x)
 				{
-					for (int y = 0; y < LevelCreatorPixelRenderer->tileMapSize.y; ++y)
+					for (y = 0; y < LevelCreatorPixelRenderer->tileMapSize.y; ++y)
 					{
 						for (int i = 0; i < LevelCreatorPixelRenderer->numNonWalkTiles; ++i)
 						{
@@ -515,10 +524,10 @@ void LevelCreatorScene::ToolHandler()
 			//LevelCreatorPixelRenderer->lightSource[1].position = LevelCreatorPixelRenderer->animatedObjects[0][0]->position + Vector2{ 3,3 };
 			//LevelCreatorPixelRenderer->lightSource[0].position = LevelCreatorPixelRenderer->animatedObjects[0][0]->position + Vector2{ 3,3 };
 
-			Vector2 LightP = LevelCreatorPixelRenderer->lightSource[0].position;
+			Vector2 LightP = LevelCreatorPixelRenderer->lightSource[EntityContainer::GetInstance()->FindByName("Player")->GetComponent<Light>()->currentIndex].position;
 			Vector2 D = LightP - CursourP - LevelCreatorPixelRenderer->GetCameraPosition();
 			float Angle = atan2f(D.x, D.y) * (180.0f / 3.14f) + 180.0f;
-			LevelCreatorPixelRenderer->lightSource[0].angle = Angle;
+			LevelCreatorPixelRenderer->lightSource[EntityContainer::GetInstance()->FindByName("Player")->GetComponent<Light>()->currentIndex].angle = Angle;
 			return;
 		}
 
@@ -679,14 +688,14 @@ Engine::EngineCode LevelCreatorScene::Unload()
 	doorCount = 0;
 	emitterCount = 0;
 	ReceiverCount = 0;
-	delete LevelCreatorSceneinstance;
+	LevelCreatorSceneinstance->~Scene();
 	LevelCreatorSceneinstance = nullptr;
 	return Engine::NothingBad;
 }
 
 Scene* LevelCreatorSceneGetInstance(void)
 {
-	static Scene* LevelCreatorSceneinstance = nullptr; // Make it static to ensure a single instance
+	//due to the static declaration way overhead this will only trigger once.
 	if (!LevelCreatorSceneinstance)
 	{
 		LevelCreatorSceneinstance = new LevelCreatorScene();
@@ -1008,9 +1017,9 @@ void LevelCreatorScene::ImGuiWindow()
 
 		if (ImGui::BeginPopup("Tile Selector"))
 		{
-			for (unsigned n = 0; n < entityManager->pRenderer->GetTileCount(); n++)
+			for (unsigned n = 0; n < (unsigned)entityManager->pRenderer->GetTileCount(); n++)
 			{
-				if (ImGui::Selectable(TileNumToString(n).c_str(), selected == n))
+				if (ImGui::Selectable(TileNumToString(n).c_str(), (unsigned)selected == n))
 				{
 					selected = n;
 					currentTile = n; // Update the currentTile when a tile is selected
@@ -1099,6 +1108,7 @@ static int playerCount = 0;
 int LevelCreatorScene::CreatePlayerEntity()
 {
 	int circles_existing = 0;
+	UNREFERENCED_PARAMETER(circles_existing);
 	playerExists = true;
 	std::string number = "./Data/GameObjects/Player";
 	std::string filename = "./Data/GameObjects/Player.json";
@@ -1119,6 +1129,7 @@ int LevelCreatorScene::CreatePlayerEntity()
 int LevelCreatorScene::CreateCircleEntity()
 {
 	int circles_existing = 0;
+	UNREFERENCED_PARAMETER(circles_existing);
 	std::string number = "./Data/GameObjects/Circle";
 	std::string filename = "./Data/GameObjects/Circle.json";
 
@@ -1136,6 +1147,7 @@ int LevelCreatorScene::CreateCircleEntity()
 int LevelCreatorScene::CreateDoorEntity()
 {
 	int door_existing = 0;
+	UNREFERENCED_PARAMETER(door_existing);
 	std::string number = "./Data/GameObjects/Door";
 	std::string filename = "./Data/GameObjects/Door.json";
 
@@ -1168,7 +1180,7 @@ int LevelCreatorScene::CreateMirrorEntity(MirrorData mirror)
 	case 4: filename = "./Data/GameObjects/MirrorBottomRight.json"; break;
 	default: return 0;
 	}
-
+	//classic naming conventions
 	Entity* temp = FileIO::GetInstance()->ReadEntity(filename);
 	temp->GetComponent<BehaviorMirror>()->SetReflection(mirror.direction);
 
@@ -1241,7 +1253,7 @@ int LevelCreatorScene::CreateReceiverEntity()
 
 	Entity* temp = FileIO::GetInstance()->ReadEntity(filename);
 	temp->addKey = "Receiver"; // this is for the map holding functions and gives access to function for circle
-	temp->key = "Receiver" + std::to_string(emitterCount);
+	temp->key = "Receiver" + std::to_string(ReceiverCount);
 
 	//temp->SetFilePath("./Data/GameObjects/Receiver" + sceneName + std::to_string(emitterCount) + ".json");
 	tempEntities.push_back(temp);
@@ -1353,7 +1365,7 @@ void LevelCreatorScene::AddMirrorEntity(Entity* entity)
 	Light* light = entity->GetComponent<Light>();
 	if (light)
 	{
-
+		bLight = { {"Type", "Light"}, { "File", "./Data/Lights/MirrorLight.json" } };
 	}
 	components.push_back(collider);
 	components.push_back(transform);
@@ -1362,6 +1374,8 @@ void LevelCreatorScene::AddMirrorEntity(Entity* entity)
 		components.push_back(bSwitch);
 	if (entMirr)
 		components.push_back(bMirror);
+	if (light)
+		components.push_back(bLight);
 	mirrorData["Components"] = components;
 	mirrorData["FilePath"] = entity->GetFilePath();
 	mirrorData["Name"] = "Switch";

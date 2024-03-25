@@ -110,7 +110,7 @@ void WinScene::Render()
 
 Engine::EngineCode WinScene::Unload()
 {
-    delete WinSceneinstance;
+    WinSceneinstance->~Scene();
     WinSceneinstance = nullptr;
 	return Engine::NothingBad;
 }

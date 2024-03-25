@@ -21,6 +21,9 @@
 #include "TbdTestScene.h"
 #include "EntityContainer.h"
 #include "BehaviorReceiver.h"
+#include "SceneSystem.h"
+#include "WinScene.h"
+#include "LevelCreatorScene.h"
 
 
 BehaviorDoor::BehaviorDoor() : Behavior(Behavior::bDoor), mDestination(), AddedToForeGround(false), closedPPM(), openPPM(), tempImage(nullptr), isDoorClosed(true)
@@ -155,6 +158,10 @@ void BehaviorDoor::Read(json jsonData)
     {
         _receiver = jsonData["PairName"];
     }
+    if (jsonData["NextScene"].is_string())
+    {
+        _nextScene = jsonData["NextScene"];
+    }
     if (Parent()->key.c_str())
     {
         _key = Parent()->key.c_str();
@@ -199,19 +206,23 @@ void BehaviorDoor::DoorCollisionHandler(Entity* entity1, Entity* entity2)
                 {
                     if (door->GetDoorClosed() == true)
                     {
-                        door->isDoorClosed = false;
                         door->SetNext(cOpen);
                     }
                     else
                     {
-                        door->isDoorClosed = true;
+                        // LevelBuilder::SetWinState(true);
+                        if (LevelBuilder::IsWinStateSet() == false)
+                        {
+                            if (door->_nextScene == "WinScene")
+                                SceneSystem::GetInstance()->SetScene(WinSceneGetInstance());
+                            else if (door->_nextScene == "LevelCreatorScene")
+                                       SceneSystem::GetInstance()->SetScene(LevelCreatorSceneGetInstance());
+                        }
                         door->SetNext(cClosed);
                     }
                 }
             }
 #endif
-            // Play sound effects only when the win state is set for the first time
-            AudioManager.PlaySFX("cheer");
         }
 
     }

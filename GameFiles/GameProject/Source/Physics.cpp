@@ -61,6 +61,7 @@ void Physics::Update(float dt)
 	if (transform)
 	{
 		float _rotation = transform->GetRotation();
+		UNREFERENCED_PARAMETER(_rotation);
 		const gfxVector2* _translation = transform->GetTranslation();
 		oldTranslation = *_translation;
 	}

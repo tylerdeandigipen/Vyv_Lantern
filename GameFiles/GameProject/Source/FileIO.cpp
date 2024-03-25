@@ -176,7 +176,8 @@ int** FileIO::ReadTylerTileMap(json jsonData)
 	LevelBuilder::GetInstance()->SetY(SizeY);
 
 	int** TileMap = new int* [SizeX];
-	for (int i = 0; i < SizeX; ++i)
+	//^^^ not easy to track does this get freed?
+	for (i = 0; i < SizeX; ++i)
 	{
 		TileMap[i] = new int[SizeY];
 	}
@@ -415,6 +416,7 @@ void FileIO::ExportTileMap(std::string name)
 
 ImageBuffer* ReadPPM(const char* filename)
 {
+	UNREFERENCED_PARAMETER(filename);
 	/*FILE* fp;
 	fopen_s(&fp, filename, "r");
 	if (fp)

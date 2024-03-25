@@ -72,7 +72,7 @@ void BehaviorMirror::Init()
     {
         //FileIO::GetInstance()->ReadLight("");
         // Set collision handler for mirrors with lasers maybe??
-        Collider* collider = Parent()->Has(Collider);
+        //Collider* collider = Parent()->Has(Collider); does not need
         if (Parent() && Parent()->Has(Transform)) 
         {
             //Parent()->GetImage()->position = currentPos;
@@ -119,7 +119,7 @@ void BehaviorMirror::Update(float dt)
         ImageBuffer* image = Parent()->GetImage();
         Transform* trans = Parent()->Has(Transform);
         gfxVector2 test = image->size;
-        float testvalue = (test.y / 1.5f);
+        //float testvalue = (test.y / 1.5f); not referenced
         std::string file = Parent()->GetSpritePath();
         // horizontal
         mirror->xPos1 = { trans->GetTranslation()->x, trans->GetTranslation()->y + (test.y / 2) };
@@ -170,7 +170,9 @@ void BehaviorMirror::SwitchOn(bool collided)
             Entity* entity = (*entityContainer)[i];
             BehaviorMirror* mirror = reinterpret_cast<BehaviorMirror*>(entity->Has(Behavior));
             BehaviorSwitch* Switch = reinterpret_cast<BehaviorSwitch*>(entity->Has(Behavior));
-            
+            UNREFERENCED_PARAMETER(mirror);
+            UNREFERENCED_PARAMETER(Switch);
+           
 
         }
     }
