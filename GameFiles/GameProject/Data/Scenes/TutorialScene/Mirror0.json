@@ -25,21 +25,25 @@
             },
             "Type": "Physics"
         },
-        {
-            "NumPositions": 2,
-            "Type": "BehaviorSwitch",
-            "key": 1,
-            "pos": [
-                {
-                    "x": "96.000000",
-                    "y": "164.000000"
-                },
-                {
-                    "x": "112.000000",
-                    "y": "164.000000"
-                }
-            ]
-        }
+      {
+        "NumPositions": 2,
+        "Type": "BehaviorSwitch",
+        "key": 1,
+        "pos": [
+          {
+            "x": "96.000000",
+            "y": "164.000000"
+          },
+          {
+            "x": "112.000000",
+            "y": "164.000000"
+          }
+        ]
+      },
+      {
+        "Type": "Light",
+        "File": "./Data/Lights/MirrorLight.json"
+      }
     ],
   "FilePath": "./Data/Scenes/TutorialScene/Mirror0.json",
   "KeyObject": {
