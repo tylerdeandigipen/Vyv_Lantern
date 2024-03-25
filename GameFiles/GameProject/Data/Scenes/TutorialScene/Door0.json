@@ -15,7 +15,8 @@
       "DoorClosed": true,
       "ClosedSprite": "./Assets/PPM/Door_Closed.ppm",
       "OpenSprite": "./Assets/PPM/Door_Open.ppm",
-      "PairName": "Receiver0"
+      "PairName": "Receiver0",
+      "NextScene": "LevelCreatorScene"
     },
     {
       "OldTranslation": {

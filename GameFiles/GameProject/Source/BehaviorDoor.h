@@ -51,6 +51,7 @@ private:
 	std::string openPPM;
 	ImageBuffer* tempImage;
 	std::string _receiver;
+	std::string _nextScene;
 	std::string _key;
 };
 
