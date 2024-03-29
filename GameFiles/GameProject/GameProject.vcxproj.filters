@@ -199,9 +199,6 @@
     <ClCompile Include="Source\TextEditor.cpp">
       <Filter>Source FIles\Other</Filter>
     </ClCompile>
-    <ClCompile Include="AudioManager.cpp">
-      <Filter>Source FIles\Other</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="IMGUI\imgui.h">
@@ -414,9 +411,6 @@
     <ClInclude Include="BehaviorEmitter.h" />
     <ClInclude Include="Source\SplashScene.h" />
     <ClInclude Include="BehaviorReceiver.h" />
-    <ClInclude Include="AudioManager.h">
-      <Filter>Header FIles\Other</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Misc\GameProject.ico">
