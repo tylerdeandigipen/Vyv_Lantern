@@ -339,7 +339,7 @@ void LevelCreatorScene::ExportScene(std::string named)
 	ObjectFile["Mirror"] = { {"count", mirrorCount + 1} };
 	ObjectFile["Door"] = { {"count", doorCount + 1} };
 	ObjectFile["Emitter"] = { {"count", emitterCount + 1} };
-	ObjectFile["Reviever"] = { {"count", ReceiverCount + 1} };
+	ObjectFile["Receiver"] = { {"count", ReceiverCount + 1} };
 
 	std::ofstream objectList(listToExport);
 	objectList << std::setw(2) << ObjectFile << std::endl;
@@ -952,10 +952,12 @@ void LevelCreatorScene::ImGuiWindow()
 							if (counts["Mirror"].is_object())
 							{
 								mirrorCount = counts["Mirror"]["count"];
-							}if (counts["Emitter"].is_object())
+							}
+							if (counts["Emitter"].is_object())
 							{
 								emitterCount = counts["Emitter"]["count"];
-							}if (counts["Receiver"].is_object())
+							}
+							if (counts["Receiver"].is_object())
 							{
 								ReceiverCount = counts["Receiver"]["count"];
 							}
