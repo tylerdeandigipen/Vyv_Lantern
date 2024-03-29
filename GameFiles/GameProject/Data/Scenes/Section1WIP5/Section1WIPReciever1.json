@@ -16,6 +16,9 @@
         "y": 384.0
       },
       "Type": "Physics"
+    },
+    {
+      "Type": "BehaviorReceiver"
     }
   ],
   "FilePath": "./Data/Scenes/Section1WIP5/Section1WIPReciever1.json",
