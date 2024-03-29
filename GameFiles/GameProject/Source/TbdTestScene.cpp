@@ -60,7 +60,6 @@ Engine::EngineCode TbdTestScene::Load()
 	AudioManager.LoadMusicFromJSON("./Data/music.json");//line is good
 	AudioManager.LoadSFXFromJSON("./Data/SFX.json");// line is goodplay
 
-
 	if (entityManagerTBD->InitializeProperties("./Data/GameObjects/ObjectList.json"))
 		std::cout << "Property load success!\n";
 
@@ -102,9 +101,11 @@ Engine::EngineCode TbdTestScene::Init()
 		TbdPixelRenderer->particleManager->AddParticle(testParticle);
 	}
 
-	AudioManager.PlayMusic("drips"); //line is good
+	//AudioManager.PlayMusic("drips"); //line is good
 
-	AudioManager.PlayMusic("forest"); //line is good
+	//AudioManager.PlayMusic("forest"); //line is good
+	AudioManager.PlayMusic("bgm");
+	AudioManager.PlaySFX("ambience");
 
 	FontSystem fontSystem;
 
@@ -235,8 +236,6 @@ void TbdTestScene::handleCheatCodes()
 	{
 		TbdCanPlaceLight = 1;
 	}
-
-
 
 	if (inputHandler->keyPressed(SDL_SCANCODE_GRAVE) && TbdCanToggleFullBright == true)
 	{
@@ -384,6 +383,8 @@ void TbdTestScene::handleCheatCodes()
 
 #endif
 
+bool isMuted = false;
+bool mKeyDown = false;
 void TbdPlayerMovement(float dt)
 {
 	UNREFERENCED_PARAMETER(dt);
@@ -439,13 +440,35 @@ void TbdPlayerMovement(float dt)
 		}
 		*/
 	}
+
+	if (inputHandler->keyPressed(SDL_SCANCODE_M))
+	{
+		if (!mKeyDown)
+		{
+			if (isMuted)
+			{
+				AudioManager.ResumeMusic();
+				AudioManager.ResumeSFX();
+			}
+			else
+			{
+				AudioManager.PauseMusic();
+				AudioManager.PauseSFX();
+			}
+			isMuted = !isMuted;
+		}
+		mKeyDown = true;
+	}
+	else
+	{
+		mKeyDown = false;
+	}
 }
 
 void TbdTestScene::Update(float dt)
 {
 	if (CheckGameScenes() || CheckRestart())
 		return;
-
 
 	//eventally have player handle these lights
 	//TbdPixelRenderer->lightSource[1].position = TbdPixelRenderer->animatedObjects[0][0]->position + Vector2{ 3,3 };
@@ -455,13 +478,6 @@ void TbdTestScene::Update(float dt)
 	AudioManager.Update();
 	inputHandler->handleInput();
 	bool check = winState;
-
-	if (inputHandler->keyPressed(SDL_SCANCODE_M))
-	{
-		AudioManager.StopMusic();
-		AudioManager.StopSFX();
-		AudioManager.StopVoice();
-	}
 
 	if (inputHandler->keyPressed(SDL_SCANCODE_Y))
 	{

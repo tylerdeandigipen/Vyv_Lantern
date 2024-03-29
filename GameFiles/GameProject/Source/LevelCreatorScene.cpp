@@ -78,6 +78,7 @@ Vector2 oldMousePos;
 Vector2 previousTile;
 
 Vector2 pos1, pos2;
+
 //but why?
 //bool temp = false;
 bool isPanning = false;
@@ -338,7 +339,7 @@ void LevelCreatorScene::ExportScene(std::string named)
 	ObjectFile["Mirror"] = { {"count", mirrorCount + 1} };
 	ObjectFile["Door"] = { {"count", doorCount + 1} };
 	ObjectFile["Emitter"] = { {"count", emitterCount + 1} };
-	ObjectFile["Reviever"] = { {"count", ReceiverCount + 1} };
+	ObjectFile["Receiver"] = { {"count", ReceiverCount + 1} };
 
 	std::ofstream objectList(listToExport);
 	objectList << std::setw(2) << ObjectFile << std::endl;
@@ -352,7 +353,6 @@ void LevelCreatorScene::ExportScene(std::string named)
 
 void LevelCreatorScene::ToolPan(Inputs* inputHandler, Vector2 CursourP)
 {
-
 	if (inputHandler->mouseButtonPressed(SDL_BUTTON_RIGHT))
 	{
 		if (isPanning == false)
@@ -809,6 +809,43 @@ void LevelCreatorScene::ImGuiWindow()
 			ImGui::EndPopup();
 		}
 
+		// begin popup
+		if (ImGui::Button("also dont touch"))
+		{
+			// calls next if
+			ImGui::OpenPopup("Stacked 1");
+		}
+
+		// actually begins poup
+		if (ImGui::BeginPopupModal("Stacked 1", NULL, ImGuiWindowFlags_MenuBar))
+		{
+			// text upon clicking
+			ImGui::Text("stack uno");
+
+			// button to add another stacked
+			if (ImGui::Button("add another modal.."))
+				ImGui::OpenPopup("Stacked 2");
+
+			// force it to be true
+			bool unused_open = true;
+			if (ImGui::BeginPopupModal("Stacked 2", &unused_open))
+			{
+				// add double stack
+				ImGui::Text("WOAH double stacking");
+				ImGui::Text("unheard of...");
+
+				// closes second window
+				if (ImGui::Button("Close"))
+					ImGui::CloseCurrentPopup();
+				ImGui::EndPopup();
+			}
+
+			// closes last popup
+			if (ImGui::Button("Close"))
+				ImGui::CloseCurrentPopup();
+			ImGui::EndPopup();
+		}
+
 		ImGui::Text("Scene Settings");
 		ImGui::Text("./Data/Scenes/''LevelNameHere''");
 		if (ImGui::TreeNode("Export:"))
@@ -915,10 +952,12 @@ void LevelCreatorScene::ImGuiWindow()
 							if (counts["Mirror"].is_object())
 							{
 								mirrorCount = counts["Mirror"]["count"];
-							}if (counts["Emitter"].is_object())
+							}
+							if (counts["Emitter"].is_object())
 							{
 								emitterCount = counts["Emitter"]["count"];
-							}if (counts["Receiver"].is_object())
+							}
+							if (counts["Receiver"].is_object())
 							{
 								ReceiverCount = counts["Receiver"]["count"];
 							}
@@ -1180,6 +1219,7 @@ int LevelCreatorScene::CreateMirrorEntity(MirrorData mirror)
 	case 4: filename = "./Data/GameObjects/MirrorBottomRight.json"; break;
 	default: return 0;
 	}
+
 	//classic naming conventions
 	Entity* temp = FileIO::GetInstance()->ReadEntity(filename);
 	temp->GetComponent<BehaviorMirror>()->SetReflection(mirror.direction);

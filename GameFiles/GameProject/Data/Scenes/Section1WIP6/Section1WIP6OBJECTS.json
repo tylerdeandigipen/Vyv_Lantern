@@ -1,0 +1,104 @@
+{
+  "Circle": {
+    "count": 6
+  },
+  "Door": {
+    "count": 6
+  },
+  "Emitter": {
+    "count": 9
+  },
+  "FilePath": "./Data/Scenes/Section1WIP6/Section1WIP6OBJECTS.json",
+  "Mirror": {
+    "count": 30
+  },
+  "Objects": [
+    {
+      "FilePath": "./Data/Scenes/Section1WIP6/Section1WIPEmitter0.json"
+    },
+    {
+      "FilePath": "./Data/Scenes/Section1WIP6/Section1WIPReciever1.json"
+    },
+    {
+      "FilePath": "./Data/Scenes/Section1WIP6/Section1WIPMirror0.json"
+    },
+    {
+      "FilePath": "./Data/Scenes/Section1WIP6/Section1WIPMirror1.json"
+    },
+    {
+      "FilePath": "./Data/Scenes/Section1WIP6/Section1WIPMirror2.json"
+    },
+    {
+      "FilePath": "./Data/Scenes/Section1WIP6/Section1WIPMirror3.json"
+    },
+    {
+      "FilePath": "./Data/Scenes/Section1WIP6/Section1WIPMirror4.json"
+    },
+    {
+      "FilePath": "./Data/Scenes/Section1WIP6/Reciever3.json"
+    },
+    {
+      "FilePath": "./Data/Scenes/Section1WIP6/Mirror7.json"
+    },
+    {
+      "FilePath": "./Data/Scenes/Section1WIP6/Mirror8.json"
+    },
+    {
+      "FilePath": "./Data/Scenes/Section1WIP6/Mirror9.json"
+    },
+    {
+      "FilePath": "./Data/Scenes/Section1WIP6/Mirror10.json"
+    },
+    {
+      "FilePath": "./Data/Scenes/Section1WIP6/Mirror11.json"
+    },
+    {
+      "FilePath": "./Data/Scenes/Section1WIP6/Mirror12.json"
+    },
+    {
+      "FilePath": "./Data/Scenes/Section1WIP6/Mirror13.json"
+    },
+    {
+      "FilePath": "./Data/Scenes/Section1WIP6/Emitter4.json"
+    },
+    {
+      "FilePath": "./Data/Scenes/Section1WIP6/Mirror15.json"
+    },
+    {
+      "FilePath": "./Data/Scenes/Section1WIP6/Mirror16.json"
+    },
+    {
+      "FilePath": "./Data/Scenes/Section1WIP6/Mirror17.json"
+    },
+    {
+      "FilePath": "./Data/Scenes/Section1WIP6/Mirror18.json"
+    },
+    {
+      "FilePath": "./Data/Scenes/Section1WIP6/Mirror19.json"
+    },
+    {
+      "FilePath": "./Data/Scenes/Section1WIP6/Reciever5.json"
+    },
+    {
+      "FilePath": "./Data/Scenes/Section1WIP6/Mirror22.json"
+    },
+    {
+      "FilePath": "./Data/Scenes/Section1WIP6/Mirror23.json"
+    },
+    {
+      "FilePath": "./Data/Scenes/Section1WIP6/Mirror24.json"
+    },
+    {
+      "FilePath": "./Data/Scenes/Section1WIP6/Mirror25.json"
+    },
+    {
+      "FilePath": "./Data/Scenes/Section1WIP6/Mirror26.json"
+    },
+    {
+      "FilePath": "./Data/Scenes/Section1WIP6/Mirror27.json"
+    }
+  ],
+  "Reviever": {
+    "count": 1
+  }
+}

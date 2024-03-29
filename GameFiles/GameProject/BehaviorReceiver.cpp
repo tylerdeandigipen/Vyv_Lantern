@@ -74,6 +74,11 @@ void BehaviorReceiver::Update(float dt)
 void BehaviorReceiver::Read(json jsonData)
 {
     Init();
+    receiver->isSolid = true;
+    if (jsonData["Solid"].is_boolean())
+    {
+        receiver->isSolid = jsonData["Solid"];
+    }
     // do not know what it needs but for now it shall be callin init
 
 }
