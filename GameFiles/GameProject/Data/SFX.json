@@ -1,4 +1,5 @@
 {
+  "ambience": "Assets/Audio/SFX/LevelAmbienceSFX.wav",
   "creak": "Assets/Audio/SFX/CreaksSqueaks_PulleySquea_3.ogg",
   "door": "Assets/Audio/SFX/SCIENCE_FICTION_DOOR_WHOOSH_OPEN_SHORT_01.ogg",
   "cheer": "Assets/Audio/SFX/CROWD_APPLAUD_CHEER_SCREAM_01.ogg",

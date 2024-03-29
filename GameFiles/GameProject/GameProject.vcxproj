@@ -173,6 +173,7 @@ xcopy "$(ProjectDir)Fmod\*.dll" "$(OutDir)" /s /r /y /q /i</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="AudioManager.h" />
     <ClInclude Include="BehaviorEmitter.h" />
     <ClInclude Include="BehaviorReceiver.h" />
     <ClInclude Include="Emitter.h" />
@@ -249,6 +250,7 @@ xcopy "$(ProjectDir)Fmod\*.dll" "$(OutDir)" /s /r /y /q /i</Command>
     <ClInclude Include="Vector.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="AudioManager.cpp" />
     <ClCompile Include="BehaviorReceiver.cpp" />
     <ClCompile Include="Emitter.cpp" />
     <ClCompile Include="Engine.cpp" />
