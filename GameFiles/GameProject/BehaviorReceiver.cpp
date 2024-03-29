@@ -49,6 +49,7 @@ void BehaviorReceiver::Init()
             // vertical 
             receiver->yPos1 = { trans->GetTranslation()->x + (test.x / 2), trans->GetTranslation()->y };
             receiver->yPos2 = { trans->GetTranslation()->x + (test.y / 2), trans->GetTranslation()->y + test.y };
+            receiver->isSolid = true;
             Renderer::GetInstance()->laserHandler.AddCheckPoint(receiver);
         }
     }
