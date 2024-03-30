@@ -60,12 +60,12 @@ public:
 	void SetAudioVolume(float volume);
 	void SetMusicVolume(float volume);
 	void SetVoiceVolume(float volume);
-	void IncreaseMusicVolume();
-	void IncreaseSFXVolume();
-	void IncreaseVoiceVolume();
-	void DecreaseMusicVolume();
-	void DecreaseSFXVolume();
-	void DecreaseVoiceVolume();
+	void IncreaseMusicVolume(float volume);
+	void IncreaseSFXVolume(float volume);
+	void IncreaseVoiceVolume(float volume);
+	void DecreaseMusicVolume(float volume);
+	void DecreaseSFXVolume(float volume);
+	void DecreaseVoiceVolume(float volume);
 	void Update(void);
 	void LoadMusicFromJSON(std::string jsonFilePath);
 	void LoadSFXFromJSON(std::string jsonFilePath);

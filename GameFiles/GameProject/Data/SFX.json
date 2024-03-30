@@ -1,9 +1,10 @@
 {
-  "ambience": "Assets/Audio/SFX/LevelAmbienceSFX.wav",
-  "creak": "Assets/Audio/SFX/CreaksSqueaks_PulleySquea_3.ogg",
-  "door": "Assets/Audio/SFX/SCIENCE_FICTION_DOOR_WHOOSH_OPEN_SHORT_01.ogg",
+  "bgAmbience": "Assets/Audio/SFX/LevelAmbienceSFX.wav",
+  "pauseMenu": "Assets/Audio/SFX/CreaksSqueaks_PulleySquea_3.ogg",
+  "doorOpen": "Assets/Audio/SFX/SCIENCE_FICTION_DOOR_WHOOSH_OPEN_SHORT_01.ogg",
   "cheer": "Assets/Audio/SFX/CROWD_APPLAUD_CHEER_SCREAM_01.ogg",
   "footsteps": "Assets/Audio/SFX/FOOTSTEPS_SNEAKERS_SNOW_WALK_SLOW_CRUNCH_01.ogg",
-  "laser": "Assets/Audio/SFX/SCIENCE_FICTION_LASER_GUN_BEAM_BLASTER_SHOT_01.ogg",
-  "button": "Assets/Audio/SFX/WALKIE_TALKIE_BUTTON_PRESS_BEEP_01.ogg"
+  "laserShoot": "Assets/Audio/SFX/SCIENCE_FICTION_LASER_GUN_BEAM_BLASTER_SHOT_01.ogg",
+  "laserAmbience": "Assets/Audio/SFX/LaserBeamSFX.wav",
+  "mirrorMove": "Assets/Audio/SFX/MirrorMoveSFX.wav"
 }
