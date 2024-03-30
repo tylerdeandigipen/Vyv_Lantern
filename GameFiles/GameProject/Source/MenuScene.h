@@ -43,6 +43,9 @@ public:
 	void HandleOption();
 
 
+	void ImGuiInterg();
+	void ImGuiWindow();
+
 
 	void cheatScanlines();
 

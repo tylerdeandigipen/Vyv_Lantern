@@ -8,6 +8,10 @@
 // Copyright  © 2023 DigiPen (USA) Corporation.
 //
 //------------------------------------------------------------------------------
+
+#include "imgui.h"
+#include "imgui_impl_sdl2.h"
+#include "imgui_impl_opengl3.h"
 #include <SDL/SDL.h>
 #include <glad/glad.h>
 #include <iostream>
@@ -41,6 +45,9 @@
 #include "Component.h"
 #include "TestScene.h"
 #include "Transform.h"
+#include "Sprite.h"
+
+
 
 Logging& MenuLogger = Logging::GetInstance("debugLog.log");
 
@@ -55,6 +62,10 @@ Entity* Beginbutton;
 Entity* Creditbutton;
 Entity* optionbutton;
 Entity* ExitButton;
+
+//Entity* PlayerIcon;
+
+ImageBuffer* ani;
 
 MenuScene::MenuScene() : Scene("Menutest")
 {
@@ -75,15 +86,18 @@ Engine::EngineCode MenuScene::Init()
 
     cheatScanlines();
 
+
     //exporttests
     json ignore{ {"isAnimated", false}};
+    //json ingnore{ {"isAnimated", true,}, {"frameSize", {8,8}} };
+
 
     Beginbutton = new Entity("Object", "./Assets/PPM/Begin.ppm", ignore);
     ExitButton = new Entity("Object", "./Assets/PPM/quit.ppm", ignore);
     Creditbutton = new Entity("Object", "./Assets/PPM/credit.ppm", ignore);
     optionbutton = new Entity("Object", "./Assets/PPM/option.ppm", ignore);
 
-
+    //PlayerIcon = new Entity("Object", "./Assets/PPM/Player_Sprites.ppm", ingnore);
 
     Renderer::GetInstance()->isFullbright = true;
 
@@ -91,6 +105,18 @@ Engine::EngineCode MenuScene::Init()
     ExitButton->CreateImage("./Assets/PPM/quit.ppm");
     Creditbutton->CreateImage("./Assets/PPM/credit.ppm");
     optionbutton->CreateImage("./Assets/PPM/option.ppm");
+
+
+    ani = new ImageBuffer();
+    ani = Renderer::GetInstance()->CreateAnimatedObject("./Assets/PPM/Player_Sprites.ppm", Vector2{8,8});
+
+    ani->position = gfxVector2{ 42,65 };
+    ani->isFlipped = true;
+
+    //MenuPixelRender->objectLayer = new ImageBuffer;
+
+    //ani->AddSprite(ani, Vector2{30,30});
+
 
     Transform* BPOS = new Transform;
     BPOS->SetTranslation(gfxVector2{92,25});
@@ -113,12 +139,21 @@ Engine::EngineCode MenuScene::Init()
     ExitButton->Add(BBPOS);
     ExitButton->AddToRenderer(MenuPixelRender, "");
 
+
+    //Transform* MCP = new Transform;
+    //MCP->SetTranslation(gfxVector2{ 42,65 });
+    //PlayerIcon->Add(MCP);
+    //PlayerIcon->AddToRenderer(MenuPixelRender, "");
+
     // Create SDL Window
     MenuWindow = PlatformSystem::GetInstance()->GetWindowHandle();
     MenuPixelRender->window = MenuWindow;
 
 
 
+    FontSystem fontSystem;
+
+    fontSystem.init("Font/MouldyCheeseRegular-WyMWG.ttf", 10);
 
     //initialize level data
     //EntityContainer::GetInstance()->ReadEntities();
@@ -149,6 +184,20 @@ Engine::EngineCode MenuScene::Init()
     return Engine::NothingBad;
 }
 
+static bool tabKeyPreviouslyPressed = false;
+static bool show_demo_window = false;
+static bool show_tool_metrics = false;
+static bool show_custom_window = false;
+static bool show_metrics_debug_bar = false;
+
+static bool isGravePressedForCheat = false;
+static bool isQPressedForCheat = false;
+static bool isNPressedForCheat = false;
+static bool isCPressedForCheat = false;
+static bool isFPressedForCheat = false;
+static bool isEPressedForCheat = false;
+static bool isHPressedForCheat = false;
+static bool isGPressedForCheat = false;
 
 void MenuScene::cheatScanlines()
 {
@@ -305,6 +354,7 @@ void MenuScene::Update(float dt)
     Creditbutton->Update(dt);
     optionbutton->Update(dt);
 
+    //PlayerIcon->Update(dt);
 
     if (IsMouseOverBeginingButton())
     {
@@ -362,3 +412,157 @@ Scene* MenuSceneGetInstance(void)
     return MenuSceneinstance;
 }
 
+#ifndef ImGUI_Functions
+
+void MenuScene::ImGuiInterg()
+{
+#ifdef _DEBUG
+    ImGui_ImplOpenGL3_NewFrame();
+    ImGui_ImplSDL2_NewFrame();
+    ImGui::NewFrame();
+
+    if (show_custom_window)
+    {
+        ImGuiWindow();
+    }
+
+    ImGui::Render();
+#endif
+}
+
+void MenuScene::ImGuiWindow()
+{
+#ifdef _DEBUG
+    if (show_custom_window)
+    {
+        ImGui::Begin("custom window");
+        ImGui::Text("hey how you doin ;)");
+        ImGui::Text("welcome to the tbdtestscene debug window");
+
+        ImGui::Separator();
+
+        ImGui::Text("Mouse Position: (%d, %d)", Inputs::GetInstance()->getMouseX(), Inputs::GetInstance()->getMouseY());
+
+        ImGui::Text("Keys Pressed:");
+        for (int i = 0; i < SDL_NUM_SCANCODES; ++i)
+        {
+            if (Inputs::GetInstance()->keyPressed(i))
+            {
+                const char* keyName = SDL_GetKeyName(SDL_GetKeyFromScancode(static_cast<SDL_Scancode>(i)));
+                ImGui::BulletText("%s is being pressed", keyName);
+            }
+        }
+
+        ImGui::Separator();
+        ImGui::Text("Cheat Status:");
+
+
+        if (ImGui::Button("ScanLines Cheat:"))
+        {
+            isFPressedForCheat = !isFPressedForCheat;
+
+            cheatScanlines();
+        }
+
+
+        ImGui::SameLine();
+        ImGui::Text(isGPressedForCheat ? "Active" : "Inactive");
+
+        ImGui::Separator();
+        ImGui::Text("Entities:");
+        EntityContainer* entityContainer = EntityContainer::GetInstance();
+        int numEntities = entityContainer->CountEntities();
+
+        if (ImGui::TreeNode("All Entities"))
+        {
+            for (int i = 0; i < numEntities; i++)
+            {
+                Entity* entity = (*entityContainer)[i];
+                if (entity)
+                {
+                    if (ImGui::TreeNode(("Entity %s", entity->GetRealName().c_str())))
+                    {
+                        ImGui::Text("Name: %s", entity->GetRealName().c_str());
+                        ImGui::Text("Entity Number: %d", i);
+
+                        ImGui::TreePop();
+                    }
+                }
+            }
+            ImGui::TreePop();
+        }
+
+        ImGui::Separator();
+
+        ImGui::Text("Particle System:");
+
+        Particle** particles = MenuPixelRender->particleManager->GetParticles();
+
+        if (ImGui::TreeNode("All Active Particles"))
+        {
+            for (int i = 0; i < MAX_PARTICLES; ++i)
+            {
+                if (particles[i] != nullptr)
+                {
+                    if (ImGui::TreeNode(("Particle " + std::to_string(i)).c_str()))
+                    {
+                        ImGui::Text("Particle Type: %d", particles[i]->particleType);
+                        ImGui::Text("Position: (%.2f, %.2f)", particles[i]->position.x, particles[i]->position.y);
+                        ImGui::Text("Direction: (%.2f, %.2f)", particles[i]->direction.x, particles[i]->direction.y);
+                        ImGui::Text("Speed: (%.2f, %.2f)", particles[i]->speed.x, particles[i]->speed.y);
+                        ImGui::Text("Color: (%d, %d, %d, %d)", particles[i]->color.r, particles[i]->color.g, particles[i]->color.b, particles[i]->color.a);
+
+                        ImGui::TreePop();
+                    }
+                }
+            }
+            ImGui::TreePop();
+        }
+
+        ImGui::Separator();
+
+        if (ImGui::TreeNode("Tilesets in use:"))
+        {
+            ImGui::BulletText("TileMapSprites.json");
+            ImGui::BulletText("TileMapNormals.json");
+            ImGui::TreePop();
+        }
+
+        ImGui::Separator();
+        ImGui::Text("Scene Tools:");
+
+        if (ImGui::Button("Toggle Metrics/Debug Bar"))
+        {
+            show_metrics_debug_bar = !show_metrics_debug_bar;
+        }
+
+        if (ImGui::Button("Reset Scene"))
+        {
+            SceneSystem::GetInstance()->RestartScene();
+        }
+
+        if (ImGui::Button("Test Scene"))
+        {
+            SceneSystem::GetInstance()->SetScene(TestSceneGetInstance());
+        }
+
+        if (ImGui::Button("Level Creator Scene"))
+        {
+            SceneSystem::GetInstance()->SetScene(LevelCreatorSceneGetInstance());
+        }
+
+        if (show_metrics_debug_bar)
+        {
+            ImGui::Text("Metrics/Debugger:");
+            ImGui::Separator();
+            ImGui::Text("Frame Time: %.3f ms/frame", 1000.0f / ImGui::GetIO().Framerate);
+            ImGui::Text("Framerate: %.1f FPS", ImGui::GetIO().Framerate);
+
+            ImGui::Separator();
+        }
+
+        ImGui::End();
+    }
+#endif
+}
+#endif

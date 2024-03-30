@@ -34,6 +34,9 @@ private:
 	void HandleBack();
 	void HandleExit();
 	void HandleSettings();
+	void ImGuiInterg();
+
+
 
 	static std::unique_ptr<PauseMenu> instance;
 };

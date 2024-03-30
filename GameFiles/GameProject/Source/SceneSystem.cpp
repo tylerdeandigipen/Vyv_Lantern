@@ -144,7 +144,7 @@ SceneSystem* SceneSystem::GetInstance()
 // IM MAKING THIS PURPOSELY BIG SO I SEE IT MORE CLEARLY
 // IGNORE THIS PRACTICALLY EVERYONE ELSE
 // - taylee
-SceneSystem::SceneSystem() : BaseSystem("SceneSystem"), DefaultSceneInstance(TbdTestSceneGetInstance()),
+SceneSystem::SceneSystem() : BaseSystem("SceneSystem"), DefaultSceneInstance(SplashSceneGetInstance()/*TbdTestSceneGetInstance()     MenuSceneGetInstance()*/),
 activeScene(nullptr), nextScene(nullptr), timer(0), rate(0.01f), isRestarting(false)
 { }
 
