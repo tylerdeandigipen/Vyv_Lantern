@@ -105,7 +105,10 @@ Engine::EngineCode TbdTestScene::Init()
 
 	//AudioManager.PlayMusic("forest"); //line is good
 	AudioManager.PlayMusic("bgm");
-	AudioManager.PlaySFX("ambience");
+	AudioManager.DecreaseMusicVolume(0.7f);
+
+	AudioManager.PlaySFX("bgAmbience");
+	AudioManager.PlaySFX("laserAmbience");
 
 	FontSystem fontSystem;
 

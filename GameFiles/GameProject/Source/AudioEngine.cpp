@@ -236,58 +236,82 @@ void _audioManager::SetVoiceVolume(float volume)
 	voiceChannelGroup->setPaused(false);
 }
 
-void _audioManager::IncreaseMusicVolume()
+void _audioManager::IncreaseMusicVolume(float volume)
 {
-	float volume;
+	float currentVolume;
+	musicChannelGroup->getVolume(&currentVolume);
 
-	musicChannelGroup->getVolume(&volume);
-	volume += 0.1f;
-	SetMusicVolume(volume);
+	float newVolume = currentVolume + volume;
+	if (newVolume < 0.0f) {
+		newVolume = 0.0f;
+	}
+
+	musicChannelGroup->setVolume(newVolume);
 }
 
-void _audioManager::IncreaseSFXVolume()
+void _audioManager::IncreaseSFXVolume(float volume)
 {
-	float volume;
+	float currentVolume;
+	SFXChannelGroup->getVolume(&currentVolume);
 
-	SFXChannelGroup->getVolume(&volume);
-	volume += 0.1f;
-	SetAudioVolume(volume);
+	float newVolume = currentVolume + volume;
+	if (newVolume < 0.0f) {
+		newVolume = 0.0f;
+	}
+
+	SFXChannelGroup->setVolume(newVolume);
 }
 
-void _audioManager::IncreaseVoiceVolume()
+void _audioManager::IncreaseVoiceVolume(float volume)
 {
-	float volume;
+	float currentVolume;
+	voiceChannelGroup->getVolume(&currentVolume);
 
-	voiceChannelGroup->getVolume(&volume);
-	volume += 0.1f;
-	SetVoiceVolume(volume);
+	float newVolume = currentVolume + volume;
+	if (newVolume < 0.0f) {
+		newVolume = 0.0f;
+	}
+
+	voiceChannelGroup->setVolume(newVolume);
 }
 
-void _audioManager::DecreaseMusicVolume()
+void _audioManager::DecreaseMusicVolume(float volume)
 {
-	float volume;
+	float currentVolume;
+	musicChannelGroup->getVolume(&currentVolume);
 
-	musicChannelGroup->getVolume(&volume);
-	volume -= 0.1f;
-	SetMusicVolume(volume);
+	float newVolume = currentVolume - volume;
+	if (newVolume < 0.0f) {
+		newVolume = 0.0f;
+	}
+
+	musicChannelGroup->setVolume(newVolume);
 }
 
-void _audioManager::DecreaseSFXVolume()
+void _audioManager::DecreaseSFXVolume(float volume)
 {
-	float volume;
+	float currentVolume;
+	SFXChannelGroup->getVolume(&currentVolume);
 
-	SFXChannelGroup->getVolume(&volume);
-	volume -= 0.1f;
-	SetAudioVolume(volume);
+	float newVolume = currentVolume - volume;
+	if (newVolume < 0.0f) {
+		newVolume = 0.0f;
+	}
+
+	SFXChannelGroup->setVolume(newVolume);
 }
 
-void _audioManager::DecreaseVoiceVolume()
+void _audioManager::DecreaseVoiceVolume(float volume)
 {
-	float volume;
+	float currentVolume;
+	voiceChannelGroup->getVolume(&currentVolume);
 
-	voiceChannelGroup->getVolume(&volume);
-	volume -= 0.1f;
-	SetVoiceVolume(volume);
+	float newVolume = currentVolume - volume;
+	if (newVolume < 0.0f) {
+		newVolume = 0.0f;
+	}
+
+	voiceChannelGroup->setVolume(newVolume);
 }
 
 /*!				void _audioManager::Update()
