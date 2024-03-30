@@ -173,7 +173,9 @@ void BehaviorSwitch::SwitchCollisionHandler(Entity* entity1, Entity* entity2)
 				/*Mirror will move here*/
 
 				//BehaviorMirror::SwitchOn(OnOff);
-				AudioManager.PlaySFX("mirrorMove");
+				//AudioManager.PlaySFX("mirrorMove");
+
+				// MAKE RANDOM AUDIO PLAY
 
 				// temporary win condition
 				if (theSwitch->currentPos == theSwitch->maxCount)
