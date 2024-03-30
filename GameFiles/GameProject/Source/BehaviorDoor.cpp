@@ -214,7 +214,10 @@ void BehaviorDoor::DoorCollisionHandler(Entity* entity1, Entity* entity2)
                         if (LevelBuilder::IsWinStateSet() == false)
                         {
                             if (door->_nextScene == "WinScene")
+                            {
+                                AudioManager.PlayMusic("cheer");
                                 SceneSystem::GetInstance()->SetScene(WinSceneGetInstance());
+                            }
                             else if (door->_nextScene == "LevelCreatorScene")
                                        SceneSystem::GetInstance()->SetScene(LevelCreatorSceneGetInstance());
                         }

@@ -1347,7 +1347,7 @@ void LevelCreatorScene::AddDoorEntity(Entity* entity)
 	json collider = { {"Type", "ColliderAABB"} };
 	json transform = { {"Type", "Transform"}, {"translation", { { "x", entity->Has(Transform)->GetTranslation()->x }, {"y", entity->Has(Transform)->GetTranslation()->y} } } };
 	json physics = { {"Type", "Physics"}, {"OldTranslation", { { "x", entity->Has(Transform)->GetTranslation()->x }, {"y", entity->Has(Transform)->GetTranslation()->y} } } };
-	json behaivor = { {"Type", "BehaviorDoor"}, {"DoorClosed", true}, {"ClosedSprite", "./Assets/PPM/Door_Closed.ppm"}, {"OpenSprite", "./Assets/PPM/Door_Open.ppm"}, {"PairName", entity->GetComponent<BehaviorDoor>()->GetPairName() } };
+	json behaivor = { {"Type", "BehaviorDoor"}, {"DoorClosed", true}, {"ClosedSprite", "./Assets/PPM/Door_Closed.ppm"}, {"OpenSprite", "./Assets/PPM/Door_Open.ppm"}, {"PairName", entity->GetComponent<BehaviorDoor>()->GetPairName() }, {"NextScene", entity->GetComponent<BehaviorDoor>()->GetNextScene() }};
 
 	components.push_back(collider);
 	components.push_back(transform);

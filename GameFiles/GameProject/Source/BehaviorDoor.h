@@ -42,6 +42,7 @@ public:
 	bool GetDoorClosed();
 	auto GetDestinationPosition() -> Destination;
 	auto GetPairName() -> std::string { return _receiver; };
+	auto GetNextScene() -> std::string { return _nextScene; };
 
 private:
 	Destination mDestination;

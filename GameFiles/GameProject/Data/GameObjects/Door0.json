@@ -23,7 +23,7 @@
       "ClosedSprite": "./Assets/PPM/Door_Closed.ppm",
       "OpenSprite": "./Assets/PPM/Door_Open.ppm",
       "PairName": "Receiver0",
-      "NextScene": "LevelCreatorScene"
+      "NextScene": "WinScene"
     }
   ],
   "FilePath": "./Data/GameObjects/Door0.json",
