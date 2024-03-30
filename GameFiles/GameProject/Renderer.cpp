@@ -991,10 +991,13 @@ void Renderer::UpdateObjects(float dt)
 	{
 		for (int l = 0; l < 3; ++l)
 		{
-			if (objects[i]->layer == l && objects[i]->totalFrames == 0 && objects[i]->isCulled == false)
+			if (objects[i])
 			{
-				objectLayer->AddSprite(objects[i]);
-				break;
+				if (objects[i]->layer == l && objects[i]->totalFrames == 0 && objects[i]->isCulled == false)
+				{
+					objectLayer->AddSprite(objects[i]);
+					break;
+				}
 			}
 		}
 	}

@@ -151,6 +151,7 @@
     <ClCompile Include="Source\WinScene.cpp">
       <Filter>Source FIles\Scenes</Filter>
     </ClCompile>
+    <ClCompile Include="Source\TextEditor.cpp" />
     <ClCompile Include="Source\Subject.cpp">
       <Filter>Source FIles\Engine</Filter>
     </ClCompile>
@@ -172,6 +173,8 @@
     <ClCompile Include="Source\ParticleManager.cpp">
       <Filter>Source FIles\Engine\Systems</Filter>
     </ClCompile>
+    <ClCompile Include="Emitter.cpp" />
+    <ClCompile Include="LineCollider.cpp" />
     <ClCompile Include="Source\TBDLasers.cpp">
       <Filter>Source FIles\Graphics</Filter>
     </ClCompile>
@@ -184,21 +187,8 @@
     <ClCompile Include="Source\BehaviorEmitter.cpp">
       <Filter>Source FIles\Objects\Components\Sub Components</Filter>
     </ClCompile>
-    <ClCompile Include="BehaviorReceiver.cpp">
-      <Filter>Source FIles\Objects\Components\Sub Components</Filter>
-    </ClCompile>
-    <ClCompile Include="Emitter.cpp">
-      <Filter>Source FIles\Objects\Components\Sub Components</Filter>
-    </ClCompile>
-    <ClCompile Include="LineCollider.cpp">
-      <Filter>Source FIles\Objects\Components\Sub Components</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\SplashScene.cpp">
-      <Filter>Source FIles\Scenes</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\TextEditor.cpp">
-      <Filter>Source FIles\Other</Filter>
-    </ClCompile>
+    <ClCompile Include="Source\SplashScene.cpp" />
+    <ClCompile Include="Source\MenuScene.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="IMGUI\imgui.h">
@@ -410,7 +400,7 @@
     </ClInclude>
     <ClInclude Include="BehaviorEmitter.h" />
     <ClInclude Include="Source\SplashScene.h" />
-    <ClInclude Include="BehaviorReceiver.h" />
+    <ClInclude Include="Source\MenuScene.h" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Misc\GameProject.ico">

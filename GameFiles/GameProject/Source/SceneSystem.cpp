@@ -17,9 +17,9 @@
 #include "TestScene.h"
 #include "TBDTestScene.h"
 #include "LevelCreatorScene.h"
-#include "WinScene.h"
 #include "SplashScene.h"
 #include "Inputs.h"
+#include "MenuScene.h"
 
 // enums for different scene types
 enum class SceneType
@@ -28,7 +28,7 @@ enum class SceneType
 	SCENE_TEST = 1,
 	SCENE_LEVELCREATOR = 2,
 	SCENE_SPLASH = 3,
-	SCENE_WIN = 4,
+	SCENE_MENU = 4,
 	NULL_SCENE,
 
 	// Add more scenes as needed
@@ -144,7 +144,7 @@ SceneSystem* SceneSystem::GetInstance()
 // IM MAKING THIS PURPOSELY BIG SO I SEE IT MORE CLEARLY
 // IGNORE THIS PRACTICALLY EVERYONE ELSE
 // - taylee
-SceneSystem::SceneSystem() : BaseSystem("SceneSystem"), DefaultSceneInstance(TbdTestSceneGetInstance()),
+SceneSystem::SceneSystem() : BaseSystem("SceneSystem"), DefaultSceneInstance(SplashSceneGetInstance()/*TbdTestSceneGetInstance()     MenuSceneGetInstance()*/),
 activeScene(nullptr), nextScene(nullptr), timer(0), rate(0.01f), isRestarting(false)
 { }
 
@@ -233,11 +233,10 @@ bool CheckGameScenes()
 	{
 		activeSceneType = SceneType::SCENE_SPLASH;
 	}
-	else if (activeScene == WinSceneGetInstance())
+	else if (activeScene == MenuSceneGetInstance())
 	{
-		activeSceneType = SceneType::SCENE_WIN;
+		activeSceneType = SceneType::SCENE_MENU;
 	}
-
 	assert(activeSceneType != SceneType::NULL_SCENE && "Active scene type is NULL. Location: CheckGameScenes()");
 
 	if (inputHandlerScene->keyPressed(SDL_SCANCODE_1))
@@ -282,6 +281,17 @@ bool CheckGameScenes()
 		else
 		{
 			sceneSystem->SetScene(SplashSceneGetInstance());
+		}
+	}
+	else if (inputHandlerScene->keyPressed(SDL_SCANCODE_5))
+	{
+		if (activeSceneType == SceneType::SCENE_MENU)
+		{
+			sceneSystem->RestartScene();
+		}
+		else
+		{
+			sceneSystem->SetScene(MenuSceneGetInstance());
 		}
 	}
 	else
