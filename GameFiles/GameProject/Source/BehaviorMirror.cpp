@@ -78,9 +78,9 @@ void BehaviorMirror::Init()
             //Parent()->GetImage()->position = currentPos;
             // set up mirror information
             ImageBuffer* image = Parent()->GetImage();
+            Transform* trans = Parent()->Has(Transform);
             if (image)
             {
-                Transform* trans = Parent()->Has(Transform);
                 gfxVector2 test = image->size;
                 std::string file = Parent()->GetSpritePath();
                 gfxVector2 up = { 0.0f, 1.0f };
@@ -96,6 +96,10 @@ void BehaviorMirror::Init()
                 mirror->yPos2 = { trans->GetTranslation()->x + (test.y / 2), trans->GetTranslation()->y + test.y };
                 //mirror->reflectDir = { 1 , 0 };
                 // mirror->reflectFromLeft = true;
+            }
+            if (LitSprite)
+            {
+                LitSprite->position = *trans->GetTranslation();
             }
         }
         Renderer::GetInstance()->laserHandler.AddMirror(mirror);
@@ -127,7 +131,20 @@ void BehaviorMirror::Update(float dt)
         // vertical 
         mirror->yPos1 = { trans->GetTranslation()->x + (test.x / 2), trans->GetTranslation()->y };
         mirror->yPos2 = { trans->GetTranslation()->x + (test.y / 2), trans->GetTranslation()->y + test.y };
-
+        if (LitSprite)
+        {
+            LitSprite->position = Parent()->GetImage()->position;
+            if (mirror->isActivated1 || mirror->isActivated2)
+            {
+                LitSprite->isCulled = false;
+                Parent()->GetImage()->isCulled = true;
+            }
+            else
+            {
+                LitSprite->isCulled = true;
+                Parent()->GetImage()->isCulled = false;
+            }
+        }
     }
 }
 
@@ -143,8 +160,28 @@ void BehaviorMirror::Read(json jsonData)
         //angle.y = direction["DirectionY"];
         mirror->reflectDir.x = direction["DirectionX"];
         mirror->reflectDir.y = direction["DirectionY"];
+        if (mirror->reflectDir.x < 0 || mirror->reflectDir.y < 0)
+        {
+            flipped = true;
+            if (Parent())
+            {
+                Parent()->GetImage()->isFlipped = true;
+            }
+        }
     }
 
+    if (jsonData["LitSprite"].is_object())
+    {
+        std::string sprite = jsonData["LitSprite"]["LitSprite"];
+        LitSprite = new ImageBuffer(sprite);
+        Renderer::GetInstance()->AddObject(LitSprite);
+        if (flipped)
+        {
+            LitSprite->isFlipped = true;
+        }
+        LitSprite->isCulled = true;
+        LitSprite->position = *Parent()->GetComponent<Transform>()->GetTranslation();
+    }
 
     for (auto& positions : jsonData["pos"])
     {

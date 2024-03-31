@@ -38,8 +38,11 @@
         "DirectionX": -1.0,
         "DirectionY": 1.0
       },
-      "key": 1
-    },
+      "key": 1,
+      "LitSprite" :{
+        "LitSprite": "./Assets/PPM/CrystalSprites/MirrorLit.ppm"
+      }
+      },
     {
       "Type": "Light",
       "File": "./Data/Lights/MirrorLight.json"
@@ -51,7 +54,7 @@
   },
   "Name": "Switch",
   "Type": "Object",
-  "file": "./Assets/PPM/CrystalSprites/MirrorCrystalDownRight.ppm",
+  "file": "./Assets/PPM/CrystalSprites/MirrorUnlit.ppm",
   "frameSize": [
     8,
     8

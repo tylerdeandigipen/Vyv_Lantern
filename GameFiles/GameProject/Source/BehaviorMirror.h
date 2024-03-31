@@ -14,6 +14,7 @@
 #include "TBDLasers.h"
 
 class gfxVector2;
+class ImageBuffer;
 struct Mirror;
 
 class BehaviorMirror : public Behavior
@@ -41,6 +42,7 @@ public:
 	void SetReflection(gfxVector2 dir) { mirror->reflectDir = dir; };
 
 private:
+
 	void Controller(float dt);
 	//reflector* reflect;
 	Mirror* mirror;
@@ -51,4 +53,6 @@ private:
 	static gfxVector2 currentPos; // Current position of the mirror
 	static gfxVector2 targetPos; // Target position for interpolation
 	bool inited = false;
+	bool flipped = false;
+	ImageBuffer* LitSprite = nullptr;
 };
