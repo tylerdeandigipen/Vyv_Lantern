@@ -168,6 +168,8 @@ void BehaviorSwitch::SwitchCollisionHandler(Entity* entity1, Entity* entity2)
 
 			if (input->keyPressed(SDL_SCANCODE_E))
 			{
+				AudioManager.PlaySFX("interact");
+
 				// swaps bool value
 				theSwitch->SetLerped();
 				OnOff = true;
@@ -197,8 +199,6 @@ void BehaviorSwitch::SwitchCollisionHandler(Entity* entity1, Entity* entity2)
 				{
 					AudioManager.PlaySFX("mirrorMove5");
 				}
-
-				// MAKE RANDOM AUDIO PLAY
 
 				// temporary win condition
 				if (theSwitch->currentPos == theSwitch->maxCount)
