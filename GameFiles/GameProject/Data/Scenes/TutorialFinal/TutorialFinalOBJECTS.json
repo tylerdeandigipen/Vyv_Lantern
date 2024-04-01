@@ -1,16 +1,16 @@
 {
   "Circle": {
-    "count": 5
+    "count": 6
   },
   "Door": {
-    "count": 2
+    "count": 3
   },
   "Emitter": {
-    "count": 8
+    "count": 11
   },
   "FilePath": "./Data/Scenes/TutorialFinal/TutorialFinalOBJECTS.json",
   "Mirror": {
-    "count": 11
+    "count": 12
   },
   "Objects": [
     {
@@ -20,7 +20,7 @@
       "FilePath": "./Data/Scenes/TutorialFinal/Door0.json"
     },
     {
-      "FilePath": "./Data/Scenes/TutorialFinal/Door3.json"
+      "FilePath": "./Data/Scenes/TutorialFinal/Door4.json"
     },
     {
       "FilePath": "./Data/Scenes/TutorialFinal/Receiver0.json"
@@ -57,9 +57,15 @@
     },
     {
       "FilePath": "./Data/Scenes/TutorialFinal/Door1.json"
+    },
+    {
+      "FilePath": "./Data/Scenes/TutorialFinal/Emitter8.json"
+    },
+    {
+      "FilePath": "./Data/Scenes/TutorialFinal/Emitter9.json"
     }
   ],
   "Receiver": {
-    "count": 3
+    "count": 4
   }
 }

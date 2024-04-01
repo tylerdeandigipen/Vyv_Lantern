@@ -26,9 +26,9 @@
       "Type": "BehaviorDoor"
     }
   ],
-  "FilePath": "./Data/Scenes/TutorialFinal/Door2.json",
+  "FilePath": "./Data/Scenes/TutorialFinal/Door3.json",
   "KeyObject": {
-    "key": "Door3"
+    "key": "Door4"
   },
   "Name": "Door",
   "Type": "Object",
