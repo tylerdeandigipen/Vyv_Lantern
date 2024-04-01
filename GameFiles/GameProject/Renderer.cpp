@@ -59,9 +59,13 @@ void Renderer::Update(float dt)
 	omp_set_num_threads(maxThreadsAllowed);
 
 	//fixes janky cam movements
-	
 	CameraP.x = std::truncf(nextCamPos.x);
 	CameraP.y = std::truncf(nextCamPos.y);
+
+	if (decalsAreDirty == true)
+	{
+		AddDecalsToTilemap();
+	}
 
 	UpdateObjects(dt);
 
@@ -847,6 +851,42 @@ void Renderer::MakeTileMap(int** tileMapArray)
 		}
 	}
 	delete clearTile;
+}
+
+void Renderer::AddDecal(ImageBuffer* sprite, Vector2 pos)
+{
+	if (numDecals < MAX_DECALS)
+	{
+		decals[numDecals] = sprite;
+		decals[numDecals]->position = pos;
+		decalsAreDirty = true;
+		numDecals += 1;
+	}
+}
+
+void Renderer::AddDecalsToTilemap()
+{
+	for (int i = 0; i < numDecals; i++)
+	{
+		if (decals[i] != NULL)
+		{
+			backgroundLayer->AddSprite(decals[i]);
+		}
+	}
+}
+
+//only removes the specified decal from the renderer, call before you delete a given decal
+void Renderer::FreeDecalFromRenderer(ImageBuffer* sprite)
+{
+	for (int i = 0; i < numDecals; i++)
+	{
+		if (decals[i] == sprite)
+		{
+			decals[i] = nullptr;
+			//decalsAreDirty = true; //possibly add this later if want to redraw tilemap to get rid of removed decals
+			return;
+		}
+	}
 }
 
 void Renderer::TileMapSetTile(Vector2 pos, int tile)

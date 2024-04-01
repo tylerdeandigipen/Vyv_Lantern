@@ -28,6 +28,7 @@
 #define NUM_WALL_TILES 17
 #define NUM_NON_WALKABLE_TILES 33
 #define MAX_LASER_POINTS 100
+#define MAX_DECALS 100
 
 class Renderer
 {
@@ -76,6 +77,9 @@ public:
 
 	//Tilemap Functions
 	void MakeTileMap(int** tileMapArray);
+	void AddDecal(ImageBuffer* sprite, Vector2 pos);
+	void AddDecalsToTilemap();
+	void FreeDecalFromRenderer(ImageBuffer* spriteToFree);
 	void TileMapSetTile(Vector2 pos, int tile);
 	void TileMapEraseTile(Vector2 pos);
 	void AddTileToTileset(ImageBuffer* tile);
@@ -183,6 +187,9 @@ private:
 	ImageBuffer* tileSet[MAX_TILES];
 	ImageBuffer* normalTileSet[MAX_TILES];
 	ImageBuffer* shadowCasterTileset[MAX_TILES];
+	ImageBuffer* decals[MAX_DECALS];
+	int numDecals = 0;
+	bool decalsAreDirty = false;
 
 	//Framerate Variables
 	int frameCount = 0;
