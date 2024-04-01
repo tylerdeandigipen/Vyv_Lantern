@@ -24,6 +24,7 @@
 #include <cmath>
 #include <iostream>
 #include "Vector.h"
+#include <stdlib.h>
 
 bool BehaviorSwitch::OnOff = false;
 
@@ -172,8 +173,30 @@ void BehaviorSwitch::SwitchCollisionHandler(Entity* entity1, Entity* entity2)
 				OnOff = true;
 				/*Mirror will move here*/
 
+				int audioPlay = rand() % 5 + 1;
+
 				//BehaviorMirror::SwitchOn(OnOff);
 				//AudioManager.PlaySFX("mirrorMove");
+				if (audioPlay == 1)
+				{
+					AudioManager.PlaySFX("mirrorMove1");
+				}
+				else if (audioPlay == 2)
+				{
+					AudioManager.PlaySFX("mirrorMove2");
+				}
+				else if (audioPlay == 3)
+				{
+					AudioManager.PlaySFX("mirrorMove3");
+				}
+				else if (audioPlay == 4)
+				{
+					AudioManager.PlaySFX("mirrorMove4");
+				}
+				else if (audioPlay == 5)
+				{
+					AudioManager.PlaySFX("mirrorMove5");
+				}
 
 				// MAKE RANDOM AUDIO PLAY
 

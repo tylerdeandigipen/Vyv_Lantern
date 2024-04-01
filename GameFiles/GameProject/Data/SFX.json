@@ -6,5 +6,9 @@
   "footsteps": "Assets/Audio/SFX/FOOTSTEPS_SNEAKERS_SNOW_WALK_SLOW_CRUNCH_01.ogg",
   "laserShoot": "Assets/Audio/SFX/SCIENCE_FICTION_LASER_GUN_BEAM_BLASTER_SHOT_01.ogg",
   "laserAmbience": "Assets/Audio/SFX/LaserBeamSFX.wav",
-  "mirrorMove": "Assets/Audio/SFX/MirrorMoveSFX.wav"
+  "mirrorMove1": "Assets/Audio/SFX/MirrorMoveSFX1.wav",
+  "mirrorMove2": "Assets/Audio/SFX/MirrorMoveSFX2.wav",
+  "mirrorMove3": "Assets/Audio/SFX/MirrorMoveSFX3.wav",
+  "mirrorMove4": "Assets/Audio/SFX/MirrorMoveSFX4.wav",
+  "mirrorMove5": "Assets/Audio/SFX/MirrorMoveSFX5.wav"
 }
