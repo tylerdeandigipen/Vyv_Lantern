@@ -1,0 +1,116 @@
+{
+  "Circle": {
+    "count": 9
+  },
+  "Door": {
+    "count": 10
+  },
+  "Emitter": {
+    "count": 12
+  },
+  "FilePath": "./Data/Scenes/Section1FinalNot1FPS/Section1FinalNot1FPSOBJECTS.json",
+  "Mirror": {
+    "count": 34
+  },
+  "Objects": [
+    {
+      "FilePath": "./Data/Scenes/Section1FinalNot1FPS/Section1WIPEmitter0.json"
+    },
+    {
+      "FilePath": "./Data/Scenes/Section1FinalNot1FPS/Section1WIPReciever1.json"
+    },
+    {
+      "FilePath": "./Data/Scenes/Section1FinalNot1FPS/Section1WIPMirror0.json"
+    },
+    {
+      "FilePath": "./Data/Scenes/Section1FinalNot1FPS/Section1WIPMirror1.json"
+    },
+    {
+      "FilePath": "./Data/Scenes/Section1FinalNot1FPS/Section1WIPMirror2.json"
+    },
+    {
+      "FilePath": "./Data/Scenes/Section1FinalNot1FPS/Section1WIPMirror3.json"
+    },
+    {
+      "FilePath": "./Data/Scenes/Section1FinalNot1FPS/Section1WIPMirror4.json"
+    },
+    {
+      "FilePath": "./Data/Scenes/Section1FinalNot1FPS/Reciever3.json"
+    },
+    {
+      "FilePath": "./Data/Scenes/Section1FinalNot1FPS/Mirror7.json"
+    },
+    {
+      "FilePath": "./Data/Scenes/Section1FinalNot1FPS/Mirror8.json"
+    },
+    {
+      "FilePath": "./Data/Scenes/Section1FinalNot1FPS/Mirror9.json"
+    },
+    {
+      "FilePath": "./Data/Scenes/Section1FinalNot1FPS/Mirror10.json"
+    },
+    {
+      "FilePath": "./Data/Scenes/Section1FinalNot1FPS/Mirror11.json"
+    },
+    {
+      "FilePath": "./Data/Scenes/Section1FinalNot1FPS/Mirror12.json"
+    },
+    {
+      "FilePath": "./Data/Scenes/Section1FinalNot1FPS/Mirror13.json"
+    },
+    {
+      "FilePath": "./Data/Scenes/Section1FinalNot1FPS/Emitter4.json"
+    },
+    {
+      "FilePath": "./Data/Scenes/Section1FinalNot1FPS/Mirror15.json"
+    },
+    {
+      "FilePath": "./Data/Scenes/Section1FinalNot1FPS/Mirror16.json"
+    },
+    {
+      "FilePath": "./Data/Scenes/Section1FinalNot1FPS/Mirror17.json"
+    },
+    {
+      "FilePath": "./Data/Scenes/Section1FinalNot1FPS/Mirror18.json"
+    },
+    {
+      "FilePath": "./Data/Scenes/Section1FinalNot1FPS/Mirror19.json"
+    },
+    {
+      "FilePath": "./Data/Scenes/Section1FinalNot1FPS/Reciever5.json"
+    },
+    {
+      "FilePath": "./Data/Scenes/Section1FinalNot1FPS/Mirror22.json"
+    },
+    {
+      "FilePath": "./Data/Scenes/Section1FinalNot1FPS/Mirror23.json"
+    },
+    {
+      "FilePath": "./Data/Scenes/Section1FinalNot1FPS/Mirror24.json"
+    },
+    {
+      "FilePath": "./Data/Scenes/Section1FinalNot1FPS/Mirror25.json"
+    },
+    {
+      "FilePath": "./Data/Scenes/Section1FinalNot1FPS/Mirror26.json"
+    },
+    {
+      "FilePath": "./Data/Scenes/Section1FinalNot1FPS/Mirror27.json"
+    },
+    {
+      "FilePath": "./Data/Scenes/Section1FinalNot1FPS/Mirror30.json"
+    },
+    {
+      "FilePath": "./Data/Scenes/Section1FinalNot1FPS/Receiver6.json"
+    },
+    {
+      "FilePath": "./Data/Scenes/Section1FinalNot1FPS/Door7.json"
+    },
+    {
+      "FilePath": "./Data/Scenes/Section1FinalNot1FPS/Receiver1.json"
+    }
+  ],
+  "Receiver": {
+    "count": 3
+  }
+}
