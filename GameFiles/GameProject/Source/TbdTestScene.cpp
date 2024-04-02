@@ -36,6 +36,7 @@
 #include "FontSystem.h"
 
 #include "TestScene.h"
+#include "Section1Final.h"
 
 Logging& TbdLogger = Logging::GetInstance("debugLog.log");
 
@@ -61,6 +62,7 @@ Engine::EngineCode TbdTestScene::Load()
 	AudioManager.LoadSFXFromJSON("./Data/SFX.json");// line is goodplay
 
 	if (entityManagerTBD->InitializeProperties("./Data/GameObjects/ObjectList.json"))
+	//if (entityManagerTBD->InitializeProperties("./Data/Scenes/TutorialFinalActual/TutorialFinalActualOBJECTS.json"))
 		std::cout << "Property load success!\n";
 
 	return Engine::NothingBad;
@@ -83,6 +85,7 @@ Engine::EngineCode TbdTestScene::Init()
 	//initialize level data
 	//EntityContainer::GetInstance()->ReadEntities();
 	LevelBuilder::GetInstance()->LoadTileMap("./Data/Scenes/TutorialFinal2.json");
+	//LevelBuilder::GetInstance()->LoadTileMap("./Data/Scenes/TutorialFinalActual/TutorialFinalActual.json");
 
 	//ControlledEmitter = LaserSystem::GetInstance()->CreateEmitter();
 	/*
@@ -256,6 +259,10 @@ void TbdTestScene::handleCheatCodes()
 	if (!inputHandler->keyPressed(SDL_SCANCODE_GRAVE))
 	{
 		TbdCanToggleFullBright = true;
+	}
+	if (inputHandler->keyPressed(SDL_SCANCODE_7))
+	{
+		SceneSystem::GetInstance()->SetScene(Section1FinalGetInstance());
 	}
 
 	if (inputHandler->keyPressed(SDL_SCANCODE_Q) && TbdCanToggleOnlyLights == true)

@@ -199,6 +199,9 @@
     <ClCompile Include="Source\TextEditor.cpp">
       <Filter>Source FIles\Other</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Section1Final.cpp">
+      <Filter>Source FIles\Scenes</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="IMGUI\imgui.h">
@@ -411,6 +414,9 @@
     <ClInclude Include="BehaviorEmitter.h" />
     <ClInclude Include="Source\SplashScene.h" />
     <ClInclude Include="BehaviorReceiver.h" />
+    <ClInclude Include="Source\Section1Final.h">
+      <Filter>Header FIles\Scenes</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Misc\GameProject.ico">

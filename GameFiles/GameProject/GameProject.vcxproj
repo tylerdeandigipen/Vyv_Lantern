@@ -234,6 +234,7 @@ xcopy "$(ProjectDir)Fmod\*.dll" "$(OutDir)" /s /r /y /q /i</Command>
     <ClInclude Include="Source\Scene.h" />
     <ClInclude Include="Source\SceneSystem.h" />
     <ClInclude Include="Source\ScopeTimer.h" />
+    <ClInclude Include="Source\Section1Final.h" />
     <ClInclude Include="Source\SplashScene.h" />
     <ClInclude Include="Source\Sprite.h" />
     <ClInclude Include="Source\StubScene.h" />
@@ -303,6 +304,7 @@ xcopy "$(ProjectDir)Fmod\*.dll" "$(OutDir)" /s /r /y /q /i</Command>
     <ClCompile Include="Source\PlatformSystem.cpp" />
     <ClCompile Include="Source\Scene.cpp" />
     <ClCompile Include="Source\SceneSystem.cpp" />
+    <ClCompile Include="Source\Section1Final.cpp" />
     <ClCompile Include="Source\SplashScene.cpp" />
     <ClCompile Include="Source\Sprite.cpp" />
     <ClCompile Include="Source\StubScene.cpp" />

@@ -23,7 +23,8 @@
       "NextScene": "",
       "OpenSprite": "./Assets/PPM/Door_Open.ppm",
       "PairName": "Receiver2",
-      "Type": "BehaviorDoor"
+      "Type": "BehaviorDoor",
+      "NextScene" : "Section1Final"
     }
   ],
   "FilePath": "./Data/Scenes/TutorialFinalActual/Door3.json",

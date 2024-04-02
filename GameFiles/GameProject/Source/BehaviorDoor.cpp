@@ -24,6 +24,7 @@
 #include "SceneSystem.h"
 #include "WinScene.h"
 #include "LevelCreatorScene.h"
+#include "Section1Final.h"
 
 BehaviorDoor::BehaviorDoor() : Behavior(Behavior::bDoor), mDestination(), AddedToForeGround(false), closedPPM(), openPPM(), tempImage(nullptr), isDoorClosed(true)
 {
@@ -203,33 +204,48 @@ void BehaviorDoor::DoorCollisionHandler(Entity* entity1, Entity* entity2)
 				}
 			}
 
-#ifdef _DEBUG
-			Inputs* input = Inputs::GetInstance();
-			if (input->keyPressed(SDL_SCANCODE_E))
+
+			if (door != nullptr && door->isDoorClosed == false)
 			{
-				if (door->GetCurr() == cIdle)
+				if (door->_nextScene == "Section1Final")
+					SceneSystem::GetInstance()->SetScene(Section1FinalGetInstance());
+				else if (door->_nextScene == "WinScene")
 				{
-					if (door->GetDoorClosed() == true)
-					{
-						door->SetNext(cOpen);
-					}
-					else
-					{
-						// LevelBuilder::SetWinState(true);
-						if (LevelBuilder::IsWinStateSet() == false)
-						{
-							if (door->_nextScene == "WinScene")
-							{
-								AudioManager.PlayMusic("cheer");
-								SceneSystem::GetInstance()->SetScene(WinSceneGetInstance());
-							}
-							else if (door->_nextScene == "LevelCreatorScene")
-								SceneSystem::GetInstance()->SetScene(LevelCreatorSceneGetInstance());
-						}
-						door->SetNext(cClosed);
-					}
+					AudioManager.PlayMusic("cheer");
+					SceneSystem::GetInstance()->SetScene(WinSceneGetInstance());
 				}
 			}
+
+#ifdef _DEBUG
+            Inputs* input = Inputs::GetInstance();
+            if (input->keyPressed(SDL_SCANCODE_7))
+            {
+                SceneSystem::GetInstance()->SetScene(Section1FinalGetInstance());
+                if (door->GetCurr() == cIdle)
+                {
+                    if (door->GetDoorClosed() == true)
+                    {
+                        door->SetNext(cOpen);
+                    }
+                    else
+                    {
+                        // LevelBuilder::SetWinState(true);
+                        if (LevelBuilder::IsWinStateSet() == false)
+                        {
+                            if (door->_nextScene == "WinScene")
+                            {
+                                AudioManager.PlayMusic("cheer");
+                                SceneSystem::GetInstance()->SetScene(WinSceneGetInstance());
+                            }
+                            else if (door->_nextScene == "LevelCreatorScene")
+                                SceneSystem::GetInstance()->SetScene(LevelCreatorSceneGetInstance());
+                            else if (door->_nextScene == "Section1Final")
+                                SceneSystem::GetInstance()->SetScene(Section1FinalGetInstance());
+                        }
+                        door->SetNext(cClosed);
+                    }
+                }
+            }
 #endif
 		}
 	}

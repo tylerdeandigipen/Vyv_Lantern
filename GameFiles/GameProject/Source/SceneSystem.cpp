@@ -14,6 +14,7 @@
 #include "Scene.h"
 #include "Engine.h"
 #include "TbdTestScene.h"
+#include "Section1Final.h"
 #include "TestScene.h"
 #include "TBDTestScene.h"
 #include "LevelCreatorScene.h"
@@ -29,6 +30,7 @@ enum class SceneType
 	SCENE_LEVELCREATOR = 2,
 	SCENE_SPLASH = 3,
 	SCENE_WIN = 4,
+	SCENE_SECTION1,
 	NULL_SCENE,
 
 	// Add more scenes as needed
@@ -237,7 +239,11 @@ bool CheckGameScenes()
 	{
 		activeSceneType = SceneType::SCENE_WIN;
 	}
-
+	else if (activeScene == Section1FinalGetInstance())
+	{
+		activeSceneType = SceneType::SCENE_SECTION1;
+	}
+		
 	assert(activeSceneType != SceneType::NULL_SCENE && "Active scene type is NULL. Location: CheckGameScenes()");
 
 	if (inputHandlerScene->keyPressed(SDL_SCANCODE_1))
