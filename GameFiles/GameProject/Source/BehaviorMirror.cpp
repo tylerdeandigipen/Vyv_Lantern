@@ -160,28 +160,18 @@ void BehaviorMirror::Read(json jsonData)
         //angle.y = direction["DirectionY"];
         mirror->reflectDir.x = direction["DirectionX"];
         mirror->reflectDir.y = direction["DirectionY"];
-        if (mirror->reflectDir.x < 0 || mirror->reflectDir.y < 0)
-        {
-            flipped = true;
-            if (Parent())
-            {
-                Parent()->GetImage()->isFlipped = true;
-            }
-        }
     }
-
-    if (jsonData["LitSprite"].is_object())
+    // make check for unlit flipped sprite to flip this sprite later on
+    std::string sprite = "./Assets/PPM/CrystalSprites/MirrorLit.ppm";
+    LitSprite = new ImageBuffer(sprite);
+    Renderer::GetInstance()->AddObject(LitSprite);
+    if (Parent()->GetSpritePath().compare("./Assets/PPM/CrystalSprites/MirrorCrystalDownLeft.ppm") == 0 || Parent()->GetSpritePath().compare("./Assets/PPM/CrystalSprites/MirrorCrystalUpRight.ppm") == 0 || Parent()->GetSpritePath().compare("./Assets/PPM/CrystalSprites/MirrorUnlitFlipped.ppm") == 0)
     {
-        std::string sprite = jsonData["LitSprite"]["LitSprite"];
-        LitSprite = new ImageBuffer(sprite);
-        Renderer::GetInstance()->AddObject(LitSprite);
-        if (flipped)
-        {
-            LitSprite->isFlipped = true;
-        }
-        LitSprite->isCulled = true;
-        LitSprite->position = *Parent()->GetComponent<Transform>()->GetTranslation();
+        flipped = true;
+        LitSprite->FlipSprite();
     }
+    LitSprite->isCulled = true;
+    LitSprite->position = *Parent()->GetComponent<Transform>()->GetTranslation();
 
     for (auto& positions : jsonData["pos"])
     {
