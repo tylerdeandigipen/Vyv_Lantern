@@ -62,7 +62,8 @@ Engine::EngineCode TbdTestScene::Load()
 	AudioManager.LoadSFXFromJSON("./Data/SFX.json");// line is goodplay
 
 	if (entityManagerTBD->InitializeProperties("./Data/GameObjects/ObjectList.json"))
-	//if (entityManagerTBD->InitializeProperties("./Data/Scenes/TutorialFinalActual/TutorialFinalActualOBJECTS.json"))
+
+		//if (entityManagerTBD->InitializeProperties("./Data/Scenes/TutorialFinalActual/TutorialFinalActualOBJECTS.json"))
 		std::cout << "Property load success!\n";
 
 	return Engine::NothingBad;
@@ -85,6 +86,7 @@ Engine::EngineCode TbdTestScene::Init()
 	//initialize level data
 	//EntityContainer::GetInstance()->ReadEntities();
 	LevelBuilder::GetInstance()->LoadTileMap("./Data/Scenes/TutorialFinal2.json");
+
 	//LevelBuilder::GetInstance()->LoadTileMap("./Data/Scenes/TutorialFinalActual/TutorialFinalActual.json");
 
 	//ControlledEmitter = LaserSystem::GetInstance()->CreateEmitter();
@@ -111,7 +113,8 @@ Engine::EngineCode TbdTestScene::Init()
 	AudioManager.DecreaseMusicVolume(0.7f);
 
 	AudioManager.PlaySFX("bgAmbience");
-	AudioManager.PlaySFX("laserAmbience");
+
+	//AudioManager.PlaySFX("laserAmbience"); // replace with things that sound more "electric humming"
 
 	FontSystem fontSystem;
 
@@ -305,11 +308,16 @@ void TbdTestScene::handleCheatCodes()
 	{
 		if (CanPause == true)
 		{
-			AudioManager.PlaySFX("creak");
 			if (Engine::GetInstance()->Paused() == false)
+			{
+				AudioManager.PlaySFX("pauseOpen");
 				Engine::GetInstance()->SetPause(true);
+			}
 			else
+			{
+				AudioManager.PlaySFX("pauseClose");
 				Engine::GetInstance()->SetPause(false);
+			}
 		}
 		CanPause = false;
 	}
