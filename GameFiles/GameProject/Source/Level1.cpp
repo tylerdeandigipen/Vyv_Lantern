@@ -50,6 +50,9 @@ Scene* Level1instance = NULL;
 
 laser_emitter* Level1WLaser;
 
+constexpr const char* _OBJECT_LIST = "./Data/Scenes/Level1/Level1OBJECTS.json";
+constexpr const char* _SCENE = "./Data/Scenes/Level1/Level1.json";
+
 Level1::Level1() : Scene("Level1")
 {
 	entityManagerTBD = std::make_unique<EntityManager>();
@@ -60,7 +63,7 @@ Engine::EngineCode Level1::Load()
 	AudioManager.LoadMusicFromJSON("./Data/music.json");//line is good
 	AudioManager.LoadSFXFromJSON("./Data/SFX.json");// line is goodplay
 
-	if (entityManagerTBD->InitializeProperties("./Data/Scenes/Level1/Level1OBJECTS.json"))
+	if (entityManagerTBD->InitializeProperties(_OBJECT_LIST))
 		std::cout << "Property load success!\n";
 
 	return Engine::NothingBad;
@@ -82,7 +85,7 @@ Engine::EngineCode Level1::Init()
 
 	//initialize level data
 	//EntityContainer::GetInstance()->ReadEntities();
-	LevelBuilder::GetInstance()->LoadTileMap("./Data/Scenes/Level1/Level1.json");
+	LevelBuilder::GetInstance()->LoadTileMap(_SCENE);
 
 	//ControlledEmitter = LaserSystem::GetInstance()->CreateEmitter();
 	/*
