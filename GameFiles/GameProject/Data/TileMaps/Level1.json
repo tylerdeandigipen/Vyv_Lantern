@@ -1,12 +1,4 @@
 { "compressionlevel":-1,
- "editorsettings":
-    {
-     "export":
-        {
-         "format":"json",
-         "target":"..\/GameFiles\/GameProject\/Data\/TileMaps\/Level1.json"
-        }
-    },
  "height":30,
  "infinite":false,
  "layers":[
@@ -101,7 +93,7 @@
  "tilesets":[
         {
          "firstgid":1,
-         "source":"TestTileSet5.tsx"
+         "source":"..\/..\/..\/..\/DesignDocumentation\/TestTileSet5.tsx"
         }],
  "tilewidth":8,
  "type":"map",
