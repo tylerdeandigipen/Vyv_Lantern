@@ -296,6 +296,10 @@ bool CheckGameScenes()
 			sceneSystem->SetScene(SplashSceneGetInstance());
 		}
 	}
+	else if (inputHandlerScene->keyPressed(SDL_SCANCODE_7))
+	{
+		SceneSystem::GetInstance()->SetScene(Level1GetInstance());
+	}
 	else
 	{
 		return false;

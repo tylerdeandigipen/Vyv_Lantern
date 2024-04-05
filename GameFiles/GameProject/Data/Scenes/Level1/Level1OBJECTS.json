@@ -8,12 +8,16 @@
   "Emitter": {
     "count": 1
   },
-  "FilePath": "./Data/Scenes/Level1/Level1OBJECTS.json",
   "Mirror": {
     "count": 1
   },
-  "Objects": null,
   "Receiver": {
     "count": 1
-  }
+  },
+  "FilePath": "./Data/Scenes/Level1/Level1OBJECTS.json",
+  "Objects": [
+    {
+      "FilePath": "./Data/Scenes/Level1/Player.json"
+    }
+  ]
 }
