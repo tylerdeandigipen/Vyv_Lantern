@@ -13,7 +13,7 @@
   "minAngle": 0,
   "maxAngle": 0,
   "angle": 0,
-  "intensity": 3,
+  "intensity": 3.3,
   "radius": 11,
   "radialFalloff": -1,
   "radialWeight": 1,

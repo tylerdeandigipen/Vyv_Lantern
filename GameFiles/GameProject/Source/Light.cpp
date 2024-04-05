@@ -68,7 +68,7 @@ void Light::Update(float dt)
 		{
 			position = *trans->GetTranslation();
 			ImageBuffer* image = Parent()->GetImage();
-			position.x += (image->size.x / 2) - 1;
+			position.x += (image->size.x / 2);
 			position.y += image->size.y / 2;
 			Renderer::GetInstance()->lightSource[currentIndex].position = position;
 		}
