@@ -5,6 +5,8 @@
 #include "SceneSystem.h"
 #include "Entity.h"
 #include "FileIO.h"
+#include "EntityManager.h"
+
 class Scene;
 
 class SplashScene : public Scene
@@ -13,6 +15,9 @@ public:
 
 	SplashScene();
 	~SplashScene();
+
+	void ImGuiInterg();
+	//void ImGuiWindow();
 
 	Engine::EngineCode Load(void) override;
 	Engine::EngineCode Init(void) override;
@@ -23,6 +28,8 @@ public:
 private:
 	float time;
 	Entity* logo;
+	std::unique_ptr<EntityManager> entityManagerSPL;
+
 	
 };
 

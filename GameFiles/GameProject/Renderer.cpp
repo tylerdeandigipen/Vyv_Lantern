@@ -162,7 +162,8 @@ void Renderer::Update(float dt)
 	glEnd();
 
 #ifdef _DEBUG
-	ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+	if(ImGui::GetDrawData())
+		ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 #endif
 	SDL_GL_SwapWindow(window);
 	objectLayer->ClearImageBuffer();
