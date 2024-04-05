@@ -3,6 +3,6 @@
     "GameObjectFile": "./Data/Scenes/Section1WIP5/Section1WIP5OBJECTS.json"
   },
   "TiledData": {
-    "TileMapFile": "./Data/Scenes/Section1WIP5/Section1WIP5TilemapMAP.json"
+    "TileMapFile": "./Data/Scenes/Section1WIP5/1F_Layout1_NewLayout.json"
   }
 }

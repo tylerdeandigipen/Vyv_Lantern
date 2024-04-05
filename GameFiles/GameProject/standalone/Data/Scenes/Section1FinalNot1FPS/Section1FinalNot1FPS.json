@@ -1,0 +1,8 @@
+{
+  "GameObjectList": {
+    "GameObjectFile": "./Data/Scenes/Section1FinalNot1FPS/Section1FinalNot1FPSOBJECTS.json"
+  },
+  "TiledData": {
+    "TileMapFile": "./Data/Scenes/Section1FinalNot1FPS/Section1FinalNot1FPSMAP.json"
+  }
+}
