@@ -332,3 +332,13 @@ bool CheckRestart()
 	}
 	return false;
 }
+
+bool CheckRestart(const char* filename)
+{
+	if (inputHandlerScene->keyPressed(SDL_SCANCODE_R))
+	{
+		SceneSystem::GetInstance()->RestartScene();
+		return true;
+	}
+	return false;
+}
