@@ -20,6 +20,7 @@
 #include "EntityContainer.h"
 #include "TbdTestScene.h"
 #include "LevelBuilder.h"
+#include "MenuScene.h"
 Scene* SplashSceneinstance = NULL; //SORRY MIKEY L MEYERS!!!!!!!!!!!!!!!!!!!!!!
 
 SDL_Window* SplashWindow;
@@ -73,7 +74,7 @@ void SplashScene::Update(float dt)
 	{
 		//TODO get the menu scene.
 		Renderer::GetInstance()->isFullbright = false;
-		SceneSystem::GetInstance()->SetScene(TbdTestSceneGetInstance());
+		SceneSystem::GetInstance()->SetScene(MenuSceneGetInstance());
 		ImGuiInterg();
 
 	}
