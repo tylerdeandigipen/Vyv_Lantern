@@ -28,7 +28,7 @@
         },
         {
           "x": "200.000000",
-          "y": "36.000000"
+          "y": "44.000000"
         },
         {
           "x": "200.000000",
@@ -43,6 +43,10 @@
         "DirectionY": -1.0
       },
       "key": 1
+    },
+    {
+      "Type": "Light",
+      "File": "./Data/Lights/MirrorLight.json"
     }
   ],
   "FilePath": "./Data/Scenes/Section1WIP5/Mirror7.json",

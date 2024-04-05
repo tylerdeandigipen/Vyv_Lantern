@@ -18,7 +18,8 @@
       "Type": "Physics"
     },
     {
-      "Type": "BehaviorReceiver"
+      "Type": "BehaviorReceiver",
+      "Solid": true
     }
   ],
   "FilePath": "./Data/GameObjects/Reciever0.json",

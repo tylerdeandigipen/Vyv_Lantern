@@ -39,6 +39,10 @@
         "DirectionY": 1.0
       },
       "key": 1
+    },
+    {
+      "Type": "Light",
+      "File": "./Data/Lights/MirrorLight.json"
     }
   ],
   "FilePath": "./Data/Scenes/Section1WIP5/Mirror24.json",

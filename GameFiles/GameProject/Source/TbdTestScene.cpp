@@ -227,24 +227,28 @@ void TbdTestScene::handleCheatCodes()
 {
 	Inputs* inputHandler = Inputs::GetInstance();
 
-	if (inputHandler->keyPressed(SDL_SCANCODE_E) && TbdCanPlaceLight == 1)
+	if (inputHandler->keyPressed(SDL_SCANCODE_ESCAPE))
 	{
-		cheatBlur();
-
-		if (!isEPressedForCheat)
+		if (CanPause == true)
 		{
-			isEPressedForCheat = true;
+			if (Engine::GetInstance()->Paused() == false)
+			{
+				AudioManager.PlaySFX("pauseOpen");
+				Engine::GetInstance()->SetPause(true);
+			}
+			else
+			{
+				AudioManager.PlaySFX("pauseClose");
+				Engine::GetInstance()->SetPause(false);
+			}
 		}
-		else
-		{
-			isEPressedForCheat = false;
-		}
+		CanPause = false;
 	}
-	if (!inputHandler->keyPressed(SDL_SCANCODE_E))
+	else
 	{
-		TbdCanPlaceLight = 1;
+		CanPause = true;
 	}
-
+#ifdef _DEBUG
 	if (inputHandler->keyPressed(SDL_SCANCODE_GRAVE) && TbdCanToggleFullBright == true)
 	{
 		cheatFullbright();
@@ -301,28 +305,6 @@ void TbdTestScene::handleCheatCodes()
 	if (!inputHandler->keyPressed(SDL_SCANCODE_N))
 	{
 		TbdCanToggleNormalDisplay = true;
-	}
-
-	if (inputHandler->keyPressed(SDL_SCANCODE_ESCAPE))
-	{
-		if (CanPause == true)
-		{
-			if (Engine::GetInstance()->Paused() == false)
-			{
-				AudioManager.PlaySFX("pauseOpen");
-				Engine::GetInstance()->SetPause(true);
-			}
-			else
-			{
-				AudioManager.PlaySFX("pauseClose");
-				Engine::GetInstance()->SetPause(false);
-			}
-		}
-		CanPause = false;
-	}
-	else
-	{
-		CanPause = true;
 	}
 
 	if (inputHandler->keyPressed(SDL_SCANCODE_C) && TbdCanRenderWallHitboxes == 1)
@@ -396,6 +378,7 @@ void TbdTestScene::handleCheatCodes()
 	{
 		canToggleFog = 1;
 	}
+#endif _DEBUG
 }
 
 #endif
@@ -407,6 +390,7 @@ void TbdPlayerMovement(float dt)
 	UNREFERENCED_PARAMETER(dt);
 	Inputs* inputHandler = Inputs::GetInstance();
 
+#ifdef _DEBUG
 	if (inputHandler->keyPressed(SDL_SCANCODE_TAB))
 	{
 		if (!tabKeyPreviouslyPressed)
@@ -421,7 +405,7 @@ void TbdPlayerMovement(float dt)
 	{
 		tabKeyPreviouslyPressed = false;
 	}
-
+#endif _DEBUG
 	if (Engine::GetInstance()->Paused() == false)
 	{
 		/*

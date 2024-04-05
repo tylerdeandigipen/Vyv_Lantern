@@ -25,6 +25,7 @@
 #include "WinScene.h"
 #include "LevelCreatorScene.h"
 #include "Section1Final.h"
+#include "Level1.h"
 
 BehaviorDoor::BehaviorDoor() : Behavior(Behavior::bDoor), mDestination(), AddedToForeGround(false), closedPPM(), openPPM(), tempImage(nullptr), isDoorClosed(true)
 {
@@ -180,73 +181,74 @@ void BehaviorDoor::DoorCollisionHandler(Entity* entity1, Entity* entity2)
 {
 	BehaviorDoor* door = nullptr;
 
-	// Check if the win state is already set
-	if (LevelBuilder::IsWinStateSet() == false && LevelBuilder::getDoor() == false) {
+	// Check the player and the door collision
+	if ((entity1->GetRealName().compare("Player") == 0 && entity2->GetRealName().compare("Door") == 0) ||
+		(entity1->GetRealName().compare("Door") == 0 && entity2->GetRealName().compare("Player") == 0))
+	{
+		//LevelBuilder::SetWinState(true);
 
-		// Check the player and the door collision
-		if ((entity1->GetRealName().compare("Player") == 0 && entity2->GetRealName().compare("Door") == 0) ||
-			(entity1->GetRealName().compare("Door") == 0 && entity2->GetRealName().compare("Player") == 0))
+		if (entity1->GetRealName().compare("Door") == 0)
 		{
-			//LevelBuilder::SetWinState(true);
-
-			if (entity1->GetRealName().compare("Door") == 0)
+			if (reinterpret_cast<BehaviorDoor*>(entity1->Has(Behavior)) && reinterpret_cast<BehaviorDoor*>(entity1->Has(Behavior))->GetName().compare("BehaviorDoor") == 0)
 			{
-				if (reinterpret_cast<BehaviorDoor*>(entity1->Has(Behavior)) && reinterpret_cast<BehaviorDoor*>(entity1->Has(Behavior))->GetName().compare("BehaviorDoor") == 0)
-				{
-					door = reinterpret_cast<BehaviorDoor*>(entity1->Has(Behavior));
-				}
+				door = reinterpret_cast<BehaviorDoor*>(entity1->Has(Behavior));
 			}
-			else if (entity2->GetRealName().compare("Door") == 0)
+		}
+		else if (entity2->GetRealName().compare("Door") == 0)
+		{
+			if (reinterpret_cast<BehaviorDoor*>(entity2->Has(Behavior)) && reinterpret_cast<BehaviorDoor*>(entity2->Has(Behavior))->GetName().compare("BehaviorDoor") == 0)
 			{
-				if (reinterpret_cast<BehaviorDoor*>(entity2->Has(Behavior)) && reinterpret_cast<BehaviorDoor*>(entity2->Has(Behavior))->GetName().compare("BehaviorDoor") == 0)
-				{
-					door = reinterpret_cast<BehaviorDoor*>(entity2->Has(Behavior));
-				}
+				door = reinterpret_cast<BehaviorDoor*>(entity2->Has(Behavior));
 			}
+		}
 
-			if (door != nullptr && door->isDoorClosed == false)
+		if (door != nullptr && door->isDoorClosed == false)
+		{
+			if (door->_nextScene == "Section1Final")
+				SceneSystem::GetInstance()->SetScene(Section1FinalGetInstance());
+			else if (door->_nextScene == "Level1")
+				SceneSystem::GetInstance()->SetScene(Level1GetInstance());
+			else if (door->_nextScene == "WinScene")
 			{
-				if (door->_nextScene == "Section1Final")
-					SceneSystem::GetInstance()->SetScene(Section1FinalGetInstance());
-				else if (door->_nextScene == "WinScene")
+				if (LevelBuilder::GetWinState())
 				{
 					AudioManager.PlayMusic("cheer");
 					SceneSystem::GetInstance()->SetScene(WinSceneGetInstance());
 				}
 			}
+		}
 
 #ifdef _DEBUG
-			Inputs* input = Inputs::GetInstance();
-			if (input->keyPressed(SDL_SCANCODE_7))
+		Inputs* input = Inputs::GetInstance();
+		if (input->keyPressed(SDL_SCANCODE_7))
+		{
+			SceneSystem::GetInstance()->SetScene(Section1FinalGetInstance());
+			if (door->GetCurr() == cIdle)
 			{
-				SceneSystem::GetInstance()->SetScene(Section1FinalGetInstance());
-				if (door->GetCurr() == cIdle)
+				if (door->GetDoorClosed() == true)
 				{
-					if (door->GetDoorClosed() == true)
+					door->SetNext(cOpen);
+				}
+				else
+				{
+					// LevelBuilder::SetWinState(true);
+					if (LevelBuilder::IsWinStateSet() == false)
 					{
-						door->SetNext(cOpen);
-					}
-					else
-					{
-						// LevelBuilder::SetWinState(true);
-						if (LevelBuilder::IsWinStateSet() == false)
+						if (door->_nextScene == "WinScene")
 						{
-							if (door->_nextScene == "WinScene")
-							{
-								AudioManager.PlaySFX("cheer");
-								SceneSystem::GetInstance()->SetScene(WinSceneGetInstance());
-							}
-							else if (door->_nextScene == "LevelCreatorScene")
-								SceneSystem::GetInstance()->SetScene(LevelCreatorSceneGetInstance());
-							else if (door->_nextScene == "Section1Final")
-								SceneSystem::GetInstance()->SetScene(Section1FinalGetInstance());
+							AudioManager.PlaySFX("cheer");
+							SceneSystem::GetInstance()->SetScene(WinSceneGetInstance());
 						}
-						door->SetNext(cClosed);
+						else if (door->_nextScene == "LevelCreatorScene")
+							SceneSystem::GetInstance()->SetScene(LevelCreatorSceneGetInstance());
+						else if (door->_nextScene == "Section1Final")
+							SceneSystem::GetInstance()->SetScene(Section1FinalGetInstance());
 					}
+					door->SetNext(cClosed);
 				}
 			}
-#endif
 		}
+#endif
 	}
 }
 
