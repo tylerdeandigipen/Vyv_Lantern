@@ -24,6 +24,7 @@
 #include "Level1.h"
 #include "Level2.h"
 #include "Level3.h"
+#include "Level4.h"
 
 // enums for different scene types
 enum class SceneType
@@ -37,6 +38,7 @@ enum class SceneType
 	SCENE_LEVEL1,
 	SCENE_LEVEL2,
 	SCENE_LEVEL3,
+	SCENE_LEVEL4,
 	NULL_SCENE,
 
 	// Add more scenes as needed
@@ -261,6 +263,10 @@ bool CheckGameScenes()
 		activeSceneType = SceneType::SCENE_LEVEL2;
 	}
 	else if (activeScene == Level3GetInstance())
+	{
+		activeSceneType = SceneType::SCENE_LEVEL3;
+	}
+	else if (activeScene == Level4GetInstance())
 	{
 		activeSceneType = SceneType::SCENE_LEVEL3;
 	}
