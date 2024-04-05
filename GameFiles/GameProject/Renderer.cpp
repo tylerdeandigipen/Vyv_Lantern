@@ -858,9 +858,20 @@ void Renderer::AddDecal(ImageBuffer* sprite, Vector2 pos)
 	if (numDecals < MAX_DECALS)
 	{
 		decals[numDecals] = sprite;
-		decals[numDecals]->position = pos;
+		decalPositions[numDecals] = pos;
 		decalsAreDirty = true;
 		numDecals += 1;
+		return;
+	}
+	for (int i = 0; i < numDecals; i++)
+	{
+		if (decals[i] == NULL)
+		{
+			decals[i] = sprite;
+			decalPositions[i] = pos;
+			decalsAreDirty = true;
+			return;
+		}
 	}
 }
 
@@ -870,6 +881,7 @@ void Renderer::AddDecalsToTilemap()
 	{
 		if (decals[i] != NULL)
 		{
+			decals[i]->position = decalPositions[i];
 			backgroundLayer->AddSprite(decals[i]);
 		}
 	}
@@ -884,7 +896,6 @@ void Renderer::FreeDecalFromRenderer(ImageBuffer* sprite)
 		{
 			decals[i] = nullptr;
 			//decalsAreDirty = true; //possibly add this later if want to redraw tilemap to get rid of removed decals
-			return;
 		}
 	}
 }

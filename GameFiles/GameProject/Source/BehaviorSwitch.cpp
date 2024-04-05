@@ -41,6 +41,9 @@ BehaviorSwitch::BehaviorSwitch(BehaviorSwitch const& other) : Behavior(other), i
 BehaviorSwitch::~BehaviorSwitch()
 {
 	currentPos = 0;
+	Renderer::GetInstance()->FreeDecalFromRenderer(movePointDecal);
+	delete movePointDecal;
+	movePointDecal = NULL;
 }
 
 std::string BehaviorSwitch::GetName()
@@ -108,6 +111,8 @@ void BehaviorSwitch::Update(float dt)
 void BehaviorSwitch::Read(json jsonData)
 {
 	Init();
+	std::string tempSprite = "./Assets/PPM/MovePointDecal.ppm";
+	movePointDecal = new ImageBuffer(tempSprite);
 	/*What values to load into the switches here*/
 	maxCount = jsonData["NumPositions"] - 1;
 	for (auto& positions : jsonData["pos"])
@@ -115,7 +120,7 @@ void BehaviorSwitch::Read(json jsonData)
 		// Extract "x" and "y" values, convert them to integers, and store in the vector
 		float x = (float)std::stoi(positions["x"].get<std::string>());
 		float y = (float)std::stoi(positions["y"].get<std::string>());
-
+		Renderer::GetInstance()->AddDecal(movePointDecal, Vector2{x, y} - Vector2{ 2,2 } + Vector2{4,4});// 2, 2 is half size of movepoint and 4,4 is half of mirror sprite
 		pos.push_back({ x,y });
 	}
 	key = jsonData["key"];

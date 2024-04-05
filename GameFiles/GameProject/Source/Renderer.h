@@ -188,6 +188,7 @@ private:
 	ImageBuffer* normalTileSet[MAX_TILES];
 	ImageBuffer* shadowCasterTileset[MAX_TILES];
 	ImageBuffer* decals[MAX_DECALS];
+	Vector2 decalPositions[MAX_DECALS];
 	int numDecals = 0;
 	bool decalsAreDirty = false;
 

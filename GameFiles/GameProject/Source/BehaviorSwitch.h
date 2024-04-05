@@ -12,6 +12,8 @@
 #include "Vector.h"
 #include <random>
 
+class ImageBuffer;
+
 class BehaviorSwitch : public Behavior
 {
 public:
@@ -38,6 +40,7 @@ public:
 	void Update(float dt);
 	void Read(json jsonData) override;
 	static void SwitchCollisionHandler(Entity* entity1, Entity* entity2);
+	ImageBuffer* movePointDecal = nullptr;
 
 private:
 	void Controller(float dt);
