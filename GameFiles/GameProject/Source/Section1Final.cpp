@@ -309,23 +309,24 @@ void Section1Final::handleCheatCodes()
 {
 	Inputs* inputHandler = Inputs::GetInstance();
 
-	if (inputHandler->keyPressed(SDL_SCANCODE_E) && Name_Section1Final::TbdCanPlaceLight == 1)
+	if (inputHandler->keyPressed(SDL_SCANCODE_ESCAPE))
 	{
-		cheatBlur();
-
-		if (!Name_Section1Final::isEPressedForCheat)
+		if (Name_Section1Final::CanPause == true)
 		{
-			Name_Section1Final::isEPressedForCheat = true;
+			AudioManager.PlaySFX("creak");
+			if (Engine::GetInstance()->Paused() == false)
+				Engine::GetInstance()->SetPause(true);
+			else
+				Engine::GetInstance()->SetPause(false);
 		}
-		else
-		{
-			Name_Section1Final::isEPressedForCheat = false;
-		}
+		Name_Section1Final::CanPause = false;
 	}
-	if (!inputHandler->keyPressed(SDL_SCANCODE_E))
+	else
 	{
-		Name_Section1Final::TbdCanPlaceLight = 1;
+		Name_Section1Final::CanPause = true;
 	}
+	
+#ifdef _DEBUG
 
 	if (inputHandler->keyPressed(SDL_SCANCODE_GRAVE) && Name_Section1Final::TbdCanToggleFullBright == true)
 	{
@@ -379,23 +380,6 @@ void Section1Final::handleCheatCodes()
 	if (!inputHandler->keyPressed(SDL_SCANCODE_N))
 	{
 		Name_Section1Final::TbdCanToggleNormalDisplay = true;
-	}
-
-	if (inputHandler->keyPressed(SDL_SCANCODE_ESCAPE))
-	{
-		if (Name_Section1Final::CanPause == true)
-		{
-			AudioManager.PlaySFX("creak");
-			if (Engine::GetInstance()->Paused() == false)
-				Engine::GetInstance()->SetPause(true);
-			else
-				Engine::GetInstance()->SetPause(false);
-		}
-		Name_Section1Final::CanPause = false;
-	}
-	else
-	{
-		Name_Section1Final::CanPause = true;
 	}
 
 	if (inputHandler->keyPressed(SDL_SCANCODE_C) && Name_Section1Final::TbdCanRenderWallHitboxes == 1)
@@ -469,6 +453,7 @@ void Section1Final::handleCheatCodes()
 	{
 		Name_Section1Final::canToggleFog = 1;
 	}
+#endif _DEBUG
 }
 
 #endif

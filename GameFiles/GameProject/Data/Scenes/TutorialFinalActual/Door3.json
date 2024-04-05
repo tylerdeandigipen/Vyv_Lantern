@@ -20,11 +20,9 @@
     {
       "ClosedSprite": "./Assets/PPM/Door_Closed.ppm",
       "DoorClosed": true,
-      "NextScene": "",
       "OpenSprite": "./Assets/PPM/Door_Open.ppm",
       "PairName": "Receiver2",
-      "Type": "BehaviorDoor",
-      "NextScene" : "Section1Final"
+      "Type": "BehaviorDoor"
     }
   ],
   "FilePath": "./Data/Scenes/TutorialFinalActual/Door3.json",

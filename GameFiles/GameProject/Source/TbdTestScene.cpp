@@ -61,8 +61,7 @@ Engine::EngineCode TbdTestScene::Load()
 	AudioManager.LoadMusicFromJSON("./Data/music.json");//line is good
 	AudioManager.LoadSFXFromJSON("./Data/SFX.json");// line is goodplay
 
-	if (entityManagerTBD->InitializeProperties("./Data/GameObjects/ObjectList.json"))
-
+	if (entityManagerTBD->InitializeProperties("./Data/GameObjects/TutorialFinalActual/TutorialFinalActualOBJECTS.json"))
 		//if (entityManagerTBD->InitializeProperties("./Data/Scenes/TutorialFinalActual/TutorialFinalActualOBJECTS.json"))
 		std::cout << "Property load success!\n";
 
@@ -85,7 +84,7 @@ Engine::EngineCode TbdTestScene::Init()
 
 	//initialize level data
 	//EntityContainer::GetInstance()->ReadEntities();
-	LevelBuilder::GetInstance()->LoadTileMap("./Data/Scenes/TutorialFinal2.json");
+	LevelBuilder::GetInstance()->LoadTileMap("./Data/Scenes/TutorialFinalActual/TutorialFinalActual.json");
 
 	//LevelBuilder::GetInstance()->LoadTileMap("./Data/Scenes/TutorialFinalActual/TutorialFinalActual.json");
 

@@ -19,11 +19,10 @@
     },
     {
       "ClosedSprite": "./Assets/PPM/Door_Closed.ppm",
-      "DoorClosed": false,
-      "NextScene": "",
+      "DoorClosed": true,
       "OpenSprite": "./Assets/PPM/Door_Open.ppm",
-      "PairName": "",
-      //"NextScene": "WinScene"
+      "PairName": "Receiver2",
+      "NextScene" : "Section1Final",
       "Type": "BehaviorDoor"
     }
   ],
