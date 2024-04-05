@@ -12,8 +12,12 @@
   "Mirror": {
     "count": 1
   },
-  "Objects": null,
   "Receiver": {
     "count": 1
-  }
+  },
+  "Objects": [
+    {
+      "FilePath": "./Data/Scenes/Level3/Player.json"
+    }
+  ]
 }
