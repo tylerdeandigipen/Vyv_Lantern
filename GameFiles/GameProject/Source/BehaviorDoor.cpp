@@ -26,6 +26,8 @@
 #include "LevelCreatorScene.h"
 #include "Section1Final.h"
 #include "Level1.h"
+#include "Level2.h"
+#include "Level3.h"
 
 BehaviorDoor::BehaviorDoor() : Behavior(Behavior::bDoor), mDestination(), AddedToForeGround(false), closedPPM(), openPPM(), tempImage(nullptr), isDoorClosed(true)
 {
@@ -208,6 +210,10 @@ void BehaviorDoor::DoorCollisionHandler(Entity* entity1, Entity* entity2)
 				SceneSystem::GetInstance()->SetScene(Section1FinalGetInstance());
 			else if (door->_nextScene == "Level1")
 				SceneSystem::GetInstance()->SetScene(Level1GetInstance());
+			else if (door->_nextScene == "Level2")
+				SceneSystem::GetInstance()->SetScene(Level2GetInstance());
+			else if (door->_nextScene == "Level3")
+				SceneSystem::GetInstance()->SetScene(Level3GetInstance());
 			else if (door->_nextScene == "WinScene")
 			{
 				if (LevelBuilder::GetWinState())

@@ -188,6 +188,8 @@ xcopy "$(ProjectDir)Fmod\*.dll" "$(OutDir)" /s /r /y /q /i</Command>
     <ClInclude Include="IMGUI\imstb_rectpack.h" />
     <ClInclude Include="IMGUI\imstb_textedit.h" />
     <ClInclude Include="IMGUI\imstb_truetype.h" />
+    <ClInclude Include="Source\Level2.h" />
+    <ClInclude Include="Source\Level3.h" />
     <ClInclude Include="LineCollider.h" />
     <ClInclude Include="Math.h" />
     <ClInclude Include="Math_Header.h" />
@@ -264,6 +266,8 @@ xcopy "$(ProjectDir)Fmod\*.dll" "$(OutDir)" /s /r /y /q /i</Command>
     <ClCompile Include="IMGUI\imgui_impl_sdl2.cpp" />
     <ClCompile Include="IMGUI\imgui_tables.cpp" />
     <ClCompile Include="IMGUI\imgui_widgets.cpp" />
+    <ClCompile Include="Source\Level2.cpp" />
+    <ClCompile Include="Source\Level3.cpp" />
     <ClCompile Include="LevelBuilder.cpp" />
     <ClCompile Include="LineCollider.cpp" />
     <ClCompile Include="Main.cpp" />
