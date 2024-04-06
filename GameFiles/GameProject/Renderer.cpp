@@ -52,6 +52,23 @@ std::unique_ptr<Renderer> Renderer::instance = nullptr;
 //split into Update and Render functions
 void Renderer::Update(float dt)
 {
+	// delete this when menus are finalized
+	if (numMenuPages == 0)
+	{
+		int pauseMenuIndex = AddMenuPage("./Assets/PPM/Pause_Temp.ppm"); //yes this is a local var but when u actually use le menus keep this var per each page
+	}
+	if (Engine::GetInstance()->Paused() == true)
+	{
+		int pauseMenuIndex = 0; //imagine this is the same var as above :)
+		LoadMenuPage(pauseMenuIndex);
+	}
+	else
+	{
+		LoadMenuPage(-1);
+	}
+	// 
+
+
 	Uint32 currentTime = SDL_GetTicks();
 	ScopeTimer TestScopeTimer("Renderer::Update");
 
@@ -211,7 +228,7 @@ void Renderer::RenderToOutbuffer()
 	{
 		RenderWallCollidersToDebugBuffer();
 	}
-	if (Engine::GetInstance()->Paused() == true)
+	if (currentMenu != -1)
 	{
 		RenderMenu();
 	}
@@ -368,58 +385,6 @@ float Renderer::FindPixelLuminosity(float x, float y, Light* LightSource)
 	return Result;
 }
 
-//depricated do not use
-void Renderer::CalculateShadows()
-{
-	const int xSize = (int)outputBuffer->size.x;
-	const int ySize = (int)outputBuffer->size.y;
-	Color black{ 0,0,0,255 };
-	const Vector2 cameraPos = CameraP;
-	Vector2 lightPos;
-	int shadowsCast = 0;
-
-	// #pragma omp parallel
-	{
-		// #pragma omp for nowait collapse(3) private(lightPos, shadowsCast)
-		for (int x = 0; x < xSize; ++x)
-		{
-			for (int y = 0; y < ySize; ++y)
-			{
-				shadowsCast = 0;
-				if (lightR[x][y] != 0 && lightG[x][y] != 0 && lightB[x][y] != 0)
-				{
-					for (int i = 0; i < numLights; ++i)
-					{
-						if (lightSource[i].intensity != 0)
-						{
-							lightPos = lightSource[i].position;
-							if ((bool)CheckLineForObject((int)lightPos.x - (int)cameraPos.x, (int)lightPos.y - (int)cameraPos.y, (int)x, (int)y) == true)
-							{
-								shadowsCast += 1;
-							}
-							else if (distanceSquared(lightPos.x - (int)cameraPos.x, lightPos.y - (int)cameraPos.y, (float)x, (float)y) <= lightSource[i].radius * lightSource[i].radius)
-							{
-								shadowsCast -= 1;
-							}
-						}
-					}
-					if (shadowCasterBuffer->SampleColor(x + (int)CameraP.x, y + (int)CameraP.y).GetAlpha() != 0) //make shadow casters not cast shadows on themselves
-					{
-						//maybe here do ham algo with the tilemap instead of pixels and if any tiles inbetween player and target tile then dont sub?
-						shadowsCast -= 1;
-					}
-					if (shadowsCast >= 1)
-					{
-						lightR[x][y] = 0;
-						lightG[x][y] = 0;
-						lightB[x][y] = 0;
-					}
-				}
-			}
-		}
-	}
-}
-
 bool Renderer::CalculateIfPixelIsLit(int x, int y, int i)
 {
 	const Vector2 cameraPos = CameraP;
@@ -461,11 +426,6 @@ bool Renderer::CalculateIfPixelIsLit(int x, int y, int i)
 
 void Renderer::RenderMenu()
 {
-	if (menuBuffer == NULL)
-	{
-		LoadMenuToBuffer("./Assets/PPM/Pause_Temp.ppm");
-	}
-
 	const int xSize = (int)outputBuffer->size.x;
 	const int ySize = (int)outputBuffer->size.y;
 
@@ -783,7 +743,7 @@ void Renderer::UpdateFace(int faceState_)
 	else if (faceState_ >= 0 && faceIndex < MAX_ANIMATED_OBJECTS && animatedObjects[faceIndex][0] != NULL && faceState_ <= animatedObjects[faceIndex][0]->totalFrames)
 	{
 		faceState = faceState_;
-		if (animatedObjects[0][animatedObjects[0][0]->currentFrame]->isFlipped != animatedObjects[faceIndex][faceState]->isFlipped)
+		if (animatedObjects[0] != NULL && animatedObjects[0][animatedObjects[0][0]->currentFrame]->isFlipped != animatedObjects[faceIndex][faceState]->isFlipped)
 		{
 			animatedObjects[faceIndex][faceState]->FlipSprite();
 		}
@@ -990,6 +950,8 @@ Renderer::Renderer() : objects{ NULL }
 	lightBuffer = new ImageBuffer{ SCREEN_SIZE_X ,SCREEN_SIZE_Y };
 	laserBuffer = new ImageBuffer{ SCREEN_SIZE_X ,SCREEN_SIZE_Y };
 	shadowCasterBuffer = new ImageBuffer{ SCREEN_SIZE_X ,SCREEN_SIZE_Y };
+	menuBuffer = new ImageBuffer{ SCREEN_SIZE_X ,SCREEN_SIZE_Y };
+
 	particleManager = new ParticleManager;
 	faceIndex = -1;
 	faceState = 0;
@@ -1081,6 +1043,37 @@ ImageBuffer* Renderer::GetObjectByName(std::string name_)
 	return NULL;
 }
 
+void Renderer::LoadMenuPage(int index)
+{
+	if (currentMenu != index)
+	{
+		currentMenu = index;
+		menuBuffer->ClearImageBuffer();
+		if (index != -1)
+		{
+			menuBuffer->AddSprite(menuPages[index]);
+		}
+	}
+}
+
+int Renderer::AddMenuPage(const std::string filename)
+{
+	if (numMenuPages > MAX_MENU_PAGES)
+	{
+		return -1;
+	}
+	for (int i = 0; i < MAX_MENU_PAGES; i++)
+	{
+		if (menuPages[i] == NULL)
+		{
+			menuPages[i] = new ImageBuffer{filename};
+			numMenuPages += 1;
+			return i;
+		}
+	}
+	return -1;
+}
+
 void Renderer::AddLight(Light light)
 {
 	if (numLights + 1 < MAX_LIGHT_SOURCES)
@@ -1170,7 +1163,7 @@ void Renderer::ReallocateLightArrays()
 
 void Renderer::LoadMenuToBuffer(const std::string filename)
 {
-	menuBuffer = new ImageBuffer{ filename };
+	//menuBuffer = new ImageBuffer{filename}; //making new one might delete this
 }
 
 Vector2 Renderer::GetCameraPosition(void)
@@ -1417,11 +1410,7 @@ Renderer::~Renderer(void)
 	delete particleManager;
 	delete shadowCasterBuffer;
 	delete laserBuffer;
-
-	if (menuBuffer != NULL)
-	{
-		delete menuBuffer;
-	}
+	delete menuBuffer;
 
 	//Free indexes
 	for (int x = 0; x < SCREEN_SIZE_X; ++x) {
@@ -1465,15 +1454,9 @@ void Renderer::CleanRenderer()
 	normalBuffer->ClearImageBuffer();
 	lightBuffer->ClearImageBuffer();
 	laserBuffer->ClearImageBuffer();
-
+	menuBuffer->ClearImageBuffer();
 	laserHandler.Clear();
-
-	if (menuBuffer != NULL)
-	{
-		delete menuBuffer;
-		menuBuffer = NULL;
-	}
-
+	ClearMenuPages();
 	particleManager->ClearParticles();
 	ReallocateLightArrays();
 	ClearTilesets();
@@ -1538,6 +1521,19 @@ void Renderer::ClearTilesets()
 	numTiles = 0;
 	numNormalTiles = 0;
 	numShadowCasterTiles = 0;
+}
+
+void Renderer::ClearMenuPages()
+{
+	for (int i = 0; i < MAX_MENU_PAGES; i++)
+	{
+		if (menuPages[i] != NULL)
+		{
+			delete menuPages[i];
+			menuPages[i] = NULL;
+		}
+	}
+	numMenuPages = 0;
 }
 
 void Renderer::ExpandTileMapInDirection(Vector2 direction, int distance)

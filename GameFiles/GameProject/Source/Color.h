@@ -17,7 +17,7 @@ class Color
 public:
 
 	Color(uint8_t r, uint8_t g, uint8_t b, uint8_t a);
-	Color(Color &rhs);
+	Color(const Color &rhs);
 	Color();
 
 	uint8_t GetAlpha();
@@ -26,6 +26,7 @@ public:
 	uint8_t GetGreen();
 	Color BlendColors(Color top, Color bottom, float blendPercent);
 	void ChangeSaturation(double percent);
+	float hueToRgb(float p, float q, float t);
 	void SetAlpha(uint8_t a_);
 	Color ScaleIndividual(float rScale, float gScale, float bScale);
 	Color& operator =(const Color& rhs)&;

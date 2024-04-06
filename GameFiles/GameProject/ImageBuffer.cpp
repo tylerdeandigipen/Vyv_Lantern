@@ -9,30 +9,9 @@
 //------------------------------------------------------------------------------
 #include "ImageBuffer.h"
 #include "Math.h"
+#include <algorithm>
 #include <inttypes.h>
 #include <omp.h>
-
-inline int min(int x, int y)
-{
-	int Result = x;
-	if(y < x)
-	{
-		Result = y;
-	}
-
-	return(Result);
-}
-
-inline int max(int x, int y)
-{
-	int Result = x;
-	if(y > x)
-	{
-		Result = y;
-	}
-
-	return(Result);
-}
 
 ImageBuffer::ImageBuffer(ImageBuffer& rhs)
 {
@@ -73,7 +52,7 @@ ImageBuffer::ImageBuffer(float x, float y)
     isCulled = false;
 }
 
-ImageBuffer::ImageBuffer(const std::string file)
+ImageBuffer::ImageBuffer(const std::string file, Color burnColor)
 {
     buffer = NULL;
     FILE* fp;
@@ -115,13 +94,123 @@ ImageBuffer::ImageBuffer(const std::string file)
                 }
                 else
                 {
-                    *DestPixel++ = { red, green, blue, 255 };
+                    if (burnColor == trans)
+                    {
+                        *DestPixel++ = { red, green, blue, 255 };
+                    }
+                    else
+                    {
+                        Color tempColor(red, green, blue, 255);
+                        *DestPixel++ = BurnColor(&tempColor, &burnColor);
+                    }
                 }
             }
         }
     }
     type = NA;
     isCulled = false;
+}
+
+Color ImageBuffer::BurnColor(Color* source, Color* burnColor)
+{
+    float h = 0;
+    float s = 0;
+    float l = 0;
+
+    float newH = 0;
+    float newS = 0;
+    float newL = 0;
+
+    float newR = 0;
+    float newG = 0;
+    float newB = 0;
+
+    //convert the rgb unto hsl
+    int r = burnColor->r;
+    int g = burnColor->g;
+    int b = burnColor->b;
+
+    float fR = r / 255.0;
+    float fG = g / 255.0;
+    float fB = b / 255.0;
+
+
+    float fCMin = std::min(fR, std::min(fG, fB));
+    float fCMax = std::max(fR, std::max(fG, fB));
+
+
+    l = 50 * (fCMin + fCMax);
+
+    if (fCMin == fCMax)
+    {
+        s = 0;
+        h = 0;
+    }
+    else
+    {
+        if (l < 50)
+        {
+            s = 100 * (fCMax - fCMin) / (fCMax + fCMin);
+        }
+        else
+        {
+            s = 100 * (fCMax - fCMin) / (2.0 - fCMax - fCMin);
+        }
+
+        if (fCMax == fR)
+        {
+            h = 60 * (fG - fB) / (fCMax - fCMin);
+        }
+        if (fCMax == fG)
+        {
+            h = 60 * (fB - fR) / (fCMax - fCMin) + 120;
+        }
+        if (fCMax == fB)
+        {
+            h = 60 * (fR - fG) / (fCMax - fCMin) + 240;
+        }
+        if (h < 0)
+        {
+            h = h + 360;
+        }
+    }
+    //find the L of the og color
+    int sR = source->r;
+    int sG = source->g;
+    int sB = source->b;
+
+    float sfR = sR / 255.0;
+    float sfG = sG / 255.0;
+    float sfB = sB / 255.0;
+
+
+    float sfCMin = std::min(sfR, std::min(sfG, sfB));
+    float sfCMax = std::max(sfR, std::max(sfG, sfB));
+
+    newH = h / 360;
+    newS = s / 100;
+    newL = (50 * (sfCMin + sfCMax)) / 100;
+
+    if (newS == 0)
+    {
+        newL = 0; //colorless
+    }
+    else 
+    {
+        float q = newL < 0.5 ? newL * (1 + newS) : newL + newS - newL * newS;
+        float p = 2 * newL - q;
+        newR = source->hueToRgb(p, q, newH + (1.0f / 3.0f));
+        newG = source->hueToRgb(p, q, newH);
+        newB = source->hueToRgb(p, q, newH - (1.0f / 3.0f));
+    }
+
+    Color finalColor;
+    finalColor.r = (uint8_t)clampInt8(newR * 255, 0, 255);
+    finalColor.g = (uint8_t)clampInt8(newG * 255, 0, 255);
+    finalColor.b = (uint8_t)clampInt8(newB * 255, 0, 255);
+    finalColor.a = 255;
+    return finalColor;
+
 }
 
 ImageBuffer::~ImageBuffer()
@@ -540,5 +629,4 @@ void ImageBuffer::DitherBuffer(ImageBuffer* output, bool renderOnlyLights, bool 
             }
         }
     }
-
 }

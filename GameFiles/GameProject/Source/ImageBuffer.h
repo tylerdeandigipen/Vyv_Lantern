@@ -47,7 +47,7 @@ public:
     Color* buffer;
     AABB aabb;
 
-    ImageBuffer(const std::string filename);
+    ImageBuffer(const std::string filename, Color burnColor = Color{(uint8_t)0,(uint8_t)0,(uint8_t)0,(uint8_t)0});
     ImageBuffer(ImageBuffer &rhs);
     ImageBuffer(float x, float y);
     ImageBuffer();
@@ -61,7 +61,8 @@ public:
     void Update(float dt);
 
     Color &SampleColor(int x, int y);
-    
+    Color BurnColor(Color* source, Color* burnColor);
+
     void FlipSprite();
     ImageBuffer& ClearImageBuffer();
     void MergeLayers(ImageBuffer* bottom, ImageBuffer* top);
