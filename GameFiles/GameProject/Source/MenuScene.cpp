@@ -67,9 +67,10 @@ Entity* ExitButton;
 
 ImageBuffer* ani;
 
+
 MenuScene::MenuScene() : Scene("Menutest")
 {
-
+    offset = -50.0f;
 }
 
 Engine::EngineCode MenuScene::Load()
@@ -84,7 +85,7 @@ Engine::EngineCode MenuScene::Init()
 {
     Inputs::GetInstance()->SetWindow(MenuWindow);
 
-    cheatScanlines();
+    //cheatScanlines();
 
 
     //exporttests
@@ -108,10 +109,10 @@ Engine::EngineCode MenuScene::Init()
 
 
     ani = new ImageBuffer();
-    ani = Renderer::GetInstance()->CreateAnimatedObject("./Assets/PPM/Player_Sprites.ppm", Vector2{8,8});
+    ani = Renderer::GetInstance()->CreateAnimatedObject("./Assets/PPM/menu_animation.ppm", Vector2{80,80});
 
-    ani->position = gfxVector2{ 42,65 };
-    ani->isFlipped = true;
+    ani->position = gfxVector2{ 122,35 };
+    ani->isFlipped = false;
 
     //MenuPixelRender->objectLayer = new ImageBuffer;
 
@@ -119,23 +120,23 @@ Engine::EngineCode MenuScene::Init()
 
 
     Transform* BPOS = new Transform;
-    BPOS->SetTranslation(gfxVector2{92,25});
+    BPOS->SetTranslation(gfxVector2{ offset + 92,25});
     Beginbutton->Add(BPOS);
     Beginbutton->AddToRenderer(MenuPixelRender, "");
 
     
     Transform* crepos = new Transform;
-    crepos->SetTranslation(gfxVector2{ 92,50 });
+    crepos->SetTranslation(gfxVector2{ offset + 92,50 });
     Creditbutton->Add(crepos);
     Creditbutton->AddToRenderer(MenuPixelRender, "");
 
     Transform* optpos = new Transform;
-    optpos->SetTranslation(gfxVector2{ 92,75 });
+    optpos->SetTranslation(gfxVector2{ offset + 92,75 });
     optionbutton->Add(optpos);
     optionbutton->AddToRenderer(MenuPixelRender, "");
 
     Transform* BBPOS = new Transform;
-    BBPOS->SetTranslation(gfxVector2{ 92,100 });
+    BBPOS->SetTranslation(gfxVector2{ offset + 92,100 });
     ExitButton->Add(BBPOS);
     ExitButton->AddToRenderer(MenuPixelRender, "");
 
@@ -214,7 +215,7 @@ bool MenuScene::IsMouseOverBeginingButton()
     int mouseY = Inputs::GetInstance()->getMouseY();
 
 
-    Vector2 position = {700,215};
+    Vector2 position = {300,215};
 
     int width = (250/2);
     int high = (128/2);
@@ -247,7 +248,7 @@ bool MenuScene::IsMouseOverExitButton()
     int mouseY = Inputs::GetInstance()->getMouseY();
 
 
-    Vector2 position = { 700,690 };
+    Vector2 position = { 300,690 };
 
     int width = (250 / 2);
     int high = (128 / 2);
@@ -280,7 +281,7 @@ bool MenuScene::IsMouseOverCreditButton()
     int mouseY = Inputs::GetInstance()->getMouseY();
 
 
-    Vector2 position = { 700,375 };
+    Vector2 position = { 300,375 };
 
     int width = (250 / 2);
     int high = (128 / 2);
@@ -310,7 +311,7 @@ bool MenuScene::IsMouseOverOptionButton()
     int mouseY = Inputs::GetInstance()->getMouseY();
 
 
-    Vector2 position = { 700,520 };
+    Vector2 position = { 300,520 };
 
     int width = (250 / 2);
     int high = (128 / 2);

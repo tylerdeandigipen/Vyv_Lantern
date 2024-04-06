@@ -52,7 +52,7 @@ public:
 private:
 	emitter_id ControlledEmitter;
 
-
+	float offset;
 };
 
 Scene* MenuSceneGetInstance(void);

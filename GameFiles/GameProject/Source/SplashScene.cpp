@@ -28,10 +28,12 @@ SDL_Window* SplashWindow;
 SDL_GLContext SplashGlContext;
 
 
+
 SplashScene::SplashScene() : Scene("Splash")
 {
-	time = 3.0f;
+	time = 6.0f;
 	logo = nullptr;	
+	logoflag = true;
 	entityManagerSPL = std::make_unique<EntityManager>();
 
 }
@@ -46,10 +48,27 @@ Engine::EngineCode SplashScene::Init()
 	Renderer::GetInstance()->isFullbright = true;
 	//TODO make a LOGO sprite
 		// Create SDL Window
+	cheatScanlines();
+
+	json ignore{ {"isAnimated", false} };
+	logo = new Entity("Object", "./Assets/PPM/logo.ppm", ignore);
+
+	logo->CreateImage("./Assets/PPM/logo.ppm");
+	
+
+	Transform* LogoPOS = new Transform;
+	LogoPOS->SetTranslation(gfxVector2{ 50,50 });
+
+	logo->Add(LogoPOS);
+	logo->AddToRenderer(Renderer::GetInstance(), "");
+
+
+
 	SplashWindow = PlatformSystem::GetInstance()->GetWindowHandle();
 	Renderer::GetInstance()->window = SplashWindow;
 
-	LevelBuilder::GetInstance()->LoadTileMap("./Data/Scenes/Splash/Splash.json");
+	LevelBuilder::GetInstance()->LoadTileMap("./Data/Scenes/Splash2/Splash2.json");
+
 
 	return Engine::NothingBad;
 }
@@ -73,13 +92,20 @@ void SplashScene::Update(float dt)
 	if (time <= 0.0f)
 	{
 		//TODO get the menu scene.
-		Renderer::GetInstance()->isFullbright = false;
-		SceneSystem::GetInstance()->SetScene(MenuSceneGetInstance());
+		//Renderer::GetInstance()->isFullbright = false;
+		//SceneSystem::GetInstance()->SetScene(MenuSceneGetInstance());
 		ImGuiInterg();
 
 	}
+	else if (time <= 3.0f)
+	{
+		logo->SetImage("./Assets/PPM/flogo.ppm");
+		logo->Update(dt);
+		time -= dt;
+	}
 	else
 	{
+		logo->Update(dt);
 		time -= dt;
 	}
 
@@ -87,6 +113,14 @@ void SplashScene::Update(float dt)
 	Renderer::GetInstance()->Update(dt);
 	entityManagerSPL->pRenderer = Renderer::GetInstance();
 
+}
+
+void SplashScene::cheatScanlines()
+{
+	if (Renderer::GetInstance()->doScanLines == false)
+		Renderer::GetInstance()->doScanLines = true;
+	else
+		Renderer::GetInstance()->doScanLines = false;
 }
 
 void SplashScene::Render()

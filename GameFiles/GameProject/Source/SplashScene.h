@@ -17,6 +17,7 @@ public:
 	~SplashScene();
 
 	void ImGuiInterg();
+	void cheatScanlines();
 	//void ImGuiWindow();
 
 	Engine::EngineCode Load(void) override;
@@ -28,6 +29,7 @@ public:
 private:
 	float time;
 	Entity* logo;
+	bool logoflag;
 	std::unique_ptr<EntityManager> entityManagerSPL;
 
 	
