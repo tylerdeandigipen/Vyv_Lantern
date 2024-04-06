@@ -16,7 +16,7 @@
 #include <iostream>
 #include <algorithm>
 
-#include "Level1.h"
+#include "Level4.h"
 #include "LevelCreatorScene.h"
 #include "Scene.h"
 #include "PlatformSystem.h"
@@ -37,28 +37,28 @@
 
 #include "TestScene.h"
 
-Logging& Level1Logger = Logging::GetInstance("debugLog.log");
+Logging& Level4Logger = Logging::GetInstance("debugLog.log");
 
-SDL_Renderer* Level1Renderer_sdl;
-Renderer* Level1Renderer = Renderer::GetInstance();
+SDL_Renderer* Level4Renderer_sdl;
+Renderer* Level4Renderer = Renderer::GetInstance();
 
-SDL_Window* Level1Window;
+SDL_Window* Level4Window;
 
-SDL_GLContext Level1GlContext;
+SDL_GLContext Level4GlContext;
 
-Scene* Level1instance = NULL;
+Scene* Level4instance = NULL;
 
-laser_emitter* Level1WLaser;
+laser_emitter* Level4WLaser;
 
-constexpr const char* _OBJECT_LIST = "./Data/Scenes/Level1/Level1OBJECTS.json";
-constexpr const char* _SCENE = "./Data/Scenes/Level1/Level1.json";
+constexpr const char* _OBJECT_LIST = "./Data/Scenes/Level4/Level4OBJECTS.json";
+constexpr const char* _SCENE = "./Data/Scenes/Level4/Level4.json";
 
-Level1::Level1() : Scene("Level1")
+Level4::Level4() : Scene("Level4")
 {
 	entityManagerTBD = std::make_unique<EntityManager>();
 }
 
-Engine::EngineCode Level1::Load()
+Engine::EngineCode Level4::Load()
 {
 	AudioManager.LoadMusicFromJSON("./Data/music.json");//line is good
 	AudioManager.LoadSFXFromJSON("./Data/SFX.json");// line is goodplay
@@ -69,9 +69,9 @@ Engine::EngineCode Level1::Load()
 	return Engine::NothingBad;
 }
 
-Engine::EngineCode Level1::Init()
+Engine::EngineCode Level4::Init()
 {
-	Inputs::GetInstance()->SetWindow(Level1Window);
+	Inputs::GetInstance()->SetWindow(Level4Window);
 
 	//exporttests
 	//FileIO::GetInstance()->ExportTileMap("export_tests");
@@ -80,8 +80,8 @@ Engine::EngineCode Level1::Init()
 	Light tempLight2;
 
 	// Create SDL Window
-	Level1Window = PlatformSystem::GetInstance()->GetWindowHandle();
-	Level1Renderer->window = Level1Window;
+	Level4Window = PlatformSystem::GetInstance()->GetWindowHandle();
+	Level4Renderer->window = Level4Window;
 
 	//initialize level data
 	//EntityContainer::GetInstance()->ReadEntities();
@@ -101,7 +101,7 @@ Engine::EngineCode Level1::Init()
 		tempRandNum = Vector2{ (float)(rand() % SCREEN_SIZE_X - 10), (float)(rand() % SCREEN_SIZE_Y - 10) };
 		tempRandNum += Vector2{ 10,10 };
 		Particle* testParticle = new Particle(tempRandNum, Vector2{ -0.8f,-0.25f }, Vector2{ 17.0f, 15.0f }, tempColor, Particle_Dust);
-		Level1Renderer->particleManager->AddParticle(testParticle);
+		Level4Renderer->particleManager->AddParticle(testParticle);
 	}
 
 	//AudioManager.PlayMusic("drips"); //line is good
@@ -117,7 +117,7 @@ Engine::EngineCode Level1::Init()
 
 	fontSystem.init("Font/MouldyCheeseRegular-WyMWG.ttf", 10);
 
-	entityManagerTBD->pRenderer = Level1Renderer;
+	entityManagerTBD->pRenderer = Level4Renderer;
 
 	Engine::GetInstance()->SetPause(false);
 	return Engine::NothingBad;
@@ -125,7 +125,7 @@ Engine::EngineCode Level1::Init()
 
 #ifndef Render_Toggle_Functions
 
-namespace Name_Level1
+namespace Name_Level4
 {
 	int TbdCanPlaceLight = 0;
 	bool TbdCanToggleFullBright = true;
@@ -162,17 +162,17 @@ namespace Name_Level1
 
 		if (inputHandler->keyPressed(SDL_SCANCODE_TAB))
 		{
-			if (!Name_Level1::tabKeyPreviouslyPressed)
+			if (!Name_Level4::tabKeyPreviouslyPressed)
 			{
-				Name_Level1::show_demo_window = !Name_Level1::show_demo_window;
-				Name_Level1::show_tool_metrics = !Name_Level1::show_tool_metrics;
-				Name_Level1::show_custom_window = !Name_Level1::show_custom_window;
+				Name_Level4::show_demo_window = !Name_Level4::show_demo_window;
+				Name_Level4::show_tool_metrics = !Name_Level4::show_tool_metrics;
+				Name_Level4::show_custom_window = !Name_Level4::show_custom_window;
 			}
-			Name_Level1::tabKeyPreviouslyPressed = true;
+			Name_Level4::tabKeyPreviouslyPressed = true;
 		}
 		else
 		{
-			Name_Level1::tabKeyPreviouslyPressed = false;
+			Name_Level4::tabKeyPreviouslyPressed = false;
 		}
 
 		if (Engine::GetInstance()->Paused() == false)
@@ -213,9 +213,9 @@ namespace Name_Level1
 
 		if (inputHandler->keyPressed(SDL_SCANCODE_M))
 		{
-			if (!Name_Level1::mKeyDown)
+			if (!Name_Level4::mKeyDown)
 			{
-				if (Name_Level1::isMuted)
+				if (Name_Level4::isMuted)
 				{
 					AudioManager.ResumeMusic();
 					AudioManager.ResumeSFX();
@@ -225,96 +225,96 @@ namespace Name_Level1
 					AudioManager.PauseMusic();
 					AudioManager.PauseSFX();
 				}
-				Name_Level1::isMuted = !Name_Level1::isMuted;
+				Name_Level4::isMuted = !Name_Level4::isMuted;
 			}
-			Name_Level1::mKeyDown = true;
+			Name_Level4::mKeyDown = true;
 		}
 		else
 		{
-			Name_Level1::mKeyDown = false;
+			Name_Level4::mKeyDown = false;
 		}
 	}
 }
 
-void Level1::cheatFullbright()
+void Level4::cheatFullbright()
 {
-	if (Level1Renderer->isFullbright == false)
-		Level1Renderer->isFullbright = true;
+	if (Level4Renderer->isFullbright == false)
+		Level4Renderer->isFullbright = true;
 	else
-		Level1Renderer->isFullbright = false;
-	Name_Level1::TbdCanToggleFullBright = false;
+		Level4Renderer->isFullbright = false;
+	Name_Level4::TbdCanToggleFullBright = false;
 }
 
-void Level1::cheatBlur()
+void Level4::cheatBlur()
 {
-	if (Level1Renderer->doBlur == false)
-		Level1Renderer->doBlur = true;
+	if (Level4Renderer->doBlur == false)
+		Level4Renderer->doBlur = true;
 	else
-		Level1Renderer->doBlur = false;
-	Name_Level1::TbdCanPlaceLight = 0;
+		Level4Renderer->doBlur = false;
+	Name_Level4::TbdCanPlaceLight = 0;
 }
 
-void Level1::cheatOnlyLights()
+void Level4::cheatOnlyLights()
 {
-	if (Level1Renderer->renderOnlyLights == false)
-		Level1Renderer->renderOnlyLights = true;
+	if (Level4Renderer->renderOnlyLights == false)
+		Level4Renderer->renderOnlyLights = true;
 	else
-		Level1Renderer->renderOnlyLights = false;
-	Name_Level1::TbdCanToggleOnlyLights = false;
+		Level4Renderer->renderOnlyLights = false;
+	Name_Level4::TbdCanToggleOnlyLights = false;
 }
 
-void Level1::cheatNormalMap()
+void Level4::cheatNormalMap()
 {
-	if (Level1Renderer->renderNormalMap == false)
-		Level1Renderer->renderNormalMap = true;
+	if (Level4Renderer->renderNormalMap == false)
+		Level4Renderer->renderNormalMap = true;
 	else
-		Level1Renderer->renderNormalMap = false;
-	Name_Level1::TbdCanToggleNormalDisplay = false;
+		Level4Renderer->renderNormalMap = false;
+	Name_Level4::TbdCanToggleNormalDisplay = false;
 }
 
-void Level1::cheatWallHitboxes()
+void Level4::cheatWallHitboxes()
 {
-	if (Level1Renderer->renderWallHitboxes == false)
-		Level1Renderer->renderWallHitboxes = true;
+	if (Level4Renderer->renderWallHitboxes == false)
+		Level4Renderer->renderWallHitboxes = true;
 	else
-		Level1Renderer->renderWallHitboxes = false;
-	Name_Level1::TbdCanRenderWallHitboxes = 0;
+		Level4Renderer->renderWallHitboxes = false;
+	Name_Level4::TbdCanRenderWallHitboxes = 0;
 }
 
-void Level1::cheatScanlines()
+void Level4::cheatScanlines()
 {
-	if (Level1Renderer->doScanLines == false)
-		Level1Renderer->doScanLines = true;
+	if (Level4Renderer->doScanLines == false)
+		Level4Renderer->doScanLines = true;
 	else
-		Level1Renderer->doScanLines = false;
-	Name_Level1::canToggleScanLines = 0;
+		Level4Renderer->doScanLines = false;
+	Name_Level4::canToggleScanLines = 0;
 }
 
-void Level1::cheatOnlyFog()
+void Level4::cheatOnlyFog()
 {
-	if (Level1Renderer->drawRawFog == false)
-		Level1Renderer->drawRawFog = true;
+	if (Level4Renderer->drawRawFog == false)
+		Level4Renderer->drawRawFog = true;
 	else
-		Level1Renderer->drawRawFog = false;
-	Name_Level1::canRenderRawFog = 0;
+		Level4Renderer->drawRawFog = false;
+	Name_Level4::canRenderRawFog = 0;
 }
 
-void Level1::cheatFog()
+void Level4::cheatFog()
 {
-	if (Level1Renderer->doFog == false)
-		Level1Renderer->doFog = true;
+	if (Level4Renderer->doFog == false)
+		Level4Renderer->doFog = true;
 	else
-		Level1Renderer->doFog = false;
-	Name_Level1::canToggleFog = 0;
+		Level4Renderer->doFog = false;
+	Name_Level4::canToggleFog = 0;
 }
 
-void Level1::handleCheatCodes()
+void Level4::handleCheatCodes()
 {
 	Inputs* inputHandler = Inputs::GetInstance();
 
 	if (inputHandler->keyPressed(SDL_SCANCODE_ESCAPE))
 	{
-		if (Name_Level1::CanPause == true)
+		if (Name_Level4::CanPause == true)
 		{
 			AudioManager.PlaySFX("creak");
 			if (Engine::GetInstance()->Paused() == false)
@@ -322,139 +322,139 @@ void Level1::handleCheatCodes()
 			else
 				Engine::GetInstance()->SetPause(false);
 		}
-		Name_Level1::CanPause = false;
+		Name_Level4::CanPause = false;
 	}
 	else
 	{
-		Name_Level1::CanPause = true;
+		Name_Level4::CanPause = true;
 	}
 
 #ifdef _DEBUG
 
-	if (inputHandler->keyPressed(SDL_SCANCODE_GRAVE) && Name_Level1::TbdCanToggleFullBright == true)
+	if (inputHandler->keyPressed(SDL_SCANCODE_GRAVE) && Name_Level4::TbdCanToggleFullBright == true)
 	{
 		cheatFullbright();
 
-		if (!Name_Level1::isGravePressedForCheat)
+		if (!Name_Level4::isGravePressedForCheat)
 		{
-			Name_Level1::isGravePressedForCheat = true;
+			Name_Level4::isGravePressedForCheat = true;
 		}
 		else
 		{
-			Name_Level1::isGravePressedForCheat = false;
+			Name_Level4::isGravePressedForCheat = false;
 		}
 	}
 	if (!inputHandler->keyPressed(SDL_SCANCODE_GRAVE))
 	{
-		Name_Level1::TbdCanToggleFullBright = true;
+		Name_Level4::TbdCanToggleFullBright = true;
 	}
 
-	if (inputHandler->keyPressed(SDL_SCANCODE_Q) && Name_Level1::TbdCanToggleOnlyLights == true)
+	if (inputHandler->keyPressed(SDL_SCANCODE_Q) && Name_Level4::TbdCanToggleOnlyLights == true)
 	{
 		cheatOnlyLights();
 
-		if (!Name_Level1::isQPressedForCheat)
+		if (!Name_Level4::isQPressedForCheat)
 		{
-			Name_Level1::isQPressedForCheat = true;
+			Name_Level4::isQPressedForCheat = true;
 		}
 		else
 		{
-			Name_Level1::isQPressedForCheat = false;
+			Name_Level4::isQPressedForCheat = false;
 		}
 	}
 	if (!inputHandler->keyPressed(SDL_SCANCODE_Q))
 	{
-		Name_Level1::TbdCanToggleOnlyLights = true;
+		Name_Level4::TbdCanToggleOnlyLights = true;
 	}
 
-	if (inputHandler->keyPressed(SDL_SCANCODE_N) && Name_Level1::TbdCanToggleNormalDisplay == true)
+	if (inputHandler->keyPressed(SDL_SCANCODE_N) && Name_Level4::TbdCanToggleNormalDisplay == true)
 	{
 		cheatNormalMap();
 
-		if (!Name_Level1::isNPressedForCheat)
+		if (!Name_Level4::isNPressedForCheat)
 		{
-			Name_Level1::isNPressedForCheat = true;
+			Name_Level4::isNPressedForCheat = true;
 		}
 		else
 		{
-			Name_Level1::isNPressedForCheat = false;
+			Name_Level4::isNPressedForCheat = false;
 		}
 	}
 	if (!inputHandler->keyPressed(SDL_SCANCODE_N))
 	{
-		Name_Level1::TbdCanToggleNormalDisplay = true;
+		Name_Level4::TbdCanToggleNormalDisplay = true;
 	}
 
-	if (inputHandler->keyPressed(SDL_SCANCODE_C) && Name_Level1::TbdCanRenderWallHitboxes == 1)
+	if (inputHandler->keyPressed(SDL_SCANCODE_C) && Name_Level4::TbdCanRenderWallHitboxes == 1)
 	{
 		cheatWallHitboxes();
 
-		if (!Name_Level1::isCPressedForCheat)
+		if (!Name_Level4::isCPressedForCheat)
 		{
-			Name_Level1::isCPressedForCheat = true;
+			Name_Level4::isCPressedForCheat = true;
 		}
 		else
 		{
-			Name_Level1::isCPressedForCheat = false;
+			Name_Level4::isCPressedForCheat = false;
 		}
 	}
 	if (!inputHandler->keyPressed(SDL_SCANCODE_C))
 	{
-		Name_Level1::TbdCanRenderWallHitboxes = 1;
+		Name_Level4::TbdCanRenderWallHitboxes = 1;
 	}
 
-	if (inputHandler->keyPressed(SDL_SCANCODE_F) && Name_Level1::canToggleScanLines == 1)
+	if (inputHandler->keyPressed(SDL_SCANCODE_F) && Name_Level4::canToggleScanLines == 1)
 	{
 		cheatScanlines();
 
-		if (!Name_Level1::isFPressedForCheat)
+		if (!Name_Level4::isFPressedForCheat)
 		{
-			Name_Level1::isFPressedForCheat = true;
+			Name_Level4::isFPressedForCheat = true;
 		}
 		else
 		{
-			Name_Level1::isFPressedForCheat = false;
+			Name_Level4::isFPressedForCheat = false;
 		}
 	}
 	if (!inputHandler->keyPressed(SDL_SCANCODE_F))
 	{
-		Name_Level1::canToggleScanLines = 1;
+		Name_Level4::canToggleScanLines = 1;
 	}
 
-	if (inputHandler->keyPressed(SDL_SCANCODE_H) && Name_Level1::canRenderRawFog == 1)
+	if (inputHandler->keyPressed(SDL_SCANCODE_H) && Name_Level4::canRenderRawFog == 1)
 	{
 		cheatOnlyFog();
 
-		if (!Name_Level1::isHPressedForCheat)
+		if (!Name_Level4::isHPressedForCheat)
 		{
-			Name_Level1::isHPressedForCheat = true;
+			Name_Level4::isHPressedForCheat = true;
 		}
 		else
 		{
-			Name_Level1::isHPressedForCheat = false;
+			Name_Level4::isHPressedForCheat = false;
 		}
 	}
 	if (!inputHandler->keyPressed(SDL_SCANCODE_H))
 	{
-		Name_Level1::canRenderRawFog = 1;
+		Name_Level4::canRenderRawFog = 1;
 	}
 
-	if (inputHandler->keyPressed(SDL_SCANCODE_G) && Name_Level1::canToggleFog == 1)
+	if (inputHandler->keyPressed(SDL_SCANCODE_G) && Name_Level4::canToggleFog == 1)
 	{
 		cheatFog();
 
-		if (!Name_Level1::isGPressedForCheat)
+		if (!Name_Level4::isGPressedForCheat)
 		{
-			Name_Level1::isGPressedForCheat = true;
+			Name_Level4::isGPressedForCheat = true;
 		}
 		else
 		{
-			Name_Level1::isGPressedForCheat = false;
+			Name_Level4::isGPressedForCheat = false;
 		}
 	}
 	if (!inputHandler->keyPressed(SDL_SCANCODE_G))
 	{
-		Name_Level1::canToggleFog = 1;
+		Name_Level4::canToggleFog = 1;
 	}
 #endif _DEBUG
 }
@@ -464,7 +464,7 @@ void Level1::handleCheatCodes()
 
 
 
-void Level1::Update(float dt)
+void Level4::Update(float dt)
 {
 	if (CheckGameScenes() || CheckRestart())
 		return;
@@ -486,9 +486,9 @@ void Level1::Update(float dt)
 	{
 		if (dt != 0)
 		{
-			Level1Renderer->menuBuffer = new ImageBuffer{ SCREEN_SIZE_X,SCREEN_SIZE_Y };
+			Level4Renderer->menuBuffer = new ImageBuffer{ SCREEN_SIZE_X,SCREEN_SIZE_Y };
 			ImageBuffer* temp = new ImageBuffer{ "./Assets/PPM/TemporaryWinScreen.ppm" };
-			Level1Renderer->menuBuffer->AddSprite(temp, Vector2{ -20,-5 });
+			Level4Renderer->menuBuffer->AddSprite(temp, Vector2{ -20,-5 });
 			Engine::GetInstance()->SetPause(true);
 		}
 		if (inputHandler->keyPressed(SDL_SCANCODE_RETURN))
@@ -496,58 +496,58 @@ void Level1::Update(float dt)
 			SceneSystem::RestartScene();
 		}
 	}
-	Name_Level1::TbdPlayerMovement(dt);
+	Name_Level4::TbdPlayerMovement(dt);
 	handleCheatCodes();
 
 	ImGuiInterg();
-	Level1Renderer->Update(dt);
+	Level4Renderer->Update(dt);
 	entityManagerTBD->pInput = Inputs::GetInstance();
 }
 
-void Level1::Render()
+void Level4::Render()
 {
 	return;
 }
 
-Engine::EngineCode Level1::Exit()
+Engine::EngineCode Level4::Exit()
 {
 	EntityContainer::GetInstance()->FreeAll();
 	LevelBuilder::SetWinState(false);
 	LevelBuilder::setDoor(false);
 	Inputs::GetInstance()->InputKeyClear();
-	Level1Renderer->CleanRenderer();
+	Level4Renderer->CleanRenderer();
 	winState = false;
 	return Engine::NothingBad;
 }
 
-Engine::EngineCode Level1::Unload()
+Engine::EngineCode Level4::Unload()
 {
 	winState = false;
-	Level1instance->~Scene();
-	Level1Renderer = nullptr;
+	Level4instance->~Scene();
+	Level4Renderer = nullptr;
 	return Engine::NothingBad;
 }
 
-Scene* Level1GetInstance(void)
+Scene* Level4GetInstance(void)
 {
 	static Scene* TbdSceneinstance = nullptr; // Make it static to ensure a single instance
-	if (!Level1instance)
+	if (!Level4instance)
 	{
-		Level1instance = new Level1();
+		Level4instance = new Level4();
 	}
-	return Level1instance;
+	return Level4instance;
 }
 
 #ifndef ImGUI_Functions
 
-void Level1::ImGuiInterg()
+void Level4::ImGuiInterg()
 {
 #ifdef _DEBUG
 	ImGui_ImplOpenGL3_NewFrame();
 	ImGui_ImplSDL2_NewFrame();
 	ImGui::NewFrame();
 
-	if (Name_Level1::show_custom_window)
+	if (Name_Level4::show_custom_window)
 	{
 		ImGuiWindow();
 	}
@@ -556,10 +556,10 @@ void Level1::ImGuiInterg()
 #endif
 }
 
-void Level1::ImGuiWindow()
+void Level4::ImGuiWindow()
 {
 #ifdef _DEBUG
-	if (Name_Level1::show_custom_window)
+	if (Name_Level4::show_custom_window)
 	{
 		ImGui::Begin("TBDTestScene");
 		ImGui::BeginMainMenuBar();
@@ -569,7 +569,7 @@ void Level1::ImGuiWindow()
 		if (ImGui::MenuItem("Test Scene", NULL, false, true))
 			SceneSystem::GetInstance()->SetScene(TestSceneGetInstance());
 		if (ImGui::MenuItem("TbdTest Scene", NULL, false, true))
-			SceneSystem::GetInstance()->SetScene(Level1GetInstance());
+			SceneSystem::GetInstance()->SetScene(Level4GetInstance());
 
 		ImGui::EndMainMenuBar();
 
@@ -579,10 +579,10 @@ void Level1::ImGuiWindow()
 
 		if (ImGui::Button("Toggle Metrics/Debug Bar"))
 		{
-			Name_Level1::show_metrics_debug_bar = !Name_Level1::show_metrics_debug_bar;
+			Name_Level4::show_metrics_debug_bar = !Name_Level4::show_metrics_debug_bar;
 		}
 
-		if (Name_Level1::show_metrics_debug_bar)
+		if (Name_Level4::show_metrics_debug_bar)
 		{
 			ImGui::Text("Metrics/Debugger:");
 			ImGui::Separator();
@@ -591,9 +591,9 @@ void Level1::ImGuiWindow()
 
 			int mouseX = Inputs::GetInstance()->getMouseX();
 			int mouseY = Inputs::GetInstance()->getMouseY();
-			float screenScale = Level1Renderer->screenScale;
-			float cameraPosX = Level1Renderer->GetCameraPosition().x;
-			float cameraPosY = Level1Renderer->GetCameraPosition().y;
+			float screenScale = Level4Renderer->screenScale;
+			float cameraPosX = Level4Renderer->GetCameraPosition().x;
+			float cameraPosY = Level4Renderer->GetCameraPosition().y;
 			float worldMouseX = (mouseX - cameraPosX) / screenScale;
 			float worldMouseY = (mouseY - cameraPosY) / screenScale;
 
@@ -609,8 +609,8 @@ void Level1::ImGuiWindow()
 				}
 			}
 
-			ImGui::SliderFloat("Brightness", &Level1Renderer->minBrightness, 0.0f, 255.0f);
-			ImGui::SliderFloat("Saturation", &Level1Renderer->saturationPercent, 0.0f, 1.0f);
+			ImGui::SliderFloat("Brightness", &Level4Renderer->minBrightness, 0.0f, 255.0f);
+			ImGui::SliderFloat("Saturation", &Level4Renderer->saturationPercent, 0.0f, 1.0f);
 
 			ImGui::Separator();
 		}
@@ -621,79 +621,79 @@ void Level1::ImGuiWindow()
 
 		if (ImGui::Button("FullBright Cheat:"))
 		{
-			Name_Level1::isGravePressedForCheat = !Name_Level1::isGravePressedForCheat;
+			Name_Level4::isGravePressedForCheat = !Name_Level4::isGravePressedForCheat;
 
 			cheatFullbright();
 		}
 		ImGui::SameLine();
-		ImGui::Text(Name_Level1::isGravePressedForCheat ? "Active" : "Inactive");
+		ImGui::Text(Name_Level4::isGravePressedForCheat ? "Active" : "Inactive");
 
 		if (ImGui::Button("Render Only Lights Cheat:"))
 		{
-			Name_Level1::isQPressedForCheat = !Name_Level1::isQPressedForCheat;
+			Name_Level4::isQPressedForCheat = !Name_Level4::isQPressedForCheat;
 
 			cheatOnlyLights();
 		}
 		ImGui::SameLine();
-		ImGui::Text(Name_Level1::isQPressedForCheat ? "Active" : "Inactive");
+		ImGui::Text(Name_Level4::isQPressedForCheat ? "Active" : "Inactive");
 
 		if (ImGui::Button("NormalMap Cheat:"))
 		{
-			Name_Level1::isNPressedForCheat = !Name_Level1::isNPressedForCheat;
+			Name_Level4::isNPressedForCheat = !Name_Level4::isNPressedForCheat;
 
 			cheatNormalMap();
 		}
 		ImGui::SameLine();
-		ImGui::Text(Name_Level1::isNPressedForCheat ? "Active" : "Inactive");
+		ImGui::Text(Name_Level4::isNPressedForCheat ? "Active" : "Inactive");
 
 		if (ImGui::Button("Wall Hitboxes Cheat:"))
 		{
-			Name_Level1::isCPressedForCheat = !Name_Level1::isCPressedForCheat;
+			Name_Level4::isCPressedForCheat = !Name_Level4::isCPressedForCheat;
 
 			cheatWallHitboxes();
 		}
 		ImGui::SameLine();
-		ImGui::Text(Name_Level1::isCPressedForCheat ? "Active" : "Inactive");
+		ImGui::Text(Name_Level4::isCPressedForCheat ? "Active" : "Inactive");
 
 		if (ImGui::Button("ScanLines Cheat:"))
 		{
-			Name_Level1::isFPressedForCheat = !Name_Level1::isFPressedForCheat;
+			Name_Level4::isFPressedForCheat = !Name_Level4::isFPressedForCheat;
 
 			cheatScanlines();
 		}
 
 		ImGui::SameLine();
-		ImGui::Text(Name_Level1::isFPressedForCheat ? "Active" : "Inactive");
+		ImGui::Text(Name_Level4::isFPressedForCheat ? "Active" : "Inactive");
 
 		if (ImGui::Button("Blur Cheat:"))
 		{
-			Name_Level1::isEPressedForCheat = !Name_Level1::isEPressedForCheat;
+			Name_Level4::isEPressedForCheat = !Name_Level4::isEPressedForCheat;
 
 			cheatBlur();
 		}
 
 		ImGui::SameLine();
-		ImGui::Text(Name_Level1::isEPressedForCheat ? "Active" : "Inactive");
+		ImGui::Text(Name_Level4::isEPressedForCheat ? "Active" : "Inactive");
 
 		if (ImGui::Button("Render Justa Fog Cheat:"))
 		{
-			Name_Level1::isHPressedForCheat = !Name_Level1::isHPressedForCheat;
+			Name_Level4::isHPressedForCheat = !Name_Level4::isHPressedForCheat;
 
 			cheatOnlyFog();
 		}
 
 		ImGui::SameLine();
-		ImGui::Text(Name_Level1::isHPressedForCheat ? "Active" : "Inactive");
+		ImGui::Text(Name_Level4::isHPressedForCheat ? "Active" : "Inactive");
 
 		if (ImGui::Button("Render Fog Cheat:"))
 		{
-			Name_Level1::isGPressedForCheat = !Name_Level1::isGPressedForCheat;
+			Name_Level4::isGPressedForCheat = !Name_Level4::isGPressedForCheat;
 
 			cheatFog();
 		}
 
 		ImGui::SameLine();
-		ImGui::Text(Name_Level1::isGPressedForCheat ? "Active" : "Inactive");
+		ImGui::Text(Name_Level4::isGPressedForCheat ? "Active" : "Inactive");
 
 		ImGui::Separator();
 
@@ -727,7 +727,7 @@ void Level1::ImGuiWindow()
 
 		ImGui::Text("Particle System:");
 
-		Particle** particles = Level1Renderer->particleManager->GetParticles();
+		Particle** particles = Level4Renderer->particleManager->GetParticles();
 
 		if (ImGui::TreeNode("All Active Particles"))
 		{

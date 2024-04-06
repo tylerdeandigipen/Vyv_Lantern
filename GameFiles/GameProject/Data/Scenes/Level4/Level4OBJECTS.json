@@ -1,0 +1,23 @@
+{
+  "Circle": {
+    "count": 1
+  },
+  "Door": {
+    "count": 1
+  },
+  "Emitter": {
+    "count": 1
+  },
+  "FilePath": "./Data/Scenes/Level4/Level4OBJECTS.json",
+  "Mirror": {
+    "count": 1
+  },
+  "Receiver": {
+    "count": 1
+  },
+  "Objects": [
+    {
+      "FilePath": "./Data/Scenes/Level3/Player.json"
+    }
+  ]
+}

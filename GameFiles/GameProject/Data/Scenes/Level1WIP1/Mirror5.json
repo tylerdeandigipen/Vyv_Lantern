@@ -6,33 +6,33 @@
     {
       "Type": "Transform",
       "translation": {
-        "x": 296.0,
-        "y": 80.0
+        "x": 176.0,
+        "y": 88.0
       }
     },
     {
       "OldTranslation": {
-        "x": 296.0,
-        "y": 80.0
+        "x": 176.0,
+        "y": 88.0
       },
       "Type": "Physics"
     },
     {
       "Direction": {
-        "DirectionX": -1.0,
-        "DirectionY": 1.0
+        "DirectionX": 1.0,
+        "DirectionY": -1.0
       },
       "Type": "BehaviorMirror",
       "key": 0
     }
   ],
-  "FilePath": "./Data/Scenes/TutorialFinalActual/Mirror5.json",
+  "FilePath": "./Data/Scenes/Level1WIP1/Mirror5.json",
   "KeyObject": {
     "key": "Mirror5"
   },
   "Name": "Switch",
   "Type": "Object",
-  "file": "./Assets/PPM/CrystalSprites/MirrorCrystalDownRight.ppm",
+  "file": "./Assets/PPM/CrystalSprites/MirrorCrystalDownLeft.ppm",
   "frameSize": [
     8,
     8
