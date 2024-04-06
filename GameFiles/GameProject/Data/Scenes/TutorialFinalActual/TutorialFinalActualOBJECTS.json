@@ -14,6 +14,9 @@
   },
   "Objects": [
     {
+      "FilePath": "./Data/Scenes/TutorialFinalActual/Player.json"
+    },
+    {
       "FilePath": "./Data/Scenes/TutorialFinalActual/Door0.json"
     },
     {
