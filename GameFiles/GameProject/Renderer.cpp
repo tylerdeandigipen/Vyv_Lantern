@@ -777,14 +777,17 @@ void Renderer::UpdateFace(int faceState_)
 		ImageBuffer* temp = CreateAnimatedObject("./Assets/PPM/Man_Faces.ppm", { 8,8 });
 		temp->isCulled = true;
 	}
-	else if (faceState_ >= 0 && faceIndex < MAX_ANIMATED_OBJECTS && animatedObjects[faceIndex][0] != NULL && faceState_ <= animatedObjects[faceIndex][0]->totalFrames)
+	else if (faceIndex != 1)
 	{
-		faceState = faceState_;
-		if (animatedObjects[0][animatedObjects[0][0]->currentFrame]->isFlipped != animatedObjects[faceIndex][faceState]->isFlipped)
+		if (faceState_ >= 0 && faceIndex < MAX_ANIMATED_OBJECTS && animatedObjects[faceIndex][0] != NULL && faceState_ <= animatedObjects[faceIndex][0]->totalFrames)
 		{
-			animatedObjects[faceIndex][faceState]->FlipSprite();
+			faceState = faceState_;
+			if (animatedObjects[0] != NULL && animatedObjects[0][animatedObjects[0][0]->currentFrame]->isFlipped != animatedObjects[faceIndex][faceState]->isFlipped)
+			{
+				animatedObjects[faceIndex][faceState]->FlipSprite();
+			}
+			animatedObjects[0][animatedObjects[0][0]->currentFrame]->AddSprite(animatedObjects[faceIndex][faceState]);
 		}
-		animatedObjects[0][animatedObjects[0][0]->currentFrame]->AddSprite(animatedObjects[faceIndex][faceState]);
 	}
 }
 

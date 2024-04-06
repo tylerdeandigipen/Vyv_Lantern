@@ -93,13 +93,13 @@ void SplashScene::Update(float dt)
 	{
 		//TODO get the menu scene.
 		//Renderer::GetInstance()->isFullbright = false;
-		//SceneSystem::GetInstance()->SetScene(MenuSceneGetInstance());
+		SceneSystem::GetInstance()->SetScene(MenuSceneGetInstance());
 		ImGuiInterg();
 
 	}
 	else if (time <= 3.0f)
 	{
-		logo->SetImage("./Assets/PPM/flogo.ppm");
+		logoswich(false);
 		logo->Update(dt);
 		time -= dt;
 	}
@@ -114,6 +114,20 @@ void SplashScene::Update(float dt)
 	entityManagerSPL->pRenderer = Renderer::GetInstance();
 
 }
+
+void SplashScene::logoswich(bool check)
+{
+	if (logoflag == check)
+	{
+		return;
+	}
+	else
+	{
+		logo->SetImage("./Assets/PPM/flogo.ppm");
+		logoflag = check;
+	}
+}
+
 
 void SplashScene::cheatScanlines()
 {

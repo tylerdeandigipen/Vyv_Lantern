@@ -19,6 +19,7 @@ public:
 	void ImGuiInterg();
 	void cheatScanlines();
 	//void ImGuiWindow();
+	void logoswich(bool check);
 
 	Engine::EngineCode Load(void) override;
 	Engine::EngineCode Init(void) override;
