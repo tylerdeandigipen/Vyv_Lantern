@@ -14,6 +14,9 @@
   },
   "Objects": [
     {
+      "FilePath": "./Data/Scenes/Level1Final/Player0.json"
+    },
+    {
       "FilePath": "./Data/Scenes/Level1Final/Emitter1.json"
     },
     {

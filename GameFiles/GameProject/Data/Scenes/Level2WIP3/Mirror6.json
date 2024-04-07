@@ -6,52 +6,52 @@
     {
       "Type": "Transform",
       "translation": {
-        "x": 160.0,
-        "y": 144.0
+        "x": 144.0,
+        "y": 72.0
       }
     },
     {
       "OldTranslation": {
-        "x": 160.0,
-        "y": 144.0
+        "x": 144.0,
+        "y": 72.0
       },
       "Type": "Physics"
     },
     {
-      "NumPositions": 2,
+      "NumPositions": 3,
       "Type": "BehaviorSwitch",
       "key": 1,
       "pos": [
         {
-          "x": "160.000000",
-          "y": "144.000000"
+          "x": "144.000000",
+          "y": "72.000000"
         },
         {
           "x": "176.000000",
-          "y": "144.000000"
+          "y": "72.000000"
+        },
+        {
+          "x": "96.000000",
+          "y": "72.000000"
         }
       ]
     },
     {
       "Direction": {
-        "DirectionX": 1.0,
-        "DirectionY": -1.0
+        "DirectionX": -1.0,
+        "DirectionY": 1.0
       },
       "Type": "BehaviorMirror",
       "key": 0
-    },
-    {
-      "File": "./Data/Lights/MirrorLight.json",
-      "Type": "Light"
     }
   ],
-  "FilePath": "./Data/Scenes/Level1Final/Mirror4.json",
+  "FilePath": "./Data/Scenes/Level2WIP3/Mirror6.json",
   "KeyObject": {
-    "key": "Mirror4"
+    "key": "Mirror6"
   },
   "Name": "Switch",
   "Type": "Object",
-  "file": "./Assets/PPM/CrystalSprites/MirrorCrystalDownLeft.ppm",
+  "file": "./Assets/PPM/CrystalSprites/MirrorCrystalDownRight.ppm",
   "frameSize": [
     8,
     8

@@ -322,7 +322,7 @@ void LevelCreatorScene::ExportScene(std::string named)
 
 	for (auto it : tempEntities)
 	{
-		if (it->addKey.compare("Reciever") == 0)
+		if (it && it->addKey.compare("Reciever") == 0)
 		{
 			it->addKey = "Receiver";
 		}

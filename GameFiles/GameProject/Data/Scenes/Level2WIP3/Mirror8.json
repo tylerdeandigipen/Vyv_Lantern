@@ -6,29 +6,33 @@
     {
       "Type": "Transform",
       "translation": {
-        "x": 160.0,
-        "y": 144.0
+        "x": 208.0,
+        "y": 88.0
       }
     },
     {
       "OldTranslation": {
-        "x": 160.0,
-        "y": 144.0
+        "x": 208.0,
+        "y": 88.0
       },
       "Type": "Physics"
     },
     {
-      "NumPositions": 2,
+      "NumPositions": 3,
       "Type": "BehaviorSwitch",
       "key": 1,
       "pos": [
         {
-          "x": "160.000000",
-          "y": "144.000000"
+          "x": "208.000000",
+          "y": "88.000000"
         },
         {
-          "x": "176.000000",
-          "y": "144.000000"
+          "x": "208.000000",
+          "y": "104.000000"
+        },
+        {
+          "x": "208.000000",
+          "y": "72.000000"
         }
       ]
     },
@@ -39,15 +43,11 @@
       },
       "Type": "BehaviorMirror",
       "key": 0
-    },
-    {
-      "File": "./Data/Lights/MirrorLight.json",
-      "Type": "Light"
     }
   ],
-  "FilePath": "./Data/Scenes/Level1Final/Mirror4.json",
+  "FilePath": "./Data/Scenes/Level2WIP3/Mirror8.json",
   "KeyObject": {
-    "key": "Mirror4"
+    "key": "Mirror8"
   },
   "Name": "Switch",
   "Type": "Object",
