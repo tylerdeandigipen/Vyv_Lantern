@@ -38,6 +38,11 @@
 #include "TestScene.h"
 #include "Section1Final.h"
 
+#include "DebugNew.h"
+#ifdef _DEBUG
+#define new DEBUG_NEW
+#endif
+
 Logging& TbdLogger = Logging::GetInstance("debugLog.log");
 
 SDL_Renderer* TbdRenderer;

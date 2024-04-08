@@ -22,6 +22,12 @@
 
 #include <nlohmann/json.hpp>
 
+#include "DebugNew.h"
+#ifdef _DEBUG
+#define new DEBUG_NEW
+#endif
+
+
 using json = nlohmann::json;
 
 // Used to sort components using their type Id.

@@ -20,6 +20,11 @@
 #include "Emitter.h"
 #include "LineCollider.h"
 
+#include "DebugNew.h"
+#ifdef _DEBUG
+#define new DEBUG_NEW
+#endif
+
 int EntityContainer::entityCount = 0;
 std::unique_ptr<EntityContainer> EntityContainer::instance = nullptr;
 

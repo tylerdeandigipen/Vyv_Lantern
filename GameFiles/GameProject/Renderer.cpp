@@ -1419,6 +1419,18 @@ Renderer::~Renderer(void)
 	delete laserBuffer;
 	delete menuBuffer;
 
+	outputBuffer = NULL;
+	objectLayer = NULL;
+	backgroundLayer = NULL;
+	foregroundLayer = NULL;
+	normalBuffer = NULL;
+	DebugBuffer = NULL;
+	lightBuffer = NULL;
+	particleManager = NULL;
+	shadowCasterBuffer = NULL;
+	laserBuffer = NULL;
+	menuBuffer = NULL;
+
 	//Free indexes
 	for (int x = 0; x < SCREEN_SIZE_X; ++x) {
 		delete[] lightR[x];

@@ -21,6 +21,12 @@
 #include "TbdTestScene.h"
 #include "LevelBuilder.h"
 #include "MenuScene.h"
+
+#include "DebugNew.h"
+#ifdef _DEBUG
+#define new DEBUG_NEW
+#endif
+
 Scene* SplashSceneinstance = NULL; //SORRY MIKEY L MEYERS!!!!!!!!!!!!!!!!!!!!!!
 
 SDL_Window* SplashWindow;
@@ -40,7 +46,6 @@ SplashScene::SplashScene() : Scene("Splash")
 
 SplashScene::~SplashScene()
 {
-
 }
 
 Engine::EngineCode SplashScene::Init()
@@ -145,6 +150,9 @@ void SplashScene::Render()
 
 Engine::EngineCode SplashScene::Unload()
 {
+	delete logo->GetComponent<Transform>();
+	delete logo;
+	logo = nullptr;
 	EntityContainer::GetInstance()->FreeAll();
 	Renderer::GetInstance()->CleanRenderer();
 	return Engine::NothingBad;
@@ -158,7 +166,11 @@ Engine::EngineCode SplashScene::Exit()
 
 Scene* SplashSceneGetInstance(void)
 {
-	SplashSceneinstance = new SplashScene();
+	//SplashSceneinstance = new SplashScene();
+	static Scene* SplashSceneinstance = nullptr; // Make it static to ensure a single instance
+	if (!SplashSceneinstance) {
+		SplashSceneinstance = new SplashScene();
+	}
 	return SplashSceneinstance;
 }
 

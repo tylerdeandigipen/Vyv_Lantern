@@ -25,6 +25,7 @@
 
 #include <crtdbg.h>
 
+
 #define MAX_LOADSTRING 100
 #define APIENTRY    WINAPI
 #define WINAPI __stdcall
@@ -64,7 +65,6 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 	engine->EngineAddSystem(SceneSystem::GetInstance());
 
 	Engine::EngineCode returnCode = engine->Start();
-
 	//_CrtDumpMemoryLeaks();
 	// Enable run-time memory check for debug builds.
 #if defined(DEBUG) | defined(_DEBUG)

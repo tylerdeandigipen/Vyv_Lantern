@@ -17,6 +17,7 @@
 #include <SDL/SDL.h>
 
 
+
 class Entity
 {
 	friend class LevelCreatorScene; // do not judge me won

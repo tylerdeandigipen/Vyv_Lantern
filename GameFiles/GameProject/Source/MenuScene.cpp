@@ -47,7 +47,10 @@
 #include "Transform.h"
 #include "Sprite.h"
 
-
+#include "DebugNew.h"
+#ifdef _DEBUG
+#define new DEBUG_NEW
+#endif
 
 Logging& MenuLogger = Logging::GetInstance("debugLog.log");
 
@@ -58,10 +61,10 @@ SDL_Window* MenuWindow;
 
 Scene* MenuSceneinstance = NULL;
 
-Entity* Beginbutton;
-Entity* Creditbutton;
-Entity* optionbutton;
-Entity* ExitButton;
+static Entity* Beginbutton;
+static Entity* Creditbutton;
+static Entity* optionbutton;
+static Entity* ExitButton;
 
 //Entity* PlayerIcon;
 
@@ -84,9 +87,11 @@ Engine::EngineCode MenuScene::Load()
 Engine::EngineCode MenuScene::Init()
 {
     Inputs::GetInstance()->SetWindow(MenuWindow);
+    // Create SDL Window
+    MenuWindow = PlatformSystem::GetInstance()->GetWindowHandle();
+    MenuPixelRender->window = MenuWindow;
 
     //cheatScanlines();
-
 
     //exporttests
     json ignore{ {"isAnimated", false}};
@@ -146,15 +151,7 @@ Engine::EngineCode MenuScene::Init()
     //PlayerIcon->Add(MCP);
     //PlayerIcon->AddToRenderer(MenuPixelRender, "");
 
-    // Create SDL Window
-    MenuWindow = PlatformSystem::GetInstance()->GetWindowHandle();
-    MenuPixelRender->window = MenuWindow;
 
-
-
-    FontSystem fontSystem;
-
-    fontSystem.init("Font/MouldyCheeseRegular-WyMWG.ttf", 10);
 
     //initialize level data
     //EntityContainer::GetInstance()->ReadEntities();
@@ -166,6 +163,7 @@ Engine::EngineCode MenuScene::Init()
     MenuLaser1->Position = Vector2(200.0f, 50.0f + 12.0f); //add offset to accomodate for the position of the mirror (opengl position mixed with sdl2 position)
     MenuLaser1->Direction = Vector2::Normalize(Vector2(-1.0f, 0.0f));
     */
+   
     Color tempColor{ 141,141,141,255 };
     int numTestDust = 140;
     Vector2 tempRandNum;
@@ -390,17 +388,32 @@ void MenuScene::Render()
 
 Engine::EngineCode MenuScene::Exit()
 {
+    delete Beginbutton->GetComponent<Transform>();
+    delete ExitButton->GetComponent<Transform>();
+    delete Creditbutton->GetComponent<Transform>();
+    delete optionbutton->GetComponent<Transform>();
+
+    delete Beginbutton;
+    delete ExitButton;
+    delete Creditbutton;
+    delete optionbutton;
+
+    Beginbutton = NULL;
+    ExitButton = NULL;
+    Creditbutton = NULL;
+    optionbutton = NULL;
+
+    delete ani;
+    ani = NULL;
     Inputs::GetInstance()->InputKeyClear();
     MenuPixelRender->CleanRenderer();
-    winState = false;
     return Engine::NothingBad;
 }
 
 Engine::EngineCode MenuScene::Unload()
 {
-    winState = false;
-    delete MenuSceneinstance;
-    MenuSceneinstance = nullptr;
+    //delete MenuSceneinstance;
+    //MenuSceneinstance = nullptr;
     return Engine::NothingBad;
 }
 
