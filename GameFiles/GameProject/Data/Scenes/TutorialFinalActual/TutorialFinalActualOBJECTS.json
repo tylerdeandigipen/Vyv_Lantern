@@ -17,6 +17,12 @@
       "FilePath": "./Data/Scenes/TutorialFinalActual/Player.json"
     },
     {
+      "FilePath": "./Data/GameObjects/WASD.json"
+    },
+    {
+      "FilePath": "./Data/GameObjects/EPress.json"
+    },
+    {
       "FilePath": "./Data/Scenes/TutorialFinalActual/Door0.json"
     },
     {
