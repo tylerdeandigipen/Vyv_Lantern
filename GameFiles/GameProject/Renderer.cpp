@@ -183,7 +183,8 @@ void Renderer::Update(float dt)
 	glEnd();
 
 #ifdef _DEBUG
-	ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+	if(ImGui::GetDrawData())
+		ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 #endif
 	SDL_GL_SwapWindow(window);
 	objectLayer->ClearImageBuffer();
@@ -1007,10 +1008,13 @@ void Renderer::UpdateObjects(float dt)
 	{
 		for (int l = 0; l < 3; ++l)
 		{
-			if (objects[i]->layer == l && objects[i]->totalFrames == 0 && objects[i]->isCulled == false)
+			if (objects[i])
 			{
-				objectLayer->AddSprite(objects[i]);
-				break;
+				if (objects[i]->layer == l && objects[i]->totalFrames == 0 && objects[i]->isCulled == false)
+				{
+					objectLayer->AddSprite(objects[i]);
+					break;
+				}
 			}
 		}
 	}

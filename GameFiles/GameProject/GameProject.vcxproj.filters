@@ -151,6 +151,7 @@
     <ClCompile Include="Source\WinScene.cpp">
       <Filter>Source FIles\Scenes</Filter>
     </ClCompile>
+    <ClCompile Include="Source\TextEditor.cpp" />
     <ClCompile Include="Source\Subject.cpp">
       <Filter>Source FIles\Engine</Filter>
     </ClCompile>
@@ -172,7 +173,11 @@
     <ClCompile Include="Source\ParticleManager.cpp">
       <Filter>Source FIles\Engine\Systems</Filter>
     </ClCompile>
+    <ClCompile Include="Emitter.cpp" />
+    <ClCompile Include="LineCollider.cpp" />
     <ClCompile Include="Source\TBDLasers.cpp">
+    <ClCompile Include="Source\SplashScene.cpp" />
+    <ClCompile Include="Source\MenuScene.cpp" />
       <Filter>Source FIles\Graphics</Filter>
     </ClCompile>
     <ClCompile Include="Source\EntityManager.cpp">
@@ -418,6 +423,7 @@
     <ClInclude Include="Source\SplashScene.h" />
     <ClInclude Include="BehaviorReceiver.h" />
     <ClInclude Include="Source\Section1Final.h">
+    <ClInclude Include="Source\MenuScene.h" />
       <Filter>Header FIles\Scenes</Filter>
     </ClInclude>
     <ClInclude Include="Source\Level1.h">

@@ -1,17 +1,29 @@
+//------------------------------------------------------------------------------
+//
+// File Name:	MenuScene.h
+// Author(s):	TayLee Young, Louis Wang, Michael Howard, Tyler Dean
+// Purpose:		Test scene for our game
+//
+// Copyright  © 2023 DigiPen (USA) Corporation.
+//
+//------------------------------------------------------------------------------
 #pragma once
-
 #include "Engine.h"
 #include "Scene.h"
 #include "SceneSystem.h"
+#include "AudioEngine.h"
+#include "Collision.h"
+
+#include "LaserSystem.h"
 
 class Scene;
+struct emitter_id;
 
 class MenuScene : public Scene
 {
 public:
 
 	MenuScene();
-	~MenuScene();
 
 	Engine::EngineCode Load(void) override;
 	Engine::EngineCode Init(void) override;
@@ -19,17 +31,28 @@ public:
 	Engine::EngineCode Unload(void) override;
 	void Update(float dt) override;
 	void Render(void) override;
-private:
-	void RenderButtons();
-	void HandleButtonInput();
-
-	bool IsMouseOverBackButton();
+	bool winState = false;
+	bool IsMouseOverBeginingButton();
 	bool IsMouseOverExitButton();
-	bool IsMouseOverSettingsButton();
+	bool IsMouseOverCreditButton();
+	bool IsMouseOverOptionButton();
 
-	void HandleBack();
+	void HandleBegin();
 	void HandleExit();
-	void HandleSettings();
+	void HandleCredit();
+	void HandleOption();
+
+
+	void ImGuiInterg();
+	void ImGuiWindow();
+
+
+	void cheatScanlines();
+
+private:
+	emitter_id ControlledEmitter;
+
+	float offset;
 };
 
 Scene* MenuSceneGetInstance(void);
