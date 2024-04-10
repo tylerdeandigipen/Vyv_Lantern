@@ -18,7 +18,7 @@
       "Type": "Physics"
     },
     {
-      "NumPositions": 4,
+      "NumPositions": 3,
       "Type": "BehaviorSwitch",
       "key": 1,
       "pos": [
