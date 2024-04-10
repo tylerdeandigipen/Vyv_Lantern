@@ -7,13 +7,13 @@
       "Type": "Transform",
       "translation": {
         "x": 144.0,
-        "y": 120.0
+        "y": 144.0
       }
     },
     {
       "OldTranslation": {
         "x": 144.0,
-        "y": 120.0
+        "y": 144.0
       },
       "Type": "Physics"
     },
