@@ -16,6 +16,7 @@
 #include "pausemenu.h"
 #include "Engine.h"
 #include "Inputs.h"
+#include "Renderer.h"
 
 #include "TbdTestScene.h"
 
@@ -81,6 +82,12 @@ void PauseMenu::HandleSettings()
 {
 	if (Inputs::GetInstance()->mouseButtonPressed(SDL_BUTTON_LEFT))
 	{
+		int settingsMenuIndex = 1;
+		Renderer::GetInstance()->LoadMenuPage(settingsMenuIndex);
+	}
+	else
+	{
+		Renderer::GetInstance()->LoadMenuPage(-1);
 	}
 }
 

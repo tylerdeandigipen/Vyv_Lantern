@@ -56,6 +56,7 @@ void Renderer::Update(float dt)
 	if (numMenuPages == 0)
 	{
 		int pauseMenuIndex = AddMenuPage("./Assets/PPM/Pause_Temp.ppm"); //yes this is a local var but when u actually use le menus keep this var per each page
+		int settingsMenuIndex = AddMenuPage("./Assets/PPM/Pause_Menu_Settings.ppm");
 	}
 	if (Engine::GetInstance()->Paused() == true)
 	{
@@ -66,8 +67,8 @@ void Renderer::Update(float dt)
 	{
 		LoadMenuPage(-1);
 	}
-	// 
 
+	//
 
 	Uint32 currentTime = SDL_GetTicks();
 	ScopeTimer TestScopeTimer("Renderer::Update");
@@ -183,7 +184,7 @@ void Renderer::Update(float dt)
 	glEnd();
 
 #ifdef _DEBUG
-	if(ImGui::GetDrawData())
+	if (ImGui::GetDrawData())
 		ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 #endif
 	SDL_GL_SwapWindow(window);
@@ -488,9 +489,9 @@ void Renderer::RenderLasers()
 
 	//optimize later to only calculate light near / in the laser line zone
 	//maybe make so depending on distance it uses two different light func  tions
-	#pragma omp parallel
+#pragma omp parallel
 	{
-		#pragma omp for collapse(3) nowait private(IntensityR, IntensityG, IntensityB)
+#pragma omp for collapse(3) nowait private(IntensityR, IntensityG, IntensityB)
 		for (int x = 0; x < xSize; ++x)
 		{
 			for (int y = 0; y < ySize; ++y)
@@ -561,7 +562,7 @@ void Renderer::RenderLasers()
 							}
 						}
 						else if ((x <= laserPoints1[i].x + laserAreaLightRange && x >= laserPoints2[i].x - laserAreaLightRange && (int)laserPoints1[i].x - (int)laserPoints2[i].x > 0) || (x >= laserPoints1[i].x - laserAreaLightRange && x <= laserPoints2[i].x + laserAreaLightRange && (int)laserPoints1[i].x - (int)laserPoints2[i].x < 0))
-						{ 
+						{
 							if (abs(y - laserPoints2[i].y) < laserAreaLightRange)
 							{
 								float distSquared = abs(distanceSquared(laserPoints2[i].x, laserPoints2[i].y, (float)x, (float)y));
@@ -574,7 +575,7 @@ void Renderer::RenderLasers()
 										isLit = true;
 									}
 									if (isLit == true)
-									{								
+									{
 										float dist = sqrt(distSquared);
 										float s = dist / laserAreaLightRange;
 										float s2 = s * s;
@@ -615,7 +616,7 @@ void Renderer::RenderLasers()
 								{
 									isLit = true;
 								}
-								if(isLit == true)
+								if (isLit == true)
 								{
 									float scaledDist = abs(x - (int)laserPoints2[i].x) / laserAreaLightRange;
 									float scaledDistSquared = scaledDist * scaledDist;
@@ -859,6 +860,7 @@ void Renderer::FreeDecalFromRenderer(ImageBuffer* sprite)
 		if (decals[i] == sprite)
 		{
 			decals[i] = nullptr;
+
 			//decalsAreDirty = true; //possibly add this later if want to redraw tilemap to get rid of removed decals
 		}
 	}
@@ -1073,7 +1075,7 @@ int Renderer::AddMenuPage(const std::string filename)
 	{
 		if (menuPages[i] == NULL)
 		{
-			menuPages[i] = new ImageBuffer{filename};
+			menuPages[i] = new ImageBuffer{ filename };
 			numMenuPages += 1;
 			return i;
 		}
@@ -1277,7 +1279,7 @@ gfxVector2 Renderer::LaserCheckLineForObject(Vector2 pos1, Vector2 pos2)
 			y += sy;
 		}
 	}
-	
+
 	return pos2;
 }
 
@@ -1340,6 +1342,7 @@ void Renderer::BlurLasers(int blurRangeLow, int blurRangeHigh)
 	float r = 0;
 	float g = 0;
 	float b = 0;
+
 	//not actually unreferenced but W4 gets pissy
 	UNREFERENCED_PARAMETER(r);
 	UNREFERENCED_PARAMETER(g);

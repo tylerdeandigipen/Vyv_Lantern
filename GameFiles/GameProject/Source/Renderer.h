@@ -35,6 +35,8 @@ class Renderer
 {
 public:
 
+	int numMenuPages = 0;
+
 	//Visual Effects Settings
 	float screenScale = 6; //doesnt work for some reason, havent looked into yet bc not too important
 	float saturationPercent = 1;
@@ -72,6 +74,7 @@ public:
 	//Animation Functions
 	void UpdateAnimations(float dt);
 	ImageBuffer* CreateAnimatedObject(const std::string filename, Vector2 frameSize);
+
 	// 0 = forward, 1 = down, 2 = up, 3 = blink
 	void UpdateFace(int faceState_);
 
@@ -134,13 +137,14 @@ public:
 	ImageBuffer* laserBuffer = NULL;
 	ImageBuffer* shadowCasterBuffer = NULL;
 	ImageBuffer* normalBuffer = NULL;
+
 	//ImageBuffer* fogBuffer = NULL;
 
 	//Object References
 	Light lightSource[MAX_LIGHT_SOURCES];
 	ImageBuffer* objects[MAX_OBJECTS];
 	ImageBuffer* animatedObjects[MAX_ANIMATED_OBJECTS][MAX_ANIMATION_FRAMES];
-	ImageBuffer* menuPages[MAX_MENU_PAGES] = {NULL};
+	ImageBuffer* menuPages[MAX_MENU_PAGES] = { NULL };
 
 	//Needed to be public (maybe make private later by adding helper funcs)
 	Vector2 tileMapSize;
@@ -158,7 +162,7 @@ public:
 
 	int** tileMap = NULL;
 
-	int nonWalkableTiles[NUM_NON_WALKABLE_TILES] = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 26, 27, 28, 29, 30, 31, 41, 42, 43, 45, 46, 47, 48, 49, 50, 51,52,53,54,58,62,63,69,76,77,82,88,90,91};
+	int nonWalkableTiles[NUM_NON_WALKABLE_TILES] = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 26, 27, 28, 29, 30, 31, 41, 42, 43, 45, 46, 47, 48, 49, 50, 51,52,53,54,58,62,63,69,76,77,82,88,90,91 };
 	int numNonWalkTiles = NUM_NON_WALKABLE_TILES;
 
 	int currentMenu = -1;
@@ -179,7 +183,6 @@ private:
 	int numObjects = 0;
 	int numAnimatedObjects = 0;
 	int numLights = 0;
-	int numMenuPages = 0;
 
 	//Fog Variables
 	bool fogIsDirty = true;

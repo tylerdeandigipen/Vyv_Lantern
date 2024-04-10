@@ -12,6 +12,7 @@
 
 #include <string>
 #include <memory>
+#include "Renderer.h"
 
 class PauseMenu {
 public:
@@ -34,9 +35,6 @@ private:
 	void HandleBack();
 	void HandleExit();
 	void HandleSettings();
-	void ImGuiInterg();
-
-
 
 	static std::unique_ptr<PauseMenu> instance;
 };
