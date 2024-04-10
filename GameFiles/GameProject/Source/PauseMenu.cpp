@@ -85,10 +85,6 @@ void PauseMenu::HandleSettings()
 		int settingsMenuIndex = 1;
 		Renderer::GetInstance()->LoadMenuPage(settingsMenuIndex);
 	}
-	else
-	{
-		Renderer::GetInstance()->LoadMenuPage(-1);
-	}
 }
 
 bool PauseMenu::IsMouseOverBackButton()
