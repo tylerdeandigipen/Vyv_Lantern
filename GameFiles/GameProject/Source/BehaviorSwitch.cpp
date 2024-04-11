@@ -124,6 +124,13 @@ void BehaviorSwitch::Read(json jsonData)
 		pos.push_back({ x,y });
 	}
 	key = jsonData["key"];
+
+	for (int i = 0; i < pos.size() - 1; i++)
+	{
+		Renderer::GetInstance()->DrawLine(pos[i] + Vector2{4,4}, pos[i + 1] + Vector2{ 4,4 }, Color{ 186,185,182,255 }, Renderer::GetInstance()->backgroundLayer, 0.75f);
+		Renderer::GetInstance()->DrawLine(pos[i] + Vector2{ 3,3 }, pos[i + 1] + Vector2{ 3,3 }, Color{ 186,185,182,255 }, Renderer::GetInstance()->backgroundLayer, 0.75f);
+	}
+
 }
 
 ImageBuffer* prompt = NULL;

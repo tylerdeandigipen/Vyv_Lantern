@@ -758,7 +758,7 @@ void Renderer::UpdateFace(int faceState_)
 	}
 }
 
-void Renderer::LerpToBlack(float progress)
+void Renderer::TintScreenBlack(float progress)
 {
 	fadePercent = progress;
 }
@@ -1649,7 +1649,7 @@ void Renderer::ResizeBuffers()
 
 #ifndef Debug_Functions
 
-void Renderer::DrawLine(Vector2 P0, Vector2 P1, const Color& LineColor, ImageBuffer* buffer)
+void Renderer::DrawLine(Vector2 P0, Vector2 P1, const Color& LineColor, ImageBuffer* buffer, float skipPercent)
 {
 	int MinX = (int)min(P0.x, P1.x);
 	int MinY = (int)min(P0.y, P1.y);
@@ -1687,8 +1687,11 @@ void Renderer::DrawLine(Vector2 P0, Vector2 P1, const Color& LineColor, ImageBuf
 			float d = fabsf(Vector2::DotProduct(N, PixelD));
 			if (d <= 0.5f)
 			{
-				Color& DestPixel = buffer->SampleColor(PixelX, PixelY);
-				DestPixel = LineColor;
+				if (skipPercent == 0 || (skipPercent * 100) < rand() % 100)
+				{
+					Color& DestPixel = buffer->SampleColor(PixelX, PixelY);
+					DestPixel = LineColor;
+				}
 			}
 		}
 	}

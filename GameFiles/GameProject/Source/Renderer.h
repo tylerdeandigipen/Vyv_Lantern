@@ -74,7 +74,7 @@ public:
 	//Animation Functions
 	void UpdateAnimations(float dt);
 	ImageBuffer* CreateAnimatedObject(const std::string filename, Vector2 frameSize);
-	void LerpToBlack(float progress);
+	void TintScreenBlack(float progress);
 
 	// 0 = forward, 1 = down, 2 = up, 3 = blink
 	void UpdateFace(int faceState_);
@@ -121,7 +121,7 @@ public:
 	void ResizeBuffers();
 
 	//Debug Functions
-	void DrawLine(Vector2 P0, Vector2 P1, const Color& LineColor, ImageBuffer* buffer = NULL);
+	void DrawLine(Vector2 P0, Vector2 P1, const Color& LineColor, ImageBuffer* buffer = NULL, float skipPercent = 0);
 	void RenderWallCollidersToDebugBuffer();
 
 	//Output Buffer
