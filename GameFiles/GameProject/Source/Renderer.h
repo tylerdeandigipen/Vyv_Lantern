@@ -74,6 +74,7 @@ public:
 	//Animation Functions
 	void UpdateAnimations(float dt);
 	ImageBuffer* CreateAnimatedObject(const std::string filename, Vector2 frameSize);
+	void LerpToBlack(float progress);
 
 	// 0 = forward, 1 = down, 2 = up, 3 = blink
 	void UpdateFace(int faceState_);
@@ -211,6 +212,7 @@ private:
 	float PreviousFrameLengths[15];
 
 	//Misc.
+	float fadePercent = 1;
 	int faceState = 0;
 	unsigned int maxThreadsAllowed = 8;
 	Vector2 nextCamPos;

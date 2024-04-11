@@ -68,8 +68,6 @@ void Renderer::Update(float dt)
 		LoadMenuPage(-1);
 	}
 
-	//
-
 	Uint32 currentTime = SDL_GetTicks();
 	ScopeTimer TestScopeTimer("Renderer::Update");
 
@@ -221,6 +219,10 @@ void Renderer::RenderToOutbuffer()
 				else if (renderNormalMap == true)
 				{
 					DestPixel = laserBuffer->SampleColor(x, y);
+				}
+				if (fadePercent < 1)
+				{
+					DestPixel = DestPixel * fadePercent;
 				}
 			}
 		}
@@ -754,6 +756,11 @@ void Renderer::UpdateFace(int faceState_)
 			animatedObjects[0][animatedObjects[0][0]->currentFrame]->AddSprite(animatedObjects[faceIndex][faceState]);
 		}
 	}
+}
+
+void Renderer::LerpToBlack(float progress)
+{
+	fadePercent = progress;
 }
 
 #endif
@@ -1483,6 +1490,7 @@ void Renderer::CleanRenderer()
 	ReallocateLightArrays();
 	ClearTilesets();
 
+	fadePercent = 1;
 	faceIndex = -1;
 	numTiles = 0;
 	numNormalTiles = 0;
