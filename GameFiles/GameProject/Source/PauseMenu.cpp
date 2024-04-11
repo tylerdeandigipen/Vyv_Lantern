@@ -22,7 +22,7 @@
 
 std::unique_ptr<PauseMenu> PauseMenu::instance = nullptr;
 
-PauseMenu::PauseMenu()
+PauseMenu::PauseMenu() : settingsMenuOpen(false)
 {
 }
 
@@ -60,6 +60,16 @@ void PauseMenu::HandleButtonInput()
 	{
 		HandleSettings();
 	}
+
+	if (Inputs::GetInstance()->keyPressed(SDLK_ESCAPE) && settingsMenuOpen == true)
+	{
+		CloseSettingsMenu();
+	}
+
+	if (settingsMenuOpen)
+	{
+		OpenSettingsMenu();
+	}
 }
 
 void PauseMenu::HandleBack()
@@ -82,8 +92,26 @@ void PauseMenu::HandleSettings()
 {
 	if (Inputs::GetInstance()->mouseButtonPressed(SDL_BUTTON_LEFT))
 	{
-		int settingsMenuIndex = 1;
-		Renderer::GetInstance()->LoadMenuPage(settingsMenuIndex);
+		// If the settings menu is closed, open it
+		if (!settingsMenuOpen)
+		{
+			settingsMenuOpen = true;
+		}
+	}
+}
+
+void PauseMenu::OpenSettingsMenu()
+{
+	int settingsMenuIndex = 1;
+	Renderer::GetInstance()->LoadMenuPage(settingsMenuIndex);
+}
+
+void PauseMenu::CloseSettingsMenu()
+{
+	if (Inputs::GetInstance()->keyPressed(SDLK_ESCAPE))
+	{
+		settingsMenuOpen = false;
+		Renderer::GetInstance()->LoadMenuPage(-1);
 	}
 }
 

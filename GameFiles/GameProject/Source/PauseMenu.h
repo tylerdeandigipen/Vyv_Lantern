@@ -35,6 +35,10 @@ private:
 	void HandleBack();
 	void HandleExit();
 	void HandleSettings();
+	void CloseSettingsMenu();
+	void OpenSettingsMenu();
+
+	bool settingsMenuOpen;
 
 	static std::unique_ptr<PauseMenu> instance;
 };
