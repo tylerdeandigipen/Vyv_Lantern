@@ -22,7 +22,7 @@
       "DoorClosed": true,
       "OpenSprite": "./Assets/PPM/Door_Open.ppm",
       "PairName": "Receiver2",
-      "NextScene" : "Section1Final",
+      "NextScene" : "Level1",
       "Type": "BehaviorDoor"
     }
   ],

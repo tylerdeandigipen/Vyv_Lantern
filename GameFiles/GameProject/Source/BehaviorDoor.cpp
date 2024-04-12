@@ -207,9 +207,7 @@ void BehaviorDoor::DoorCollisionHandler(Entity* entity1, Entity* entity2)
 
 		if (door != nullptr && door->isDoorClosed == false)
 		{
-			if (door->_nextScene == "Section1Final")
-				SceneSystem::GetInstance()->SetScene(Section1FinalGetInstance());
-			else if (door->_nextScene == "Level1")
+			if (door->_nextScene == "Level1")
 				SceneSystem::GetInstance()->SetScene(Level1GetInstance());
 			else if (door->_nextScene == "Level2")
 				SceneSystem::GetInstance()->SetScene(Level2GetInstance());

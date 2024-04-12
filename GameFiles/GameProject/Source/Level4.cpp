@@ -50,8 +50,8 @@ Scene* Level4instance = NULL;
 
 laser_emitter* Level4WLaser;
 
-constexpr const char* _OBJECT_LIST = "./Data/Scenes/Level4/Level4OBJECTS.json";
-constexpr const char* _SCENE = "./Data/Scenes/Level4/Level4.json";
+constexpr const char* _OBJECT_LIST = "./Data/Scenes/Level4Final/Level4FinalOBJECTS.json";
+constexpr const char* _SCENE = "./Data/Scenes/Level4Final/Level4Final.json";
 
 Level4::Level4() : Scene("Level4")
 {
