@@ -118,7 +118,8 @@ void BehaviorDoor::Update(float dt)
 		if (isDoorClosed)
 		{
 			Parent()->SetImage(openPPM);
-			AudioManager.PlaySFX("doorOpen");
+
+			AudioManager.PlaySFX("doorOpen", 1.0f);
 		}
 
 		isDoorClosed = false;
@@ -129,7 +130,8 @@ void BehaviorDoor::Update(float dt)
 		if (!isDoorClosed)
 		{
 			Parent()->SetImage(closedPPM);
-			AudioManager.PlaySFX("doorClosed");
+
+			AudioManager.PlaySFX("doorClosed", 1.0f);
 		}
 
 		isDoorClosed = true;
@@ -243,7 +245,7 @@ void BehaviorDoor::DoorCollisionHandler(Entity* entity1, Entity* entity2)
 					{
 						if (door->_nextScene == "WinScene")
 						{
-							AudioManager.PlaySFX("cheer");
+							AudioManager.PlaySFX("cheer", 7.0f);
 							SceneSystem::GetInstance()->SetScene(WinSceneGetInstance());
 						}
 						else if (door->_nextScene == "LevelCreatorScene")
