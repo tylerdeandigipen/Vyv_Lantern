@@ -100,7 +100,7 @@ Engine::EngineCode TbdTestScene::Init()
 	TestLaser1->Direction = Vector2::Normalize(Vector2(-1.0f, 0.0f));
 	*/
 	Color tempColor{ 141,141,141,255 };
-	int numTestDust = 120;
+	int numTestDust = 0;
 	Vector2 tempRandNum;
 	for (int i = 0; i < numTestDust; i++)
 	{

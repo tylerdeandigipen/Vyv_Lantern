@@ -11,14 +11,20 @@
 #include "Math.h"
 #include <math.h>
 #include <cmath>
-Particle::Particle(Vector2 pos, Vector2 dir, Vector2 spd, Color otherColor, Particle_Type partType, Vector2 attractPoint)
+Particle::Particle(Vector2 pos, Vector2 dir, Vector2 spd, Color otherColor, Particle_Type partType, float givenLifeTime, Vector2 attractPoint)
 {
 	particleType = partType;
 	position = pos;
+	spawnPos = pos;
 	direction = dir;
 	speed = spd;
 	mothAttractionPoint = attractPoint;
 	color = otherColor;
+	lifeTime = givenLifeTime;
+	if (lifeTime != 0)
+	{
+		timeAlive = (rand() % (int)(lifeTime * 10)) / 10.0f;
+	}
 	isDead = false;
 }
 Particle::Particle() 
@@ -99,6 +105,27 @@ void Particle::Update(float dt)
 			{
 				position.x = (float)(rand() % (int)tileMapSize.x - 50);
 				position.x += 50;
+			}
+		}
+		break;
+		case Particle_Laser_Emiter:
+		{
+			isTransparent = true;
+			Vector2 temp = { (float)(rand() % RAND_RANGE_DUST), (float)(rand() % RAND_RANGE_DUST) };
+			temp -= {RAND_RANGE_DUST / 2, RAND_RANGE_DUST / 2};
+			temp /= RAND_RANGE_DUST;
+			direction += temp;
+
+			position.x += cosf(direction.x) * speed.x * dt;
+			position.y += (0.5f + sinf(direction.y)) * speed.y * dt;
+			if (timeAlive >= lifeTime)
+			{
+				position = spawnPos;
+				timeAlive = 0;
+			}
+			else
+			{
+				timeAlive += dt;
 			}
 		}
 		break;

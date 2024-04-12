@@ -49,16 +49,19 @@ void ParticleManager::UpdateParticles()
 
 void ParticleManager::AddParticle(Particle* particle_)
 {
-	for (int i = 0; i < totalParticles - 1; i++)
+	if (totalParticles < MAX_PARTICLES)
 	{
-		if (particleArray[i] == NULL)
+		for (int i = 0; i < totalParticles - 1; i++)
 		{
-			particleArray[i] = particle_;
-			return;
+			if (particleArray[i] == NULL)
+			{
+				particleArray[i] = particle_;
+				return;
+			}
 		}
+		particleArray[totalParticles] = particle_;
+		totalParticles += 1;
 	}
-	particleArray[totalParticles] = particle_;
-	totalParticles += 1;
 }
 
 void ParticleManager::ClearParticles()

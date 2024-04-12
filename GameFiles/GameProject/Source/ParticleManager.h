@@ -25,7 +25,7 @@ public:
 	void ClearParticles();
 
 	Particle* particleArray[MAX_PARTICLES];
-	int totalParticles;
+	int totalParticles = 0;
 
 	Particle** GetParticles();
 	Vector2 tileMapSize{ 240,136 };

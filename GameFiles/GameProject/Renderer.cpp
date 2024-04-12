@@ -467,7 +467,15 @@ void Renderer::RenderParticles()
 			if (tempPos.x >= 0 && tempPos.x < outputBuffer->size.x && tempPos.y >= 0 && tempPos.y < outputBuffer->size.y)
 			{
 				Color& DestPixel = outputBuffer->SampleColor((int)tempPos.x, (int)tempPos.y);
-				DestPixel = particleManager->particleArray[i]->color;
+				if (particleManager->particleArray[i]->isTransparent == false)
+				{
+					DestPixel = particleManager->particleArray[i]->color;
+				}
+				else
+				{
+					float transPercent = (particleManager->particleArray[i]->timeAlive / particleManager->particleArray[i]->lifeTime);
+					DestPixel = DestPixel.BlendColors(particleManager->particleArray[i]->color,DestPixel, transPercent * 100);
+				}
 			}
 		}
 	}
