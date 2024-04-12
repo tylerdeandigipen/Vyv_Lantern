@@ -237,6 +237,7 @@ void MenuScene::HandleBegin()
     if (Inputs::GetInstance()->mouseButtonPressed(SDL_BUTTON_LEFT))
     {
         SceneSystem* sceneSystem = SceneSystem::GetInstance();
+        Renderer::GetInstance()->isFullbright = false;
         sceneSystem->SetScene(TbdTestSceneGetInstance());
 
     }
