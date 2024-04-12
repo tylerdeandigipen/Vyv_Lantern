@@ -6,8 +6,12 @@
 #include "Entity.h"
 #include "FileIO.h"
 #include "EntityManager.h"
+#include <SDL/SDL.h>
+#include <glad/glad.h>
 
 class Scene;
+
+
 
 class SplashScene : public Scene
 {
@@ -32,6 +36,7 @@ private:
 	Entity* logo;
 	bool logoflag;
 	std::unique_ptr<EntityManager> entityManagerSPL;
+	
 
 	
 };
