@@ -112,7 +112,7 @@ Engine::EngineCode Level2::Init()
 
 	AudioManager.PlaySFX("bgAmbience", 0.75f);
 
-	//AudioManager.PlaySFX("laserAmbience");
+	AudioManager.PlaySFX("laserAmbience", 0.2f);
 
 	FontSystem fontSystem;
 

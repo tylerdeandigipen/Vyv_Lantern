@@ -121,7 +121,7 @@ Engine::EngineCode TbdTestScene::Init()
 
 	AudioManager.PlaySFX("bgAmbience", 0.75);
 
-	//AudioManager.PlaySFX("laserAmbience"); // replace with things that sound more "electric humming"
+	AudioManager.PlaySFX("laserAmbience", 0.2f); // replace with things that sound more "electric humming"
 
 	FontSystem fontSystem;
 
