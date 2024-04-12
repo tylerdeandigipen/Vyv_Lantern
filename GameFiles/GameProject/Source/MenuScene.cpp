@@ -78,8 +78,8 @@ MenuScene::MenuScene() : Scene("Menutest"), isCreditsOpen(false)
 
 Engine::EngineCode MenuScene::Load()
 {
-	//AudioManager.LoadMusicFromJSON("./Data/music.json");
-	//AudioManager.LoadSFXFromJSON("./Data/SFX.json");
+	AudioManager.LoadMusicFromJSON("./Data/music.json");
+	AudioManager.LoadSFXFromJSON("./Data/SFX.json");
 
 	return Engine::NothingBad;
 }
@@ -233,6 +233,7 @@ void MenuScene::HandleBegin()
 {
 	if (Inputs::GetInstance()->mouseButtonPressed(SDL_BUTTON_LEFT))
 	{
+		AudioManager.PlaySFX("buttonFeedback", 0.5);
 		SceneSystem* sceneSystem = SceneSystem::GetInstance();
 		Renderer::GetInstance()->isFullbright = false;
 		sceneSystem->SetScene(TbdTestSceneGetInstance());
