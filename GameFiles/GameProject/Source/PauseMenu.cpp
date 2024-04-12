@@ -17,6 +17,7 @@
 #include "Engine.h"
 #include "Inputs.h"
 #include "Renderer.h"
+#include "AudioEngine.h"
 
 #include "TbdTestScene.h"
 
@@ -24,6 +25,8 @@ std::unique_ptr<PauseMenu> PauseMenu::instance = nullptr;
 
 PauseMenu::PauseMenu() : settingsMenuOpen(false), exitMenuOpen(false)
 {
+	AudioManager.LoadMusicFromJSON("./Data/music.json");//line is good
+	AudioManager.LoadSFXFromJSON("./Data/SFX.json");// line is goodplay
 }
 
 PauseMenu::~PauseMenu()
@@ -96,6 +99,7 @@ void PauseMenu::HandleBack()
 {
 	if (Inputs::GetInstance()->mouseButtonPressed(SDL_BUTTON_LEFT))
 	{
+		AudioManager.PlaySFX("buttonFeedback", 0.5);
 		Engine::GetInstance()->SetPause(false);
 	}
 }
@@ -120,6 +124,7 @@ void PauseMenu::HandleSettings()
 		// If the settings menu is closed, open it
 		if (!settingsMenuOpen)
 		{
+			AudioManager.PlaySFX("buttonFeedback", 0.5);
 			settingsMenuOpen = true;
 		}
 	}
@@ -137,6 +142,7 @@ void PauseMenu::CloseExitMenu()
 	{
 		if (Inputs::GetInstance()->mouseButtonPressed(SDL_BUTTON_LEFT))
 		{
+			AudioManager.PlaySFX("buttonFeedback", 0.5);
 			exitMenuOpen = false;
 			Renderer::GetInstance()->LoadMenuPage(-1);
 
@@ -148,6 +154,7 @@ void PauseMenu::CloseExitMenu()
 	{
 		if (Inputs::GetInstance()->mouseButtonPressed(SDL_BUTTON_LEFT))
 		{
+			AudioManager.PlaySFX("buttonFeedback", 0.5);
 			exitMenuOpen = false;
 			Renderer::GetInstance()->LoadMenuPage(-1);
 		}
@@ -164,12 +171,16 @@ void PauseMenu::CloseSettingsMenu()
 {
 	if (Inputs::GetInstance()->keyPressed(SDLK_ESCAPE))
 	{
+		AudioManager.PlaySFX("buttonFeedback", 0.5);
+
 		settingsMenuOpen = false;
 		Renderer::GetInstance()->LoadMenuPage(-1);
 	}
 
 	if (Inputs::GetInstance()->mouseButtonPressed(SDL_BUTTON_LEFT))
 	{
+		AudioManager.PlaySFX("buttonFeedback", 0.5);
+
 		settingsMenuOpen = false;
 		Renderer::GetInstance()->LoadMenuPage(-1);
 	}
