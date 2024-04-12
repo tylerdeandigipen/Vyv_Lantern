@@ -104,6 +104,7 @@ public:
 	Vector2 GetCameraPosition(void);
 	void SetCameraPosition(Vector2 NewCameraP);
 	static Renderer* GetInstance();
+	void TurnoffFace();
 	int CheckLineForObject(int x1, int y1, int x2, int y2);
 	gfxVector2 LaserCheckLineForObject(Vector2 pos1, Vector2 pos2);
 	void BlurLights(int blurRangeLow, int blurRangeHigh);
@@ -220,6 +221,7 @@ private:
 	static std::unique_ptr<Renderer> instance;
 	ImageBuffer* DebugBuffer = NULL;
 	uint32_t OutputBufferTexture = NULL;
+	bool faceflag;
 };
 
 #endif

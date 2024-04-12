@@ -110,8 +110,9 @@ Engine::EngineCode Level1::Init()
 	AudioManager.PlayMusic("bgm");
 	AudioManager.DecreaseMusicVolume(0.7f);
 
-	AudioManager.PlaySFX("bgAmbience");
-	AudioManager.PlaySFX("laserAmbience");
+	AudioManager.PlaySFX("bgAmbience", 0.75f);
+
+	//AudioManager.PlaySFX("laserAmbience");
 
 	FontSystem fontSystem;
 
@@ -316,7 +317,7 @@ void Level1::handleCheatCodes()
 	{
 		if (Name_Level1::CanPause == true)
 		{
-			AudioManager.PlaySFX("creak");
+			//AudioManager.PlaySFX("creak");
 			if (Engine::GetInstance()->Paused() == false)
 				Engine::GetInstance()->SetPause(true);
 			else
