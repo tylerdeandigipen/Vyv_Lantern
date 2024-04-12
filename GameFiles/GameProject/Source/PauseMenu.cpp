@@ -66,6 +66,11 @@ void PauseMenu::HandleButtonInput()
 		CloseSettingsMenu();
 	}
 
+	if (IsMouseOverSettingsExitButton() && settingsMenuOpen == true)
+	{
+		CloseSettingsMenu();
+	}
+
 	if (settingsMenuOpen)
 	{
 		OpenSettingsMenu();
@@ -113,6 +118,26 @@ void PauseMenu::CloseSettingsMenu()
 		settingsMenuOpen = false;
 		Renderer::GetInstance()->LoadMenuPage(-1);
 	}
+
+	if (Inputs::GetInstance()->mouseButtonPressed(SDL_BUTTON_LEFT))
+	{
+		settingsMenuOpen = false;
+		Renderer::GetInstance()->LoadMenuPage(-1);
+	}
+}
+
+bool PauseMenu::IsMouseOverSettingsExitButton()
+{
+	int mouseX = Inputs::GetInstance()->getMouseX();
+	int mouseY = Inputs::GetInstance()->getMouseY();
+
+	int exitButtonTopLeftX = 531;
+	int exitButtonTopLeftY = 710;
+	int exitButtonBottomRightX = 684;
+	int exitButtonBottomRightY = 794;
+
+	return (mouseX >= exitButtonTopLeftX && mouseX <= exitButtonBottomRightX &&
+		mouseY >= exitButtonTopLeftY && mouseY <= exitButtonBottomRightY);
 }
 
 bool PauseMenu::IsMouseOverBackButton()

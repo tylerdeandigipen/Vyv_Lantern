@@ -31,6 +31,7 @@ private:
 	bool IsMouseOverBackButton();
 	bool IsMouseOverExitButton();
 	bool IsMouseOverSettingsButton();
+	bool IsMouseOverSettingsExitButton();
 
 	void HandleBack();
 	void HandleExit();

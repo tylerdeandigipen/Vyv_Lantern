@@ -67,6 +67,7 @@ Engine::EngineCode TbdTestScene::Load()
 	AudioManager.LoadSFXFromJSON("./Data/SFX.json");// line is goodplay
 
 	if (entityManagerTBD->InitializeProperties("./Data/GameObjects/TutorialFinalActual/TutorialFinalActualOBJECTS.json"))
+
 		//if (entityManagerTBD->InitializeProperties("./Data/Scenes/TutorialFinalActual/TutorialFinalActualOBJECTS.json"))
 		std::cout << "Property load success!\n";
 
@@ -603,7 +604,8 @@ void TbdTestScene::ImGuiWindow()
 			float worldMouseX = (mouseX - cameraPosX) / screenScale;
 			float worldMouseY = (mouseY - cameraPosY) / screenScale;
 
-			ImGui::Text("Mouse Position: (%.2f, %.2f)", worldMouseX, worldMouseY);
+			ImGui::Text("World Mouse Position: (%.2f, %.2f)", worldMouseX, worldMouseY);
+			ImGui::Text("Local Mouse Position: (%d, %d)", Inputs::GetInstance()->getMouseX(), Inputs::GetInstance()->getMouseY());
 
 			ImGui::Text("Keys Pressed:");
 			for (int i = 0; i < SDL_NUM_SCANCODES; ++i)
