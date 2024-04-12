@@ -85,7 +85,7 @@
       <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <OpenMPSupport>true</OpenMPSupport>
-      <DisableSpecificWarnings>4819; 4849; 4005</DisableSpecificWarnings>
+      <DisableSpecificWarnings>4819; 4849; 4005; 4101</DisableSpecificWarnings>
       <TreatWarningAsError>false</TreatWarningAsError>
     </ClCompile>
     <Link>
@@ -106,7 +106,7 @@
       <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <OpenMPSupport>true</OpenMPSupport>
-      <DisableSpecificWarnings>4819; 4849; 4005</DisableSpecificWarnings>
+      <DisableSpecificWarnings>4819; 4849; 4005; 4101</DisableSpecificWarnings>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -124,7 +124,7 @@
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>$(ProjectDir)glfw-3.3.8.bin.WIN64\glfw-3.3.8.bin.WIN64\include;$(ProjectDir)lib\Fmod\inc;$(ProjectDir)SDL2_ttf\include</AdditionalIncludeDirectories>
       <OpenMPSupport>true</OpenMPSupport>
-      <DisableSpecificWarnings>4819; 4849; 4005</DisableSpecificWarnings>
+      <DisableSpecificWarnings>4819; 4849; 4005; 4101</DisableSpecificWarnings>
       <LanguageStandard>stdcpp14</LanguageStandard>
       <TreatWarningAsError>false</TreatWarningAsError>
     </ClCompile>
@@ -155,7 +155,7 @@ xcopy "$(ProjectDir)Fmod\*.dll" "$(OutDir)" /s /r /y /q /i
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>$(ProjectDir)glfw-3.3.8.bin.WIN64\glfw-3.3.8.bin.WIN64\include;$(ProjectDir)lib\Fmod\inc;$(ProjectDir)SDL2_ttf\include</AdditionalIncludeDirectories>
       <OpenMPSupport>true</OpenMPSupport>
-      <DisableSpecificWarnings>4819; 4849; 4005</DisableSpecificWarnings>
+      <DisableSpecificWarnings>4819; 4849; 4005; 4101</DisableSpecificWarnings>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
