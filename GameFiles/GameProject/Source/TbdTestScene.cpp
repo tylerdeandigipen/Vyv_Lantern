@@ -63,6 +63,8 @@ TbdTestScene::TbdTestScene() : Scene("tbdtest")
 
 Engine::EngineCode TbdTestScene::Load()
 {
+	Renderer::GetInstance()->isFullbright = false;
+
 	AudioManager.LoadMusicFromJSON("./Data/music.json");//line is good
 	AudioManager.LoadSFXFromJSON("./Data/SFX.json");// line is goodplay
 
@@ -119,7 +121,7 @@ Engine::EngineCode TbdTestScene::Init()
 
 	AudioManager.PlaySFX("bgAmbience", 0.75);
 
-	//AudioManager.PlaySFX("laserAmbience"); // replace with things that sound more "electric humming"
+	AudioManager.PlaySFX("laserAmbience", 0.2f); // replace with things that sound more "electric humming"
 
 	FontSystem fontSystem;
 
@@ -271,10 +273,6 @@ void TbdTestScene::handleCheatCodes()
 	if (!inputHandler->keyPressed(SDL_SCANCODE_GRAVE))
 	{
 		TbdCanToggleFullBright = true;
-	}
-	if (inputHandler->keyPressed(SDL_SCANCODE_7))
-	{
-		SceneSystem::GetInstance()->SetScene(Section1FinalGetInstance());
 	}
 
 	if (inputHandler->keyPressed(SDL_SCANCODE_Q) && TbdCanToggleOnlyLights == true)

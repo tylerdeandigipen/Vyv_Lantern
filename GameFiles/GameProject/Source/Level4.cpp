@@ -85,7 +85,7 @@ Engine::EngineCode Level4::Init()
 
 	//initialize level data
 	//EntityContainer::GetInstance()->ReadEntities();
-	LevelBuilder::GetInstance()->LoadTileMap(_SCENE);
+	LevelBuilder::GetInstance()->LoadTileMap("./Data/Scenes/Level4Final/Level4Final.json");
 
 	//ControlledEmitter = LaserSystem::GetInstance()->CreateEmitter();
 	/*
@@ -112,7 +112,7 @@ Engine::EngineCode Level4::Init()
 
 	AudioManager.PlaySFX("bgAmbience", 0.75);
 
-	//AudioManager.PlaySFX("laserAmbience", );
+	AudioManager.PlaySFX("laserAmbience", 0.2f);
 
 	FontSystem fontSystem;
 

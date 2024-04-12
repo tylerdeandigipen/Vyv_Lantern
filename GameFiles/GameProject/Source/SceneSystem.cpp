@@ -27,6 +27,8 @@
 #include "MenuScene.h"
 
 // enums for different scene types
+static bool Animating = false;
+static bool FadeIn = false;
 enum class SceneType
 {
 	SCENE_TBD_TEST = 0,
@@ -60,11 +62,13 @@ Engine::EngineCode SceneSystem::Init()
 	return Engine::NothingBad;
 }
 
+static float tint = 1.0f;
 void SceneSystem::Update(float dt)
 {
 	if (nextScene != nullptr)
 	{
 		ChangeScene();
+		Animating = true;
 	}
 
 	// if there is an active scene and engine isn't paused
@@ -82,6 +86,29 @@ void SceneSystem::Update(float dt)
 		dt = 0;
 	}
 
+	if (Animating)
+	{
+		if (!FadeIn)
+		{
+			tint -= .01;
+			if (tint >= 0)
+			{
+				FadeIn = true;
+				tint = 0.0f;
+			}
+		}
+		else
+		{
+			tint += .01;
+			if (tint >= 1)
+			{
+				tint = 1.0f;
+				FadeIn = false;
+				Animating = false;
+			}
+		}
+		Renderer::GetInstance()->TintScreenBlack(tint);
+	}
 	assert(activeScene != nullptr && "Active scene is NULL. Location: SceneSystem::Update()");
 	activeScene->Update(dt);
 }
@@ -331,7 +358,7 @@ bool CheckGameScenes()
 	}
 	else if (inputHandlerScene->keyPressed(SDL_SCANCODE_7))
 	{
-		SceneSystem::GetInstance()->SetScene(Level3GetInstance());
+		SceneSystem::GetInstance()->SetScene(Level4GetInstance());
 	}
 	else
 	{

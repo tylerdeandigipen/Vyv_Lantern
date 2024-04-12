@@ -1,5 +1,6 @@
 #include "Entity.h"
 #include "Transform.h"
+#include "LevelBuilder.h"
 #include "BehaviorReceiver.h"
 
 BehaviorReceiver::BehaviorReceiver() : Behavior(Behavior::bEmitter), receiver(new CheckPoint)
@@ -67,7 +68,13 @@ void BehaviorReceiver::Update(float dt)
         Vector2 position = *Parent()->Has(Transform)->GetTranslation();
         // set reflection position when the mirror stops moving or is not moving;
         //mirror->p
-
+        if (final)
+        {
+            if (receiver->isActivated)
+            {
+                LevelBuilder::SetWinState(true);
+            }
+        }
     }
 }
 
@@ -78,6 +85,11 @@ void BehaviorReceiver::Read(json jsonData)
     if (jsonData["Solid"].is_boolean())
     {
         receiver->isSolid = jsonData["Solid"];
+    }
+    if (jsonData["FinalReceiver"].is_object())
+    {
+        json fin = jsonData["FinalReceiver"];
+        final = fin["Final"];
     }
     // do not know what it needs but for now it shall be callin init
 

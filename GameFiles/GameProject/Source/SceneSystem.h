@@ -26,7 +26,6 @@ public:
 	static void RestartScene();
 	void SetScene(Scene* scene);
 	Scene* GetActiveScene();
-
 	static SceneSystem* GetInstance();
 
 	float GetRate();

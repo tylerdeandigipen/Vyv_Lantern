@@ -112,7 +112,7 @@ Engine::EngineCode Level1::Init()
 
 	AudioManager.PlaySFX("bgAmbience", 0.75f);
 
-	//AudioManager.PlaySFX("laserAmbience");
+	AudioManager.PlaySFX("laserAmbience", 0.2f);
 
 	FontSystem fontSystem;
 
@@ -466,7 +466,7 @@ void Level1::Update(float dt)
 {
 	if (CheckGameScenes() || CheckRestart())
 		return;
-	
+
 	//eventally have player handle these lights
 	//TbdPixelRenderer->lightSource[1].position = TbdPixelRenderer->animatedObjects[0][0]->position + Vector2{ 3,3 };
 	//TbdPixelRenderer->lightSource[0].position = TbdPixelRenderer->animatedObjects[0][0]->position + Vector2{ 3,3 };

@@ -37,6 +37,7 @@ float FrameRate::CalculateAverageFrameRate(float* PreviousFrameLengths, uint32_t
 
 void FrameRate::UpdateWindowTitle(SDL_Window* window, float AverageFrameRate) {
     char WindowTextBuffer[128];
-    sprintf_s(WindowTextBuffer, sizeof(WindowTextBuffer), "FPS: %.2f", AverageFrameRate);
+    //TODO UPDATE TO FULL GAME NAME
+    sprintf_s(WindowTextBuffer, sizeof(WindowTextBuffer), "TYLER'S MIRROR FPS: %.2f", AverageFrameRate);
     SDL_SetWindowTitle(window, WindowTextBuffer);
 }

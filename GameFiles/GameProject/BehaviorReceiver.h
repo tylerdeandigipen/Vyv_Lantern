@@ -29,6 +29,7 @@ public:
 
 private:
 	//bool inited = false;
+	bool final = false;
 	CheckPoint* receiver;
 };
 

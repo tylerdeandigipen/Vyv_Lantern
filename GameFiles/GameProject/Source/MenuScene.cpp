@@ -1,7 +1,7 @@
 //------------------------------------------------------------------------------
 //
 // File Name:	MenuScene.cpp
-// Author(s):	Tyler Dean, Michael Howard, TayLee Young, 
+// Author(s):	Tyler Dean, Michael Howard, TayLee Young,
 //              Thomas Stephenson, Louis Wang
 // Purpose:     Main scene for the game.
 //
@@ -71,127 +71,120 @@ static Entity* Title;
 
 ImageBuffer* ani;
 
-
-MenuScene::MenuScene() : Scene("Menutest")
+MenuScene::MenuScene() : Scene("Menutest"), isCreditsOpen(false)
 {
-    offset = -50.0f;
+	offset = -50.0f;
 }
 
 Engine::EngineCode MenuScene::Load()
 {
-    //AudioManager.LoadMusicFromJSON("./Data/music.json");
-    //AudioManager.LoadSFXFromJSON("./Data/SFX.json");
+	//AudioManager.LoadMusicFromJSON("./Data/music.json");
+	//AudioManager.LoadSFXFromJSON("./Data/SFX.json");
 
-    return Engine::NothingBad;
+	return Engine::NothingBad;
 }
 
 Engine::EngineCode MenuScene::Init()
 {
-    Inputs::GetInstance()->SetWindow(MenuWindow);
-    // Create SDL Window
-    MenuWindow = PlatformSystem::GetInstance()->GetWindowHandle();
-    MenuPixelRender->window = MenuWindow;
+	Inputs::GetInstance()->SetWindow(MenuWindow);
 
-    //cheatScanlines();
+	// Create SDL Window
+	MenuWindow = PlatformSystem::GetInstance()->GetWindowHandle();
+	MenuPixelRender->window = MenuWindow;
 
-    //exporttests
-    json ignore{ {"isAnimated", false}};
-    //json ingnore{ {"isAnimated", true,}, {"frameSize", {8,8}} };
+	//cheatScanlines();
 
+	//exporttests
+	json ignore{ {"isAnimated", false} };
 
-    Beginbutton = new Entity("Object", "./Assets/PPM/Begin.ppm", ignore);
-    ExitButton = new Entity("Object", "./Assets/PPM/quit.ppm", ignore);
-    Creditbutton = new Entity("Object", "./Assets/PPM/credit.ppm", ignore);
-    optionbutton = new Entity("Object", "./Assets/PPM/option.ppm", ignore);
+	//json ingnore{ {"isAnimated", true,}, {"frameSize", {8,8}} };
 
-    Title = new Entity("Object", "./Assets/PPM/title.ppm", ignore);
+	Beginbutton = new Entity("Object", "./Assets/PPM/Begin.ppm", ignore);
+	ExitButton = new Entity("Object", "./Assets/PPM/quit.ppm", ignore);
+	Creditbutton = new Entity("Object", "./Assets/PPM/credit.ppm", ignore);
+	optionbutton = new Entity("Object", "./Assets/PPM/option.ppm", ignore);
 
-    //PlayerIcon = new Entity("Object", "./Assets/PPM/Player_Sprites.ppm", ingnore);
+	Title = new Entity("Object", "./Assets/PPM/title.ppm", ignore);
 
-    Renderer::GetInstance()->isFullbright = true;
+	//PlayerIcon = new Entity("Object", "./Assets/PPM/Player_Sprites.ppm", ingnore);
 
-    Beginbutton->CreateImage("./Assets/PPM/Begin.ppm");
-    ExitButton->CreateImage("./Assets/PPM/quit.ppm");
-    Creditbutton->CreateImage("./Assets/PPM/credit.ppm");
-    optionbutton->CreateImage("./Assets/PPM/option.ppm");
-    Title->CreateImage("./Assets/PPM/title.ppm");
+	Renderer::GetInstance()->isFullbright = true;
 
+	Beginbutton->CreateImage("./Assets/PPM/Begin.ppm");
+	ExitButton->CreateImage("./Assets/PPM/quit.ppm");
+	Creditbutton->CreateImage("./Assets/PPM/credit.ppm");
+	optionbutton->CreateImage("./Assets/PPM/option.ppm");
+	Title->CreateImage("./Assets/PPM/title.ppm");
 
-    ani = new ImageBuffer();
-    ani = Renderer::GetInstance()->CreateAnimatedObject("./Assets/PPM/menu_animation.ppm", Vector2{80,80});
+	ani = new ImageBuffer();
+	ani = Renderer::GetInstance()->CreateAnimatedObject("./Assets/PPM/menu_animation.ppm", Vector2{ 80,80 });
 
-    ani->position = gfxVector2{ 122,45 };
-    ani->isFlipped = false;
+	ani->position = gfxVector2{ 122,45 };
+	ani->isFlipped = false;
 
-    //MenuPixelRender->objectLayer = new ImageBuffer;
+	//MenuPixelRender->objectLayer = new ImageBuffer;
 
-    //ani->AddSprite(ani, Vector2{30,30});
+	//ani->AddSprite(ani, Vector2{30,30});
 
+	Transform* BPOS = new Transform;
+	BPOS->SetTranslation(gfxVector2{ offset + 92,38 });
+	Beginbutton->Add(BPOS);
+	Beginbutton->AddToRenderer(MenuPixelRender, "");
 
-    Transform* BPOS = new Transform;
-    BPOS->SetTranslation(gfxVector2{ offset + 92,38});
-    Beginbutton->Add(BPOS);
-    Beginbutton->AddToRenderer(MenuPixelRender, "");
+	Transform* crepos = new Transform;
+	crepos->SetTranslation(gfxVector2{ offset + 92,60 });
+	Creditbutton->Add(crepos);
+	Creditbutton->AddToRenderer(MenuPixelRender, "");
 
-    
-    Transform* crepos = new Transform;
-    crepos->SetTranslation(gfxVector2{ offset + 92,60 });
-    Creditbutton->Add(crepos);
-    Creditbutton->AddToRenderer(MenuPixelRender, "");
+	Transform* optpos = new Transform;
+	optpos->SetTranslation(gfxVector2{ offset + 92,82 });
+	optionbutton->Add(optpos);
+	optionbutton->AddToRenderer(MenuPixelRender, "");
 
-    Transform* optpos = new Transform;
-    optpos->SetTranslation(gfxVector2{ offset + 92,82 });
-    optionbutton->Add(optpos);
-    optionbutton->AddToRenderer(MenuPixelRender, "");
+	Transform* BBPOS = new Transform;
+	BBPOS->SetTranslation(gfxVector2{ offset + 92,104 });
+	ExitButton->Add(BBPOS);
+	ExitButton->AddToRenderer(MenuPixelRender, "");
 
-    Transform* BBPOS = new Transform;
-    BBPOS->SetTranslation(gfxVector2{ offset + 92,104 });
-    ExitButton->Add(BBPOS);
-    ExitButton->AddToRenderer(MenuPixelRender, "");
+	Transform* TitlePos = new Transform;
+	TitlePos->SetTranslation(gfxVector2{ offset + 94,5 });
+	Title->Add(TitlePos);
+	Title->AddToRenderer(MenuPixelRender, "");
 
+	MenuPixelRender->TurnoffFace();
 
-    Transform* TitlePos = new Transform;
-    TitlePos->SetTranslation(gfxVector2{ offset + 94,5 });
-    Title->Add(TitlePos);
-    Title->AddToRenderer(MenuPixelRender, "");
+	//Transform* MCP = new Transform;
+	//MCP->SetTranslation(gfxVector2{ 42,65 });
+	//PlayerIcon->Add(MCP);
+	//PlayerIcon->AddToRenderer(MenuPixelRender, "");
 
-    MenuPixelRender->TurnoffFace();
+	//initialize level data
+	//EntityContainer::GetInstance()->ReadEntities();
+	//LevelBuilder::GetInstance()->LoadTileMap("./Data/Scenes/TutorialFinal2.json");
 
-    //Transform* MCP = new Transform;
-    //MCP->SetTranslation(gfxVector2{ 42,65 });
-    //PlayerIcon->Add(MCP);
-    //PlayerIcon->AddToRenderer(MenuPixelRender, "");
+	//ControlledEmitter = LaserSystem::GetInstance()->CreateEmitter();
+	/*
+	laser_emitter* MenuLaser1 = NewEmitter();
+	MenuLaser1->Position = Vector2(200.0f, 50.0f + 12.0f); //add offset to accomodate for the position of the mirror (opengl position mixed with sdl2 position)
+	MenuLaser1->Direction = Vector2::Normalize(Vector2(-1.0f, 0.0f));
+	*/
 
+	Color tempColor{ 141,141,141,255 };
+	int numTestDust = 140;
+	Vector2 tempRandNum;
+	for (int i = 0; i < numTestDust; i++)
+	{
+		tempRandNum = Vector2{ (float)(rand() % SCREEN_SIZE_X - 10), (float)(rand() % SCREEN_SIZE_Y - 10) };
+		tempRandNum += Vector2{ 10,10 };
+		Particle* testParticle = new Particle(tempRandNum, Vector2{ -0.8f,-0.25f }, Vector2{ 17.0f, 15.0f }, tempColor, Particle_Dust);
+		MenuPixelRender->particleManager->AddParticle(testParticle);
+	}
 
+	//AudioManager.PlayMusic("drips");
 
-    //initialize level data
-    //EntityContainer::GetInstance()->ReadEntities();
-    //LevelBuilder::GetInstance()->LoadTileMap("./Data/Scenes/TutorialFinal2.json");
+	//AudioManager.PlayMusic("forest");
 
-    //ControlledEmitter = LaserSystem::GetInstance()->CreateEmitter();
-    /*
-    laser_emitter* MenuLaser1 = NewEmitter();
-    MenuLaser1->Position = Vector2(200.0f, 50.0f + 12.0f); //add offset to accomodate for the position of the mirror (opengl position mixed with sdl2 position)
-    MenuLaser1->Direction = Vector2::Normalize(Vector2(-1.0f, 0.0f));
-    */
-   
-    Color tempColor{ 141,141,141,255 };
-    int numTestDust = 140;
-    Vector2 tempRandNum;
-    for (int i = 0; i < numTestDust; i++)
-    {
-        tempRandNum = Vector2{ (float)(rand() % SCREEN_SIZE_X - 10), (float)(rand() % SCREEN_SIZE_Y - 10) };
-        tempRandNum += Vector2{ 10,10 };
-        Particle* testParticle = new Particle(tempRandNum, Vector2{ -0.8f,-0.25f }, Vector2{ 17.0f, 15.0f }, tempColor, Particle_Dust);
-        MenuPixelRender->particleManager->AddParticle(testParticle);
-    }
-
-    //AudioManager.PlayMusic("drips");
-
-    //AudioManager.PlayMusic("forest");
-
-
-    return Engine::NothingBad;
+	return Engine::NothingBad;
 }
 
 static bool tabKeyPreviouslyPressed = false;
@@ -211,232 +204,221 @@ static bool isGPressedForCheat = false;
 
 void MenuScene::cheatScanlines()
 {
-    if (MenuPixelRender->doScanLines == false)
-        MenuPixelRender->doScanLines = true;
-    else
-        MenuPixelRender->doScanLines = false;
+	if (MenuPixelRender->doScanLines == false)
+		MenuPixelRender->doScanLines = true;
+	else
+		MenuPixelRender->doScanLines = false;
 }
-
 
 bool MenuScene::IsMouseOverBeginingButton()
 {
-    int mouseX = Inputs::GetInstance()->getMouseX();
-    int mouseY = Inputs::GetInstance()->getMouseY();
+	int mouseX = Inputs::GetInstance()->getMouseX();
+	int mouseY = Inputs::GetInstance()->getMouseY();
 
+	Vector2 position = { 300,300 };
 
-    Vector2 position = {300,300};
+	int width = (250 / 2);
+	int high = (128 / 2);
 
-    int width = (250/2);
-    int high = (128/2);
+	int LeftOfButton = position.x - width;
+	int TopOfButton = position.y - high;
+	int RightOfButton = position.x + width;
+	int ButtomOfButton = position.y + high;
 
-
-    int LeftOfButton = position.x - width;
-    int TopOfButton = position.y - high;
-    int RightOfButton = position.x + width;
-    int ButtomOfButton = position.y + high;
-
-    return (mouseX >=  LeftOfButton && mouseX <= RightOfButton &&
-        mouseY >= TopOfButton && mouseY <= ButtomOfButton);
-
+	return (mouseX >= LeftOfButton && mouseX <= RightOfButton &&
+		mouseY >= TopOfButton && mouseY <= ButtomOfButton);
 }
-
 
 void MenuScene::HandleBegin()
 {
-    if (Inputs::GetInstance()->mouseButtonPressed(SDL_BUTTON_LEFT))
-    {
-        SceneSystem* sceneSystem = SceneSystem::GetInstance();
-        Renderer::GetInstance()->isFullbright = false;
-        sceneSystem->SetScene(TbdTestSceneGetInstance());
-
-    }
+	if (Inputs::GetInstance()->mouseButtonPressed(SDL_BUTTON_LEFT))
+	{
+		SceneSystem* sceneSystem = SceneSystem::GetInstance();
+		Renderer::GetInstance()->isFullbright = false;
+		sceneSystem->SetScene(TbdTestSceneGetInstance());
+	}
 }
 
 bool MenuScene::IsMouseOverExitButton()
 {
-    int mouseX = Inputs::GetInstance()->getMouseX();
-    int mouseY = Inputs::GetInstance()->getMouseY();
+	int mouseX = Inputs::GetInstance()->getMouseX();
+	int mouseY = Inputs::GetInstance()->getMouseY();
 
+	Vector2 position = { 300,700 };
 
-    Vector2 position = { 300,700 };
+	int width = (250 / 2);
+	int high = (128 / 2);
 
-    int width = (250 / 2);
-    int high = (128 / 2);
+	int LeftOfButton = position.x - width;
+	int TopOfButton = position.y - high;
+	int RightOfButton = position.x + width;
+	int ButtomOfButton = position.y + high;
 
-
-    int LeftOfButton = position.x - width;
-    int TopOfButton = position.y - high;
-    int RightOfButton = position.x + width;
-    int ButtomOfButton = position.y + high;
-
-    return (mouseX >= LeftOfButton && mouseX <= RightOfButton &&
-        mouseY >= TopOfButton && mouseY <= ButtomOfButton);
+	return (mouseX >= LeftOfButton && mouseX <= RightOfButton &&
+		mouseY >= TopOfButton && mouseY <= ButtomOfButton);
 }
-
-
-
 
 void MenuScene::HandleExit()
 {
-    if (Inputs::GetInstance()->mouseButtonPressed(SDL_BUTTON_LEFT))
-    {
-        Engine::GetInstance()->SetCloseRequest(true);
-    }
+	if (Inputs::GetInstance()->mouseButtonPressed(SDL_BUTTON_LEFT))
+	{
+		Engine::GetInstance()->SetCloseRequest(true);
+	}
 }
-
 
 bool MenuScene::IsMouseOverCreditButton()
 {
-    int mouseX = Inputs::GetInstance()->getMouseX();
-    int mouseY = Inputs::GetInstance()->getMouseY();
+	int mouseX = Inputs::GetInstance()->getMouseX();
+	int mouseY = Inputs::GetInstance()->getMouseY();
 
+	Vector2 position = { 300,400 };
 
-    Vector2 position = { 300,400 };
+	int width = (250 / 2);
+	int high = (128 / 2);
 
-    int width = (250 / 2);
-    int high = (128 / 2);
+	int LeftOfButton = position.x - width;
+	int TopOfButton = position.y - high;
+	int RightOfButton = position.x + width;
+	int ButtomOfButton = position.y + high;
 
-
-    int LeftOfButton = position.x - width;
-    int TopOfButton = position.y - high;
-    int RightOfButton = position.x + width;
-    int ButtomOfButton = position.y + high;
-
-    return (mouseX >= LeftOfButton && mouseX <= RightOfButton &&
-        mouseY >= TopOfButton && mouseY <= ButtomOfButton);
+	return (mouseX >= LeftOfButton && mouseX <= RightOfButton &&
+		mouseY >= TopOfButton && mouseY <= ButtomOfButton);
 }
 
 void MenuScene::HandleCredit()
 {
-    if (Inputs::GetInstance()->mouseButtonPressed(SDL_BUTTON_LEFT))
-    {
-        //do something
-    }
+	if (Inputs::GetInstance()->mouseButtonPressed(SDL_BUTTON_LEFT))
+	{
+		if (!isCreditsOpen)
+		{
+			//do something
+			isCreditsOpen = true;
+		}
+	}
 }
 
+void MenuScene::openCredits()
+{
+	int creditsIndex = 3;
+	Renderer::GetInstance()->LoadMenuPage(creditsIndex);
+}
 
 bool MenuScene::IsMouseOverOptionButton()
 {
-    int mouseX = Inputs::GetInstance()->getMouseX();
-    int mouseY = Inputs::GetInstance()->getMouseY();
+	int mouseX = Inputs::GetInstance()->getMouseX();
+	int mouseY = Inputs::GetInstance()->getMouseY();
 
+	Vector2 position = { 300,550 };
 
-    Vector2 position = { 300,550 };
+	int width = (250 / 2);
+	int high = (128 / 2);
 
-    int width = (250 / 2);
-    int high = (128 / 2);
+	int LeftOfButton = position.x - width;
+	int TopOfButton = position.y - high;
+	int RightOfButton = position.x + width;
+	int ButtomOfButton = position.y + high;
 
-
-    int LeftOfButton = position.x - width;
-    int TopOfButton = position.y - high;
-    int RightOfButton = position.x + width;
-    int ButtomOfButton = position.y + high;
-
-    return (mouseX >= LeftOfButton && mouseX <= RightOfButton &&
-        mouseY >= TopOfButton && mouseY <= ButtomOfButton);
+	return (mouseX >= LeftOfButton && mouseX <= RightOfButton &&
+		mouseY >= TopOfButton && mouseY <= ButtomOfButton);
 }
 
 void MenuScene::HandleOption()
 {
-    if (Inputs::GetInstance()->mouseButtonPressed(SDL_BUTTON_LEFT))
-    {
-        //do something
-    }
+	if (Inputs::GetInstance()->mouseButtonPressed(SDL_BUTTON_LEFT))
+	{
+		//do something
+	}
 }
-
-
-
-
-
 
 void MenuScene::Update(float dt)
 {
-    if (CheckGameScenes() || CheckRestart())
-        return;
+	if (CheckGameScenes() || CheckRestart())
+		return;
 
-    Inputs* inputHandler = Inputs::GetInstance();
-    AudioManager.Update();
-    inputHandler->handleInput();
-    bool check = winState;
+	Inputs* inputHandler = Inputs::GetInstance();
+	AudioManager.Update();
+	inputHandler->handleInput();
+	bool check = winState;
 
-    MenuPixelRender->RenderMenu();
-    Beginbutton->Update(dt);
-    ExitButton->Update(dt);
-    Creditbutton->Update(dt);
-    optionbutton->Update(dt);
-    Title->Update(dt);
-    //PlayerIcon->Update(dt);
+	MenuPixelRender->RenderMenu();
+	Beginbutton->Update(dt);
+	ExitButton->Update(dt);
+	Creditbutton->Update(dt);
+	optionbutton->Update(dt);
+	Title->Update(dt);
 
-    if (IsMouseOverBeginingButton())
-    {
-        HandleBegin();
+	//PlayerIcon->Update(dt);
 
-    }
-    if (IsMouseOverCreditButton())
-    {
-        //HandleExit();
-        HandleCredit();
-    }
-    if (IsMouseOverOptionButton())
-    {
-        //HandleExit();
-        HandleOption();
-    }
-    if (IsMouseOverExitButton())
-    {
-        HandleExit();
-    }
+	if (IsMouseOverBeginingButton())
+	{
+		HandleBegin();
+	}
+	if (IsMouseOverCreditButton())
+	{
+		//HandleExit();
+		HandleCredit();
+	}
+	if (IsMouseOverOptionButton())
+	{
+		//HandleExit();
+		HandleOption();
+	}
+	if (IsMouseOverExitButton())
+	{
+		HandleExit();
+	}
 
+	if (isCreditsOpen)
+	{
+		openCredits();
+	}
 
-
-
-
-    MenuPixelRender->Update(dt);
+	MenuPixelRender->Update(dt);
 }
 
 void MenuScene::Render()
 {
-    return;
+	return;
 }
 
 Engine::EngineCode MenuScene::Exit()
 {
-    delete Beginbutton->GetComponent<Transform>();
-    delete ExitButton->GetComponent<Transform>();
-    delete Creditbutton->GetComponent<Transform>();
-    delete optionbutton->GetComponent<Transform>();
+	delete Beginbutton->GetComponent<Transform>();
+	delete ExitButton->GetComponent<Transform>();
+	delete Creditbutton->GetComponent<Transform>();
+	delete optionbutton->GetComponent<Transform>();
 
-    delete Beginbutton;
-    delete ExitButton;
-    delete Creditbutton;
-    delete optionbutton;
+	delete Beginbutton;
+	delete ExitButton;
+	delete Creditbutton;
+	delete optionbutton;
 
-    Beginbutton = NULL;
-    ExitButton = NULL;
-    Creditbutton = NULL;
-    optionbutton = NULL;
+	Beginbutton = NULL;
+	ExitButton = NULL;
+	Creditbutton = NULL;
+	optionbutton = NULL;
 
-    delete ani;
-    ani = NULL;
-    Inputs::GetInstance()->InputKeyClear();
-    MenuPixelRender->CleanRenderer();
-    return Engine::NothingBad;
+	delete ani;
+	ani = NULL;
+	Inputs::GetInstance()->InputKeyClear();
+	MenuPixelRender->CleanRenderer();
+	return Engine::NothingBad;
 }
 
 Engine::EngineCode MenuScene::Unload()
 {
-    //delete MenuSceneinstance;
-    //MenuSceneinstance = nullptr;
-    return Engine::NothingBad;
+	//delete MenuSceneinstance;
+	//MenuSceneinstance = nullptr;
+	return Engine::NothingBad;
 }
 
 Scene* MenuSceneGetInstance(void)
 {
-    static Scene* TbdSceneinstance = nullptr; // Make it static to ensure a single instance
-    if (!MenuSceneinstance) {
-        MenuSceneinstance = new MenuScene();
-    }
-    return MenuSceneinstance;
+	static Scene* TbdSceneinstance = nullptr; // Make it static to ensure a single instance
+	if (!MenuSceneinstance) {
+		MenuSceneinstance = new MenuScene();
+	}
+	return MenuSceneinstance;
 }
 
 #ifndef ImGUI_Functions
@@ -444,152 +426,158 @@ Scene* MenuSceneGetInstance(void)
 void MenuScene::ImGuiInterg()
 {
 #ifdef _DEBUG
-    ImGui_ImplOpenGL3_NewFrame();
-    ImGui_ImplSDL2_NewFrame();
-    ImGui::NewFrame();
+	ImGui_ImplOpenGL3_NewFrame();
+	ImGui_ImplSDL2_NewFrame();
+	ImGui::NewFrame();
 
-    if (show_custom_window)
-    {
-        ImGuiWindow();
-    }
+	if (show_custom_window)
+	{
+		ImGuiWindow();
+	}
 
-    ImGui::Render();
+	ImGui::Render();
 #endif
 }
 
 void MenuScene::ImGuiWindow()
 {
 #ifdef _DEBUG
-    if (show_custom_window)
-    {
-        ImGui::Begin("custom window");
-        ImGui::Text("hey how you doin ;)");
-        ImGui::Text("welcome to the tbdtestscene debug window");
+	if (show_custom_window)
+	{
+		ImGui::Begin("custom window");
+		ImGui::Text("hey how you doin ;)");
+		ImGui::Text("welcome to the tbdtestscene debug window");
 
-        ImGui::Separator();
+		ImGui::Separator();
 
-        ImGui::Text("Mouse Position: (%d, %d)", Inputs::GetInstance()->getMouseX(), Inputs::GetInstance()->getMouseY());
+		int mouseX = Inputs::GetInstance()->getMouseX();
+		int mouseY = Inputs::GetInstance()->getMouseY();
+		float screenScale = MenuPixelRender->screenScale;
+		float cameraPosX = MenuPixelRender->GetCameraPosition().x;
+		float cameraPosY = MenuPixelRender->GetCameraPosition().y;
+		float worldMouseX = (mouseX - cameraPosX) / screenScale;
+		float worldMouseY = (mouseY - cameraPosY) / screenScale;
+		ImGui::Text("World Mouse Position: (%.2f, %.2f)", worldMouseX, worldMouseY);
+		ImGui::Text("Local Mouse Position: (%d, %d)", Inputs::GetInstance()->getMouseX(), Inputs::GetInstance()->getMouseY());
 
-        ImGui::Text("Keys Pressed:");
-        for (int i = 0; i < SDL_NUM_SCANCODES; ++i)
-        {
-            if (Inputs::GetInstance()->keyPressed(i))
-            {
-                const char* keyName = SDL_GetKeyName(SDL_GetKeyFromScancode(static_cast<SDL_Scancode>(i)));
-                ImGui::BulletText("%s is being pressed", keyName);
-            }
-        }
+		ImGui::Text("Keys Pressed:");
+		for (int i = 0; i < SDL_NUM_SCANCODES; ++i)
+		{
+			if (Inputs::GetInstance()->keyPressed(i))
+			{
+				const char* keyName = SDL_GetKeyName(SDL_GetKeyFromScancode(static_cast<SDL_Scancode>(i)));
+				ImGui::BulletText("%s is being pressed", keyName);
+			}
+		}
 
-        ImGui::Separator();
-        ImGui::Text("Cheat Status:");
+		ImGui::Separator();
+		ImGui::Text("Cheat Status:");
 
+		if (ImGui::Button("ScanLines Cheat:"))
+		{
+			isFPressedForCheat = !isFPressedForCheat;
 
-        if (ImGui::Button("ScanLines Cheat:"))
-        {
-            isFPressedForCheat = !isFPressedForCheat;
+			cheatScanlines();
+		}
 
-            cheatScanlines();
-        }
+		ImGui::SameLine();
+		ImGui::Text(isGPressedForCheat ? "Active" : "Inactive");
 
+		ImGui::Separator();
+		ImGui::Text("Entities:");
+		EntityContainer* entityContainer = EntityContainer::GetInstance();
+		int numEntities = entityContainer->CountEntities();
 
-        ImGui::SameLine();
-        ImGui::Text(isGPressedForCheat ? "Active" : "Inactive");
+		if (ImGui::TreeNode("All Entities"))
+		{
+			for (int i = 0; i < numEntities; i++)
+			{
+				Entity* entity = (*entityContainer)[i];
+				if (entity)
+				{
+					if (ImGui::TreeNode(("Entity %s", entity->GetRealName().c_str())))
+					{
+						ImGui::Text("Name: %s", entity->GetRealName().c_str());
+						ImGui::Text("Entity Number: %d", i);
 
-        ImGui::Separator();
-        ImGui::Text("Entities:");
-        EntityContainer* entityContainer = EntityContainer::GetInstance();
-        int numEntities = entityContainer->CountEntities();
+						ImGui::TreePop();
+					}
+				}
+			}
+			ImGui::TreePop();
+		}
 
-        if (ImGui::TreeNode("All Entities"))
-        {
-            for (int i = 0; i < numEntities; i++)
-            {
-                Entity* entity = (*entityContainer)[i];
-                if (entity)
-                {
-                    if (ImGui::TreeNode(("Entity %s", entity->GetRealName().c_str())))
-                    {
-                        ImGui::Text("Name: %s", entity->GetRealName().c_str());
-                        ImGui::Text("Entity Number: %d", i);
+		ImGui::Separator();
 
-                        ImGui::TreePop();
-                    }
-                }
-            }
-            ImGui::TreePop();
-        }
+		ImGui::Text("Particle System:");
 
-        ImGui::Separator();
+		Particle** particles = MenuPixelRender->particleManager->GetParticles();
 
-        ImGui::Text("Particle System:");
+		if (ImGui::TreeNode("All Active Particles"))
+		{
+			for (int i = 0; i < MAX_PARTICLES; ++i)
+			{
+				if (particles[i] != nullptr)
+				{
+					if (ImGui::TreeNode(("Particle " + std::to_string(i)).c_str()))
+					{
+						ImGui::Text("Particle Type: %d", particles[i]->particleType);
+						ImGui::Text("Position: (%.2f, %.2f)", particles[i]->position.x, particles[i]->position.y);
+						ImGui::Text("Direction: (%.2f, %.2f)", particles[i]->direction.x, particles[i]->direction.y);
+						ImGui::Text("Speed: (%.2f, %.2f)", particles[i]->speed.x, particles[i]->speed.y);
+						ImGui::Text("Color: (%d, %d, %d, %d)", particles[i]->color.r, particles[i]->color.g, particles[i]->color.b, particles[i]->color.a);
 
-        Particle** particles = MenuPixelRender->particleManager->GetParticles();
+						ImGui::TreePop();
+					}
+				}
+			}
+			ImGui::TreePop();
+		}
 
-        if (ImGui::TreeNode("All Active Particles"))
-        {
-            for (int i = 0; i < MAX_PARTICLES; ++i)
-            {
-                if (particles[i] != nullptr)
-                {
-                    if (ImGui::TreeNode(("Particle " + std::to_string(i)).c_str()))
-                    {
-                        ImGui::Text("Particle Type: %d", particles[i]->particleType);
-                        ImGui::Text("Position: (%.2f, %.2f)", particles[i]->position.x, particles[i]->position.y);
-                        ImGui::Text("Direction: (%.2f, %.2f)", particles[i]->direction.x, particles[i]->direction.y);
-                        ImGui::Text("Speed: (%.2f, %.2f)", particles[i]->speed.x, particles[i]->speed.y);
-                        ImGui::Text("Color: (%d, %d, %d, %d)", particles[i]->color.r, particles[i]->color.g, particles[i]->color.b, particles[i]->color.a);
+		ImGui::Separator();
 
-                        ImGui::TreePop();
-                    }
-                }
-            }
-            ImGui::TreePop();
-        }
+		if (ImGui::TreeNode("Tilesets in use:"))
+		{
+			ImGui::BulletText("TileMapSprites.json");
+			ImGui::BulletText("TileMapNormals.json");
+			ImGui::TreePop();
+		}
 
-        ImGui::Separator();
+		ImGui::Separator();
+		ImGui::Text("Scene Tools:");
 
-        if (ImGui::TreeNode("Tilesets in use:"))
-        {
-            ImGui::BulletText("TileMapSprites.json");
-            ImGui::BulletText("TileMapNormals.json");
-            ImGui::TreePop();
-        }
+		if (ImGui::Button("Toggle Metrics/Debug Bar"))
+		{
+			show_metrics_debug_bar = !show_metrics_debug_bar;
+		}
 
-        ImGui::Separator();
-        ImGui::Text("Scene Tools:");
+		if (ImGui::Button("Reset Scene"))
+		{
+			SceneSystem::GetInstance()->RestartScene();
+		}
 
-        if (ImGui::Button("Toggle Metrics/Debug Bar"))
-        {
-            show_metrics_debug_bar = !show_metrics_debug_bar;
-        }
+		if (ImGui::Button("Test Scene"))
+		{
+			SceneSystem::GetInstance()->SetScene(TestSceneGetInstance());
+		}
 
-        if (ImGui::Button("Reset Scene"))
-        {
-            SceneSystem::GetInstance()->RestartScene();
-        }
+		if (ImGui::Button("Level Creator Scene"))
+		{
+			SceneSystem::GetInstance()->SetScene(LevelCreatorSceneGetInstance());
+		}
 
-        if (ImGui::Button("Test Scene"))
-        {
-            SceneSystem::GetInstance()->SetScene(TestSceneGetInstance());
-        }
+		if (show_metrics_debug_bar)
+		{
+			ImGui::Text("Metrics/Debugger:");
+			ImGui::Separator();
+			ImGui::Text("Frame Time: %.3f ms/frame", 1000.0f / ImGui::GetIO().Framerate);
+			ImGui::Text("Framerate: %.1f FPS", ImGui::GetIO().Framerate);
 
-        if (ImGui::Button("Level Creator Scene"))
-        {
-            SceneSystem::GetInstance()->SetScene(LevelCreatorSceneGetInstance());
-        }
+			ImGui::Separator();
+		}
 
-        if (show_metrics_debug_bar)
-        {
-            ImGui::Text("Metrics/Debugger:");
-            ImGui::Separator();
-            ImGui::Text("Frame Time: %.3f ms/frame", 1000.0f / ImGui::GetIO().Framerate);
-            ImGui::Text("Framerate: %.1f FPS", ImGui::GetIO().Framerate);
-
-            ImGui::Separator();
-        }
-
-        ImGui::End();
-    }
+		ImGui::End();
+	}
 #endif
 }
 #endif

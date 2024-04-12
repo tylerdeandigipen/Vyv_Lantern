@@ -18,7 +18,11 @@
       "Type": "Physics"
     },
     {
-      "Type": "BehaviorReceiver"
+      "Type": "BehaviorReceiver",
+      "FinalReceiver":
+      {
+        "Final" : true
+      }
     }
   ],
   "FilePath": "./Data/Scenes/Level4Final/Receiver1.json",

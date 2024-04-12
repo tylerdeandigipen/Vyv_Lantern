@@ -41,11 +41,10 @@ public:
 	void HandleExit();
 	void HandleCredit();
 	void HandleOption();
-
+	void openCredits();
 
 	void ImGuiInterg();
 	void ImGuiWindow();
-
 
 	void cheatScanlines();
 
@@ -53,6 +52,8 @@ private:
 	emitter_id ControlledEmitter;
 
 	float offset;
+
+	bool isCreditsOpen;
 };
 
 Scene* MenuSceneGetInstance(void);

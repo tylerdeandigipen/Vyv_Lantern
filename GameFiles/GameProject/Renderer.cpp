@@ -58,6 +58,7 @@ void Renderer::Update(float dt)
 		int pauseMenuIndex = AddMenuPage("./Assets/PPM/Pause_Temp.ppm"); //yes this is a local var but when u actually use le menus keep this var per each page
 		int settingsMenuIndex = AddMenuPage("./Assets/PPM/Pause_Menu_Settings.ppm");
 		int quitConfirmIndex = AddMenuPage("./Assets/PPM/Pause_Menu_Confirm_Quit.ppm");
+		int creditsIndex = AddMenuPage("./Assets/PPM/Credits_Menu.ppm");
 	}
 	if (Engine::GetInstance()->Paused() == true)
 	{
@@ -172,7 +173,6 @@ void Renderer::Update(float dt)
 	PreviousFrameBeginTime = currentTime;
 }
 
-#ifndef Rendering_Functions
 
 void Renderer::RenderToOutbuffer()
 {
@@ -669,10 +669,6 @@ void Renderer::DrawLaserLines(int thickness)
 	}
 }
 
-#endif
-
-#ifndef Animation_Functions
-
 void Renderer::UpdateAnimations(float dt = 0)
 {
 	if (timer >= timeBetweenFrames)
@@ -729,7 +725,7 @@ ImageBuffer* Renderer::CreateAnimatedObject(const std::string filename, Vector2 
 void Renderer::UpdateFace(int faceState_)
 {
 	//temperory fix for now
-	//solution method: 
+	//solution method:
 	//adding a face flag in the renderer and a function names TurnoffFace() to set the flag
 	//if the flag is true, than do not render any face action but the default emotion
 	//else do the normal face rendering
@@ -782,10 +778,6 @@ void Renderer::TintScreenBlack(float progress)
 	fadePercent = progress;
 }
 
-#endif
-
-#ifndef Tilemap_Functions
-
 //Refactor all these to do all at once when given a master tileset
 //using the given name + a suffix to get the normals and shadows
 void Renderer::MakeTileMap(int** tileMapArray)
@@ -837,7 +829,6 @@ void Renderer::MakeTileMap(int** tileMapArray)
 					normalTileSet[0]->position = { (float)(x * TILE_SIZE), (float)(y * TILE_SIZE) };
 					normalBuffer->AddSprite(normalTileSet[0]);
 				}
-				
 
 				if (shadowCasterTileset[tileMapArray[x][y]])
 				{
@@ -982,10 +973,6 @@ void Renderer::AddShadowCasterToShadowCasterTileset(ImageBuffer* tile)
 	shadowCasterTileset[numShadowCasterTiles] = tile;
 	numShadowCasterTiles += 1;
 }
-
-#endif
-
-#ifndef Helper_Functions
 
 Renderer::Renderer() : objects{ NULL }
 {
@@ -1237,8 +1224,6 @@ void Renderer::TurnoffFace()
 	faceflag = true;
 }
 
-
-
 int Renderer::CheckLineForObject(int x1, int y1, int x2, int y2)
 {
 	int dx = abs(x2 - x1);
@@ -1448,9 +1433,6 @@ void Renderer::BlurLasers(int blurRangeLow, int blurRangeHigh)
 	}
 }
 
-#endif
-
-#ifndef Cleanup_Functions
 
 Renderer::~Renderer(void)
 {
@@ -1683,9 +1665,6 @@ void Renderer::ResizeBuffers()
 	DebugBuffer = new ImageBuffer{ tileMapSize.x * (TILE_SIZE), tileMapSize.y * (TILE_SIZE) };
 }
 
-#endif
-
-#ifndef Debug_Functions
 
 void Renderer::DrawLine(Vector2 P0, Vector2 P1, const Color& LineColor, ImageBuffer* buffer, float skipPercent)
 {
@@ -1783,5 +1762,3 @@ void Renderer::RenderWallCollidersToDebugBuffer()
 	debugOutlineTile->position = animatedObjects[0][0]->position;
 	DebugBuffer->AddSprite(debugOutlineTile);
 }
-
-#endif
