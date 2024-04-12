@@ -30,10 +30,8 @@
 Scene* SplashSceneinstance = NULL; //SORRY MIKEY L MEYERS!!!!!!!!!!!!!!!!!!!!!!
 
 SDL_Window* SplashWindow;
-
+Inputs* inputs;
 SDL_GLContext SplashGlContext;
-
-Inputs* inputs = nullptr;
 
 SplashScene::SplashScene() : Scene("Splash")
 {
@@ -41,10 +39,7 @@ SplashScene::SplashScene() : Scene("Splash")
 	logo = nullptr;	
 	logoflag = true;
 	entityManagerSPL = std::make_unique<EntityManager>();
-	if (!inputs)
-	{
-		inputs = Inputs::GetInstance();
-	}
+
 }
 
 SplashScene::~SplashScene()
@@ -64,6 +59,7 @@ Engine::EngineCode SplashScene::Init()
 
 	logo->CreateImage("./Assets/PPM/logo.ppm");
 	
+	inputs = Inputs::GetInstance();
 
 	Transform* LogoPOS = new Transform;
 	LogoPOS->SetTranslation(gfxVector2{ 50,50 });
@@ -75,6 +71,7 @@ Engine::EngineCode SplashScene::Init()
 
 	SplashWindow = PlatformSystem::GetInstance()->GetWindowHandle();
 	Renderer::GetInstance()->window = SplashWindow;
+	inputs->SetWindow(SplashWindow);
 
 	LevelBuilder::GetInstance()->LoadTileMap("./Data/Scenes/Splash2/Splash2.json");
 
@@ -91,6 +88,8 @@ Engine::EngineCode SplashScene::Load()
 	return Engine::NothingBad;
 }
 
+
+
 void SplashScene::Update(float dt)
 {
 	if (CheckGameScenes() || CheckRestart())
@@ -98,12 +97,19 @@ void SplashScene::Update(float dt)
 		return;
 	}
 
-	if (!inputs)
+
+
+
+	if (inputs->keyPressed(SDL_SCANCODE_E) || inputs->keyPressed(SDL_SCANCODE_ESCAPE) || inputs->keyPressed(SDL_SCANCODE_SPACE) || inputs->keyPressed(SDL_SCANCODE_RETURN) || inputs->mouseButtonPressed(SDL_BUTTON_LEFT) || inputs->mouseButtonPressed(SDL_BUTTON_RIGHT))
 	{
-		inputs = Inputs::GetInstance();
+		//TODO get the menu scene.
+		//Renderer::GetInstance()->isFullbright = false;
+		SceneSystem::GetInstance()->SetScene(MenuSceneGetInstance());
+		ImGuiInterg();
 	}
-	
-	if (time <= 0.0f || inputs->keyPressed(SDL_SCANCODE_E) || inputs->keyPressed(SDL_SCANCODE_ESCAPE) || inputs->keyPressed(SDL_SCANCODE_SPACE) || inputs->keyPressed(SDL_SCANCODE_RETURN))
+
+
+	if (time <= 0.0f)
 	{
 		//TODO get the menu scene.
 		//Renderer::GetInstance()->isFullbright = false;
@@ -123,6 +129,7 @@ void SplashScene::Update(float dt)
 		time -= dt;
 	}
 
+	inputs->handleInput();
 	EntityContainer::GetInstance()->UpdateAll(dt);
 	Renderer::GetInstance()->Update(dt);
 	entityManagerSPL->pRenderer = Renderer::GetInstance();
