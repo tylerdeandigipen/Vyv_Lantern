@@ -39,6 +39,10 @@
       },
       "Type": "BehaviorMirror",
       "key": 0
+    },
+    {
+      "File": "./Data/Lights/MirrorLight.json",
+      "Type": "Light"
     }
   ],
   "FilePath": "./Data/Scenes/TutorialFinalActual/Mirror2.json",

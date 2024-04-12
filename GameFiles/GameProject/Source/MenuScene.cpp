@@ -65,6 +65,7 @@ static Entity* Beginbutton;
 static Entity* Creditbutton;
 static Entity* optionbutton;
 static Entity* ExitButton;
+static Entity* Title;
 
 //Entity* PlayerIcon;
 
@@ -103,6 +104,8 @@ Engine::EngineCode MenuScene::Init()
     Creditbutton = new Entity("Object", "./Assets/PPM/credit.ppm", ignore);
     optionbutton = new Entity("Object", "./Assets/PPM/option.ppm", ignore);
 
+    Title = new Entity("Object", "./Assets/PPM/title.ppm", ignore);
+
     //PlayerIcon = new Entity("Object", "./Assets/PPM/Player_Sprites.ppm", ingnore);
 
     Renderer::GetInstance()->isFullbright = true;
@@ -111,12 +114,13 @@ Engine::EngineCode MenuScene::Init()
     ExitButton->CreateImage("./Assets/PPM/quit.ppm");
     Creditbutton->CreateImage("./Assets/PPM/credit.ppm");
     optionbutton->CreateImage("./Assets/PPM/option.ppm");
+    Title->CreateImage("./Assets/PPM/title.ppm");
 
 
     ani = new ImageBuffer();
     ani = Renderer::GetInstance()->CreateAnimatedObject("./Assets/PPM/menu_animation.ppm", Vector2{80,80});
 
-    ani->position = gfxVector2{ 122,35 };
+    ani->position = gfxVector2{ 122,45 };
     ani->isFlipped = false;
 
     //MenuPixelRender->objectLayer = new ImageBuffer;
@@ -125,26 +129,33 @@ Engine::EngineCode MenuScene::Init()
 
 
     Transform* BPOS = new Transform;
-    BPOS->SetTranslation(gfxVector2{ offset + 92,25});
+    BPOS->SetTranslation(gfxVector2{ offset + 92,38});
     Beginbutton->Add(BPOS);
     Beginbutton->AddToRenderer(MenuPixelRender, "");
 
     
     Transform* crepos = new Transform;
-    crepos->SetTranslation(gfxVector2{ offset + 92,50 });
+    crepos->SetTranslation(gfxVector2{ offset + 92,60 });
     Creditbutton->Add(crepos);
     Creditbutton->AddToRenderer(MenuPixelRender, "");
 
     Transform* optpos = new Transform;
-    optpos->SetTranslation(gfxVector2{ offset + 92,75 });
+    optpos->SetTranslation(gfxVector2{ offset + 92,82 });
     optionbutton->Add(optpos);
     optionbutton->AddToRenderer(MenuPixelRender, "");
 
     Transform* BBPOS = new Transform;
-    BBPOS->SetTranslation(gfxVector2{ offset + 92,100 });
+    BBPOS->SetTranslation(gfxVector2{ offset + 92,104 });
     ExitButton->Add(BBPOS);
     ExitButton->AddToRenderer(MenuPixelRender, "");
 
+
+    Transform* TitlePos = new Transform;
+    TitlePos->SetTranslation(gfxVector2{ offset + 94,5 });
+    Title->Add(TitlePos);
+    Title->AddToRenderer(MenuPixelRender, "");
+
+    MenuPixelRender->TurnoffFace();
 
     //Transform* MCP = new Transform;
     //MCP->SetTranslation(gfxVector2{ 42,65 });
@@ -213,7 +224,7 @@ bool MenuScene::IsMouseOverBeginingButton()
     int mouseY = Inputs::GetInstance()->getMouseY();
 
 
-    Vector2 position = {300,215};
+    Vector2 position = {300,300};
 
     int width = (250/2);
     int high = (128/2);
@@ -235,6 +246,7 @@ void MenuScene::HandleBegin()
     if (Inputs::GetInstance()->mouseButtonPressed(SDL_BUTTON_LEFT))
     {
         SceneSystem* sceneSystem = SceneSystem::GetInstance();
+        Renderer::GetInstance()->isFullbright = false;
         sceneSystem->SetScene(TbdTestSceneGetInstance());
 
     }
@@ -246,7 +258,7 @@ bool MenuScene::IsMouseOverExitButton()
     int mouseY = Inputs::GetInstance()->getMouseY();
 
 
-    Vector2 position = { 300,690 };
+    Vector2 position = { 300,700 };
 
     int width = (250 / 2);
     int high = (128 / 2);
@@ -279,7 +291,7 @@ bool MenuScene::IsMouseOverCreditButton()
     int mouseY = Inputs::GetInstance()->getMouseY();
 
 
-    Vector2 position = { 300,375 };
+    Vector2 position = { 300,400 };
 
     int width = (250 / 2);
     int high = (128 / 2);
@@ -309,7 +321,7 @@ bool MenuScene::IsMouseOverOptionButton()
     int mouseY = Inputs::GetInstance()->getMouseY();
 
 
-    Vector2 position = { 300,520 };
+    Vector2 position = { 300,550 };
 
     int width = (250 / 2);
     int high = (128 / 2);
@@ -352,21 +364,22 @@ void MenuScene::Update(float dt)
     ExitButton->Update(dt);
     Creditbutton->Update(dt);
     optionbutton->Update(dt);
-
+    Title->Update(dt);
     //PlayerIcon->Update(dt);
 
     if (IsMouseOverBeginingButton())
     {
         HandleBegin();
-        //Renderer::GetInstance()->isFullbright = false;
 
     }
     if (IsMouseOverCreditButton())
     {
+        //HandleExit();
         HandleCredit();
     }
     if (IsMouseOverOptionButton())
     {
+        //HandleExit();
         HandleOption();
     }
     if (IsMouseOverExitButton())

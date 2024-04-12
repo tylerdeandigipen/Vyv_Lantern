@@ -20,7 +20,7 @@
     {
       "ClosedSprite": "./Assets/PPM/Door_Closed.ppm",
       "DoorClosed": true,
-      "NextScene": "Level2Final",
+      "NextScene": "Level2",
       "OpenSprite": "./Assets/PPM/Door_Open.ppm",
       "PairName": "Receiver1",
       "Type": "BehaviorDoor"

@@ -50,8 +50,8 @@ Scene* Level4instance = NULL;
 
 laser_emitter* Level4WLaser;
 
-constexpr const char* _OBJECT_LIST = "./Data/Scenes/Level4/Level4OBJECTS.json";
-constexpr const char* _SCENE = "./Data/Scenes/Level4/Level4.json";
+constexpr const char* _OBJECT_LIST = "./Data/Scenes/Level4Final/Level4FinalOBJECTS.json";
+constexpr const char* _SCENE = "./Data/Scenes/Level4Final/Level4Final.json";
 
 Level4::Level4() : Scene("Level4")
 {
@@ -110,8 +110,9 @@ Engine::EngineCode Level4::Init()
 	AudioManager.PlayMusic("bgm");
 	AudioManager.DecreaseMusicVolume(0.7f);
 
-	AudioManager.PlaySFX("bgAmbience");
-	AudioManager.PlaySFX("laserAmbience");
+	AudioManager.PlaySFX("bgAmbience", 0.75);
+
+	//AudioManager.PlaySFX("laserAmbience", );
 
 	FontSystem fontSystem;
 
@@ -316,7 +317,7 @@ void Level4::handleCheatCodes()
 	{
 		if (Name_Level4::CanPause == true)
 		{
-			AudioManager.PlaySFX("creak");
+			//AudioManager.PlaySFX("creak");
 			if (Engine::GetInstance()->Paused() == false)
 				Engine::GetInstance()->SetPause(true);
 			else
@@ -460,9 +461,6 @@ void Level4::handleCheatCodes()
 }
 
 #endif
-
-
-
 
 void Level4::Update(float dt)
 {

@@ -50,8 +50,8 @@ Scene* Level1instance = NULL;
 
 laser_emitter* Level1WLaser;
 
-constexpr const char* _OBJECT_LIST = "./Data/Scenes/Level1/Level1OBJECTS.json";
-constexpr const char* _SCENE = "./Data/Scenes/Level1/Level1.json";
+constexpr const char* _OBJECT_LIST = "./Data/Scenes/Level1Final/Level1FinalOBJECTS.json";
+constexpr const char* _SCENE = "./Data/Scenes/Level1Final/Level1Final.json";
 
 Level1::Level1() : Scene("Level1")
 {
@@ -110,8 +110,9 @@ Engine::EngineCode Level1::Init()
 	AudioManager.PlayMusic("bgm");
 	AudioManager.DecreaseMusicVolume(0.7f);
 
-	AudioManager.PlaySFX("bgAmbience");
-	AudioManager.PlaySFX("laserAmbience");
+	AudioManager.PlaySFX("bgAmbience", 0.75f);
+
+	//AudioManager.PlaySFX("laserAmbience");
 
 	FontSystem fontSystem;
 
@@ -316,7 +317,7 @@ void Level1::handleCheatCodes()
 	{
 		if (Name_Level1::CanPause == true)
 		{
-			AudioManager.PlaySFX("creak");
+			//AudioManager.PlaySFX("creak");
 			if (Engine::GetInstance()->Paused() == false)
 				Engine::GetInstance()->SetPause(true);
 			else
@@ -461,14 +462,11 @@ void Level1::handleCheatCodes()
 
 #endif
 
-
-
-
 void Level1::Update(float dt)
 {
 	if (CheckGameScenes() || CheckRestart())
 		return;
-
+	
 	//eventally have player handle these lights
 	//TbdPixelRenderer->lightSource[1].position = TbdPixelRenderer->animatedObjects[0][0]->position + Vector2{ 3,3 };
 	//TbdPixelRenderer->lightSource[0].position = TbdPixelRenderer->animatedObjects[0][0]->position + Vector2{ 3,3 };

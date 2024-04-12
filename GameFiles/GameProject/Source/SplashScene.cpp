@@ -21,7 +21,7 @@
 #include "TbdTestScene.h"
 #include "LevelBuilder.h"
 #include "MenuScene.h"
-
+#include "Inputs.h"
 #include "DebugNew.h"
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -33,7 +33,7 @@ SDL_Window* SplashWindow;
 
 SDL_GLContext SplashGlContext;
 
-
+Inputs* inputs = nullptr;
 
 SplashScene::SplashScene() : Scene("Splash")
 {
@@ -41,12 +41,16 @@ SplashScene::SplashScene() : Scene("Splash")
 	logo = nullptr;	
 	logoflag = true;
 	entityManagerSPL = std::make_unique<EntityManager>();
-
+	if (!inputs)
+	{
+		inputs = Inputs::GetInstance();
+	}
 }
 
 SplashScene::~SplashScene()
 {
 }
+
 
 Engine::EngineCode SplashScene::Init()
 {
@@ -93,8 +97,13 @@ void SplashScene::Update(float dt)
 	{
 		return;
 	}
+
+	if (!inputs)
+	{
+		inputs = Inputs::GetInstance();
+	}
 	
-	if (time <= 0.0f)
+	if (time <= 0.0f || inputs->keyPressed(SDL_SCANCODE_E) || inputs->keyPressed(SDL_SCANCODE_ESCAPE) || inputs->keyPressed(SDL_SCANCODE_SPACE) || inputs->keyPressed(SDL_SCANCODE_RETURN))
 	{
 		//TODO get the menu scene.
 		//Renderer::GetInstance()->isFullbright = false;

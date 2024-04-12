@@ -50,8 +50,8 @@ Scene* Level3instance = NULL;
 
 laser_emitter* Level3WLaser;
 
-constexpr const char* _OBJECT_LIST = "./Data/Scenes/Level3/Level3OBJECTS.json";
-constexpr const char* _SCENE = "./Data/Scenes/Level3/Level3.json";
+constexpr const char* _OBJECT_LIST = "./Data/Scenes/Level3Final/Level3FinalOBJECTS.json";
+constexpr const char* _SCENE = "./Data/Scenes/Level3Final/Level3Final.json";
 
 Level3::Level3() : Scene("Level3")
 {
@@ -110,8 +110,9 @@ Engine::EngineCode Level3::Init()
 	AudioManager.PlayMusic("bgm");
 	AudioManager.DecreaseMusicVolume(0.7f);
 
-	AudioManager.PlaySFX("bgAmbience");
-	AudioManager.PlaySFX("laserAmbience");
+	AudioManager.PlaySFX("bgAmbience", 0.75f);
+
+	//AudioManager.PlaySFX("laserAmbience");
 
 	FontSystem fontSystem;
 
@@ -316,7 +317,7 @@ void Level3::handleCheatCodes()
 	{
 		if (Name_Level3::CanPause == true)
 		{
-			AudioManager.PlaySFX("creak");
+			//AudioManager.PlaySFX("creak");
 			if (Engine::GetInstance()->Paused() == false)
 				Engine::GetInstance()->SetPause(true);
 			else
@@ -460,9 +461,6 @@ void Level3::handleCheatCodes()
 }
 
 #endif
-
-
-
 
 void Level3::Update(float dt)
 {
