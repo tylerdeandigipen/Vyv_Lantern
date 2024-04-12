@@ -58,6 +58,7 @@ void Renderer::Update(float dt)
 		int pauseMenuIndex = AddMenuPage("./Assets/PPM/Pause_Temp.ppm"); //yes this is a local var but when u actually use le menus keep this var per each page
 		int settingsMenuIndex = AddMenuPage("./Assets/PPM/Pause_Menu_Settings.ppm");
 		int quitConfirmIndex = AddMenuPage("./Assets/PPM/Pause_Menu_Confirm_Quit.ppm");
+		int creditsIndex = AddMenuPage("./Assets/PPM/Credits_Menu.ppm");
 	}
 	if (Engine::GetInstance()->Paused() == true)
 	{
@@ -748,7 +749,7 @@ ImageBuffer* Renderer::CreateAnimatedObject(const std::string filename, Vector2 
 void Renderer::UpdateFace(int faceState_)
 {
 	//temperory fix for now
-	//solution method: 
+	//solution method:
 	//adding a face flag in the renderer and a function names TurnoffFace() to set the flag
 	//if the flag is true, than do not render any face action but the default emotion
 	//else do the normal face rendering
@@ -856,7 +857,6 @@ void Renderer::MakeTileMap(int** tileMapArray)
 					normalTileSet[0]->position = { (float)(x * TILE_SIZE), (float)(y * TILE_SIZE) };
 					normalBuffer->AddSprite(normalTileSet[0]);
 				}
-				
 
 				if (shadowCasterTileset[tileMapArray[x][y]])
 				{
@@ -1255,8 +1255,6 @@ void Renderer::TurnoffFace()
 {
 	faceflag = true;
 }
-
-
 
 int Renderer::CheckLineForObject(int x1, int y1, int x2, int y2)
 {
