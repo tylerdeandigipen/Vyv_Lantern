@@ -753,7 +753,7 @@ void Renderer::UpdateFace(int faceState_)
 		ImageBuffer* temp = CreateAnimatedObject("./Assets/PPM/Man_Faces.ppm", { 8,8 });
 		temp->isCulled = true;
 	}
-	else if (faceState != -1)
+	else if (faceIndex != 1)
 	{
 		if (faceState_ >= 0 && faceIndex < MAX_ANIMATED_OBJECTS && animatedObjects[faceIndex][0] != NULL && faceState_ <= animatedObjects[faceIndex][0]->totalFrames)
 		{
