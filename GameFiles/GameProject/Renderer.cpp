@@ -57,6 +57,7 @@ void Renderer::Update(float dt)
 	{
 		int pauseMenuIndex = AddMenuPage("./Assets/PPM/Pause_Temp.ppm"); //yes this is a local var but when u actually use le menus keep this var per each page
 		int settingsMenuIndex = AddMenuPage("./Assets/PPM/Pause_Menu_Settings.ppm");
+		int quitConfirmIndex = AddMenuPage("./Assets/PPM/Pause_Menu_Confirm_Quit.ppm");
 	}
 	if (Engine::GetInstance()->Paused() == true)
 	{
@@ -290,7 +291,7 @@ void Renderer::RenderLightingPass()
 #else
 	inputBuffer->Blit(outputBuffer);
 #endif
-}
+	}
 
 float Renderer::FindPixelLuminosity(float x, float y, Light* LightSource)
 {
@@ -474,7 +475,7 @@ void Renderer::RenderParticles()
 				else
 				{
 					float transPercent = (particleManager->particleArray[i]->timeAlive / particleManager->particleArray[i]->lifeTime);
-					DestPixel = DestPixel.BlendColors(particleManager->particleArray[i]->color,DestPixel, transPercent * 100);
+					DestPixel = DestPixel.BlendColors(particleManager->particleArray[i]->color, DestPixel, transPercent * 100);
 				}
 			}
 		}

@@ -30,6 +30,8 @@ private:
 
 	bool IsMouseOverBackButton();
 	bool IsMouseOverExitButton();
+	bool IsMouseOverExitButtonYes();
+	bool IsMouseOverExitButtonNo();
 	bool IsMouseOverSettingsButton();
 	bool IsMouseOverSettingsExitButton();
 
@@ -38,8 +40,11 @@ private:
 	void HandleSettings();
 	void CloseSettingsMenu();
 	void OpenSettingsMenu();
+	void OpenExitMenu();
+	void CloseExitMenu();
 
 	bool settingsMenuOpen;
+	bool exitMenuOpen;
 
 	static std::unique_ptr<PauseMenu> instance;
 };
