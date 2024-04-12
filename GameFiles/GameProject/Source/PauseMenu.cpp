@@ -22,7 +22,7 @@
 
 std::unique_ptr<PauseMenu> PauseMenu::instance = nullptr;
 
-PauseMenu::PauseMenu() : settingsMenuOpen(false)
+PauseMenu::PauseMenu() : settingsMenuOpen(false), exitMenuOpen(false)
 {
 }
 
@@ -71,9 +71,24 @@ void PauseMenu::HandleButtonInput()
 		CloseSettingsMenu();
 	}
 
+	if (IsMouseOverExitButtonYes() && exitMenuOpen == true)
+	{
+		CloseExitMenu();
+	}
+
+	if (IsMouseOverExitButtonNo() && exitMenuOpen == true)
+	{
+		CloseExitMenu();
+	}
+
 	if (settingsMenuOpen)
 	{
 		OpenSettingsMenu();
+	}
+
+	if (exitMenuOpen)
+	{
+		OpenExitMenu();
 	}
 }
 
@@ -89,7 +104,12 @@ void PauseMenu::HandleExit()
 {
 	if (Inputs::GetInstance()->mouseButtonPressed(SDL_BUTTON_LEFT))
 	{
-		Engine::GetInstance()->SetCloseRequest(true);
+		if (!exitMenuOpen)
+		{
+			exitMenuOpen = true;
+		}
+
+		//Engine::GetInstance()->SetCloseRequest(true);
 	}
 }
 
@@ -101,6 +121,35 @@ void PauseMenu::HandleSettings()
 		if (!settingsMenuOpen)
 		{
 			settingsMenuOpen = true;
+		}
+	}
+}
+
+void PauseMenu::OpenExitMenu()
+{
+	int exitConfirmIndex = 2;
+	Renderer::GetInstance()->LoadMenuPage(exitConfirmIndex);
+}
+
+void PauseMenu::CloseExitMenu()
+{
+	if (IsMouseOverExitButtonYes())
+	{
+		if (Inputs::GetInstance()->mouseButtonPressed(SDL_BUTTON_LEFT))
+		{
+			exitMenuOpen = false;
+			Renderer::GetInstance()->LoadMenuPage(-1);
+
+			Engine::GetInstance()->SetCloseRequest(true);
+		}
+	}
+
+	if (IsMouseOverExitButtonNo())
+	{
+		if (Inputs::GetInstance()->mouseButtonPressed(SDL_BUTTON_LEFT))
+		{
+			exitMenuOpen = false;
+			Renderer::GetInstance()->LoadMenuPage(-1);
 		}
 	}
 }
@@ -163,6 +212,34 @@ bool PauseMenu::IsMouseOverExitButton()
 	int exitButtonTopLeftY = 250;
 	int exitButtonBottomRightX = 490;
 	int exitButtonBottomRightY = 370;
+
+	return (mouseX >= exitButtonTopLeftX && mouseX <= exitButtonBottomRightX &&
+		mouseY >= exitButtonTopLeftY && mouseY <= exitButtonBottomRightY);
+}
+
+bool PauseMenu::IsMouseOverExitButtonYes()
+{
+	int mouseX = Inputs::GetInstance()->getMouseX();
+	int mouseY = Inputs::GetInstance()->getMouseY();
+
+	int exitButtonTopLeftX = 527;
+	int exitButtonTopLeftY = 468;
+	int exitButtonBottomRightX = 684;
+	int exitButtonBottomRightY = 560;
+
+	return (mouseX >= exitButtonTopLeftX && mouseX <= exitButtonBottomRightX &&
+		mouseY >= exitButtonTopLeftY && mouseY <= exitButtonBottomRightY);
+}
+
+bool PauseMenu::IsMouseOverExitButtonNo()
+{
+	int mouseX = Inputs::GetInstance()->getMouseX();
+	int mouseY = Inputs::GetInstance()->getMouseY();
+
+	int exitButtonTopLeftX = 758;
+	int exitButtonTopLeftY = 470;
+	int exitButtonBottomRightX = 910;
+	int exitButtonBottomRightY = 556;
 
 	return (mouseX >= exitButtonTopLeftX && mouseX <= exitButtonBottomRightX &&
 		mouseY >= exitButtonTopLeftY && mouseY <= exitButtonBottomRightY);
