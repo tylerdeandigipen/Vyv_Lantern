@@ -85,16 +85,16 @@ _audioManager::~_audioManager(void)
 
 				Plays music clip
 */
-void _audioManager::PlaySFX(std::string clipName)
+void _audioManager::PlaySFX(std::string clipName, float volume)
 {
 	// Create the sound.
-	FMOD::Sound* audioClip = 0;
-	auto search = soundDatabase.find(clipName);
-	if (search != soundDatabase.end())
-		audioClip = search->second;
-
-	// Play the sound.
-	fmodSystem->playSound(audioClip, SFXChannelGroup, false, nullptr);
+	FMOD::Sound* sound = GetSound(clipName);
+	if (sound)
+	{
+		FMOD::Channel* channel;
+		fmodSystem->playSound(sound, SFXChannelGroup, false, &channel);
+		channel->setVolume(volume);
+	}
 }
 
 /*!				void _audioManager::PlayMusic(string musicTrack)

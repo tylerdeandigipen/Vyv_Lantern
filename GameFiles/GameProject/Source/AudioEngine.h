@@ -47,7 +47,7 @@ public:
 	FMOD::ChannelGroup* GetMusicChannel(void);
 	FMOD::ChannelGroup* GetAudioChannel(void);
 	FMOD::ChannelGroup* GetVoiceChannel(void);
-	void PlaySFX(std::string audiClip);
+	void PlaySFX(std::string audiClip, float volume);
 	void PlayMusic(std::string musicTrack);
 	void PlayVoice(std::string voiceClip);
 	void StopSFX(void);

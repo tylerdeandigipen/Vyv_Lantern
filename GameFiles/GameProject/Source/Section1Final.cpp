@@ -107,8 +107,9 @@ Engine::EngineCode Section1Final::Init()
 	AudioManager.PlayMusic("bgm");
 	AudioManager.DecreaseMusicVolume(0.7f);
 
-	AudioManager.PlaySFX("bgAmbience");
-	AudioManager.PlaySFX("laserAmbience");
+	AudioManager.PlaySFX("bgAmbience", 0.75f);
+
+	//AudioManager.PlaySFX("laserAmbience");
 
 	FontSystem fontSystem;
 
@@ -313,7 +314,7 @@ void Section1Final::handleCheatCodes()
 	{
 		if (Name_Section1Final::CanPause == true)
 		{
-			AudioManager.PlaySFX("creak");
+			//AudioManager.PlaySFX("creak");
 			if (Engine::GetInstance()->Paused() == false)
 				Engine::GetInstance()->SetPause(true);
 			else
@@ -325,7 +326,7 @@ void Section1Final::handleCheatCodes()
 	{
 		Name_Section1Final::CanPause = true;
 	}
-	
+
 #ifdef _DEBUG
 
 	if (inputHandler->keyPressed(SDL_SCANCODE_GRAVE) && Name_Section1Final::TbdCanToggleFullBright == true)
@@ -457,9 +458,6 @@ void Section1Final::handleCheatCodes()
 }
 
 #endif
-
-
-
 
 void Section1Final::Update(float dt)
 {

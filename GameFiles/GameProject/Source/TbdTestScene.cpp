@@ -117,7 +117,7 @@ Engine::EngineCode TbdTestScene::Init()
 	AudioManager.PlayMusic("bgm");
 	AudioManager.DecreaseMusicVolume(0.7f);
 
-	AudioManager.PlaySFX("bgAmbience");
+	AudioManager.PlaySFX("bgAmbience", 0.75);
 
 	//AudioManager.PlaySFX("laserAmbience"); // replace with things that sound more "electric humming"
 
@@ -239,12 +239,12 @@ void TbdTestScene::handleCheatCodes()
 		{
 			if (Engine::GetInstance()->Paused() == false)
 			{
-				AudioManager.PlaySFX("pauseOpen");
+				AudioManager.PlaySFX("pauseOpen", 1.0f);
 				Engine::GetInstance()->SetPause(true);
 			}
 			else
 			{
-				AudioManager.PlaySFX("pauseClose");
+				AudioManager.PlaySFX("pauseClose", 1.0f);
 				Engine::GetInstance()->SetPause(false);
 			}
 		}

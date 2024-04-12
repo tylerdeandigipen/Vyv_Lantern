@@ -120,17 +120,16 @@ void BehaviorSwitch::Read(json jsonData)
 		// Extract "x" and "y" values, convert them to integers, and store in the vector
 		float x = (float)std::stoi(positions["x"].get<std::string>());
 		float y = (float)std::stoi(positions["y"].get<std::string>());
-		Renderer::GetInstance()->AddDecal(movePointDecal, Vector2{x, y} - Vector2{ 2,2 } + Vector2{4,4});// 2, 2 is half size of movepoint and 4,4 is half of mirror sprite
+		Renderer::GetInstance()->AddDecal(movePointDecal, Vector2{ x, y } - Vector2{ 2,2 } + Vector2{ 4,4 });// 2, 2 is half size of movepoint and 4,4 is half of mirror sprite
 		pos.push_back({ x,y });
 	}
 	key = jsonData["key"];
 
 	for (int i = 0; i < pos.size() - 1; i++)
 	{
-		Renderer::GetInstance()->DrawLine(pos[i] + Vector2{4,4}, pos[i + 1] + Vector2{ 4,4 }, Color{ 186,185,182,255 }, Renderer::GetInstance()->backgroundLayer, 0.75f);
+		Renderer::GetInstance()->DrawLine(pos[i] + Vector2{ 4,4 }, pos[i + 1] + Vector2{ 4,4 }, Color{ 186,185,182,255 }, Renderer::GetInstance()->backgroundLayer, 0.75f);
 		Renderer::GetInstance()->DrawLine(pos[i] + Vector2{ 3,3 }, pos[i + 1] + Vector2{ 3,3 }, Color{ 186,185,182,255 }, Renderer::GetInstance()->backgroundLayer, 0.75f);
 	}
-
 }
 
 ImageBuffer* prompt = NULL;
@@ -180,8 +179,6 @@ void BehaviorSwitch::SwitchCollisionHandler(Entity* entity1, Entity* entity2)
 
 			if (input->keyPressed(SDL_SCANCODE_E))
 			{
-				AudioManager.PlaySFX("interact");
-
 				// swaps bool value
 				theSwitch->SetLerped();
 				OnOff = true;
@@ -190,32 +187,31 @@ void BehaviorSwitch::SwitchCollisionHandler(Entity* entity1, Entity* entity2)
 				int audioPlay = rand() % 5 + 1;
 
 				//BehaviorMirror::SwitchOn(OnOff);
-				//AudioManager.PlaySFX("mirrorMove");
 				if (audioPlay == 1)
 				{
-					AudioManager.PlaySFX("mirrorMove1");
+					AudioManager.PlaySFX("mirrorMove1", 0.5f);
 				}
 				else if (audioPlay == 2)
 				{
-					AudioManager.PlaySFX("mirrorMove2");
+					AudioManager.PlaySFX("mirrorMove2", 0.5f);
 				}
 				else if (audioPlay == 3)
 				{
-					AudioManager.PlaySFX("mirrorMove3");
+					AudioManager.PlaySFX("mirrorMove3", 0.5f);
 				}
 				else if (audioPlay == 4)
 				{
-					AudioManager.PlaySFX("mirrorMove4");
+					AudioManager.PlaySFX("mirrorMove4", 0.5f);
 				}
 				else if (audioPlay == 5)
 				{
-					AudioManager.PlaySFX("mirrorMove5");
+					AudioManager.PlaySFX("mirrorMove5", 0.5f);
 				}
 
 				// temporary win condition
 				if (theSwitch->currentPos == theSwitch->maxCount)
 				{
-					AudioManager.PlaySFX("doorOpen");
+					AudioManager.PlaySFX("doorOpen", 1.0); // maybe make the sound quieter the further the player is
 					LevelBuilder::setDoor(true);
 					theSwitch->currentPos = 0;
 				}
