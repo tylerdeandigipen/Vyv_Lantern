@@ -50,8 +50,8 @@ void BehaviorEmitter::Init()
             for (int i = 0; i < numEmitterParticles; i++)
             {
                 float angle = (rand() % 628) / 100;
-                Vector2 angleVec{ cosf(angle),sinf(angle) };
-                Particle* temp = new Particle{ laser->pos + Vector2{(float)(rand() % 8) - 3,(float)(rand() % 4) - 1},angleVec,Vector2{angleVec.x * ((rand() % 10) - 5) * 2.5f, angleVec.y * ((rand() % 10) - 5) * 2.5f}, Color{202,245,250,255}, Particle_Laser_Emiter, 2.0f };
+                Vector2 angleVec{cosf(angle),sinf(angle)};
+                Particle* temp = new Particle{ laser->pos + Vector2{(float)(rand() % 8) - 3,(float)(rand() % 4) - 1},angleVec,Vector2{angleVec.x * ((rand() % 10) - 5) * 2.0f, angleVec.y * ((rand() % 10) - 5) * 2.0f}, Color{202,245,250,255}, Particle_Laser_Emiter, 4.0f };
                 Renderer::GetInstance()->particleManager->AddParticle(temp);
             }
         }
