@@ -827,7 +827,7 @@ void Renderer::MakeTileMap(int** tileMapArray)
 					normalTileSet[0]->position = { (float)(x * TILE_SIZE), (float)(y * TILE_SIZE) };
 					normalBuffer->AddSprite(normalTileSet[0]);
 				}
-				}
+				
 
 				if (shadowCasterTileset[tileMapArray[x][y]])
 				{
