@@ -124,7 +124,7 @@ Vector2 TBDLasers::CheckCollision(int laserIndex)
 	Vector2 laserPos1 = lasers[laserIndex]->pos - renderer->GetCameraPosition();
 	Vector2 laserPos2 = laserPos1 + (lasers[laserIndex]->dir * 10); //10 is an arbitrary constant
 	float minDist = 999999;
-	int closestMirrorIndex = 99;
+	int closestMirrorIndex = -99;
 	//check for mirror collision
 	for (int i = 0; i < numMirrors; i++)
 	{
@@ -196,20 +196,6 @@ Vector2 TBDLasers::CheckCollision(int laserIndex)
 		}
 	}
 
-	if (closestMirrorIndex != 99)
-	{
-		AddLaser(&mirrors[closestMirrorIndex]->reflectedLaser1);
-		AddLaser(&mirrors[closestMirrorIndex]->reflectedLaser2);
-		if (lasers[laserIndex]->dir.x != 0)
-		{
-			SetReflectedLaserValuesX(lasers[laserIndex], mirrors[closestMirrorIndex], laserPos2);
-		}
-		else
-		{
-			SetReflectedLaserValuesY(lasers[laserIndex], mirrors[closestMirrorIndex], laserPos2);
-		}
-	}
-
 	for (int i = 0; i < numCheckPoints; i++)
 	{
 		if (checkPoints[i] != NULL)
@@ -240,6 +226,7 @@ Vector2 TBDLasers::CheckCollision(int laserIndex)
 							{
 								laserPos2 = tempPos2;
 								minDist = abs((tempPos2.y - laserPos1.y) * (tempPos2.y - laserPos1.y));
+								closestMirrorIndex = -99;
 							}
 							if (checkPoints[i]->requiredColor == defaultColor || checkPoints[i]->requiredColor == lasers[i]->color)
 							{
@@ -274,6 +261,7 @@ Vector2 TBDLasers::CheckCollision(int laserIndex)
 							{
 								laserPos2 = tempPos2;
 								minDist = abs((tempPos2.x - laserPos1.x) * (tempPos2.x - laserPos1.x));
+								closestMirrorIndex = -99;
 							}
 							if (checkPoints[i]->requiredColor == defaultColor || checkPoints[i]->requiredColor == lasers[i]->color)
 							{
@@ -286,6 +274,19 @@ Vector2 TBDLasers::CheckCollision(int laserIndex)
 		}
 	}
 	
+	if (closestMirrorIndex != -99)
+	{
+		AddLaser(&mirrors[closestMirrorIndex]->reflectedLaser1);
+		AddLaser(&mirrors[closestMirrorIndex]->reflectedLaser2);
+		if (lasers[laserIndex]->dir.x != 0)
+		{
+			SetReflectedLaserValuesX(lasers[laserIndex], mirrors[closestMirrorIndex], laserPos2);
+		}
+		else
+		{
+			SetReflectedLaserValuesY(lasers[laserIndex], mirrors[closestMirrorIndex], laserPos2);
+		}
+	}
 
 	if (laserPos1 + (lasers[laserIndex]->dir * 10) == laserPos2) //10 is an arbitrary constant
 	{
