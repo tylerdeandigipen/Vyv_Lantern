@@ -220,18 +220,23 @@ Vector2 TBDLasers::CheckCollision(int laserIndex)
 					if ((lasers[laserIndex]->dir.y > 0 && laserPos1.y < mirrorPoint1.y) || (lasers[laserIndex]->dir.y < 0 && laserPos1.y > mirrorPoint1.y))
 					{
 						Vector2 tempPos2 = renderer->LaserCheckLineForObject(laserPos1, Vector2{ laserPos1.x, mirrorPoint1.y });
-						if (abs((tempPos2.y - laserPos1.y) * (tempPos2.y - laserPos1.y)) < minDist && abs((tempPos2.y - laserPos1.y) * (tempPos2.y - laserPos1.y)) <= abs((mirrorPoint1.y - laserPos1.y) * (mirrorPoint1.y - laserPos1.y)))
+						float tempPosDist = abs((tempPos2.y - laserPos1.y) * (tempPos2.y - laserPos1.y));
+						if (tempPosDist < minDist && !(tempPosDist < abs((mirrorPoint1.y - laserPos1.y) * (mirrorPoint1.y - laserPos1.y))))
 						{	
 							if (checkPoints[i]->isSolid)
 							{
 								laserPos2 = tempPos2;
-								minDist = abs((tempPos2.y - laserPos1.y) * (tempPos2.y - laserPos1.y));
+								minDist = tempPosDist;
 								closestMirrorIndex = -99;
 							}
 							if (checkPoints[i]->requiredColor == defaultColor || checkPoints[i]->requiredColor == lasers[i]->color)
 							{
 								checkPoints[i]->isActivated = true;
 							}
+						}
+						else if (tempPosDist < minDist)
+						{
+							minDist = tempPosDist;
 						}
 					}
 				}
@@ -255,18 +260,23 @@ Vector2 TBDLasers::CheckCollision(int laserIndex)
 					if ((lasers[laserIndex]->dir.x > 0 && laserPos1.x < mirrorPoint1.x) || (lasers[laserIndex]->dir.x < 0 && laserPos1.x > mirrorPoint1.x))
 					{
 						Vector2 tempPos2 = renderer->LaserCheckLineForObject(laserPos1, Vector2{ mirrorPoint1.x, laserPos1.y });
-						if (abs((tempPos2.x - laserPos1.x) * (tempPos2.x - laserPos1.x)) < minDist && abs((tempPos2.x - laserPos1.x) * (tempPos2.x - laserPos1.x)) <= abs((mirrorPoint1.x - laserPos1.x) * (mirrorPoint1.x - laserPos1.x)))
+						float tempPosDist = abs((tempPos2.x - laserPos1.x) * (tempPos2.x - laserPos1.x));
+						if (tempPosDist < minDist && !(tempPosDist < abs((mirrorPoint1.x - laserPos1.x) * (mirrorPoint1.x - laserPos1.x))))
 						{
 							if (checkPoints[i]->isSolid)
 							{
 								laserPos2 = tempPos2;
-								minDist = abs((tempPos2.x - laserPos1.x) * (tempPos2.x - laserPos1.x));
+								minDist = tempPosDist;
 								closestMirrorIndex = -99;
 							}
 							if (checkPoints[i]->requiredColor == defaultColor || checkPoints[i]->requiredColor == lasers[i]->color)
 							{
 								checkPoints[i]->isActivated = true;
 							}
+						}
+						else if (tempPosDist < minDist)
+						{
+							minDist = tempPosDist;
 						}
 					}
 				}
