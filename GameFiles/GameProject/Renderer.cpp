@@ -822,11 +822,22 @@ void Renderer::MakeTileMap(int** tileMapArray)
 					normalTileSet[tileMapArray[x][y]]->position = { (float)(x * TILE_SIZE), (float)(y * TILE_SIZE) };
 					normalBuffer->AddSprite(normalTileSet[tileMapArray[x][y]]);
 				}
+				else if (normalTileSet[0])
+				{
+					normalTileSet[0]->position = { (float)(x * TILE_SIZE), (float)(y * TILE_SIZE) };
+					normalBuffer->AddSprite(normalTileSet[0]);
+				}
+				}
 
 				if (shadowCasterTileset[tileMapArray[x][y]])
 				{
 					shadowCasterTileset[tileMapArray[x][y]]->position = { (float)(x * TILE_SIZE), (float)(y * TILE_SIZE) };
 					shadowCasterBuffer->AddSprite(shadowCasterTileset[tileMapArray[x][y]]);
+				}
+				else if (shadowCasterTileset[0])
+				{
+					shadowCasterTileset[0]->position = { (float)(x * TILE_SIZE), (float)(y * TILE_SIZE) };
+					shadowCasterBuffer->AddSprite(shadowCasterTileset[0]);
 				}
 			}
 		}
