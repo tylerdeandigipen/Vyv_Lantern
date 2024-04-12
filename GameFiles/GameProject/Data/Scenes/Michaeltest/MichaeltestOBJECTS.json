@@ -1,0 +1,19 @@
+{
+  "Circle": {
+    "count": 2
+  },
+  "Door": {
+    "count": 2
+  },
+  "Emitter": {
+    "count": 2
+  },
+  "FilePath": "./Data/Scenes/Michaeltest/MichaeltestOBJECTS.json",
+  "Mirror": {
+    "count": 2
+  },
+  "Objects": null,
+  "Receiver": {
+    "count": 2
+  }
+}

@@ -190,7 +190,6 @@ void BehaviorDoor::DoorCollisionHandler(Entity* entity1, Entity* entity2)
 	if ((entity1->GetRealName().compare("Player") == 0 && entity2->GetRealName().compare("Door") == 0) ||
 		(entity1->GetRealName().compare("Door") == 0 && entity2->GetRealName().compare("Player") == 0))
 	{
-		//LevelBuilder::SetWinState(true);
 
 		if (entity1->GetRealName().compare("Door") == 0)
 		{

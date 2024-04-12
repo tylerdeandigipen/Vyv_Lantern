@@ -192,7 +192,6 @@ void Renderer::Update(float dt)
 	PreviousFrameBeginTime = currentTime;
 }
 
-#ifndef Rendering_Functions
 
 void Renderer::RenderToOutbuffer()
 {
@@ -689,10 +688,6 @@ void Renderer::DrawLaserLines(int thickness)
 	}
 }
 
-#endif
-
-#ifndef Animation_Functions
-
 void Renderer::UpdateAnimations(float dt = 0)
 {
 	if (timer >= timeBetweenFrames)
@@ -801,10 +796,6 @@ void Renderer::TintScreenBlack(float progress)
 {
 	fadePercent = progress;
 }
-
-#endif
-
-#ifndef Tilemap_Functions
 
 //Refactor all these to do all at once when given a master tileset
 //using the given name + a suffix to get the normals and shadows
@@ -1001,10 +992,6 @@ void Renderer::AddShadowCasterToShadowCasterTileset(ImageBuffer* tile)
 	shadowCasterTileset[numShadowCasterTiles] = tile;
 	numShadowCasterTiles += 1;
 }
-
-#endif
-
-#ifndef Helper_Functions
 
 Renderer::Renderer() : objects{ NULL }
 {
@@ -1465,9 +1452,6 @@ void Renderer::BlurLasers(int blurRangeLow, int blurRangeHigh)
 	}
 }
 
-#endif
-
-#ifndef Cleanup_Functions
 
 Renderer::~Renderer(void)
 {
@@ -1700,9 +1684,6 @@ void Renderer::ResizeBuffers()
 	DebugBuffer = new ImageBuffer{ tileMapSize.x * (TILE_SIZE), tileMapSize.y * (TILE_SIZE) };
 }
 
-#endif
-
-#ifndef Debug_Functions
 
 void Renderer::DrawLine(Vector2 P0, Vector2 P1, const Color& LineColor, ImageBuffer* buffer, float skipPercent)
 {
@@ -1800,5 +1781,3 @@ void Renderer::RenderWallCollidersToDebugBuffer()
 	debugOutlineTile->position = animatedObjects[0][0]->position;
 	DebugBuffer->AddSprite(debugOutlineTile);
 }
-
-#endif

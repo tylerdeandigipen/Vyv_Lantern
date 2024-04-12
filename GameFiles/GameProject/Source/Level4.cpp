@@ -85,7 +85,7 @@ Engine::EngineCode Level4::Init()
 
 	//initialize level data
 	//EntityContainer::GetInstance()->ReadEntities();
-	LevelBuilder::GetInstance()->LoadTileMap(_SCENE);
+	LevelBuilder::GetInstance()->LoadTileMap("./Data/Scenes/Level4Final/Level4Final.json");
 
 	//ControlledEmitter = LaserSystem::GetInstance()->CreateEmitter();
 	/*
