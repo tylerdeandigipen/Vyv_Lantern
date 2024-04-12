@@ -747,22 +747,51 @@ ImageBuffer* Renderer::CreateAnimatedObject(const std::string filename, Vector2 
 //maybe move into player class or component?
 void Renderer::UpdateFace(int faceState_)
 {
-	if ((faceIndex < 0 || faceIndex > MAX_ANIMATED_OBJECTS) && numAnimatedObjects != 0)
+	//temperory fix for now
+	//solution method: 
+	//adding a face flag in the renderer and a function names TurnoffFace() to set the flag
+	//if the flag is true, than do not render any face action but the default emotion
+	//else do the normal face rendering
+	if (!faceflag)
 	{
-		faceIndex = numAnimatedObjects;
-		ImageBuffer* temp = CreateAnimatedObject("./Assets/PPM/Man_Faces.ppm", { 8,8 });
-		temp->isCulled = true;
-	}
-	else if (faceIndex != 1)
-	{
-		if (faceState_ >= 0 && faceIndex < MAX_ANIMATED_OBJECTS && animatedObjects[faceIndex][0] != NULL && faceState_ <= animatedObjects[faceIndex][0]->totalFrames)
+		if ((faceIndex < 0 || faceIndex > MAX_ANIMATED_OBJECTS) && numAnimatedObjects != 0)
 		{
-			faceState = faceState_;
-			if (animatedObjects[0] != NULL && animatedObjects[0][animatedObjects[0][0]->currentFrame]->isFlipped != animatedObjects[faceIndex][faceState]->isFlipped)
+			faceIndex = numAnimatedObjects;
+			ImageBuffer* temp = CreateAnimatedObject("./Assets/PPM/Man_Faces.ppm", { 8,8 });
+			temp->isCulled = true;
+		}
+		else if (faceIndex != -1)
+		{
+			if (faceState_ >= 0 && faceIndex < MAX_ANIMATED_OBJECTS && animatedObjects[faceIndex][0] != NULL && faceState_ <= animatedObjects[faceIndex][0]->totalFrames)
 			{
-				animatedObjects[faceIndex][faceState]->FlipSprite();
+				faceState = faceState_;
+				if (animatedObjects[0] != NULL && animatedObjects[0][animatedObjects[0][0]->currentFrame]->isFlipped != animatedObjects[faceIndex][faceState]->isFlipped)
+				{
+					animatedObjects[faceIndex][faceState]->FlipSprite();
+				}
+				animatedObjects[0][animatedObjects[0][0]->currentFrame]->AddSprite(animatedObjects[faceIndex][faceState]);
 			}
-			animatedObjects[0][animatedObjects[0][0]->currentFrame]->AddSprite(animatedObjects[faceIndex][faceState]);
+		}
+	}
+	else
+	{
+		if ((faceIndex < 0 || faceIndex > MAX_ANIMATED_OBJECTS) && numAnimatedObjects != 0)
+		{
+			faceIndex = numAnimatedObjects;
+			ImageBuffer* temp = CreateAnimatedObject("./Assets/PPM/Man_Faces.ppm", { 8,8 });
+			temp->isCulled = true;
+		}
+		else if (faceIndex != 1)
+		{
+			if (faceState_ >= 0 && faceIndex < MAX_ANIMATED_OBJECTS && animatedObjects[faceIndex][0] != NULL && faceState_ <= animatedObjects[faceIndex][0]->totalFrames)
+			{
+				faceState = faceState_;
+				if (animatedObjects[0] != NULL && animatedObjects[0][animatedObjects[0][0]->currentFrame]->isFlipped != animatedObjects[faceIndex][faceState]->isFlipped)
+				{
+					animatedObjects[faceIndex][faceState]->FlipSprite();
+				}
+				animatedObjects[0][animatedObjects[0][0]->currentFrame]->AddSprite(animatedObjects[faceIndex][faceState]);
+			}
 		}
 	}
 }
@@ -1218,8 +1247,16 @@ Renderer* Renderer::GetInstance()
 	{
 		instance.reset(new Renderer());
 	}
+	instance->faceflag = false;
 	return instance.get();
 }
+
+void Renderer::TurnoffFace()
+{
+	faceflag = true;
+}
+
+
 
 int Renderer::CheckLineForObject(int x1, int y1, int x2, int y2)
 {
