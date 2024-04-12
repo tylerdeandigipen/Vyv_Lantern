@@ -14,6 +14,7 @@
 
 #include "Inputs.h"
 #include "Engine.h"
+#include "AudioEngine.h"
 
 // singleton instance
 std::unique_ptr<Inputs> Inputs::instance = nullptr;
@@ -130,7 +131,24 @@ void Inputs::handleInput()
 					keyStates[event.key.keysym.scancode] = false;
 				}
 				break;
+
+			case SDL_WINDOWEVENT_FOCUS_LOST:
+			{
+				AudioManager.PauseMusic();
+				AudioManager.PauseSFX();
+				break;
 			}
+
+			case SDL_WINDOWEVENT_FOCUS_GAINED:
+			{
+				AudioManager.ResumeMusic();
+				AudioManager.ResumeSFX();
+				break;
+			}
+
+			}
+
+
 
 #ifdef _DEBUG
 		}
