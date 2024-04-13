@@ -150,14 +150,19 @@ Vector2 TBDLasers::CheckCollision(int laserIndex)
 					if ((lasers[laserIndex]->dir.y > 0 && laserPos1.y < mirrorPoint1.y) || (lasers[laserIndex]->dir.y < 0 && laserPos1.y > mirrorPoint1.y))
 					{
 						Vector2 tempPos2 = renderer->LaserCheckLineForObject(laserPos1, Vector2{ laserPos1.x, mirrorPoint1.y });
-						if (abs((tempPos2.y - laserPos1.y) * (tempPos2.y - laserPos1.y)) < minDist)
+						float tempPosDist = abs((tempPos2.x - laserPos1.x) * (tempPos2.x - laserPos1.x));
+						if (tempPosDist < minDist)
 						{
 							laserPos2 = tempPos2;
-							minDist = abs((tempPos2.y - laserPos1.y) * (tempPos2.y - laserPos1.y));
+							minDist = tempPosDist;
 							if (laserPos2.y == mirrorPoint1.y)
 							{
 								closestMirrorIndex = i;
 							}
+						}
+						else if (tempPosDist < minDist)
+						{
+							minDist = tempPosDist;
 						}
 					}
 				}
@@ -181,14 +186,19 @@ Vector2 TBDLasers::CheckCollision(int laserIndex)
 					if ((lasers[laserIndex]->dir.x > 0 && laserPos1.x < mirrorPoint1.x) || (lasers[laserIndex]->dir.x < 0 && laserPos1.x > mirrorPoint1.x))
 					{
 						Vector2 tempPos2 = renderer->LaserCheckLineForObject(laserPos1, Vector2{ mirrorPoint1.x, laserPos1.y });
-						if (abs((tempPos2.x - laserPos1.x) * (tempPos2.x - laserPos1.x)) < minDist)
+						float tempPosDist = abs((tempPos2.x - laserPos1.x) * (tempPos2.x - laserPos1.x));
+						if (tempPosDist < minDist)
 						{
 							laserPos2 = tempPos2;
-							minDist = abs((tempPos2.x - laserPos1.x) * (tempPos2.x - laserPos1.x));
+							minDist = tempPosDist;
 							if (laserPos2.x == mirrorPoint1.x)
 							{
 								closestMirrorIndex = i;
 							}
+						}
+						else if (tempPosDist < minDist)
+						{
+							minDist = tempPosDist;
 						}
 					}
 				}
