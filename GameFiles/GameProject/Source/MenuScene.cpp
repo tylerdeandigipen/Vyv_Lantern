@@ -215,7 +215,7 @@ bool MenuScene::IsMouseOverBeginingButton()
 	int mouseX = Inputs::GetInstance()->getMouseX();
 	int mouseY = Inputs::GetInstance()->getMouseY();
 
-	Vector2 position = { 300,300 };
+	Vector2 position = { 400,300 };
 
 	int width = (250 / 2);
 	int high = (128 / 2);
@@ -245,7 +245,7 @@ bool MenuScene::IsMouseOverExitButton()
 	int mouseX = Inputs::GetInstance()->getMouseX();
 	int mouseY = Inputs::GetInstance()->getMouseY();
 
-	Vector2 position = { 300,700 };
+	Vector2 position = { 400,700 };
 
 	int width = (250 / 2);
 	int high = (128 / 2);
@@ -272,7 +272,7 @@ bool MenuScene::IsMouseOverCreditButton()
 	int mouseX = Inputs::GetInstance()->getMouseX();
 	int mouseY = Inputs::GetInstance()->getMouseY();
 
-	Vector2 position = { 300,400 };
+	Vector2 position = { 400,400 };
 
 	int width = (250 / 2);
 	int high = (128 / 2);
@@ -309,7 +309,7 @@ bool MenuScene::IsMouseOverOptionButton()
 	int mouseX = Inputs::GetInstance()->getMouseX();
 	int mouseY = Inputs::GetInstance()->getMouseY();
 
-	Vector2 position = { 300,550 };
+	Vector2 position = { 400,550 };
 
 	int width = (250 / 2);
 	int high = (128 / 2);
@@ -340,6 +340,10 @@ void MenuScene::Update(float dt)
 	AudioManager.Update();
 	inputHandler->handleInput();
 	bool check = winState;
+
+
+	MenuPixelRender->TurnoffFace();
+
 
 	MenuPixelRender->RenderMenu();
 	Beginbutton->Update(dt);
