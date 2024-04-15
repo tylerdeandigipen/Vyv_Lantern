@@ -1518,6 +1518,7 @@ void Renderer::CleanRenderer()
 	numAnimatedObjects = 0;
 	numLights = 0;
 	frameCount = 0;
+	numLasers = 0;
 	timer = 0;
 	CameraP = Vector2{ 0,0 };
 }

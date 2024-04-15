@@ -301,6 +301,7 @@ bool CheckGameScenes()
 		
 	assert(activeSceneType != SceneType::NULL_SCENE && "Active scene type is NULL. Location: CheckGameScenes()");
 
+#ifdef _DEBUG
 	if (inputHandlerScene->keyPressed(SDL_SCANCODE_1))
 	{
 		if (activeSceneType == SceneType::SCENE_TBD_TEST)
@@ -364,26 +365,30 @@ bool CheckGameScenes()
 	{
 		return false;
 	}
-
-	return true;
+#endif
+	return false;
 }
 
 bool CheckRestart()
 {
+#ifdef _DEBUG
 	if (inputHandlerScene->keyPressed(SDL_SCANCODE_R))
 	{
 		SceneSystem::GetInstance()->RestartScene();
 		return true;
 	}
+#endif 
 	return false;
 }
 
 bool CheckRestart(const char* filename)
 {
+#ifdef _DEBUG
 	if (inputHandlerScene->keyPressed(SDL_SCANCODE_R))
 	{
 		SceneSystem::GetInstance()->RestartScene();
 		return true;
 	}
+#endif
 	return false;
 }

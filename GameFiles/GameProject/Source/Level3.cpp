@@ -80,6 +80,7 @@ Engine::EngineCode Level3::Init()
 	Light tempLight2;
 
 	// Create SDL Window
+	Level3Renderer = Renderer::GetInstance();
 	Level3Window = PlatformSystem::GetInstance()->GetWindowHandle();
 	Level3Renderer->window = Level3Window;
 

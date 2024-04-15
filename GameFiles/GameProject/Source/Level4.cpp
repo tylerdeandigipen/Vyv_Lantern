@@ -17,6 +17,7 @@
 #include <algorithm>
 
 #include "Level4.h"
+#include "WinScene.h"
 #include "LevelCreatorScene.h"
 #include "Scene.h"
 #include "PlatformSystem.h"
@@ -71,7 +72,6 @@ Engine::EngineCode Level4::Load()
 
 Engine::EngineCode Level4::Init()
 {
-	Inputs::GetInstance()->SetWindow(Level4Window);
 
 	//exporttests
 	//FileIO::GetInstance()->ExportTileMap("export_tests");
@@ -80,8 +80,10 @@ Engine::EngineCode Level4::Init()
 	Light tempLight2;
 
 	// Create SDL Window
+	Level4Renderer = Renderer::GetInstance();
 	Level4Window = PlatformSystem::GetInstance()->GetWindowHandle();
 	Level4Renderer->window = Level4Window;
+	Inputs::GetInstance()->SetWindow(Level4Window);
 
 	//initialize level data
 	//EntityContainer::GetInstance()->ReadEntities();
@@ -212,6 +214,8 @@ namespace Name_Level4
 			*/
 		}
 
+#ifdef _DEBUG
+
 		if (inputHandler->keyPressed(SDL_SCANCODE_M))
 		{
 			if (!Name_Level4::mKeyDown)
@@ -234,6 +238,7 @@ namespace Name_Level4
 		{
 			Name_Level4::mKeyDown = false;
 		}
+#endif // DEBUG
 	}
 }
 
@@ -482,9 +487,10 @@ void Level4::Update(float dt)
 	}
 	if (LevelBuilder::GetWinState())
 	{
-		if (dt != 0)
-		{
-			Level4Renderer->menuBuffer = new ImageBuffer{ SCREEN_SIZE_X,SCREEN_SIZE_Y };
+		SceneSystem::GetInstance()->SetScene(WinSceneGetInstance());
+		//if (dt != 0)
+		//{
+		/*	Level4Renderer->menuBuffer = new ImageBuffer{ SCREEN_SIZE_X,SCREEN_SIZE_Y };
 			ImageBuffer* temp = new ImageBuffer{ "./Assets/PPM/TemporaryWinScreen.ppm" };
 			Level4Renderer->menuBuffer->AddSprite(temp, Vector2{ -20,-5 });
 			Engine::GetInstance()->SetPause(true);
@@ -492,7 +498,7 @@ void Level4::Update(float dt)
 		if (inputHandler->keyPressed(SDL_SCANCODE_RETURN))
 		{
 			SceneSystem::RestartScene();
-		}
+		}*/
 	}
 	Name_Level4::TbdPlayerMovement(dt);
 	handleCheatCodes();

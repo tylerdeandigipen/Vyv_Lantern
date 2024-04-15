@@ -12,7 +12,12 @@
   "Mirror": {
     "count": 1
   },
-  "Objects": null,
+  "Objects":
+  [
+    {
+      "FilePath": "./Data/Scenes/Resolution/Fin.json"
+    }
+  ],
   "Receiver": {
     "count": 1
   }

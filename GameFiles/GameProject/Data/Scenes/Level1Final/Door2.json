@@ -18,10 +18,10 @@
       "Type": "Physics"
     },
     {
-      "ClosedSprite": "./Assets/PPM/Door_Closed.ppm",
+      "ClosedSprite": "./Assets/PPM/Door_Closed_Sideways.ppm",
       "DoorClosed": true,
       "NextScene": "Level2",
-      "OpenSprite": "./Assets/PPM/Door_Open.ppm",
+      "OpenSprite": "./Assets/PPM/Door_Open_Sideways.ppm",
       "PairName": "Receiver1",
       "Type": "BehaviorDoor"
     }
@@ -32,7 +32,7 @@
   },
   "Name": "Door",
   "Type": "Object",
-  "file": "./Assets/PPM/Door_Closed.ppm",
+  "file": "./Assets/PPM/Door_Closed_Sideways.ppm",
   "frameSize": [
     8,
     8

@@ -1,0 +1,33 @@
+{
+  "Components": [
+    {
+      "Type": "ColliderAABB"
+    },
+    {
+      "Type": "Transform",
+      "translation": {
+        "x": 72.0,
+        "y": 50.0
+      }
+    },
+    {
+      "OldTranslation": {
+        "x": 168.0,
+        "y": 112.0
+      },
+      "Type": "Physics"
+    }
+  ],
+  "FilePath": "./Data/Scenes/Resolution/Fin.json",
+  "KeyObject": {
+    "key": "Fin"
+  },
+  "Name": "Switch",
+  "Type": "Object",
+  "file": "./Assets/PPM/FINTemp.ppm",
+  "frameSize": [
+    8,
+    8
+  ],
+  "isAnimated": false
+}

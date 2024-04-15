@@ -10,13 +10,14 @@ BehaviorEmitter::BehaviorEmitter() : Behavior(Behavior::bEmitter), laser(new Las
 BehaviorEmitter::BehaviorEmitter(BehaviorEmitter const& other) : Behavior(other), laser(other.laser)
 {
     _type = this;
-    delete laser;
-    laser = NULL;
+
 }
 
 BehaviorEmitter::~BehaviorEmitter()
 {
     // call the function to delete mirror whenever tyler makes it ioujdfsjklsdfjkl;dfsjkl;
+    delete laser;
+    laser = NULL;
 }
 
 std::string BehaviorEmitter::GetName()

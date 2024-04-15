@@ -3,6 +3,8 @@
 #include "Engine.h"
 #include "Scene.h"
 #include "SceneSystem.h"
+#include "EntityManager.h"
+
 class Scene;
 
 class WinScene : public Scene
@@ -19,6 +21,18 @@ public:
 	void Update(float dt) override;
 	void Render(void) override;
 private:
+	std::unique_ptr<EntityManager> entityManagerTBD;
+
+	void handleCheatCodes();
+
+	void cheatFullbright();
+	void cheatOnlyLights();
+	void cheatNormalMap();
+	void cheatWallHitboxes();
+	void cheatScanlines();
+	void cheatBlur();
+	void cheatOnlyFog();
+	void cheatFog();
 	void ImGuiInterg();
 	void ImGuiWindow();
 };
