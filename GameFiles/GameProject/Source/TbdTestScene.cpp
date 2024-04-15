@@ -523,6 +523,7 @@ Engine::EngineCode TbdTestScene::Exit()
 	Inputs::GetInstance()->InputKeyClear();
 	TbdPixelRenderer->CleanRenderer();
 	winState = false;
+
 	return Engine::NothingBad;
 }
 
@@ -531,6 +532,10 @@ Engine::EngineCode TbdTestScene::Unload()
 	winState = false;
 	TbdTestSceneinstance->~Scene();
 	TbdTestSceneinstance = nullptr;
+
+	AudioManager.UnloadMusic("bgm");
+	AudioManager.UnLoadSFX("bgAmbience");
+	AudioManager.UnLoadSFX("laserAmbience");
 	return Engine::NothingBad;
 }
 

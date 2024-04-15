@@ -78,7 +78,6 @@ MenuScene::MenuScene() : Scene("Menutest"), isCreditsOpen(false)
 
 Engine::EngineCode MenuScene::Load()
 {
-	AudioManager.LoadMusicFromJSON("./Data/music.json");
 	AudioManager.LoadSFXFromJSON("./Data/SFX.json");
 
 	return Engine::NothingBad;
@@ -341,9 +340,7 @@ void MenuScene::Update(float dt)
 	inputHandler->handleInput();
 	bool check = winState;
 
-
 	MenuPixelRender->TurnoffFace();
-
 
 	MenuPixelRender->RenderMenu();
 	Beginbutton->Update(dt);
@@ -414,6 +411,8 @@ Engine::EngineCode MenuScene::Unload()
 {
 	//delete MenuSceneinstance;
 	//MenuSceneinstance = nullptr;
+
+	AudioManager.UnLoadSFX("buttonFeedback");
 	return Engine::NothingBad;
 }
 

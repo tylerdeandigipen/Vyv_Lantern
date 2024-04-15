@@ -104,9 +104,6 @@ Engine::EngineCode Level2::Init()
 		Level2Renderer->particleManager->AddParticle(testParticle);
 	}
 
-	//AudioManager.PlayMusic("drips"); //line is good
-
-	//AudioManager.PlayMusic("forest"); //line is good
 	AudioManager.PlayMusic("bgm");
 	AudioManager.DecreaseMusicVolume(0.7f);
 
@@ -523,6 +520,9 @@ Engine::EngineCode Level2::Unload()
 	winState = false;
 	Level2instance->~Scene();
 	Level2Renderer = nullptr;
+	AudioManager.UnloadMusic("bgm");
+	AudioManager.UnLoadSFX("bgAmbience");
+	AudioManager.UnLoadSFX("laserAmbience");
 	return Engine::NothingBad;
 }
 

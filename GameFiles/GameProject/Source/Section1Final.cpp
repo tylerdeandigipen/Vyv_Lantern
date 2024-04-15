@@ -101,9 +101,6 @@ Engine::EngineCode Section1Final::Init()
 		Section1FinalRenderer->particleManager->AddParticle(testParticle);
 	}
 
-	//AudioManager.PlayMusic("drips"); //line is good
-
-	//AudioManager.PlayMusic("forest"); //line is good
 	AudioManager.PlayMusic("bgm");
 	AudioManager.DecreaseMusicVolume(0.7f);
 
@@ -520,6 +517,10 @@ Engine::EngineCode Section1Final::Unload()
 	winState = false;
 	Section1Finalinstance->~Scene();
 	Section1FinalRenderer = nullptr;
+
+	AudioManager.UnloadMusic("bgm");
+	AudioManager.UnLoadSFX("bgAmbience");
+	AudioManager.UnLoadSFX("laserAmbience");
 	return Engine::NothingBad;
 }
 
