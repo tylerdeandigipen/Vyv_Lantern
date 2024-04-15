@@ -105,12 +105,12 @@ Engine::EngineCode Level2::Init()
 		Level2Renderer->particleManager->AddParticle(testParticle);
 	}
 
-	AudioManager.PlayMusic("bgm");
-	AudioManager.DecreaseMusicVolume(0.7f);
+	//AudioManager.PlayMusic("bgm");
+	//AudioManager.DecreaseMusicVolume(0.7f);
 
-	AudioManager.PlaySFX("bgAmbience", 0.75f);
+	//AudioManager.PlaySFX("bgAmbience", 0.75f);
 
-	AudioManager.PlaySFX("laserAmbience", 0.2f);
+	//AudioManager.PlaySFX("laserAmbience", 0.2f);
 
 	FontSystem fontSystem;
 
@@ -216,13 +216,13 @@ namespace Name_Level2
 			{
 				if (Name_Level2::isMuted)
 				{
-					AudioManager.ResumeMusic();
-					AudioManager.ResumeSFX();
+					//AudioManager.ResumeMusic();
+					//AudioManager.ResumeSFX();
 				}
 				else
 				{
-					AudioManager.PauseMusic();
-					AudioManager.PauseSFX();
+					//AudioManager.PauseMusic();
+					//AudioManager.PauseSFX();
 				}
 				Name_Level2::isMuted = !Name_Level2::isMuted;
 			}
@@ -521,9 +521,10 @@ Engine::EngineCode Level2::Unload()
 	winState = false;
 	Level2instance->~Scene();
 	Level2Renderer = nullptr;
-	AudioManager.UnloadMusic("bgm");
-	AudioManager.UnLoadSFX("bgAmbience");
-	AudioManager.UnLoadSFX("laserAmbience");
+
+	//AudioManager.UnloadMusic("bgm");
+	//AudioManager.UnLoadSFX("bgAmbience");
+	//AudioManager.UnLoadSFX("laserAmbience");
 	return Engine::NothingBad;
 }
 

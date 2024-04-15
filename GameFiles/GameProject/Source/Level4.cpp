@@ -61,8 +61,8 @@ Level4::Level4() : Scene("Level4")
 
 Engine::EngineCode Level4::Load()
 {
-	AudioManager.LoadMusicFromJSON("./Data/music.json");//line is good
-	AudioManager.LoadSFXFromJSON("./Data/SFX.json");// line is goodplay
+	//AudioManager.LoadMusicFromJSON("./Data/music.json");//line is good
+	//AudioManager.LoadSFXFromJSON("./Data/SFX.json");// line is goodplay
 
 	if (entityManagerTBD->InitializeProperties(_OBJECT_LIST))
 		std::cout << "Property load success!\n";
@@ -72,7 +72,6 @@ Engine::EngineCode Level4::Load()
 
 Engine::EngineCode Level4::Init()
 {
-
 	//exporttests
 	//FileIO::GetInstance()->ExportTileMap("export_tests");
 
@@ -109,12 +108,12 @@ Engine::EngineCode Level4::Init()
 	//AudioManager.PlayMusic("drips"); //line is good
 
 	//AudioManager.PlayMusic("forest"); //line is good
-	AudioManager.PlayMusic("bgm");
-	AudioManager.DecreaseMusicVolume(0.7f);
+	//AudioManager.PlayMusic("bgm");
+	//AudioManager.DecreaseMusicVolume(0.7f);
 
-	AudioManager.PlaySFX("bgAmbience", 0.75);
+	//AudioManager.PlaySFX("bgAmbience", 0.75);
 
-	AudioManager.PlaySFX("laserAmbience", 0.2f);
+	//AudioManager.PlaySFX("laserAmbience", 0.2f);
 
 	FontSystem fontSystem;
 
@@ -222,13 +221,13 @@ namespace Name_Level4
 			{
 				if (Name_Level4::isMuted)
 				{
-					AudioManager.ResumeMusic();
-					AudioManager.ResumeSFX();
+					//AudioManager.ResumeMusic();
+					//AudioManager.ResumeSFX();
 				}
 				else
 				{
-					AudioManager.PauseMusic();
-					AudioManager.PauseSFX();
+					//AudioManager.PauseMusic();
+					//AudioManager.PauseSFX();
 				}
 				Name_Level4::isMuted = !Name_Level4::isMuted;
 			}
@@ -477,7 +476,8 @@ void Level4::Update(float dt)
 	//TbdPixelRenderer->lightSource[0].position = TbdPixelRenderer->animatedObjects[0][0]->position + Vector2{ 3,3 };
 
 	Inputs* inputHandler = Inputs::GetInstance();
-	AudioManager.Update();
+
+	//AudioManager.Update();
 	inputHandler->handleInput();
 	bool check = winState;
 
@@ -488,6 +488,7 @@ void Level4::Update(float dt)
 	if (LevelBuilder::GetWinState())
 	{
 		SceneSystem::GetInstance()->SetScene(WinSceneGetInstance());
+
 		//if (dt != 0)
 		//{
 		/*	Level4Renderer->menuBuffer = new ImageBuffer{ SCREEN_SIZE_X,SCREEN_SIZE_Y };

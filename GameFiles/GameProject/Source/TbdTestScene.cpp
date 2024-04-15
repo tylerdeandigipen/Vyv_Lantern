@@ -533,9 +533,9 @@ Engine::EngineCode TbdTestScene::Unload()
 	TbdTestSceneinstance->~Scene();
 	TbdTestSceneinstance = nullptr;
 
-	AudioManager.UnloadMusic("bgm");
-	AudioManager.UnLoadSFX("bgAmbience");
-	AudioManager.UnLoadSFX("laserAmbience");
+	//AudioManager.UnloadMusic("bgm");
+	//AudioManager.UnLoadSFX("bgAmbience");
+	////AudioManager.UnLoadSFX("laserAmbience");
 	return Engine::NothingBad;
 }
 

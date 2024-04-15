@@ -108,12 +108,12 @@ Engine::EngineCode Level3::Init()
 	//AudioManager.PlayMusic("drips"); //line is good
 
 	//AudioManager.PlayMusic("forest"); //line is good
-	AudioManager.PlayMusic("bgm");
-	AudioManager.DecreaseMusicVolume(0.7f);
+	//AudioManager.PlayMusic("bgm");
+	//AudioManager.DecreaseMusicVolume(0.7f);
 
-	AudioManager.PlaySFX("bgAmbience", 0.75f);
+	//AudioManager.PlaySFX("bgAmbience", 0.75f);
 
-	AudioManager.PlaySFX("laserAmbience", 0.2f);
+	//AudioManager.PlaySFX("laserAmbience", 0.2f);
 
 	FontSystem fontSystem;
 
@@ -219,13 +219,13 @@ namespace Name_Level3
 			{
 				if (Name_Level3::isMuted)
 				{
-					AudioManager.ResumeMusic();
-					AudioManager.ResumeSFX();
+					//AudioManager.ResumeMusic();
+					//AudioManager.ResumeSFX();
 				}
 				else
 				{
-					AudioManager.PauseMusic();
-					AudioManager.PauseSFX();
+					//AudioManager.PauseMusic();
+					//AudioManager.PauseSFX();
 				}
 				Name_Level3::isMuted = !Name_Level3::isMuted;
 			}

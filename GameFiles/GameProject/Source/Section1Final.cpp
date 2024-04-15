@@ -101,12 +101,12 @@ Engine::EngineCode Section1Final::Init()
 		Section1FinalRenderer->particleManager->AddParticle(testParticle);
 	}
 
-	AudioManager.PlayMusic("bgm");
-	AudioManager.DecreaseMusicVolume(0.7f);
+	//AudioManager.PlayMusic("bgm");
+	//AudioManager.DecreaseMusicVolume(0.7f);
 
-	AudioManager.PlaySFX("bgAmbience", 0.75f);
+	//AudioManager.PlaySFX("bgAmbience", 0.75f);
 
-	AudioManager.PlaySFX("laserAmbience", 0.2f);
+	//AudioManager.PlaySFX("laserAmbience", 0.2f);
 
 	FontSystem fontSystem;
 
@@ -212,13 +212,13 @@ namespace Name_Section1Final
 			{
 				if (Name_Section1Final::isMuted)
 				{
-					AudioManager.ResumeMusic();
-					AudioManager.ResumeSFX();
+					//AudioManager.ResumeMusic();
+					//AudioManager.ResumeSFX();
 				}
 				else
 				{
-					AudioManager.PauseMusic();
-					AudioManager.PauseSFX();
+					//AudioManager.PauseMusic();
+					//AudioManager.PauseSFX();
 				}
 				Name_Section1Final::isMuted = !Name_Section1Final::isMuted;
 			}
@@ -311,7 +311,7 @@ void Section1Final::handleCheatCodes()
 	{
 		if (Name_Section1Final::CanPause == true)
 		{
-			//AudioManager.PlaySFX("creak");
+			////AudioManager.PlaySFX("creak");
 			if (Engine::GetInstance()->Paused() == false)
 				Engine::GetInstance()->SetPause(true);
 			else
@@ -518,9 +518,9 @@ Engine::EngineCode Section1Final::Unload()
 	Section1Finalinstance->~Scene();
 	Section1FinalRenderer = nullptr;
 
-	AudioManager.UnloadMusic("bgm");
-	AudioManager.UnLoadSFX("bgAmbience");
-	AudioManager.UnLoadSFX("laserAmbience");
+	//AudioManager.UnloadMusic("bgm");
+	//AudioManager.UnLoadSFX("bgAmbience");
+	//AudioManager.UnLoadSFX("laserAmbience");
 	return Engine::NothingBad;
 }
 
