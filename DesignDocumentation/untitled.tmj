@@ -4,7 +4,7 @@
      "export":
         {
          "format":"json",
-         "target":"..\/GameFiles\/GameProject\/Data\/TileMaps\/Final.tmj"
+         "target":"..\/GameFiles\/GameProject\/Data\/Scenes\/Resolution\/ResolutionMAP.json"
         }
     },
  "height":28,
@@ -42,7 +42,7 @@
          "height":28,
          "id":1,
          "name":"Tile Layer 1",
-         "opacity":1,
+         "opacity":0.9,
          "type":"tilelayer",
          "visible":true,
          "width":26,
