@@ -190,7 +190,6 @@ void BehaviorDoor::DoorCollisionHandler(Entity* entity1, Entity* entity2)
 	if ((entity1->GetRealName().compare("Player") == 0 && entity2->GetRealName().compare("Door") == 0) ||
 		(entity1->GetRealName().compare("Door") == 0 && entity2->GetRealName().compare("Player") == 0))
 	{
-
 		if (entity1->GetRealName().compare("Door") == 0)
 		{
 			if (reinterpret_cast<BehaviorDoor*>(entity1->Has(Behavior)) && reinterpret_cast<BehaviorDoor*>(entity1->Has(Behavior))->GetName().compare("BehaviorDoor") == 0)
@@ -209,13 +208,25 @@ void BehaviorDoor::DoorCollisionHandler(Entity* entity1, Entity* entity2)
 		if (door != nullptr && door->isDoorClosed == false)
 		{
 			if (door->_nextScene == "Level1")
+			{
 				SceneSystem::GetInstance()->SetScene(Level1GetInstance());
+				AudioManager.PlaySFX("lvlTransition", 1.0f);
+			}
 			else if (door->_nextScene == "Level2")
+			{
 				SceneSystem::GetInstance()->SetScene(Level2GetInstance());
+				AudioManager.PlaySFX("lvlTransition", 1.0f);
+			}
 			else if (door->_nextScene == "Level3")
+			{
 				SceneSystem::GetInstance()->SetScene(Level3GetInstance());
+				AudioManager.PlaySFX("lvlTransition", 1.0f);
+			}
 			else if (door->_nextScene == "Level4")
+			{
 				SceneSystem::GetInstance()->SetScene(Level4GetInstance());
+				AudioManager.PlaySFX("lvlTransition", 1.0f);
+			}
 			else if (door->_nextScene == "WinScene")
 			{
 				if (LevelBuilder::GetWinState())

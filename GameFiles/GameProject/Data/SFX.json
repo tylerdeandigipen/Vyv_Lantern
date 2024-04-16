@@ -13,5 +13,6 @@
   "mirrorMove3": "Assets/Audio/SFX/MirrorMoveSFX3.wav",
   "mirrorMove4": "Assets/Audio/SFX/MirrorMoveSFX4.wav",
   "mirrorMove5": "Assets/Audio/SFX/MirrorMoveSFX5.wav",
-  "buttonFeedback": "Assets/Audio/SFX/buttonFeedback.wav"
+  "buttonFeedback": "Assets/Audio/SFX/buttonFeedback.wav",
+  "lvlTransition": "Assets/Audio/SFX/VictorySFX2.wav"
 }
