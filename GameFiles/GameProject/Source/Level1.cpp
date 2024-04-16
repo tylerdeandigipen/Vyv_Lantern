@@ -60,8 +60,8 @@ Level1::Level1() : Scene("Level1")
 
 Engine::EngineCode Level1::Load()
 {
-	AudioManager.LoadMusicFromJSON("./Data/music.json");//line is good
-	AudioManager.LoadSFXFromJSON("./Data/SFX.json");// line is goodplay
+	//AudioManager.LoadMusicFromJSON("./Data/music.json");//line is good
+	//AudioManager.LoadSFXFromJSON("./Data/SFX.json");// line is goodplay
 
 	if (entityManagerTBD->InitializeProperties(_OBJECT_LIST))
 		std::cout << "Property load success!\n";
@@ -216,13 +216,13 @@ namespace Name_Level1
 			{
 				if (Name_Level1::isMuted)
 				{
-					//AudioManager.ResumeMusic();
-					//AudioManager.ResumeSFX();
+					AudioManager.ResumeMusic();
+					AudioManager.ResumeSFX();
 				}
 				else
 				{
-					//AudioManager.PauseMusic();
-					//AudioManager.PauseSFX();
+					AudioManager.PauseMusic();
+					AudioManager.PauseSFX();
 				}
 				Name_Level1::isMuted = !Name_Level1::isMuted;
 			}

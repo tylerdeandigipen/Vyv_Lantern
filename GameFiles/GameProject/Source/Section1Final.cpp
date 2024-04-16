@@ -57,8 +57,8 @@ Section1Final::Section1Final() : Scene("Section1Final")
 
 Engine::EngineCode Section1Final::Load()
 {
-	AudioManager.LoadMusicFromJSON("./Data/music.json");//line is good
-	AudioManager.LoadSFXFromJSON("./Data/SFX.json");// line is goodplay
+	//AudioManager.LoadMusicFromJSON("./Data/music.json");//line is good
+	//AudioManager.LoadSFXFromJSON("./Data/SFX.json");// line is goodplay
 
 	if (entityManagerTBD->InitializeProperties("./Data/Scenes/Section1FinalNot1FPS/Section1FinalNot1FPSOBJECTS.json"))
 		std::cout << "Property load success!\n";
@@ -212,13 +212,13 @@ namespace Name_Section1Final
 			{
 				if (Name_Section1Final::isMuted)
 				{
-					//AudioManager.ResumeMusic();
-					//AudioManager.ResumeSFX();
+					AudioManager.ResumeMusic();
+					AudioManager.ResumeSFX();
 				}
 				else
 				{
-					//AudioManager.PauseMusic();
-					//AudioManager.PauseSFX();
+					AudioManager.PauseMusic();
+					AudioManager.PauseSFX();
 				}
 				Name_Section1Final::isMuted = !Name_Section1Final::isMuted;
 			}

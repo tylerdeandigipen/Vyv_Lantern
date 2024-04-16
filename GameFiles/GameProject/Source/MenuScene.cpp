@@ -78,6 +78,7 @@ MenuScene::MenuScene() : Scene("Menutest"), isCreditsOpen(false)
 
 Engine::EngineCode MenuScene::Load()
 {
+	AudioManager.LoadMusicFromJSON("./Data/music.json");
 	AudioManager.LoadSFXFromJSON("./Data/SFX.json");
 
 	return Engine::NothingBad;

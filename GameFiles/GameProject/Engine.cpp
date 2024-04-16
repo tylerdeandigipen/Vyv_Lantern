@@ -14,6 +14,7 @@
 #include "BaseSystem.h"
 #include "Time_TM.h"
 #include "Renderer.h"
+#include "AudioEngine.h"
 #include <cassert>
 
 // singleton instance
@@ -168,6 +169,7 @@ Engine::EngineCode Engine::ShutDown()
 	}
 
 	delete time;
+	AudioManager.Free();
 	return EngineExit;
 }
 

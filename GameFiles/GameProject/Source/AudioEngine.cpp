@@ -480,6 +480,21 @@ void _audioManager::UnloadVoice(std::string name)
 		voiceDatabase[name]->release();
 }
 
+void _audioManager::UnloadAll()
+{
+	for (auto& sfxSounds : soundDatabase)
+	{
+		UnLoadSFX(sfxSounds.first);
+		sfxSounds.second = nullptr;
+	}
+
+	for (auto& musicSounds : musicDatabase)
+	{
+		UnLoadSFX(musicSounds.first);
+		musicSounds.second = nullptr;
+	}
+}
+
 /*!				void _audioManager::Free(void)
 {
 @param
@@ -489,6 +504,7 @@ void _audioManager::UnloadVoice(std::string name)
 */
 void _audioManager::Free(void)
 {
+	UnloadAll();
 	fmodSystem->release();
 	isActive = false;
 }

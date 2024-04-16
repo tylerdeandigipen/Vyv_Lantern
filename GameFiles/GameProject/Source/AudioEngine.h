@@ -76,6 +76,7 @@ public:
 	void UnLoadSFX(std::string name);
 	void UnloadMusic(std::string name);
 	void UnloadVoice(std::string name);
+	void UnloadAll();
 	void Free(void);
 	FMOD::Sound* GetSound(std::string name);
 	FMOD::Sound* GetMusic(std::string name);

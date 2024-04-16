@@ -65,9 +65,6 @@ Engine::EngineCode TbdTestScene::Load()
 {
 	Renderer::GetInstance()->isFullbright = false;
 
-	AudioManager.LoadMusicFromJSON("./Data/music.json");//line is good
-	AudioManager.LoadSFXFromJSON("./Data/SFX.json");// line is goodplay
-
 	if (entityManagerTBD->InitializeProperties("./Data/GameObjects/TutorialFinalActual/TutorialFinalActualOBJECTS.json"))
 
 		//if (entityManagerTBD->InitializeProperties("./Data/Scenes/TutorialFinalActual/TutorialFinalActualOBJECTS.json"))
@@ -532,10 +529,6 @@ Engine::EngineCode TbdTestScene::Unload()
 	winState = false;
 	TbdTestSceneinstance->~Scene();
 	TbdTestSceneinstance = nullptr;
-
-	//AudioManager.UnloadMusic("bgm");
-	//AudioManager.UnLoadSFX("bgAmbience");
-	////AudioManager.UnLoadSFX("laserAmbience");
 	return Engine::NothingBad;
 }
 

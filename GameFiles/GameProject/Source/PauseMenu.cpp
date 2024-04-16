@@ -25,8 +25,8 @@ std::unique_ptr<PauseMenu> PauseMenu::instance = nullptr;
 
 PauseMenu::PauseMenu() : settingsMenuOpen(false), exitMenuOpen(false)
 {
-	AudioManager.LoadMusicFromJSON("./Data/music.json");//line is good
-	AudioManager.LoadSFXFromJSON("./Data/SFX.json");// line is goodplay
+	//AudioManager.LoadMusicFromJSON("./Data/music.json");//line is good
+	//AudioManager.LoadSFXFromJSON("./Data/SFX.json");// line is goodplay
 }
 
 PauseMenu::~PauseMenu()

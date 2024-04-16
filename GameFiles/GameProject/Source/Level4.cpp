@@ -221,13 +221,13 @@ namespace Name_Level4
 			{
 				if (Name_Level4::isMuted)
 				{
-					//AudioManager.ResumeMusic();
-					//AudioManager.ResumeSFX();
+					AudioManager.ResumeMusic();
+					AudioManager.ResumeSFX();
 				}
 				else
 				{
-					//AudioManager.PauseMusic();
-					//AudioManager.PauseSFX();
+					AudioManager.PauseMusic();
+					AudioManager.PauseSFX();
 				}
 				Name_Level4::isMuted = !Name_Level4::isMuted;
 			}

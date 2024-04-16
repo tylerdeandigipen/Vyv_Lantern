@@ -5,8 +5,6 @@
   "doorOpen": "Assets/Audio/SFX/DoorOpen.wav",
   "doorClose": "Assets/Audio/SFX/DoorClose.wav",
   "cheer": "Assets/Audio/SFX/VictorySFX4.wav",
-  "footsteps": "Assets/Audio/SFX/FOOTSTEPS_SNEAKERS_SNOW_WALK_SLOW_CRUNCH_01.ogg",
-  "laserShoot": "Assets/Audio/SFX/LaserSFX.wav",
   "laserAmbience": "Assets/Audio/SFX/LaserAmbienceSFX.wav",
   "mirrorMove1": "Assets/Audio/SFX/MirrorMoveSFX1.wav",
   "mirrorMove2": "Assets/Audio/SFX/MirrorMoveSFX2.wav",

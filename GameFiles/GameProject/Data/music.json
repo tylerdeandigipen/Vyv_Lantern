@@ -1,8 +1,3 @@
 {
-  "bgm": "Assets/Audio/Music/PrimaryAmbience.wav",
-  "drips": "Assets/Audio/Music/WaterLiquid_Drips_Splats_Gl.ogg",
-  "forest": "Assets/Audio/Music/Nature_Forest_Early_Morning.ogg",
-  "weather": "Assets/Audio/Music/WEATHER_RAIN_LIGHT_THUNDER_01.ogg",
-  "atmosphere": "Assets/Audio/Music/ATS05_Atmospheric_Cassia.ogg",
-  "mystery": "Assets/Audio/Music/ATS02_PlanetMystery_Yuksel.ogg"
+  "bgm": "Assets/Audio/Music/PrimaryAmbience.wav"
 }
