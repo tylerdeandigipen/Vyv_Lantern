@@ -71,7 +71,6 @@ Engine::EngineCode WinScene::Load()
 
 Engine::EngineCode WinScene::Init()
 {
-
 	//exporttests
 	//FileIO::GetInstance()->ExportTileMap("export_tests");
 
@@ -85,6 +84,7 @@ Engine::EngineCode WinScene::Init()
 	Inputs::GetInstance()->SetWindow(WinSceneWindow);
 	WinSceneRenderer->SetCameraPosition({ -16.0f, 220.0f });
 	WinSceneRenderer->minBrightness = 175.0f;
+
 	//initialize level data
 	//EntityContainer::GetInstance()->ReadEntities();
 	LevelBuilder::GetInstance()->LoadTileMap("./Data/Scenes/Resolution/Resolution.json");
@@ -109,12 +109,12 @@ Engine::EngineCode WinScene::Init()
 	//AudioManager.PlayMusic("drips"); //line is good
 
 	//AudioManager.PlayMusic("forest"); //line is good
-	AudioManager.PlayMusic("bgm");
-	AudioManager.DecreaseMusicVolume(0.7f);
+	//AudioManager.PlayMusic("bgm");
+	//AudioManager.DecreaseMusicVolume(0.7f);
 
-	AudioManager.PlaySFX("bgAmbience", 0.75);
+	//AudioManager.PlaySFX("bgAmbience", 0.75);
 
-	AudioManager.PlaySFX("laserAmbience", 0.2f);
+	//AudioManager.PlaySFX("laserAmbience", 0.2f);
 
 	FontSystem fontSystem;
 
@@ -463,24 +463,24 @@ void WinScene::handleCheatCodes()
 #endif
 }
 
-
 static float timer = 0.0f;
 void WinScene::Update(float dt)
 {
 	if (CheckGameScenes() || CheckRestart())
 		return;
 	timer += dt;
+
 	//eventally have player handle these lights
 	//TbdPixelRenderer->lightSource[1].position = TbdPixelRenderer->animatedObjects[0][0]->position + Vector2{ 3,3 };
 	//TbdPixelRenderer->lightSource[0].position = TbdPixelRenderer->animatedObjects[0][0]->position + Vector2{ 3,3 };
-	
+
 	if (timer >= 2.0f)
 	{
 		Vector2 moveUp = WinSceneRenderer->GetCameraPosition();
 		if (moveUp.y > 148.0f) //-48 from start
 		{
 			Vector2 ScreenHalfSize = 0.5f * Vector2(SCREEN_SIZE_X, SCREEN_SIZE_Y);
-			moveUp.y -= (((ScreenHalfSize.y + 4.0f)/64.0f) * dt) * .2f;
+			moveUp.y -= (((ScreenHalfSize.y + 4.0f) / 64.0f) * dt) * .2f;
 			WinSceneRenderer->SetCameraPosition({ moveUp.x, moveUp.y });
 		}
 		else
@@ -490,6 +490,7 @@ void WinScene::Update(float dt)
 			{
 				Vector2 translation = (*EntityContainer::GetInstance())[0]->GetImage()->position;
 				translation.y += (40 * dt);
+
 				//(*EntityContainer::GetInstance())[0]->GetComponent<Transform>()->SetTranslation(translation);
 				(*EntityContainer::GetInstance())[0]->GetImage()->position.y = translation.y;
 			}
