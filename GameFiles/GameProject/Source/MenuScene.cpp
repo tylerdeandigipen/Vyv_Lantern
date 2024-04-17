@@ -272,9 +272,9 @@ void MenuScene::HandleExit()
 
 void MenuScene::openConfirmQuitMenu()
 {
-	int confirmQuitMainindex = 4;
+	//int confirmQuitMainindex = 4;
 
-	Renderer::GetInstance()->LoadMenuPage(confirmQuitMainindex);
+	//Renderer::GetInstance()->LoadMenuPage(confirmQuitMainindex);
 }
 
 bool MenuScene::IsMouseOverCreditButton()
