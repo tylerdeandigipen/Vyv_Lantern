@@ -91,6 +91,10 @@ void Renderer::Update(float dt)
 		{
 			mainMenuOptionsIndex = AddMenuPage("./Assets/PPM/Main_Menu_Settings.ppm");
 		}
+		if (mainMenuIndex == -1)
+		{
+			mainMenuIndex = AddMenuPage("./Assets/PPM/Main_Menu.ppm");
+		}
 	}
 	else
 	{

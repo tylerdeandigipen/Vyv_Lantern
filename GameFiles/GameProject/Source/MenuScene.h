@@ -25,6 +25,11 @@ public:
 
 	MenuScene();
 
+	bool isCreditsOpen;
+	bool isConfirmQuitOpen;
+	bool isOptionsOpen;
+	bool audioDirty;
+
 	Engine::EngineCode Load(void) override;
 	Engine::EngineCode Init(void) override;
 	Engine::EngineCode Exit(void) override;
@@ -79,11 +84,6 @@ private:
 	bool mainMenuOpen;
 
 	float offset;
-
-	bool isCreditsOpen;
-	bool isConfirmQuitOpen;
-	bool isOptionsOpen;
-	bool audioDirty = false;
 };
 
 Scene* MenuSceneGetInstance(void);

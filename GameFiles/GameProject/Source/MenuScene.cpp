@@ -71,7 +71,7 @@ static Entity* Title;
 
 ImageBuffer* ani;
 
-MenuScene::MenuScene() : Scene("Menutest"), isCreditsOpen(false), isConfirmQuitOpen(false), isOptionsOpen(false)
+MenuScene::MenuScene() : Scene("Menutest"), isCreditsOpen(false), isConfirmQuitOpen(false), isOptionsOpen(false), audioDirty(false)
 {
 	offset = -50.0f;
 }
@@ -99,22 +99,22 @@ Engine::EngineCode MenuScene::Init()
 
 	//json ingnore{ {"isAnimated", true,}, {"frameSize", {8,8}} };
 
-	Beginbutton = new Entity("Object", "./Assets/PPM/Begin.ppm", ignore);
-	ExitButton = new Entity("Object", "./Assets/PPM/quit.ppm", ignore);
-	Creditbutton = new Entity("Object", "./Assets/PPM/credit.ppm", ignore);
-	optionbutton = new Entity("Object", "./Assets/PPM/option.ppm", ignore);
+	//Beginbutton = new Entity("Object", "./Assets/PPM/Begin.ppm", ignore);
+	//ExitButton = new Entity("Object", "./Assets/PPM/quit.ppm", ignore);
+	//Creditbutton = new Entity("Object", "./Assets/PPM/credit.ppm", ignore);
+	//optionbutton = new Entity("Object", "./Assets/PPM/option.ppm", ignore);
 
-	Title = new Entity("Object", "./Assets/PPM/title.ppm", ignore);
+	//Title = new Entity("Object", "./Assets/PPM/title.ppm", ignore);
 
 	//PlayerIcon = new Entity("Object", "./Assets/PPM/Player_Sprites.ppm", ingnore);
 
 	Renderer::GetInstance()->isFullbright = true;
 
-	Beginbutton->CreateImage("./Assets/PPM/Begin.ppm");
-	ExitButton->CreateImage("./Assets/PPM/quit.ppm");
-	Creditbutton->CreateImage("./Assets/PPM/credit.ppm");
-	optionbutton->CreateImage("./Assets/PPM/option.ppm");
-	Title->CreateImage("./Assets/PPM/title.ppm");
+	//Beginbutton->CreateImage("./Assets/PPM/Begin.ppm");
+	//ExitButton->CreateImage("./Assets/PPM/quit.ppm");
+	//Creditbutton->CreateImage("./Assets/PPM/credit.ppm");
+	//optionbutton->CreateImage("./Assets/PPM/option.ppm");
+	//Title->CreateImage("./Assets/PPM/title.ppm");
 
 	ani = new ImageBuffer();
 	ani = Renderer::GetInstance()->CreateAnimatedObject("./Assets/PPM/menu_animation.ppm", Vector2{ 80,80 });
@@ -126,30 +126,30 @@ Engine::EngineCode MenuScene::Init()
 
 	//ani->AddSprite(ani, Vector2{30,30});
 
-	Transform* BPOS = new Transform;
-	BPOS->SetTranslation(gfxVector2{ offset + 92,38 });
-	Beginbutton->Add(BPOS);
-	Beginbutton->AddToRenderer(MenuPixelRender, "");
+	//Transform* BPOS = new Transform;
+	//BPOS->SetTranslation(gfxVector2{ offset + 92,38 });
+	//Beginbutton->Add(BPOS);
+	//Beginbutton->AddToRenderer(MenuPixelRender, "");
 
-	Transform* crepos = new Transform;
-	crepos->SetTranslation(gfxVector2{ offset + 92,60 });
-	Creditbutton->Add(crepos);
-	Creditbutton->AddToRenderer(MenuPixelRender, "");
+	//Transform* crepos = new Transform;
+	//crepos->SetTranslation(gfxVector2{ offset + 92,60 });
+	//Creditbutton->Add(crepos);
+	//Creditbutton->AddToRenderer(MenuPixelRender, "");
 
-	Transform* optpos = new Transform;
-	optpos->SetTranslation(gfxVector2{ offset + 92,82 });
-	optionbutton->Add(optpos);
-	optionbutton->AddToRenderer(MenuPixelRender, "");
+	//Transform* optpos = new Transform;
+	//optpos->SetTranslation(gfxVector2{ offset + 92,82 });
+	//optionbutton->Add(optpos);
+	//optionbutton->AddToRenderer(MenuPixelRender, "");
 
-	Transform* BBPOS = new Transform;
-	BBPOS->SetTranslation(gfxVector2{ offset + 92,104 });
-	ExitButton->Add(BBPOS);
-	ExitButton->AddToRenderer(MenuPixelRender, "");
+	//Transform* BBPOS = new Transform;
+	//BBPOS->SetTranslation(gfxVector2{ offset + 92,104 });
+	//ExitButton->Add(BBPOS);
+	//ExitButton->AddToRenderer(MenuPixelRender, "");
 
-	Transform* TitlePos = new Transform;
-	TitlePos->SetTranslation(gfxVector2{ offset + 94,5 });
-	Title->Add(TitlePos);
-	Title->AddToRenderer(MenuPixelRender, "");
+	//Transform* TitlePos = new Transform;
+	//TitlePos->SetTranslation(gfxVector2{ offset + 94,5 });
+	//Title->Add(TitlePos);
+	//Title->AddToRenderer(MenuPixelRender, "");
 
 	MenuPixelRender->TurnoffFace();
 
@@ -223,13 +223,19 @@ void MenuScene::Update(float dt)
 	MenuPixelRender->TurnoffFace();
 
 	MenuPixelRender->RenderMenu();
-	Beginbutton->Update(dt);
-	ExitButton->Update(dt);
-	Creditbutton->Update(dt);
-	optionbutton->Update(dt);
-	Title->Update(dt);
+
+	//Beginbutton->Update(dt);
+	//ExitButton->Update(dt);
+	//Creditbutton->Update(dt);
+	//optionbutton->Update(dt);
+	//Title->Update(dt);
 
 	//PlayerIcon->Update(dt);
+
+	if (!isOptionsOpen && !isCreditsOpen && !isConfirmQuitOpen)
+	{
+		Renderer::GetInstance()->LoadMenuPage(Renderer::GetInstance()->mainMenuIndex);
+	}
 
 	if (IsMouseOverBeginingButton())
 	{
@@ -518,18 +524,13 @@ bool MenuScene::IsMouseOverBeginingButton()
 	int mouseX = Inputs::GetInstance()->getMouseX();
 	int mouseY = Inputs::GetInstance()->getMouseY();
 
-	Vector2 position = { 400,300 };
+	int topLeftX = 14;
+	int topLeftY = 305;
+	int bottomRightX = 292;
+	int bottomRightY = 442;
 
-	int width = (250 / 2);
-	int high = (128 / 2);
-
-	int LeftOfButton = position.x - width;
-	int TopOfButton = position.y - high;
-	int RightOfButton = position.x + width;
-	int ButtomOfButton = position.y + high;
-
-	return (mouseX >= LeftOfButton && mouseX <= RightOfButton &&
-		mouseY >= TopOfButton && mouseY <= ButtomOfButton);
+	return (mouseX >= topLeftX && mouseX <= bottomRightX &&
+		mouseY >= topLeftY && mouseY <= bottomRightY);
 }
 
 bool MenuScene::IsMouseOverOptionButton()
@@ -537,18 +538,13 @@ bool MenuScene::IsMouseOverOptionButton()
 	int mouseX = Inputs::GetInstance()->getMouseX();
 	int mouseY = Inputs::GetInstance()->getMouseY();
 
-	Vector2 position = { 400,550 };
+	int topLeftX = 76;
+	int topLeftY = 460;
+	int bottomRightX = 236;
+	int bottomRightY = 533;
 
-	int width = (250 / 2);
-	int high = (128 / 2);
-
-	int LeftOfButton = position.x - width;
-	int TopOfButton = position.y - high;
-	int RightOfButton = position.x + width;
-	int ButtomOfButton = position.y + high;
-
-	return (mouseX >= LeftOfButton && mouseX <= RightOfButton &&
-		mouseY >= TopOfButton && mouseY <= ButtomOfButton);
+	return (mouseX >= topLeftX && mouseX <= bottomRightX &&
+		mouseY >= topLeftY && mouseY <= bottomRightY);
 }
 
 bool MenuScene::IsMouseOverCreditButton()
@@ -556,18 +552,13 @@ bool MenuScene::IsMouseOverCreditButton()
 	int mouseX = Inputs::GetInstance()->getMouseX();
 	int mouseY = Inputs::GetInstance()->getMouseY();
 
-	Vector2 position = { 400,400 };
+	int topLeftX = 76;
+	int topLeftY = 665;
+	int bottomRightX = 241;
+	int bottomRightY = 740;
 
-	int width = (250 / 2);
-	int high = (128 / 2);
-
-	int LeftOfButton = position.x - width;
-	int TopOfButton = position.y - high;
-	int RightOfButton = position.x + width;
-	int ButtomOfButton = position.y + high;
-
-	return (mouseX >= LeftOfButton && mouseX <= RightOfButton &&
-		mouseY >= TopOfButton && mouseY <= ButtomOfButton);
+	return (mouseX >= topLeftX && mouseX <= bottomRightX &&
+		mouseY >= topLeftY && mouseY <= bottomRightY);
 }
 
 bool MenuScene::IsMouseOverCloseCredit()
@@ -589,18 +580,13 @@ bool MenuScene::IsMouseOverExitButton()
 	int mouseX = Inputs::GetInstance()->getMouseX();
 	int mouseY = Inputs::GetInstance()->getMouseY();
 
-	Vector2 position = { 400,700 };
+	int topLeftX = 400;
+	int topLeftY = 356;
+	int bottomRightX = 534;
+	int bottomRightY = 397;
 
-	int width = (250 / 2);
-	int high = (128 / 2);
-
-	int LeftOfButton = position.x - width;
-	int TopOfButton = position.y - high;
-	int RightOfButton = position.x + width;
-	int ButtomOfButton = position.y + high;
-
-	return (mouseX >= LeftOfButton && mouseX <= RightOfButton &&
-		mouseY >= TopOfButton && mouseY <= ButtomOfButton);
+	return (mouseX >= topLeftX && mouseX <= bottomRightX &&
+		mouseY >= topLeftY && mouseY <= bottomRightY);
 }
 
 bool MenuScene::IsMouseOverExitButtonYes()
@@ -776,20 +762,20 @@ void MenuScene::Render()
 
 Engine::EngineCode MenuScene::Exit()
 {
-	delete Beginbutton->GetComponent<Transform>();
-	delete ExitButton->GetComponent<Transform>();
-	delete Creditbutton->GetComponent<Transform>();
-	delete optionbutton->GetComponent<Transform>();
+	//delete Beginbutton->GetComponent<Transform>();
+	//delete ExitButton->GetComponent<Transform>();
+	//delete Creditbutton->GetComponent<Transform>();
+	//delete optionbutton->GetComponent<Transform>();
 
-	delete Beginbutton;
-	delete ExitButton;
-	delete Creditbutton;
-	delete optionbutton;
+	//delete Beginbutton;
+	//delete ExitButton;
+	//delete Creditbutton;
+	//delete optionbutton;
 
-	Beginbutton = NULL;
-	ExitButton = NULL;
-	Creditbutton = NULL;
-	optionbutton = NULL;
+	//Beginbutton = NULL;
+	//ExitButton = NULL;
+	//Creditbutton = NULL;
+	//optionbutton = NULL;
 
 	delete ani;
 	ani = NULL;
