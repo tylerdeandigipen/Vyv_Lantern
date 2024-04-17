@@ -71,7 +71,7 @@ static Entity* Title;
 
 ImageBuffer* ani;
 
-MenuScene::MenuScene() : Scene("Menutest"), isCreditsOpen(false), isConfirmQuitOpen(false)
+MenuScene::MenuScene() : Scene("Menutest"), isCreditsOpen(false), isConfirmQuitOpen(false), isOptionsOpen(false)
 {
 	offset = -50.0f;
 }
@@ -250,14 +250,19 @@ void MenuScene::Update(float dt)
 		HandleExit();
 	}
 
-	if (isCreditsOpen && !isConfirmQuitOpen)
+	if (isCreditsOpen && !isConfirmQuitOpen && !isOptionsOpen)
 	{
 		openCredits();
 	}
 
-	if (isConfirmQuitOpen && !isCreditsOpen)
+	if (isConfirmQuitOpen && !isCreditsOpen && !isOptionsOpen)
 	{
 		openConfirmQuitMenu();
+	}
+
+	if (isOptionsOpen && !isCreditsOpen && !isConfirmQuitOpen)
+	{
+		openOptions();
 	}
 
 	if (IsMouseOverExitButtonYes() && isConfirmQuitOpen == true)
@@ -325,6 +330,15 @@ void MenuScene::closeCredits()
 	}
 }
 
+void MenuScene::openOptions()
+{
+	Renderer::GetInstance()->LoadMenuPage(Renderer::GetInstance()->mainMenuOptionsIndex);
+}
+
+void MenuScene::closeOptions()
+{
+}
+
 void MenuScene::HandleBegin()
 {
 	if (Inputs::GetInstance()->mouseButtonPressed(SDL_BUTTON_LEFT))
@@ -340,7 +354,12 @@ void MenuScene::HandleOption()
 {
 	if (Inputs::GetInstance()->mouseButtonPressed(SDL_BUTTON_LEFT))
 	{
-		//do something
+		if (!isCreditsOpen && !isConfirmQuitOpen && !isOptionsOpen)
+		{
+			//do something
+			AudioManager.PlaySFX("buttonFeedback", 0.5);
+			isOptionsOpen = true;
+		}
 	}
 }
 

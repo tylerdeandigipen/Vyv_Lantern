@@ -321,11 +321,16 @@ void WinScene::handleCheatCodes()
 	{
 		if (Name_WinScene::CanPause == true)
 		{
-			//AudioManager.PlaySFX("creak");
 			if (Engine::GetInstance()->Paused() == false)
+			{
+				AudioManager.PlaySFX("pauseOpen", 1.0f);
 				Engine::GetInstance()->SetPause(true);
+			}
 			else
+			{
+				AudioManager.PlaySFX("pauseClose", 1.0f);
 				Engine::GetInstance()->SetPause(false);
+			}
 		}
 		Name_WinScene::CanPause = false;
 	}
@@ -486,47 +491,49 @@ void WinScene::Update(float dt)
 		//}
 		//else
 		//{
-			Transform* trans = (*EntityContainer::GetInstance())[0]->GetComponent<Transform>();
-			if (trans->GetTranslation()->y < 154)
+		Transform* trans = (*EntityContainer::GetInstance())[0]->GetComponent<Transform>();
+		if (trans->GetTranslation()->y < 154)
+		{
+			Vector2 translation = (*EntityContainer::GetInstance())[0]->GetImage()->position;
+			translation.y += (35 * dt);
+
+			//(*EntityContainer::GetInstance())[0]->GetComponent<Transform>()->SetTranslation(translation);
+			(*EntityContainer::GetInstance())[0]->GetImage()->position.y = translation.y;
+		}
+		else
+		{
+			Transform* trans = (*EntityContainer::GetInstance())[1]->GetComponent<Transform>();
+			if (trans->GetTranslation()->y > 232)
 			{
-				Vector2 translation = (*EntityContainer::GetInstance())[0]->GetImage()->position;
-				translation.y += (35 * dt);
+				Vector2 translation = (*EntityContainer::GetInstance())[1]->GetImage()->position;
+				translation.y -= (35 * dt);
 
 				//(*EntityContainer::GetInstance())[0]->GetComponent<Transform>()->SetTranslation(translation);
-				(*EntityContainer::GetInstance())[0]->GetImage()->position.y = translation.y;
+				(*EntityContainer::GetInstance())[1]->GetImage()->position.y = translation.y;
+				(*EntityContainer::GetInstance())[1]->GetImage()->layer = 2;
 			}
 			else
 			{
-				Transform* trans = (*EntityContainer::GetInstance())[1]->GetComponent<Transform>();
-				if (trans->GetTranslation()->y > 232)
+				int mouseX = Inputs::GetInstance()->getMouseX();
+				int mouseY = Inputs::GetInstance()->getMouseY();
+				float screenScale = WinSceneRenderer->screenScale;
+				float cameraPosX = WinSceneRenderer->GetCameraPosition().x;
+				float cameraPosY = WinSceneRenderer->GetCameraPosition().y;
+				float worldMouseX = (mouseX + (cameraPosX * 6)) / screenScale;
+				float worldMouseY = (mouseY + (cameraPosY * 6)) / screenScale;
+				ImageBuffer* image = (*EntityContainer::GetInstance())[1]->GetImage();
+				if ((worldMouseX <= image->position.x + image->size.x) && (worldMouseX >= image->position.x)
+					&& ((worldMouseY <= image->position.y + image->size.y)) && ((worldMouseY >= image->position.y)))
 				{
-					Vector2 translation = (*EntityContainer::GetInstance())[1]->GetImage()->position;
-					translation.y -= (35 * dt);
-					//(*EntityContainer::GetInstance())[0]->GetComponent<Transform>()->SetTranslation(translation);
-					(*EntityContainer::GetInstance())[1]->GetImage()->position.y = translation.y;
-					(*EntityContainer::GetInstance())[1]->GetImage()->layer = 2;
-				}
-				else
-				{
-					int mouseX = Inputs::GetInstance()->getMouseX();
-					int mouseY = Inputs::GetInstance()->getMouseY();
-					float screenScale = WinSceneRenderer->screenScale;
-					float cameraPosX = WinSceneRenderer->GetCameraPosition().x;
-					float cameraPosY = WinSceneRenderer->GetCameraPosition().y;
-					float worldMouseX = (mouseX + (cameraPosX*6)) / screenScale;
-					float worldMouseY = (mouseY + (cameraPosY*6)) / screenScale;
-					ImageBuffer* image = (*EntityContainer::GetInstance())[1]->GetImage();
-					if ((worldMouseX <= image->position.x + image->size.x) && (worldMouseX >= image->position.x)
-						&& ((worldMouseY <= image->position.y + image->size.y)) && ((worldMouseY >= image->position.y)))
+					if (Inputs::GetInstance()->mouseButtonPressed(SDL_BUTTON_LEFT))
 					{
-						if (Inputs::GetInstance()->mouseButtonPressed(SDL_BUTTON_LEFT))
-						{
-							SceneSystem::GetInstance()->SetScene(MenuSceneGetInstance());
-						}
+						SceneSystem::GetInstance()->SetScene(MenuSceneGetInstance());
 					}
 				}
 			}
 		}
+	}
+
 	//}
 
 	Inputs* inputHandler = Inputs::GetInstance();

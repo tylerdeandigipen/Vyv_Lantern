@@ -87,6 +87,10 @@ void Renderer::Update(float dt)
 		{
 			confirmQuitMainindex = AddMenuPage("./Assets/PPM/Main_Menu_Confirm_Quit.ppm");
 		}
+		if (mainMenuOptionsIndex == -1)
+		{
+			mainMenuOptionsIndex = AddMenuPage("./Assets/PPM/Main_Menu_Settings.ppm");
+		}
 	}
 	else
 	{

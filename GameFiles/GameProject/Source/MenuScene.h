@@ -50,6 +50,8 @@ public:
 	void closeCredits();
 	void openConfirmQuitMenu();
 	void closeConfirmQuitMenu();
+	void openOptions();
+	void closeOptions();
 
 	void ImGuiInterg();
 	void ImGuiWindow();
@@ -70,6 +72,7 @@ private:
 
 	bool isCreditsOpen;
 	bool isConfirmQuitOpen;
+	bool isOptionsOpen;
 };
 
 Scene* MenuSceneGetInstance(void);
