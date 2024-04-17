@@ -71,7 +71,7 @@ static Entity* Title;
 
 ImageBuffer* ani;
 
-MenuScene::MenuScene() : Scene("Menutest"), isCreditsOpen(false)
+MenuScene::MenuScene() : Scene("Menutest"), isCreditsOpen(false), isConfirmQuitOpen(false)
 {
 	offset = -50.0f;
 }
@@ -272,9 +272,7 @@ void MenuScene::HandleExit()
 
 void MenuScene::openConfirmQuitMenu()
 {
-	//int confirmQuitMainindex = 4;
-
-	//Renderer::GetInstance()->LoadMenuPage(confirmQuitMainindex);
+	Renderer::GetInstance()->LoadMenuPage(Renderer::GetInstance()->confirmQuitMainindex);
 }
 
 bool MenuScene::IsMouseOverCreditButton()

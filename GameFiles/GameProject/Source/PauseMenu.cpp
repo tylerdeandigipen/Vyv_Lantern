@@ -23,26 +23,8 @@
 
 std::unique_ptr<PauseMenu> PauseMenu::instance = nullptr;
 
-int pauseMenuIndex = -1;
-int settingsMenuIndex = -1;
-int quitConfirmIndex = -1;
-
 PauseMenu::PauseMenu() : settingsMenuOpen(false), exitMenuOpen(false), isPauseMenuOpen(false)
 {
-	/*if (settingsMenuIndex == -1)
-	{
-		settingsMenuIndex = Renderer::GetInstance()->AddMenuPage("./Assets/PPM/Pause_Menu_Settings.ppm");
-	}
-
-	if (quitConfirmIndex == -1)
-	{
-		quitConfirmIndex = Renderer::GetInstance()->AddMenuPage("./Assets/PPM/Pause_Menu_Confirm_Quit.ppm");
-	} */
-
-	if (pauseMenuIndex == -1)
-	{
-		pauseMenuIndex = Renderer::GetInstance()->AddMenuPage("./Assets/PPM/Pause_Temp.ppm");
-	}
 }
 
 PauseMenu::~PauseMenu()
@@ -65,9 +47,8 @@ void PauseMenu::RenderButtons()
 
 void PauseMenu::HandleButtonInput()
 {
-	if (Engine::GetInstance()->Paused() == true)
+	if (isPauseMenuOpen)
 	{
-		Renderer::GetInstance()->LoadMenuPage(pauseMenuIndex);
 		if (IsMouseOverBackButton())
 		{
 			HandleBack();
@@ -132,8 +113,6 @@ void PauseMenu::HandleExit()
 		{
 			exitMenuOpen = true;
 		}
-
-		//Engine::GetInstance()->SetCloseRequest(true);
 	}
 }
 
@@ -152,8 +131,7 @@ void PauseMenu::HandleSettings()
 
 void PauseMenu::OpenExitMenu()
 {
-	//int exitConfirmIndex = 2;
-	//Renderer::GetInstance()->LoadMenuPage(exitConfirmIndex);
+	Renderer::GetInstance()->LoadMenuPage(Renderer::GetInstance()->exitConfirmIndex);
 }
 
 void PauseMenu::CloseExitMenu()
@@ -165,8 +143,6 @@ void PauseMenu::CloseExitMenu()
 			AudioManager.PlaySFX("buttonFeedback", 0.5);
 			exitMenuOpen = false;
 
-			//Renderer::GetInstance()->LoadMenuPage(-1);
-
 			Engine::GetInstance()->SetCloseRequest(true);
 		}
 	}
@@ -177,16 +153,13 @@ void PauseMenu::CloseExitMenu()
 		{
 			AudioManager.PlaySFX("buttonFeedback", 0.5);
 			exitMenuOpen = false;
-
-			//Renderer::GetInstance()->LoadMenuPage(-1);
 		}
 	}
 }
 
 void PauseMenu::OpenSettingsMenu()
 {
-	//int settingsMenuIndex = 1;
-	//Renderer::GetInstance()->LoadMenuPage(settingsMenuIndex);
+	Renderer::GetInstance()->LoadMenuPage(Renderer::GetInstance()->settingsMenuIndex);
 }
 
 void PauseMenu::CloseSettingsMenu()
@@ -196,8 +169,6 @@ void PauseMenu::CloseSettingsMenu()
 		AudioManager.PlaySFX("buttonFeedback", 0.5);
 
 		settingsMenuOpen = false;
-
-		//Renderer::GetInstance()->LoadMenuPage(-1);
 	}
 
 	if (Inputs::GetInstance()->mouseButtonPressed(SDL_BUTTON_LEFT))
@@ -205,8 +176,6 @@ void PauseMenu::CloseSettingsMenu()
 		AudioManager.PlaySFX("buttonFeedback", 0.5);
 
 		settingsMenuOpen = false;
-
-		//Renderer::GetInstance()->LoadMenuPage(-1);
 	}
 }
 

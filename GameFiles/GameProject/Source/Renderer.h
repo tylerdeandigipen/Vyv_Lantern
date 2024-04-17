@@ -36,8 +36,10 @@ class Renderer
 public:
 
 	int numMenuPages = 0;
-
-	bool pauseMenuOpen = false;
+	int pauseMenuIndex = -1;
+	int exitConfirmIndex = -1;
+	int settingsMenuIndex = -1;
+	int confirmQuitMainindex = -1;
 
 	//Visual Effects Settings
 	float screenScale = 6; //doesnt work for some reason, havent looked into yet bc not too important

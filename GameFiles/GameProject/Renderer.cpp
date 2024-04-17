@@ -49,7 +49,6 @@
 
 std::unique_ptr<Renderer> Renderer::instance = nullptr;
 
-int pauseMenuIndex = -1;
 //split into Update and Render functions
 void Renderer::Update(float dt)
 {
@@ -60,6 +59,19 @@ void Renderer::Update(float dt)
 		{
 			pauseMenuIndex = AddMenuPage("./Assets/PPM/Pause_Temp.ppm");
 		}
+		if (exitConfirmIndex == -1)
+		{
+			exitConfirmIndex = AddMenuPage("./Assets/PPM/Pause_Menu_Confirm_Quit.ppm");
+		}
+		if (settingsMenuIndex == -1)
+		{
+			settingsMenuIndex = AddMenuPage("./Assets/PPM/Pause_Menu_Settings.ppm");
+		}
+		if (confirmQuitMainindex == -1)
+		{
+			confirmQuitMainindex = AddMenuPage("./Assets/PPM/Main_Menu_Confirm_Quit_1.ppm");
+		}
+
 		LoadMenuPage(pauseMenuIndex);
 	}
 	else
@@ -268,7 +280,7 @@ void Renderer::RenderLightingPass()
 #else
 	inputBuffer->Blit(outputBuffer);
 #endif
-	}
+		}
 
 float Renderer::FindPixelLuminosity(float x, float y, Light* LightSource)
 {
