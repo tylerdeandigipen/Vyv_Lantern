@@ -23,10 +23,20 @@
 
 std::unique_ptr<PauseMenu> PauseMenu::instance = nullptr;
 
+int settingsMenuIndex = -1;
+int quitConfirmIndex = -1;
+
 PauseMenu::PauseMenu() : settingsMenuOpen(false), exitMenuOpen(false), isPauseMenuOpen(false)
 {
-	//AudioManager.LoadMusicFromJSON("./Data/music.json");//line is good
-	//AudioManager.LoadSFXFromJSON("./Data/SFX.json");// line is goodplay
+	/*if (settingsMenuIndex == -1)
+	{
+		settingsMenuIndex = Renderer::GetInstance()->AddMenuPage("./Assets/PPM/Pause_Menu_Settings.ppm");
+	}
+
+	if (quitConfirmIndex == -1)
+	{
+		quitConfirmIndex = Renderer::GetInstance()->AddMenuPage("./Assets/PPM/Pause_Menu_Confirm_Quit.ppm");
+	} */
 }
 
 PauseMenu::~PauseMenu()
@@ -135,8 +145,8 @@ void PauseMenu::HandleSettings()
 
 void PauseMenu::OpenExitMenu()
 {
-	int exitConfirmIndex = 2;
-	Renderer::GetInstance()->LoadMenuPage(exitConfirmIndex);
+	//int exitConfirmIndex = 2;
+	//Renderer::GetInstance()->LoadMenuPage(exitConfirmIndex);
 }
 
 void PauseMenu::CloseExitMenu()
@@ -147,7 +157,8 @@ void PauseMenu::CloseExitMenu()
 		{
 			AudioManager.PlaySFX("buttonFeedback", 0.5);
 			exitMenuOpen = false;
-			Renderer::GetInstance()->LoadMenuPage(-1);
+
+			//Renderer::GetInstance()->LoadMenuPage(-1);
 
 			Engine::GetInstance()->SetCloseRequest(true);
 		}
@@ -159,15 +170,16 @@ void PauseMenu::CloseExitMenu()
 		{
 			AudioManager.PlaySFX("buttonFeedback", 0.5);
 			exitMenuOpen = false;
-			Renderer::GetInstance()->LoadMenuPage(-1);
+
+			//Renderer::GetInstance()->LoadMenuPage(-1);
 		}
 	}
 }
 
 void PauseMenu::OpenSettingsMenu()
 {
-	int settingsMenuIndex = 1;
-	Renderer::GetInstance()->LoadMenuPage(settingsMenuIndex);
+	//int settingsMenuIndex = 1;
+	//Renderer::GetInstance()->LoadMenuPage(settingsMenuIndex);
 }
 
 void PauseMenu::CloseSettingsMenu()
@@ -177,7 +189,8 @@ void PauseMenu::CloseSettingsMenu()
 		AudioManager.PlaySFX("buttonFeedback", 0.5);
 
 		settingsMenuOpen = false;
-		Renderer::GetInstance()->LoadMenuPage(-1);
+
+		//Renderer::GetInstance()->LoadMenuPage(-1);
 	}
 
 	if (Inputs::GetInstance()->mouseButtonPressed(SDL_BUTTON_LEFT))
@@ -185,7 +198,8 @@ void PauseMenu::CloseSettingsMenu()
 		AudioManager.PlaySFX("buttonFeedback", 0.5);
 
 		settingsMenuOpen = false;
-		Renderer::GetInstance()->LoadMenuPage(-1);
+
+		//Renderer::GetInstance()->LoadMenuPage(-1);
 	}
 }
 

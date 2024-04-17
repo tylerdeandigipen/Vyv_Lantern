@@ -310,8 +310,8 @@ void MenuScene::HandleCredit()
 
 void MenuScene::openCredits()
 {
-	int creditsIndex = 3;
-	Renderer::GetInstance()->LoadMenuPage(creditsIndex);
+	//int creditsIndex = 3;
+	//Renderer::GetInstance()->LoadMenuPage(creditsIndex);
 }
 
 bool MenuScene::IsMouseOverOptionButton()
