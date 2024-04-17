@@ -49,10 +49,23 @@
 
 std::unique_ptr<Renderer> Renderer::instance = nullptr;
 
+int pauseMenuIndex = -1;
 //split into Update and Render functions
 void Renderer::Update(float dt)
 {
-	
+	if (Engine::GetInstance()->Paused() == true)
+	{
+		PauseMenu::GetInstance()->isPauseMenuOpen = true;
+		if (pauseMenuIndex == -1)
+		{
+			pauseMenuIndex = AddMenuPage("./Assets/PPM/Pause_Temp.ppm");
+		}
+		LoadMenuPage(pauseMenuIndex);
+	}
+	else
+	{
+		LoadMenuPage(-1);
+	}
 
 	Uint32 currentTime = SDL_GetTicks();
 	ScopeTimer TestScopeTimer("Renderer::Update");
