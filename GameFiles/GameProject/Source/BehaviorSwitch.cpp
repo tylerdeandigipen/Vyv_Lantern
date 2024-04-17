@@ -189,23 +189,23 @@ void BehaviorSwitch::SwitchCollisionHandler(Entity* entity1, Entity* entity2)
 				//BehaviorMirror::SwitchOn(OnOff);
 				if (audioPlay == 1)
 				{
-					AudioManager.PlaySFX("mirrorMove1", 0.5f);
+					AudioManager.PlaySFX("mirrorMove1", 0.2f);
 				}
 				else if (audioPlay == 2)
 				{
-					AudioManager.PlaySFX("mirrorMove2", 0.5f);
+					AudioManager.PlaySFX("mirrorMove2", 0.2f);
 				}
 				else if (audioPlay == 3)
 				{
-					AudioManager.PlaySFX("mirrorMove3", 0.5f);
+					AudioManager.PlaySFX("mirrorMove3", 0.2f);
 				}
 				else if (audioPlay == 4)
 				{
-					AudioManager.PlaySFX("mirrorMove4", 0.5f);
+					AudioManager.PlaySFX("mirrorMove4", 0.2f);
 				}
 				else if (audioPlay == 5)
 				{
-					AudioManager.PlaySFX("mirrorMove5", 0.5f);
+					AudioManager.PlaySFX("mirrorMove5", 0.2f);
 				}
 
 				// temporary win condition

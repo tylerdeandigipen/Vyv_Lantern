@@ -351,6 +351,7 @@ void MenuScene::HandleCredit()
 		if (!isCreditsOpen && !isConfirmQuitOpen)
 		{
 			//do something
+			AudioManager.PlaySFX("buttonFeedback", 0.5);
 			isCreditsOpen = true;
 		}
 	}
@@ -362,6 +363,7 @@ void MenuScene::HandleExit()
 	{
 		if (!isConfirmQuitOpen && !isCreditsOpen)
 		{
+			AudioManager.PlaySFX("buttonFeedback", 0.5);
 			isConfirmQuitOpen = true;
 		}
 	}

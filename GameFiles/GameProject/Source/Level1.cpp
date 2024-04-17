@@ -315,11 +315,16 @@ void Level1::handleCheatCodes()
 	{
 		if (Name_Level1::CanPause == true)
 		{
-			//AudioManager.PlaySFX("creak");
 			if (Engine::GetInstance()->Paused() == false)
+			{
+				AudioManager.PlaySFX("pauseOpen", 1.0f);
 				Engine::GetInstance()->SetPause(true);
+			}
 			else
+			{
+				AudioManager.PlaySFX("pauseClose", 1.0f);
 				Engine::GetInstance()->SetPause(false);
+			}
 		}
 		Name_Level1::CanPause = false;
 	}
