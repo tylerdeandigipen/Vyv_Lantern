@@ -60,15 +60,7 @@ void Renderer::Update(float dt)
 		int quitConfirmIndex = AddMenuPage("./Assets/PPM/Pause_Menu_Confirm_Quit.ppm");
 		int creditsIndex = AddMenuPage("./Assets/PPM/Credits_Menu.ppm");
 	}
-	if (Engine::GetInstance()->Paused() == true)
-	{
-		int pauseMenuIndex = 0; //imagine this is the same var as above :)
-		LoadMenuPage(pauseMenuIndex);
-	}
-	else
-	{
-		LoadMenuPage(-1);
-	}
+
 
 	Uint32 currentTime = SDL_GetTicks();
 	ScopeTimer TestScopeTimer("Renderer::Update");
