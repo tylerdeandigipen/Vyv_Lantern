@@ -282,7 +282,8 @@ bool CheckGameScenes()
 	else if (activeScene == Level1GetInstance())
 	{
 		activeSceneType = SceneType::SCENE_LEVEL1;
-	}else if (activeScene == Level1GetInstance())
+	}
+	else if (activeScene == Level1GetInstance())
 	{
 		activeSceneType = SceneType::SCENE_LEVEL1;
 	}
@@ -298,7 +299,7 @@ bool CheckGameScenes()
 	{
 		activeSceneType = SceneType::SCENE_LEVEL3;
 	}
-		
+
 	assert(activeSceneType != SceneType::NULL_SCENE && "Active scene type is NULL. Location: CheckGameScenes()");
 
 #ifdef _DEBUG
@@ -377,7 +378,7 @@ bool CheckRestart()
 		SceneSystem::GetInstance()->RestartScene();
 		return true;
 	}
-#endif 
+#endif
 	return false;
 }
 

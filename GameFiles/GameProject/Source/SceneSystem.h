@@ -17,6 +17,7 @@ class Scene;
 class SceneSystem : public BaseSystem
 {
 public:
+
 	~SceneSystem();
 	Engine::EngineCode Init();
 	Engine::EngineCode Close();
@@ -29,7 +30,6 @@ public:
 	static SceneSystem* GetInstance();
 
 	float GetRate();
-
 private:
 	SceneSystem();
 

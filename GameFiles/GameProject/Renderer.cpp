@@ -22,6 +22,7 @@
 #include "DebugNew.h"
 #include "imgui_impl_opengl3.h"
 #include "FrameRate.h"
+#include "SceneSystem.h"
 
 #include <windows.h>
 #include <SDL/SDL.h>
@@ -67,12 +68,15 @@ void Renderer::Update(float dt)
 		{
 			settingsMenuIndex = AddMenuPage("./Assets/PPM/Pause_Menu_Settings.ppm");
 		}
-		if (confirmQuitMainindex == -1)
-		{
-			confirmQuitMainindex = AddMenuPage("./Assets/PPM/Main_Menu_Confirm_Quit_1.ppm");
-		}
 
 		LoadMenuPage(pauseMenuIndex);
+	}
+	else if (Engine::GetInstance()->Paused() == false)
+	{
+		if (confirmQuitMainindex == -1)
+		{
+			confirmQuitMainindex = AddMenuPage("./Assets/PPM/Main_Menu_Confirm_Quit.ppm");
+		}
 	}
 	else
 	{
@@ -276,7 +280,7 @@ void Renderer::RenderLightingPass()
 				lightB[x][y] = IntensityB;
 			}
 		}
-	}
+			}
 #else
 	inputBuffer->Blit(outputBuffer);
 #endif
