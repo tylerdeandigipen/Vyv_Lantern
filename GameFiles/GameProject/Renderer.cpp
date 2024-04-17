@@ -1090,11 +1090,11 @@ ImageBuffer* Renderer::GetObjectByName(std::string name_)
 
 void Renderer::LoadMenuPage(int index)
 {
-	if (currentMenu != index)
+	if (currentMenu != index && numMenuPages != 0)
 	{
 		currentMenu = index;
 		menuBuffer->ClearImageBuffer();
-		if (index != -1)
+		if (index != -1 && menuPages[index] != NULL)
 		{
 			menuBuffer->AddSprite(menuPages[index]);
 		}
