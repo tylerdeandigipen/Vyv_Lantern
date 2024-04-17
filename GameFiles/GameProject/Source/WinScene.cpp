@@ -17,6 +17,7 @@
 #include <algorithm>
 
 #include "WinScene.h"
+#include "MenuScene.h"
 #include "LevelCreatorScene.h"
 #include "Scene.h"
 #include "PlatformSystem.h"
@@ -82,7 +83,7 @@ Engine::EngineCode WinScene::Init()
 	WinSceneWindow = PlatformSystem::GetInstance()->GetWindowHandle();
 	WinSceneRenderer->window = WinSceneWindow;
 	Inputs::GetInstance()->SetWindow(WinSceneWindow);
-	WinSceneRenderer->SetCameraPosition({ -16.0f, 220.0f });
+	WinSceneRenderer->SetCameraPosition({ -16.0f, 148.0f });
 	WinSceneRenderer->minBrightness = 175.0f;
 
 	//initialize level data
@@ -476,26 +477,57 @@ void WinScene::Update(float dt)
 
 	if (timer >= 2.0f)
 	{
-		Vector2 moveUp = WinSceneRenderer->GetCameraPosition();
-		if (moveUp.y > 148.0f) //-48 from start
-		{
-			Vector2 ScreenHalfSize = 0.5f * Vector2(SCREEN_SIZE_X, SCREEN_SIZE_Y);
-			moveUp.y -= (((ScreenHalfSize.y + 4.0f) / 64.0f) * dt) * .2f;
-			WinSceneRenderer->SetCameraPosition({ moveUp.x, moveUp.y });
-		}
-		else
-		{
+		//Vector2 moveUp = WinSceneRenderer->GetCameraPosition();
+		//if (moveUp.y > 148.0f) //-48 from start
+		//{
+		//	Vector2 ScreenHalfSize = 0.5f * Vector2(SCREEN_SIZE_X, SCREEN_SIZE_Y);
+		//	moveUp.y -= (((ScreenHalfSize.y + 4.0f) / 64.0f) * dt) * .2f;
+		//	WinSceneRenderer->SetCameraPosition({ moveUp.x, moveUp.y });
+		//}
+		//else
+		//{
 			Transform* trans = (*EntityContainer::GetInstance())[0]->GetComponent<Transform>();
 			if (trans->GetTranslation()->y < 154)
 			{
 				Vector2 translation = (*EntityContainer::GetInstance())[0]->GetImage()->position;
-				translation.y += (40 * dt);
+				translation.y += (35 * dt);
 
 				//(*EntityContainer::GetInstance())[0]->GetComponent<Transform>()->SetTranslation(translation);
 				(*EntityContainer::GetInstance())[0]->GetImage()->position.y = translation.y;
 			}
+			else
+			{
+				Transform* trans = (*EntityContainer::GetInstance())[1]->GetComponent<Transform>();
+				if (trans->GetTranslation()->y > 232)
+				{
+					Vector2 translation = (*EntityContainer::GetInstance())[1]->GetImage()->position;
+					translation.y -= (35 * dt);
+					//(*EntityContainer::GetInstance())[0]->GetComponent<Transform>()->SetTranslation(translation);
+					(*EntityContainer::GetInstance())[1]->GetImage()->position.y = translation.y;
+					(*EntityContainer::GetInstance())[1]->GetImage()->layer = 2;
+				}
+				else
+				{
+					int mouseX = Inputs::GetInstance()->getMouseX();
+					int mouseY = Inputs::GetInstance()->getMouseY();
+					float screenScale = WinSceneRenderer->screenScale;
+					float cameraPosX = WinSceneRenderer->GetCameraPosition().x;
+					float cameraPosY = WinSceneRenderer->GetCameraPosition().y;
+					float worldMouseX = (mouseX + (cameraPosX*6)) / screenScale;
+					float worldMouseY = (mouseY + (cameraPosY*6)) / screenScale;
+					ImageBuffer* image = (*EntityContainer::GetInstance())[1]->GetImage();
+					if ((worldMouseX <= image->position.x + image->size.x) && (worldMouseX >= image->position.x)
+						&& ((worldMouseY <= image->position.y + image->size.y)) && ((worldMouseY >= image->position.y)))
+					{
+						if (Inputs::GetInstance()->mouseButtonPressed(SDL_BUTTON_LEFT))
+						{
+							SceneSystem::GetInstance()->SetScene(MenuSceneGetInstance());
+						}
+					}
+				}
+			}
 		}
-	}
+	//}
 
 	Inputs* inputHandler = Inputs::GetInstance();
 	AudioManager.Update();
@@ -521,6 +553,9 @@ Engine::EngineCode WinScene::Exit()
 	LevelBuilder::setDoor(false);
 	Inputs::GetInstance()->InputKeyClear();
 	WinSceneRenderer->CleanRenderer();
+	WinSceneRenderer->SetCameraPosition({ 0.0f, 0.0f });
+	WinSceneRenderer->minBrightness = 34;
+
 	return Engine::NothingBad;
 }
 

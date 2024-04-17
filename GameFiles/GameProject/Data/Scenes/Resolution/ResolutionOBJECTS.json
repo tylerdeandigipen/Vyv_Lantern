@@ -16,6 +16,9 @@
   [
     {
       "FilePath": "./Data/Scenes/Resolution/Fin.json"
+    },
+    {
+      "FilePath": "./Data/Scenes/Resolution/ReturnToMenu.json"
     }
   ],
   "Receiver": {

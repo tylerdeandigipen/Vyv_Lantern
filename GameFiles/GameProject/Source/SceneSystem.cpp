@@ -26,7 +26,7 @@
 #include "Level4.h"
 #include "MenuScene.h"
 #include "Renderer.h"
-
+#include "WinScene.h"
 // enums for different scene types
 static bool Animating = false;
 static bool FadeIn = false;
@@ -375,7 +375,7 @@ bool CheckGameScenes()
 	}
 	else if (inputHandlerScene->keyPressed(SDL_SCANCODE_7))
 	{
-		SceneSystem::GetInstance()->SetScene(Level4GetInstance());
+		SceneSystem::GetInstance()->SetScene(WinSceneGetInstance());
 	}
 	else
 	{
