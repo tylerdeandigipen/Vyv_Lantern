@@ -52,16 +52,7 @@ std::unique_ptr<Renderer> Renderer::instance = nullptr;
 //split into Update and Render functions
 void Renderer::Update(float dt)
 {
-	if (Engine::GetInstance()->Paused() == true)
-	{
-		PauseMenu::GetInstance()->isPauseMenuOpen = true;
-		int pauseMenuIndex = 0; //imagine this is the same var as above :)
-		LoadMenuPage(pauseMenuIndex);
-	}
-	else
-	{
-		LoadMenuPage(-1);
-	}
+	
 
 	Uint32 currentTime = SDL_GetTicks();
 	ScopeTimer TestScopeTimer("Renderer::Update");
