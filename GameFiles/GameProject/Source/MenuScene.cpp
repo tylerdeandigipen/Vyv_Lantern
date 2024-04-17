@@ -258,22 +258,27 @@ void MenuScene::Update(float dt)
 			if (whichSlot == 1)
 			{
 				AudioManager.SetMusicVolume(0.0);
+				audioDirty = true;
 			}
 			else if (whichSlot == 2)
 			{
 				AudioManager.SetMusicVolume(0.3);
+				audioDirty = true;
 			}
 			else if (whichSlot == 3)
 			{
 				AudioManager.SetMusicVolume(0.5);
+				audioDirty = true;
 			}
 			else if (whichSlot == 4)
 			{
 				AudioManager.SetMusicVolume(0.7);
+				audioDirty = true;
 			}
 			else if (whichSlot == 5)
 			{
 				AudioManager.SetMusicVolume(1.0);
+				audioDirty = true;
 			}
 			else
 			{
@@ -290,28 +295,44 @@ void MenuScene::Update(float dt)
 			if (whichSlot == 1)
 			{
 				AudioManager.SetAudioVolume(0.0);
+				audioDirty = true;
 			}
 			else if (whichSlot == 2)
 			{
 				AudioManager.SetAudioVolume(0.3);
+				audioDirty = true;
 			}
 			else if (whichSlot == 3)
 			{
 				AudioManager.SetAudioVolume(0.5);
+				audioDirty = true;
 			}
 			else if (whichSlot == 4)
 			{
 				AudioManager.SetAudioVolume(0.7);
+				audioDirty = true;
 			}
 			else if (whichSlot == 5)
 			{
 				AudioManager.SetAudioVolume(1.0);
+				audioDirty = true;
 			}
 			else
 			{
 				AudioManager.SetAudioVolume(1.0);
+				audioDirty = true;
 			}
 		}
+	}
+
+	if (IsMouseOverReset() && isOptionsOpen)
+	{
+		HandleResetOptions();
+	}
+
+	if (IsMouseOverFullscreen() && isOptionsOpen)
+	{
+		HandleFullscreen();
 	}
 
 	if (isCreditsOpen && !isConfirmQuitOpen && !isOptionsOpen)
@@ -460,6 +481,34 @@ void MenuScene::HandleExit()
 		{
 			AudioManager.PlaySFX("buttonFeedback", 0.5);
 			isConfirmQuitOpen = true;
+		}
+	}
+}
+
+void MenuScene::HandleResetOptions()
+{
+	if (Inputs::GetInstance()->mouseButtonPressed(SDL_BUTTON_LEFT))
+	{
+		if (isOptionsOpen)
+		{
+			if (audioDirty)
+			{
+				AudioManager.PlaySFX("buttonFeedback", 0.5);
+				audioDirty = false;
+				AudioManager.SetAudioVolume(1.0);
+				AudioManager.SetMusicVolume(1.0);
+			}
+		}
+	}
+}
+
+void MenuScene::HandleFullscreen()
+{
+	if (Inputs::GetInstance()->mouseButtonPressed(SDL_BUTTON_LEFT))
+	{
+		if (isOptionsOpen)
+		{
+			// put here
 		}
 	}
 }
@@ -619,6 +668,34 @@ bool MenuScene::IsMouseOverSFX()
 	int topLeftY = 470;
 	int bottomRightX = 903;
 	int bottomRightY = 526;
+
+	return (mouseX >= topLeftX && mouseX <= bottomRightX &&
+		mouseY >= topLeftY && mouseY <= bottomRightY);
+}
+
+bool MenuScene::IsMouseOverReset()
+{
+	int mouseX = Inputs::GetInstance()->getMouseX();
+	int mouseY = Inputs::GetInstance()->getMouseY();
+
+	int topLeftX = 744;
+	int topLeftY = 608;
+	int bottomRightX = 802;
+	int bottomRightY = 644;
+
+	return (mouseX >= topLeftX && mouseX <= bottomRightX &&
+		mouseY >= topLeftY && mouseY <= bottomRightY);
+}
+
+bool MenuScene::IsMouseOverFullscreen()
+{
+	int mouseX = Inputs::GetInstance()->getMouseX();
+	int mouseY = Inputs::GetInstance()->getMouseY();
+
+	int topLeftX = 796;
+	int topLeftY = 212;
+	int bottomRightX = 835;
+	int bottomRightY = 244;
 
 	return (mouseX >= topLeftX && mouseX <= bottomRightX &&
 		mouseY >= topLeftY && mouseY <= bottomRightY);

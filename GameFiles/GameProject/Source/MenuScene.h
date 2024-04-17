@@ -47,11 +47,15 @@ public:
 	int CheckAmbienceArea();
 	bool IsMouseOverSFX();
 	int CheckSFXArea();
+	bool IsMouseOverReset();
+	bool IsMouseOverFullscreen();
 
 	void HandleBegin();
 	void HandleExit();
 	void HandleCredit();
 	void HandleOption();
+	void HandleResetOptions();
+	void HandleFullscreen();
 	void openCredits();
 	void closeCredits();
 	void openConfirmQuitMenu();
@@ -79,6 +83,7 @@ private:
 	bool isCreditsOpen;
 	bool isConfirmQuitOpen;
 	bool isOptionsOpen;
+	bool audioDirty = false;
 };
 
 Scene* MenuSceneGetInstance(void);
