@@ -23,6 +23,7 @@
 
 std::unique_ptr<PauseMenu> PauseMenu::instance = nullptr;
 
+int pauseMenuIndex = -1;
 int settingsMenuIndex = -1;
 int quitConfirmIndex = -1;
 
@@ -37,6 +38,11 @@ PauseMenu::PauseMenu() : settingsMenuOpen(false), exitMenuOpen(false), isPauseMe
 	{
 		quitConfirmIndex = Renderer::GetInstance()->AddMenuPage("./Assets/PPM/Pause_Menu_Confirm_Quit.ppm");
 	} */
+
+	if (pauseMenuIndex == -1)
+	{
+		pauseMenuIndex = Renderer::GetInstance()->AddMenuPage("./Assets/PPM/Pause_Temp.ppm");
+	}
 }
 
 PauseMenu::~PauseMenu()
@@ -59,8 +65,9 @@ void PauseMenu::RenderButtons()
 
 void PauseMenu::HandleButtonInput()
 {
-	if (isPauseMenuOpen)
+	if (Engine::GetInstance()->Paused() == true)
 	{
+		Renderer::GetInstance()->LoadMenuPage(pauseMenuIndex);
 		if (IsMouseOverBackButton())
 		{
 			HandleBack();
