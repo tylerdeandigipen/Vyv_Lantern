@@ -105,17 +105,6 @@ void PauseMenu::HandleBack()
 	}
 }
 
-void PauseMenu::HandleExit()
-{
-	if (Inputs::GetInstance()->mouseButtonPressed(SDL_BUTTON_LEFT))
-	{
-		if (!exitMenuOpen)
-		{
-			exitMenuOpen = true;
-		}
-	}
-}
-
 void PauseMenu::HandleSettings()
 {
 	if (Inputs::GetInstance()->mouseButtonPressed(SDL_BUTTON_LEFT))
@@ -125,6 +114,17 @@ void PauseMenu::HandleSettings()
 		{
 			AudioManager.PlaySFX("buttonFeedback", 0.5);
 			settingsMenuOpen = true;
+		}
+	}
+}
+
+void PauseMenu::HandleExit()
+{
+	if (Inputs::GetInstance()->mouseButtonPressed(SDL_BUTTON_LEFT))
+	{
+		if (!exitMenuOpen)
+		{
+			exitMenuOpen = true;
 		}
 	}
 }

@@ -69,14 +69,12 @@ void Renderer::Update(float dt)
 			settingsMenuIndex = AddMenuPage("./Assets/PPM/Pause_Menu_Settings.ppm");
 		}
 
-		LoadMenuPage(pauseMenuIndex);
-	}
-	else if (Engine::GetInstance()->Paused() == false)
-	{
-		if (confirmQuitMainindex == -1)
+		/*if (confirmQuitMainindex == -1)
 		{
 			confirmQuitMainindex = AddMenuPage("./Assets/PPM/Main_Menu_Confirm_Quit.ppm");
-		}
+		}*/
+
+		LoadMenuPage(pauseMenuIndex);
 	}
 	else
 	{
@@ -280,11 +278,11 @@ void Renderer::RenderLightingPass()
 				lightB[x][y] = IntensityB;
 			}
 		}
-			}
+	}
 #else
 	inputBuffer->Blit(outputBuffer);
 #endif
-		}
+}
 
 float Renderer::FindPixelLuminosity(float x, float y, Light* LightSource)
 {
@@ -1117,6 +1115,24 @@ int Renderer::AddMenuPage(const std::string filename)
 		}
 	}
 	return -1;
+}
+
+void Renderer::ResetMenuPages()
+{
+	for (int i = 0; i < MAX_MENU_PAGES; i++)
+	{
+		if (menuPages[i] != nullptr)
+		{
+			menuPages[i] = nullptr;
+		}
+	}
+	numMenuPages = 0;
+	currentMenu = -1;
+
+	pauseMenuIndex = -1;
+	exitConfirmIndex = -1;
+	settingsMenuIndex = -1;
+	confirmQuitMainindex = -1;
 }
 
 void Renderer::AddLight(Light light)

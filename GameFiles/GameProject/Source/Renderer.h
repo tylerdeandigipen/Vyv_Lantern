@@ -125,6 +125,8 @@ public:
 	void ClearTilesets();
 	void ResizeBuffers();
 
+	void ResetMenuPages();
+
 	//Debug Functions
 	void DrawLine(Vector2 P0, Vector2 P1, const Color& LineColor, ImageBuffer* buffer = NULL, float skipPercent = 0);
 	void RenderWallCollidersToDebugBuffer();

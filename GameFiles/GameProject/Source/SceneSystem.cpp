@@ -25,6 +25,7 @@
 #include "Level3.h"
 #include "Level4.h"
 #include "MenuScene.h"
+#include "Renderer.h"
 
 // enums for different scene types
 static bool Animating = false;
@@ -197,6 +198,8 @@ void SceneSystem::ChangeScene()
 		assert(false && "nextScene is NULL! Location: SceneSystem::ChangeScene()");
 		throw(Engine::AllScenesNull);
 	}
+
+	Renderer::GetInstance()->ResetMenuPages();
 
 	if (!activeScene)
 	{
