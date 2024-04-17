@@ -250,6 +250,70 @@ void MenuScene::Update(float dt)
 		HandleExit();
 	}
 
+	if (IsMouseOverAmbience() && isOptionsOpen)
+	{
+		int whichSlot = CheckAmbienceArea();
+		if (whichSlot != 0)
+		{
+			if (whichSlot == 1)
+			{
+				AudioManager.SetMusicVolume(0.0);
+			}
+			else if (whichSlot == 2)
+			{
+				AudioManager.SetMusicVolume(0.3);
+			}
+			else if (whichSlot == 3)
+			{
+				AudioManager.SetMusicVolume(0.5);
+			}
+			else if (whichSlot == 4)
+			{
+				AudioManager.SetMusicVolume(0.7);
+			}
+			else if (whichSlot == 5)
+			{
+				AudioManager.SetMusicVolume(1.0);
+			}
+			else
+			{
+				AudioManager.SetMusicVolume(1.0);
+			}
+		}
+	}
+
+	if (IsMouseOverSFX() && isOptionsOpen)
+	{
+		int whichSlot = CheckSFXArea();
+		if (whichSlot != 0)
+		{
+			if (whichSlot == 1)
+			{
+				AudioManager.SetAudioVolume(0.0);
+			}
+			else if (whichSlot == 2)
+			{
+				AudioManager.SetAudioVolume(0.3);
+			}
+			else if (whichSlot == 3)
+			{
+				AudioManager.SetAudioVolume(0.5);
+			}
+			else if (whichSlot == 4)
+			{
+				AudioManager.SetAudioVolume(0.7);
+			}
+			else if (whichSlot == 5)
+			{
+				AudioManager.SetAudioVolume(1.0);
+			}
+			else
+			{
+				AudioManager.SetAudioVolume(1.0);
+			}
+		}
+	}
+
 	if (isCreditsOpen && !isConfirmQuitOpen && !isOptionsOpen)
 	{
 		openCredits();
@@ -278,6 +342,11 @@ void MenuScene::Update(float dt)
 	if (IsMouseOverCloseCredit() && isCreditsOpen)
 	{
 		closeCredits();
+	}
+
+	if (IsMouseOverCloseOptions() && isOptionsOpen)
+	{
+		closeOptions();
 	}
 
 	MenuPixelRender->Update(dt);
@@ -337,6 +406,13 @@ void MenuScene::openOptions()
 
 void MenuScene::closeOptions()
 {
+	if (Inputs::GetInstance()->mouseButtonPressed(SDL_BUTTON_LEFT))
+	{
+		AudioManager.PlaySFX("buttonFeedback", 0.5);
+		isOptionsOpen = false;
+
+		Renderer::GetInstance()->LoadMenuPage(-1);
+	}
 }
 
 void MenuScene::HandleBegin()
@@ -504,6 +580,116 @@ bool MenuScene::IsMouseOverExitButtonNo()
 
 	return (mouseX >= exitButtonTopLeftX && mouseX <= exitButtonBottomRightX &&
 		mouseY >= exitButtonTopLeftY && mouseY <= exitButtonBottomRightY);
+}
+
+bool MenuScene::IsMouseOverCloseOptions()
+{
+	int mouseX = Inputs::GetInstance()->getMouseX();
+	int mouseY = Inputs::GetInstance()->getMouseY();
+
+	int exitButtonTopLeftX = 531;
+	int exitButtonTopLeftY = 712;
+	int exitButtonBottomRightX = 690;
+	int exitButtonBottomRightY = 796;
+
+	return (mouseX >= exitButtonTopLeftX && mouseX <= exitButtonBottomRightX &&
+		mouseY >= exitButtonTopLeftY && mouseY <= exitButtonBottomRightY);
+}
+
+bool MenuScene::IsMouseOverAmbience()
+{
+	int mouseX = Inputs::GetInstance()->getMouseX();
+	int mouseY = Inputs::GetInstance()->getMouseY();
+
+	int topLeftX = 539;
+	int topLeftY = 375;
+	int bottomRightX = 903;
+	int bottomRightY = 424;
+
+	return (mouseX >= topLeftX && mouseX <= bottomRightX &&
+		mouseY >= topLeftY && mouseY <= bottomRightY);
+}
+
+bool MenuScene::IsMouseOverSFX()
+{
+	int mouseX = Inputs::GetInstance()->getMouseX();
+	int mouseY = Inputs::GetInstance()->getMouseY();
+
+	int topLeftX = 539;
+	int topLeftY = 470;
+	int bottomRightX = 903;
+	int bottomRightY = 526;
+
+	return (mouseX >= topLeftX && mouseX <= bottomRightX &&
+		mouseY >= topLeftY && mouseY <= bottomRightY);
+}
+
+int MenuScene::CheckAmbienceArea()
+{
+	int mouseX = Inputs::GetInstance()->getMouseX();
+	int mouseY = Inputs::GetInstance()->getMouseY();
+
+	// Check if mouse is within the ambience area
+	if (IsMouseOverAmbience() && Inputs::GetInstance()->mouseButtonPressed(SDL_BUTTON_LEFT))
+	{
+		// Calculate the distances to each section's center
+		std::vector<Vector2> sectionCenters =
+		{
+			{547, 396}, {634, 396}, {724, 396}, {812, 396}, {900, 396}
+		};
+
+		float minDistance = FLT_MAX;
+		int closestSection = -1;
+
+		// Iterate through each section's center and find the closest one
+		for (int i = 0; i < sectionCenters.size(); ++i)
+		{
+			float distance = sqrt(pow(mouseX - sectionCenters[i].x, 2) + pow(mouseY - sectionCenters[i].y, 2));
+			if (distance < minDistance)
+			{
+				minDistance = distance;
+				closestSection = i + 1; // Sections are indexed starting from 1
+			}
+		}
+
+		return closestSection;
+	}
+
+	return 0;
+}
+
+int MenuScene::CheckSFXArea()
+{
+	int mouseX = Inputs::GetInstance()->getMouseX();
+	int mouseY = Inputs::GetInstance()->getMouseY();
+
+	// Check if mouse is within the ambience area
+	if (IsMouseOverSFX() && Inputs::GetInstance()->mouseButtonPressed(SDL_BUTTON_LEFT))
+	{
+		// Calculate the distances to each section's center
+		std::vector<Vector2> sectionCenters =
+		{
+			{547, 493}, {634, 493}, {724, 493}, {812, 493}, {900, 493}
+		};
+
+		float minDistance = FLT_MAX;
+		int closestSection = -1;
+
+		// Iterate through each section's center and find the closest one
+		for (int i = 0; i < sectionCenters.size(); ++i)
+		{
+			float distance = sqrt(pow(mouseX - sectionCenters[i].x, 2) + pow(mouseY - sectionCenters[i].y, 2));
+			if (distance < minDistance)
+			{
+				minDistance = distance;
+				closestSection = i + 1; // Sections are indexed starting from 1
+			}
+		}
+
+		return closestSection;
+	}
+
+	return 0;
 }
 
 void MenuScene::Render()

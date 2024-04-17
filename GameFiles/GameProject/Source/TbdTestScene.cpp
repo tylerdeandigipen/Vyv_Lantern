@@ -113,12 +113,6 @@ Engine::EngineCode TbdTestScene::Init()
 	//AudioManager.PlayMusic("drips"); //line is good
 
 	//AudioManager.PlayMusic("forest"); //line is good
-	AudioManager.PlayMusic("bgm");
-	AudioManager.DecreaseMusicVolume(0.7f);
-
-	AudioManager.PlaySFX("bgAmbience", 0.75);
-
-	AudioManager.PlaySFX("laserAmbience", 0.2f); // replace with things that sound more "electric humming"
 
 	FontSystem fontSystem;
 

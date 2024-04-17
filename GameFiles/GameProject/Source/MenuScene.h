@@ -41,6 +41,12 @@ public:
 	bool IsMouseOverExitButtonNo();
 
 	bool IsMouseOverCloseCredit();
+	bool IsMouseOverCloseOptions();
+
+	bool IsMouseOverAmbience();
+	int CheckAmbienceArea();
+	bool IsMouseOverSFX();
+	int CheckSFXArea();
 
 	void HandleBegin();
 	void HandleExit();

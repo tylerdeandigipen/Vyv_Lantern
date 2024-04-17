@@ -25,6 +25,12 @@ std::unique_ptr<PauseMenu> PauseMenu::instance = nullptr;
 
 PauseMenu::PauseMenu() : settingsMenuOpen(false), exitMenuOpen(false), isPauseMenuOpen(false)
 {
+	AudioManager.PlayMusic("bgm");
+	AudioManager.DecreaseMusicVolume(0.7f);
+
+	AudioManager.PlaySFX("bgAmbience", 0.75);
+
+	AudioManager.PlaySFX("laserAmbience", 0.2f); // replace with things that sound more "electric humming"
 }
 
 PauseMenu::~PauseMenu()
