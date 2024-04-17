@@ -4,3 +4,4 @@ Tyler's Mirror is a Top-Down puzzle about mirror and lasers. You play as a lost 
 
 Vomunar Cai - Designer - songyang.cai@digipen.edu
 Michael Howard - Programmer - michael.howard@digipen.edu
+Zan Moffat - Design Lead/Puzzle Designer - zan.moffat@digipen.edu
