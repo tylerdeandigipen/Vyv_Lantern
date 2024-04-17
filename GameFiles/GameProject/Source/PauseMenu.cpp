@@ -23,7 +23,7 @@
 
 std::unique_ptr<PauseMenu> PauseMenu::instance = nullptr;
 
-PauseMenu::PauseMenu() : settingsMenuOpen(false), exitMenuOpen(false)
+PauseMenu::PauseMenu() : settingsMenuOpen(false), exitMenuOpen(false), isPauseMenuOpen(false)
 {
 	//AudioManager.LoadMusicFromJSON("./Data/music.json");//line is good
 	//AudioManager.LoadSFXFromJSON("./Data/SFX.json");// line is goodplay
@@ -49,49 +49,52 @@ void PauseMenu::RenderButtons()
 
 void PauseMenu::HandleButtonInput()
 {
-	if (IsMouseOverBackButton())
+	if (isPauseMenuOpen)
 	{
-		HandleBack();
-	}
+		if (IsMouseOverBackButton())
+		{
+			HandleBack();
+		}
 
-	if (IsMouseOverExitButton())
-	{
-		HandleExit();
-	}
+		if (IsMouseOverExitButton())
+		{
+			HandleExit();
+		}
 
-	if (IsMouseOverSettingsButton())
-	{
-		HandleSettings();
-	}
+		if (IsMouseOverSettingsButton())
+		{
+			HandleSettings();
+		}
 
-	if (Inputs::GetInstance()->keyPressed(SDLK_ESCAPE) && settingsMenuOpen == true)
-	{
-		CloseSettingsMenu();
-	}
+		if (Inputs::GetInstance()->keyPressed(SDLK_ESCAPE) && settingsMenuOpen == true)
+		{
+			CloseSettingsMenu();
+		}
 
-	if (IsMouseOverSettingsExitButton() && settingsMenuOpen == true)
-	{
-		CloseSettingsMenu();
-	}
+		if (IsMouseOverSettingsExitButton() && settingsMenuOpen == true)
+		{
+			CloseSettingsMenu();
+		}
 
-	if (IsMouseOverExitButtonYes() && exitMenuOpen == true)
-	{
-		CloseExitMenu();
-	}
+		if (IsMouseOverExitButtonYes() && exitMenuOpen == true)
+		{
+			CloseExitMenu();
+		}
 
-	if (IsMouseOverExitButtonNo() && exitMenuOpen == true)
-	{
-		CloseExitMenu();
-	}
+		if (IsMouseOverExitButtonNo() && exitMenuOpen == true)
+		{
+			CloseExitMenu();
+		}
 
-	if (settingsMenuOpen)
-	{
-		OpenSettingsMenu();
-	}
+		if (settingsMenuOpen)
+		{
+			OpenSettingsMenu();
+		}
 
-	if (exitMenuOpen)
-	{
-		OpenExitMenu();
+		if (exitMenuOpen)
+		{
+			OpenExitMenu();
+		}
 	}
 }
 

@@ -42,6 +42,9 @@ public:
 	void HandleCredit();
 	void HandleOption();
 	void openCredits();
+	void closeCredits();
+	void openConfirmQuitMenu();
+	void closeConfirmQuitMenu();
 
 	void ImGuiInterg();
 	void ImGuiWindow();
@@ -54,6 +57,7 @@ private:
 	float offset;
 
 	bool isCreditsOpen;
+	bool isConfirmQuitOpen;
 };
 
 Scene* MenuSceneGetInstance(void);

@@ -24,6 +24,8 @@ public:
 
 	static PauseMenu* GetInstance();
 
+	bool isPauseMenuOpen;
+
 private:
 	void RenderButtons();
 	void HandleButtonInput();

@@ -59,9 +59,11 @@ void Renderer::Update(float dt)
 		int settingsMenuIndex = AddMenuPage("./Assets/PPM/Pause_Menu_Settings.ppm");
 		int quitConfirmIndex = AddMenuPage("./Assets/PPM/Pause_Menu_Confirm_Quit.ppm");
 		int creditsIndex = AddMenuPage("./Assets/PPM/Credits_Menu.ppm");
+		int confirmQuitMainindex = AddMenuPage("./Assets/PPM/Main_Menu_Confirm_Quit.ppm");
 	}
 	if (Engine::GetInstance()->Paused() == true)
 	{
+		PauseMenu::GetInstance()->isPauseMenuOpen = true;
 		int pauseMenuIndex = 0; //imagine this is the same var as above :)
 		LoadMenuPage(pauseMenuIndex);
 	}
@@ -172,7 +174,6 @@ void Renderer::Update(float dt)
 	objectLayer->ClearImageBuffer();
 	PreviousFrameBeginTime = currentTime;
 }
-
 
 void Renderer::RenderToOutbuffer()
 {
@@ -1433,7 +1434,6 @@ void Renderer::BlurLasers(int blurRangeLow, int blurRangeHigh)
 	}
 }
 
-
 Renderer::~Renderer(void)
 {
 	CleanRenderer();
@@ -1665,7 +1665,6 @@ void Renderer::ResizeBuffers()
 	shadowCasterBuffer = new ImageBuffer{ tileMapSize.x * (TILE_SIZE), tileMapSize.y * (TILE_SIZE) };
 	DebugBuffer = new ImageBuffer{ tileMapSize.x * (TILE_SIZE), tileMapSize.y * (TILE_SIZE) };
 }
-
 
 void Renderer::DrawLine(Vector2 P0, Vector2 P1, const Color& LineColor, ImageBuffer* buffer, float skipPercent)
 {

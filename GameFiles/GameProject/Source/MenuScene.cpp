@@ -263,8 +263,18 @@ void MenuScene::HandleExit()
 {
 	if (Inputs::GetInstance()->mouseButtonPressed(SDL_BUTTON_LEFT))
 	{
-		Engine::GetInstance()->SetCloseRequest(true);
+		if (!isConfirmQuitOpen)
+		{
+			isConfirmQuitOpen = true;
+		}
 	}
+}
+
+void MenuScene::openConfirmQuitMenu()
+{
+	//int confirmQuitMainindex = 4;
+
+	//Renderer::GetInstance()->LoadMenuPage(confirmQuitMainindex);
 }
 
 bool MenuScene::IsMouseOverCreditButton()
@@ -374,6 +384,11 @@ void MenuScene::Update(float dt)
 	if (isCreditsOpen)
 	{
 		openCredits();
+	}
+
+	if (isConfirmQuitOpen)
+	{
+		openConfirmQuitMenu();
 	}
 
 	MenuPixelRender->Update(dt);
