@@ -52,15 +52,6 @@ std::unique_ptr<Renderer> Renderer::instance = nullptr;
 //split into Update and Render functions
 void Renderer::Update(float dt)
 {
-	// delete this when menus are finalized
-	if (numMenuPages == 0)
-	{
-		int pauseMenuIndex = AddMenuPage("./Assets/PPM/Pause_Temp.ppm"); //yes this is a local var but when u actually use le menus keep this var per each page
-		int settingsMenuIndex = AddMenuPage("./Assets/PPM/Pause_Menu_Settings.ppm");
-		int quitConfirmIndex = AddMenuPage("./Assets/PPM/Pause_Menu_Confirm_Quit.ppm");
-		int creditsIndex = AddMenuPage("./Assets/PPM/Credits_Menu.ppm");
-		int confirmQuitMainindex = AddMenuPage("./Assets/PPM/Main_Menu_Confirm_Quit.ppm");
-	}
 	if (Engine::GetInstance()->Paused() == true)
 	{
 		PauseMenu::GetInstance()->isPauseMenuOpen = true;
