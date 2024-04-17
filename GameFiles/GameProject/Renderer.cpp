@@ -79,6 +79,10 @@ void Renderer::Update(float dt)
 	}
 	else if (SceneSystem::GetInstance()->mainMenuOpen == true)
 	{
+		if (creditsMainMenuIndex == -1)
+		{
+			creditsMainMenuIndex = AddMenuPage("./Assets/PPM/Credits_Menu.ppm");
+		}
 		if (confirmQuitMainindex == -1)
 		{
 			confirmQuitMainindex = AddMenuPage("./Assets/PPM/Main_Menu_Confirm_Quit.ppm");

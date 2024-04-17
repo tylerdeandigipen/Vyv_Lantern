@@ -210,135 +210,6 @@ void MenuScene::cheatScanlines()
 		MenuPixelRender->doScanLines = false;
 }
 
-bool MenuScene::IsMouseOverBeginingButton()
-{
-	int mouseX = Inputs::GetInstance()->getMouseX();
-	int mouseY = Inputs::GetInstance()->getMouseY();
-
-	Vector2 position = { 400,300 };
-
-	int width = (250 / 2);
-	int high = (128 / 2);
-
-	int LeftOfButton = position.x - width;
-	int TopOfButton = position.y - high;
-	int RightOfButton = position.x + width;
-	int ButtomOfButton = position.y + high;
-
-	return (mouseX >= LeftOfButton && mouseX <= RightOfButton &&
-		mouseY >= TopOfButton && mouseY <= ButtomOfButton);
-}
-
-void MenuScene::HandleBegin()
-{
-	if (Inputs::GetInstance()->mouseButtonPressed(SDL_BUTTON_LEFT))
-	{
-		AudioManager.PlaySFX("buttonFeedback", 0.5);
-		SceneSystem* sceneSystem = SceneSystem::GetInstance();
-		Renderer::GetInstance()->isFullbright = false;
-		sceneSystem->SetScene(TbdTestSceneGetInstance());
-	}
-}
-
-bool MenuScene::IsMouseOverExitButton()
-{
-	int mouseX = Inputs::GetInstance()->getMouseX();
-	int mouseY = Inputs::GetInstance()->getMouseY();
-
-	Vector2 position = { 400,700 };
-
-	int width = (250 / 2);
-	int high = (128 / 2);
-
-	int LeftOfButton = position.x - width;
-	int TopOfButton = position.y - high;
-	int RightOfButton = position.x + width;
-	int ButtomOfButton = position.y + high;
-
-	return (mouseX >= LeftOfButton && mouseX <= RightOfButton &&
-		mouseY >= TopOfButton && mouseY <= ButtomOfButton);
-}
-
-void MenuScene::HandleExit()
-{
-	if (Inputs::GetInstance()->mouseButtonPressed(SDL_BUTTON_LEFT))
-	{
-		if (!isConfirmQuitOpen)
-		{
-			isConfirmQuitOpen = true;
-		}
-	}
-}
-
-void MenuScene::openConfirmQuitMenu()
-{
-	Renderer::GetInstance()->LoadMenuPage(Renderer::GetInstance()->confirmQuitMainindex);
-}
-
-bool MenuScene::IsMouseOverCreditButton()
-{
-	int mouseX = Inputs::GetInstance()->getMouseX();
-	int mouseY = Inputs::GetInstance()->getMouseY();
-
-	Vector2 position = { 400,400 };
-
-	int width = (250 / 2);
-	int high = (128 / 2);
-
-	int LeftOfButton = position.x - width;
-	int TopOfButton = position.y - high;
-	int RightOfButton = position.x + width;
-	int ButtomOfButton = position.y + high;
-
-	return (mouseX >= LeftOfButton && mouseX <= RightOfButton &&
-		mouseY >= TopOfButton && mouseY <= ButtomOfButton);
-}
-
-void MenuScene::HandleCredit()
-{
-	if (Inputs::GetInstance()->mouseButtonPressed(SDL_BUTTON_LEFT))
-	{
-		if (!isCreditsOpen)
-		{
-			//do something
-			isCreditsOpen = true;
-		}
-	}
-}
-
-void MenuScene::openCredits()
-{
-	//int creditsIndex = 3;
-	//Renderer::GetInstance()->LoadMenuPage(creditsIndex);
-}
-
-bool MenuScene::IsMouseOverOptionButton()
-{
-	int mouseX = Inputs::GetInstance()->getMouseX();
-	int mouseY = Inputs::GetInstance()->getMouseY();
-
-	Vector2 position = { 400,550 };
-
-	int width = (250 / 2);
-	int high = (128 / 2);
-
-	int LeftOfButton = position.x - width;
-	int TopOfButton = position.y - high;
-	int RightOfButton = position.x + width;
-	int ButtomOfButton = position.y + high;
-
-	return (mouseX >= LeftOfButton && mouseX <= RightOfButton &&
-		mouseY >= TopOfButton && mouseY <= ButtomOfButton);
-}
-
-void MenuScene::HandleOption()
-{
-	if (Inputs::GetInstance()->mouseButtonPressed(SDL_BUTTON_LEFT))
-	{
-		//do something
-	}
-}
-
 void MenuScene::Update(float dt)
 {
 	if (CheckGameScenes() || CheckRestart())
@@ -379,17 +250,239 @@ void MenuScene::Update(float dt)
 		HandleExit();
 	}
 
-	if (isCreditsOpen)
+	if (isCreditsOpen && !isConfirmQuitOpen)
 	{
 		openCredits();
 	}
 
-	if (isConfirmQuitOpen)
+	if (isConfirmQuitOpen && !isCreditsOpen)
 	{
 		openConfirmQuitMenu();
 	}
 
+	if (IsMouseOverExitButtonYes() && isConfirmQuitOpen == true)
+	{
+		closeConfirmQuitMenu();
+	}
+
+	if (IsMouseOverExitButtonNo() && isConfirmQuitOpen == true)
+	{
+		closeConfirmQuitMenu();
+	}
+
+	if (IsMouseOverCloseCredit() && isCreditsOpen)
+	{
+		closeCredits();
+	}
+
 	MenuPixelRender->Update(dt);
+}
+
+void MenuScene::openConfirmQuitMenu()
+{
+	Renderer::GetInstance()->LoadMenuPage(Renderer::GetInstance()->confirmQuitMainindex);
+}
+
+void MenuScene::closeConfirmQuitMenu()
+{
+	if (IsMouseOverExitButtonYes())
+	{
+		if (Inputs::GetInstance()->mouseButtonPressed(SDL_BUTTON_LEFT))
+		{
+			AudioManager.PlaySFX("buttonFeedback", 0.5);
+			isConfirmQuitOpen = false;
+
+			Engine::GetInstance()->SetCloseRequest(true);
+		}
+	}
+
+	if (IsMouseOverExitButtonNo())
+	{
+		if (Inputs::GetInstance()->mouseButtonPressed(SDL_BUTTON_LEFT))
+		{
+			AudioManager.PlaySFX("buttonFeedback", 0.5);
+			isConfirmQuitOpen = false;
+
+			Renderer::GetInstance()->LoadMenuPage(-1);
+		}
+	}
+}
+
+void MenuScene::openCredits()
+{
+	Renderer::GetInstance()->LoadMenuPage(Renderer::GetInstance()->creditsMainMenuIndex);
+}
+
+void MenuScene::closeCredits()
+{
+	if (Inputs::GetInstance()->mouseButtonPressed(SDL_BUTTON_LEFT))
+	{
+		AudioManager.PlaySFX("buttonFeedback", 0.5);
+		isCreditsOpen = false;
+
+		Renderer::GetInstance()->LoadMenuPage(-1);
+		isConfirmQuitOpen = false;
+	}
+}
+
+void MenuScene::HandleBegin()
+{
+	if (Inputs::GetInstance()->mouseButtonPressed(SDL_BUTTON_LEFT))
+	{
+		AudioManager.PlaySFX("buttonFeedback", 0.5);
+		SceneSystem* sceneSystem = SceneSystem::GetInstance();
+		Renderer::GetInstance()->isFullbright = false;
+		sceneSystem->SetScene(TbdTestSceneGetInstance());
+	}
+}
+
+void MenuScene::HandleOption()
+{
+	if (Inputs::GetInstance()->mouseButtonPressed(SDL_BUTTON_LEFT))
+	{
+		//do something
+	}
+}
+
+void MenuScene::HandleCredit()
+{
+	if (Inputs::GetInstance()->mouseButtonPressed(SDL_BUTTON_LEFT))
+	{
+		if (!isCreditsOpen && !isConfirmQuitOpen)
+		{
+			//do something
+			isCreditsOpen = true;
+		}
+	}
+}
+
+void MenuScene::HandleExit()
+{
+	if (Inputs::GetInstance()->mouseButtonPressed(SDL_BUTTON_LEFT))
+	{
+		if (!isConfirmQuitOpen && !isCreditsOpen)
+		{
+			isConfirmQuitOpen = true;
+		}
+	}
+}
+
+bool MenuScene::IsMouseOverBeginingButton()
+{
+	int mouseX = Inputs::GetInstance()->getMouseX();
+	int mouseY = Inputs::GetInstance()->getMouseY();
+
+	Vector2 position = { 400,300 };
+
+	int width = (250 / 2);
+	int high = (128 / 2);
+
+	int LeftOfButton = position.x - width;
+	int TopOfButton = position.y - high;
+	int RightOfButton = position.x + width;
+	int ButtomOfButton = position.y + high;
+
+	return (mouseX >= LeftOfButton && mouseX <= RightOfButton &&
+		mouseY >= TopOfButton && mouseY <= ButtomOfButton);
+}
+
+bool MenuScene::IsMouseOverOptionButton()
+{
+	int mouseX = Inputs::GetInstance()->getMouseX();
+	int mouseY = Inputs::GetInstance()->getMouseY();
+
+	Vector2 position = { 400,550 };
+
+	int width = (250 / 2);
+	int high = (128 / 2);
+
+	int LeftOfButton = position.x - width;
+	int TopOfButton = position.y - high;
+	int RightOfButton = position.x + width;
+	int ButtomOfButton = position.y + high;
+
+	return (mouseX >= LeftOfButton && mouseX <= RightOfButton &&
+		mouseY >= TopOfButton && mouseY <= ButtomOfButton);
+}
+
+bool MenuScene::IsMouseOverCreditButton()
+{
+	int mouseX = Inputs::GetInstance()->getMouseX();
+	int mouseY = Inputs::GetInstance()->getMouseY();
+
+	Vector2 position = { 400,400 };
+
+	int width = (250 / 2);
+	int high = (128 / 2);
+
+	int LeftOfButton = position.x - width;
+	int TopOfButton = position.y - high;
+	int RightOfButton = position.x + width;
+	int ButtomOfButton = position.y + high;
+
+	return (mouseX >= LeftOfButton && mouseX <= RightOfButton &&
+		mouseY >= TopOfButton && mouseY <= ButtomOfButton);
+}
+
+bool MenuScene::IsMouseOverCloseCredit()
+{
+	int mouseX = Inputs::GetInstance()->getMouseX();
+	int mouseY = Inputs::GetInstance()->getMouseY();
+
+	int exitButtonTopLeftX = 366;
+	int exitButtonTopLeftY = 691;
+	int exitButtonBottomRightX = 550;
+	int exitButtonBottomRightY = 798;
+
+	return (mouseX >= exitButtonTopLeftX && mouseX <= exitButtonBottomRightX &&
+		mouseY >= exitButtonTopLeftY && mouseY <= exitButtonBottomRightY);
+}
+
+bool MenuScene::IsMouseOverExitButton()
+{
+	int mouseX = Inputs::GetInstance()->getMouseX();
+	int mouseY = Inputs::GetInstance()->getMouseY();
+
+	Vector2 position = { 400,700 };
+
+	int width = (250 / 2);
+	int high = (128 / 2);
+
+	int LeftOfButton = position.x - width;
+	int TopOfButton = position.y - high;
+	int RightOfButton = position.x + width;
+	int ButtomOfButton = position.y + high;
+
+	return (mouseX >= LeftOfButton && mouseX <= RightOfButton &&
+		mouseY >= TopOfButton && mouseY <= ButtomOfButton);
+}
+
+bool MenuScene::IsMouseOverExitButtonYes()
+{
+	int mouseX = Inputs::GetInstance()->getMouseX();
+	int mouseY = Inputs::GetInstance()->getMouseY();
+
+	int exitButtonTopLeftX = 527;
+	int exitButtonTopLeftY = 468;
+	int exitButtonBottomRightX = 684;
+	int exitButtonBottomRightY = 560;
+
+	return (mouseX >= exitButtonTopLeftX && mouseX <= exitButtonBottomRightX &&
+		mouseY >= exitButtonTopLeftY && mouseY <= exitButtonBottomRightY);
+}
+
+bool MenuScene::IsMouseOverExitButtonNo()
+{
+	int mouseX = Inputs::GetInstance()->getMouseX();
+	int mouseY = Inputs::GetInstance()->getMouseY();
+
+	int exitButtonTopLeftX = 758;
+	int exitButtonTopLeftY = 470;
+	int exitButtonBottomRightX = 910;
+	int exitButtonBottomRightY = 556;
+
+	return (mouseX >= exitButtonTopLeftX && mouseX <= exitButtonBottomRightX &&
+		mouseY >= exitButtonTopLeftY && mouseY <= exitButtonBottomRightY);
 }
 
 void MenuScene::Render()

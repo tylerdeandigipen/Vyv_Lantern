@@ -40,6 +40,7 @@ public:
 	int exitConfirmIndex = -1;
 	int settingsMenuIndex = -1;
 	int confirmQuitMainindex = -1;
+	int creditsMainMenuIndex = -1;
 
 	//Visual Effects Settings
 	float screenScale = 6; //doesnt work for some reason, havent looked into yet bc not too important

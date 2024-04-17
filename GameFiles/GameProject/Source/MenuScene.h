@@ -37,6 +37,11 @@ public:
 	bool IsMouseOverCreditButton();
 	bool IsMouseOverOptionButton();
 
+	bool IsMouseOverExitButtonYes();
+	bool IsMouseOverExitButtonNo();
+
+	bool IsMouseOverCloseCredit();
+
 	void HandleBegin();
 	void HandleExit();
 	void HandleCredit();
