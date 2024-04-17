@@ -19,10 +19,13 @@
     },
     {
       "Type": "BehaviorReceiver",
-      "FinalReceiver":
-      {
-        "Final" : true
+      "FinalReceiver": {
+        "Final": true
       }
+    },
+    {
+      "File": "./Data/Lights/MirrorLight.json",
+      "Type": "Light"
     }
   ],
   "FilePath": "./Data/Scenes/Level4Final/Receiver1.json",
