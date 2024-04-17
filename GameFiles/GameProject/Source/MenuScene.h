@@ -51,8 +51,15 @@ public:
 
 	void cheatScanlines();
 
+	bool IsMainMenuOpen() const
+	{
+		return mainMenuOpen;
+	}
+
 private:
 	emitter_id ControlledEmitter;
+
+	bool mainMenuOpen;
 
 	float offset;
 

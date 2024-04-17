@@ -23,6 +23,7 @@
 #include "imgui_impl_opengl3.h"
 #include "FrameRate.h"
 #include "SceneSystem.h"
+#include "MenuScene.h"
 
 #include <windows.h>
 #include <SDL/SDL.h>
@@ -75,6 +76,13 @@ void Renderer::Update(float dt)
 		}*/
 
 		LoadMenuPage(pauseMenuIndex);
+	}
+	else if (SceneSystem::GetInstance()->mainMenuOpen == true)
+	{
+		if (confirmQuitMainindex == -1)
+		{
+			confirmQuitMainindex = AddMenuPage("./Assets/PPM/Main_Menu_Confirm_Quit.ppm");
+		}
 	}
 	else
 	{

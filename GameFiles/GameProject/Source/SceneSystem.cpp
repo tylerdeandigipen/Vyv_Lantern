@@ -37,12 +37,12 @@ enum class SceneType
 	SCENE_LEVELCREATOR = 2,
 	SCENE_SPLASH = 3,
 	SCENE_WIN = 4,
-	SCENE_SECTION1,
-	SCENE_LEVEL1,
-	SCENE_LEVEL2,
-	SCENE_LEVEL3,
-	SCENE_LEVEL4,
-	SCENE_MENU = 4,
+	SCENE_SECTION1 = 5,
+	SCENE_LEVEL1 = 6,
+	SCENE_LEVEL2 = 7,
+	SCENE_LEVEL3 = 8,
+	SCENE_LEVEL4 = 9,
+	SCENE_MENU = 10,
 	NULL_SCENE,
 
 	// Add more scenes as needed
@@ -60,6 +60,7 @@ Engine::EngineCode SceneSystem::Init()
 
 	//current scene instance set to default
 	instance->SetScene(DefaultSceneInstance);
+
 	return Engine::NothingBad;
 }
 
@@ -261,46 +262,57 @@ bool CheckGameScenes()
 	if (activeScene == TbdTestSceneGetInstance())
 	{
 		activeSceneType = SceneType::SCENE_TBD_TEST;
+		SceneSystem::GetInstance()->mainMenuOpen = false;
 	}
 	else if (activeScene == TestSceneGetInstance())
 	{
 		activeSceneType = SceneType::SCENE_TEST;
+		SceneSystem::GetInstance()->mainMenuOpen = false;
 	}
 	else if (activeScene == LevelCreatorSceneGetInstance())
 	{
 		activeSceneType = SceneType::SCENE_LEVELCREATOR;
+		SceneSystem::GetInstance()->mainMenuOpen = false;
 	}
 	else if (activeScene == SplashSceneGetInstance())
 	{
 		activeSceneType = SceneType::SCENE_SPLASH;
+		SceneSystem::GetInstance()->mainMenuOpen = false;
 	}
 	else if (activeScene == MenuSceneGetInstance())
 	{
 		activeSceneType = SceneType::SCENE_MENU;
+		SceneSystem::GetInstance()->mainMenuOpen = true;
 	}
 	else if (activeScene == Section1FinalGetInstance())
 	{
 		activeSceneType = SceneType::SCENE_SECTION1;
+		SceneSystem::GetInstance()->mainMenuOpen = false;
 	}
 	else if (activeScene == Level1GetInstance())
 	{
 		activeSceneType = SceneType::SCENE_LEVEL1;
+		SceneSystem::GetInstance()->mainMenuOpen = false;
 	}
 	else if (activeScene == Level1GetInstance())
 	{
 		activeSceneType = SceneType::SCENE_LEVEL1;
+		SceneSystem::GetInstance()->mainMenuOpen = false;
 	}
 	else if (activeScene == Level2GetInstance())
 	{
 		activeSceneType = SceneType::SCENE_LEVEL2;
+		SceneSystem::GetInstance()->mainMenuOpen = false;
 	}
 	else if (activeScene == Level3GetInstance())
 	{
 		activeSceneType = SceneType::SCENE_LEVEL3;
+		SceneSystem::GetInstance()->mainMenuOpen = false;
 	}
 	else if (activeScene == Level4GetInstance())
 	{
 		activeSceneType = SceneType::SCENE_LEVEL3;
+		SceneSystem::GetInstance()->mainMenuOpen = false;
 	}
 
 	assert(activeSceneType != SceneType::NULL_SCENE && "Active scene type is NULL. Location: CheckGameScenes()");

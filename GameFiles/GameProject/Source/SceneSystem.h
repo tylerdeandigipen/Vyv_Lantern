@@ -30,6 +30,7 @@ public:
 	static SceneSystem* GetInstance();
 
 	float GetRate();
+	bool mainMenuOpen = true;
 private:
 	SceneSystem();
 
