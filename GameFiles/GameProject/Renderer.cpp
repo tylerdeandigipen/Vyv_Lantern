@@ -306,7 +306,7 @@ void Renderer::RenderLightingPass()
 #else
 	inputBuffer->Blit(outputBuffer);
 #endif
-	}
+}
 
 float Renderer::FindPixelLuminosity(float x, float y, Light* LightSource)
 {
@@ -1157,6 +1157,10 @@ void Renderer::ResetMenuPages()
 	exitConfirmIndex = -1;
 	settingsMenuIndex = -1;
 	confirmQuitMainindex = -1;
+	creditsMainMenuIndex = -1;
+	mainMenuOptionsIndex = -1;
+	mainMenuHelpIndex = -1;
+	mainMenuIndex = -1;
 }
 
 void Renderer::AddLight(Light light)
