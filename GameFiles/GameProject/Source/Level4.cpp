@@ -492,6 +492,7 @@ void Level4::Update(float dt)
 	}
 	if (LevelBuilder::GetWinState())
 	{
+		AudioManager.PlaySFX("cheer", 1.0f);
 		SceneSystem::GetInstance()->SetScene(WinSceneGetInstance());
 
 		//if (dt != 0)

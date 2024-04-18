@@ -208,11 +208,11 @@ void BehaviorSwitch::SwitchCollisionHandler(Entity* entity1, Entity* entity2)
 					AudioManager.PlaySFX("mirrorMove5", 0.2f);
 				}
 
-				// temporary win condition
+				// temporary win condition /
 				if (theSwitch->currentPos == theSwitch->maxCount)
 				{
-					AudioManager.PlaySFX("doorOpen", 1.0); // maybe make the sound quieter the further the player is
-					LevelBuilder::setDoor(true);
+				//	AudioManager.PlaySFX("doorOpen", 1.0); // maybe make the sound quieter the further the player is
+				//	LevelBuilder::setDoor(true);
 					theSwitch->currentPos = 0;
 				}
 				else

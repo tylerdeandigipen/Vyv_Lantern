@@ -527,6 +527,7 @@ void WinScene::Update(float dt)
 				{
 					if (Inputs::GetInstance()->mouseButtonPressed(SDL_BUTTON_LEFT))
 					{
+						Renderer::GetInstance()->ResetMenuPages();
 						SceneSystem::GetInstance()->SetScene(MenuSceneGetInstance());
 					}
 				}
