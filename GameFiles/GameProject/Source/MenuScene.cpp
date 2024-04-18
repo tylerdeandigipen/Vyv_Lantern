@@ -184,6 +184,13 @@ Engine::EngineCode MenuScene::Init()
 
 	//AudioManager.PlayMusic("forest");
 
+	AudioManager.PlayMusic("bgm");
+	AudioManager.DecreaseMusicVolume(0.7f);
+
+	AudioManager.PlaySFX("bgAmbience", 0.75);
+
+	AudioManager.PlaySFX("laserAmbience", 0.2f);
+
 	return Engine::NothingBad;
 }
 

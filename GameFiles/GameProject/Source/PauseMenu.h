@@ -36,10 +36,19 @@ private:
 	bool IsMouseOverExitButtonNo();
 	bool IsMouseOverSettingsButton();
 	bool IsMouseOverSettingsExitButton();
+	bool IsMouseOverAmbience();
+	bool IsMouseOverSFX();
+	bool IsMouseOverReset();
+	bool IsMouseOverFullscreen();
 
 	void HandleBack();
 	void HandleExit();
 	void HandleSettings();
+	void HandleResetOptions();
+	void HandleFullScreen();
+
+	int CheckAmbienceArea();
+	int CheckSFXArea();
 	void CloseSettingsMenu();
 	void OpenSettingsMenu();
 	void OpenExitMenu();
@@ -47,6 +56,7 @@ private:
 
 	bool settingsMenuOpen;
 	bool exitMenuOpen;
+	bool audioDirty;
 
 	static std::unique_ptr<PauseMenu> instance;
 };
