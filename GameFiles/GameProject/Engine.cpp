@@ -25,6 +25,9 @@ Engine::EngineCode Engine::Start()
 	// time instance
 	time = new Time();
 
+	// will see if still crashes but should be an "okay" place to load sound since it gets deletes on this files exit
+	AudioManager.LoadMusicFromJSON("./Data/music.json");//line is good
+	AudioManager.LoadSFXFromJSON("./Data/SFX.json");// line is goodplay
 	// initalize all systems
 	for (int i = 0; i < systemCount; ++i)
 	{

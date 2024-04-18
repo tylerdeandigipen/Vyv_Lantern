@@ -78,8 +78,8 @@ MenuScene::MenuScene() : Scene("Menutest"), isCreditsOpen(false), isConfirmQuitO
 
 Engine::EngineCode MenuScene::Load()
 {
-	AudioManager.LoadMusicFromJSON("./Data/music.json");
-	AudioManager.LoadSFXFromJSON("./Data/SFX.json");
+	/*AudioManager.LoadMusicFromJSON("./Data/music.json");
+	AudioManager.LoadSFXFromJSON("./Data/SFX.json");*/
 
 	return Engine::NothingBad;
 }
@@ -184,9 +184,17 @@ Engine::EngineCode MenuScene::Init()
 
 	//AudioManager.PlayMusic("forest");
 
-	AudioManager.PlayMusic("bgm");
-	AudioManager.DecreaseMusicVolume(0.7f);
-
+	static bool soundsound = false;
+	if (!soundsound)
+	{
+		AudioManager.PlayMusic("bgm");
+		AudioManager.DecreaseMusicVolume(0.7f);
+		soundsound = true;
+	}
+	else
+	{
+		int thing = 92;
+	}
 	AudioManager.PlaySFX("bgAmbience", 0.75);
 
 	AudioManager.PlaySFX("laserAmbience", 0.2f);
