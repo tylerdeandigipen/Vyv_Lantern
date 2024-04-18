@@ -42,6 +42,7 @@ public:
 	int confirmQuitMainindex = -1;
 	int creditsMainMenuIndex = -1;
 	int mainMenuOptionsIndex = -1;
+	int mainMenuHelpIndex = -1;
 	int mainMenuIndex = -1;
 
 	//Visual Effects Settings

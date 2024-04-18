@@ -25,11 +25,6 @@ public:
 
 	MenuScene();
 
-	bool isCreditsOpen;
-	bool isConfirmQuitOpen;
-	bool isOptionsOpen;
-	bool audioDirty;
-
 	Engine::EngineCode Load(void) override;
 	Engine::EngineCode Init(void) override;
 	Engine::EngineCode Exit(void) override;
@@ -41,12 +36,14 @@ public:
 	bool IsMouseOverExitButton();
 	bool IsMouseOverCreditButton();
 	bool IsMouseOverOptionButton();
+	bool IsMouseOverHelpButton();
 
 	bool IsMouseOverExitButtonYes();
 	bool IsMouseOverExitButtonNo();
 
 	bool IsMouseOverCloseCredit();
 	bool IsMouseOverCloseOptions();
+	bool IsMouseOverCloseHelp();
 
 	bool IsMouseOverAmbience();
 	int CheckAmbienceArea();
@@ -61,12 +58,15 @@ public:
 	void HandleOption();
 	void HandleResetOptions();
 	void HandleFullscreen();
+	void HandleHelpButton();
 	void openCredits();
 	void closeCredits();
 	void openConfirmQuitMenu();
 	void closeConfirmQuitMenu();
 	void openOptions();
 	void closeOptions();
+	void openHelp();
+	void closeHelp();
 
 	void ImGuiInterg();
 	void ImGuiWindow();
@@ -84,6 +84,12 @@ private:
 	bool mainMenuOpen;
 
 	float offset;
+
+	bool isCreditsOpen;
+	bool isConfirmQuitOpen;
+	bool isOptionsOpen;
+	bool isHelpOpen;
+	bool audioDirty;
 };
 
 Scene* MenuSceneGetInstance(void);

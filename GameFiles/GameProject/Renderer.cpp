@@ -95,6 +95,10 @@ void Renderer::Update(float dt)
 		{
 			mainMenuIndex = AddMenuPage("./Assets/PPM/Main_Menu.ppm");
 		}
+		if (mainMenuHelpIndex == -1)
+		{
+			mainMenuHelpIndex = AddMenuPage("./Assets/PPM/How_To_Play_Menu.ppm");
+		}
 	}
 	else
 	{
@@ -302,7 +306,7 @@ void Renderer::RenderLightingPass()
 #else
 	inputBuffer->Blit(outputBuffer);
 #endif
-}
+	}
 
 float Renderer::FindPixelLuminosity(float x, float y, Light* LightSource)
 {

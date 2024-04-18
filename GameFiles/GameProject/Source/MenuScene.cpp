@@ -71,7 +71,7 @@ static Entity* Title;
 
 ImageBuffer* ani;
 
-MenuScene::MenuScene() : Scene("Menutest"), isCreditsOpen(false), isConfirmQuitOpen(false), isOptionsOpen(false), audioDirty(false)
+MenuScene::MenuScene() : Scene("Menutest"), isCreditsOpen(false), isConfirmQuitOpen(false), isOptionsOpen(false), isHelpOpen(false), audioDirty(false)
 {
 	offset = -50.0f;
 }
@@ -232,7 +232,7 @@ void MenuScene::Update(float dt)
 
 	//PlayerIcon->Update(dt);
 
-	if (!isOptionsOpen && !isCreditsOpen && !isConfirmQuitOpen)
+	if (!isOptionsOpen && !isCreditsOpen && !isConfirmQuitOpen && !isHelpOpen)
 	{
 		Renderer::GetInstance()->LoadMenuPage(Renderer::GetInstance()->mainMenuIndex);
 	}
@@ -254,6 +254,10 @@ void MenuScene::Update(float dt)
 	if (IsMouseOverExitButton())
 	{
 		HandleExit();
+	}
+	if (IsMouseOverHelpButton())
+	{
+		HandleHelpButton();
 	}
 
 	if (IsMouseOverAmbience() && isOptionsOpen)
@@ -341,19 +345,24 @@ void MenuScene::Update(float dt)
 		HandleFullscreen();
 	}
 
-	if (isCreditsOpen && !isConfirmQuitOpen && !isOptionsOpen)
+	if (isCreditsOpen && !isConfirmQuitOpen && !isOptionsOpen && !isHelpOpen)
 	{
 		openCredits();
 	}
 
-	if (isConfirmQuitOpen && !isCreditsOpen && !isOptionsOpen)
+	if (isConfirmQuitOpen && !isCreditsOpen && !isOptionsOpen && !isHelpOpen)
 	{
 		openConfirmQuitMenu();
 	}
 
-	if (isOptionsOpen && !isCreditsOpen && !isConfirmQuitOpen)
+	if (isOptionsOpen && !isCreditsOpen && !isConfirmQuitOpen && !isHelpOpen)
 	{
 		openOptions();
+	}
+
+	if (isHelpOpen && !isCreditsOpen && !isConfirmQuitOpen && !isOptionsOpen)
+	{
+		openHelp();
 	}
 
 	if (IsMouseOverExitButtonYes() && isConfirmQuitOpen == true)
@@ -374,6 +383,11 @@ void MenuScene::Update(float dt)
 	if (IsMouseOverCloseOptions() && isOptionsOpen)
 	{
 		closeOptions();
+	}
+
+	if (IsMouseOverCloseHelp() && isHelpOpen)
+	{
+		closeHelp();
 	}
 
 	MenuPixelRender->Update(dt);
@@ -442,6 +456,22 @@ void MenuScene::closeOptions()
 	}
 }
 
+void MenuScene::openHelp()
+{
+	Renderer::GetInstance()->LoadMenuPage(Renderer::GetInstance()->mainMenuHelpIndex);
+}
+
+void MenuScene::closeHelp()
+{
+	if (Inputs::GetInstance()->mouseButtonPressed(SDL_BUTTON_LEFT))
+	{
+		AudioManager.PlaySFX("buttonFeedback", 0.5);
+		isHelpOpen = false;
+
+		Renderer::GetInstance()->LoadMenuPage(-1);
+	}
+}
+
 void MenuScene::HandleBegin()
 {
 	if (Inputs::GetInstance()->mouseButtonPressed(SDL_BUTTON_LEFT))
@@ -457,7 +487,7 @@ void MenuScene::HandleOption()
 {
 	if (Inputs::GetInstance()->mouseButtonPressed(SDL_BUTTON_LEFT))
 	{
-		if (!isCreditsOpen && !isConfirmQuitOpen && !isOptionsOpen)
+		if (!isHelpOpen && !isCreditsOpen && !isConfirmQuitOpen && !isOptionsOpen)
 		{
 			//do something
 			AudioManager.PlaySFX("buttonFeedback", 0.5);
@@ -470,7 +500,7 @@ void MenuScene::HandleCredit()
 {
 	if (Inputs::GetInstance()->mouseButtonPressed(SDL_BUTTON_LEFT))
 	{
-		if (!isCreditsOpen && !isConfirmQuitOpen)
+		if (!isHelpOpen && !isCreditsOpen && !isConfirmQuitOpen && !isOptionsOpen)
 		{
 			//do something
 			AudioManager.PlaySFX("buttonFeedback", 0.5);
@@ -483,10 +513,22 @@ void MenuScene::HandleExit()
 {
 	if (Inputs::GetInstance()->mouseButtonPressed(SDL_BUTTON_LEFT))
 	{
-		if (!isConfirmQuitOpen && !isCreditsOpen)
+		if (!isHelpOpen && !isCreditsOpen && !isConfirmQuitOpen && !isOptionsOpen)
 		{
 			AudioManager.PlaySFX("buttonFeedback", 0.5);
 			isConfirmQuitOpen = true;
+		}
+	}
+}
+
+void MenuScene::HandleHelpButton()
+{
+	if (Inputs::GetInstance()->mouseButtonPressed(SDL_BUTTON_LEFT))
+	{
+		if (!isHelpOpen && !isCreditsOpen && !isConfirmQuitOpen && !isOptionsOpen)
+		{
+			AudioManager.PlaySFX("buttonFeedback", 0.5);
+			isHelpOpen = true;
 		}
 	}
 }
@@ -682,6 +724,34 @@ bool MenuScene::IsMouseOverFullscreen()
 	int topLeftY = 212;
 	int bottomRightX = 835;
 	int bottomRightY = 244;
+
+	return (mouseX >= topLeftX && mouseX <= bottomRightX &&
+		mouseY >= topLeftY && mouseY <= bottomRightY);
+}
+
+bool MenuScene::IsMouseOverHelpButton()
+{
+	int mouseX = Inputs::GetInstance()->getMouseX();
+	int mouseY = Inputs::GetInstance()->getMouseY();
+
+	int topLeftX = 78;
+	int topLeftY = 556;
+	int bottomRightX = 246;
+	int bottomRightY = 664;
+
+	return (mouseX >= topLeftX && mouseX <= bottomRightX &&
+		mouseY >= topLeftY && mouseY <= bottomRightY);
+}
+
+bool MenuScene::IsMouseOverCloseHelp()
+{
+	int mouseX = Inputs::GetInstance()->getMouseX();
+	int mouseY = Inputs::GetInstance()->getMouseY();
+
+	int topLeftX = 633;
+	int topLeftY = 690;
+	int bottomRightX = 796;
+	int bottomRightY = 780;
 
 	return (mouseX >= topLeftX && mouseX <= bottomRightX &&
 		mouseY >= topLeftY && mouseY <= bottomRightY);
