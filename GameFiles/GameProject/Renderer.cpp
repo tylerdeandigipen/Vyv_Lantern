@@ -214,7 +214,7 @@ void Renderer::RenderToOutbuffer()
 	const int ySize = (int)outputBuffer->size.y;
 	if (renderWallHitboxes != true)
 	{
-#pragma omp parallel for collapse(2)
+//#pragma omp parallel for collapse(2)
 		for (int x = 0; x < xSize; ++x)
 		{
 			for (int y = 0; y < ySize; ++y)
@@ -238,7 +238,7 @@ void Renderer::RenderToOutbuffer()
 				}
 				if (fadePercent < 1)
 				{
-					DestPixel = DestPixel * fadePercent;
+					DestPixel = DestPixel.BlendColors(DestPixel,fadeColor, 100 * (1 - fadePercent));
 				}
 			}
 		}
@@ -807,9 +807,10 @@ void Renderer::UpdateFace(int faceState_)
 	}
 }
 
-void Renderer::TintScreenBlack(float progress)
+void Renderer::TintScreenBlack(float progress, Color tintColor)
 {
 	fadePercent = progress;
+	fadeColor = tintColor;
 }
 
 //Refactor all these to do all at once when given a master tileset
