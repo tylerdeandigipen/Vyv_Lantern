@@ -61,8 +61,6 @@ WinScene::WinScene() : Scene("WinScene")
 
 Engine::EngineCode WinScene::Load()
 {
-
-
 	if (entityManagerTBD->InitializeProperties(_OBJECT_LIST))
 		std::cout << "Property load success!\n";
 
@@ -79,11 +77,12 @@ Engine::EngineCode WinScene::Init()
 
 	// Create SDL Window
 	WinSceneRenderer = Renderer::GetInstance();
+	LevelBuilder::SetWinState(true);
 	WinSceneWindow = PlatformSystem::GetInstance()->GetWindowHandle();
 	WinSceneRenderer->window = WinSceneWindow;
 	Inputs::GetInstance()->SetWindow(WinSceneWindow);
 	WinSceneRenderer->SetCameraPosition({ -16.0f, 148.0f });
-	WinSceneRenderer->minBrightness = 175.0f;
+	WinSceneRenderer->minBrightness = 215.0f;
 
 	//initialize level data
 	//EntityContainer::GetInstance()->ReadEntities();
@@ -528,6 +527,7 @@ void WinScene::Update(float dt)
 					{
 						Renderer::GetInstance()->ResetMenuPages();
 						SceneSystem::GetInstance()->SetScene(MenuSceneGetInstance());
+						AudioManager.PlaySFX("buttonFeedback", 0.5);
 					}
 				}
 			}

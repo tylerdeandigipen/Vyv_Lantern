@@ -17,6 +17,7 @@
 #include "LevelBuilder.h"
 #include "Maths/Math.h"
 #include "Maths/Vector.h"
+#include "SceneSystem.h"
 #include "AudioEngine.h"
 
 const float pushForce = 1.0f;
@@ -87,7 +88,7 @@ void BehaviorPlayer::Read(json jsonData)
 
 void BehaviorPlayer::Controller(float dt)
 {
-	if (Engine::GetInstance()->Paused() == false)
+	if (Engine::GetInstance()->Paused() == false && SceneSystem::GetInstance()->LetPlayerMove())
 	{
 		faceState = 0;
 		Transform* transform = Parent()->Has(Transform);
@@ -180,13 +181,19 @@ void BehaviorPlayer::Controller(float dt)
 		float Angle = atan2f(D.x, D.y) * (180.0f / 3.14f) + 180.0f;
 		Renderer::GetInstance()->lightSource[0].angle = Angle;
 		ImageBuffer* playerEntity = Renderer::GetInstance()->animatedObjects[0][0];
-		if (centerCameraOnPlayer && playerEntity->isCulled != true)
-		{
-			Vector2 ScreenHalfSize = 0.5f * Vector2(SCREEN_SIZE_X, SCREEN_SIZE_Y);
-			Vector2 BitmapHalfDim = 0.5f * playerEntity->size;
-			Vector2 newCamPos = (playerEntity->position - ScreenHalfSize + BitmapHalfDim) + ((CursourP - Renderer::GetInstance()->GetCameraPosition() - ScreenHalfSize + BitmapHalfDim) * followCursorScalar);
-			Renderer::GetInstance()->SetCameraPosition(newCamPos);
-		}
+	}
+	if (centerCameraOnPlayer && Parent()->GetImage()->isCulled != true)
+	{
+		int x, y;
+		Uint32 buttons = SDL_GetMouseState(&x, &y);
+		Vector2 CursourP = { (float)x, (float)y };
+		CursourP *= 1.0f / Renderer::GetInstance()->screenScale;
+		CursourP += Renderer::GetInstance()->GetCameraPosition();
+
+		Vector2 ScreenHalfSize = 0.5f * Vector2(SCREEN_SIZE_X, SCREEN_SIZE_Y);
+		Vector2 BitmapHalfDim = 0.5f * Parent()->GetImage()->size;
+		Vector2 newCamPos = (Parent()->GetImage()->position - ScreenHalfSize + BitmapHalfDim) + ((CursourP - Renderer::GetInstance()->GetCameraPosition() - ScreenHalfSize + BitmapHalfDim) * followCursorScalar);
+		Renderer::GetInstance()->SetCameraPosition(newCamPos);
 	}
 }
 

@@ -9,6 +9,7 @@
 //------------------------------------------------------------------------------
 #include <cassert>
 #include "SceneSystem.h"
+#include "AudioEngine.h"
 #include "Renderer.h"
 #include "PlatformSystem.h"
 #include "Scene.h"
@@ -18,6 +19,7 @@
 #include "TestScene.h"
 #include "TBDTestScene.h"
 #include "LevelCreatorScene.h"
+#include "LevelBuilder.h"
 #include "SplashScene.h"
 #include "Inputs.h"
 #include "Level1.h"
@@ -28,7 +30,6 @@
 #include "Renderer.h"
 #include "WinScene.h"
 // enums for different scene types
-static bool Animating = false;
 static bool FadeIn = false;
 enum class SceneType
 {
@@ -52,13 +53,14 @@ enum class SceneType
 std::unique_ptr<SceneSystem> SceneSystem::instance = nullptr;
 
 Inputs* inputHandlerScene = Inputs::GetInstance();
-
+static bool firstChange = true;
 Engine::EngineCode SceneSystem::Init()
 {
 	// make sure the default scene isn't null
 	assert(DefaultSceneInstance != nullptr && "Default scene is NULL. Location: SceneSystem::Init()");
 
 	//current scene instance set to default
+
 	instance->SetScene(DefaultSceneInstance);
 
 	return Engine::NothingBad;
@@ -69,8 +71,9 @@ void SceneSystem::Update(float dt)
 {
 	if (nextScene != nullptr)
 	{
-		ChangeScene();
 		Animating = true;
+		if (!activeScene)
+			ChangeScene();
 	}
 
 	// if there is an active scene and engine isn't paused
@@ -87,32 +90,54 @@ void SceneSystem::Update(float dt)
 	{
 		dt = 0;
 	}
+	assert(activeScene != nullptr && "Active scene is NULL. Location: SceneSystem::Update()");
 
 	if (Animating)
 	{
 		if (!FadeIn)
 		{
-			tint -= .01;
-			if (tint >= 0)
+			PlayerMove = false;
+			tint -= (.5 * dt);
+			if (tint <= 0)
 			{
 				FadeIn = true;
 				tint = 0.0f;
+
+				if (nextScene)
+				{
+					ChangeScene();
+					//activeScene->Init();
+				}
 			}
 		}
 		else
 		{
-			tint += .01;
+			PlayerMove = true;
+			tint += (.5 * dt);
 			if (tint >= 1)
 			{
 				tint = 1.0f;
 				FadeIn = false;
 				Animating = false;
 			}
+			activeScene->Update(dt);
 		}
-		Renderer::GetInstance()->TintScreenBlack(tint);
+		if (LevelBuilder::GetInstance()->GetWinState())
+		{
+			Renderer::GetInstance()->TintScreenBlack(tint, Color{200, 200, 200, 255});
+		}
+		else
+		{
+			Renderer::GetInstance()->TintScreenBlack(tint);
+		}
+		Renderer::GetInstance()->Update(dt);
+		_audioManager::Instance().Update();
 	}
-	assert(activeScene != nullptr && "Active scene is NULL. Location: SceneSystem::Update()");
-	activeScene->Update(dt);
+	else
+	//if (activeScene) // comment like this feels wrong
+	{
+		activeScene->Update(dt);
+	}
 }
 
 void SceneSystem::Render()
@@ -246,8 +271,8 @@ void SceneSystem::ChangeScene()
 		assert(false && "activeScene is NULL! Location: SceneSystem::ChangeScene()");
 		throw(Engine::AllScenesNull);
 	}
-
-	activeScene->Init();
+	//if (!Animating)
+		activeScene->Init();
 }
 
 bool CheckGameScenes()

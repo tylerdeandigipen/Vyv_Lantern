@@ -28,7 +28,8 @@ public:
 	void SetScene(Scene* scene);
 	Scene* GetActiveScene();
 	static SceneSystem* GetInstance();
-
+	bool GetAnimating() { return Animating; };
+	bool LetPlayerMove() { return PlayerMove; }
 	float GetRate();
 	bool mainMenuOpen = true;
 private:
@@ -39,6 +40,8 @@ private:
 	SceneSystem& operator=(SceneSystem const&) = delete;
 
 	void ChangeScene();
+	bool Animating = false;
+	bool PlayerMove = false;
 
 	static std::unique_ptr<SceneSystem> instance;
 	Scene* DefaultSceneInstance;

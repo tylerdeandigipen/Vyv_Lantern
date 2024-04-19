@@ -205,7 +205,7 @@ void BehaviorDoor::DoorCollisionHandler(Entity* entity1, Entity* entity2)
 			}
 		}
 
-		if (door != nullptr && door->isDoorClosed == false)
+		if (door != nullptr && door->isDoorClosed == false && !SceneSystem::GetInstance()->GetAnimating())
 		{
 			if (door->_nextScene == "Level1")
 			{

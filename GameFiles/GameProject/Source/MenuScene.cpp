@@ -60,7 +60,7 @@ Renderer* MenuPixelRender = Renderer::GetInstance();
 SDL_Window* MenuWindow;
 
 Scene* MenuSceneinstance = NULL;
-
+static bool beginsound = false;
 static Entity* Beginbutton;
 static Entity* Creditbutton;
 static Entity* optionbutton;
@@ -80,6 +80,7 @@ Engine::EngineCode MenuScene::Load()
 {
 	/*AudioManager.LoadMusicFromJSON("./Data/music.json");
 	AudioManager.LoadSFXFromJSON("./Data/SFX.json");*/
+	beginsound = false;
 
 	return Engine::NothingBad;
 }
@@ -87,10 +88,10 @@ Engine::EngineCode MenuScene::Load()
 Engine::EngineCode MenuScene::Init()
 {
 	Inputs::GetInstance()->SetWindow(MenuWindow);
-
 	// Create SDL Window
 	MenuWindow = PlatformSystem::GetInstance()->GetWindowHandle();
 	MenuPixelRender->window = MenuWindow;
+	beginsound = false;
 
 	//cheatScanlines();
 
@@ -491,7 +492,11 @@ void MenuScene::HandleBegin()
 {
 	if (Inputs::GetInstance()->mouseButtonPressed(SDL_BUTTON_LEFT))
 	{
-		AudioManager.PlaySFX("buttonFeedback", 0.5);
+		if (!beginsound)
+		{
+			AudioManager.PlaySFX("buttonFeedback", 0.5);
+			beginsound = true;
+		}
 		SceneSystem* sceneSystem = SceneSystem::GetInstance();
 		Renderer::GetInstance()->isFullbright = false;
 		sceneSystem->SetScene(TbdTestSceneGetInstance());
