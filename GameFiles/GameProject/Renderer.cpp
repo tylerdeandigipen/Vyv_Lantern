@@ -1358,8 +1358,14 @@ gfxVector2 Renderer::LaserCheckLineForObject(Vector2 pos1, Vector2 pos2)
 	int x = (int)pos1.x;
 	int y = (int)pos1.y;
 
+	int currIterations = 0;
+
 	while (x != (int)pos2.x || y != (int)pos2.y)
 	{
+		if (currIterations > 10000)//if its looking for more then 10k times then just stop
+		{
+			return pos2;
+		}
 		if (shadowCasterBuffer->SampleColor(x + (int)CameraP.x, y + (int)CameraP.y).GetAlpha() != 0)
 		{
 			result.x = (float)x;
@@ -1378,6 +1384,7 @@ gfxVector2 Renderer::LaserCheckLineForObject(Vector2 pos1, Vector2 pos2)
 			error += dx;
 			y += sy;
 		}
+		currIterations += 1;
 	}
 
 	return pos2;
