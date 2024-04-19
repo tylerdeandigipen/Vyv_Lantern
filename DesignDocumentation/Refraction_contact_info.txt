@@ -9,4 +9,5 @@ Tyler Dean - Producer / Programmer - tyler.dean@digipen.edu
 Wonhyeong Chae - Programmer - w.chae@digipen.edu
 David Kommavongsa - Programmer - david.kommavongsa@digipen.edu
 TayLee Young - Programmer - taylee.young@digipen.edu
-Shangyu Li - Programmer = shangyu.li@digipen.edu
+Shangyu Li - Programmer - shangyu.li@digipen.edu
+Siddharth Mahesh - Designer - siddharth.mahesh@digipen.edu
