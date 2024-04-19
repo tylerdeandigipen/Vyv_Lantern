@@ -1,0 +1,27 @@
+{
+  "Type": "Object",
+  "Name": "Switch",
+  "file": "./Assets/PPM/WASD2_2.White.ppm",
+  "FilePath": "./Data/GameObjects/WASD2.json",
+  "isAnimated": false,
+  "frameSize": [ 8, 8 ],
+  "Components": [
+    {
+      "Type": "ColliderAABB"
+    },
+    {
+      "Type": "Transform",
+      "translation": {
+        "x": 121,
+        "y": 294
+      }
+    },
+    {
+      "Type": "Physics",
+      "OldTranslation": {
+        "x": 90,
+        "y": 30
+      }
+    }
+  ]
+}

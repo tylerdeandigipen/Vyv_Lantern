@@ -43,8 +43,9 @@
 #define new DEBUG_NEW
 #endif
 
+#ifdef _DEBUG
 Logging& TbdLogger = Logging::GetInstance("debugLog.log");
-
+#endif
 SDL_Renderer* TbdRenderer;
 Renderer* TbdPixelRenderer = Renderer::GetInstance();
 
@@ -65,10 +66,10 @@ Engine::EngineCode TbdTestScene::Load()
 {
 	Renderer::GetInstance()->isFullbright = false;
 
-	if (entityManagerTBD->InitializeProperties("./Data/GameObjects/TutorialFinalActual/TutorialFinalActualOBJECTS.json"))
+	//if (entityManagerTBD->InitializeProperties("./Data/GameObjects/TutorialFinalActual/TutorialFinalActualOBJECTS.json"))
 
 		//if (entityManagerTBD->InitializeProperties("./Data/Scenes/TutorialFinalActual/TutorialFinalActualOBJECTS.json"))
-		std::cout << "Property load success!\n";
+		//std::cout << "Property load success!\n";
 
 	return Engine::NothingBad;
 }
@@ -114,9 +115,7 @@ Engine::EngineCode TbdTestScene::Init()
 
 	//AudioManager.PlayMusic("forest"); //line is good
 
-	FontSystem fontSystem;
-
-	fontSystem.init("Font/MouldyCheeseRegular-WyMWG.ttf", 10);
+	//fontSystem.init("Font/MouldyCheeseRegular-WyMWG.ttf", 10);
 
 	entityManagerTBD->pRenderer = TbdPixelRenderer;
 

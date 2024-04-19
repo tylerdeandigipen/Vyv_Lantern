@@ -71,6 +71,8 @@ static Entity* Title;
 
 ImageBuffer* ani;
 
+static float pleasGodWork = 0.0f;
+
 MenuScene::MenuScene() : Scene("Menutest"), isCreditsOpen(false), isConfirmQuitOpen(false), isOptionsOpen(false), isHelpOpen(false), audioDirty(false)
 {
 	offset = -50.0f;
@@ -88,6 +90,7 @@ Engine::EngineCode MenuScene::Load()
 Engine::EngineCode MenuScene::Init()
 {
 	Inputs::GetInstance()->SetWindow(MenuWindow);
+	pleasGodWork = 0.0f;
 
 	// Create SDL Window
 	MenuWindow = PlatformSystem::GetInstance()->GetWindowHandle();
@@ -414,6 +417,7 @@ void MenuScene::Update(float dt)
 	{
 		closeHelp();
 	}
+	pleasGodWork -= dt * 4.0f;
 
 	MenuPixelRender->Update(dt);
 }
@@ -450,18 +454,28 @@ void MenuScene::closeConfirmQuitMenu()
 
 void MenuScene::openCredits()
 {
-	Renderer::GetInstance()->LoadMenuPage(Renderer::GetInstance()->creditsMainMenuIndex);
+	if (pleasGodWork < 0.0f)
+	{
+		Renderer::GetInstance()->LoadMenuPage(Renderer::GetInstance()->creditsMainMenuIndex);
+
+		//pleasGodWork = .5f;
+	}
 }
 
 void MenuScene::closeCredits()
 {
-	if (Inputs::GetInstance()->mouseButtonPressed(SDL_BUTTON_LEFT))
+	if (pleasGodWork < 0.0f)
 	{
-		AudioManager.PlaySFX("buttonFeedback", 0.5);
-		isCreditsOpen = false;
+		if (Inputs::GetInstance()->mouseButtonPressed(SDL_BUTTON_LEFT))
+		{
+			AudioManager.PlaySFX("buttonFeedback", 0.5);
+			isCreditsOpen = false;
 
-		Renderer::GetInstance()->LoadMenuPage(-1);
-		isConfirmQuitOpen = false;
+			Renderer::GetInstance()->LoadMenuPage(-1);
+
+			//isConfirmQuitOpen = false;
+		}
+		pleasGodWork = .5f;
 	}
 }
 
@@ -634,16 +648,19 @@ bool MenuScene::IsMouseOverCreditButton()
 
 bool MenuScene::IsMouseOverCloseCredit()
 {
-	int mouseX = Inputs::GetInstance()->getMouseX();
-	int mouseY = Inputs::GetInstance()->getMouseY();
+	if (isCreditsOpen)
+	{
+		int mouseX = Inputs::GetInstance()->getMouseX();
+		int mouseY = Inputs::GetInstance()->getMouseY();
 
-	int exitButtonTopLeftX = 366;
-	int exitButtonTopLeftY = 691;
-	int exitButtonBottomRightX = 550;
-	int exitButtonBottomRightY = 798;
+		int exitButtonTopLeftX = 60;
+		int exitButtonTopLeftY = 689;
+		int exitButtonBottomRightX = 229;
+		int exitButtonBottomRightY = 774;
 
-	return (mouseX >= exitButtonTopLeftX && mouseX <= exitButtonBottomRightX &&
-		mouseY >= exitButtonTopLeftY && mouseY <= exitButtonBottomRightY);
+		return (mouseX >= exitButtonTopLeftX && mouseX <= exitButtonBottomRightX &&
+			mouseY >= exitButtonTopLeftY && mouseY <= exitButtonBottomRightY);
+	}
 }
 
 bool MenuScene::IsMouseOverExitButton()

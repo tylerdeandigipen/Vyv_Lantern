@@ -1,0 +1,40 @@
+{
+  "Components": [
+    {
+      "Type": "ColliderAABB"
+    },
+    {
+      "Type": "Transform",
+      "translation": {
+        "x": 29.0,
+        "y": 195.0
+      }
+    },
+    {
+      "OldTranslation": {
+        "x": 29.0,
+        "y": 195.0
+      },
+      "Type": "Physics"
+    },
+    {
+      "ClosedSprite": "./Assets/PPM/DigipenLogo.ppm",
+      "DoorClosed": true,
+      "OpenSprite": "./Assets/PPM/DigipenLogo.ppm",
+      "PairName": "",
+      "Type": "BehaviorDoor"
+    }
+  ],
+  "FilePath": "./Data/Scenes/Splash/Door3.json",
+  "KeyObject": {
+    "key": "Door3"
+  },
+  "Name": "Door",
+  "Type": "Object",
+  "file": "./Assets/PPM/DigipenLogo.ppm",
+  "frameSize": [
+    8,
+    8
+  ],
+  "isAnimated": false
+}

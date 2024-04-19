@@ -1,0 +1,60 @@
+{
+  "Components": [
+    {
+      "Type": "ColliderAABB"
+    },
+    {
+      "Type": "Transform",
+      "translation": {
+        "x": 208.0,
+        "y": 88.0
+      }
+    },
+    {
+      "OldTranslation": {
+        "x": 208.0,
+        "y": 88.0
+      },
+      "Type": "Physics"
+    },
+    {
+      "NumPositions": 3,
+      "Type": "BehaviorSwitch",
+      "key": 1,
+      "pos": [
+        {
+          "x": "208.000000",
+          "y": "88.000000"
+        },
+        {
+          "x": "208.000000",
+          "y": "104.000000"
+        },
+        {
+          "x": "208.000000",
+          "y": "72.000000"
+        }
+      ]
+    },
+    {
+      "Direction": {
+        "DirectionX": 1.0,
+        "DirectionY": -1.0
+      },
+      "Type": "BehaviorMirror",
+      "key": 0
+    }
+  ],
+  "FilePath": "./Data/Scenes/Level2WIP3/Mirror8.json",
+  "KeyObject": {
+    "key": "Mirror8"
+  },
+  "Name": "Switch",
+  "Type": "Object",
+  "file": "./Assets/PPM/CrystalSprites/MirrorCrystalDownLeft.ppm",
+  "frameSize": [
+    8,
+    8
+  ],
+  "isAnimated": false
+}

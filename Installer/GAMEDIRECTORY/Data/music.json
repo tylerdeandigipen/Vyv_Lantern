@@ -1,8 +1,3 @@
 {
-  "bgm": "Assets/Audio/Music/FM01-9thSense-Loop-1Minute-Sazonoff.ogg",
-  "drips": "Assets/Audio/Music/WaterLiquid-Drips_Splats_Gl.ogg",
-  "forest": "Assets/Audio/Music/Nature-Forest-Early-Morning.ogg",
-  "weather": "Assets/Audio/Music/WEATHER-RAIN-LIGHT-THUNDER-01.ogg",
-  "atmosphere": "Assets/Audio/Music/ATS05-Atmospheric–Cassia.ogg",
-  "mystery": "Assets/Audio/Music/ATS02-PlanetMystery–Yuksel.ogg"
+  "bgm": "Assets/Audio/Music/PrimaryAmbience.mp3"
 }

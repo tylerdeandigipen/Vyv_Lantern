@@ -1,0 +1,8 @@
+{
+  "GameObjectList": {
+    "GameObjectFile": "./Data/Scenes/oneOBJECTS.json"
+  },
+  "TiledData": {
+    "TileMapFile": "./Data/Scenes/oneMAP.json"
+  }
+}

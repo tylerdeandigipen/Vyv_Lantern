@@ -23,13 +23,13 @@
 
 #define ApplicationName 'Refraction'
 #define ApplicationVersion '1.0.0'
-#define CPlusPlusYearVersion '1999'
+#define CPlusPlusYearVersion '2014'
 
 DisableWelcomePage=no
 WizardImageFile=INSTALLERFILES\panel_image_100.bmp
 WizardSmallImageFile=INSTALLERFILES\banner.bmp
 
-AppId={{EBC470E6-DD34-48B7-8846-EA2D06E08D2B}
+AppId={{260DECE2-3762-4FAC-A6B4-E148CA4124A0}
 
 ; Standard app data stuff
 AppName={#ApplicationName}

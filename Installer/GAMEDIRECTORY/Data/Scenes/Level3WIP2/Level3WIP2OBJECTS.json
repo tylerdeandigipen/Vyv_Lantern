@@ -1,0 +1,47 @@
+{
+  "Circle": {
+    "count": 4
+  },
+  "Door": {
+    "count": 4
+  },
+  "Emitter": {
+    "count": 4
+  },
+  "FilePath": "./Data/Scenes/Level3WIP2/Level3WIP2OBJECTS.json",
+  "Mirror": {
+    "count": 10
+  },
+  "Objects": [
+    {
+      "FilePath": "./Data/Scenes/Level3WIP2/Emitter1.json"
+    },
+    {
+      "FilePath": "./Data/Scenes/Level3WIP2/Receiver1.json"
+    },
+    {
+      "FilePath": "./Data/Scenes/Level3WIP2/Door1.json"
+    },
+    {
+      "FilePath": "./Data/Scenes/Level3WIP2/Mirror1.json"
+    },
+    {
+      "FilePath": "./Data/Scenes/Level3WIP2/Mirror3.json"
+    },
+    {
+      "FilePath": "./Data/Scenes/Level3WIP2/Mirror4.json"
+    },
+    {
+      "FilePath": "./Data/Scenes/Level3WIP2/Mirror5.json"
+    },
+    {
+      "FilePath": "./Data/Scenes/Level3WIP2/Mirror6.json"
+    },
+    {
+      "FilePath": "./Data/Scenes/Level3WIP2/Mirror8.json"
+    }
+  ],
+  "Receiver": {
+    "count": 4
+  }
+}

@@ -1,0 +1,36 @@
+{
+  "Components": [
+    {
+      "Type": "ColliderAABB"
+    },
+    {
+      "Type": "Transform",
+      "translation": {
+        "x": 200.0,
+        "y": 142.0
+      }
+    },
+    {
+      "OldTranslation": {
+        "x": 200.0,
+        "y": 142.0
+      },
+      "Type": "Physics"
+    },
+    {
+      "Type": "BehaviorReceiver"
+    }
+  ],
+  "FilePath": "./Data/Scenes/Level1WIP2/Receiver1.json",
+  "KeyObject": {
+    "key": "Receiver1"
+  },
+  "Name": "Receiver",
+  "Type": "Object",
+  "file": "./Assets/PPM/CrystalSprites/GoalCrystal.ppm",
+  "frameSize": [
+    8,
+    8
+  ],
+  "isAnimated": false
+}

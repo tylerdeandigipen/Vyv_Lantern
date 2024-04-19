@@ -31,6 +31,8 @@ public:
 	bool mouseButtonUp(SDL_Keycode button) const;
 	bool mouseButtonDown(SDL_Keycode button) const;
 	bool mouseButtonPressed(Uint8 button) const;
+	bool leftMouseButtonClicked();
+	bool rightMouseButtonClicked();
 
 	int getMouseX() const;
 	int getMouseY() const;
@@ -48,6 +50,8 @@ private:
 
 	bool leftMouseB;
 	bool rightMouseB;
+	bool leftMouseButtonPressed;
+	bool rightMouseButtonPressed;
 
 	bool quitting;
 	bool keyStates[SDL_NUM_SCANCODES];
