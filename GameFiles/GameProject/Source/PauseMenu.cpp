@@ -23,7 +23,7 @@
 
 std::unique_ptr<PauseMenu> PauseMenu::instance = nullptr;
 
-PauseMenu::PauseMenu() : settingsMenuOpen(false), exitMenuOpen(false), isPauseMenuOpen(false), audioDirty(false)
+PauseMenu::PauseMenu() : settingsMenuOpen(false), exitMenuOpen(false), isPauseMenuOpen(false), audioDirty(false), helpOpen(false)
 {
 }
 
@@ -69,6 +69,11 @@ void PauseMenu::HandleButtonInput()
 			HandleResetOptions();
 		}
 
+		if (IsMouseOverHelp())
+		{
+			HandleHelp();
+		}
+
 		if (IsMouseOverAmbience() && settingsMenuOpen)
 		{
 			int whichSlot = CheckAmbienceArea();
@@ -104,6 +109,10 @@ void PauseMenu::HandleButtonInput()
 					AudioManager.SetMusicVolume(1.0);
 				}
 			}
+		}
+		else if (!settingsMenuOpen)
+		{
+			Renderer::GetInstance()->numMenuSelections = 0;
 		}
 
 		if (IsMouseOverSFX() && settingsMenuOpen)
@@ -143,6 +152,10 @@ void PauseMenu::HandleButtonInput()
 				}
 			}
 		}
+		else if (!settingsMenuOpen)
+		{
+			Renderer::GetInstance()->numMenuSelections = 0;
+		}
 
 		if (Inputs::GetInstance()->keyPressed(SDLK_ESCAPE) && settingsMenuOpen == true)
 		{
@@ -164,6 +177,11 @@ void PauseMenu::HandleButtonInput()
 			CloseExitMenu();
 		}
 
+		if (IsMouseOverCloseHelp() && helpOpen)
+		{
+			CloseHelp();
+		}
+
 		if (settingsMenuOpen)
 		{
 			OpenSettingsMenu();
@@ -172,6 +190,11 @@ void PauseMenu::HandleButtonInput()
 		if (exitMenuOpen)
 		{
 			OpenExitMenu();
+		}
+
+		if (helpOpen)
+		{
+			OpenHelp();
 		}
 	}
 }
@@ -238,6 +261,40 @@ void PauseMenu::HandleFullScreen()
 	}
 }
 
+void PauseMenu::HandleHelp()
+{
+	if (Inputs::GetInstance()->mouseButtonPressed(SDL_BUTTON_LEFT))
+	{
+		if (!helpOpen)
+		{
+			AudioManager.PlaySFX("buttonFeedback", 0.5);
+			helpOpen = true;
+		}
+	}
+}
+
+void PauseMenu::OpenHelp()
+{
+	Renderer::GetInstance()->LoadMenuPage(Renderer::GetInstance()->helpMenuIndex);
+}
+
+void PauseMenu::CloseHelp()
+{
+	if (Inputs::GetInstance()->keyPressed(SDLK_ESCAPE))
+	{
+		AudioManager.PlaySFX("buttonFeedback", 0.5);
+
+		helpOpen = false;
+	}
+
+	if (Inputs::GetInstance()->mouseButtonPressed(SDL_BUTTON_LEFT))
+	{
+		AudioManager.PlaySFX("buttonFeedback", 0.5);
+
+		helpOpen = false;
+	}
+}
+
 void PauseMenu::OpenExitMenu()
 {
 	Renderer::GetInstance()->LoadMenuPage(Renderer::GetInstance()->exitConfirmIndex);
@@ -290,33 +347,42 @@ void PauseMenu::CloseSettingsMenu()
 
 int PauseMenu::CheckAmbienceArea()
 {
-	int mouseX = Inputs::GetInstance()->getMouseX();
-	int mouseY = Inputs::GetInstance()->getMouseY();
+	int x, y;
+	Uint32 buttons = SDL_GetMouseState(&x, &y);
+	Vector2 CursorP = { (float)x, (float)y };
+	CursorP *= 1.0f / Renderer::GetInstance()->screenScale;
 
 	// Check if mouse is within the ambience area
-	if (IsMouseOverAmbience() && Inputs::GetInstance()->mouseButtonPressed(SDL_BUTTON_LEFT))
+	if (Inputs::GetInstance()->mouseButtonPressed(SDL_BUTTON_LEFT) && settingsMenuOpen)
 	{
-		// Calculate the distances to each section's center
-		std::vector<Vector2> sectionCenters =
-		{
-			{547, 396}, {634, 396}, {724, 396}, {812, 396}, {900, 396}
+		// Define the snap positions
+		std::vector<Vector2> snapPositions = {
+			{88, 64}, {103, 64}, {118, 64}, {133, 64}, {148, 64}
 		};
 
+		// Find the closest snap position to the cursor
 		float minDistance = FLT_MAX;
-		int closestSection = -1;
+		int closestSnapIndex = -1;
 
-		// Iterate through each section's center and find the closest one
-		for (int i = 0; i < sectionCenters.size(); ++i)
+		for (int i = 0; i < snapPositions.size(); ++i)
 		{
-			float distance = sqrt(pow(mouseX - sectionCenters[i].x, 2) + pow(mouseY - sectionCenters[i].y, 2));
+			float distance = std::abs(CursorP.x - snapPositions[i].x);
 			if (distance < minDistance)
 			{
 				minDistance = distance;
-				closestSection = i + 1; // Sections are indexed starting from 1
+				closestSnapIndex = i;
 			}
 		}
 
-		return closestSection;
+		// Set the position of the menu selection to the closest snap position
+		Vector2 pos = snapPositions[closestSnapIndex];
+
+		Renderer::GetInstance()->menuSelectionPos[2] = pos;
+		Renderer::GetInstance()->menuSelectionType[2] = Renderer::GetInstance()->Pip;
+
+		Renderer::GetInstance()->numMenuSelections++;
+
+		return closestSnapIndex + 1;
 	}
 
 	return 0;
@@ -324,33 +390,42 @@ int PauseMenu::CheckAmbienceArea()
 
 int PauseMenu::CheckSFXArea()
 {
-	int mouseX = Inputs::GetInstance()->getMouseX();
-	int mouseY = Inputs::GetInstance()->getMouseY();
+	int x, y;
+	Uint32 buttons = SDL_GetMouseState(&x, &y);
+	Vector2 CursorP = { (float)x, (float)y };
+	CursorP *= 1.0f / Renderer::GetInstance()->screenScale;
 
 	// Check if mouse is within the ambience area
-	if (IsMouseOverSFX() && Inputs::GetInstance()->mouseButtonPressed(SDL_BUTTON_LEFT))
+	if (Inputs::GetInstance()->mouseButtonPressed(SDL_BUTTON_LEFT) && settingsMenuOpen)
 	{
-		// Calculate the distances to each section's center
-		std::vector<Vector2> sectionCenters =
-		{
-			{547, 493}, {634, 493}, {724, 493}, {812, 493}, {900, 493}
+		// Define the snap positions
+		std::vector<Vector2> snapPositions = {
+			{88, 80}, {103, 80}, {118, 80}, {133, 80}, {148, 80}
 		};
 
+		// Find the closest snap position to the cursor
 		float minDistance = FLT_MAX;
-		int closestSection = -1;
+		int closestSnapIndex = -1;
 
-		// Iterate through each section's center and find the closest one
-		for (int i = 0; i < sectionCenters.size(); ++i)
+		for (int i = 0; i < snapPositions.size(); ++i)
 		{
-			float distance = sqrt(pow(mouseX - sectionCenters[i].x, 2) + pow(mouseY - sectionCenters[i].y, 2));
+			float distance = std::abs(CursorP.x - snapPositions[i].x);
 			if (distance < minDistance)
 			{
 				minDistance = distance;
-				closestSection = i + 1; // Sections are indexed starting from 1
+				closestSnapIndex = i;
 			}
 		}
 
-		return closestSection;
+		// Set the position of the menu selection to the closest snap position
+		Vector2 pos = snapPositions[closestSnapIndex];
+
+		Renderer::GetInstance()->menuSelectionPos[3] = pos;
+		Renderer::GetInstance()->menuSelectionType[3] = Renderer::GetInstance()->Pip;
+
+		Renderer::GetInstance()->numMenuSelections++;
+
+		return closestSnapIndex + 1;
 	}
 
 	return 0;
@@ -375,10 +450,24 @@ bool PauseMenu::IsMouseOverBackButton()
 	int mouseX = Inputs::GetInstance()->getMouseX();
 	int mouseY = Inputs::GetInstance()->getMouseY();
 
-	int backButtonTopLeftX = 40;
-	int backButtonTopLeftY = 336;
-	int backButtonBottomRightX = 240;
-	int backButtonBottomRightY = 440;
+	int backButtonTopLeftX = 56;
+	int backButtonTopLeftY = 444;
+	int backButtonBottomRightX = 232;
+	int backButtonBottomRightY = 532;
+
+	return (mouseX >= backButtonTopLeftX && mouseX <= backButtonBottomRightX &&
+		mouseY >= backButtonTopLeftY && mouseY <= backButtonBottomRightY);
+}
+
+bool PauseMenu::IsMouseOverHelp()
+{
+	int mouseX = Inputs::GetInstance()->getMouseX();
+	int mouseY = Inputs::GetInstance()->getMouseY();
+
+	int backButtonTopLeftX = 50;
+	int backButtonTopLeftY = 342;
+	int backButtonBottomRightX = 236;
+	int backButtonBottomRightY = 427;
 
 	return (mouseX >= backButtonTopLeftX && mouseX <= backButtonBottomRightX &&
 		mouseY >= backButtonTopLeftY && mouseY <= backButtonBottomRightY);
@@ -491,6 +580,20 @@ bool PauseMenu::IsMouseOverFullscreen()
 	int topLeftY = 212;
 	int bottomRightX = 835;
 	int bottomRightY = 244;
+
+	return (mouseX >= topLeftX && mouseX <= bottomRightX &&
+		mouseY >= topLeftY && mouseY <= bottomRightY);
+}
+
+bool PauseMenu::IsMouseOverCloseHelp()
+{
+	int mouseX = Inputs::GetInstance()->getMouseX();
+	int mouseY = Inputs::GetInstance()->getMouseY();
+
+	int topLeftX = 636;
+	int topLeftY = 692;
+	int bottomRightX = 800;
+	int bottomRightY = 779;
 
 	return (mouseX >= topLeftX && mouseX <= bottomRightX &&
 		mouseY >= topLeftY && mouseY <= bottomRightY);

@@ -40,12 +40,15 @@ private:
 	bool IsMouseOverSFX();
 	bool IsMouseOverReset();
 	bool IsMouseOverFullscreen();
+	bool IsMouseOverHelp();
+	bool IsMouseOverCloseHelp();
 
 	void HandleBack();
 	void HandleExit();
 	void HandleSettings();
 	void HandleResetOptions();
 	void HandleFullScreen();
+	void HandleHelp();
 
 	int CheckAmbienceArea();
 	int CheckSFXArea();
@@ -53,10 +56,13 @@ private:
 	void OpenSettingsMenu();
 	void OpenExitMenu();
 	void CloseExitMenu();
+	void OpenHelp();
+	void CloseHelp();
 
 	bool settingsMenuOpen;
 	bool exitMenuOpen;
 	bool audioDirty;
+	bool helpOpen;
 
 	static std::unique_ptr<PauseMenu> instance;
 };
