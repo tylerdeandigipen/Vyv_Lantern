@@ -30,6 +30,7 @@
 #define MAX_LASER_POINTS 100
 #define MAX_DECALS 100
 #define MAX_MENU_PAGES 10
+#define MAX_MENU_SELECTIONS 10
 
 class Renderer
 {
@@ -78,6 +79,7 @@ public:
 	void RenderFog();
 	void RenderLasers();
 	void DrawLaserLines(int thickness);
+	void RenderMenuSelections();
 
 	//Animation Functions
 	void UpdateAnimations(float dt);
@@ -178,6 +180,10 @@ public:
 	int numNonWalkTiles = NUM_NON_WALKABLE_TILES;
 
 	int currentMenu = -1;
+	int numMenuSelections = 0;
+	Vector2 menuSelectionPos[MAX_MENU_SELECTIONS];
+	enum MenuSelectorType { Pip, Check };
+	MenuSelectorType menuSelectionType[MAX_MENU_SELECTIONS];
 
 	Vector2 laserPoints1[MAX_LASER_POINTS];
 	Vector2 laserPoints2[MAX_LASER_POINTS];
@@ -233,6 +239,10 @@ private:
 	ImageBuffer* DebugBuffer = NULL;
 	uint32_t OutputBufferTexture = NULL;
 	bool faceflag;
+
+	//taylee put the proper menu sprites here when you-ppm ify them
+	ImageBuffer menuPip{"./Assets/PPM/MovePointDecal.ppm", Color{0,255,0,255}};
+	ImageBuffer menuCheck{ "./Assets/PPM/MovePointDecal.ppm", Color{255,0,0,255}};
 };
 
 #endif

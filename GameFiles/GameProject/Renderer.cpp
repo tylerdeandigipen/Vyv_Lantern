@@ -214,7 +214,7 @@ void Renderer::RenderToOutbuffer()
 	const int ySize = (int)outputBuffer->size.y;
 	if (renderWallHitboxes != true)
 	{
-//#pragma omp parallel for collapse(2)
+  #pragma omp parallel for collapse(2)
 		for (int x = 0; x < xSize; ++x)
 		{
 			for (int y = 0; y < ySize; ++y)
@@ -251,6 +251,7 @@ void Renderer::RenderToOutbuffer()
 	if (currentMenu != -1)
 	{
 		RenderMenu();
+		RenderMenuSelections();
 	}
 }
 
@@ -699,6 +700,23 @@ void Renderer::DrawLaserLines(int thickness)
 			{
 				DrawLine(Vector2((int)laserPoints1[i].x, (int)laserPoints1[i].y + j - thicknessOver2), Vector2((int)laserPoints2[i].x, (int)laserPoints2[i].y + j - thicknessOver2), laserColor[i], laserBuffer);
 			}
+		}
+	}
+}
+
+void Renderer::RenderMenuSelections()
+{
+	for (int i = 0; i < numMenuSelections; i++)
+	{
+		if (menuSelectionType[i] == Pip)
+		{
+			menuPip.position = menuSelectionPos[i];
+			outputBuffer->AddSprite(&menuPip);
+		}
+		else if(menuSelectionType[i] == Check)
+		{
+			menuCheck.position = menuSelectionPos[i];
+			outputBuffer->AddSprite(&menuCheck);
 		}
 	}
 }
@@ -1577,6 +1595,7 @@ void Renderer::CleanRenderer()
 	numLasers = 0;
 	timer = 0;
 	CameraP = Vector2{ 0,0 };
+	numMenuSelections = 0;
 }
 
 void Renderer::ClearSprites()
