@@ -271,6 +271,7 @@ void SceneSystem::ChangeScene()
 		assert(false && "activeScene is NULL! Location: SceneSystem::ChangeScene()");
 		throw(Engine::AllScenesNull);
 	}
+	Renderer::GetInstance()->CleanRenderer();
 	//if (!Animating)
 		activeScene->Init();
 }
