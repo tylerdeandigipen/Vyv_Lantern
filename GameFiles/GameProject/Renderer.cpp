@@ -63,15 +63,12 @@ void Renderer::Update(float dt)
 		}
 		if (exitConfirmIndex == -1)
 		{
+			exitConfirmIndex = AddMenuPage("./Assets/PPM/Pause_Menu_Confirm_Quit.ppm");
 		}
 		if (settingsMenuIndex == -1)
 		{
+			settingsMenuIndex = AddMenuPage("./Assets/PPM/Pause_Menu_Settings.ppm");
 		}
-
-		/*if (confirmQuitMainindex == -1)
-		{
-			confirmQuitMainindex = AddMenuPage("./Assets/PPM/Main_Menu_Confirm_Quit.ppm");
-		}*/
 
 		LoadMenuPage(pauseMenuIndex);
 	}
@@ -87,6 +84,7 @@ void Renderer::Update(float dt)
 		}
 		if (mainMenuOptionsIndex == -1)
 		{
+			mainMenuOptionsIndex = AddMenuPage("./Assets/PPM/Main_Menu_Settings.ppm");
 		}
 		if (mainMenuIndex == -1)
 		{
