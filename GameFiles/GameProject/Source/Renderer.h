@@ -41,6 +41,7 @@ public:
 	int exitConfirmIndex = -1;
 	int settingsMenuIndex = -1;
 	int confirmQuitMainindex = -1;
+	int helpMenuIndex = -1;
 	int creditsMainMenuIndex = -1;
 	int mainMenuOptionsIndex = -1;
 	int mainMenuHelpIndex = -1;
@@ -84,7 +85,7 @@ public:
 	//Animation Functions
 	void UpdateAnimations(float dt);
 	ImageBuffer* CreateAnimatedObject(const std::string filename, Vector2 frameSize);
-	void TintScreenBlack(float progress, Color tintColor = Color{0,0,0,255});
+	void TintScreenBlack(float progress, Color tintColor = Color{ 0,0,0,255 });
 
 	// 0 = forward, 1 = down, 2 = up, 3 = blink
 	void UpdateFace(int faceState_);
@@ -230,7 +231,7 @@ private:
 
 	//Misc.
 	float fadePercent = 1;
-	Color fadeColor{0,0,0,255};
+	Color fadeColor{ 0,0,0,255 };
 	int faceState = 0;
 	unsigned int maxThreadsAllowed = 8;
 	Vector2 nextCamPos;
@@ -240,9 +241,8 @@ private:
 	uint32_t OutputBufferTexture = NULL;
 	bool faceflag;
 
-	//taylee put the proper menu sprites here when you-ppm ify them
-	ImageBuffer menuPip{"./Assets/PPM/MovePointDecal.ppm", Color{0,255,0,255}};
-	ImageBuffer menuCheck{ "./Assets/PPM/MovePointDecal.ppm", Color{255,0,0,255}};
+	ImageBuffer menuPip{ "./Assets/PPM/Menu_Selection_Pip.ppm" };
+	ImageBuffer menuCheck{ "./Assets/PPM/Menu_Selected_X.ppm" };
 };
 
 #endif

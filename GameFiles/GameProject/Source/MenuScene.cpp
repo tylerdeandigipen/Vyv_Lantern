@@ -88,6 +88,7 @@ Engine::EngineCode MenuScene::Load()
 Engine::EngineCode MenuScene::Init()
 {
 	Inputs::GetInstance()->SetWindow(MenuWindow);
+
 	// Create SDL Window
 	MenuWindow = PlatformSystem::GetInstance()->GetWindowHandle();
 	MenuPixelRender->window = MenuWindow;
@@ -312,6 +313,10 @@ void MenuScene::Update(float dt)
 			}
 		}
 	}
+	else if (!isOptionsOpen)
+	{
+		Renderer::GetInstance()->numMenuSelections = 0;
+	}
 
 	if (IsMouseOverSFX() && isOptionsOpen)
 	{
@@ -349,6 +354,10 @@ void MenuScene::Update(float dt)
 				audioDirty = true;
 			}
 		}
+	}
+	else if (!isOptionsOpen)
+	{
+		Renderer::GetInstance()->numMenuSelections = 0;
 	}
 
 	if (IsMouseOverReset() && isOptionsOpen)
@@ -779,33 +788,42 @@ bool MenuScene::IsMouseOverCloseHelp()
 
 int MenuScene::CheckAmbienceArea()
 {
-	int mouseX = Inputs::GetInstance()->getMouseX();
-	int mouseY = Inputs::GetInstance()->getMouseY();
+	int x, y;
+	Uint32 buttons = SDL_GetMouseState(&x, &y);
+	Vector2 CursorP = { (float)x, (float)y };
+	CursorP *= 1.0f / Renderer::GetInstance()->screenScale;
 
 	// Check if mouse is within the ambience area
-	if (IsMouseOverAmbience() && Inputs::GetInstance()->mouseButtonPressed(SDL_BUTTON_LEFT))
+	if (Inputs::GetInstance()->mouseButtonPressed(SDL_BUTTON_LEFT) && isOptionsOpen)
 	{
-		// Calculate the distances to each section's center
-		std::vector<Vector2> sectionCenters =
-		{
-			{547, 396}, {634, 396}, {724, 396}, {812, 396}, {900, 396}
+		// Define the snap positions
+		std::vector<Vector2> snapPositions = {
+			{88, 64}, {103, 64}, {118, 64}, {133, 64}, {148, 64}
 		};
 
+		// Find the closest snap position to the cursor
 		float minDistance = FLT_MAX;
-		int closestSection = -1;
+		int closestSnapIndex = -1;
 
-		// Iterate through each section's center and find the closest one
-		for (int i = 0; i < sectionCenters.size(); ++i)
+		for (int i = 0; i < snapPositions.size(); ++i)
 		{
-			float distance = sqrt(pow(mouseX - sectionCenters[i].x, 2) + pow(mouseY - sectionCenters[i].y, 2));
+			float distance = std::abs(CursorP.x - snapPositions[i].x);
 			if (distance < minDistance)
 			{
 				minDistance = distance;
-				closestSection = i + 1; // Sections are indexed starting from 1
+				closestSnapIndex = i;
 			}
 		}
 
-		return closestSection;
+		// Set the position of the menu selection to the closest snap position
+		Vector2 pos = snapPositions[closestSnapIndex];
+
+		Renderer::GetInstance()->menuSelectionPos[0] = pos;
+		Renderer::GetInstance()->menuSelectionType[0] = Renderer::GetInstance()->Pip;
+
+		Renderer::GetInstance()->numMenuSelections++;
+
+		return closestSnapIndex + 1;
 	}
 
 	return 0;
@@ -813,33 +831,42 @@ int MenuScene::CheckAmbienceArea()
 
 int MenuScene::CheckSFXArea()
 {
-	int mouseX = Inputs::GetInstance()->getMouseX();
-	int mouseY = Inputs::GetInstance()->getMouseY();
+	int x, y;
+	Uint32 buttons = SDL_GetMouseState(&x, &y);
+	Vector2 CursorP = { (float)x, (float)y };
+	CursorP *= 1.0f / Renderer::GetInstance()->screenScale;
 
 	// Check if mouse is within the ambience area
-	if (IsMouseOverSFX() && Inputs::GetInstance()->mouseButtonPressed(SDL_BUTTON_LEFT))
+	if (Inputs::GetInstance()->mouseButtonPressed(SDL_BUTTON_LEFT) && isOptionsOpen)
 	{
-		// Calculate the distances to each section's center
-		std::vector<Vector2> sectionCenters =
-		{
-			{547, 493}, {634, 493}, {724, 493}, {812, 493}, {900, 493}
+		// Define the snap positions
+		std::vector<Vector2> snapPositions = {
+			{88, 80}, {103, 80}, {118, 80}, {133, 80}, {148, 80}
 		};
 
+		// Find the closest snap position to the cursor
 		float minDistance = FLT_MAX;
-		int closestSection = -1;
+		int closestSnapIndex = -1;
 
-		// Iterate through each section's center and find the closest one
-		for (int i = 0; i < sectionCenters.size(); ++i)
+		for (int i = 0; i < snapPositions.size(); ++i)
 		{
-			float distance = sqrt(pow(mouseX - sectionCenters[i].x, 2) + pow(mouseY - sectionCenters[i].y, 2));
+			float distance = std::abs(CursorP.x - snapPositions[i].x);
 			if (distance < minDistance)
 			{
 				minDistance = distance;
-				closestSection = i + 1; // Sections are indexed starting from 1
+				closestSnapIndex = i;
 			}
 		}
 
-		return closestSection;
+		// Set the position of the menu selection to the closest snap position
+		Vector2 pos = snapPositions[closestSnapIndex];
+
+		Renderer::GetInstance()->menuSelectionPos[1] = pos;
+		Renderer::GetInstance()->menuSelectionType[1] = Renderer::GetInstance()->Pip;
+
+		Renderer::GetInstance()->numMenuSelections++;
+
+		return closestSnapIndex + 1;
 	}
 
 	return 0;
