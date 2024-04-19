@@ -63,11 +63,9 @@ void Renderer::Update(float dt)
 		}
 		if (exitConfirmIndex == -1)
 		{
-			exitConfirmIndex = AddMenuPage("./Assets/PPM/Pause_Menu_Confirm_Quit.ppm");
 		}
 		if (settingsMenuIndex == -1)
 		{
-			settingsMenuIndex = AddMenuPage("./Assets/PPM/Pause_Menu_Settings.ppm");
 		}
 
 		/*if (confirmQuitMainindex == -1)
@@ -89,7 +87,6 @@ void Renderer::Update(float dt)
 		}
 		if (mainMenuOptionsIndex == -1)
 		{
-			mainMenuOptionsIndex = AddMenuPage("./Assets/PPM/Main_Menu_Settings.ppm");
 		}
 		if (mainMenuIndex == -1)
 		{
@@ -214,7 +211,7 @@ void Renderer::RenderToOutbuffer()
 	const int ySize = (int)outputBuffer->size.y;
 	if (renderWallHitboxes != true)
 	{
-  #pragma omp parallel for collapse(2)
+#pragma omp parallel for collapse(2)
 		for (int x = 0; x < xSize; ++x)
 		{
 			for (int y = 0; y < ySize; ++y)
@@ -238,7 +235,7 @@ void Renderer::RenderToOutbuffer()
 				}
 				if (fadePercent < 1)
 				{
-					DestPixel = DestPixel.BlendColors(DestPixel,fadeColor, 100 * (1 - fadePercent));
+					DestPixel = DestPixel.BlendColors(DestPixel, fadeColor, 100 * (1 - fadePercent));
 				}
 			}
 		}
@@ -713,7 +710,7 @@ void Renderer::RenderMenuSelections()
 			menuPip.position = menuSelectionPos[i];
 			outputBuffer->AddSprite(&menuPip);
 		}
-		else if(menuSelectionType[i] == Check)
+		else if (menuSelectionType[i] == Check)
 		{
 			menuCheck.position = menuSelectionPos[i];
 			outputBuffer->AddSprite(&menuCheck);
