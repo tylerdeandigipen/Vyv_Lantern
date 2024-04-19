@@ -63,8 +63,8 @@ Engine::EngineCode Level1::Load()
 	//AudioManager.LoadMusicFromJSON("./Data/music.json");//line is good
 	//AudioManager.LoadSFXFromJSON("./Data/SFX.json");// line is goodplay
 
-	if (entityManagerTBD->InitializeProperties(_OBJECT_LIST))
-		std::cout << "Property load success!\n";
+	//if (entityManagerTBD->InitializeProperties(_OBJECT_LIST))
+	//	std::cout << "Property load success!\n";
 
 	return Engine::NothingBad;
 }

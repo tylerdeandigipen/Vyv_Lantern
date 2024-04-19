@@ -490,7 +490,7 @@ void WinScene::Update(float dt)
 		//else
 		//{
 		Transform* trans = (*EntityContainer::GetInstance())[0]->GetComponent<Transform>();
-		if (trans->GetTranslation()->y < 154)
+		if (trans->GetTranslation()->y < 132)
 		{
 			Vector2 translation = (*EntityContainer::GetInstance())[0]->GetImage()->position;
 			translation.y += (35 * dt);
@@ -501,7 +501,7 @@ void WinScene::Update(float dt)
 		else
 		{
 			Transform* trans = (*EntityContainer::GetInstance())[1]->GetComponent<Transform>();
-			if (trans->GetTranslation()->y > 232)
+			if (trans->GetTranslation()->y > 248)
 			{
 				Vector2 translation = (*EntityContainer::GetInstance())[1]->GetImage()->position;
 				translation.y -= (35 * dt);

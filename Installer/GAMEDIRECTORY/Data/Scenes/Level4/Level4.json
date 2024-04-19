@@ -1,0 +1,8 @@
+{
+  "GameObjectList": {
+    "GameObjectFile": "./Data/Scenes/Level4/Level4OBJECTS.json"
+  },
+  "TiledData": {
+    "TileMapFile": "./Data/Scenes/Level4/Level4MAP.json"
+  }
+}

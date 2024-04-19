@@ -1,0 +1,8 @@
+{
+  "GameObjectList": {
+    "GameObjectFile": "./Data/Scenes/TutorialFinalActual/TutorialFinalActualOBJECTS.json"
+  },
+  "TiledData": {
+    "TileMapFile": "./Data/Scenes/TutorialFinalActual/TutorialFinalActualMAP.json"
+  }
+}

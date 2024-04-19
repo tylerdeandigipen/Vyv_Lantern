@@ -1,0 +1,45 @@
+{
+  "Components": [
+    {
+      "Type": "ColliderAABB"
+    },
+    {
+      "Type": "Transform",
+      "translation": {
+        "x": 176.0,
+        "y": 88.0
+      }
+    },
+    {
+      "OldTranslation": {
+        "x": 176.0,
+        "y": 88.0
+      },
+      "Type": "Physics"
+    },
+    {
+      "Direction": {
+        "DirectionX": 1.0,
+        "DirectionY": -1.0
+      },
+      "Type": "BehaviorMirror",
+      "key": 0
+    },
+    {
+      "File": "./Data/Lights/MirrorLight.json",
+      "Type": "Light"
+    }
+  ],
+  "FilePath": "./Data/Scenes/Level1Final/Mirror5.json",
+  "KeyObject": {
+    "key": "Mirror5"
+  },
+  "Name": "Switch",
+  "Type": "Object",
+  "file": "./Assets/PPM/CrystalSprites/MirrorCrystalDownLeft.ppm",
+  "frameSize": [
+    8,
+    8
+  ],
+  "isAnimated": false
+}

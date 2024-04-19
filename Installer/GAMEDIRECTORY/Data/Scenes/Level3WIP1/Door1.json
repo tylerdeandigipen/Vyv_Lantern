@@ -1,0 +1,41 @@
+{
+  "Components": [
+    {
+      "Type": "ColliderAABB"
+    },
+    {
+      "Type": "Transform",
+      "translation": {
+        "x": 120.0,
+        "y": 0.0
+      }
+    },
+    {
+      "OldTranslation": {
+        "x": 120.0,
+        "y": 0.0
+      },
+      "Type": "Physics"
+    },
+    {
+      "ClosedSprite": "./Assets/PPM/Door_Closed.ppm",
+      "DoorClosed": true,
+      "NextScene": "",
+      "OpenSprite": "./Assets/PPM/Door_Open.ppm",
+      "PairName": "",
+      "Type": "BehaviorDoor"
+    }
+  ],
+  "FilePath": "./Data/Scenes/Level3WIP1/Door1.json",
+  "KeyObject": {
+    "key": "Door1"
+  },
+  "Name": "Door",
+  "Type": "Object",
+  "file": "./Assets/PPM/Door_Closed.ppm",
+  "frameSize": [
+    8,
+    8
+  ],
+  "isAnimated": false
+}

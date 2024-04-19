@@ -1,0 +1,27 @@
+{
+  "Type": "Object",
+  "Name": "Switch",
+  "file": "./Assets/PPM/EPressWhite.ppm",
+  "FilePath": "./Data/GameObjects/EPress.json",
+  "isAnimated": false,
+  "frameSize": [ 8, 8 ],
+  "Components": [
+    {
+      "Type": "ColliderAABB"
+    },
+    {
+      "Type": "Transform",
+      "translation": {
+        "x": 92,
+        "y": 167
+      }
+    },
+    {
+      "Type": "Physics",
+      "OldTranslation": {
+        "x": 90,
+        "y": 30
+      }
+    }
+  ]
+}

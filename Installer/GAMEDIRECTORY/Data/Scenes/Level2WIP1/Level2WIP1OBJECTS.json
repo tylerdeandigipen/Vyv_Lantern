@@ -1,0 +1,29 @@
+{
+  "Circle": {
+    "count": 2
+  },
+  "Door": {
+    "count": 3
+  },
+  "Emitter": {
+    "count": 3
+  },
+  "FilePath": "./Data/Scenes/Level2WIP1/Level2WIP1OBJECTS.json",
+  "Mirror": {
+    "count": 2
+  },
+  "Objects": [
+    {
+      "FilePath": "./Data/Scenes/Level2WIP1/Receiver1.json"
+    },
+    {
+      "FilePath": "./Data/Scenes/Level2WIP1/Emitter1.json"
+    },
+    {
+      "FilePath": "./Data/Scenes/Level2WIP1/Door1.json"
+    }
+  ],
+  "Receiver": {
+    "count": 3
+  }
+}

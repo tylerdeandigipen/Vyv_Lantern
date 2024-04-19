@@ -1,0 +1,50 @@
+{
+  "Circle": {
+    "count": 4
+  },
+  "Door": {
+    "count": 4
+  },
+  "Emitter": {
+    "count": 5
+  },
+  "FilePath": "./Data/Scenes/Level4Final/Level4FinalOBJECTS.json",
+  "Mirror": {
+    "count": 12
+  },
+  "Objects": [
+    {
+      "FilePath": "./Data/Scenes/Level4Final/Player0.json"
+    },
+    {
+      "FilePath": "./Data/Scenes/Level4Final/Emitter1.json"
+    },
+    {
+      "FilePath": "./Data/Scenes/Level4Final/Receiver1.json"
+    },
+    {
+      "FilePath": "./Data/Scenes/Level4Final/Mirror1.json"
+    },
+    {
+      "FilePath": "./Data/Scenes/Level4Final/Mirror2.json"
+    },
+    {
+      "FilePath": "./Data/Scenes/Level4Final/Mirror3.json"
+    },
+    {
+      "FilePath": "./Data/Scenes/Level4Final/Mirror5.json"
+    },
+    {
+      "FilePath": "./Data/Scenes/Level4Final/Mirror7.json"
+    },
+    {
+      "FilePath": "./Data/Scenes/Level4Final/Mirror8.json"
+    },
+    {
+      "FilePath": "./Data/Scenes/Level4Final/Mirror9.json"
+    }
+  ],
+  "Receiver": {
+    "count": 5
+  }
+}

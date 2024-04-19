@@ -1,0 +1,27 @@
+{
+  "Circle": {
+    "count": 1
+  },
+  "Door": {
+    "count": 1
+  },
+  "Emitter": {
+    "count": 1
+  },
+  "FilePath": "./Data/Scenes/Resolution/ResolutionOBJECTS.json",
+  "Mirror": {
+    "count": 1
+  },
+  "Objects":
+  [
+    {
+      "FilePath": "./Data/Scenes/Resolution/Fin.json"
+    },
+    {
+      "FilePath": "./Data/Scenes/Resolution/ReturnToMenu.json"
+    }
+  ],
+  "Receiver": {
+    "count": 1
+  }
+}

@@ -1,8 +1,16 @@
 {
-  "creak": "Assets/Audio/SFX/CreaksSqueaks-PulleySquea_3.ogg",
-  "door": "Assets/Audio/SFX/SCIENCE-FICTION-DOOR-WHOOSH-OPEN-SHORT-01.ogg",
-  "cheer": "Assets/Audio/SFX/CROWD-APPLAUD-CHEER-SCREAM-01.ogg",
-  "footsteps": "Assets/Audio/SFX/FOOTSTEPS-SNEAKERS-SNOW-WALK-SLOW-CRUNCH-01.ogg",
-  "laser": "Assets/Audio/SFX/SCIENCE-FICTION-LASER-GUN-BEAM-BLASTER-SHOT-01.ogg",
-  "button": "Assets/Audio/SFX/WALKIE-TALKIE-BUTTON-PRESS-BEEP-01.ogg"
+  "bgAmbience": "Assets/Audio/SFX/LevelAmbienceSFX.mp3",
+  "pauseOpen": "Assets/Audio/SFX/PauseMenuOpen.mp3",
+  "pauseClose": "Assets/Audio/SFX/PauseMenuClose.mp3",
+  "doorOpen": "Assets/Audio/SFX/DoorOpen.mp3",
+  "doorClose": "Assets/Audio/SFX/DoorClose.mp3",
+  "cheer": "Assets/Audio/SFX/VictorySFX4.mp3",
+  "laserAmbience": "Assets/Audio/SFX/LaserAmbienceSFX.mp3",
+  "mirrorMove1": "Assets/Audio/SFX/MirrorMoveSFX1.mp3",
+  "mirrorMove2": "Assets/Audio/SFX/MirrorMoveSFX2.mp3",
+  "mirrorMove3": "Assets/Audio/SFX/MirrorMoveSFX3.mp3",
+  "mirrorMove4": "Assets/Audio/SFX/MirrorMoveSFX4.mp3",
+  "mirrorMove5": "Assets/Audio/SFX/MirrorMoveSFX5.mp3",
+  "buttonFeedback": "Assets/Audio/SFX/buttonFeedback.mp3",
+  "lvlTransition": "Assets/Audio/SFX/VictorySFX2.mp3"
 }
