@@ -90,6 +90,7 @@ private:
 	bool isOptionsOpen;
 	bool isHelpOpen;
 	bool audioDirty;
+	bool wantToExitCredits;
 };
 
 Scene* MenuSceneGetInstance(void);

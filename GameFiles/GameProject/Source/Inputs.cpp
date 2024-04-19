@@ -26,6 +26,8 @@ Inputs::Inputs()
 	mouseY = 0;
 	leftMouseB = false;
 	rightMouseB = false;
+	leftMouseButtonPressed = false;
+	rightMouseButtonPressed = false;
 	window = NULL;
 
 	// init key states to false
@@ -89,10 +91,12 @@ void Inputs::handleInput()
 				if (event.button.button == SDL_BUTTON_RIGHT)
 				{
 					rightMouseB = true;
+					rightMouseButtonPressed = true;
 				}
 				else if (event.button.button == SDL_BUTTON_LEFT)
 				{
 					leftMouseB = true;
+					leftMouseButtonPressed = true;
 				}
 				break;
 
@@ -145,10 +149,7 @@ void Inputs::handleInput()
 				AudioManager.ResumeSFX();
 				break;
 			}
-
 			}
-
-
 
 #ifdef _DEBUG
 		}
@@ -208,6 +209,24 @@ bool Inputs::mouseButtonPressed(Uint8 button) const
 		return rightMouseB;
 	}
 
+	return false;
+}
+
+bool Inputs::leftMouseButtonClicked()
+{
+	if (leftMouseButtonPressed && !leftMouseB) {
+		leftMouseButtonPressed = false;
+		return true;
+	}
+	return false;
+}
+
+bool Inputs::rightMouseButtonClicked()
+{
+	if (rightMouseButtonPressed && !rightMouseB) {
+		rightMouseButtonPressed = false;
+		return true;
+	}
 	return false;
 }
 

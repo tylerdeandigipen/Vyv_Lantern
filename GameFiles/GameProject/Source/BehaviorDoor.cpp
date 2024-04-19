@@ -131,7 +131,7 @@ void BehaviorDoor::Update(float dt)
 		{
 			Parent()->SetImage(closedPPM);
 
-			AudioManager.PlaySFX("doorClosed", 1.0f);
+			AudioManager.PlaySFX("doorClose", 1.0f);
 		}
 
 		isDoorClosed = true;
