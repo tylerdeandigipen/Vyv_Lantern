@@ -73,7 +73,7 @@ private:
 	Vector2 realPos{-9999, -9999};
     float playerMoveSpeed;
 	float followCursorScalar = 0.2f;
-	int wehavewalls[20] = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 45, 46, 48, 29, 26, 31, 41, 39, 36 };
+	int wehavewalls[21] = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 45, 46, 48, 29, 26, 31, 41, 39, 36 };
 	//static std::pair<BehaviorPlayer*, std::string> player;
 	bool checkWalls(gfxVector2 position);
 	void moveEntityTowards(Vector2 targetPosition);
