@@ -59,7 +59,7 @@ void Renderer::Update(float dt)
 		PauseMenu::GetInstance()->isPauseMenuOpen = true;
 		if (pauseMenuIndex == -1)
 		{
-			pauseMenuIndex = AddMenuPage("./Assets/PPM/Pause_Temp.ppm");
+			pauseMenuIndex = AddMenuPage("./Assets/PPM/Pause_Menu.ppm");
 		}
 		if (exitConfirmIndex == -1)
 		{
@@ -68,6 +68,16 @@ void Renderer::Update(float dt)
 		if (settingsMenuIndex == -1)
 		{
 			settingsMenuIndex = AddMenuPage("./Assets/PPM/Pause_Menu_Settings.ppm");
+		}
+		if (helpMenuIndex == -1)
+		{
+			helpMenuIndex = AddMenuPage("./Assets/PPM/Pause_Menu_Help.ppm");
+		}
+
+		if (SceneSystem::GetInstance()->mainMenuOpen == false)
+		{
+			Renderer::GetInstance()->menuSelectionPos[0] = { -500, -500 };
+			Renderer::GetInstance()->menuSelectionPos[1] = { -500, -500 };
 		}
 
 		LoadMenuPage(pauseMenuIndex);

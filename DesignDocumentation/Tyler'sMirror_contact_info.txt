@@ -1,7 +1,0 @@
-Tyler's Mirror (Adventure, Top-Down, Puzzle)
-
-Tyler's Mirror is a Top-Down puzzle about mirror and lasers. You play as a lost spirit in an ancient corrupted ruin. After going down the mirror maze, you'll discover the truth of corruption and save this world.
-
-Vomunar Cai - Designer - songyang.cai@digipen.edu
-Michael Howard - Programmer - michael.howard@digipen.edu
-Zan Moffat - Design Lead/Puzzle Designer - zan.moffat@digipen.edu
