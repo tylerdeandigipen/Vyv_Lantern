@@ -1,0 +1,12 @@
+Refraction (Adventure, Top-Down, Puzzle)
+
+Refraction is a Top-Down puzzle about mirror and lasers. You play as a lost spirit in an ancient corrupted ruin. After going down the mirror maze, you'll discover the truth of corruption and save this world.
+
+Songyang (Vomunar) Cai - Designer - songyang.cai@digipen.edu
+Michael Howard - Programmer - michael.howard@digipen.edu
+Zan Moffat - Design Lead/Puzzle Designer - zan.moffat@digipen.edu
+Tyler Dean - Producer / Programmer - tyler.dean@digipen.edu
+Wonhyeong Chae - Programmer - w.chae@digipen.edu
+David Kommavongsa - Programmer - david.kommavongsa@digipen.edu
+TayLee Young - Programmer - taylee.young@digipen.edu
+Shangyu Li - Programmer = shangyu.li@digipen.edu
