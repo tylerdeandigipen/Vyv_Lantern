@@ -62,7 +62,7 @@ Engine::EngineCode SplashScene::Init()
 	inputs = Inputs::GetInstance();
 
 	Transform* LogoPOS = new Transform;
-	LogoPOS->SetTranslation(gfxVector2{ 50,50 });
+	LogoPOS->SetTranslation(gfxVector2{ 17,50 });
 
 	logo->Add(LogoPOS);
 	logo->AddToRenderer(Renderer::GetInstance(), "");
