@@ -38,6 +38,6 @@ float FrameRate::CalculateAverageFrameRate(float* PreviousFrameLengths, uint32_t
 void FrameRate::UpdateWindowTitle(SDL_Window* window, float AverageFrameRate) {
     char WindowTextBuffer[128];
     //TODO UPDATE TO FULL GAME NAME
-    sprintf_s(WindowTextBuffer, sizeof(WindowTextBuffer), "TYLER'S MIRROR FPS: %.2f", AverageFrameRate);
+    sprintf_s(WindowTextBuffer, sizeof(WindowTextBuffer), "Refraction", AverageFrameRate);
     SDL_SetWindowTitle(window, WindowTextBuffer);
 }

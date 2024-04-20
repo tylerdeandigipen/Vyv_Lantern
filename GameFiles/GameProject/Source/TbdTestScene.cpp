@@ -50,7 +50,7 @@ SDL_Renderer* TbdRenderer;
 Renderer* TbdPixelRenderer = Renderer::GetInstance();
 
 SDL_Window* TbdWindow;
-
+bool easteregg = false;
 SDL_GLContext TbdGlContext;
 
 Scene* TbdTestSceneinstance = NULL;
@@ -478,20 +478,29 @@ void TbdTestScene::Update(float dt)
 	{
 		winState = (check ? false : true);
 	}
-	if (LevelBuilder::GetWinState())
+	/*if (!EntityContainer::GetInstance()->IsEmpty())
 	{
-		if (dt != 0)
+		if (EntityContainer::GetInstance()->FindByName("Player")->GetComponent<Transform>()->GetTranslation()->y < 0.0f)
 		{
-			TbdPixelRenderer->menuBuffer = new ImageBuffer{ SCREEN_SIZE_X,SCREEN_SIZE_Y };
-			ImageBuffer* temp = new ImageBuffer{ "./Assets/PPM/TemporaryWinScreen.ppm" };
-			TbdPixelRenderer->menuBuffer->AddSprite(temp, Vector2{ -20,-5 });
-			Engine::GetInstance()->SetPause(true);
+			static bool hatethis = false;
+			static ImageBuffer* temp = NULL;
+			if (!hatethis)
+			{
+				hatethis = true;
+				temp = new ImageBuffer{ "./Assets/PPM/TemporaryWinScreen.ppm" };
+				TbdPixelRenderer->menuBuffer = new ImageBuffer{ SCREEN_SIZE_X,SCREEN_SIZE_Y };
+				TbdPixelRenderer->menuBuffer->AddSprite(temp, Vector2{ -20,-5 });
+				Engine::GetInstance()->SetPause(true);
+			}
+
+			if (inputHandler->keyPressed(SDL_SCANCODE_RETURN))
+			{
+				if (temp)
+					delete temp;
+				SceneSystem::RestartScene();
+			}
 		}
-		if (inputHandler->keyPressed(SDL_SCANCODE_RETURN))
-		{
-			SceneSystem::RestartScene();
-		}
-	}
+	}*/
 	TbdPlayerMovement(dt);
 	handleCheatCodes();
 

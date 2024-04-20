@@ -138,6 +138,8 @@ void SceneSystem::Update(float dt)
 	{
 		activeScene->Update(dt);
 	}
+	//if (strcmp(activeScene->name, "Splash") == 0 && !Animating)
+	//	activeScene->Update(dt);
 }
 
 void SceneSystem::Render()
