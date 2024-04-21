@@ -436,6 +436,7 @@ void TbdPlayerMovement(float dt)
 		*/
 	}
 
+#ifdef _DEBUG
 	if (inputHandler->keyPressed(SDL_SCANCODE_M))
 	{
 		if (!mKeyDown)
@@ -458,6 +459,7 @@ void TbdPlayerMovement(float dt)
 	{
 		mKeyDown = false;
 	}
+#endif
 }
 
 void TbdTestScene::Update(float dt)
@@ -474,10 +476,14 @@ void TbdTestScene::Update(float dt)
 	inputHandler->handleInput();
 	bool check = winState;
 
+#ifdef DEBUG
+
+
 	if (inputHandler->keyPressed(SDL_SCANCODE_Y))
 	{
 		winState = (check ? false : true);
 	}
+#endif // DEBUG
 	/*if (!EntityContainer::GetInstance()->IsEmpty())
 	{
 		if (EntityContainer::GetInstance()->FindByName("Player")->GetComponent<Transform>()->GetTranslation()->y < 0.0f)

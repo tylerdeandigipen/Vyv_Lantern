@@ -124,11 +124,15 @@ void Inputs::handleInput()
 					keyStates[event.key.keysym.scancode] = true;
 
 					// if escape is pressed, shut down engine
+#ifdef DEBUG
+
+
 					if (event.key.keysym.sym == SDLK_9)
 					{
 						Engine::GetInstance()->SetCloseRequest(true);
 						quitting = true;
 					}
+#endif // DEBUG
 				}
 				break;
 

@@ -29,7 +29,7 @@ DisableWelcomePage=no
 WizardImageFile=INSTALLERFILES\panel_image_100.bmp
 WizardSmallImageFile=INSTALLERFILES\banner.bmp
 
-AppId={{260DECE2-3762-4FAC-A6B4-E148CA4124A0}
+AppId={{A2D31EE9-E49B-441E-A9D8-09E5FEBB6F34}
 
 ; Standard app data stuff
 AppName={#ApplicationName}
