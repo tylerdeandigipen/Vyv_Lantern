@@ -42,7 +42,9 @@ public:
 	int settingsMenuIndex = -1;
 	int confirmQuitMainindex = -1;
 	int helpMenuIndex = -1;
-	int creditsMainMenuIndex = -1;
+	int madeAtDigipenCredits = -1;
+	int licensesCredits = -1;
+	int additionalThanksCredits = -1;
 	int mainMenuOptionsIndex = -1;
 	int mainMenuHelpIndex = -1;
 	int mainMenuIndex = -1;

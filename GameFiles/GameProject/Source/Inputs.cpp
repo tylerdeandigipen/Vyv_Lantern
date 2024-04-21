@@ -26,8 +26,8 @@ Inputs::Inputs()
 	mouseY = 0;
 	leftMouseB = false;
 	rightMouseB = false;
-	leftMouseButtonPressed = false;
-	rightMouseButtonPressed = false;
+	leftMouseReleased = false;
+	rightMouseReleased = false;
 	window = NULL;
 
 	// init key states to false
@@ -62,6 +62,8 @@ void Inputs::handleInput()
 {
 	SDL_Event event;
 
+	float timer = 0.8;
+
 	// poll event is an event queue for sdl2
 	while (SDL_PollEvent(&event))
 	{
@@ -91,22 +93,24 @@ void Inputs::handleInput()
 				if (event.button.button == SDL_BUTTON_RIGHT)
 				{
 					rightMouseB = true;
-					rightMouseButtonPressed = true;
+					rightMouseReleased = false;
 				}
 				else if (event.button.button == SDL_BUTTON_LEFT)
 				{
 					leftMouseB = true;
-					leftMouseButtonPressed = true;
+					rightMouseReleased = false;
 				}
 				break;
 
 			case SDL_MOUSEBUTTONUP:
 				if (event.button.button == SDL_BUTTON_RIGHT)
 				{
+					rightMouseReleased = true;
 					rightMouseB = false;
 				}
 				else if (event.button.button == SDL_BUTTON_LEFT)
 				{
+					leftMouseReleased = true;
 					leftMouseB = false;
 				}
 				break;
@@ -209,24 +213,6 @@ bool Inputs::mouseButtonPressed(Uint8 button) const
 		return rightMouseB;
 	}
 
-	return false;
-}
-
-bool Inputs::leftMouseButtonClicked()
-{
-	if (leftMouseButtonPressed && !leftMouseB) {
-		leftMouseButtonPressed = false;
-		return true;
-	}
-	return false;
-}
-
-bool Inputs::rightMouseButtonClicked()
-{
-	if (rightMouseButtonPressed && !rightMouseB) {
-		rightMouseButtonPressed = false;
-		return true;
-	}
 	return false;
 }
 

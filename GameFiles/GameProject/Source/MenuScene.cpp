@@ -417,7 +417,11 @@ void MenuScene::Update(float dt)
 	{
 		closeHelp();
 	}
-	pleasGodWork -= dt * 4.0f;
+
+	if (IsMouseOverLeftArrow() || IsMouseOverRightArrow())
+	{
+		HandleWhichCredit();
+	}
 
 	MenuPixelRender->Update(dt);
 }
@@ -454,28 +458,32 @@ void MenuScene::closeConfirmQuitMenu()
 
 void MenuScene::openCredits()
 {
-	if (pleasGodWork < 0.0f)
+	if (isCredits1Open)
 	{
-		Renderer::GetInstance()->LoadMenuPage(Renderer::GetInstance()->creditsMainMenuIndex);
-
-		//pleasGodWork = .5f;
+		Renderer::GetInstance()->LoadMenuPage(Renderer::GetInstance()->additionalThanksCredits);
+	}
+	else if (isCredits2Open)
+	{
+		Renderer::GetInstance()->LoadMenuPage(Renderer::GetInstance()->madeAtDigipenCredits);
+	}
+	else if (isCredits3Open)
+	{
+		Renderer::GetInstance()->LoadMenuPage(Renderer::GetInstance()->licensesCredits);
 	}
 }
 
 void MenuScene::closeCredits()
 {
-	if (pleasGodWork < 0.0f)
+	if (Inputs::GetInstance()->mouseButtonPressed(SDL_BUTTON_LEFT))
 	{
-		if (Inputs::GetInstance()->mouseButtonPressed(SDL_BUTTON_LEFT))
-		{
-			AudioManager.PlaySFX("buttonFeedback", 0.5);
-			isCreditsOpen = false;
+		AudioManager.PlaySFX("buttonFeedback", 0.5);
+		isCreditsOpen = false;
 
-			Renderer::GetInstance()->LoadMenuPage(-1);
+		isCredits1Open = false;
+		isCredits2Open = false;
+		isCredits3Open = false;
 
-			//isConfirmQuitOpen = false;
-		}
-		pleasGodWork = .5f;
+		Renderer::GetInstance()->LoadMenuPage(-1);
 	}
 }
 
@@ -548,6 +556,38 @@ void MenuScene::HandleCredit()
 			//do something
 			AudioManager.PlaySFX("buttonFeedback", 0.5);
 			isCreditsOpen = true;
+			isCredits1Open = true;
+		}
+	}
+}
+
+void MenuScene::HandleWhichCredit()
+{
+	if (Inputs::GetInstance()->leftMouseB)
+	{
+		if (isCredits1Open && !isCredits2Open && !isCredits3Open)
+		{
+			isCredits1Open = false;
+			isCredits2Open = true;
+			openCredits();
+			Inputs::GetInstance()->leftMouseB = false;
+			return;
+		}
+		else if (isCredits2Open && !isCredits3Open && !isCredits1Open)
+		{
+			isCredits2Open = false;
+			isCredits3Open = true;
+			openCredits();
+			Inputs::GetInstance()->leftMouseB = false;
+			return;
+		}
+		else if (isCredits3Open && !isCredits1Open && !isCredits2Open)
+		{
+			isCredits3Open = false;
+			isCredits1Open = true;
+			openCredits();
+			Inputs::GetInstance()->leftMouseB = false;
+			return;
 		}
 	}
 }
@@ -646,6 +686,34 @@ bool MenuScene::IsMouseOverCreditButton()
 		mouseY >= topLeftY && mouseY <= bottomRightY);
 }
 
+bool MenuScene::IsMouseOverLeftArrow()
+{
+	int mouseX = Inputs::GetInstance()->getMouseX();
+	int mouseY = Inputs::GetInstance()->getMouseY();
+
+	int topLeftX = 473;
+	int topLeftY = 695;
+	int bottomRightX = 604;
+	int bottomRightY = 776;
+
+	return (mouseX >= topLeftX && mouseX <= bottomRightX &&
+		mouseY >= topLeftY && mouseY <= bottomRightY);
+}
+
+bool MenuScene::IsMouseOverRightArrow()
+{
+	int mouseX = Inputs::GetInstance()->getMouseX();
+	int mouseY = Inputs::GetInstance()->getMouseY();
+
+	int topLeftX = 635;
+	int topLeftY = 694;
+	int bottomRightX = 772;
+	int bottomRightY = 775;
+
+	return (mouseX >= topLeftX && mouseX <= bottomRightX &&
+		mouseY >= topLeftY && mouseY <= bottomRightY);
+}
+
 bool MenuScene::IsMouseOverCloseCredit()
 {
 	if (isCreditsOpen)
@@ -653,10 +721,10 @@ bool MenuScene::IsMouseOverCloseCredit()
 		int mouseX = Inputs::GetInstance()->getMouseX();
 		int mouseY = Inputs::GetInstance()->getMouseY();
 
-		int exitButtonTopLeftX = 60;
-		int exitButtonTopLeftY = 689;
-		int exitButtonBottomRightX = 229;
-		int exitButtonBottomRightY = 774;
+		int exitButtonTopLeftX = 265;
+		int exitButtonTopLeftY = 691;
+		int exitButtonBottomRightX = 415;
+		int exitButtonBottomRightY = 773;
 
 		return (mouseX >= exitButtonTopLeftX && mouseX <= exitButtonBottomRightX &&
 			mouseY >= exitButtonTopLeftY && mouseY <= exitButtonBottomRightY);

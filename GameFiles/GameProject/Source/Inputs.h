@@ -31,11 +31,14 @@ public:
 	bool mouseButtonUp(SDL_Keycode button) const;
 	bool mouseButtonDown(SDL_Keycode button) const;
 	bool mouseButtonPressed(Uint8 button) const;
-	bool leftMouseButtonClicked();
-	bool rightMouseButtonClicked();
 
 	int getMouseX() const;
 	int getMouseY() const;
+
+	bool leftMouseReleased;
+	bool rightMouseReleased;
+	bool leftMouseB;
+	bool rightMouseB;
 
 	void InputKeyClear();
 
@@ -47,11 +50,6 @@ private:
 
 	int mouseX;
 	int mouseY;
-
-	bool leftMouseB;
-	bool rightMouseB;
-	bool leftMouseButtonPressed;
-	bool rightMouseButtonPressed;
 
 	bool quitting;
 	bool keyStates[SDL_NUM_SCANCODES];

@@ -42,6 +42,8 @@ public:
 	bool IsMouseOverExitButtonNo();
 
 	bool IsMouseOverCloseCredit();
+	bool IsMouseOverLeftArrow();
+	bool IsMouseOverRightArrow();
 	bool IsMouseOverCloseOptions();
 	bool IsMouseOverCloseHelp();
 
@@ -55,6 +57,7 @@ public:
 	void HandleBegin();
 	void HandleExit();
 	void HandleCredit();
+	void HandleWhichCredit();
 	void HandleOption();
 	void HandleResetOptions();
 	void HandleFullscreen();
@@ -91,6 +94,10 @@ private:
 	bool isHelpOpen;
 	bool audioDirty;
 	bool wantToExitCredits;
+
+	bool isCredits1Open = false;
+	bool isCredits2Open = false;
+	bool isCredits3Open = false;
 };
 
 Scene* MenuSceneGetInstance(void);

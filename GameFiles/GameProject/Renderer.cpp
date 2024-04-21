@@ -84,9 +84,17 @@ void Renderer::Update(float dt)
 	}
 	else if (SceneSystem::GetInstance()->mainMenuOpen == true)
 	{
-		if (creditsMainMenuIndex == -1)
+		if (madeAtDigipenCredits == -1)
 		{
-			creditsMainMenuIndex = AddMenuPage("./Assets/PPM/Credits_Menu.ppm");
+			madeAtDigipenCredits = AddMenuPage("./Assets/PPM/Credits_Menu_Made_At_DigiPen.ppm");
+		}
+		if (licensesCredits == -1)
+		{
+			licensesCredits = AddMenuPage("./Assets/PPM/Credits_Menu_Licences.ppm");
+		}
+		if (additionalThanksCredits == -1)
+		{
+			additionalThanksCredits = AddMenuPage("./Assets/PPM/Credits_Menu_Additional_Thanks.ppm");
 		}
 		if (confirmQuitMainindex == -1)
 		{
@@ -1181,10 +1189,12 @@ void Renderer::ResetMenuPages()
 	exitConfirmIndex = -1;
 	settingsMenuIndex = -1;
 	confirmQuitMainindex = -1;
-	creditsMainMenuIndex = -1;
 	mainMenuOptionsIndex = -1;
 	mainMenuHelpIndex = -1;
 	mainMenuIndex = -1;
+	madeAtDigipenCredits = -1;
+	licensesCredits = -1;
+	additionalThanksCredits = -1;
 }
 
 void Renderer::AddLight(Light light)
